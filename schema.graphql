@@ -1,0 +1,171 @@
+schema {
+  query: Root
+}
+
+type Build {
+  id: ID!
+  branch: String!
+  changeIdInRepo: String!
+  changeMessage: String
+  authorName: String
+  changeTimestamp: Long!
+  buildStartedTimestamp: Long!
+  buildFinishedTimestamp: Long
+  status: BuildStatus
+  notifications: [Notification]
+  tasks: [Task]
+}
+
+# Build status.
+enum BuildStatus {
+  CREATED
+  EXECUTING
+  FAILED
+  COMPLETED
+}
+
+# Long type
+scalar Long
+
+type Notification {
+  level: NotificationLevel
+  message: String
+}
+
+# Notification level.
+enum NotificationLevel {
+  INFO
+  WARNING
+  ERROR
+}
+
+# Information about pagination in a connection.
+type PageInfo {
+  # When paginating forwards, are there more items?
+  hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
+  hasPreviousPage: Boolean!
+
+  # When paginating backwards, the cursor to continue.
+  startCursor: String
+
+  # When paginating forwards, the cursor to continue.
+  endCursor: String
+}
+
+type Repository {
+  id: ID!
+  fullName: String!
+  cloneUrl: String!
+  masterBranch: String!
+  isPrivate: Boolean!
+  lastMasterBuild: Build
+  builds(
+    # fetching only nodes before this node (exclusive)
+    before: String
+
+    # fetching only nodes after this node (exclusive)
+    after: String
+
+    # fetching only the first certain number of nodes
+    first: Int
+
+    # fetching only the last certain number of nodes
+    last: Int
+  ): RepositoryBuildsConnection
+}
+
+# An edge in a connection
+type RepositoryBuildEdge {
+  # The item at the end of the edge
+  node: Build
+
+  # cursor marks a unique position or index into the connection
+  cursor: String!
+}
+
+# A connection to a list of items.
+type RepositoryBuildsConnection {
+  # a list of edges
+  edges: [RepositoryBuildEdge]
+
+  # details about this specific page
+  pageInfo: PageInfo!
+}
+
+type Root {
+  viewer: User
+  repository(id: ID!): Repository
+  build(id: ID!): Build
+  task(id: ID!): Task
+}
+
+type Task {
+  id: ID!
+  name: String!
+  status: TaskStatus
+  notifications: [Notification]
+  commands: [TaskCommand]
+}
+
+type TaskCommand {
+  name: String
+  status: TaskCommandStatus
+  durationInSeconds: Int
+}
+
+# Task Command status.
+enum TaskCommandStatus {
+  UNDEFINED
+  SUCCESS
+  FAILURE
+}
+
+# Task status.
+enum TaskStatus {
+  CREATED
+  EXECUTING
+  ABORTED
+  FAILED
+  COMPLETED
+}
+
+type User {
+  id: ID!
+  githubUserId: Long
+  name: String!
+  avatarURL: String
+  builds(
+    # fetching only nodes before this node (exclusive)
+    before: String
+
+    # fetching only nodes after this node (exclusive)
+    after: String
+
+    # fetching only the first certain number of nodes
+    first: Int
+
+    # fetching only the last certain number of nodes
+    last: Int
+  ): UserBuildsConnection
+}
+
+# An edge in a connection
+type UserBuildEdge {
+  # The item at the end of the edge
+  node: Build
+
+  # cursor marks a unique position or index into the connection
+  cursor: String!
+}
+
+# A connection to a list of items.
+type UserBuildsConnection {
+  # a list of edges
+  edges: [UserBuildEdge]
+
+  # details about this specific page
+  pageInfo: PageInfo!
+}
+

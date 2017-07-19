@@ -15,7 +15,7 @@ class NotificationList extends React.Component {
 
   static notificationItem(notification) {
     let headerStyle = {
-      backgroundColor: notificationColor(notification.status)
+      backgroundColor: notificationColor(notification.level)
     };
     return (
       <Card key={notification.message}

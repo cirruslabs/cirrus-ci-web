@@ -8,6 +8,7 @@ import Paper from 'material-ui/Paper';
 
 import TaskList from './TaskList';
 import NotificationList from "./NotificationList";
+import {formatDuration} from "../utils/time";
 
 class ViewerBuildList extends React.Component {
   render() {
@@ -23,7 +24,7 @@ class ViewerBuildList extends React.Component {
     };
 
     function runSummaryMessage(build) {
-      return build.status;
+      return build.status + " in " + formatDuration(build.buildFinishedTimestamp - build.buildStartedTimestamp);
     }
 
     let repoUrl = build.repository.cloneUrl.slice(0, -4);

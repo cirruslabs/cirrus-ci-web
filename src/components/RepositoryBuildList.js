@@ -16,6 +16,8 @@ import {
 } from 'material-ui/Table';
 
 import Paper from 'material-ui/Paper';
+import FontIcon from 'material-ui/FontIcon';
+import IconButton from 'material-ui/IconButton';
 import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
 
 
@@ -29,6 +31,9 @@ class RepositoryBuildList extends React.Component {
       main: {
         paddingTop: 8
       },
+      gap: {
+        paddingTop: 16
+      },
     };
 
     let edges = this.props.repository.builds.edges;
@@ -37,9 +42,17 @@ class RepositoryBuildList extends React.Component {
         <Paper zDepth={1} rounded={false}>
           <Toolbar>
             <ToolbarGroup>
-              <ToolbarTitle text="Repository Builds"/>
+              <ToolbarTitle text={this.props.repository.fullName}/>
+            </ToolbarGroup>
+            <ToolbarGroup>
+              <IconButton tooltip="Repository Settings">
+                <FontIcon className="material-icons">settings</FontIcon>
+              </IconButton>
             </ToolbarGroup>
           </Toolbar>
+        </Paper>
+        <div style={styles.gap}/>
+        <Paper zDepth={1} rounded={false}>
           <Table selectable={false} style={{tableLayout: 'auto'}}>
             <TableBody displayRowCheckbox={false} showRowHover={true}>
               {edges.map(edge => this.buildItem(edge.node))}
@@ -77,6 +90,7 @@ class RepositoryBuildList extends React.Component {
 export default createFragmentContainer(withRouter(RepositoryBuildList), {
   repository: graphql`
     fragment RepositoryBuildList_repository on Repository {
+      fullName
       builds(last: 100) {
         edges {
           node {

@@ -1,9 +1,11 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import {
   createFragmentContainer,
   graphql,
 } from 'react-relay';
-import FontIcon from 'material-ui/FontIcon';
+import {withRouter} from 'react-router-dom'
+import IconButton from 'material-ui/IconButton';
 import Paper from 'material-ui/Paper';
 
 import TaskList from './TaskList';
@@ -11,6 +13,10 @@ import NotificationList from "./NotificationList";
 import {formatDuration} from "../utils/time";
 
 class ViewerBuildList extends React.Component {
+  static contextTypes = {
+    router: PropTypes.object,
+  };
+
   render() {
     let build = this.props.build;
 
@@ -21,6 +27,15 @@ class ViewerBuildList extends React.Component {
       gap: {
         paddingTop: 16
       },
+      title: {
+        padding: 0
+      },
+      repoButton: {
+        padding: 0
+      },
+      repoButtonIcon: {
+        fontSize: 48
+      }
     };
 
     function runSummaryMessage(build) {
@@ -30,6 +45,15 @@ class ViewerBuildList extends React.Component {
     let repoUrl = build.repository.cloneUrl.slice(0, -4);
     let branchUrl = repoUrl + "/tree/" + build.branch;
     let commitUrl = repoUrl + "/commit/" + build.changeIdInRepo;
+
+    let repoIcon = <IconButton href={repoUrl}
+                               iconClassName="fa fa-github text-middle"
+                               style={styles.repoButton}
+                               iconStyle={styles.repoButtonIcon}
+                               disableTouchRipple={true}
+                               tooltip="Navigate to GitHub"/>;
+    let repoTitle = <a onClick={() => this.context.router.history.push("/repository/" + build.repository.id)}
+                       style={{ cursor: "pointer" }}>{build.repository.fullName}</a>;
 
     let tasksComponent = build.tasks ? <TaskList tasks={build.tasks}/> : null;
     let notificationsComponent = !build.notifications ? null :
@@ -41,8 +65,8 @@ class ViewerBuildList extends React.Component {
       <div style={styles.main} className="container">
         <Paper zDepth={2} rounded={false}>
           <div className="card-block">
-            <h4 className="card-title">
-              <FontIcon className="fa fa-github"/> {build.repository.fullName}
+            <h4 className="card-title text-middle" style={styles.title}>
+              {repoIcon} {repoTitle}
             </h4>
             <h5 className="card-title align-middle">
               Commit <a href={commitUrl}>{build.changeIdInRepo.substr(0, 6)}</a> on branch <a href={branchUrl}>{build.branch}</a>
@@ -61,7 +85,7 @@ class ViewerBuildList extends React.Component {
   }
 }
 
-export default createFragmentContainer(ViewerBuildList, {
+export default createFragmentContainer(withRouter(ViewerBuildList), {
   build: graphql`
     fragment BuildDetails_build on Build {
       id

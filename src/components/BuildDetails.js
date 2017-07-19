@@ -3,6 +3,7 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay';
+import FontIcon from 'material-ui/FontIcon';
 import Paper from 'material-ui/Paper';
 
 import TaskList from './TaskList';
@@ -25,6 +26,10 @@ class ViewerBuildList extends React.Component {
       return build.status;
     }
 
+    let repoUrl = build.repository.cloneUrl.slice(0, -4);
+    let branchUrl = repoUrl + "/tree/" + build.branch;
+    let commitUrl = repoUrl + "/commit/" + build.changeIdInRepo;
+
     let tasksComponent = build.tasks ? <TaskList tasks={build.tasks}/> : null;
     let notificationsComponent = !build.notifications ? null :
       <div style={styles.gap}>
@@ -35,9 +40,12 @@ class ViewerBuildList extends React.Component {
       <div style={styles.main} className="container">
         <Paper zDepth={2} rounded={false}>
           <div className="card-block">
-            <h4 className="card-title align-middle">
-              Commit {build.changeIdInRepo.substr(0, 6)}
+            <h4 className="card-title">
+              <FontIcon className="fa fa-github"/> {build.repository.fullName}
             </h4>
+            <h5 className="card-title align-middle">
+              Commit <a href={commitUrl}>{build.changeIdInRepo.substr(0, 6)}</a> on branch <a href={branchUrl}>{build.branch}</a>
+            </h5>
             <h6 className="card-subtitle mb-2 text-muted">{runSummaryMessage(build)}</h6>
             <p className="card-text">{build.changeMessage}</p>
           </div>
@@ -71,6 +79,11 @@ export default createFragmentContainer(ViewerBuildList, {
         id
         name
         status
+      }
+      repository {
+        id
+        fullName
+        cloneUrl
       }
     }
   `,

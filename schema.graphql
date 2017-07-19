@@ -14,6 +14,7 @@ type Build {
   status: BuildStatus
   notifications: [Notification]
   tasks: [Task]
+  repository: Repository!
 }
 
 # Build status.
@@ -22,6 +23,13 @@ enum BuildStatus {
   EXECUTING
   FAILED
   COMPLETED
+}
+
+type GitHubOrganization {
+  accountId: Long!
+  accountLogin: String!
+  avatarUrl: String
+  installationId: Long
 }
 
 # Long type
@@ -149,6 +157,7 @@ type User {
     # fetching only the last certain number of nodes
     last: Int
   ): UserBuildsConnection
+  githubOrganizations: [GitHubOrganization]
 }
 
 # An edge in a connection

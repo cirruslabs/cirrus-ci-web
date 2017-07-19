@@ -4,7 +4,7 @@ import {
   createFragmentContainer,
   graphql,
 } from 'react-relay';
-import {withRouter} from 'react-router-dom'
+import {Link, withRouter} from 'react-router-dom'
 
 import BuildStatus from './BuildStatus'
 
@@ -23,7 +23,8 @@ import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
 
 class RepositoryBuildList extends React.Component {
   static contextTypes = {
-    router: PropTypes.object
+    router: PropTypes.object,
+    location: PropTypes.object
   };
 
   render() {
@@ -45,9 +46,11 @@ class RepositoryBuildList extends React.Component {
               <ToolbarTitle text={this.props.repository.fullName}/>
             </ToolbarGroup>
             <ToolbarGroup>
-              <IconButton tooltip="Repository Settings">
-                <FontIcon className="material-icons">settings</FontIcon>
-              </IconButton>
+              <Link to={ "/repository/" + this.props.repository.id + "/settings"}>
+                <IconButton tooltip="Repository Settings">
+                  <FontIcon className="material-icons">settings</FontIcon>
+                </IconButton>
+              </Link>
             </ToolbarGroup>
           </Toolbar>
         </Paper>
@@ -90,6 +93,7 @@ class RepositoryBuildList extends React.Component {
 export default createFragmentContainer(withRouter(RepositoryBuildList), {
   repository: graphql`
     fragment RepositoryBuildList_repository on Repository {
+      id
       fullName
       builds(last: 100) {
         edges {

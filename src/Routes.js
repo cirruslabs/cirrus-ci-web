@@ -60,8 +60,8 @@ class Routes extends React.Component {
           <Header onIconButtonTouch={this.handleToggle}/>
           <Switch>
             <Route exact path="/" component={AsyncHome} props={this.props}/>
-            <Route exact path="/builds/:buildId" component={AsyncBuild} props={this.props}/>
-            <Route exact path="/tasks/:taskId" component={AsyncTask} props={this.props}/>
+            <Route exact path="/build/:buildId" component={AsyncBuild} props={this.props}/>
+            <Route exact path="/task/:taskId" component={AsyncTask} props={this.props}/>
             <Route exact path="/github" component={AsyncGitHub} props={this.props}/>
           </Switch>
         </div>

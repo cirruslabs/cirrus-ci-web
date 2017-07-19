@@ -37,7 +37,7 @@ class TaskList extends React.Component {
   }
 
   handleTaskClick(taskId) {
-    this.context.router.history.push("/tasks/" + taskId)
+    this.context.router.history.push("/task/" + taskId)
   }
 }
 

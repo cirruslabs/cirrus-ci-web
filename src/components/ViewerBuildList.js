@@ -67,7 +67,7 @@ class ViewerBuildList extends React.Component {
   }
 
   handleBuildClick(buildId) {
-    this.context.router.history.push("/builds/" + buildId)
+    this.context.router.history.push("/build/" + buildId)
   }
 }
 

@@ -13,17 +13,21 @@ function fetchQuery(
     cacheConfig,
     uploadables,
 ) {
-    return fetch('http://api.cirrus-ci.org/graphql', {
+  let query = {
+    query: operation.text, // GraphQL text from input
+    variables,
+  };
+  if (process.env.NODE_ENV === 'development') {
+    console.log(query);
+  }
+  return fetch('http://api.cirrus-ci.org/graphql', {
         method: 'POST',
         credentials: 'include', // cookies
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-            query: operation.text, // GraphQL text from input
-            variables,
-        }),
+        body: JSON.stringify(query),
     }).then(response => {
         return response.json();
     });

@@ -30,6 +30,11 @@ const AsyncBuild = Loadable({
   loading: LoadingComponent
 });
 
+const AsyncRepository = Loadable({
+  loader: () => import('./scenes/Repository/Repository'),
+  loading: LoadingComponent
+});
+
 const AsyncTask = Loadable({
   loader: () => import('./scenes/Task/Task'),
   loading: LoadingComponent
@@ -61,6 +66,7 @@ class Routes extends React.Component {
           <Switch>
             <Route exact path="/" component={AsyncHome} props={this.props}/>
             <Route exact path="/build/:buildId" component={AsyncBuild} props={this.props}/>
+            <Route exact path="/repository/:repositoryId" component={AsyncRepository} props={this.props}/>
             <Route exact path="/task/:taskId" component={AsyncTask} props={this.props}/>
             <Route exact path="/github" component={AsyncGitHub} props={this.props}/>
           </Switch>

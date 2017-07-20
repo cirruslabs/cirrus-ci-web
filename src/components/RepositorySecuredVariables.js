@@ -10,7 +10,7 @@ import TextField from 'material-ui/TextField';
 const securedVariableMutation = graphql`
   mutation RepositorySecuredVariablesMutation($input: RepositorySecuredVariableInput!) {
     securedVariable(input: $input) {
-      value
+      variableName
     }
   }
 `;
@@ -33,13 +33,14 @@ class RepositorySecuredVariables extends React.Component {
   render() {
     let securedComponent = null;
 
-    if (this.state.securedVariable) {
+    if (this.state.securedVariableName) {
       // todo: simplify coping
-      let valueForYAMLFile = "SECURE[" + this.state.securedVariable + "]";
+      let valueForYAMLFile = "ENCRYPTED[" + this.state.securedVariableName + "]";
 
       securedComponent = (
         <CardText expandable={true}>
-          <TextField multiLine={true}
+          <TextField name="securedVariable"
+                     multiLine={true}
                      fullWidth={true}
                      disabled={true}
                      value={valueForYAMLFile}/>
@@ -57,6 +58,7 @@ class RepositorySecuredVariables extends React.Component {
         />
         <CardText expandable={true}>
           <TextField
+            name="securedVariableValue"
             hintText="Enter value to create a secure variable for"
             value={this.state.inputValue}
             disabled={this.state.securedVariable !== undefined}
@@ -94,7 +96,7 @@ class RepositorySecuredVariables extends React.Component {
           this.setState(
             {
               inputValue: valueToSecure,
-              securedVariable: response.securedVariable.value
+              securedVariableName: response.securedVariable.variableName
             }
           );
         },

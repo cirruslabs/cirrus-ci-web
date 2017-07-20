@@ -116,7 +116,7 @@ input RepositorySecuredVariableInput {
 
 type RepositorySecuredVariablePayload {
   clientMutationId: String!
-  value: String!
+  variableName: String!
 }
 
 type RepositorySettings {

@@ -1,15 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {createFragmentContainer, graphql,} from 'react-relay';
+import {createFragmentContainer, graphql} from 'react-relay';
 import {withRouter} from 'react-router-dom'
-
-import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
-import FontIcon from 'material-ui/FontIcon';
 import Paper from 'material-ui/Paper';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
 import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
-
+import RepositorySecuredVariables from "./RepositorySecuredVariables";
 
 class RepositorySettingsView extends React.Component {
   static contextTypes = {
@@ -24,9 +19,6 @@ class RepositorySettingsView extends React.Component {
       settingGap: {
         paddingTop: 16
       },
-      securedVariableTitle: {
-        verticalAlign: "middle"
-      },
     };
 
     return (
@@ -40,24 +32,7 @@ class RepositorySettingsView extends React.Component {
         </Paper>
         <div style={styles.settingGap}/>
         <Paper zDepth={1} rounded={false}>
-          <Card>
-            <CardHeader
-              title="Secured Variables"
-              titleStyle={styles.securedVariableTitle}
-              actAsExpander={true}
-              showExpandableButton={true}
-              avatar={<FontIcon className="material-icons">lock</FontIcon>}
-            />
-            <CardText expandable={true}>
-              <TextField
-                hintText="Enter value to create a secure variable for"
-                multiLine={true}
-                fullWidth={true}/>
-            </CardText>
-            <CardActions expandable={true}>
-              <RaisedButton primary={true} label="Encrypt"/>
-            </CardActions>
-          </Card>
+          <RepositorySecuredVariables repository={this.props.repository}/>
         </Paper>
       </div>
     );
@@ -67,6 +42,7 @@ class RepositorySettingsView extends React.Component {
 export default createFragmentContainer(withRouter(RepositorySettingsView), {
   repository: graphql`
     fragment RepositorySettingsView_repository on Repository {
+      id
       fullName
     }
   `,

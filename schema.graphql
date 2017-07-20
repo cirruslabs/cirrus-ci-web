@@ -1,5 +1,6 @@
 schema {
   query: Root
+  mutation: Mutation
 }
 
 type Build {
@@ -34,6 +35,10 @@ type GitHubOrganization {
 
 # Long type
 scalar Long
+
+type Mutation {
+  securedVariable(input: RepositorySecuredVariableInput!): RepositorySecuredVariablePayload
+}
 
 type Notification {
   level: NotificationLevel
@@ -82,6 +87,7 @@ type Repository {
     # fetching only the last certain number of nodes
     last: Int
   ): RepositoryBuildsConnection
+  settings: RepositorySettings
 }
 
 # An edge in a connection
@@ -100,6 +106,21 @@ type RepositoryBuildsConnection {
 
   # details about this specific page
   pageInfo: PageInfo!
+}
+
+input RepositorySecuredVariableInput {
+  clientMutationId: String!
+  repositoryId: ID!
+  valueToSecure: String!
+}
+
+type RepositorySecuredVariablePayload {
+  clientMutationId: String!
+  value: String!
+}
+
+type RepositorySettings {
+  securedVariableValue: String
 }
 
 type Root {

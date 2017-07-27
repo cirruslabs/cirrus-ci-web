@@ -1,14 +1,30 @@
+import PropTypes from 'prop-types';
 import React from 'react';
-import {
-  createFragmentContainer,
-  graphql,
-} from 'react-relay';
+import {withRouter} from 'react-router-dom'
+import environment from '../createRelayEnvironment';
+import {commitMutation, createFragmentContainer, graphql} from 'react-relay';
+import {Card, CardActions, CardHeader} from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
 
 import TaskCommandList from './TaskCommandList'
 import NotificationList from "./NotificationList";
 
+const taskReRunMutation = graphql`
+  mutation TaskDetailsReRunMutation($input: TaskInput!) {
+    rerun(input: $input) {
+      newTask {
+        id
+      }
+    }
+  }
+`;
+
 class ViewerTaskList extends React.Component {
+  static contextTypes = {
+    router: PropTypes.object
+  };
+
   render() {
     let task = this.props.task;
 
@@ -29,12 +45,16 @@ class ViewerTaskList extends React.Component {
     return (
       <div style={styles.main} className="container">
         <Paper zDepth={2} rounded={false}>
-          <div className="card-block">
-            <h4 className="card-title align-middle">
-              Task {task.name}
-            </h4>
-            <p className="card-text">{task.status}</p>
-          </div>
+          <Card>
+            <CardHeader
+              title={"Task " + task.name}
+              subtitle={task.status}
+              actAsExpander={false}
+            />
+            <CardActions>
+              <FlatButton label="Re-run" onTouchTap={() => this.rerun(task.id)}/>
+            </CardActions>
+          </Card>
         </Paper>
         {notificationsComponent}
         <div style={styles.gap}/>
@@ -44,9 +64,30 @@ class ViewerTaskList extends React.Component {
       </div>
     );
   }
+
+  rerun(taskId) {
+    const variables = {
+      input: {
+        clientMutationId: "rerun-" + taskId,
+        taskId: taskId,
+      },
+    };
+
+    commitMutation(
+      environment,
+      {
+        mutation: taskReRunMutation,
+        variables: variables,
+        onCompleted: (response) => {
+          this.context.router.history.push("/task/" + response.rerun.newTask.id)
+        },
+        onError: err => console.error(err),
+      },
+    );
+  }
 }
 
-export default createFragmentContainer(ViewerTaskList, {
+export default createFragmentContainer(withRouter(ViewerTaskList), {
   task: graphql`
     fragment TaskDetails_task on Task {
       id

@@ -38,6 +38,7 @@ scalar Long
 
 type Mutation {
   securedVariable(input: RepositorySecuredVariableInput!): RepositorySecuredVariablePayload
+  rerun(input: TaskInput!): TaskPayload
 }
 
 type Notification {
@@ -149,6 +150,16 @@ enum TaskCommandStatus {
   UNDEFINED
   SUCCESS
   FAILURE
+}
+
+input TaskInput {
+  clientMutationId: String!
+  taskId: String!
+}
+
+type TaskPayload {
+  clientMutationId: String!
+  newTask: Task!
 }
 
 # Task status.

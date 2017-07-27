@@ -16,10 +16,6 @@ const securedVariableMutation = graphql`
 `;
 
 class RepositorySecuredVariables extends React.Component {
-  static contextTypes = {
-    router: PropTypes.object
-  };
-
   constructor(props) {
     super();
     this.state = {inputValue: ''};

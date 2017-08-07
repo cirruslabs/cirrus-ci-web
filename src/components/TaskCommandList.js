@@ -48,7 +48,7 @@ class TaskCommandList extends React.Component {
   }
 
   logURL(command) {
-    return "http://api.cirrus-ci.org/v1/task/command/" + command.name + "-" + this.props.taskId + ".log";
+    return "http://api.cirrus-ci.org/v1/task/" + this.props.taskId + "/logs/" + command.name + ".log";
   }
 }
 

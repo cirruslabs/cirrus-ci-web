@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import environment from '../createRelayEnvironment';
 import {commitMutation, graphql} from 'react-relay';

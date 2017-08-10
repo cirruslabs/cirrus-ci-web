@@ -1,0 +1,15 @@
+gcp_credentials: ENCRYPTED[968d57aeb51c3e4cba37ed626e0c2da53dd73b305929bf6310b6f74a4cfca95e56bbd7866abdf11287f76fe8644768bc]
+
+gke_container:
+  image: node:8.3.0-alpine
+  cluster_endpoint: 35.188.82.251
+  cluster_auth_token: ENCRYPTED[0c2a4094c87b94f7c0ac8640aebbab1a4c90d4a6085479f81a26e3582cb5173fdc720a34da3c0325da57feb0547d408f]
+  namespace: default
+  cpu: 1.5
+  memory: 1024
+  disk: 2
+
+task:
+  install_script: yarn install
+  relay_script: npm run relay
+  build_script: npm run build

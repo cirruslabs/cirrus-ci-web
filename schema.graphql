@@ -1,6 +1,7 @@
 schema {
   query: Root
   mutation: Mutation
+  subscription: Subscription
 }
 
 type Build {
@@ -128,6 +129,10 @@ type Root {
   viewer: User
   repository(id: ID!): Repository
   build(id: ID!): Build
+  task(id: ID!): Task
+}
+
+type Subscription {
   task(id: ID!): Task
 }
 

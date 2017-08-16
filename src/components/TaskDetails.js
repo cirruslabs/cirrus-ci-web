@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {withRouter} from 'react-router-dom'
 import environment from '../createRelayEnvironment';
-import {commitMutation, createFragmentContainer, graphql} from 'react-relay';
+import {commitMutation, createFragmentContainer, graphql, requestSubscription} from 'react-relay';
 import {Card, CardActions, CardHeader} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
@@ -20,10 +20,36 @@ const taskReRunMutation = graphql`
   }
 `;
 
+const taskSubscription = graphql`
+  subscription TaskDetailsSubscription(
+    $taskID: ID!
+  ) {
+    task(id: $taskID) {
+      ...TaskDetails_task
+    }
+  }
+`;
+
 class ViewerTaskList extends React.Component {
   static contextTypes = {
     router: PropTypes.object
   };
+
+  componentDidMount() {
+    let variables = {taskID: this.props.task.id};
+
+    this.subscription = requestSubscription(
+      environment,
+      {
+        subscription: taskSubscription,
+        variables: variables
+      }
+    );
+  }
+
+  componentWillUnmount() {
+    this.subscription && this.subscription.dispose && this.subscription.dispose()
+  }
 
   render() {
     let task = this.props.task;

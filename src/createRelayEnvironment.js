@@ -5,13 +5,31 @@ const {
     Store,
 } = require('relay-runtime');
 
-// Define a function that fetches the results of an operation (query/mutation/etc)
-// and returns its results as a Promise:
+/**
+ * See RelayNetwork.js:43 for details how it used in Relay
+ */
+function pollingSubscription(
+  operation,
+  variables,
+  cacheConfig,
+  config
+) {
+  let {onError, onNext} = config;
+
+  let intervalId = setInterval(() => {
+    fetchQuery(operation, variables).then(response => {
+      onNext(response);
+    }, error => {
+      onError(error)
+    });
+  }, 3333);
+
+  return { dispose: () => clearInterval(intervalId) }
+}
+
 function fetchQuery(
     operation,
-    variables,
-    cacheConfig,
-    uploadables,
+    variables
 ) {
   let query = {
     query: operation.text, // GraphQL text from input
@@ -34,7 +52,7 @@ function fetchQuery(
 }
 
 // Create a network layer from the fetch function
-const network = Network.create(fetchQuery);
+const network = Network.create(fetchQuery, pollingSubscription);
 
 const source = new RecordSource();
 const store = new Store(source);

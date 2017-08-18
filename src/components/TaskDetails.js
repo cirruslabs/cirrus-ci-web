@@ -9,6 +9,7 @@ import Paper from 'material-ui/Paper';
 
 import TaskCommandList from './TaskCommandList'
 import NotificationList from "./NotificationList";
+import {isTaskFinalStatus} from "../utils/status";
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskInput!) {
@@ -36,6 +37,10 @@ class ViewerTaskList extends React.Component {
   };
 
   componentDidMount() {
+    if (isTaskFinalStatus(this.props.task.status)) {
+      return
+    }
+
     let variables = {taskID: this.props.task.id};
 
     this.subscription = requestSubscription(
@@ -48,11 +53,20 @@ class ViewerTaskList extends React.Component {
   }
 
   componentWillUnmount() {
+    this.closeSubscription();
+  }
+
+  closeSubscription() {
     this.subscription && this.subscription.dispose && this.subscription.dispose()
   }
 
   render() {
     let task = this.props.task;
+
+    if (isTaskFinalStatus(task.status)) {
+      // no need to be subscripted anymore
+      this.closeSubscription();
+    }
 
     let styles = {
       main: {

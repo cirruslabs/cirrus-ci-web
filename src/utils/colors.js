@@ -26,7 +26,7 @@ export function taskStatusColor(status) {
     case "FAILED":
       return cirrusColors.failure;
     default:
-      return cirrusColors.warning;
+      return cirrusColors.undefined;
   }
 }
 
@@ -37,7 +37,7 @@ export function commandStatusColor(status) {
     case 'FAILURE':
       return cirrusColors.lightFailure;
     default:
-      return cirrusColors.lightWarning;
+      return cirrusColors.undefined;
   }
 }
 

@@ -6,7 +6,10 @@ import {
 } from 'react-relay';
 import {withRouter} from 'react-router-dom'
 
+import Avatar from 'material-ui/Avatar';
 import BuildStatus from './BuildStatus'
+import Chip from 'material-ui/Chip';
+import FontIcon from 'material-ui/FontIcon';
 
 import {
   Table,
@@ -29,6 +32,9 @@ class ViewerBuildList extends React.Component {
       main: {
         paddingTop: 8
       },
+      chip: {
+        margin: 4,
+      },
     };
 
     let edges = this.props.viewer.builds.edges;
@@ -42,7 +48,7 @@ class ViewerBuildList extends React.Component {
           </Toolbar>
           <Table selectable={false} style={{tableLayout: 'auto'}}>
             <TableBody displayRowCheckbox={false} showRowHover={true}>
-              {edges.map(edge => this.buildItem(edge.node))}
+              {edges.map(edge => this.buildItem(edge.node, styles))}
             </TableBody>
           </Table>
         </Paper>
@@ -50,7 +56,7 @@ class ViewerBuildList extends React.Component {
     );
   }
 
-  buildItem(build) {
+  buildItem(build, styles) {
     return (
       <TableRow key={build.id}
                 onMouseDown={() => this.handleBuildClick(build.id)}
@@ -58,13 +64,17 @@ class ViewerBuildList extends React.Component {
         <TableRowColumn>
           <BuildStatus status={build.status}/>
         </TableRowColumn>
-        <TableRowColumn>
-          {build.changeIdInRepo.substr(0, 6)}
+        <TableRowColumn style={{padding: 0}}>
+          <Chip style={styles.chip}>
+            <Avatar icon={<FontIcon className="material-icons">storage</FontIcon>} />
+            {build.repository.fullName}
+          </Chip>
+          <Chip style={styles.chip}>
+            <Avatar icon={<FontIcon className="material-icons">call_split</FontIcon>} />
+            {build.branch}#{build.changeIdInRepo.substr(0, 6)}
+          </Chip>
         </TableRowColumn>
-        <TableRowColumn>
-          {build.repository.fullName}
-        </TableRowColumn>
-        <TableRowColumn style={{width: '100%'}}>{build.changeMessage}</TableRowColumn>
+        <TableRowColumn style={{width: '100%'}}>{build.changeMessageTitle}</TableRowColumn>
       </TableRow>
     );
   }
@@ -83,12 +93,12 @@ export default createFragmentContainer(withRouter(ViewerBuildList), {
             id
             branch
             changeIdInRepo
-            changeMessage
+            changeMessageTitle
             status
             authorName
             changeTimestamp
             buildStartedTimestamp
-            buildFinishedTimestamp
+            buildDurationInSeconds
             repository {
               fullName
             }

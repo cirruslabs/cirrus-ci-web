@@ -18,9 +18,12 @@ function pollingSubscription(
 
   let intervalId = setInterval(() => {
     fetchQuery(operation, variables).then(response => {
+      if (process.env.NODE_ENV === 'development') {
+        console.log(response);
+      }
       onNext(response);
     }, error => {
-      onError(error)
+      onError && onError(error)
     });
   }, 3333);
 

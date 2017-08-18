@@ -8,11 +8,13 @@ type Build {
   id: ID!
   branch: String!
   changeIdInRepo: String!
+  changeMessageTitle: String
   changeMessage: String
   authorName: String
   changeTimestamp: Long!
   buildStartedTimestamp: Long!
   buildFinishedTimestamp: Long
+  buildDurationInSeconds: Long
   status: BuildStatus
   notifications: [Notification]
   tasks: [Task]
@@ -170,6 +172,7 @@ type TaskPayload {
 # Task status.
 enum TaskStatus {
   CREATED
+  SCHEDULED
   EXECUTING
   ABORTED
   FAILED

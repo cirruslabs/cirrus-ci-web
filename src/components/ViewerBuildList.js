@@ -61,6 +61,9 @@ class ViewerBuildList extends React.Component {
         <TableRowColumn>
           {build.changeIdInRepo.substr(0, 6)}
         </TableRowColumn>
+        <TableRowColumn>
+          {build.repository.fullName}
+        </TableRowColumn>
         <TableRowColumn style={{width: '100%'}}>{build.changeMessage}</TableRowColumn>
       </TableRow>
     );
@@ -86,6 +89,9 @@ export default createFragmentContainer(withRouter(ViewerBuildList), {
             changeTimestamp
             buildStartedTimestamp
             buildFinishedTimestamp
+            repository {
+              fullName
+            }
           }
         }
       }

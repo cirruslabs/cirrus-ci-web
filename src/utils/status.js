@@ -1,6 +1,6 @@
 export function isTaskFinalStatus(status) {
   switch (status) {
-    case "EXECUTING":
+    case "ABORTED":
       return true;
     case "COMPLETED":
       return true;

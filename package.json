@@ -10,7 +10,7 @@
     "react": "*",
     "react-dom": "*",
     "react-loadable": "*",
-    "react-relay": "1.2.0-rc.1",
+    "react-relay": "*",
     "react-router-dom": "*",
     "react-tap-event-plugin": "*"
   },
@@ -19,7 +19,7 @@
     "flow-bin": "*",
     "get-graphql-schema": "*",
     "js-beautify": "*",
-    "relay-compiler": "1.2.0-rc.1",
+    "relay-compiler": "*",
     "relay-modern-scripts": "*"
   },
   "scripts": {

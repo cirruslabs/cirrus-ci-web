@@ -7,7 +7,7 @@ import {
 import {withRouter} from 'react-router-dom'
 
 import Avatar from 'material-ui/Avatar';
-import BuildStatus from './BuildStatus'
+import {buildStatusIconName} from './BuildStatus'
 import Chip from 'material-ui/Chip';
 import FontIcon from 'material-ui/FontIcon';
 
@@ -20,6 +20,9 @@ import {
 
 import Paper from 'material-ui/Paper';
 import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
+import {cirrusColors} from "../cirrusTheme";
+import {formatDuration} from "../utils/time";
+import {buildStatusColor} from "../utils/colors";
 
 
 class ViewerBuildList extends React.Component {
@@ -61,22 +64,41 @@ class ViewerBuildList extends React.Component {
       <TableRow key={build.id}
                 onMouseDown={() => this.handleBuildClick(build.id)}
                 style={{cursor: "pointer"}}>
-        <TableRowColumn>
-          <BuildStatus status={build.status}/>
-        </TableRowColumn>
         <TableRowColumn style={{padding: 0}}>
           <Chip style={styles.chip}>
-            <Avatar icon={<FontIcon className="material-icons">storage</FontIcon>} />
+            <Avatar backgroundColor={cirrusColors.cirrusPrimary}
+                    icon={<FontIcon className="material-icons">storage</FontIcon>} />
             {build.repository.fullName}
           </Chip>
           <Chip style={styles.chip}>
-            <Avatar icon={<FontIcon className="material-icons">call_split</FontIcon>} />
+            <Avatar backgroundColor={cirrusColors.cirrusPrimary}
+                    icon={<FontIcon className="material-icons">call_split</FontIcon>} />
             {build.branch}#{build.changeIdInRepo.substr(0, 6)}
+          </Chip>
+          <Chip style={styles.chip}>
+            <Avatar backgroundColor={buildStatusColor(build.status)}
+                    icon={<FontIcon className="material-icons">{buildStatusIconName(build.status)}</FontIcon>} />
+            {this.buildStatusMessage(build)}
           </Chip>
         </TableRowColumn>
         <TableRowColumn style={{width: '100%'}}>{build.changeMessageTitle}</TableRowColumn>
       </TableRow>
     );
+  }
+
+  buildStatusMessage(build) {
+    switch (build.status) {
+      case "CREATED":
+        return 'created';
+      case "EXECUTING":
+        return 'Executing for ' + formatDuration(build.buildDurationInSeconds);
+      case "COMPLETED":
+        return 'Finished in ' + formatDuration(build.buildDurationInSeconds);
+      case "FAILED":
+        return 'Failed in ' + formatDuration(build.buildDurationInSeconds);
+      default:
+        return build.status;
+    }
   }
 
   handleBuildClick(buildId) {

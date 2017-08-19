@@ -6,8 +6,6 @@ import {
 } from 'react-relay';
 import {Link, withRouter} from 'react-router-dom'
 
-import BuildStatus from './BuildStatus'
-
 import {
   Table,
   TableBody,
@@ -15,10 +13,15 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 
+import Avatar from 'material-ui/Avatar';
+import {buildStatusIconName} from './BuildStatus'
+import Chip from 'material-ui/Chip';
 import Paper from 'material-ui/Paper';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
+import {cirrusColors} from "../cirrusTheme";
+import {buildStatusColor} from "../utils/colors";
 
 
 class RepositoryBuildList extends React.Component {
@@ -34,6 +37,9 @@ class RepositoryBuildList extends React.Component {
       },
       gap: {
         paddingTop: 16
+      },
+      chip: {
+        margin: 4,
       },
     };
 
@@ -58,7 +64,7 @@ class RepositoryBuildList extends React.Component {
         <Paper zDepth={1} rounded={false}>
           <Table selectable={false} style={{tableLayout: 'auto'}}>
             <TableBody displayRowCheckbox={false} showRowHover={true}>
-              {edges.map(edge => this.buildItem(edge.node))}
+              {edges.map(edge => this.buildItem(edge.node, styles))}
             </TableBody>
           </Table>
         </Paper>
@@ -66,19 +72,22 @@ class RepositoryBuildList extends React.Component {
     );
   }
 
-  buildItem(build) {
+  buildItem(build, styles) {
     return (
       <TableRow key={build.id}
                 onMouseDown={() => this.handleBuildClick(build.id)}
                 style={{cursor: "pointer"}}>
         <TableRowColumn>
-          <BuildStatus status={build.status}/>
-        </TableRowColumn>
-        <TableRowColumn>
-          {build.branch}
-        </TableRowColumn>
-        <TableRowColumn>
-          {build.changeIdInRepo.substr(0, 6)}
+          <Chip style={styles.chip}>
+            <Avatar backgroundColor={cirrusColors.cirrusPrimary}
+                    icon={<FontIcon className="material-icons">call_split</FontIcon>} />
+            {build.branch}#{build.changeIdInRepo.substr(0, 6)}
+          </Chip>
+          <Chip style={styles.chip}>
+            <Avatar backgroundColor={buildStatusColor(build.status)}
+                    icon={<FontIcon className="material-icons">{buildStatusIconName(build.status)}</FontIcon>} />
+            {this.buildStatusMessage(build)}
+          </Chip>
         </TableRowColumn>
         <TableRowColumn style={{width: '100%'}}>{build.changeMessage}</TableRowColumn>
       </TableRow>

@@ -12,6 +12,7 @@ let successColor = lightGreen500;
 let lightSuccessColor = lightGreen300;
 
 let cirrusColors = {
+  cirrusPrimary: indigo400,
   cirrusDark: grey900,
   progress: successColor,
   initialization: blue500,
@@ -33,7 +34,7 @@ let cirrusTheme = {
   fontFamily: 'Roboto, sans-serif',
   borderRadius: 2,
   palette: {
-    primary1Color: indigo400,
+    primary1Color: cirrusColors.cirrusPrimary,
     primary2Color: indigo600,
     primary3Color: grey400,
     accent1Color: pinkA200,

@@ -1,19 +1,14 @@
 import React from 'react';
-import FontIcon from 'material-ui/FontIcon';
-import CircularProgress from 'material-ui/CircularProgress';
-import {buildStatusColor} from "../utils/colors";
 
-const BuildStatus = ({status}) => {
+export function buildStatusIconName(status) {
   switch (status) {
     case "CREATED":
-      return <FontIcon className="material-icons" color={buildStatusColor(status)}>cloud</FontIcon>;
+      return 'cloud';
     case "EXECUTING":
-      return <CircularProgress size={28}/>;
+      return 'play_arrow';
     case "COMPLETED":
-      return <FontIcon className="material-icons" color={buildStatusColor(status)}>done</FontIcon>;
+      return 'done';
     default:
-      return <FontIcon className="material-icons" color={buildStatusColor(status)}>error</FontIcon>;
+      return 'error';
   }
 };
-
-export default BuildStatus;

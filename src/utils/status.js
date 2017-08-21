@@ -10,3 +10,31 @@ export function isTaskFinalStatus(status) {
       return false;
   }
 }
+
+export function taskStatusIconName(status) {
+  switch (status) {
+    case "CREATED":
+      return 'cloud';
+    case "SCHEDULED":
+      return 'linear_scale';
+    case "EXECUTING":
+      return 'play_arrow';
+    case "COMPLETED":
+      return 'done';
+    default:
+      return 'error';
+  }
+}
+
+export function buildStatusIconName(status) {
+  switch (status) {
+    case "CREATED":
+      return 'cloud';
+    case "EXECUTING":
+      return 'play_arrow';
+    case "COMPLETED":
+      return 'done';
+    default:
+      return 'error';
+  }
+}

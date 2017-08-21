@@ -7,7 +7,6 @@ import {
 import {withRouter} from 'react-router-dom'
 
 import Avatar from 'material-ui/Avatar';
-import {buildStatusIconName} from './BuildStatus'
 import Chip from 'material-ui/Chip';
 import FontIcon from 'material-ui/FontIcon';
 
@@ -23,6 +22,7 @@ import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
 import {cirrusColors} from "../cirrusTheme";
 import {formatDuration} from "../utils/time";
 import {buildStatusColor} from "../utils/colors";
+import {buildStatusIconName} from "../utils/status";
 
 
 class ViewerBuildList extends React.Component {

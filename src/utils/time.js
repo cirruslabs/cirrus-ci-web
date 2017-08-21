@@ -1,7 +1,7 @@
-export function formatDuration(durationInMs) {
+export function formatDuration(durationInSeconds) {
   let formatSinglePart = (value) => value < 10 ? "0" + value : value.toString();
-  durationInMs = Math.max(0, parseInt(durationInMs, 10));
-  let secondsTotal = durationInMs / 1000;
+  durationInSeconds = durationInSeconds || 0;
+  let secondsTotal = durationInSeconds / 1000;
   let seconds = Math.floor(secondsTotal % 60);
   let minutes = Math.floor(secondsTotal / 60);
   let hours = Math.floor(minutes / 60);

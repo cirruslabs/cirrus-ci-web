@@ -39,7 +39,7 @@ class ViewerBuildList extends React.Component {
     };
 
     function runSummaryMessage(build) {
-      return build.status + " in " + formatDuration(build.buildFinishedTimestamp - build.buildStartedTimestamp);
+      return build.status + " in " + formatDuration(build.buildDurationInSeconds);
     }
 
     let repoUrl = build.repository.cloneUrl.slice(0, -4);
@@ -93,8 +93,7 @@ export default createFragmentContainer(withRouter(ViewerBuildList), {
       changeIdInRepo
       changeTimestamp
       changeMessage
-      buildStartedTimestamp
-      buildFinishedTimestamp
+      buildDurationInSeconds
       status
       notifications {
         level
@@ -104,6 +103,7 @@ export default createFragmentContainer(withRouter(ViewerBuildList), {
         id
         name
         status
+        taskDurationInSeconds
       }
       repository {
         id

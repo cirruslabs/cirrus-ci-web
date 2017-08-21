@@ -14,7 +14,6 @@ import {
 } from 'material-ui/Table';
 
 import Avatar from 'material-ui/Avatar';
-import {buildStatusIconName} from './BuildStatus'
 import Chip from 'material-ui/Chip';
 import Paper from 'material-ui/Paper';
 import FontIcon from 'material-ui/FontIcon';
@@ -22,6 +21,7 @@ import IconButton from 'material-ui/IconButton';
 import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
 import {cirrusColors} from "../cirrusTheme";
 import {buildStatusColor} from "../utils/colors";
+import {buildStatusIconName} from "../utils/status";
 
 
 class RepositoryBuildList extends React.Component {

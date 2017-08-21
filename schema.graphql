@@ -14,7 +14,7 @@ type Build {
   changeTimestamp: Long!
   buildStartedTimestamp: Long!
   buildFinishedTimestamp: Long
-  buildDurationInSeconds: Long
+  buildDurationInSeconds: Long!
   status: BuildStatus
   notifications: [Notification]
   tasks: [Task]
@@ -144,6 +144,7 @@ type Task {
   status: TaskStatus
   notifications: [Notification]
   commands: [TaskCommand]
+  taskDurationInSeconds: Long!
 }
 
 type TaskCommand {

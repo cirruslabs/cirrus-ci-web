@@ -75,13 +75,15 @@ class ViewerBuildList extends React.Component {
                     icon={<FontIcon className="material-icons">call_split</FontIcon>} />
             {build.branch}#{build.changeIdInRepo.substr(0, 6)}
           </Chip>
+        </TableRowColumn>
+        <TableRowColumn style={{width: '100%'}}>{build.changeMessageTitle}</TableRowColumn>
+        <TableRowColumn style={{padding: 0}}>
           <Chip style={styles.chip}>
             <Avatar backgroundColor={buildStatusColor(build.status)}
                     icon={<FontIcon className="material-icons">{buildStatusIconName(build.status)}</FontIcon>} />
             {this.buildStatusMessage(build)}
           </Chip>
         </TableRowColumn>
-        <TableRowColumn style={{width: '100%'}}>{build.changeMessageTitle}</TableRowColumn>
       </TableRow>
     );
   }

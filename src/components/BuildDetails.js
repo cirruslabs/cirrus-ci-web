@@ -104,6 +104,7 @@ export default createFragmentContainer(withRouter(ViewerBuildList), {
         name
         status
         taskDurationInSeconds
+        labels
       }
       repository {
         id

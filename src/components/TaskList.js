@@ -37,14 +37,21 @@ class TaskList extends React.Component {
       <TableRow key={task.id}
                 onMouseDown={() => this.handleTaskClick(task.id)}
                 style={{ cursor: "pointer" }}>
-        <TableRowColumn>
+        <TableRowColumn style={{padding: 0}}>
           <Chip style={styles.chip}>
             <Avatar backgroundColor={cirrusColors.cirrusPrimary}
                     icon={<FontIcon className="material-icons">bookmark</FontIcon>} />
             {task.name}
           </Chip>
         </TableRowColumn>
-        <TableRowColumn>
+        <TableRowColumn style={{padding: 0}}>
+          {
+            task.labels.map(label => {
+              return <Chip key={label} style={styles.chip}>{label}</Chip>
+            })
+          }
+        </TableRowColumn>
+        <TableRowColumn style={{padding: 0}}>
           <Chip style={styles.chip}>
             <Avatar backgroundColor={taskStatusColor(task.status)}
                     icon={<FontIcon className="material-icons">query_builder</FontIcon>} />

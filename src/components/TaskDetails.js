@@ -3,7 +3,8 @@ import React from 'react';
 import {withRouter} from 'react-router-dom'
 import environment from '../createRelayEnvironment';
 import {commitMutation, createFragmentContainer, graphql, requestSubscription} from 'react-relay';
-import {Card, CardActions, CardHeader} from 'material-ui/Card';
+import {Card, CardText, CardActions, CardHeader} from 'material-ui/Card';
+import Chip from 'material-ui/Chip';
 import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
 
@@ -75,6 +76,13 @@ class ViewerTaskList extends React.Component {
       gap: {
         paddingTop: 16
       },
+      chip: {
+        margin: 4,
+      },
+      wrapper: {
+        display: 'flex',
+        flexWrap: 'wrap',
+      },
     };
 
     let notificationsComponent = !task.notifications ? null :
@@ -91,6 +99,13 @@ class ViewerTaskList extends React.Component {
               subtitle={task.status}
               actAsExpander={false}
             />
+            <CardText style={styles.wrapper}>
+              {
+                task.labels.map(label => {
+                  return <Chip key={label} style={styles.chip}>{label}</Chip>
+                })
+              }
+            </CardText>
             <CardActions>
               <FlatButton label="Re-run" onTouchTap={() => this.rerun(task.id)}/>
             </CardActions>
@@ -142,6 +157,7 @@ export default createFragmentContainer(withRouter(ViewerTaskList), {
         level
         message
       }
+      labels
     }
   `,
 });

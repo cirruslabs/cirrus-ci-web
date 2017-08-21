@@ -145,6 +145,7 @@ type Task {
   notifications: [Notification]
   commands: [TaskCommand]
   taskDurationInSeconds: Long!
+  labels: [String]
 }
 
 type TaskCommand {

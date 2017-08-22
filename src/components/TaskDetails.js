@@ -125,7 +125,7 @@ class ViewerTaskList extends React.Component {
         <Paper zDepth={2} rounded={false}>
           <div className="card-block">
             <h4 className="card-title text-middle" style={styles.title}>
-              {repoTitle}#{buildTitle} {task.name}
+              {repoTitle}#{buildTitle} {task.name} {task.status.toLowerCase()}
             </h4>
             {taskProgress}
             <div style={styles.gap}>

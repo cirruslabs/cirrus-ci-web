@@ -3,14 +3,13 @@ import React from 'react';
 import {withRouter} from 'react-router-dom'
 import environment from '../createRelayEnvironment';
 import {commitMutation, createFragmentContainer, graphql, requestSubscription} from 'react-relay';
-import {Card, CardText, CardActions, CardHeader} from 'material-ui/Card';
 import Chip from 'material-ui/Chip';
-import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
 
 import TaskCommandList from './TaskCommandList'
 import NotificationList from "./NotificationList";
 import {isTaskFinalStatus} from "../utils/status";
+import {FontIcon, RaisedButton} from "material-ui";
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskInput!) {
@@ -63,6 +62,8 @@ class ViewerTaskList extends React.Component {
 
   render() {
     let task = this.props.task;
+    let build = task.build;
+    let repository = task.repository;
 
     if (isTaskFinalStatus(task.status)) {
       // no need to be subscripted anymore
@@ -90,26 +91,37 @@ class ViewerTaskList extends React.Component {
         <NotificationList notifications={task.notifications}/>
       </div>;
 
+
+    let repoTitle = <a onClick={() => this.context.router.history.push("/repository/" + repository.id)}
+                       className="link"
+                       style={{ cursor: "pointer" }}>{repository.fullName}</a>;
+    let buildTitle = <a onClick={() => this.context.router.history.push("/build/" + build.id)}
+                        className="link"
+                        style={{ cursor: "pointer" }}>{build.changeIdInRepo.substr(0, 6)}</a>;
+
     return (
       <div style={styles.main} className="container">
         <Paper zDepth={2} rounded={false}>
-          <Card>
-            <CardHeader
-              title={"Task " + task.name}
-              subtitle={task.status}
-              actAsExpander={false}
-            />
-            <CardText style={styles.wrapper}>
+          <div className="card-block">
+            <h4 className="card-title text-middle" style={styles.title}>
+              {repoTitle}#{buildTitle} {task.name}
+            </h4>
+            <p className="card-text">{build.changeMessage}</p>
+            <div className="card-body" style={styles.wrapper}>
               {
                 task.labels.map(label => {
                   return <Chip key={label} style={styles.chip}>{label}</Chip>
                 })
               }
-            </CardText>
-            <CardActions>
-              <FlatButton label="Re-run" onTouchTap={() => this.rerun(task.id)}/>
-            </CardActions>
-          </Card>
+            </div>
+            <div className="card-body text-right">
+              <RaisedButton label="Re-Run"
+                            primary={true}
+                            onTouchTap={() => this.rerun(task.id)}
+                            icon={<FontIcon className="material-icons">refresh</FontIcon>}
+              />
+            </div>
+          </div>
         </Paper>
         {notificationsComponent}
         <div style={styles.gap}/>
@@ -158,6 +170,17 @@ export default createFragmentContainer(withRouter(ViewerTaskList), {
         message
       }
       labels
+      build {
+        id
+        branch
+        changeIdInRepo
+        changeTimestamp
+        changeMessage
+      }
+      repository {
+        id
+        fullName
+      }
     }
   `,
 });

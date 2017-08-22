@@ -1,3 +1,5 @@
+import {formatDuration} from "./time";
+
 export function isTaskFinalStatus(status) {
   switch (status) {
     case "ABORTED":
@@ -36,5 +38,20 @@ export function buildStatusIconName(status) {
       return 'done';
     default:
       return 'error';
+  }
+}
+
+export function buildStatusMessage(build) {
+  switch (build.status) {
+    case "CREATED":
+      return 'created';
+    case "EXECUTING":
+      return 'Executing for ' + formatDuration(build.buildDurationInSeconds);
+    case "COMPLETED":
+      return 'Finished in ' + formatDuration(build.buildDurationInSeconds);
+    case "FAILED":
+      return 'Failed in ' + formatDuration(build.buildDurationInSeconds);
+    default:
+      return build.status;
   }
 }

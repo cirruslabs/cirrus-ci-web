@@ -22,7 +22,7 @@ import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
 import {cirrusColors} from "../cirrusTheme";
 import {formatDuration} from "../utils/time";
 import {buildStatusColor} from "../utils/colors";
-import {buildStatusIconName} from "../utils/status";
+import {buildStatusIconName, buildStatusMessage} from "../utils/status";
 
 
 class ViewerBuildList extends React.Component {
@@ -81,26 +81,11 @@ class ViewerBuildList extends React.Component {
           <Chip style={styles.chip}>
             <Avatar backgroundColor={buildStatusColor(build.status)}
                     icon={<FontIcon className="material-icons">{buildStatusIconName(build.status)}</FontIcon>} />
-            {this.buildStatusMessage(build)}
+            {buildStatusMessage(build)}
           </Chip>
         </TableRowColumn>
       </TableRow>
     );
-  }
-
-  buildStatusMessage(build) {
-    switch (build.status) {
-      case "CREATED":
-        return 'created';
-      case "EXECUTING":
-        return 'Executing for ' + formatDuration(build.buildDurationInSeconds);
-      case "COMPLETED":
-        return 'Finished in ' + formatDuration(build.buildDurationInSeconds);
-      case "FAILED":
-        return 'Failed in ' + formatDuration(build.buildDurationInSeconds);
-      default:
-        return build.status;
-    }
   }
 
   handleBuildClick(buildId) {

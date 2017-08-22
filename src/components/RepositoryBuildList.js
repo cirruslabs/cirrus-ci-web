@@ -21,7 +21,7 @@ import IconButton from 'material-ui/IconButton';
 import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
 import {cirrusColors} from "../cirrusTheme";
 import {buildStatusColor} from "../utils/colors";
-import {buildStatusIconName} from "../utils/status";
+import {buildStatusIconName, buildStatusMessage} from "../utils/status";
 
 
 class RepositoryBuildList extends React.Component {
@@ -86,7 +86,7 @@ class RepositoryBuildList extends React.Component {
           <Chip style={styles.chip}>
             <Avatar backgroundColor={buildStatusColor(build.status)}
                     icon={<FontIcon className="material-icons">{buildStatusIconName(build.status)}</FontIcon>} />
-            {this.buildStatusMessage(build)}
+            {buildStatusMessage(build)}
           </Chip>
         </TableRowColumn>
         <TableRowColumn style={{width: '100%'}}>{build.changeMessage}</TableRowColumn>

@@ -18,7 +18,7 @@ export function buildStatusColor(status) {
 export function taskStatusColor(status) {
   switch (status) {
     case "CREATED":
-      return cirrusColors.initialization;
+      return cirrusColors.lightInitialization;
     case "SCHEDULED":
       return cirrusColors.initialization;
     case "EXECUTING":

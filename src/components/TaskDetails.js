@@ -10,6 +10,7 @@ import TaskCommandList from './TaskCommandList'
 import NotificationList from "./NotificationList";
 import {isTaskFinalStatus} from "../utils/status";
 import {FontIcon, RaisedButton} from "material-ui";
+import {taskStatusColor} from "../utils/colors";
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskInput!) {
@@ -81,6 +82,8 @@ class ViewerTaskList extends React.Component {
         margin: 4,
       },
       wrapper: {
+        paddingTop: 16,
+        paddingLeft: 0,
         display: 'flex',
         flexWrap: 'wrap',
       },
@@ -91,13 +94,31 @@ class ViewerTaskList extends React.Component {
         <NotificationList notifications={task.notifications}/>
       </div>;
 
-
     let repoTitle = <a onClick={() => this.context.router.history.push("/repository/" + repository.id)}
                        className="link"
                        style={{ cursor: "pointer" }}>{repository.fullName}</a>;
     let buildTitle = <a onClick={() => this.context.router.history.push("/build/" + build.id)}
                         className="link"
                         style={{ cursor: "pointer" }}>{build.changeIdInRepo.substr(0, 6)}</a>;
+
+    let totalDuration = task.statusDurations.reduce(
+      function(sum, statusDuration) { return sum + statusDuration.durationInSeconds },
+      0
+    );
+    let taskProgress =  (
+      <div className="progress">
+        {task.statusDurations.map(statusDuration => {
+          let percent = 100 * statusDuration.durationInSeconds / totalDuration;
+          return <div className="progress-bar"
+                      role="progressbar"
+                      key={statusDuration.status}
+                      style={{width: percent + '%', backgroundColor: taskStatusColor(statusDuration.status)}}
+                      aria-valuenow={percent}
+                      aria-valuemin="0"
+                      aria-valuemax="100">{statusDuration.status}</div>
+        })}
+      </div>
+    );
 
     return (
       <div style={styles.main} className="container">
@@ -106,7 +127,10 @@ class ViewerTaskList extends React.Component {
             <h4 className="card-title text-middle" style={styles.title}>
               {repoTitle}#{buildTitle} {task.name}
             </h4>
-            <p className="card-text">{build.changeMessage}</p>
+            {taskProgress}
+            <div style={styles.gap}>
+              <p className="card-text">{build.changeMessage}</p>
+            </div>
             <div className="card-body" style={styles.wrapper}>
               {
                 task.labels.map(label => {
@@ -160,6 +184,11 @@ export default createFragmentContainer(withRouter(ViewerTaskList), {
       id
       name
       status
+      labels
+      statusDurations {
+        status
+        durationInSeconds
+      }
       commands {
         name
         status
@@ -169,7 +198,6 @@ export default createFragmentContainer(withRouter(ViewerTaskList), {
         level
         message
       }
-      labels
       build {
         id
         branch

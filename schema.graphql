@@ -146,6 +146,7 @@ type Task {
   commands: [TaskCommand]
   taskDurationInSeconds: Long!
   labels: [String]
+  statusDurations: [TaskStatusDuration]
   repository: Repository!
   build: Build!
 }
@@ -181,6 +182,11 @@ enum TaskStatus {
   ABORTED
   FAILED
   COMPLETED
+}
+
+type TaskStatusDuration {
+  status: TaskStatus!
+  durationInSeconds: Long!
 }
 
 type User {

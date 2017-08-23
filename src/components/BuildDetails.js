@@ -7,6 +7,7 @@ import {
 import {withRouter} from 'react-router-dom'
 import IconButton from 'material-ui/IconButton';
 import Paper from 'material-ui/Paper';
+import ReactMarkdown from 'react-markdown';
 
 import TaskList from './TaskList';
 import NotificationList from "./NotificationList";
@@ -72,7 +73,7 @@ class ViewerBuildList extends React.Component {
               Commit <a href={commitUrl}>{build.changeIdInRepo.substr(0, 6)}</a> on branch <a href={branchUrl}>{build.branch}</a>
             </h5>
             <h6 className="card-subtitle mb-2 text-muted">{runSummaryMessage(build)}</h6>
-            <p className="card-text">{build.changeMessage}</p>
+            <ReactMarkdown className="card-text" source={build.changeMessage}/>
           </div>
         </Paper>
         {notificationsComponent}

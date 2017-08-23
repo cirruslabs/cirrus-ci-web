@@ -10,6 +10,7 @@
     "react": "*",
     "react-dom": "*",
     "react-loadable": "*",
+    "react-markdown": "^2.5.0",
     "react-relay": "*",
     "react-router-dom": "*",
     "react-tap-event-plugin": "*"

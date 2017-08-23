@@ -11,6 +11,7 @@ import NotificationList from "./NotificationList";
 import {isTaskFinalStatus} from "../utils/status";
 import {FontIcon, RaisedButton} from "material-ui";
 import {taskStatusColor} from "../utils/colors";
+import ReactMarkdown from 'react-markdown';
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskInput!) {
@@ -129,7 +130,7 @@ class ViewerTaskList extends React.Component {
             </h4>
             {taskProgress}
             <div style={styles.gap}>
-              <p className="card-text">{build.changeMessage}</p>
+              <ReactMarkdown className="card-text" source={build.changeMessage}/>
             </div>
             <div className="card-body" style={styles.wrapper}>
               {

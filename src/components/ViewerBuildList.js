@@ -6,6 +6,7 @@ import {withRouter} from 'react-router-dom'
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
 import FontIcon from 'material-ui/FontIcon';
+import ReactMarkdown from 'react-markdown';
 
 import {Table, TableBody, TableRow, TableRowColumn,} from 'material-ui/Table';
 
@@ -67,7 +68,9 @@ class ViewerBuildList extends React.Component {
             {build.branch}#{build.changeIdInRepo.substr(0, 6)}
           </Chip>
         </TableRowColumn>
-        <TableRowColumn style={{width: '100%'}}>{build.changeMessageTitle}</TableRowColumn>
+        <TableRowColumn style={{width: '100%'}}>
+          <ReactMarkdown source={build.changeMessageTitle}/>
+        </TableRowColumn>
         <TableRowColumn style={{padding: 0}}>
           <Chip style={styles.chip}>
             <Avatar backgroundColor={buildStatusColor(build.status)}

@@ -1,17 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {
-  createFragmentContainer,
-  graphql,
-} from 'react-relay';
+import {createFragmentContainer, graphql,} from 'react-relay';
 import {Link, withRouter} from 'react-router-dom'
 
-import {
-  Table,
-  TableBody,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
+import {Table, TableBody, TableRow, TableRowColumn,} from 'material-ui/Table';
+import ReactMarkdown from 'react-markdown';
 
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
@@ -89,7 +82,9 @@ class RepositoryBuildList extends React.Component {
             {buildStatusMessage(build)}
           </Chip>
         </TableRowColumn>
-        <TableRowColumn style={{width: '100%'}}>{build.changeMessage}</TableRowColumn>
+        <TableRowColumn style={{width: '100%'}}>
+          <ReactMarkdown source={build.changeMessage}/>
+        </TableRowColumn>
       </TableRow>
     );
   }

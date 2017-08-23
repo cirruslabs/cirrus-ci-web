@@ -130,6 +130,7 @@ type RepositorySettings {
 type Root {
   viewer: User
   repository(id: ID!): Repository
+  githubRepository(user: String!, name: String!): Repository
   build(id: ID!): Build
   task(id: ID!): Task
 }

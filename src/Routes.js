@@ -50,6 +50,11 @@ const AsyncGitHub = Loadable({
   loading: LoadingComponent
 });
 
+const AsyncGitHubRepository = Loadable({
+  loader: () => import('./scenes/Repository/GitHubRepository'),
+  loading: LoadingComponent
+});
+
 class Routes extends React.Component {
   constructor(props) {
     super(props);
@@ -71,6 +76,7 @@ class Routes extends React.Component {
           <Switch>
             <Route exact path="/" component={AsyncHome} props={this.props}/>
             <Route exact path="/build/:buildId" component={AsyncBuild} props={this.props}/>
+            <Route exact path="/github/:user/:name" component={AsyncGitHubRepository} props={this.props}/>
             <Route exact path="/repository/:repositoryId" component={AsyncRepository} props={this.props}/>
             <Route exact path="/repository/:repositoryId/settings" component={AsyncRepositorySettings} props={this.props}/>
             <Route exact path="/task/:taskId" component={AsyncTask} props={this.props}/>

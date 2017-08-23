@@ -57,7 +57,8 @@ class ViewerBuildList extends React.Component {
                 onMouseDown={() => this.handleBuildClick(build.id)}
                 style={{cursor: "pointer"}}>
         <TableRowColumn style={{padding: 0}}>
-          <Chip style={styles.chip}>
+          <Chip onClick={() => this.handleRepositoryClick(build.repository)}
+                style={styles.chip}>
             <Avatar backgroundColor={cirrusColors.cirrusPrimary}
                     icon={<FontIcon className="material-icons">storage</FontIcon>} />
             {build.repository.fullName}
@@ -84,6 +85,10 @@ class ViewerBuildList extends React.Component {
 
   handleBuildClick(buildId) {
     this.context.router.history.push("/build/" + buildId)
+  }
+
+  handleRepositoryClick(repository) {
+    this.context.router.history.push("/github/" + repository.fullName)
   }
 }
 

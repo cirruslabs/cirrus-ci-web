@@ -1,26 +1,17 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {
-  createFragmentContainer,
-  graphql,
-} from 'react-relay';
+import {createFragmentContainer, graphql,} from 'react-relay';
 import {withRouter} from 'react-router-dom'
 
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
 import FontIcon from 'material-ui/FontIcon';
 
-import {
-  Table,
-  TableBody,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
+import {Table, TableBody, TableRow, TableRowColumn,} from 'material-ui/Table';
 
 import Paper from 'material-ui/Paper';
 import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
 import {cirrusColors} from "../cirrusTheme";
-import {formatDuration} from "../utils/time";
 import {buildStatusColor} from "../utils/colors";
 import {buildStatusIconName, buildStatusMessage} from "../utils/status";
 

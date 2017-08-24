@@ -97,7 +97,7 @@ class ViewerTaskList extends React.Component {
 
     let repoTitle = <a onClick={() => this.context.router.history.push("/repository/" + repository.id)}
                        className="link"
-                       style={{ cursor: "pointer" }}>{repository.fullName}</a>;
+                       style={{ cursor: "pointer" }}>{repository.owner + "/" + repository.name}</a>;
     let buildTitle = <a onClick={() => this.context.router.history.push("/build/" + build.id)}
                         className="link"
                         style={{ cursor: "pointer" }}>{build.changeIdInRepo.substr(0, 6)}</a>;
@@ -208,7 +208,8 @@ export default createFragmentContainer(withRouter(ViewerTaskList), {
       }
       repository {
         id
-        fullName
+        owner
+        name
       }
     }
   `,

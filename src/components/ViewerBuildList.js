@@ -61,7 +61,7 @@ class ViewerBuildList extends React.Component {
                 style={styles.chip}>
             <Avatar backgroundColor={cirrusColors.cirrusPrimary}
                     icon={<FontIcon className="material-icons">storage</FontIcon>} />
-            {build.repository.fullName}
+            {build.repository.owner + "/" + build.repository.name}
           </Chip>
           <Chip style={styles.chip}>
             <Avatar backgroundColor={cirrusColors.cirrusPrimary}
@@ -88,7 +88,7 @@ class ViewerBuildList extends React.Component {
   }
 
   handleRepositoryClick(repository) {
-    this.context.router.history.push("/github/" + repository.fullName)
+    this.context.router.history.push("/github/" + repository.owner + "/" + repository.name)
   }
 }
 
@@ -108,7 +108,8 @@ export default createFragmentContainer(withRouter(ViewerBuildList), {
             buildStartedTimestamp
             buildDurationInSeconds
             repository {
-              fullName
+              owner
+              name
             }
           }
         }

@@ -42,7 +42,7 @@ class RepositoryBuildList extends React.Component {
         <Paper zDepth={1} rounded={false}>
           <Toolbar>
             <ToolbarGroup>
-              <ToolbarTitle text={this.props.repository.fullName}/>
+              <ToolbarTitle text={this.props.repository.owner + "/" + this.props.repository.user}/>
             </ToolbarGroup>
             <ToolbarGroup>
               <Link to={ "/repository/" + this.props.repository.id + "/settings"}>
@@ -98,7 +98,8 @@ export default createFragmentContainer(withRouter(RepositoryBuildList), {
   repository: graphql`
     fragment RepositoryBuildList_repository on Repository {
       id
-      fullName
+      owner
+      name
       builds(last: 100) {
         edges {
           node {

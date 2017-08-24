@@ -73,7 +73,8 @@ type PageInfo {
 
 type Repository {
   id: ID!
-  fullName: String!
+  owner: String!
+  name: String!
   cloneUrl: String!
   masterBranch: String!
   isPrivate: Boolean!
@@ -130,7 +131,7 @@ type RepositorySettings {
 type Root {
   viewer: User
   repository(id: ID!): Repository
-  githubRepository(user: String!, name: String!): Repository
+  githubRepository(owner: String!, name: String!): Repository
   build(id: ID!): Build
   task(id: ID!): Task
 }

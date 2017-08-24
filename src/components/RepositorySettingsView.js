@@ -26,7 +26,7 @@ class RepositorySettingsView extends React.Component {
         <Paper style={styles.settingItem} zDepth={1} rounded={false}>
           <Toolbar>
             <ToolbarGroup>
-              <ToolbarTitle text={this.props.repository.fullName + " repository settings"}/>
+              <ToolbarTitle text={this.props.repository.owner + "/" + this.props.repository.name + " repository settings"}/>
             </ToolbarGroup>
           </Toolbar>
         </Paper>
@@ -43,7 +43,8 @@ export default createFragmentContainer(withRouter(RepositorySettingsView), {
   repository: graphql`
     fragment RepositorySettingsView_repository on Repository {
       id
-      fullName
+      owner
+      name
     }
   `,
 });

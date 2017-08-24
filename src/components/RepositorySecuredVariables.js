@@ -76,7 +76,7 @@ class RepositorySecuredVariables extends React.Component {
     let valueToSecure = this.state.inputValue;
     const variables = {
       input: {
-        clientMutationId: this.props.repository.fullName, // todo: replace with a hash of valueToSecure
+        clientMutationId: this.props.repository.name, // todo: replace with a hash of valueToSecure
         repositoryId: parseInt(this.props.repository.id, 10),
         valueToSecure: valueToSecure,
       },

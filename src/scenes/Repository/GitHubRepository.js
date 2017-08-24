@@ -12,8 +12,8 @@ const Repository = (props) => (
     variables={props.match.params}
     query={
       graphql`
-        query GitHubRepositoryQuery($user: String!, $name: String!) {
-          githubRepository(user: $user, name: $name) {
+        query GitHubRepositoryQuery($owner: String!, $name: String!) {
+          githubRepository(owner: $owner, name: $name) {
             ...RepositoryBuildList_repository
           }
         }

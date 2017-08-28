@@ -15,6 +15,7 @@ import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
 import {cirrusColors} from "../cirrusTheme";
 import {buildStatusColor} from "../utils/colors";
 import {buildStatusIconName, buildStatusMessage} from "../utils/status";
+import BuildDurationsChart from "./BuildDurationsChart";
 
 
 class RepositoryBuildList extends React.Component {
@@ -34,9 +35,12 @@ class RepositoryBuildList extends React.Component {
       chip: {
         margin: 4,
       },
+      buildsChart: {
+        height: 77,
+      },
     };
 
-    let edges = this.props.repository.builds.edges;
+    let builds = this.props.repository.builds.edges.map(edge => edge.node, styles);
     return (
       <div style={styles.main} className="container">
         <Paper zDepth={1} rounded={false}>
@@ -53,11 +57,14 @@ class RepositoryBuildList extends React.Component {
             </ToolbarGroup>
           </Toolbar>
         </Paper>
+        <Paper zDepth={1} rounded={false} style={styles.buildsChart}>
+          <BuildDurationsChart builds={builds.slice().reverse()}/>
+        </Paper>
         <div style={styles.gap}/>
         <Paper zDepth={1} rounded={false}>
           <Table selectable={false} style={{tableLayout: 'auto'}}>
             <TableBody displayRowCheckbox={false} showRowHover={true}>
-              {edges.map(edge => this.buildItem(edge.node, styles))}
+              {builds.map(build => this.buildItem(build, styles))}
             </TableBody>
           </Table>
         </Paper>
@@ -110,8 +117,7 @@ export default createFragmentContainer(withRouter(RepositoryBuildList), {
             status
             authorName
             changeTimestamp
-            buildStartedTimestamp
-            buildFinishedTimestamp
+            buildDurationInSeconds
           }
         }
       }

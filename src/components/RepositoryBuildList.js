@@ -42,7 +42,7 @@ class RepositoryBuildList extends React.Component {
         <Paper zDepth={1} rounded={false}>
           <Toolbar>
             <ToolbarGroup>
-              <ToolbarTitle text={this.props.repository.owner + "/" + this.props.repository.user}/>
+              <ToolbarTitle text={this.props.repository.owner + "/" + this.props.repository.name}/>
             </ToolbarGroup>
             <ToolbarGroup>
               <Link to={ "/repository/" + this.props.repository.id + "/settings"}>

@@ -95,7 +95,7 @@ class ViewerTaskList extends React.Component {
         <NotificationList notifications={task.notifications}/>
       </div>;
 
-    let repoTitle = <a onClick={() => this.context.router.history.push("/repository/" + repository.id)}
+    let repoTitle = <a onClick={() => this.context.router.history.push("/github/" + repository.owner + "/" + repository.name)}
                        className="link"
                        style={{ cursor: "pointer" }}>{repository.owner + "/" + repository.name}</a>;
     let buildTitle = <a onClick={() => this.context.router.history.push("/build/" + build.id)}

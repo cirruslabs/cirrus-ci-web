@@ -7,7 +7,7 @@ import FontIcon from 'material-ui/FontIcon';
 import {cirrusColors} from "../../cirrusTheme";
 import {withRouter} from "react-router-dom";
 
-class BuildBranchChip extends React.Component {
+class BuildBranchNameChip extends React.Component {
   static contextTypes = {
     router: PropTypes.object
   };
@@ -33,4 +33,4 @@ class BuildBranchChip extends React.Component {
   }
 }
 
-export default withRouter(BuildBranchChip);
+export default withRouter(BuildBranchNameChip);

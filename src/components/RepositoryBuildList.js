@@ -10,7 +10,7 @@ import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
 import BuildDurationsChart from "./BuildDurationsChart";
-import BuildBranchChip from "./chips/BuildBranchChip";
+import BuildBranchNameChip from "./chips/BuildBranchNameChip";
 import BuildStatusChip from "./chips/BuildStatusChip";
 
 
@@ -85,7 +85,7 @@ class RepositoryBuildList extends React.Component {
                 onMouseDown={() => this.handleBuildClick(build.id)}
                 style={{cursor: "pointer"}}>
         <TableRowColumn>
-          <BuildBranchChip build={build} style={styles.chip}/>
+          <BuildBranchNameChip build={build} style={styles.chip}/>
           <BuildStatusChip build={build} style={styles.chip}/>
         </TableRowColumn>
         <TableRowColumn style={{width: '100%'}}>

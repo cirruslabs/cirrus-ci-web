@@ -9,7 +9,7 @@ import {Table, TableBody, TableRow, TableRowColumn,} from 'material-ui/Table';
 import Paper from 'material-ui/Paper';
 import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
 import RepositoryNameChip from "./chips/RepositoryNameChip";
-import BuildBranchChip from "./chips/BuildBranchChip";
+import BuildBranchNameChip from "./chips/BuildBranchNameChip";
 import BuildStatusChip from "./chips/BuildStatusChip";
 
 
@@ -54,7 +54,7 @@ class ViewerBuildList extends React.Component {
                 style={{cursor: "pointer"}}>
         <TableRowColumn style={{padding: 0}}>
           <RepositoryNameChip repository={build.repository} style={styles.chip}/>
-          <BuildBranchChip build={build} style={styles.chip}/>
+          <BuildBranchNameChip build={build} style={styles.chip}/>
         </TableRowColumn>
         <TableRowColumn style={{width: '100%'}}>
           <ReactMarkdown source={build.changeMessageTitle}/>

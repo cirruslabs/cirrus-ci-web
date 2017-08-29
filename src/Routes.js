@@ -35,7 +35,7 @@ const AsyncRepository = Loadable({
   loading: LoadingComponent
 });
 
-const AsyncRepositorySettings= Loadable({
+const AsyncRepositorySettings = Loadable({
   loader: () => import('./scenes/RepositorySettings/RepositorySettings'),
   loading: LoadingComponent
 });
@@ -56,12 +56,12 @@ const AsyncGitHubRepository = Loadable({
 });
 
 class Routes extends React.Component {
+  handleToggle = () => this.setState({open: !this.state.open});
+
   constructor(props) {
     super(props);
     this.state = {open: false};
   }
-
-  handleToggle = () => this.setState({open: !this.state.open});
 
   render() {
     return (
@@ -76,9 +76,10 @@ class Routes extends React.Component {
           <Switch>
             <Route exact path="/" component={AsyncHome} props={this.props}/>
             <Route exact path="/build/:buildId" component={AsyncBuild} props={this.props}/>
-            <Route exact path="/github/:owner/:name" component={AsyncGitHubRepository} props={this.props}/>
-            <Route exact path="/repository/:repositoryId" component={AsyncRepository} props={this.props}/>
-            <Route exact path="/repository/:repositoryId/settings" component={AsyncRepositorySettings} props={this.props}/>
+            <Route exact path="/github/:owner/:name/:branch*" component={AsyncGitHubRepository} props={this.props}/>
+            <Route exact path="/repository/:repositoryId/:branch*" component={AsyncRepository} props={this.props}/>
+            <Route exact path="/repository/:repositoryId/settings" component={AsyncRepositorySettings}
+                   props={this.props}/>
             <Route exact path="/task/:taskId" component={AsyncTask} props={this.props}/>
             <Route exact path="/github" component={AsyncGitHub} props={this.props}/>
           </Switch>

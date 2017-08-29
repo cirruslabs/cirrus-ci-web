@@ -5,17 +5,13 @@ import {Link, withRouter} from 'react-router-dom'
 
 import {Table, TableBody, TableRow, TableRowColumn,} from 'material-ui/Table';
 import ReactMarkdown from 'react-markdown';
-
-import Avatar from 'material-ui/Avatar';
-import Chip from 'material-ui/Chip';
 import Paper from 'material-ui/Paper';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
-import {cirrusColors} from "../cirrusTheme";
-import {buildStatusColor} from "../utils/colors";
-import {buildStatusIconName, buildStatusMessage} from "../utils/status";
 import BuildDurationsChart from "./BuildDurationsChart";
+import BuildBranchChip from "./chips/BuildBranchChip";
+import BuildStatusChip from "./chips/BuildStatusChip";
 
 
 class RepositoryBuildList extends React.Component {
@@ -55,7 +51,7 @@ class RepositoryBuildList extends React.Component {
               <ToolbarTitle text={this.props.repository.owner + "/" + this.props.repository.name}/>
             </ToolbarGroup>
             <ToolbarGroup>
-              <Link to={ "/repository/" + this.props.repository.id + "/settings"}>
+              <Link to={"/repository/" + this.props.repository.id + "/settings"}>
                 <IconButton tooltip="Repository Settings">
                   <FontIcon className="material-icons">settings</FontIcon>
                 </IconButton>
@@ -89,16 +85,8 @@ class RepositoryBuildList extends React.Component {
                 onMouseDown={() => this.handleBuildClick(build.id)}
                 style={{cursor: "pointer"}}>
         <TableRowColumn>
-          <Chip style={styles.chip}>
-            <Avatar backgroundColor={cirrusColors.cirrusPrimary}
-                    icon={<FontIcon className="material-icons">call_split</FontIcon>} />
-            {build.branch}#{build.changeIdInRepo.substr(0, 6)}
-          </Chip>
-          <Chip style={styles.chip}>
-            <Avatar backgroundColor={buildStatusColor(build.status)}
-                    icon={<FontIcon className="material-icons">{buildStatusIconName(build.status)}</FontIcon>} />
-            {buildStatusMessage(build)}
-          </Chip>
+          <BuildBranchChip build={build} style={styles.chip}/>
+          <BuildStatusChip build={build} style={styles.chip}/>
         </TableRowColumn>
         <TableRowColumn style={{width: '100%'}}>
           <ReactMarkdown source={build.changeMessage}/>
@@ -118,7 +106,7 @@ export default createFragmentContainer(withRouter(RepositoryBuildList), {
       id
       owner
       name
-      builds(last: 100) {
+      builds(last: 100, branch: $branch) {
         edges {
           node {
             id

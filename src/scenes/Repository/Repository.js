@@ -12,7 +12,7 @@ const Repository = (props) => (
     variables={props.match.params}
     query={
       graphql`
-        query RepositoryQuery($repositoryId: ID!) {
+        query RepositoryQuery($repositoryId: ID!, $branch: String) {
           repository(id: $repositoryId) {
             ...RepositoryBuildList_repository
           }
@@ -22,7 +22,7 @@ const Repository = (props) => (
 
     render={({error, props}) => {
       if (!props) {
-        return <CirrusLinearProgress />
+        return <CirrusLinearProgress/>
       }
       return <RepositoryBuildList repository={props.repository}/>
     }}

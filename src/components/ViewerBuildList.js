@@ -2,19 +2,15 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {createFragmentContainer, graphql,} from 'react-relay';
 import {withRouter} from 'react-router-dom'
-
-import Avatar from 'material-ui/Avatar';
-import Chip from 'material-ui/Chip';
-import FontIcon from 'material-ui/FontIcon';
 import ReactMarkdown from 'react-markdown';
 
 import {Table, TableBody, TableRow, TableRowColumn,} from 'material-ui/Table';
 
 import Paper from 'material-ui/Paper';
 import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
-import {cirrusColors} from "../cirrusTheme";
-import {buildStatusColor} from "../utils/colors";
-import {buildStatusIconName, buildStatusMessage} from "../utils/status";
+import RepositoryNameChip from "./chips/RepositoryNameChip";
+import BuildBranchChip from "./chips/BuildBranchChip";
+import BuildStatusChip from "./chips/BuildStatusChip";
 
 
 class ViewerBuildList extends React.Component {
@@ -57,27 +53,14 @@ class ViewerBuildList extends React.Component {
                 onMouseDown={() => this.handleBuildClick(build.id)}
                 style={{cursor: "pointer"}}>
         <TableRowColumn style={{padding: 0}}>
-          <Chip onClick={() => this.handleRepositoryClick(build.repository)}
-                style={styles.chip}>
-            <Avatar backgroundColor={cirrusColors.cirrusPrimary}
-                    icon={<FontIcon className="material-icons">storage</FontIcon>} />
-            {build.repository.owner + "/" + build.repository.name}
-          </Chip>
-          <Chip style={styles.chip}>
-            <Avatar backgroundColor={cirrusColors.cirrusPrimary}
-                    icon={<FontIcon className="material-icons">call_split</FontIcon>} />
-            {build.branch}#{build.changeIdInRepo.substr(0, 6)}
-          </Chip>
+          <RepositoryNameChip repository={build.repository} style={styles.chip}/>
+          <BuildBranchChip build={build} style={styles.chip}/>
         </TableRowColumn>
         <TableRowColumn style={{width: '100%'}}>
           <ReactMarkdown source={build.changeMessageTitle}/>
         </TableRowColumn>
         <TableRowColumn style={{padding: 0}}>
-          <Chip style={styles.chip}>
-            <Avatar backgroundColor={buildStatusColor(build.status)}
-                    icon={<FontIcon className="material-icons">{buildStatusIconName(build.status)}</FontIcon>} />
-            {buildStatusMessage(build)}
-          </Chip>
+          <BuildStatusChip build={build} style={styles.chip}/>
         </TableRowColumn>
       </TableRow>
     );

@@ -3,13 +3,9 @@ import React from 'react';
 import {withRouter} from 'react-router-dom'
 
 import {Table, TableBody, TableRow, TableRowColumn} from 'material-ui/Table';
-import {formatDuration} from "../utils/time";
-
-import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
-import FontIcon from 'material-ui/FontIcon';
-import {cirrusColors} from "../cirrusTheme";
-import {taskStatusColor} from "../utils/colors";
+import TaskNameChip from "./chips/TaskNameChip";
+import TaskDurationChip from "./chips/TaskDurationChip";
 
 class TaskList extends React.Component {
   static contextTypes = {
@@ -26,7 +22,7 @@ class TaskList extends React.Component {
     return (
       <Table selectable={false} style={{tableLayout: 'auto'}}>
         <TableBody displayRowCheckbox={false} showRowHover={true}>
-          {tasks.map( task => this.buildItem(task, styles))}
+          {tasks.map(task => this.buildItem(task, styles))}
         </TableBody>
       </Table>
     );
@@ -36,13 +32,9 @@ class TaskList extends React.Component {
     return (
       <TableRow key={task.id}
                 onMouseDown={() => this.handleTaskClick(task.id)}
-                style={{ cursor: "pointer" }}>
+                style={{cursor: "pointer"}}>
         <TableRowColumn style={{padding: 0}}>
-          <Chip style={styles.chip}>
-            <Avatar backgroundColor={cirrusColors.cirrusPrimary}
-                    icon={<FontIcon className="material-icons">bookmark</FontIcon>} />
-            {task.name}
-          </Chip>
+          <TaskNameChip task={task} style={styles.chip}/>
         </TableRowColumn>
         <TableRowColumn style={{padding: 0}}>
           {
@@ -52,11 +44,7 @@ class TaskList extends React.Component {
           }
         </TableRowColumn>
         <TableRowColumn style={{padding: 0}}>
-          <Chip style={styles.chip}>
-            <Avatar backgroundColor={taskStatusColor(task.status)}
-                    icon={<FontIcon className="material-icons">query_builder</FontIcon>} />
-            {formatDuration(task.taskDurationInSeconds)}
-          </Chip>
+          <TaskDurationChip task={task} style={styles.chip}/>
         </TableRowColumn>
       </TableRow>
     );

@@ -91,6 +91,9 @@ type Repository {
 
     # fetching only the last certain number of nodes
     last: Int
+
+    # branch to fetch builds for
+    branch: String
   ): RepositoryBuildsConnection
   settings: RepositorySettings
 }

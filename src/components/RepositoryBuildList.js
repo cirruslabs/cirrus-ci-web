@@ -24,6 +24,12 @@ class RepositoryBuildList extends React.Component {
     location: PropTypes.object
   };
 
+
+  constructor(props) {
+    super();
+    this.state = {selectedBuildId: "0"};
+  }
+
   render() {
     let styles = {
       main: {
@@ -58,7 +64,9 @@ class RepositoryBuildList extends React.Component {
           </Toolbar>
         </Paper>
         <Paper zDepth={1} rounded={false} style={styles.buildsChart}>
-          <BuildDurationsChart builds={builds.slice().reverse()}/>
+          <BuildDurationsChart builds={builds.slice().reverse()}
+                               selectedBuildId={this.state.selectedBuildId}
+                               onSelectBuildId={(buildId) => this.setState({selectedBuildId: buildId})}/>
         </Paper>
         <div style={styles.gap}/>
         <Paper zDepth={1} rounded={false}>
@@ -73,8 +81,11 @@ class RepositoryBuildList extends React.Component {
   }
 
   buildItem(build, styles) {
+    let isSelectedBuild = this.state.selectedBuildId === build.id;
     return (
       <TableRow key={build.id}
+                hovered={isSelectedBuild}
+                onMouseOver={() => (!isSelectedBuild) && this.setState({selectedBuildId: build.id})}
                 onMouseDown={() => this.handleBuildClick(build.id)}
                 style={{cursor: "pointer"}}>
         <TableRowColumn>

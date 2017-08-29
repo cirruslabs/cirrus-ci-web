@@ -5,29 +5,26 @@ import {buildStatusColor} from "../utils/colors";
 export default class BuildDurationsChart extends React.Component {
   constructor(props) {
     super();
-    this.state = {};
-    this.handleBuildClear = this.handleBuildClear.bind(this);
-    this.handleBuildHover = this.handleBuildHover.bind(this);
     this.renderBuildBar = this.renderBuildBar.bind(this);
   }
 
   render() {
-    let {builds} = this.props;
+    let {builds, selectedBuildId, onSelectBuildId} = this.props;
     return (
       <ResponsiveContainer height='100%' width='100%'>
         <BarChart data={builds}>
           <Bar dataKey='buildDurationInSeconds'
-               shape={this.renderBuildBar}
-               animationId={Number(this.state.selectedBuildId || "0")}
-               onMouseEnter={this.handleBuildHover}
-               onMouseLeave={this.handleBuildClear}/>
+               shape={(props) => this.renderBuildBar(props, selectedBuildId)}
+               animationId={Number(selectedBuildId)}
+               onMouseEnter={(entry) => onSelectBuildId(entry.id)}
+               onMouseLeave={() => onSelectBuildId("0")}/>
         </BarChart>
       </ResponsiveContainer>
     );
   }
 
-  renderBuildBar(props) {
-    if (props.id === this.state.selectedBuildId) {
+  renderBuildBar(props, selectedBuildId) {
+    if (props.id === selectedBuildId) {
       const { x, y, width, height, ...others } = props;
       const sign = height >= 0 ? 1 : -1;
       return <Rectangle {...others}
@@ -37,13 +34,5 @@ export default class BuildDurationsChart extends React.Component {
 
     }
     return <Rectangle {...props} fill={buildStatusColor(props.status)} className="recharts-bar-rectangle" />
-  }
-
-  handleBuildClear(entry) {
-    this.setState({selectedBuildId: 0})
-  }
-
-  handleBuildHover(entry) {
-    this.setState({selectedBuildId: entry.id})
   }
 }

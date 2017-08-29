@@ -117,6 +117,11 @@ export default createFragmentContainer(withRouter(RepositoryBuildList), {
             authorName
             changeTimestamp
             buildDurationInSeconds
+            repository {
+              id
+              owner
+              name              
+            }
           }
         }
       }

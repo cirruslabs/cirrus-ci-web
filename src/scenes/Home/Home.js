@@ -23,6 +23,9 @@ const Home = (props) => (
       if (!props) {
         return <CirrusLinearProgress />
       }
+      if (!props.viewer) {
+        return null
+      }
       return <ViewerBuildList viewer={props.viewer}/>
     }}
   />

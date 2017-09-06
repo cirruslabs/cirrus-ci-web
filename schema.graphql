@@ -181,6 +181,7 @@ type TaskPayload {
 # Task status.
 enum TaskStatus {
   CREATED
+  TRIGGERED
   SCHEDULED
   EXECUTING
   ABORTED

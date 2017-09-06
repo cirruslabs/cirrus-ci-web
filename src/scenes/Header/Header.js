@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
+import FontIcon from 'material-ui/FontIcon';
 import {withRouter} from 'react-router-dom'
 
 import {graphql, QueryRenderer} from 'react-relay';
@@ -16,7 +17,9 @@ function componentForViewer(props) {
   }
   let viewer = props.viewer;
   if (!viewer) {
-    return <FlatButton label="Log In"/>
+    return <FlatButton label="Log In"
+      href="http://api.cirrus-ci.org/redirect/auth/github"
+      icon={<FontIcon className="fa fa-github" />}/>
   }
   return <AccountInformation viewer={viewer}/>
 }

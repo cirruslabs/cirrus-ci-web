@@ -24,6 +24,9 @@ const Repository = (props) => (
       if (!props) {
         return <CirrusLinearProgress/>
       }
+      if (!props.repository) {
+        return <p>Not found</p>
+      }
       return <RepositoryBuildList repository={props.repository}/>
     }}
   />

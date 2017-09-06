@@ -116,7 +116,6 @@ export default createFragmentContainer(withRouter(RepositoryBuildList), {
             status
             authorName
             changeTimestamp
-            buildDurationInSeconds
             repository {
               id
               owner

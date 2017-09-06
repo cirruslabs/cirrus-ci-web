@@ -16,7 +16,7 @@ export default createFragmentContainer(AccountInformation, {
   viewer: graphql`
     fragment AccountInformation_viewer on User {
       id
-      name
+      githubUserName
       avatarURL
     }
   `,

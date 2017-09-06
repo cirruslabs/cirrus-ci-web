@@ -88,8 +88,6 @@ export default createFragmentContainer(withRouter(ViewerBuildList), {
             status
             authorName
             changeTimestamp
-            buildStartedTimestamp
-            buildDurationInSeconds
             repository {
               owner
               name

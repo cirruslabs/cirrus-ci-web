@@ -12,9 +12,8 @@ type Build {
   changeMessage: String
   authorName: String
   changeTimestamp: Long!
-  buildStartedTimestamp: Long!
+  buildCreatedTimestamp: Long!
   buildFinishedTimestamp: Long
-  buildDurationInSeconds: Long!
   status: BuildStatus
   notifications: [Notification]
   tasks: [Task]
@@ -197,7 +196,7 @@ type TaskStatusDuration {
 type User {
   id: ID!
   githubUserId: Long
-  name: String!
+  githubUserName: String!
   avatarURL: String
   builds(
     # fetching only nodes before this node (exclusive)

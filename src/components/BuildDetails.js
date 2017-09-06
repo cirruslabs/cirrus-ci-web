@@ -94,7 +94,6 @@ export default createFragmentContainer(withRouter(ViewerBuildList), {
       changeIdInRepo
       changeTimestamp
       changeMessage
-      buildDurationInSeconds
       status
       notifications {
         level

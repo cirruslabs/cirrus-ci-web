@@ -78,7 +78,7 @@ class Routes extends React.Component {
             <Route exact path="/build/:buildId" component={AsyncBuild} props={this.props}/>
             <Route exact path="/github/:owner/:name/:branch*" component={AsyncGitHubRepository} props={this.props}/>
             <Route exact path="/repository/:repositoryId/:branch*" component={AsyncRepository} props={this.props}/>
-            <Route exact path="/repository/:repositoryId/settings" component={AsyncRepositorySettings}
+            <Route exact path="/settings/repository/:repositoryId" component={AsyncRepositorySettings}
                    props={this.props}/>
             <Route exact path="/task/:taskId" component={AsyncTask} props={this.props}/>
             <Route exact path="/github" component={AsyncGitHub} props={this.props}/>

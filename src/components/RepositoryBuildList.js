@@ -51,7 +51,7 @@ class RepositoryBuildList extends React.Component {
               <ToolbarTitle text={this.props.repository.owner + "/" + this.props.repository.name}/>
             </ToolbarGroup>
             <ToolbarGroup>
-              <Link to={"/repository/" + this.props.repository.id + "/settings"}>
+              <Link to={"/settings/repository/" + this.props.repository.id}>
                 <IconButton tooltip="Repository Settings">
                   <FontIcon className="material-icons">settings</FontIcon>
                 </IconButton>

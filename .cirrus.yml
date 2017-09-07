@@ -1,9 +1,9 @@
-gcp_credentials: ENCRYPTED[968d57aeb51c3e4cba37ed626e0c2da53dd73b305929bf6310b6f74a4cfca95e56bbd7866abdf11287f76fe8644768bc]
+gcp_credentials: ENCRYPTED[847988093f2413c78841ef5f9c53fba80b42d6f8502795a6a7513bf1831e4326bdd2070a44206e279db585e30bc466cc]
 
 gke_container:
   image: node:8.3.0
   cluster_endpoint: 35.188.82.251
-  cluster_auth_token: ENCRYPTED[0c2a4094c87b94f7c0ac8640aebbab1a4c90d4a6085479f81a26e3582cb5173fdc720a34da3c0325da57feb0547d408f]
+  cluster_auth_token: ENCRYPTED[45bef39b9a7a43084ada542a682f9fb1274934bb345f7da63f495f0ef5e04abc36f39c5e1366abee0b927d60be28674d]
   namespace: default
   cpu: 0.5
   memory: 1Gb

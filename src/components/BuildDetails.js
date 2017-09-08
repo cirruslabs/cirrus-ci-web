@@ -40,7 +40,7 @@ class ViewerBuildList extends React.Component {
     };
 
     function runSummaryMessage(build) {
-      return build.status + " in " + formatDuration(build.buildDurationInSeconds);
+      return build.status + " in " + formatDuration(build.durationInSeconds);
     }
 
     let repoUrl = build.repository.cloneUrl.slice(0, -4);

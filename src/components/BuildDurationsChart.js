@@ -13,7 +13,7 @@ export default class BuildDurationsChart extends React.Component {
     return (
       <ResponsiveContainer height='100%' width='100%'>
         <BarChart data={builds}>
-          <Bar dataKey='buildDurationInSeconds'
+          <Bar dataKey='durationInSeconds'
                shape={(props) => this.renderBuildBar(props, selectedBuildId)}
                animationId={Number(selectedBuildId)}
                onMouseEnter={(entry) => onSelectBuildId(entry.id)}

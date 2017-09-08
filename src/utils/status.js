@@ -46,11 +46,11 @@ export function buildStatusMessage(build) {
     case "CREATED":
       return 'created';
     case "EXECUTING":
-      return 'Executing for ' + formatDuration(build.buildDurationInSeconds);
+      return 'Executing for ' + formatDuration(build.durationInSeconds);
     case "COMPLETED":
-      return 'Finished in ' + formatDuration(build.buildDurationInSeconds);
+      return 'Finished in ' + formatDuration(build.durationInSeconds);
     case "FAILED":
-      return 'Failed in ' + formatDuration(build.buildDurationInSeconds);
+      return 'Failed in ' + formatDuration(build.durationInSeconds);
     default:
       return build.status;
   }

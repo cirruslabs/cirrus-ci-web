@@ -11,6 +11,7 @@ type Build {
   changeMessageTitle: String
   changeMessage: String
   authorName: String
+  durationInSeconds: Long
   changeTimestamp: Long!
   buildCreatedTimestamp: Long!
   buildFinishedTimestamp: Long

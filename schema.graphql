@@ -70,6 +70,14 @@ type PageInfo {
   endCursor: String
 }
 
+# User access level.
+enum PermissionType {
+  NONE
+  READ
+  WRITE
+  ADMIN
+}
+
 type Repository {
   id: ID!
   owner: String!
@@ -95,6 +103,7 @@ type Repository {
     branch: String
   ): RepositoryBuildsConnection
   settings: RepositorySettings
+  viewerPermission: PermissionType
 }
 
 # An edge in a connection

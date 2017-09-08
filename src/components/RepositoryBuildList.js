@@ -42,21 +42,31 @@ class RepositoryBuildList extends React.Component {
       },
     };
 
-    let builds = this.props.repository.builds.edges.map(edge => edge.node, styles);
+    let repository = this.props.repository;
+    let builds = repository.builds.edges.map(edge => edge.node, styles);
+
+    let repositorySettings = null;
+
+    if (repository.viewerPermission === 'WRITE' || repository.viewerPermission === 'ADMIN' ) {
+      repositorySettings = (
+        <ToolbarGroup>
+          <Link to={"/settings/repository/" + repository.id}>
+            <IconButton tooltip="Repository Settings">
+              <FontIcon className="material-icons">settings</FontIcon>
+            </IconButton>
+          </Link>
+        </ToolbarGroup>
+      );
+    }
+
     return (
       <div style={styles.main} className="container">
         <Paper zDepth={1} rounded={false}>
           <Toolbar>
             <ToolbarGroup>
-              <ToolbarTitle text={this.props.repository.owner + "/" + this.props.repository.name}/>
+              <ToolbarTitle text={repository.owner + "/" + repository.name}/>
             </ToolbarGroup>
-            <ToolbarGroup>
-              <Link to={"/settings/repository/" + this.props.repository.id}>
-                <IconButton tooltip="Repository Settings">
-                  <FontIcon className="material-icons">settings</FontIcon>
-                </IconButton>
-              </Link>
-            </ToolbarGroup>
+            {repositorySettings}
           </Toolbar>
         </Paper>
         <Paper zDepth={1} rounded={false} style={styles.buildsChart}>
@@ -106,6 +116,7 @@ export default createFragmentContainer(withRouter(RepositoryBuildList), {
       id
       owner
       name
+      viewerPermission
       builds(last: 100, branch: $branch) {
         edges {
           node {
@@ -116,11 +127,6 @@ export default createFragmentContainer(withRouter(RepositoryBuildList), {
             status
             authorName
             changeTimestamp
-            repository {
-              id
-              owner
-              name              
-            }
           }
         }
       }

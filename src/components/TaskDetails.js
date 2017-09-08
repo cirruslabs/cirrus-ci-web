@@ -13,6 +13,8 @@ import {FontIcon, RaisedButton} from "material-ui";
 import {taskStatusColor} from "../utils/colors";
 import ReactMarkdown from 'react-markdown';
 import BuildBranchNameChip from "./chips/BuildBranchNameChip";
+import TaskNameChip from "./chips/TaskNameChip";
+import RepositoryNameChip from "./chips/RepositoryNameChip";
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskInput!) {
@@ -123,15 +125,16 @@ class ViewerTaskList extends React.Component {
       <div style={styles.main} className="container">
         <Paper zDepth={2} rounded={false}>
           <div className="card-block">
-            <h4 className="card-title text-middle" style={styles.title}>
-              {repoTitle} {task.name} {task.status.toLowerCase()}
+            <h4 className="card-title text-middle" style={styles.wrapper}>
+              <RepositoryNameChip style={styles.chip} repository={repository} />
+              <BuildBranchNameChip style={styles.chip} build={build}/>
+              <TaskNameChip style={styles.chip} task={task}/>
             </h4>
             {taskProgress}
             <div style={styles.gap}>
               <ReactMarkdown className="card-text" source={build.changeMessage}/>
             </div>
             <div className="card-body" style={styles.wrapper}>
-              <BuildBranchNameChip style={styles.chip} build={build}/>
               {
                 task.labels.map(label => {
                   return <Chip key={label} style={styles.chip}>{label}</Chip>

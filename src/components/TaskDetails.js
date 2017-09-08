@@ -98,10 +98,6 @@ class ViewerTaskList extends React.Component {
         <NotificationList notifications={task.notifications}/>
       </div>;
 
-    let repoTitle = <a onClick={() => this.context.router.history.push("/github/" + repository.owner + "/" + repository.name)}
-                       className="link"
-                       style={{ cursor: "pointer" }}>{repository.owner + "/" + repository.name}</a>;
-
     let totalDuration = task.statusDurations.reduce(
       function(sum, statusDuration) { return sum + statusDuration.durationInSeconds },
       0

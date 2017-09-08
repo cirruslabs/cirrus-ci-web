@@ -12,6 +12,7 @@ import {isTaskFinalStatus} from "../utils/status";
 import {FontIcon, RaisedButton} from "material-ui";
 import {taskStatusColor} from "../utils/colors";
 import ReactMarkdown from 'react-markdown';
+import BuildBranchNameChip from "./chips/BuildBranchNameChip";
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskInput!) {
@@ -98,9 +99,6 @@ class ViewerTaskList extends React.Component {
     let repoTitle = <a onClick={() => this.context.router.history.push("/github/" + repository.owner + "/" + repository.name)}
                        className="link"
                        style={{ cursor: "pointer" }}>{repository.owner + "/" + repository.name}</a>;
-    let buildTitle = <a onClick={() => this.context.router.history.push("/build/" + build.id)}
-                        className="link"
-                        style={{ cursor: "pointer" }}>{build.changeIdInRepo.substr(0, 6)}</a>;
 
     let totalDuration = task.statusDurations.reduce(
       function(sum, statusDuration) { return sum + statusDuration.durationInSeconds },
@@ -126,13 +124,14 @@ class ViewerTaskList extends React.Component {
         <Paper zDepth={2} rounded={false}>
           <div className="card-block">
             <h4 className="card-title text-middle" style={styles.title}>
-              {repoTitle}#{buildTitle} {task.name} {task.status.toLowerCase()}
+              {repoTitle} {task.name} {task.status.toLowerCase()}
             </h4>
             {taskProgress}
             <div style={styles.gap}>
               <ReactMarkdown className="card-text" source={build.changeMessage}/>
             </div>
             <div className="card-body" style={styles.wrapper}>
+              <BuildBranchNameChip style={styles.chip} build={build}/>
               {
                 task.labels.map(label => {
                   return <Chip key={label} style={styles.chip}>{label}</Chip>

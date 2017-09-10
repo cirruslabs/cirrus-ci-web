@@ -83,7 +83,9 @@ class ViewerTaskList extends React.Component {
         paddingTop: 16
       },
       chip: {
-        margin: 4,
+        marginTop: 4,
+        marginBottom: 4,
+        marginRight: 4,
       },
       wrapper: {
         paddingTop: 16,

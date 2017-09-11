@@ -54,7 +54,7 @@ class ViewerBuildList extends React.Component {
                                disableTouchRipple={true}
                                tooltip="Navigate to GitHub"/>;
     let repoTitle = <a onClick={() => this.context.router.history.push("/repository/" + build.repository.id)}
-                       style={{ cursor: "pointer" }}>{build.repository.owner + "/" + build.repository.user}</a>;
+                       style={{ cursor: "pointer" }}>{build.repository.owner + "/" + build.repository.name}</a>;
 
     let tasksComponent = build.tasks ? <TaskList tasks={build.tasks}/> : null;
     let notificationsComponent = !build.notifications ? null :

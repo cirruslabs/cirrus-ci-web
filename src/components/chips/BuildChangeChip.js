@@ -7,7 +7,7 @@ import FontIcon from 'material-ui/FontIcon';
 import {cirrusColors} from "../../cirrusTheme";
 import {withRouter} from "react-router-dom";
 
-class BuildBranchNameChip extends React.Component {
+class BuildChangeChip extends React.Component {
   static contextTypes = {
     router: PropTypes.object
   };
@@ -18,19 +18,15 @@ class BuildBranchNameChip extends React.Component {
       <Chip onClick={() => this.handleBranchClick(build)}
             style={this.props.style}>
         <Avatar backgroundColor={cirrusColors.cirrusPrimary}
-                icon={<FontIcon className="material-icons">call_split</FontIcon>}/>
-        {build.branch}
+                icon={<FontIcon className="material-icons">input</FontIcon>}/>
+        {build.changeIdInRepo.substr(0, 6)}
       </Chip>
     );
   }
 
   handleBranchClick(build) {
-    if (build.repository) {
-      this.context.router.history.push("/github/" + build.repository.owner + "/" + build.repository.name + "/" + build.branch)
-    } else if (build.repositoryId) {
-      this.context.router.history.push("/repository/" + build.repositoryId + "/" + build.branch)
-    }
+    this.context.router.history.push("/builds/" + build.id);
   }
 }
 
-export default withRouter(BuildBranchNameChip);
+export default withRouter(BuildChangeChip);

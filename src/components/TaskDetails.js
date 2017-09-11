@@ -14,6 +14,7 @@ import {taskStatusColor} from "../utils/colors";
 import ReactMarkdown from 'react-markdown';
 import BuildBranchNameChip from "./chips/BuildBranchNameChip";
 import TaskNameChip from "./chips/TaskNameChip";
+import BuildChangeChip from "./chips/BuildChangeChip";
 import RepositoryNameChip from "./chips/RepositoryNameChip";
 
 const taskReRunMutation = graphql`
@@ -126,6 +127,7 @@ class ViewerTaskList extends React.Component {
             <h4 className="card-title text-middle" style={styles.wrapper}>
               <RepositoryNameChip style={styles.chip} repository={repository} />
               <BuildBranchNameChip style={styles.chip} build={build}/>
+              <BuildChangeChip style={styles.chip} build={build}/>
               <TaskNameChip style={styles.chip} task={task}/>
             </h4>
             {taskProgress}

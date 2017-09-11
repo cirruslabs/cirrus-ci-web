@@ -11,6 +11,7 @@ import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
 import RepositoryNameChip from "./chips/RepositoryNameChip";
 import BuildBranchNameChip from "./chips/BuildBranchNameChip";
 import BuildStatusChip from "./chips/BuildStatusChip";
+import BuildChangeChip from "./chips/BuildChangeChip";
 
 
 class ViewerBuildList extends React.Component {
@@ -55,6 +56,7 @@ class ViewerBuildList extends React.Component {
         <TableRowColumn style={{padding: 0}}>
           <RepositoryNameChip repository={build.repository} style={styles.chip}/>
           <BuildBranchNameChip build={build} style={styles.chip}/>
+          <BuildChangeChip build={build} style={styles.chip}/>
         </TableRowColumn>
         <TableRowColumn style={{width: '100%'}}>
           <ReactMarkdown source={build.changeMessageTitle}/>

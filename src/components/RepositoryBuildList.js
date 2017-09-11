@@ -11,6 +11,7 @@ import IconButton from 'material-ui/IconButton';
 import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
 import BuildDurationsChart from "./BuildDurationsChart";
 import BuildBranchNameChip from "./chips/BuildBranchNameChip";
+import BuildChangeChip from "./chips/BuildChangeChip";
 import BuildStatusChip from "./chips/BuildStatusChip";
 
 
@@ -96,6 +97,7 @@ class RepositoryBuildList extends React.Component {
                 style={{cursor: "pointer"}}>
         <TableRowColumn>
           <BuildBranchNameChip build={build} style={styles.chip}/>
+          <BuildChangeChip build={build} style={styles.chip}/>
           <BuildStatusChip build={build} style={styles.chip}/>
         </TableRowColumn>
         <TableRowColumn style={{width: '100%'}}>

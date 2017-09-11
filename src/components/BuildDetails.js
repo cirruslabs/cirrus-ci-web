@@ -94,6 +94,7 @@ export default createFragmentContainer(withRouter(ViewerBuildList), {
       changeIdInRepo
       changeTimestamp
       changeMessage
+      durationInSeconds
       status
       notifications {
         level
@@ -103,7 +104,7 @@ export default createFragmentContainer(withRouter(ViewerBuildList), {
         id
         name
         status
-        taskDurationInSeconds
+        durationInSeconds
         labels
       }
       repository {

@@ -126,6 +126,7 @@ export default createFragmentContainer(withRouter(RepositoryBuildList), {
             branch
             changeIdInRepo
             changeMessage
+            durationInSeconds
             status
             authorName
             changeTimestamp

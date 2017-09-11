@@ -158,7 +158,7 @@ type Task {
   status: TaskStatus
   notifications: [Notification]
   commands: [TaskCommand]
-  taskDurationInSeconds: Long!
+  durationInSeconds: Long!
   labels: [String]
   statusDurations: [TaskStatusDuration]
   repository: Repository!

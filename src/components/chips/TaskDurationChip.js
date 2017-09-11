@@ -12,7 +12,7 @@ export default function (props) {
     <Chip style={props.style}>
       <Avatar backgroundColor={taskStatusColor(task.status)}
               icon={<FontIcon className="material-icons">query_builder</FontIcon>}/>
-      {formatDuration(task.taskDurationInSeconds)}
+      {formatDuration(task.durationInSeconds)}
     </Chip>
   );
 }

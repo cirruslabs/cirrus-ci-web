@@ -26,7 +26,7 @@ export function taskStatusColor(status) {
     case "COMPLETED":
       return cirrusColors.success;
     case "ABORTED":
-      return cirrusColors.failure;
+      return cirrusColors.lightFailure;
     case "FAILED":
       return cirrusColors.failure;
     default:

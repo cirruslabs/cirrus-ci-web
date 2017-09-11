@@ -7,7 +7,6 @@ gke_container:
   namespace: default
   cpu: 0.5
   memory: 1Gb
-  disk: 1
 
 task:
   node_modules_cache:

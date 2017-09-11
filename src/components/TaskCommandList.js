@@ -37,7 +37,6 @@ class TaskCommandList extends React.Component {
           showExpandableButton={true}
         />
         <CardText expandable={true}>
-          <div>{command.status}</div>
           <FloatingActionButton mini={true}
                                 href={this.logURL(command) }>
             <FontIcon className="material-icons">get_app</FontIcon>

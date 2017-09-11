@@ -25,7 +25,7 @@ class BuildChangeChip extends React.Component {
   }
 
   handleBranchClick(build) {
-    this.context.router.history.push("/builds/" + build.id);
+    this.context.router.history.push("/build/" + build.id);
   }
 }
 

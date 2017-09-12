@@ -44,9 +44,11 @@ export function buildStatusIconName(status) {
 export function buildStatusMessage(build) {
   switch (build.status) {
     case "CREATED":
-      return 'created';
+      return 'Created';
     case "EXECUTING":
-      return 'Executing for ' + formatDuration(build.durationInSeconds);
+      // since one can re-run some of build's tasks it's not quite clear
+      // what is duration for builds like that
+      return 'Executing';
     case "COMPLETED":
       return 'Finished in ' + formatDuration(build.durationInSeconds);
     case "FAILED":

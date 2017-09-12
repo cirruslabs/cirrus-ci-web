@@ -5,8 +5,8 @@ gke_container:
   cluster_endpoint: 35.188.82.251
   cluster_auth_token: ENCRYPTED[aa5486d42c9a41cf9a165be99a354a2d009ca94fbdb39ccba574cf3f4a13cba0a23ecc5a03b591bbc3abee38f09f8ee6]
   namespace: default
-  cpu: 1
-  memory: 1Gb
+  cpu: 1.5
+  memory: 2Gb
 
 task:
   node_modules_cache:

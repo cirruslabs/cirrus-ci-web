@@ -203,6 +203,7 @@ export default createFragmentContainer(withRouter(ViewerTaskList), {
       }
       build {
         id
+        repositoryId
         branch
         changeIdInRepo
         changeTimestamp

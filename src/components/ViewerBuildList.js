@@ -29,7 +29,7 @@ class ViewerBuildList extends React.Component {
       },
     };
 
-    let edges = this.props.viewer.builds.edges;
+    let builds = this.props.viewer.builds;
     return (
       <div style={styles.main} className="container">
         <Paper zDepth={1} rounded={false}>
@@ -40,7 +40,7 @@ class ViewerBuildList extends React.Component {
           </Toolbar>
           <Table selectable={false} style={{tableLayout: 'auto'}}>
             <TableBody displayRowCheckbox={false} showRowHover={true}>
-              {edges.map(edge => this.buildItem(edge.node, styles))}
+              {builds && builds.edges.map(edge => this.buildItem(edge.node, styles))}
             </TableBody>
           </Table>
         </Paper>

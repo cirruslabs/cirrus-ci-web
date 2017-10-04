@@ -25,6 +25,8 @@ type Build {
 # Build status.
 enum BuildStatus {
   CREATED
+  NEEDS_APPROVAL
+  TRIGGERED
   EXECUTING
   FAILED
   COMPLETED

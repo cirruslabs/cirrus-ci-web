@@ -55,7 +55,7 @@ function webSocketSubscription(
 ) {
   let {onError, onNext} = config;
 
-  subscribe(topic, () => {
+  let dispose = subscribe(topic, () => {
     fetchQuery(operation, variables).then(response => {
       if (process.env.NODE_ENV === 'development') {
         console.log(response);
@@ -66,7 +66,7 @@ function webSocketSubscription(
     });
   });
 
-  return { dispose: () => unsubscribe(topic) }
+  return { dispose }
 }
 
 function fetchQuery(

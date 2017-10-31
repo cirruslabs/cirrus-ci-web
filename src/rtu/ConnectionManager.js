@@ -1,11 +1,12 @@
 import ReconnectingWebSocket from '../vendor/reconnecting-websocket/reconnecting-websocket'
+import {HandlersManager} from "./HandlersManager";
 
 const ws = new ReconnectingWebSocket('wss://api.cirrus-ci.org/ws');
 
-const topicSubscriptions = {};
+const handlersManager = new HandlersManager();
 
 ws.onopen = function open() {
-  Object.keys(topicSubscriptions).forEach(function(topic) {
+  handlersManager.allTopics().forEach(function(topic) {
     console.log('re-connecting to ' + topic);
     sendSubscribe(topic);
   });
@@ -23,35 +24,18 @@ ws.onmessage = function incoming(event) {
   let message = JSON.parse(event.data);
   let data = message.data || {};
   let topic = message.topic || '';
-  let subscription = topicSubscriptions[topic];
-  if (subscription) {
-    subscription(data)
-  }
+  handlersManager.handleNewUpdate(topic, data);
 };
 
 export function subscribe(topic, handler) {
-  topicSubscriptions[topic] = handler;
+  let closable = handlersManager.addTopicHandler(topic, handler);
   sendSubscribe(topic);
+  return closable
 }
 
 function sendSubscribe(topic) {
-  console.log('subscribing from ' + topic);
   ws.send(JSON.stringify({
     type: 'subscribe',
-    topic: topic
-  }))
-}
-
-export function unsubscribe(topic) {
-  console.log('unsubscribing from ' + topic);
-  delete topicSubscriptions[topic];
-  sendUnsubscribe(topic);
-}
-
-
-function sendUnsubscribe(topic) {
-  ws.send(JSON.stringify({
-    type: 'unsubscribe',
     topic: topic
   }))
 }

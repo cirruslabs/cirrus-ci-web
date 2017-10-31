@@ -24,10 +24,12 @@ ws.onmessage = function incoming(event) {
   let message = JSON.parse(event.data);
   let data = message.data || {};
   let topic = message.topic || '';
+  console.log("New message from " + topic);
   handlersManager.handleNewUpdate(topic, data);
 };
 
 export function subscribe(topic, handler) {
+  console.log("Subscribing to " + topic);
   let closable = handlersManager.addTopicHandler(topic, handler);
   sendSubscribe(topic);
   return closable
@@ -42,4 +44,8 @@ function sendSubscribe(topic) {
 
 export function taskUpdateTopic(taskId) {
   return "task-update-" + taskId;
+}
+
+export function taskCommandLogTopic(taskId, command) {
+  return "task-log-" + taskId + "-" + command;
 }

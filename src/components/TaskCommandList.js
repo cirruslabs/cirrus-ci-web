@@ -3,9 +3,8 @@ import React from 'react';
 import {withRouter} from 'react-router-dom'
 
 import {Card, CardHeader, CardText} from 'material-ui/Card';
-import FontIcon from 'material-ui/FontIcon';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
 import {commandStatusColor} from "../utils/colors";
+import TaskCommandLogs from "./TaskCommandLogs";
 
 class TaskCommandList extends React.Component {
   static contextTypes = {
@@ -37,17 +36,10 @@ class TaskCommandList extends React.Component {
           showExpandableButton={true}
         />
         <CardText expandable={true}>
-          <FloatingActionButton mini={true}
-                                href={this.logURL(command) }>
-            <FontIcon className="material-icons">get_app</FontIcon>
-          </FloatingActionButton>
+          <TaskCommandLogs taskId={this.props.taskId} command={command}/>
         </CardText>
       </Card>
     );
-  }
-
-  logURL(command) {
-    return "http://api.cirrus-ci.org/v1/task/" + this.props.taskId + "/logs/" + command.name + ".log";
   }
 }
 

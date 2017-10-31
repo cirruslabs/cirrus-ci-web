@@ -1,3 +1,5 @@
+import {subscribe, taskUpdateTopic, unsubscribe} from "./rtu/ConnectionManager";
+
 const {
     Environment,
     Network,
@@ -8,6 +10,20 @@ const {
 /**
  * See RelayNetwork.js:43 for details how it used in Relay
  */
+function subscription(
+  operation,
+  variables,
+  cacheConfig,
+  config
+) {
+  console.log("subscription", variables, operation);
+  if (variables['taskID']) {
+    return webSocketSubscription(taskUpdateTopic(variables['taskID']), operation, variables, cacheConfig, config)
+  } else {
+    return pollingSubscription(operation, variables, cacheConfig, config)
+  }
+}
+
 function pollingSubscription(
   operation,
   variables,
@@ -30,6 +46,29 @@ function pollingSubscription(
   return { dispose: () => clearInterval(intervalId) }
 }
 
+function webSocketSubscription(
+  topic,
+  operation,
+  variables,
+  cacheConfig,
+  config
+) {
+  let {onError, onNext} = config;
+
+  subscribe(topic, () => {
+    fetchQuery(operation, variables).then(response => {
+      if (process.env.NODE_ENV === 'development') {
+        console.log(response);
+      }
+      onNext(response);
+    }, error => {
+      onError && onError(error)
+    });
+  });
+
+  return { dispose: () => unsubscribe(topic) }
+}
+
 function fetchQuery(
     operation,
     variables
@@ -41,7 +80,7 @@ function fetchQuery(
   if (process.env.NODE_ENV === 'development') {
     console.log(query);
   }
-  return fetch('http://api.cirrus-ci.org/graphql', {
+  return fetch('https://api.cirrus-ci.org/graphql', {
         method: 'POST',
         credentials: 'include', // cookies
         headers: {
@@ -55,7 +94,7 @@ function fetchQuery(
 }
 
 // Create a network layer from the fetch function
-const network = Network.create(fetchQuery, pollingSubscription);
+const network = Network.create(fetchQuery, subscription);
 
 const source = new RecordSource();
 const store = new Store(source);

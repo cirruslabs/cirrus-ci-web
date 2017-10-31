@@ -14,7 +14,7 @@
     "react-relay": "*",
     "react-router-dom": "*",
     "react-tap-event-plugin": "*",
-    "recharts": "^1.0.0-alpha.4"
+    "recharts": "*"
   },
   "devDependencies": {
     "babel-preset-react-app": "*",

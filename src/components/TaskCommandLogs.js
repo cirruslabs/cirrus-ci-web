@@ -4,7 +4,7 @@ import {subscribe, taskCommandLogTopic} from "../rtu/ConnectionManager";
 import Logs from "./logs/Logs";
 
 
-class TaskCommandLogs extends React.Component {
+class TaskCommandRealTimeLogs extends React.Component {
   constructor() {
     super();
     this.subscriptionClosable = null;
@@ -42,4 +42,11 @@ class TaskCommandLogs extends React.Component {
   }
 }
 
-export default TaskCommandLogs
+export default function (props) {
+  let command = props.command;
+  if (command.status === 'SUCCESS' || command.status === 'FAILURE') {
+    return <TaskCommandRealTimeLogs command={command}/>
+  } else {
+    return null
+  }
+}

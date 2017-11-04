@@ -1,7 +1,7 @@
 import React from 'react';
 import {FloatingActionButton, FontIcon} from "material-ui";
 import {subscribe, taskCommandLogTopic} from "../rtu/ConnectionManager";
-import Logs from "./Logs";
+import Logs from "./logs/Logs";
 
 
 class TaskCommandLogs extends React.Component {

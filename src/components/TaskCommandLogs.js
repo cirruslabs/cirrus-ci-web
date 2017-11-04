@@ -1,25 +1,20 @@
 import React from 'react';
 import {FloatingActionButton, FontIcon} from "material-ui";
 import {subscribe, taskCommandLogTopic} from "../rtu/ConnectionManager";
+import Logs from "./Logs";
 
 
 class TaskCommandLogs extends React.Component {
   constructor() {
     super();
     this.subscriptionClosable = null;
-    this.state = {logLines: [], logTail: ""};
+    this.logs = <Logs/>;
   }
 
   componentDidMount() {
     let logTopic = taskCommandLogTopic(this.props.taskId, this.props.command.name);
     this.subscriptionClosable = subscribe(logTopic, (newLogs) => {
-      let currentLogsToAppend = this.state.logTail + newLogs;
-      let newLogLines = currentLogsToAppend.split("\n");
-      let newLogTail = newLogLines.pop();
-      this.setState({
-        logLines: this.state.logLines.concat(newLogLines),
-        logTail: newLogTail
-      })
+      this.logs.appendLogs(newLogs)
     })
   }
 
@@ -31,15 +26,9 @@ class TaskCommandLogs extends React.Component {
 
   render() {
     let command = this.props.command;
-    let logLines = this.state.logLines;
     return (
       <div>
-        <div>
-          {
-            logLines.map((line, index) => <p key={index}>{line}</p>)
-          }
-          <p>{this.state.logTail}</p>
-        </div>
+        {this.logs}
         <FloatingActionButton mini={true}
                               href={this.logURL(command) }>
           <FontIcon className="material-icons">get_app</FontIcon>

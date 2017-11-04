@@ -13,7 +13,7 @@ import TaskList from './TaskList';
 import NotificationList from "./NotificationList";
 import {formatDuration} from "../utils/time";
 
-class ViewerBuildList extends React.Component {
+class BuildDetails extends React.Component {
   static contextTypes = {
     router: PropTypes.object,
   };
@@ -86,7 +86,7 @@ class ViewerBuildList extends React.Component {
   }
 }
 
-export default createFragmentContainer(withRouter(ViewerBuildList), {
+export default createFragmentContainer(withRouter(BuildDetails), {
   build: graphql`
     fragment BuildDetails_build on Build {
       id

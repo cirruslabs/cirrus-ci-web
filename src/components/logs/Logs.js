@@ -21,11 +21,27 @@ class Logs extends React.Component {
   }
 
   render() {
+    let styles = {
+      logContainer: {
+        overflowY: "scroll",
+        backgroundColor: "#212121",
+        minHeight: "50px",
+        maxHeight: "500px",
+      },
+      logLine: {
+        color: "#FAFAFA",
+        fontFamily: "Monaco,monospace",
+        fontSize: "12px",
+        lineHeight: "19px",
+        paddingLeft: "7px",
+      },
+    };
+
     let logLines = this.state.logLines;
     return (
-      <div>
+      <div style={styles.logContainer}>
         {
-          logLines.map((line, index) => <p key={index}>{line}</p>)
+          logLines.map((line, index) => <p key={index} style={styles.logLine}>{line}</p>)
         }
         <p>{this.state.logTail}</p>
       </div>

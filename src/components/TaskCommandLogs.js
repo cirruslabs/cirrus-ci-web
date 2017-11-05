@@ -1,8 +1,14 @@
 import React from 'react';
-import {FloatingActionButton, FontIcon} from "material-ui";
+import {FontIcon, RaisedButton} from "material-ui";
 import {subscribe, taskCommandLogTopic} from "../rtu/ConnectionManager";
 import Logs from "./logs/Logs";
+import {graphql, QueryRenderer} from "react-relay";
+import environment from "../createRelayEnvironment";
+import CirrusLinearProgress from "./CirrusLinearProgress";
 
+function logURL(taskId, command) {
+  return "http://api.cirrus-ci.org/v1/task/" + taskId + "/logs/" + command.name + ".log";
+}
 
 class TaskCommandRealTimeLogs extends React.Component {
   constructor() {
@@ -25,28 +31,59 @@ class TaskCommandRealTimeLogs extends React.Component {
   }
 
   render() {
-    let command = this.props.command;
-    return (
-      <div>
-        {this.logs}
-        <FloatingActionButton mini={true}
-                              href={this.logURL(command) }>
-          <FontIcon className="material-icons">get_app</FontIcon>
-        </FloatingActionButton>
-      </div>
-    );
-  }
-
-  logURL(command) {
-    return "http://api.cirrus-ci.org/v1/task/" + this.props.taskId + "/logs/" + command.name + ".log";
+    return this.logs;
   }
 }
+
+const TaskCommandFileLogs = (props) => {
+  let styles = {
+    gap: {
+      paddingTop: 16
+    },
+  };
+  let command = props.command;
+  return (
+    <div>
+      <TaskCommandLogsTail taskId={props.taskId} commandName={command.name}/>
+      <div style={styles.gap}/>
+      <RaisedButton
+        href={logURL(props.taskId, command)}
+        target="_blank"
+        label="Download Full Logs"
+        icon={<FontIcon className="material-icons">get_app</FontIcon>}
+      />
+    </div>
+  );
+};
+
+const TaskCommandLogsTail = (props) => (
+  <QueryRenderer
+    environment={environment}
+    variables={props}
+    query={
+      graphql`
+        query TaskCommandLogsTailQuery($taskId: ID!, $commandName: String!) {
+          task(id: $taskId) {
+            commandLogsTail(name: $commandName)
+          }
+        }
+      `
+    }
+
+    render={({error, props}) => {
+      if (!props) {
+        return <CirrusLinearProgress/>
+      }
+      return <Logs logLines={props.task.commandLogsTail}/>
+    }}
+  />
+);
 
 export default function (props) {
   let command = props.command;
   if (command.status === 'SUCCESS' || command.status === 'FAILURE') {
-    return <TaskCommandRealTimeLogs command={command}/>
+    return <TaskCommandFileLogs {...props}/>
   } else {
-    return null
+    return <TaskCommandRealTimeLogs {...props}/>
   }
 }

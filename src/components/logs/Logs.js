@@ -1,10 +1,13 @@
 import React from 'react';
 
 class Logs extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.subscriptionClosable = null;
-    this.state = {logLines: [], logTail: ""};
+    this.state = {
+      logLines: props.logLines || [],
+      logTail: ""
+    };
   }
 
   appendLogs(newLogs) {
@@ -18,7 +21,6 @@ class Logs extends React.Component {
   }
 
   render() {
-    let command = this.props.command;
     let logLines = this.state.logLines;
     return (
       <div>

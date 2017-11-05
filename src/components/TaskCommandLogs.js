@@ -14,13 +14,15 @@ class TaskCommandRealTimeLogs extends React.Component {
   constructor() {
     super();
     this.subscriptionClosable = null;
-    this.logs = <Logs/>;
+    this.logs = null;
   }
 
   componentDidMount() {
     let logTopic = taskCommandLogTopic(this.props.taskId, this.props.command.name);
     this.subscriptionClosable = subscribe(logTopic, (newLogs) => {
-      this.logs.appendLogs(newLogs)
+      if (this.logs) {
+        this.logs.appendLogs(newLogs)
+      }
     })
   }
 
@@ -31,7 +33,13 @@ class TaskCommandRealTimeLogs extends React.Component {
   }
 
   render() {
-    return this.logs;
+    let inProgress = this.props.command.status === "UNDEFINED";
+    return (
+      <div>
+        <Logs ref={(component) => { this.logs = component; }} />
+        {inProgress ? <CirrusLinearProgress/> : null}
+      </div>
+    );
   }
 }
 

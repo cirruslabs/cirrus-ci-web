@@ -10,6 +10,10 @@ function logURL(taskId, command) {
   return "http://api.cirrus-ci.org/v1/task/" + taskId + "/logs/" + command.name + ".log";
 }
 
+function hasCommandFinished(command) {
+  return command.status === 'SUCCESS' || command.status === 'FAILURE'
+}
+
 class TaskCommandRealTimeLogs extends React.Component {
   constructor() {
     super();
@@ -33,7 +37,7 @@ class TaskCommandRealTimeLogs extends React.Component {
   }
 
   render() {
-    let inProgress = this.props.command.status === "UNDEFINED";
+    let inProgress = !hasCommandFinished(this.props.command);
     return (
       <div>
         <Logs ref={(component) => { this.logs = component; }} />
@@ -87,11 +91,22 @@ const TaskCommandLogsTail = (props) => (
   />
 );
 
-export default function (props) {
-  let command = props.command;
-  if (command.status === 'SUCCESS' || command.status === 'FAILURE') {
-    return <TaskCommandFileLogs {...props}/>
-  } else {
-    return <TaskCommandRealTimeLogs {...props}/>
+class TaskCommandLogs extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      initiallyRealTime: !hasCommandFinished(props.command)
+    };
+  }
+
+  render() {
+    if (hasCommandFinished(this.props.command) && !this.state.initiallyRealTime) {
+      // if we were initially following logs in real time there is no need to show logs from file
+      return <TaskCommandFileLogs {...this.props}/>
+    } else {
+      return <TaskCommandRealTimeLogs {...this.props}/>
+    }
   }
 }
+
+export default TaskCommandLogs

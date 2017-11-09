@@ -1,4 +1,4 @@
-import {subscribe, taskUpdateTopic} from "./rtu/ConnectionManager";
+import {subscribe, subscribeObjectUpdates, taskUpdateTopic} from "./rtu/ConnectionManager";
 
 const {
     Environment,
@@ -18,7 +18,7 @@ function subscription(
 ) {
   console.log("subscription", variables, operation);
   if (variables['taskID']) {
-    return webSocketSubscription(taskUpdateTopic(variables['taskID']), operation, variables, cacheConfig, config)
+    return webSocketSubscription('TASK', variables['taskID'], operation, variables, cacheConfig, config)
   } else {
     return pollingSubscription(operation, variables, cacheConfig, config)
   }
@@ -47,7 +47,8 @@ function pollingSubscription(
 }
 
 function webSocketSubscription(
-  topic,
+  kind,
+  id,
   operation,
   variables,
   cacheConfig,
@@ -55,7 +56,7 @@ function webSocketSubscription(
 ) {
   let {onError, onNext} = config;
 
-  let dispose = subscribe(topic, () => {
+  let dispose = subscribeObjectUpdates(kind, id, () => {
     fetchQuery(operation, variables).then(response => {
       if (process.env.NODE_ENV === 'development') {
         console.log(response);

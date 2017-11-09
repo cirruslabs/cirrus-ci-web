@@ -1,10 +1,10 @@
 import React from 'react';
 import {FontIcon, RaisedButton} from "material-ui";
-import {subscribe, taskCommandLogTopic} from "../rtu/ConnectionManager";
 import Logs from "./logs/Logs";
 import {graphql, QueryRenderer} from "react-relay";
 import environment from "../createRelayEnvironment";
 import CirrusLinearProgress from "./CirrusLinearProgress";
+import {subscribeTaskCommandLogs} from "../rtu/ConnectionManager";
 
 function logURL(taskId, command) {
   return "http://api.cirrus-ci.org/v1/task/" + taskId + "/logs/" + command.name + ".log";
@@ -22,8 +22,7 @@ class TaskCommandRealTimeLogs extends React.Component {
   }
 
   componentDidMount() {
-    let logTopic = taskCommandLogTopic(this.props.taskId, this.props.command.name);
-    this.subscriptionClosable = subscribe(logTopic, (newLogs) => {
+    this.subscriptionClosable = subscribeTaskCommandLogs(this.props.taskId, this.props.command.name, (newLogs) => {
       if (this.logs) {
         this.logs.appendLogs(newLogs)
       }

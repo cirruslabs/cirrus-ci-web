@@ -24,6 +24,7 @@ class TaskCommandList extends React.Component {
     let headerStyle = {
       backgroundColor: commandStatusColor(command.status)
     };
+    let expandable = command.status === 'FAILURE' || command.status === 'SUCCESS' || command.status === 'EXECUTING';
     return (
       <Card key={command.name}
             style={{borderRadius: 0}}
@@ -32,8 +33,8 @@ class TaskCommandList extends React.Component {
           title={command.name}
           subtitle={command.durationInSeconds + " seconds"}
           style={headerStyle}
-          actAsExpander={true}
-          showExpandableButton={true}
+          actAsExpander={expandable}
+          showExpandableButton={expandable}
         />
         <CardText expandable={true}>
           <TaskCommandLogs taskId={this.props.taskId} command={command}/>

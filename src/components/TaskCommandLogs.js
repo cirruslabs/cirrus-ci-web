@@ -14,6 +14,10 @@ function hasCommandFinished(command) {
   return command.status === 'SUCCESS' || command.status === 'FAILURE'
 }
 
+function isCommandRunning(command) {
+  return command.status === 'EXECUTING'
+}
+
 class TaskCommandRealTimeLogs extends React.Component {
   constructor() {
     super();
@@ -102,9 +106,10 @@ class TaskCommandLogs extends React.Component {
     if (hasCommandFinished(this.props.command) && !this.state.initiallyRealTime) {
       // if we were initially following logs in real time there is no need to show logs from file
       return <TaskCommandFileLogs {...this.props}/>
-    } else {
+    } else if (isCommandRunning(this.props.command)) {
       return <TaskCommandRealTimeLogs {...this.props}/>
     }
+    return null
   }
 }
 

@@ -1,4 +1,5 @@
 import {cirrusColors} from './../cirrusTheme'
+import {lightGreen100} from "material-ui/styles/colors";
 
 export function buildStatusColor(status) {
   switch (status) {
@@ -40,6 +41,10 @@ export function commandStatusColor(status) {
       return cirrusColors.lightSuccess;
     case 'FAILURE':
       return cirrusColors.lightFailure;
+    case 'ABORTED':
+      return cirrusColors.aborted;
+    case 'SKIPPED':
+      return cirrusColors.skipped;
     default:
       return cirrusColors.undefined;
   }

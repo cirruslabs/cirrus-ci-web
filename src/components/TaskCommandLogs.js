@@ -5,6 +5,7 @@ import {graphql, QueryRenderer} from "react-relay";
 import environment from "../createRelayEnvironment";
 import CirrusLinearProgress from "./CirrusLinearProgress";
 import {subscribeTaskCommandLogs} from "../rtu/ConnectionManager";
+import CirrusCircularProgress from "./CirrusCircularProgress";
 
 function logURL(taskId, command) {
   return "http://api.cirrus-ci.org/v1/task/" + taskId + "/logs/" + command.name + ".log";
@@ -87,7 +88,13 @@ const TaskCommandLogsTail = (props) => (
 
     render={({error, props}) => {
       if (!props) {
-        return <CirrusLinearProgress/>
+        return (
+          <div style={{width: "100%"}}>
+            <div className="text-center">
+              <CirrusCircularProgress/>
+            </div>
+          </div>
+        );
       }
       return <Logs logLines={props.task.commandLogsTail}/>
     }}

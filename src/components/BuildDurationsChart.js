@@ -3,19 +3,14 @@ import {BarChart, Bar, Rectangle, ResponsiveContainer} from 'recharts';
 import {buildStatusColor} from "../utils/colors";
 
 export default class BuildDurationsChart extends React.Component {
-  constructor(props) {
-    super();
-    this.renderBuildBar = this.renderBuildBar.bind(this);
-  }
-
   render() {
     let {builds, selectedBuildId, onSelectBuildId} = this.props;
     return (
       <ResponsiveContainer height='100%' width='100%'>
         <BarChart data={builds}>
           <Bar dataKey='durationInSeconds'
-               shape={(props) => this.renderBuildBar(props, selectedBuildId)}
-               animationId={Number(selectedBuildId)}
+               isAnimationActive={false}
+               shape={(props) => BuildDurationsChart.renderBuildBar(props, selectedBuildId)}
                onMouseEnter={(entry) => onSelectBuildId(entry.id)}
                onMouseLeave={() => onSelectBuildId("0")}/>
         </BarChart>
@@ -23,7 +18,7 @@ export default class BuildDurationsChart extends React.Component {
     );
   }
 
-  renderBuildBar(props, selectedBuildId) {
+  static renderBuildBar(props, selectedBuildId) {
     if (props.id === selectedBuildId) {
       const { x, y, width, height, ...others } = props;
       const sign = height >= 0 ? 1 : -1;

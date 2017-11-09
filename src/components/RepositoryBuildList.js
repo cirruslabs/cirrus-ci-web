@@ -60,6 +60,18 @@ class RepositoryBuildList extends React.Component {
       );
     }
 
+    let buildsChart = null;
+
+    if (this.props.branch) {
+      buildsChart = (
+        <Paper zDepth={1} rounded={false} style={styles.buildsChart}>
+          <BuildDurationsChart builds={builds.slice().reverse()}
+                               selectedBuildId={this.state.selectedBuildId}
+                               onSelectBuildId={(buildId) => this.setState({selectedBuildId: buildId})}/>
+        </Paper>
+      );
+    }
+
     return (
       <div style={styles.main} className="container">
         <Paper zDepth={1} rounded={false}>
@@ -70,11 +82,7 @@ class RepositoryBuildList extends React.Component {
             {repositorySettings}
           </Toolbar>
         </Paper>
-        <Paper zDepth={1} rounded={false} style={styles.buildsChart}>
-          <BuildDurationsChart builds={builds.slice().reverse()}
-                               selectedBuildId={this.state.selectedBuildId}
-                               onSelectBuildId={(buildId) => this.setState({selectedBuildId: buildId})}/>
-        </Paper>
+        {buildsChart}
         <div style={styles.gap}/>
         <Paper zDepth={1} rounded={false}>
           <Table selectable={false} style={{tableLayout: 'auto'}}>

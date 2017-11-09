@@ -6,8 +6,9 @@ import environment from '../../createRelayEnvironment';
 import RepositoryBuildList from '../../components/RepositoryBuildList'
 import CirrusLinearProgress from "../../components/CirrusLinearProgress";
 
-const Repository = (props) => (
-  <QueryRenderer
+const Repository = (props) => {
+  let branch = props.match.params.branch;
+  return <QueryRenderer
     environment={environment}
     variables={props.match.params}
     query={
@@ -27,9 +28,9 @@ const Repository = (props) => (
       if (!props.githubRepository) {
         return <p>Not found</p>
       }
-      return <RepositoryBuildList repository={props.githubRepository}/>
+      return <RepositoryBuildList repository={props.githubRepository} branch={branch}/>
     }}
   />
-);
+};
 
 export default Repository;

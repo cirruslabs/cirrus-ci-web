@@ -1,9 +1,11 @@
 export function formatDuration(durationInSeconds) {
   let formatSinglePart = (value) => value < 10 ? "0" + value : value.toString();
-  let secondsTotal = durationInSeconds || 0;
-  let seconds = Math.floor(secondsTotal % 60);
-  let minutes = Math.floor(secondsTotal / 60);
-  let hours = Math.floor(minutes / 60);
+  let duration = durationInSeconds || 0;
+  let seconds = Math.floor(duration % 60);
+  duration /= 60;
+  let minutes = Math.floor(duration % 60);
+  duration /= 60;
+  let hours = Math.floor(duration % 60);
   if (hours === 0) {
     return formatSinglePart(minutes) + ":" + formatSinglePart(seconds)
   }

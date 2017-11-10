@@ -32,8 +32,8 @@ class Logs extends React.Component {
         color: "#FAFAFA",
         fontFamily: "Monaco,monospace",
         fontSize: "12px",
-        lineHeight: "19px",
         paddingLeft: "7px",
+        margin: 0
       },
     };
 

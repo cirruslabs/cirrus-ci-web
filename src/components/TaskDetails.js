@@ -16,6 +16,7 @@ import BuildBranchNameChip from "./chips/BuildBranchNameChip";
 import TaskNameChip from "./chips/TaskNameChip";
 import BuildChangeChip from "./chips/BuildChangeChip";
 import RepositoryNameChip from "./chips/RepositoryNameChip";
+import TaskStatusChip from "./chips/TaskStatusChip";
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskInput!) {
@@ -37,6 +38,7 @@ const taskSubscription = graphql`
       status
       labels
       creationTimestamp
+      durationInSeconds
       statusDurations {
         status
         durationInSeconds
@@ -123,10 +125,11 @@ class ViewerTaskList extends React.Component {
         <Paper zDepth={2} rounded={false}>
           <div className="card-block">
             <h4 className="card-title text-middle" style={styles.wrapper}>
-              <RepositoryNameChip style={styles.chip} repository={repository} />
+              <RepositoryNameChip style={styles.chip} repository={repository}/>
               <BuildBranchNameChip style={styles.chip} build={build}/>
               <BuildChangeChip style={styles.chip} build={build}/>
               <TaskNameChip style={styles.chip} task={task}/>
+              <TaskStatusChip style={styles.chip} task={task}/>
             </h4>
             <TaskCommandsProgress task={task}/>
             <div style={styles.gap}>
@@ -206,12 +209,12 @@ class TaskCommandsProgress extends React.Component {
       }
       bars.push(
         <div className="progress-bar"
-                  role="progressbar"
-                  key={statusDuration.status}
-                  style={{width: percent + '%', backgroundColor: taskStatusColor(statusDuration.status)}}
-                  aria-valuenow={percent}
-                  aria-valuemin="0"
-                  aria-valuemax="100">{percent > 10 ? statusDuration.status : ""}</div>
+             role="progressbar"
+             key={statusDuration.status}
+             style={{width: percent + '%', backgroundColor: taskStatusColor(statusDuration.status)}}
+             aria-valuenow={percent}
+             aria-valuemin="0"
+             aria-valuemax="100">{percent > 10 ? statusDuration.status : ""}</div>
       )
     }
 
@@ -231,6 +234,7 @@ export default createFragmentContainer(withRouter(ViewerTaskList), {
       status
       labels
       creationTimestamp
+      durationInSeconds
       statusDurations {
         status
         durationInSeconds

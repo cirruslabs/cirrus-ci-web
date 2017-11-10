@@ -72,3 +72,26 @@ export function buildStatusMessage(build) {
       return build.status;
   }
 }
+
+export function taskStatusMessage(task) {
+  switch (task.status) {
+    case "CREATED":
+      return 'Created';
+    case "TRIGGERED":
+      return 'Triggered';
+    case "SCHEDULED":
+      return 'Scheduled';
+    case "EXECUTING":
+      return 'Executing';
+    case "ABORTED":
+      return 'Aborted';
+    case "COMPLETED":
+      return 'Finished in ' + formatDuration(task.durationInSeconds);
+    case "FAILED":
+      return 'Failed in ' + formatDuration(task.durationInSeconds);
+    case "SKIPPED":
+      return 'Skipped';
+    default:
+      return task.status;
+  }
+}

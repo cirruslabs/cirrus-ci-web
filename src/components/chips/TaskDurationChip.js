@@ -5,6 +5,7 @@ import Chip from 'material-ui/Chip';
 import FontIcon from 'material-ui/FontIcon';
 import {taskStatusColor} from "../../utils/colors";
 import {formatDuration} from "../../utils/time";
+import {taskStatusIconName} from "../../utils/status";
 
 class TaskDurationChip extends React.Component {
   render() {
@@ -17,7 +18,7 @@ class TaskDurationChip extends React.Component {
     return (
       <Chip style={this.props.style}>
         <Avatar backgroundColor={taskStatusColor(task.status)}
-                icon={<FontIcon className="material-icons">query_builder</FontIcon>}/>
+                icon={<FontIcon className="material-icons">{taskStatusIconName(task.status)}</FontIcon>}/>
         {formatDuration(durationInSeconds)}
       </Chip>
     );

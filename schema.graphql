@@ -153,6 +153,7 @@ type Root {
 
 type Subscription {
   task(id: ID!): Task
+  build(id: ID!): Build
 }
 
 type Task {

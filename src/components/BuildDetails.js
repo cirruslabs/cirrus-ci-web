@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {
   createFragmentContainer,
-  graphql,
+  graphql, requestSubscription,
 } from 'react-relay';
 import {withRouter} from 'react-router-dom'
 import IconButton from 'material-ui/IconButton';
@@ -12,11 +12,49 @@ import ReactMarkdown from 'react-markdown';
 import TaskList from './TaskList';
 import NotificationList from "./NotificationList";
 import {formatDuration} from "../utils/time";
+import environment from "../createRelayEnvironment";
+
+
+const buildSubscription = graphql`
+  subscription BuildDetailsSubscription(
+    $buildID: ID!
+  ) {
+    build(id: $buildID) {      
+      id
+      durationInSeconds
+      status
+      notifications {
+        level
+        message
+      }
+    }
+  }
+`;
 
 class BuildDetails extends React.Component {
   static contextTypes = {
     router: PropTypes.object,
   };
+
+  componentDidMount() {
+    let variables = {buildID: this.props.build.id};
+
+    this.subscription = requestSubscription(
+      environment,
+      {
+        subscription: buildSubscription,
+        variables: variables
+      }
+    );
+  }
+
+  componentWillUnmount() {
+    this.closeSubscription();
+  }
+
+  closeSubscription() {
+    this.subscription && this.subscription.dispose && this.subscription.dispose()
+  }
 
   render() {
     let build = this.props.build;

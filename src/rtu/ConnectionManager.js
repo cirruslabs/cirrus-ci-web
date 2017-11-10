@@ -34,7 +34,8 @@ export function subscribeObjectUpdates(kind, id, handler) {
     id: id,
   });
   ws.send(request);
-  return handlersManager.addRequestHandler(request, handler)
+  let topic = kind + '-update-'+id;
+  return handlersManager.addTopicHandler(topic.toLowerCase(), handler)
 }
 
 export function subscribeTaskCommandLogs(taskId, command, handler) {
@@ -44,5 +45,6 @@ export function subscribeTaskCommandLogs(taskId, command, handler) {
     command: command,
   });
   ws.send(request);
-  return handlersManager.addRequestHandler(request, handler)
+  let topic = 'task-log-' + taskId + '-' + command;
+  return handlersManager.addTopicHandler(topic, handler)
 }

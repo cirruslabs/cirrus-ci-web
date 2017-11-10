@@ -19,7 +19,9 @@ function subscription(
   console.log("subscription", variables, operation);
   if (variables['taskID']) {
     return webSocketSubscription('TASK', variables['taskID'], operation, variables, cacheConfig, config)
-  } else {
+  } if (variables['buildID']) {
+    return webSocketSubscription('BUILD', variables['buildID'], operation, variables, cacheConfig, config)
+  }  else {
     return pollingSubscription(operation, variables, cacheConfig, config)
   }
 }

@@ -1,29 +1,29 @@
 export class HandlersManager {
   constructor() {
-    this.subscriptionRequests = {}
+    this.topicHandlers = {}
   }
 
   allRequests() {
-    return Object.keys(this.subscriptionRequests)
+    return Object.keys(this.topicHandlers)
   }
 
   handleNewUpdate(topic, data) {
-    let topicHandlers = this.subscriptionRequests[topic];
+    let topicHandlers = this.topicHandlers[topic];
     if (topicHandlers) {
       topicHandlers.callAllHandlers(data)
     }
   }
 
-  addRequestHandler(request, handler) {
-    let handlers = this.subscriptionRequests[request];
+  addTopicHandler(topic, handler) {
+    let handlers = this.topicHandlers[topic];
     if (handlers === undefined) {
-      handlers = this.subscriptionRequests[request] = new RequestHandlers();
+      handlers = this.topicHandlers[topic] = new TopicHandlers();
     }
     return handlers.addHandler(handler)
   }
 }
 
-class RequestHandlers {
+class TopicHandlers {
   constructor() {
     this.handlersMap = {};
     this.idGenerator = 0;

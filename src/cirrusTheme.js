@@ -25,7 +25,7 @@ let cirrusColors = {
   lightFailure: red300,
   undefined: grey400,
   skipped: lightGreen100,
-  aborted: orange100
+  aborted: orange300
 };
 
 /**

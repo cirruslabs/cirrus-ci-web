@@ -101,25 +101,6 @@ class ViewerTaskList extends React.Component {
         <NotificationList notifications={task.notifications}/>
       </div>;
 
-    let totalDuration = task.statusDurations.reduce(
-      function(sum, statusDuration) { return sum + statusDuration.durationInSeconds },
-      0
-    );
-    let taskProgress =  (
-      <div className="progress">
-        {task.statusDurations.map(statusDuration => {
-          let percent = 100 * statusDuration.durationInSeconds / totalDuration;
-          return <div className="progress-bar"
-                      role="progressbar"
-                      key={statusDuration.status}
-                      style={{width: percent + '%', backgroundColor: taskStatusColor(statusDuration.status)}}
-                      aria-valuenow={percent}
-                      aria-valuemin="0"
-                      aria-valuemax="100">{percent > 10 ? statusDuration.status : ""}</div>
-        })}
-      </div>
-    );
-
     return (
       <div style={styles.main} className="container">
         <Paper zDepth={2} rounded={false}>
@@ -130,7 +111,7 @@ class ViewerTaskList extends React.Component {
               <BuildChangeChip style={styles.chip} build={build}/>
               <TaskNameChip style={styles.chip} task={task}/>
             </h4>
-            {taskProgress}
+            <TaskCommandsProgress task={task}/>
             <div style={styles.gap}>
               <ReactMarkdown className="card-text" source={build.changeMessage}/>
             </div>
@@ -181,6 +162,50 @@ class ViewerTaskList extends React.Component {
   }
 }
 
+class TaskCommandsProgress extends React.Component {
+  render() {
+    let task = this.props.task;
+    let totalDuration = task.statusDurations.reduce(
+      (sum, statusDuration) => sum + statusDuration.durationInSeconds,
+      0
+    );
+    if (!isTaskFinalStatus(task.status)) {
+      totalDuration = (Date.now() - task.creationTimestamp) / 1000;
+      setTimeout(() => this.forceUpdate(), 1000);
+    }
+
+    let bars = [];
+
+    let totalPercent = 0;
+    for (let i = 0; i < task.statusDurations.length; ++i) {
+      let statusDuration = task.statusDurations[i];
+      let isLastBar = i === task.statusDurations.length - 1;
+
+      let percent = 100 * statusDuration.durationInSeconds / totalDuration;
+      if (isLastBar) {
+        percent = 100 - totalPercent;
+      } else {
+        totalPercent += percent;
+      }
+      bars.push(
+        <div className="progress-bar"
+                  role="progressbar"
+                  key={statusDuration.status}
+                  style={{width: percent + '%', backgroundColor: taskStatusColor(statusDuration.status)}}
+                  aria-valuenow={percent}
+                  aria-valuemin="0"
+                  aria-valuemax="100">{percent > 10 ? statusDuration.status : ""}</div>
+      )
+    }
+
+    return (
+      <div className="progress">
+        {bars}
+      </div>
+    );
+  }
+}
+
 export default createFragmentContainer(withRouter(ViewerTaskList), {
   task: graphql`
     fragment TaskDetails_task on Task {
@@ -188,6 +213,7 @@ export default createFragmentContainer(withRouter(ViewerTaskList), {
       name
       status
       labels
+      creationTimestamp
       statusDurations {
         status
         durationInSeconds

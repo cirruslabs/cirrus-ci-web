@@ -6,13 +6,22 @@ import FontIcon from 'material-ui/FontIcon';
 import {taskStatusColor} from "../../utils/colors";
 import {formatDuration} from "../../utils/time";
 
-export default function (props) {
-  let task = props.task;
-  return (
-    <Chip style={props.style}>
-      <Avatar backgroundColor={taskStatusColor(task.status)}
-              icon={<FontIcon className="material-icons">query_builder</FontIcon>}/>
-      {formatDuration(task.durationInSeconds)}
-    </Chip>
-  );
+class TaskDurationChip extends React.Component {
+  render() {
+    let task = this.props.task;
+    let durationInSeconds = task.durationInSeconds;
+    if (task.status === "EXECUTING") {
+      durationInSeconds = (Date.now() - task.creationTimestamp) / 1000;
+      setTimeout(() => this.forceUpdate(), 1000);
+    }
+    return (
+      <Chip style={this.props.style}>
+        <Avatar backgroundColor={taskStatusColor(task.status)}
+                icon={<FontIcon className="material-icons">query_builder</FontIcon>}/>
+        {formatDuration(durationInSeconds)}
+      </Chip>
+    );
+  }
 }
+
+export default TaskDurationChip

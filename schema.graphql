@@ -164,6 +164,7 @@ type Task {
   notifications: [Notification]
   commands: [TaskCommand]
   commandLogsTail(name: String!): [String]
+  creationTimestamp: Long!
   durationInSeconds: Long!
   labels: [String]
   statusDurations: [TaskStatusDuration]

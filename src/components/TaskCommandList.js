@@ -5,6 +5,7 @@ import {withRouter} from 'react-router-dom'
 import {Card, CardHeader, CardText} from 'material-ui/Card';
 import {commandStatusColor} from "../utils/colors";
 import TaskCommandLogs from "./TaskCommandLogs";
+import {formatDuration} from "../utils/time";
 
 class TaskCommandList extends React.Component {
   static contextTypes = {
@@ -24,14 +25,15 @@ class TaskCommandList extends React.Component {
     let headerStyle = {
       backgroundColor: commandStatusColor(command.status)
     };
-    let expandable = command.status === 'FAILURE' || command.status === 'SUCCESS' || command.status === 'EXECUTING';
+    let finished = command.status === 'FAILURE' || command.status === 'SUCCESS';
+    let expandable = finished || command.status === 'EXECUTING';
     return (
       <Card key={command.name}
             style={{borderRadius: 0}}
             initiallyExpanded={command.status === 'FAILURE'}>
         <CardHeader
           title={command.name}
-          subtitle={command.durationInSeconds + " seconds"}
+          subtitle={finished ? formatDuration(command.durationInSeconds) : ""}
           style={headerStyle}
           actAsExpander={expandable}
           showExpandableButton={expandable}

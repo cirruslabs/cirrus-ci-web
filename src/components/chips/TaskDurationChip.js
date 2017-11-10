@@ -5,13 +5,13 @@ import Chip from 'material-ui/Chip';
 import FontIcon from 'material-ui/FontIcon';
 import {taskStatusColor} from "../../utils/colors";
 import {formatDuration} from "../../utils/time";
-import {taskStatusIconName} from "../../utils/status";
+import {isTaskFinalStatus, taskStatusIconName} from "../../utils/status";
 
 class TaskDurationChip extends React.Component {
   render() {
     let task = this.props.task;
     let durationInSeconds = task.durationInSeconds;
-    if (task.status === "EXECUTING") {
+    if (!isTaskFinalStatus(task.status)) {
       durationInSeconds = (Date.now() - task.creationTimestamp) / 1000;
       setTimeout(() => this.forceUpdate(), 1000);
     }

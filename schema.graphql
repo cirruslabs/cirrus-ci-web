@@ -185,6 +185,7 @@ enum TaskCommandStatus {
   FAILURE
   EXECUTING
   SKIPPED
+  ABORTED
 }
 
 input TaskInput {

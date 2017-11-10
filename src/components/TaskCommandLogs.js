@@ -6,13 +6,10 @@ import environment from "../createRelayEnvironment";
 import CirrusLinearProgress from "./CirrusLinearProgress";
 import {subscribeTaskCommandLogs} from "../rtu/ConnectionManager";
 import CirrusCircularProgress from "./CirrusCircularProgress";
+import {isTaskCommandFinalStatus} from "../utils/status";
 
 function logURL(taskId, command) {
   return "http://api.cirrus-ci.org/v1/task/" + taskId + "/logs/" + command.name + ".log";
-}
-
-function hasCommandFinished(command) {
-  return command.status === 'SUCCESS' || command.status === 'FAILURE'
 }
 
 function isCommandRunning(command) {
@@ -41,7 +38,7 @@ class TaskCommandRealTimeLogs extends React.Component {
   }
 
   render() {
-    let inProgress = !hasCommandFinished(this.props.command);
+    let inProgress = !isTaskCommandFinalStatus(this.props.command.status);
     return (
       <div>
         <Logs ref={(component) => { this.logs = component; }} />
@@ -105,12 +102,12 @@ class TaskCommandLogs extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      initiallyRealTime: !hasCommandFinished(props.command)
+      initiallyRealTime: !isTaskCommandFinalStatus(props.command.status)
     };
   }
 
   render() {
-    if (hasCommandFinished(this.props.command) && !this.state.initiallyRealTime) {
+    if (isTaskCommandFinalStatus(this.props.command.status) && !this.state.initiallyRealTime) {
       // if we were initially following logs in real time there is no need to show logs from file
       return <TaskCommandFileLogs {...this.props}/>
     } else if (isCommandRunning(this.props.command)) {

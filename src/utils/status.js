@@ -13,6 +13,19 @@ export function isTaskFinalStatus(status) {
   }
 }
 
+export function isTaskCommandFinalStatus(status) {
+  switch (status) {
+    case "ABORTED":
+      return true;
+    case "COMPLETED":
+      return true;
+    case "FAILED":
+      return true;
+    default:
+      return false;
+  }
+}
+
 export function taskStatusIconName(status) {
   switch (status) {
     case "CREATED":

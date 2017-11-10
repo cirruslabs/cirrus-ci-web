@@ -19,7 +19,7 @@ export function isTaskCommandFinalStatus(status) {
       return true;
     case "SUCCESS":
       return true;
-    case "FAILED":
+    case "FAILURE":
       return true;
     case "SKIPPED":
       return true;

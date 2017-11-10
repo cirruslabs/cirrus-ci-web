@@ -15,7 +15,9 @@ class TaskList extends React.Component {
   render() {
     let styles = {
       chip: {
-        margin: 4,
+        marginLeft: 20,
+        marginTop: 4,
+        marginBottom: 4,
       },
     };
     let tasks = this.props.tasks;

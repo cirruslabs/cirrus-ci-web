@@ -17,9 +17,11 @@ export function isTaskCommandFinalStatus(status) {
   switch (status) {
     case "ABORTED":
       return true;
-    case "COMPLETED":
+    case "SUCCESS":
       return true;
     case "FAILED":
+      return true;
+    case "SKIPPED":
       return true;
     default:
       return false;

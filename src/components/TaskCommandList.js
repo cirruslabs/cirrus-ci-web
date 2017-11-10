@@ -6,6 +6,7 @@ import {Card, CardHeader, CardText} from 'material-ui/Card';
 import {commandStatusColor} from "../utils/colors";
 import TaskCommandLogs from "./TaskCommandLogs";
 import {formatDuration} from "../utils/time";
+import {isTaskCommandFinalStatus} from "../utils/status";
 
 class TaskCommandList extends React.Component {
   static contextTypes = {
@@ -25,7 +26,7 @@ class TaskCommandList extends React.Component {
     let headerStyle = {
       backgroundColor: commandStatusColor(command.status)
     };
-    let finished = command.status === 'FAILURE' || command.status === 'SUCCESS';
+    let finished = isTaskCommandFinalStatus(command.status);
     let expandable = finished || command.status === 'EXECUTING';
     return (
       <Card key={command.name}

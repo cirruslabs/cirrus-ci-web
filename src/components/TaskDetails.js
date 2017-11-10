@@ -151,7 +151,7 @@ class ViewerTaskList extends React.Component {
         {notificationsComponent}
         <div style={styles.gap}/>
         <Paper zDepth={2} rounded={false}>
-          <TaskCommandList taskId={task.id} commands={task.commands}/>
+          <TaskCommandList task={task} commands={task.commands}/>
         </Paper>
       </div>
     );

@@ -110,7 +110,8 @@ class TaskCommandLogs extends React.Component {
     if (isTaskCommandFinalStatus(this.props.command.status) && !this.state.initiallyRealTime) {
       // if we were initially following logs in real time there is no need to show logs from file
       return <TaskCommandFileLogs {...this.props}/>
-    } else if (isCommandRunning(this.props.command)) {
+    }
+    if (isCommandRunning(this.props.command) || this.state.initiallyRealTime) {
       return <TaskCommandRealTimeLogs {...this.props}/>
     }
     return null

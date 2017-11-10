@@ -6,7 +6,7 @@ import {Card, CardHeader, CardText} from 'material-ui/Card';
 import {commandStatusColor} from "../utils/colors";
 import TaskCommandLogs from "./TaskCommandLogs";
 import {formatDuration} from "../utils/time";
-import {isTaskCommandFinalStatus} from "../utils/status";
+import {isTaskCommandFinalStatus, isTaskFinalStatus} from "../utils/status";
 
 class TaskCommandList extends React.Component {
   static contextTypes = {
@@ -27,7 +27,7 @@ class TaskCommandList extends React.Component {
       backgroundColor: commandStatusColor(command.status)
     };
     let finished = isTaskCommandFinalStatus(command.status);
-    let expandable = finished || command.status === 'EXECUTING';
+    let expandable = !isTaskFinalStatus(this.props.task.status);
     return (
       <Card key={command.name}
             style={{borderRadius: 0}}
@@ -40,7 +40,7 @@ class TaskCommandList extends React.Component {
           showExpandableButton={expandable}
         />
         <CardText expandable={true}>
-          <TaskCommandLogs taskId={this.props.taskId} command={command}/>
+          <TaskCommandLogs taskId={this.props.task.id} command={command}/>
         </CardText>
       </Card>
     );

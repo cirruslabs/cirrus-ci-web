@@ -1,18 +1,16 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {
-  createFragmentContainer,
-  graphql, requestSubscription,
-} from 'react-relay';
+import {createFragmentContainer, graphql, requestSubscription,} from 'react-relay';
 import {withRouter} from 'react-router-dom'
-import IconButton from 'material-ui/IconButton';
 import Paper from 'material-ui/Paper';
 import ReactMarkdown from 'react-markdown';
 
 import TaskList from './TaskList';
 import NotificationList from "./NotificationList";
-import {formatDuration} from "../utils/time";
 import environment from "../createRelayEnvironment";
+import BuildStatusChip from "./chips/BuildStatusChip";
+import RepositoryNameChip from "./chips/RepositoryNameChip";
+import {cirrusTheme} from "../cirrusTheme";
 
 
 const buildSubscription = graphql`
@@ -74,27 +72,23 @@ class BuildDetails extends React.Component {
       },
       repoButtonIcon: {
         fontSize: 48
-      }
+      },
+      chip: {
+        marginTop: 4,
+        marginBottom: 4,
+        marginRight: 4,
+      },
+      wrapper: {
+        paddingLeft: 0,
+        display: 'flex',
+        flexWrap: 'wrap',
+      },
     };
-
-    function runSummaryMessage(build) {
-      return build.status + " in " + formatDuration(build.durationInSeconds);
-    }
 
     let repoUrl = build.repository.cloneUrl.slice(0, -4);
     let branchUrl = repoUrl + "/tree/" + build.branch;
     let commitUrl = repoUrl + "/commit/" + build.changeIdInRepo;
 
-    let repoIcon = <IconButton href={repoUrl}
-                               iconClassName="fa fa-github text-middle"
-                               style={styles.repoButton}
-                               iconStyle={styles.repoButtonIcon}
-                               disableTouchRipple={true}
-                               tooltip="Navigate to GitHub"/>;
-    let repoTitle = <a onClick={() => this.context.router.history.push("/repository/" + build.repository.id)}
-                       style={{ cursor: "pointer" }}>{build.repository.owner + "/" + build.repository.name}</a>;
-
-    let tasksComponent = build.tasks ? <TaskList tasks={build.tasks}/> : null;
     let notificationsComponent = !build.notifications ? null :
       <div style={styles.gap}>
         <NotificationList notifications={build.notifications}/>
@@ -104,20 +98,22 @@ class BuildDetails extends React.Component {
       <div style={styles.main} className="container">
         <Paper zDepth={2} rounded={false}>
           <div className="card-block">
-            <h4 className="card-title text-middle" style={styles.title}>
-              {repoIcon} {repoTitle}
-            </h4>
+            <div style={styles.wrapper}>
+              <RepositoryNameChip style={styles.chip} repository={build.repository}/>
+              <BuildStatusChip style={styles.chip} build={build}/>
+            </div>
+            <div style={styles.gap}/>
             <h5 className="card-title align-middle">
-              Commit <a href={commitUrl}>{build.changeIdInRepo.substr(0, 6)}</a> on branch <a href={branchUrl}>{build.branch}</a>
+              Commit <a href={commitUrl}>{build.changeIdInRepo.substr(0, 6)}</a> on branch <a
+              href={branchUrl}>{build.branch}</a>:
             </h5>
-            <h6 className="card-subtitle mb-2 text-muted">{runSummaryMessage(build)}</h6>
             <ReactMarkdown className="card-text" source={build.changeMessage}/>
           </div>
         </Paper>
         {notificationsComponent}
         <div style={styles.gap}/>
         <Paper zDepth={2} rounded={false}>
-          {tasksComponent}
+          <TaskList tasks={build.tasks}/>
         </Paper>
       </div>
     );
@@ -145,6 +141,15 @@ export default createFragmentContainer(withRouter(BuildDetails), {
         creationTimestamp
         durationInSeconds
         labels
+        statusDurations {
+          status
+          durationInSeconds
+        }
+        commands {
+          name
+          status
+          durationInSeconds
+        }
       }
       repository {
         id

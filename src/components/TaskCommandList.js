@@ -27,7 +27,7 @@ class TaskCommandList extends React.Component {
       backgroundColor: commandStatusColor(command.status)
     };
     let finished = isTaskCommandFinalStatus(command.status);
-    let expandable = !isTaskFinalStatus(this.props.task.status);
+    let expandable = finished || !isTaskFinalStatus(this.props.task.status);
     return (
       <Card key={command.name}
             style={{borderRadius: 0}}

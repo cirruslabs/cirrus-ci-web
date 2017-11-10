@@ -32,7 +32,24 @@ const taskSubscription = graphql`
     $taskID: ID!
   ) {
     task(id: $taskID) {
-      ...TaskDetails_task
+      id
+      name
+      status
+      labels
+      creationTimestamp
+      statusDurations {
+        status
+        durationInSeconds
+      }
+      commands {
+        name
+        status
+        durationInSeconds
+      }
+      notifications {
+        level
+        message
+      }
     }
   }
 `;

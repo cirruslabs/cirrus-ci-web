@@ -39,6 +39,8 @@ export function commandStatusColor(status) {
   switch (status) {
     case 'SUCCESS':
       return cirrusColors.lightSuccess;
+    case 'EXECUTING':
+      return cirrusColors.executing;
     case 'FAILURE':
       return cirrusColors.lightFailure;
     case 'ABORTED':

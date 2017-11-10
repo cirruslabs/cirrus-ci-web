@@ -1,9 +1,25 @@
 import {
-  indigo400, indigo600, blue300, blue500,
-  pinkA200, lightGreen500, lightGreen300, lightGreen100,
-  grey100, grey300, grey400, grey500,  grey900,
-  orange100, orange300, orange500, red300, red500,
-  white, darkBlack, fullBlack,
+  blue300,
+  blue500,
+  darkBlack,
+  fullBlack,
+  grey100,
+  grey300,
+  grey400,
+  grey500,
+  grey900,
+  indigo400,
+  indigo600,
+  lightGreen100,
+  lightGreen300,
+  lightGreen500,
+  orange300,
+  orange500,
+  pinkA200,
+  red300,
+  red500,
+  white,
+  yellow300,
 } from 'material-ui/styles/colors';
 import {fade} from 'material-ui/utils/colorManipulator';
 import spacing from 'material-ui/styles/spacing';
@@ -24,6 +40,7 @@ let cirrusColors = {
   failure: red500,
   lightFailure: red300,
   undefined: grey400,
+  executing: yellow300,
   skipped: lightGreen100,
   aborted: orange300
 };

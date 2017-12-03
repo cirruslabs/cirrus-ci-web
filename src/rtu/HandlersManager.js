@@ -1,10 +1,11 @@
 export class HandlersManager {
   constructor() {
-    this.topicHandlers = {}
+    this.topicHandlers = {};
+    this.topicRequests = {};
   }
 
   allRequests() {
-    return Object.keys(this.topicHandlers)
+    return Object.values(this.topicRequests)
   }
 
   handleNewUpdate(topic, data) {
@@ -14,11 +15,12 @@ export class HandlersManager {
     }
   }
 
-  addTopicHandler(topic, handler) {
+  addTopicHandler(topic, request, handler) {
     let handlers = this.topicHandlers[topic];
     if (handlers === undefined) {
       handlers = this.topicHandlers[topic] = new TopicHandlers();
     }
+    this.topicRequests[topic] = request;
     return handlers.addHandler(handler)
   }
 }

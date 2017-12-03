@@ -28,7 +28,7 @@ let successColor = lightGreen500;
 let lightSuccessColor = lightGreen300;
 
 let cirrusColors = {
-  cirrusPrimary: indigo400,
+  cirrusPrimary: grey900,
   cirrusDark: grey900,
   progress: successColor,
   initialization: blue500,

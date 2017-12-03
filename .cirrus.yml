@@ -1,10 +1,5 @@
-gcp_credentials: ENCRYPTED[847988093f2413c78841ef5f9c53fba80b42d6f8502795a6a7513bf1831e4326bdd2070a44206e279db585e30bc466cc]
-
-gke_container:
+container:
   image: node:8.3.0
-  cluster_endpoint: 35.188.82.251
-  cluster_auth_token: ENCRYPTED[aa5486d42c9a41cf9a165be99a354a2d009ca94fbdb39ccba574cf3f4a13cba0a23ecc5a03b591bbc3abee38f09f8ee6]
-  namespace: default
   cpu: 1.5
   memory: 2Gb
 

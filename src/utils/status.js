@@ -13,6 +13,10 @@ export function isTaskFinalStatus(status) {
   }
 }
 
+export function isTaskExecuting(status) {
+  return status === 'EXECUTING';
+}
+
 export function isTaskInProgressStatus(status) {
   switch (status) {
     case "SCHEDULED":

@@ -17,6 +17,7 @@ import BuildChangeChip from "./chips/BuildChangeChip";
 import RepositoryNameChip from "./chips/RepositoryNameChip";
 import TaskStatusChip from "./chips/TaskStatusChip";
 import TaskCommandsProgress from "./TaskCommandsProgress";
+import TaskScheduledChip from "./chips/TaskScheduledChip";
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskInput!) {
@@ -120,6 +121,11 @@ class ViewerTaskList extends React.Component {
         <NotificationList notifications={task.notifications}/>
       </div>;
 
+    let scheduledStatusDuration = task.statusDurations.find(it => it.status === 'SCHEDULED');
+    let scheduledDurationChip = scheduledStatusDuration
+      ? <TaskScheduledChip style={styles.chip} duration={scheduledStatusDuration.durationInSeconds}/>
+      : null;
+
     return (
       <div style={styles.main} className="container">
         <Paper zDepth={2} rounded={false}>
@@ -129,6 +135,7 @@ class ViewerTaskList extends React.Component {
               <BuildBranchNameChip style={styles.chip} build={build}/>
               <BuildChangeChip style={styles.chip} build={build}/>
               <TaskNameChip style={styles.chip} task={task}/>
+              {scheduledDurationChip}
               <TaskStatusChip style={styles.chip} task={task}/>
             </h4>
             <TaskCommandsProgress task={task}/>

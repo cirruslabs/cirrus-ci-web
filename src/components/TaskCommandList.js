@@ -6,7 +6,8 @@ import {Card, CardHeader, CardText} from 'material-ui/Card';
 import {commandStatusColor} from "../utils/colors";
 import TaskCommandLogs from "./TaskCommandLogs";
 import {formatDuration} from "../utils/time";
-import {isTaskCommandFinalStatus, isTaskFinalStatus} from "../utils/status";
+import {isTaskCommandExecuting, isTaskCommandFinalStatus, isTaskFinalStatus} from "../utils/status";
+import DurationTicker from "./DurationTicker";
 
 class TaskCommandList extends React.Component {
   static contextTypes = {
@@ -34,7 +35,11 @@ class TaskCommandList extends React.Component {
             initiallyExpanded={command.status === 'FAILURE'}>
         <CardHeader
           title={command.name}
-          subtitle={finished ? formatDuration(command.durationInSeconds) : ""}
+          subtitle={
+            finished
+              ? formatDuration(command.durationInSeconds)
+              : (isTaskCommandExecuting(command.status) ? <DurationTicker timestamp={Date.now()}/> : "")
+          }
           style={headerStyle}
           actAsExpander={expandable}
           showExpandableButton={expandable}

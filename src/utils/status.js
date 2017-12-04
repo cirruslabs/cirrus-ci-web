@@ -28,6 +28,10 @@ export function isTaskInProgressStatus(status) {
   }
 }
 
+export function isTaskCommandExecuting(status) {
+  return status === 'EXECUTING';
+}
+
 export function isTaskCommandFinalStatus(status) {
   switch (status) {
     case "ABORTED":

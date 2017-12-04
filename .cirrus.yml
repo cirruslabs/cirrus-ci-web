@@ -1,4 +1,7 @@
-container:
+gcp_credentials: ENCRYPTED[d1fc0e0c4ac919a5c9b6acd9e72dab054efe4ac38366ef7732f494fe6164f37c156de7b3d36f4804d5575256cc324978]
+
+gke_container:
+  cluster_name: cirrus-ci-cluster
   image: node:8.3.0
   cpu: 1.5
   memory: 2Gb

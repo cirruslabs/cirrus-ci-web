@@ -46,7 +46,7 @@ class Header extends React.Component {
 
         render={({error, props}) => {
           return <AppBar
-            title="Cirrus CI"
+            title="Cirrus CI Beta"
             titleStyle={{ cursor: "pointer" }}
             onTitleTouchTap={() => this.context.router.history.push("/")}
             onLeftIconButtonTouchTap={this.props.onIconButtonTouch}

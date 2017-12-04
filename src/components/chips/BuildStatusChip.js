@@ -4,7 +4,7 @@ import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
 import FontIcon from 'material-ui/FontIcon';
 import {buildStatusColor} from "../../utils/colors";
-import {buildStatusIconName, buildStatusMessage, isTaskFinalStatus} from "../../utils/status";
+import {buildStatusIconName, buildStatusMessage} from "../../utils/status";
 import {graphql, requestSubscription} from "react-relay";
 import environment from "../../createRelayEnvironment";
 

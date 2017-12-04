@@ -1,5 +1,4 @@
 import {cirrusColors} from './../cirrusTheme'
-import {lightGreen100} from "material-ui/styles/colors";
 
 export function buildStatusColor(status) {
   switch (status) {

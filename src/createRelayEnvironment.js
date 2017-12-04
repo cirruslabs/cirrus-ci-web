@@ -1,4 +1,4 @@
-import {subscribe, subscribeObjectUpdates, taskUpdateTopic} from "./rtu/ConnectionManager";
+import {subscribeObjectUpdates} from "./rtu/ConnectionManager";
 
 const {
     Environment,

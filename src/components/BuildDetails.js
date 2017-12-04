@@ -10,7 +10,6 @@ import NotificationList from "./NotificationList";
 import environment from "../createRelayEnvironment";
 import BuildStatusChip from "./chips/BuildStatusChip";
 import RepositoryNameChip from "./chips/RepositoryNameChip";
-import {cirrusTheme} from "../cirrusTheme";
 
 
 const buildSubscription = graphql`

@@ -122,7 +122,7 @@ class ViewerTaskList extends React.Component {
       </div>;
 
     let scheduledStatusDuration = task.statusDurations.find(it => it.status === 'SCHEDULED');
-    let scheduledDurationChip = scheduledStatusDuration
+    let scheduledDurationChip = scheduledStatusDuration && task.status !== 'SCHEDULED'
       ? <TaskScheduledChip style={styles.chip} duration={scheduledStatusDuration.durationInSeconds}/>
       : null;
 

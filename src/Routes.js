@@ -70,7 +70,7 @@ class Routes extends React.Component {
           <Drawer docked={false}
                   open={this.state.open}
                   onRequestChange={(open) => this.setState({open})}>
-            <MenuItem>Menu Item</MenuItem>
+            <MenuItem href="https://cirrus-ci.com">Documentation</MenuItem>
           </Drawer>
           <Header onIconButtonTouch={this.handleToggle}/>
           <Switch>

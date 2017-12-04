@@ -139,6 +139,7 @@ export default createFragmentContainer(withRouter(BuildDetails), {
         name
         status
         creationTimestamp
+        scheduledTimestamp
         durationInSeconds
         labels
         statusDurations {

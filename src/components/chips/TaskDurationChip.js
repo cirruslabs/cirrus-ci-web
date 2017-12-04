@@ -5,7 +5,7 @@ import Chip from 'material-ui/Chip';
 import FontIcon from 'material-ui/FontIcon';
 import {taskStatusColor} from "../../utils/colors";
 import {formatDuration} from "../../utils/time";
-import {isTaskFinalStatus, taskStatusIconName} from "../../utils/status";
+import {isTaskFinalStatus, isTaskInProgressStatus, taskStatusIconName} from "../../utils/status";
 import {graphql, requestSubscription} from "react-relay";
 import environment from "../../createRelayEnvironment";
 
@@ -16,7 +16,7 @@ const taskSubscription = graphql`
     task(id: $taskID) {
       id
       status
-      creationTimestamp
+      scheduledTimestamp
       durationInSeconds
     }
   }
@@ -50,8 +50,10 @@ class TaskDurationChip extends React.Component {
   render() {
     let task = this.props.task;
     let durationInSeconds = task.durationInSeconds;
-    if (!isTaskFinalStatus(task.status)) {
-      durationInSeconds = (Date.now() - task.creationTimestamp) / 1000;
+    if (!isTaskInProgressStatus(task.status) && !isTaskFinalStatus(task.status)) {
+      durationInSeconds = 0
+    } else if (!isTaskFinalStatus(task.status)) {
+      durationInSeconds = (Date.now() - task.scheduledTimestamp) / 1000;
       setTimeout(() => this.forceUpdate(), 1000);
     }
     return (

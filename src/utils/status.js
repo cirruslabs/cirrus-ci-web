@@ -13,6 +13,17 @@ export function isTaskFinalStatus(status) {
   }
 }
 
+export function isTaskInProgressStatus(status) {
+  switch (status) {
+    case "SCHEDULED":
+      return true;
+    case "EXECUTING":
+      return true;
+    default:
+      return false;
+  }
+}
+
 export function isTaskCommandFinalStatus(status) {
   switch (status) {
     case "ABORTED":

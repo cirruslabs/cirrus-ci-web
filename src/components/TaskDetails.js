@@ -39,6 +39,7 @@ const taskSubscription = graphql`
       status
       labels
       creationTimestamp
+      executingTimestamp
       durationInSeconds
       statusDurations {
         status
@@ -197,6 +198,7 @@ export default createFragmentContainer(withRouter(ViewerTaskList), {
       status
       labels
       creationTimestamp
+      executingTimestamp
       durationInSeconds
       statusDurations {
         status

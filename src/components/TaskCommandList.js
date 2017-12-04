@@ -16,14 +16,23 @@ class TaskCommandList extends React.Component {
 
   render() {
     let commands = this.props.commands;
+    let task = this.props.task;
+
+    let commandComponents = [];
+    let lastTimestamp = task.executingTimestamp;
+    for (let i = 0; i < commands.length; ++i) {
+      let command = commands[i];
+      commandComponents.push(this.commandItem(command, lastTimestamp));
+      lastTimestamp += command.durationInSeconds * 1000
+    }
     return (
       <div>
-        {commands.map(command => this.commandItem(command))}
+        {commandComponents}
       </div>
     );
   }
 
-  commandItem(command) {
+  commandItem(command, commandStartTimestamp) {
     let headerStyle = {
       backgroundColor: commandStatusColor(command.status)
     };
@@ -38,7 +47,7 @@ class TaskCommandList extends React.Component {
           subtitle={
             finished
               ? formatDuration(command.durationInSeconds)
-              : (isTaskCommandExecuting(command.status) ? <DurationTicker timestamp={Date.now()}/> : "")
+              : (isTaskCommandExecuting(command.status) ? <DurationTicker timestamp={commandStartTimestamp}/> : "")
           }
           style={headerStyle}
           actAsExpander={expandable}

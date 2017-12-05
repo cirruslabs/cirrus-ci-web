@@ -164,6 +164,7 @@ class ViewerTaskList extends React.Component {
         <Paper zDepth={2} rounded={false}>
           <TaskCommandList task={task} commands={task.commands}/>
         </Paper>
+        <div style={styles.gap}/>
       </div>
     );
   }

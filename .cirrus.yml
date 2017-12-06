@@ -3,7 +3,7 @@ gcp_credentials: ENCRYPTED[d1fc0e0c4ac919a5c9b6acd9e72dab054efe4ac38366ef7732f49
 gke_container:
   cluster_name: cirrus-ci-cluster
   zone: us-central1-a
-  image: node:8.3.0
+  image: node:8
   cpu: 1.5
   memory: 2Gb
 

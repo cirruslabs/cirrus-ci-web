@@ -48,8 +48,8 @@ class Header extends React.Component {
           return <AppBar
             title="Cirrus CI Beta"
             titleStyle={{ cursor: "pointer" }}
-            onTitleTouchTap={() => this.context.router.history.push("/")}
-            onLeftIconButtonTouchTap={this.props.onIconButtonTouch}
+            onTitleClick={() => this.context.router.history.push("/")}
+            onLeftIconButtonClick={this.props.onIconButtonTouch}
             iconStyleRight={{marginTop: "auto", marginBottom: "auto"}}
             iconElementRight={componentForViewer(props)}
           />

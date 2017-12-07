@@ -18,6 +18,7 @@ import RepositoryNameChip from "./chips/RepositoryNameChip";
 import TaskStatusChip from "./chips/TaskStatusChip";
 import TaskCommandsProgress from "./TaskCommandsProgress";
 import TaskScheduledChip from "./chips/TaskScheduledChip";
+import {hasWritePermissions} from "../utils/permissions";
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskInput!) {
@@ -127,6 +128,14 @@ class ViewerTaskList extends React.Component {
       ? <TaskScheduledChip style={styles.chip} duration={scheduledStatusDuration.durationInSeconds}/>
       : null;
 
+    let reRunButton = !hasWritePermissions(repository.viewerPermission) ? null :
+      <div className="card-body text-right">
+        <RaisedButton label="Re-Run"
+                    primary={true}
+                    onTouchTap={() => this.rerun(task.id)}
+                    icon={<FontIcon className="material-icons">refresh</FontIcon>}
+        />
+      </div>;
     return (
       <div style={styles.main} className="container">
         <Paper zDepth={2} rounded={false}>
@@ -150,13 +159,7 @@ class ViewerTaskList extends React.Component {
                 })
               }
             </div>
-            <div className="card-body text-right">
-              <RaisedButton label="Re-Run"
-                            primary={true}
-                            onTouchTap={() => this.rerun(task.id)}
-                            icon={<FontIcon className="material-icons">refresh</FontIcon>}
-              />
-            </div>
+            {reRunButton}
           </div>
         </Paper>
         {notificationsComponent}
@@ -226,6 +229,7 @@ export default createFragmentContainer(withRouter(ViewerTaskList), {
         id
         owner
         name
+        viewerPermission
       }
     }
   `,

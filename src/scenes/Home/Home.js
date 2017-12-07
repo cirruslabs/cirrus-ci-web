@@ -6,7 +6,6 @@ import environment from '../../createRelayEnvironment';
 import ViewerBuildList from '../../components/ViewerBuildList'
 import CirrusLinearProgress from "../../components/CirrusLinearProgress";
 import {Paper, Toolbar, ToolbarGroup, ToolbarTitle} from "material-ui";
-import {cirrusColors} from "../../cirrusTheme";
 
 const Home = (props) => (
   <QueryRenderer

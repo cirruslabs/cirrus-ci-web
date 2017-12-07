@@ -9,7 +9,7 @@ import CirrusCircularProgress from "./CirrusCircularProgress";
 import {isTaskCommandFinalStatus} from "../utils/status";
 
 function logURL(taskId, command) {
-  return "http://api.cirrus-ci.org/v1/task/" + taskId + "/logs/" + command.name + ".log";
+  return "https://api.cirrus-ci.org/v1/task/" + taskId + "/logs/" + command.name + ".log";
 }
 
 function isCommandRunning(command) {

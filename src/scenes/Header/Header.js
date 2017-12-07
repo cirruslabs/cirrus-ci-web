@@ -18,7 +18,7 @@ function componentForViewer(props) {
   let viewer = props.viewer;
   if (!viewer) {
     return <FlatButton label="Log In"
-      href="http://api.cirrus-ci.org/redirect/auth/github"
+      href="https://api.cirrus-ci.org/redirect/auth/github"
       icon={<FontIcon className="fa fa-github" />}/>
   }
   return <AccountInformation viewer={viewer}/>

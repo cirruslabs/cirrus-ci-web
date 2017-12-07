@@ -23,7 +23,6 @@ ws.onmessage = function incoming(event) {
   let message = JSON.parse(event.data);
   let data = message.data || {};
   let topic = message.topic || '';
-  console.log("New message from " + topic);
   handlersManager.handleNewUpdate(topic, data);
 };
 

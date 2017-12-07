@@ -16,7 +16,6 @@ function subscription(
   cacheConfig,
   config
 ) {
-  console.log("subscription", variables, operation);
   if (variables['taskID']) {
     return webSocketSubscription('TASK', variables['taskID'], operation, variables, cacheConfig, config)
   } if (variables['buildID']) {

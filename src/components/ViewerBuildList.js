@@ -27,9 +27,27 @@ class ViewerBuildList extends React.Component {
       chip: {
         margin: 4,
       },
+      emptyBuilds: {
+        margin: 8,
+      },
     };
 
     let builds = this.props.viewer.builds;
+
+    let buildsComponent = (
+      <Table selectable={false} style={{tableLayout: 'auto'}}>
+        <TableBody displayRowCheckbox={false} showRowHover={true}>
+          {builds && builds.edges.map(edge => this.buildItem(edge.node, styles))}
+        </TableBody>
+      </Table>
+    );
+    if (!builds || builds.edges.length === 0) {
+      buildsComponent = (
+        <div style={styles.emptyBuilds}>
+          <ReactMarkdown source="No recent builds! Please check [documentation](https://cirrus-ci.com/) on how to start with Cirrus CI."/>
+        </div>
+      );
+    }
     return (
       <div style={styles.main} className="container">
         <Paper zDepth={1} rounded={false}>
@@ -38,11 +56,7 @@ class ViewerBuildList extends React.Component {
               <ToolbarTitle text="Recent Builds"/>
             </ToolbarGroup>
           </Toolbar>
-          <Table selectable={false} style={{tableLayout: 'auto'}}>
-            <TableBody displayRowCheckbox={false} showRowHover={true}>
-              {builds && builds.edges.map(edge => this.buildItem(edge.node, styles))}
-            </TableBody>
-          </Table>
+          {buildsComponent}
         </Paper>
       </div>
     );

@@ -15,7 +15,7 @@ class AccountInformation extends React.Component {
         anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
         targetOrigin={{horizontal: 'left', vertical: 'bottom'}}
       >
-        <MenuItem primaryText="Log Out" href="https://api.cirrus-ci.org/redirect/logout/"/>
+        <MenuItem primaryText="Log Out" href="https://api.cirrus-ci.com/redirect/logout/"/>
       </IconMenu>
     );
   }

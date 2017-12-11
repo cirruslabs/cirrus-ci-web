@@ -82,7 +82,7 @@ function fetchQuery(
   if (process.env.NODE_ENV === 'development') {
     console.log(query);
   }
-  return fetch('https://api.cirrus-ci.org/graphql', {
+  return fetch('https://api.cirrus-ci.com/graphql', {
         method: 'POST',
         credentials: 'include', // cookies
         headers: {

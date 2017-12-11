@@ -29,7 +29,7 @@
     "build": "react-scripts build",
     "flow": "flow",
     "relay": "relay-compiler --verbose --src ./src --schema schema.graphql",
-    "sync-schema": "get-graphql-schema http://api.cirrus-ci.org/schema.json > schema.graphql",
+    "sync-schema": "get-graphql-schema http://api.cirrus-ci.com/schema.json > schema.graphql",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }

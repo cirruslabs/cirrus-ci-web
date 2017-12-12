@@ -1,11 +1,8 @@
 import React from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import CircularProgress from 'material-ui/CircularProgress';
-import Drawer from 'material-ui/Drawer';
-import MenuItem from 'material-ui/MenuItem';
-
-import Header from './scenes/Header/Header';
 import Loadable from 'react-loadable';
+import Header from "./scenes/Header/Header";
 
 const LoadingComponent = ({isLoading, error}) => {
   if (isLoading) {
@@ -56,23 +53,11 @@ const AsyncGitHubRepository = Loadable({
 });
 
 class Routes extends React.Component {
-  handleToggle = () => this.setState({open: !this.state.open});
-
-  constructor(props) {
-    super(props);
-    this.state = {open: false};
-  }
-
   render() {
     return (
       <BrowserRouter>
         <div>
-          <Drawer docked={false}
-                  open={this.state.open}
-                  onRequestChange={(open) => this.setState({open})}>
-            <MenuItem href="http://cirrus-ci.com">Documentation</MenuItem>
-          </Drawer>
-          <Header onIconButtonTouch={this.handleToggle}/>
+          <Header/>
           <Switch>
             <Route exact path="/" component={AsyncHome} props={this.props}/>
             <Route exact path="/build/:buildId" component={AsyncBuild} props={this.props}/>

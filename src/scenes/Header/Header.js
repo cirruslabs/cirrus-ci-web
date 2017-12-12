@@ -10,6 +10,7 @@ import {graphql, QueryRenderer} from 'react-relay';
 import environment from '../../createRelayEnvironment';
 import AccountInformation from '../../components/AccountInformation'
 import CirrusCircularProgress from "../../components/CirrusCircularProgress";
+import {cirrusColors} from "../../cirrusTheme";
 
 function componentForViewer(props) {
   if (!props) {
@@ -18,16 +19,16 @@ function componentForViewer(props) {
   let viewer = props.viewer;
   if (!viewer) {
     return <FlatButton label="Log In"
-      href="https://api.cirrus-ci.com/redirect/auth/github"
-      icon={<FontIcon className="fa fa-github" />}/>
+                       style={{color: cirrusColors.cirrusWhite}}
+                       href="https://api.cirrus-ci.com/redirect/auth/github"
+                       icon={<FontIcon className="fa fa-github"/>}/>
   }
   return <AccountInformation viewer={viewer}/>
 }
 
 class Header extends React.Component {
   static contextTypes = {
-    router: PropTypes.object,
-    onIconButtonTouch: PropTypes.func,
+    router: PropTypes.object
   };
 
   render() {
@@ -45,13 +46,22 @@ class Header extends React.Component {
         }
 
         render={({error, props}) => {
+          let rightPanel = (
+            <div>
+              <FlatButton label="Docs"
+                          style={{color: cirrusColors.cirrusWhite, marginRight: 8}}
+                          href="http://cirrus-ci.org/"
+                          icon={<FontIcon className="fa fa-book"/>}/>
+              {componentForViewer(props)}
+            </div>
+          );
           return <AppBar
             title="Cirrus CI Beta"
-            titleStyle={{ cursor: "pointer" }}
+            titleStyle={{cursor: "pointer"}}
             onTitleClick={() => this.context.router.history.push("/")}
-            onLeftIconButtonClick={this.props.onIconButtonTouch}
+            showMenuIconButton={false}
             iconStyleRight={{marginTop: "auto", marginBottom: "auto"}}
-            iconElementRight={componentForViewer(props)}
+            iconElementRight={rightPanel}
           />
         }}
       />

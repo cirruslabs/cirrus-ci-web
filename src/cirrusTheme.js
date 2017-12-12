@@ -3,6 +3,7 @@ import {
   blue500,
   darkBlack,
   fullBlack,
+  grey50,
   grey100,
   grey300,
   grey400,
@@ -30,6 +31,7 @@ let lightSuccessColor = lightGreen300;
 let cirrusColors = {
   cirrusPrimary: grey900,
   cirrusDark: grey900,
+  cirrusWhite: grey50,
   progress: successColor,
   initialization: blue500,
   lightInitialization: blue300,

@@ -57,7 +57,7 @@ class TaskDurationChip extends React.Component {
       setTimeout(() => this.forceUpdate(), 1000);
     }
     return (
-      <Chip style={this.props.style}>
+      <Chip {...this.props}>
         <Avatar backgroundColor={taskStatusColor(task.status)}
                 icon={<FontIcon className="material-icons">{taskStatusIconName(task.status)}</FontIcon>}/>
         {formatDuration(durationInSeconds)}

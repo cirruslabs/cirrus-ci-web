@@ -44,7 +44,7 @@ class BuildStatusChip extends React.Component {
   render() {
     let build = this.props.build;
     return (
-      <Chip style={this.props.style}>
+      <Chip {...this.props}>
         <Avatar backgroundColor={buildStatusColor(build.status)}
                 icon={<FontIcon className="material-icons">{buildStatusIconName(build.status)}</FontIcon>}/>
         {buildStatusMessage(build)}

@@ -71,11 +71,12 @@ class ViewerBuildList extends React.Component {
           <RepositoryNameChip repository={build.repository} style={styles.chip}/>
           <BuildBranchNameChip build={build} style={styles.chip}/>
           <BuildChangeChip build={build} style={styles.chip}/>
+          <BuildStatusChip build={build} style={styles.chip} className="hidden-lg-up"/>
         </TableRowColumn>
         <TableRowColumn style={{width: '100%'}}>
           <ReactMarkdown source={build.changeMessageTitle}/>
         </TableRowColumn>
-        <TableRowColumn style={{padding: 0}}>
+        <TableRowColumn style={{padding: 0}} className="hidden-md-down">
           <BuildStatusChip build={build} style={styles.chip}/>
         </TableRowColumn>
       </TableRow>

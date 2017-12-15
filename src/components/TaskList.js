@@ -37,6 +37,7 @@ class TaskList extends React.Component {
                 style={{cursor: "pointer"}}>
         <TableRowColumn style={{padding: 0}}>
           <TaskNameChip task={task} style={styles.chip}/>
+          <TaskDurationChip task={task} style={styles.chip} className="hidden-md-up"/>
         </TableRowColumn>
         <TableRowColumn style={{padding: 0}}>
           {
@@ -45,7 +46,7 @@ class TaskList extends React.Component {
             })
           }
         </TableRowColumn>
-        <TableRowColumn style={{padding: 0}}>
+        <TableRowColumn style={{padding: 0}} className="hidden-sm-down">
           <TaskDurationChip task={task} style={styles.chip}/>
         </TableRowColumn>
       </TableRow>

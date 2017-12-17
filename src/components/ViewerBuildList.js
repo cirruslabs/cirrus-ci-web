@@ -104,7 +104,6 @@ export default createFragmentContainer(withRouter(ViewerBuildList), {
             changeMessageTitle
             durationInSeconds
             status
-            authorName
             changeTimestamp
             repository {
               owner

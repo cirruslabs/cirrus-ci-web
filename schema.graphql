@@ -11,7 +11,6 @@ type Build {
   changeIdInRepo: String!
   changeMessageTitle: String
   changeMessage: String
-  authorName: String
   durationInSeconds: Long
   changeTimestamp: Long!
   buildCreatedTimestamp: Long!
@@ -30,6 +29,12 @@ enum BuildStatus {
   EXECUTING
   FAILED
   COMPLETED
+}
+
+# Repository Setting to choose how to decrypt variables.
+enum DecryptEnvironemntVariablesFor {
+  USERS_WITH_WRITE_PERMISSIONS
+  EVERYONE
 }
 
 type GitHubOrganization {
@@ -140,7 +145,8 @@ type RepositorySecuredVariablePayload {
 }
 
 type RepositorySettings {
-  securedVariableValue: String
+  needsApproval: Boolean
+  decryptEnvironmentVariables: DecryptEnvironemntVariablesFor
 }
 
 type Root {

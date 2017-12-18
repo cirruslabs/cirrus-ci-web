@@ -3,7 +3,7 @@ FROM node:8.9.1
 WORKDIR /svc/cirrus-ci-web
 EXPOSE 8080
 
-RUN npm install -g serve@6.4.1
+RUN npm install -g serve@6.4.2
 
 ADD build/ /svc/cirrus-ci-web/
 

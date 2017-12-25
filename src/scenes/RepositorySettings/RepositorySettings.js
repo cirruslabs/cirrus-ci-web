@@ -4,7 +4,7 @@ import {graphql, QueryRenderer} from 'react-relay';
 
 import environment from '../../createRelayEnvironment';
 import CirrusLinearProgress from "../../components/CirrusLinearProgress";
-import RepositorySettingsView from "../../components/RepositorySettingsView";
+import RepositorySettingsPage from "../../components/RepositorySettingsPage";
 
 const RepositorySettings = (props) => (
   <QueryRenderer
@@ -14,7 +14,7 @@ const RepositorySettings = (props) => (
       graphql`
         query RepositorySettingsQuery($repositoryId: ID!) {
           repository(id: $repositoryId) {
-            ...RepositorySettingsView_repository
+            ...RepositorySettingsPage_repository
           }
         }
       `
@@ -24,7 +24,7 @@ const RepositorySettings = (props) => (
       if (!props) {
         return <CirrusLinearProgress />
       }
-      return <RepositorySettingsView repository={props.repository}/>
+      return <RepositorySettingsPage repository={props.repository}/>
     }}
   />
 );

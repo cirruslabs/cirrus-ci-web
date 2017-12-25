@@ -32,7 +32,7 @@ enum BuildStatus {
 }
 
 # Repository Setting to choose how to decrypt variables.
-enum DecryptEnvironemntVariablesFor {
+enum DecryptEnvironmentVariablesFor {
   USERS_WITH_WRITE_PERMISSIONS
   EVERYONE
 }
@@ -50,6 +50,7 @@ scalar Long
 type Mutation {
   securedVariable(input: RepositorySecuredVariableInput!): RepositorySecuredVariablePayload
   rerun(input: TaskInput!): TaskPayload
+  saveSettings(input: RepositorySettingsInput!): RepositorySettingsPayload
 }
 
 type Notification {
@@ -146,7 +147,19 @@ type RepositorySecuredVariablePayload {
 
 type RepositorySettings {
   needsApproval: Boolean
-  decryptEnvironmentVariables: DecryptEnvironemntVariablesFor
+  decryptEnvironmentVariables: DecryptEnvironmentVariablesFor
+}
+
+input RepositorySettingsInput {
+  clientMutationId: String!
+  repositoryId: ID!
+  needsApproval: Boolean
+  decryptEnvironmentVariables: DecryptEnvironmentVariablesFor
+}
+
+type RepositorySettingsPayload {
+  clientMutationId: String!
+  settings: RepositorySettings!
 }
 
 type Root {

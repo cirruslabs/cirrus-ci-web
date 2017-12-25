@@ -1,6 +1,6 @@
 import React from 'react';
 import environment from '../createRelayEnvironment';
-import {commitMutation, graphql} from 'react-relay';
+import {commitMutation, createFragmentContainer, graphql} from 'react-relay';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import FontIcon from 'material-ui/FontIcon';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -101,4 +101,12 @@ class RepositorySecuredVariables extends React.Component {
   }
 }
 
-export default RepositorySecuredVariables;
+export default createFragmentContainer(RepositorySecuredVariables, {
+  repository: graphql`
+    fragment RepositorySecuredVariables_repository on Repository {
+      id
+      owner
+      name
+    }
+  `,
+});

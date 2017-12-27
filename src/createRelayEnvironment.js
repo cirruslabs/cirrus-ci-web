@@ -16,11 +16,20 @@ function subscription(
   cacheConfig,
   config
 ) {
-  if (variables['taskID']) {
+  if (variables['taskID'] && operation.text.indexOf("commands") > 0) {
+    let taskSubscriptionDisposer = webSocketSubscription('TASK', variables['taskID'], operation, variables, cacheConfig, config);
+    let taskCommandsSubscriptionDisposer = webSocketSubscription('TASK_COMMANDS', variables['taskID'], operation, variables, cacheConfig, config);
+    return {
+      dispose: () => {
+        taskSubscriptionDisposer.dispose();
+        taskCommandsSubscriptionDisposer.dispose();
+      }
+    }
+  } else if (variables['taskID']) {
     return webSocketSubscription('TASK', variables['taskID'], operation, variables, cacheConfig, config)
-  } if (variables['buildID']) {
+  } else if (variables['buildID']) {
     return webSocketSubscription('BUILD', variables['buildID'], operation, variables, cacheConfig, config)
-  }  else {
+  } else {
     return pollingSubscription(operation, variables, cacheConfig, config)
   }
 }
@@ -35,9 +44,6 @@ function pollingSubscription(
 
   let intervalId = setInterval(() => {
     fetchQuery(operation, variables).then(response => {
-      if (process.env.NODE_ENV === 'development') {
-        console.log(response);
-      }
       onNext(response);
     }, error => {
       onError && onError(error)
@@ -59,9 +65,6 @@ function webSocketSubscription(
 
   let dispose = subscribeObjectUpdates(kind, id, () => {
     fetchQuery(operation, variables).then(response => {
-      if (process.env.NODE_ENV === 'development') {
-        console.log(response);
-      }
       onNext(response);
     }, error => {
       onError && onError(error)
@@ -79,9 +82,6 @@ function fetchQuery(
     query: operation.text, // GraphQL text from input
     variables,
   };
-  if (process.env.NODE_ENV === 'development') {
-    console.log(query);
-  }
   return fetch('https://api.cirrus-ci.com/graphql', {
         method: 'POST',
         credentials: 'include', // cookies

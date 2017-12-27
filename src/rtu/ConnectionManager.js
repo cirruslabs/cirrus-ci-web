@@ -9,14 +9,21 @@ ws.onopen = function open() {
   handlersManager.allRequests().forEach(function (request) {
     ws.send(request);
   });
+  if (process.env.NODE_ENV === 'development') {
+    console.log('connected', Date.now());
+  }
 };
 
 ws.onerror = function error(err) {
-  console.log(err);
+  if (process.env.NODE_ENV === 'development') {
+    console.log(err);
+  }
 };
 
 ws.onclose = function close() {
-  console.log('disconnected', Date.now());
+  if (process.env.NODE_ENV === 'development') {
+    console.log('disconnected', Date.now());
+  }
 };
 
 ws.onmessage = function incoming(event) {
@@ -33,8 +40,8 @@ export function subscribeObjectUpdates(kind, id, handler) {
     id: id,
   });
   ws.send(request);
-  let topic = kind + '-update-'+id;
-  return handlersManager.addTopicHandler(topic.toLowerCase(), request, handler)
+  let topic = kind + '-update-' + id;
+  return handlersManager.addTopicHandler(topic.toLowerCase().replace("_", "-"), request, handler)
 }
 
 export function subscribeTaskCommandLogs(taskId, command, handler) {

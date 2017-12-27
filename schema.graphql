@@ -21,6 +21,16 @@ type Build {
   repository: Repository!
 }
 
+input BuildInput {
+  clientMutationId: String!
+  buildId: ID!
+}
+
+type BuildPayload {
+  clientMutationId: String!
+  build: Build!
+}
+
 # Build status.
 enum BuildStatus {
   CREATED
@@ -51,6 +61,7 @@ type Mutation {
   securedVariable(input: RepositorySecuredVariableInput!): RepositorySecuredVariablePayload
   rerun(input: TaskInput!): TaskPayload
   saveSettings(input: RepositorySettingsInput!): RepositorySettingsPayload
+  approve(input: BuildInput!): BuildPayload
 }
 
 type Notification {
@@ -213,7 +224,7 @@ enum TaskCommandStatus {
 
 input TaskInput {
   clientMutationId: String!
-  taskId: String!
+  taskId: ID!
 }
 
 type TaskPayload {

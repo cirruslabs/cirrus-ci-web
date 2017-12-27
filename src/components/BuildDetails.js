@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {createFragmentContainer, graphql, requestSubscription,} from 'react-relay';
+import {commitMutation, createFragmentContainer, graphql, requestSubscription,} from 'react-relay';
 import {withRouter} from 'react-router-dom'
 import Paper from 'material-ui/Paper';
 import ReactMarkdown from 'react-markdown';
@@ -10,7 +10,20 @@ import NotificationList from "./NotificationList";
 import environment from "../createRelayEnvironment";
 import BuildStatusChip from "./chips/BuildStatusChip";
 import RepositoryNameChip from "./chips/RepositoryNameChip";
+import {hasWritePermissions} from "../utils/permissions";
+import {FontIcon, RaisedButton} from "material-ui";
+import {cirrusColors} from "../cirrusTheme";
 
+const buildApproveMutation = graphql`
+  mutation BuildDetailsApproveBuildMutation($input: BuildInput!) {
+    approve(input: $input) {
+      build {
+        id
+        status
+      }
+    }
+  }
+`;
 
 const buildSubscription = graphql`
   subscription BuildDetailsSubscription(
@@ -93,6 +106,16 @@ class BuildDetails extends React.Component {
         <NotificationList notifications={build.notifications}/>
       </div>;
 
+    let needsApproval = build.status === 'NEEDS_APPROVAL' && hasWritePermissions(build.repository.viewerPermission);
+    let approveButton = !needsApproval ? null :
+      <div className="card-body text-right">
+        <RaisedButton label="Approve"
+                      backgroundColor={cirrusColors.success}
+                      onTouchTap={() => this.approveBuild(build.id)}
+                      icon={<FontIcon className="material-icons">check</FontIcon>}
+        />
+      </div>;
+
     return (
       <div style={styles.main} className="container">
         <Paper zDepth={2} rounded={false}>
@@ -107,6 +130,7 @@ class BuildDetails extends React.Component {
               href={branchUrl}>{build.branch}</a>:
             </h5>
             <ReactMarkdown className="card-text" source={build.changeMessage}/>
+            {approveButton}
           </div>
         </Paper>
         {notificationsComponent}
@@ -115,6 +139,24 @@ class BuildDetails extends React.Component {
           <TaskList tasks={build.tasks}/>
         </Paper>
       </div>
+    );
+  }
+
+  approveBuild(buildId) {
+    const variables = {
+      input: {
+        clientMutationId: "approve-build-" + buildId,
+        buildId: buildId,
+      },
+    };
+
+    commitMutation(
+      environment,
+      {
+        mutation: buildApproveMutation,
+        variables: variables,
+        onError: err => console.error(err),
+      },
     );
   }
 }
@@ -156,6 +198,7 @@ export default createFragmentContainer(withRouter(BuildDetails), {
         owner
         name
         cloneUrl
+        viewerPermission
       }
     }
   `,

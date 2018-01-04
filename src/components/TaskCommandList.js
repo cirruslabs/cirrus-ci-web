@@ -8,6 +8,7 @@ import TaskCommandLogs from "./TaskCommandLogs";
 import {formatDuration} from "../utils/time";
 import {isTaskCommandExecuting, isTaskCommandFinalStatus, isTaskFinalStatus} from "../utils/status";
 import DurationTicker from "./DurationTicker";
+import {cirrusColors} from "../cirrusTheme";
 
 class TaskCommandList extends React.Component {
   static contextTypes = {
@@ -15,6 +16,13 @@ class TaskCommandList extends React.Component {
   };
 
   render() {
+    let styles = {
+      divider: {
+        widths: '100%',
+        height: 1,
+        backgroundColor: cirrusColors.undefined
+      }
+    };
     let commands = this.props.commands;
     let task = this.props.task;
 
@@ -22,6 +30,9 @@ class TaskCommandList extends React.Component {
     let lastTimestamp = task.executingTimestamp;
     for (let i = 0; i < commands.length; ++i) {
       let command = commands[i];
+      if (i > 0) {
+        commandComponents.push(<div style={styles.divider}/>);
+      }
       commandComponents.push(this.commandItem(command, lastTimestamp));
       lastTimestamp += command.durationInSeconds * 1000
     }
@@ -33,14 +44,19 @@ class TaskCommandList extends React.Component {
   }
 
   commandItem(command, commandStartTimestamp) {
-    let headerStyle = {
-      backgroundColor: commandStatusColor(command.status)
+    let styles = {
+      header: {
+        backgroundColor: commandStatusColor(command.status),
+      },
+      card: {
+        borderRadius: 0,
+      }
     };
     let finished = isTaskCommandFinalStatus(command.status);
     let expandable = finished || !isTaskFinalStatus(this.props.task.status);
     return (
       <Card key={command.name}
-            style={{borderRadius: 0}}
+            style={styles.card}
             initiallyExpanded={command.status === 'FAILURE'}>
         <CardHeader
           title={command.name}
@@ -49,7 +65,7 @@ class TaskCommandList extends React.Component {
               ? formatDuration(command.durationInSeconds)
               : (isTaskCommandExecuting(command.status) ? <DurationTicker timestamp={commandStartTimestamp}/> : "")
           }
-          style={headerStyle}
+          style={styles.header}
           actAsExpander={expandable}
           showExpandableButton={expandable}
         />

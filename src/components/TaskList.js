@@ -6,6 +6,7 @@ import {Table, TableBody, TableRow, TableRowColumn} from 'material-ui/Table';
 import Chip from 'material-ui/Chip';
 import TaskNameChip from "./chips/TaskNameChip";
 import TaskDurationChip from "./chips/TaskDurationChip";
+import {shorten} from "../utils/text";
 
 class TaskList extends React.Component {
   static contextTypes = {
@@ -42,7 +43,7 @@ class TaskList extends React.Component {
         <TableRowColumn style={{padding: 0}}>
           {
             task.labels.map(label => {
-              return <Chip key={label} style={styles.chip}>{label}</Chip>
+              return <Chip key={label} style={styles.chip}>{shorten(label)}</Chip>
             })
           }
         </TableRowColumn>

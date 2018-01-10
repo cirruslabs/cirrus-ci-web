@@ -19,6 +19,7 @@ import TaskStatusChip from "./chips/TaskStatusChip";
 import TaskCommandsProgress from "./TaskCommandsProgress";
 import TaskScheduledChip from "./chips/TaskScheduledChip";
 import {hasWritePermissions} from "../utils/permissions";
+import {shorten} from "../utils/text";
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskInput!) {
@@ -155,7 +156,7 @@ class ViewerTaskList extends React.Component {
             <div className="card-body" style={styles.wrapper}>
               {
                 task.labels.map(label => {
-                  return <Chip key={label} style={styles.chip}>{label}</Chip>
+                  return <Chip key={label} style={styles.chip}>{shorten(label)}</Chip>
                 })
               }
             </div>

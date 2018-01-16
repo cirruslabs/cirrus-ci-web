@@ -6,11 +6,12 @@ const ws = new ReconnectingWebSocket('wss://api.cirrus-ci.com/ws');
 const handlersManager = new HandlersManager();
 
 ws.onopen = function open() {
-  handlersManager.allRequests().forEach(function (request) {
+  let allTopicSubscribeRequests = handlersManager.allRequests();
+  allTopicSubscribeRequests.forEach(function (request) {
     ws.send(request);
   });
   if (process.env.NODE_ENV === 'development') {
-    console.log('connected', Date.now());
+    console.log("Subscribing to " + allTopicSubscribeRequests.length + " topics!");
   }
 };
 
@@ -34,14 +35,20 @@ ws.onmessage = function incoming(event) {
 };
 
 export function subscribeObjectUpdates(kind, id, handler) {
-  let request = JSON.stringify({
+  let request = {
     type: 'subscribe',
     kind: kind,
     id: id,
-  });
-  ws.send(request);
+  };
+  let requestStr = JSON.stringify(request);
+  ws.send(requestStr);
   let topic = kind + '-update-' + id;
-  return handlersManager.addTopicHandler(topic.toLowerCase().replace("_", "-"), request, handler)
+  let topicHandlerDispose = handlersManager.addTopicHandler(topic.toLowerCase().replace("_", "-"), requestStr, handler);
+  return () => {
+    topicHandlerDispose();
+    request.type = "unsubscribe";
+    ws.send(JSON.stringify(request));
+  }
 }
 
 export function subscribeTaskCommandLogs(taskId, command, handler) {

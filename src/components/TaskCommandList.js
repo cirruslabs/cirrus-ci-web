@@ -31,7 +31,7 @@ class TaskCommandList extends React.Component {
     for (let i = 0; i < commands.length; ++i) {
       let command = commands[i];
       if (i > 0) {
-        commandComponents.push(<div style={styles.divider}/>);
+        commandComponents.push(<div key={i} style={styles.divider}/>);
       }
       commandComponents.push(this.commandItem(command, lastTimestamp));
       lastTimestamp += command.durationInSeconds * 1000

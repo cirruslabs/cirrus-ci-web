@@ -208,6 +208,7 @@ type Task {
 
 type TaskCommand {
   name: String
+  type: TaskCommandType
   status: TaskCommandStatus
   durationInSeconds: Int
 }
@@ -220,6 +221,17 @@ enum TaskCommandStatus {
   EXECUTING
   SKIPPED
   ABORTED
+}
+
+# Task Command type.
+enum TaskCommandType {
+  WAIT
+  EXIT
+  EXECUTE_SCRIPT
+  CACHE
+  UPLOAD_CACHE
+  CLONE
+  EXECUTE_BACKGROUND_SCRIPT
 }
 
 input TaskInput {

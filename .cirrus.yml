@@ -1,5 +1,5 @@
 container:
-  image: node:8.9.1
+  image: node:9.4.0
   cpu: 1.5
   memory: 2Gb
 

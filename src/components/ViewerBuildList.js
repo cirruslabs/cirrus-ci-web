@@ -44,7 +44,7 @@ class ViewerBuildList extends React.Component {
     if (!builds || builds.edges.length === 0) {
       buildsComponent = (
         <div style={styles.emptyBuilds}>
-          <ReactMarkdown source="No recent builds! Please check [documentation](http://cirrus-ci.org/) on how to start with Cirrus CI."/>
+          <ReactMarkdown source="No recent builds! Please check [documentation](https://www.cirrus-ci.org/) on how to start with Cirrus CI."/>
         </div>
       );
     }

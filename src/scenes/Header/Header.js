@@ -50,7 +50,7 @@ class Header extends React.Component {
             <div>
               <FlatButton label="Docs"
                           style={{color: cirrusColors.cirrusWhite, marginRight: 8}}
-                          href="https://www.cirrus-ci.org/"
+                          href="https://cirrus-ci.org/"
                           icon={<FontIcon className="fa fa-book"/>}/>
               {componentForViewer(props)}
             </div>

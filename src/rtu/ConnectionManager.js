@@ -13,6 +13,10 @@ ws.onopen = function open() {
   if (process.env.NODE_ENV === 'development') {
     console.log("Subscribing to " + allTopicSubscribeRequests.length + " topics!");
   }
+  // send reconnent events so handlers can refresh
+  handlersManager.allTopics().forEach(function (topic) {
+    handlersManager.handleNewUpdate(topic, { "type": "reconnect" });
+  })
 };
 
 ws.onerror = function error(err) {

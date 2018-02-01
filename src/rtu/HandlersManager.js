@@ -8,6 +8,10 @@ export class HandlersManager {
     return Object.values(this.topicRequests)
   }
 
+  allTopics() {
+    return Object.keys(this.topicRequests)
+  }
+
   handleNewUpdate(topic, data) {
     let topicHandlers = this.topicHandlers[topic];
     if (topicHandlers) {

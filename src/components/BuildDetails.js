@@ -25,6 +25,17 @@ const buildApproveMutation = graphql`
   }
 `;
 
+const buildReTriggerMutation = graphql`
+  mutation BuildDetailsReTriggerMutation($input: BuildReTriggerInput!) {
+    retrigger(input: $input) {
+      build {
+        id
+        status
+      }
+    }
+  }
+`;
+
 const buildSubscription = graphql`
   subscription BuildDetailsSubscription(
     $buildID: ID!
@@ -106,15 +117,22 @@ class BuildDetails extends React.Component {
         <NotificationList notifications={build.notifications}/>
       </div>;
 
+    let canBeReTriggered = build.status === 'FAILED' && hasWritePermissions(build.repository.viewerPermission);
+    let reTriggerButton = !canBeReTriggered ? null :
+      <RaisedButton label="Re-Trigger"
+                    backgroundColor={cirrusColors.success}
+                    onTouchTap={() => this.reTriggerBuild(build.id)}
+                    icon={<FontIcon className="material-icons">refresh</FontIcon>}
+      />;
+
+
     let needsApproval = build.status === 'NEEDS_APPROVAL' && hasWritePermissions(build.repository.viewerPermission);
     let approveButton = !needsApproval ? null :
-      <div className="card-body text-right">
-        <RaisedButton label="Approve"
-                      backgroundColor={cirrusColors.success}
-                      onTouchTap={() => this.approveBuild(build.id)}
-                      icon={<FontIcon className="material-icons">check</FontIcon>}
-        />
-      </div>;
+      <RaisedButton label="Approve"
+                    backgroundColor={cirrusColors.success}
+                    onTouchTap={() => this.approveBuild(build.id)}
+                    icon={<FontIcon className="material-icons">check</FontIcon>}
+      />;
 
     return (
       <div style={styles.main} className="container">
@@ -130,7 +148,10 @@ class BuildDetails extends React.Component {
               href={branchUrl}>{build.branch}</a>:
             </h5>
             <ReactMarkdown className="card-text" source={build.changeMessage}/>
-            {approveButton}
+            <div className="card-body text-right">
+              {reTriggerButton}
+              {approveButton}
+            </div>
           </div>
         </Paper>
         {notificationsComponent}
@@ -154,6 +175,24 @@ class BuildDetails extends React.Component {
       environment,
       {
         mutation: buildApproveMutation,
+        variables: variables,
+        onError: err => console.error(err),
+      },
+    );
+  }
+
+  reTriggerBuild(buildId) {
+    const variables = {
+      input: {
+        clientMutationId: "re-trigger-build-" + buildId,
+        buildId: buildId,
+      },
+    };
+
+    commitMutation(
+      environment,
+      {
+        mutation: buildReTriggerMutation,
         variables: variables,
         onError: err => console.error(err),
       },

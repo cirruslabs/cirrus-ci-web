@@ -31,6 +31,16 @@ type BuildPayload {
   build: Build!
 }
 
+input BuildReTriggerInput {
+  clientMutationId: String!
+  buildId: ID!
+}
+
+type BuildReTriggerPayload {
+  clientMutationId: String!
+  build: Build!
+}
+
 # Build status.
 enum BuildStatus {
   CREATED
@@ -60,6 +70,7 @@ scalar Long
 type Mutation {
   securedVariable(input: RepositorySecuredVariableInput!): RepositorySecuredVariablePayload
   rerun(input: TaskInput!): TaskPayload
+  retrigger(input: BuildReTriggerInput!): BuildReTriggerPayload
   saveSettings(input: RepositorySettingsInput!): RepositorySettingsPayload
   approve(input: BuildInput!): BuildPayload
 }

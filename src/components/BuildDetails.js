@@ -117,7 +117,9 @@ class BuildDetails extends React.Component {
         <NotificationList notifications={build.notifications}/>
       </div>;
 
-    let canBeReTriggered = build.status === 'FAILED' && hasWritePermissions(build.repository.viewerPermission);
+    let canBeReTriggered = build.status === 'FAILED'
+      && hasWritePermissions(build.repository.viewerPermission)
+      && build.tasks && build.tasks.length === 0;
     let reTriggerButton = !canBeReTriggered ? null :
       <RaisedButton label="Re-Trigger"
                     backgroundColor={cirrusColors.success}

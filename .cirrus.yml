@@ -1,7 +1,5 @@
 container:
   image: node:9.4.0
-  cpu: 1.5
-  memory: 2Gb
 
 build_task:
   node_modules_cache:

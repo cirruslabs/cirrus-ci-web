@@ -1,4 +1,4 @@
-FROM node:9.4.0
+FROM node:9.5.0
 
 WORKDIR /svc/cirrus-ci-web
 EXPOSE 8080

@@ -56,7 +56,7 @@ class Header extends React.Component {
             </div>
           );
           return <AppBar
-            title="Cirrus CI Beta"
+            title="Cirrus CI"
             titleStyle={{cursor: "pointer"}}
             onTitleClick={() => this.context.router.history.push("/")}
             showMenuIconButton={false}

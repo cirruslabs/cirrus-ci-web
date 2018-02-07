@@ -14,7 +14,8 @@
     "react-relay": "*",
     "react-router-dom": "*",
     "react-tap-event-plugin": "*",
-    "recharts": "*"
+    "recharts": "*",
+    "xterm": "*"
   },
   "devDependencies": {
     "babel-preset-react-app": "*",

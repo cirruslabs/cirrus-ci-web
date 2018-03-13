@@ -3,6 +3,7 @@ import React from 'react';
 import {graphql, QueryRenderer} from 'react-relay';
 
 import environment from '../../createRelayEnvironment';
+import ReactMarkdown from 'react-markdown';
 import RepositoryBuildList from '../../components/RepositoryBuildList'
 import CirrusLinearProgress from "../../components/CirrusLinearProgress";
 
@@ -25,7 +26,7 @@ const Repository = (props) => (
         return <CirrusLinearProgress/>
       }
       if (!props.repository) {
-        return <p>Not found</p>
+        return <ReactMarkdown source="Not found! Probably, you want to [install Cirrus CI first](https://cirrus-ci.org/guide/quick-start/)!"/>
       }
       return <RepositoryBuildList repository={props.repository}/>
     }}

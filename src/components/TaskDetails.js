@@ -107,6 +107,9 @@ class ViewerTaskList extends React.Component {
       gap: {
         paddingTop: 16
       },
+      buttonGap: {
+        marginRight: 16
+      },
       chip: {
         marginTop: 4,
         marginBottom: 4,
@@ -131,13 +134,11 @@ class ViewerTaskList extends React.Component {
       : null;
 
     let reRunButton = !hasWritePermissions(repository.viewerPermission) ? null :
-      <div className="card-body text-right">
-        <RaisedButton label="Re-Run"
-                    primary={true}
-                    onTouchTap={() => this.rerun(task.id)}
-                    icon={<FontIcon className="material-icons">refresh</FontIcon>}
-        />
-      </div>;
+      <RaisedButton label="Re-Run"
+                  primary={true}
+                  onTouchTap={() => this.rerun(task.id)}
+                  icon={<FontIcon className="material-icons">refresh</FontIcon>}
+      />;
     let previousRuns = [];
     if (task.previousRuns && task.previousRuns.length > 0) {
       previousRuns = [
@@ -180,7 +181,15 @@ class ViewerTaskList extends React.Component {
                 })
               }
             </div>
-            {reRunButton}
+            <div className="card-body text-right">
+              <RaisedButton label="View All Tasks"
+                            primary={false}
+                            style={styles.buttonGap}
+                            onTouchTap={() => this.context.router.history.push("/build/" + task.buildId)}
+                            icon={<FontIcon className="material-icons">input</FontIcon>}
+              />
+              {reRunButton}
+            </div>
           </div>
         </Paper>
         {notificationsComponent}
@@ -221,6 +230,7 @@ export default createFragmentContainer(withRouter(ViewerTaskList), {
   task: graphql`
     fragment TaskDetails_task on Task {
       id
+      buildId
       name
       status
       labels

@@ -215,6 +215,7 @@ type Task {
   repository: Repository!
   build: Build!
   previousRuns: [Task]
+  dependencies: [Task]
 }
 
 type TaskCommand {

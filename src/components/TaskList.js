@@ -1,15 +1,9 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import {withRouter} from 'react-router-dom'
 
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow} from 'material-ui/Table';
 import TaskListRow from "./TaskListRow";
 
 class TaskList extends React.Component {
-  static contextTypes = {
-    router: PropTypes.object
-  };
-
   render() {
     let styles = {
       chip: {
@@ -40,10 +34,6 @@ class TaskList extends React.Component {
       </Table>
     );
   }
-
-  handleTaskClick(taskId) {
-    this.context.router.history.push("/task/" + taskId)
-  }
 }
 
-export default withRouter(TaskList);
+export default TaskList;

@@ -217,7 +217,7 @@ export default createFragmentContainer(withRouter(BuildDetails), {
         message
       }
       tasks {
-        ...TaskList_task
+        ...TaskListRow_task
       }
       repository {
         id

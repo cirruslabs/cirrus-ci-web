@@ -120,7 +120,7 @@ class ViewerTaskList extends React.Component {
       },
     };
 
-    let notificationsComponent = !task.notifications ? null :
+    let notificationsComponent = (!task.notifications || task.notifications.length === 0) ? null :
       <div style={styles.gap}>
         <NotificationList notifications={task.notifications}/>
       </div>;
@@ -138,13 +138,23 @@ class ViewerTaskList extends React.Component {
                     icon={<FontIcon className="material-icons">refresh</FontIcon>}
         />
       </div>;
-    let previousRuns = null;
+    let previousRuns = [];
     if (task.previousRuns && task.previousRuns.length > 0) {
-      previousRuns = (
+      previousRuns = [
+        <div style={styles.gap}/>,
         <Paper>
           <TaskList tasks={task.previousRuns} header="Previous Runs"/>
         </Paper>
-      )
+      ]
+    }
+    let dependencies = [];
+    if (task.dependencies && task.dependencies.length > 0) {
+      dependencies = [
+        <div style={styles.gap}/>,
+        <Paper>
+          <TaskList tasks={task.dependencies} header="Dependencies"/>
+        </Paper>
+      ]
     }
 
     return (
@@ -174,7 +184,7 @@ class ViewerTaskList extends React.Component {
           </div>
         </Paper>
         {notificationsComponent}
-        <div style={styles.gap}/>
+        {dependencies}
         {previousRuns}
         <div style={styles.gap}/>
         <Paper zDepth={2} rounded={false}>
@@ -245,7 +255,10 @@ export default createFragmentContainer(withRouter(ViewerTaskList), {
         viewerPermission
       }
       previousRuns {
-        ...TaskList_task
+        ...TaskListRow_task
+      }
+      dependencies {
+        ...TaskListRow_task
       }
     }
   `,

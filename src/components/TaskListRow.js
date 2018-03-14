@@ -7,8 +7,13 @@ import TaskNameChip from "./chips/TaskNameChip";
 import TaskDurationChip from "./chips/TaskDurationChip";
 import {shorten} from "../utils/text";
 import {createFragmentContainer, graphql} from "react-relay";
+import PropTypes from "prop-types";
 
 class TaskListRow extends React.Component {
+  static contextTypes = {
+    router: PropTypes.object
+  };
+
   render() {
     let task = this.props.task;
     let styles = this.props.styles;
@@ -32,13 +37,16 @@ class TaskListRow extends React.Component {
         </TableRowColumn>
       </TableRow>
     );
+  }
 
+  handleTaskClick(taskId) {
+    this.context.router.history.push("/task/" + taskId)
   }
 }
 
 export default createFragmentContainer(withRouter(TaskListRow), {
   task: graphql`
-    fragment TaskList_task on Task {
+    fragment TaskListRow_task on Task {
         id
         name
         status

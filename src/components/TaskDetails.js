@@ -133,7 +133,7 @@ class ViewerTaskList extends React.Component {
       ? <TaskScheduledChip style={styles.chip} duration={scheduledStatusDuration.durationInSeconds}/>
       : null;
 
-    let reRunButton = !hasWritePermissions(repository.viewerPermission) ? null :
+    let reRunButton = !hasWritePermissions(build.viewerPermission) ? null :
       <RaisedButton label="Re-Run"
                   primary={true}
                   onTouchTap={() => this.rerun(task.id)}
@@ -257,12 +257,12 @@ export default createFragmentContainer(withRouter(ViewerTaskList), {
         changeIdInRepo
         changeTimestamp
         changeMessage
+        viewerPermission
       }
       repository {
         id
         owner
         name
-        viewerPermission
       }
       previousRuns {
         ...TaskListRow_task

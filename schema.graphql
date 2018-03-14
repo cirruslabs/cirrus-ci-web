@@ -19,6 +19,7 @@ type Build {
   notifications: [Notification]
   tasks: [Task]
   repository: Repository!
+  viewerPermission: PermissionType!
 }
 
 input BuildInput {

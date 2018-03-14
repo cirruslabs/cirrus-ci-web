@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {withRouter} from 'react-router-dom'
 
-import {Table, TableBody, TableRow, TableRowColumn} from 'material-ui/Table';
+import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import Chip from 'material-ui/Chip';
 import TaskNameChip from "./chips/TaskNameChip";
 import TaskDurationChip from "./chips/TaskDurationChip";
@@ -22,8 +22,21 @@ class TaskList extends React.Component {
       },
     };
     let tasks = this.props.tasks;
+    let header = null;
+    if (this.props.header) {
+      header = (
+        <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+          <TableRow displayBorder={false} selectable={false}>
+            <TableHeaderColumn  style={{textAlign: 'center'}}>
+              {this.props.header}
+            </TableHeaderColumn>
+          </TableRow>
+        </TableHeader>
+      )
+    }
     return (
       <Table selectable={false} style={{tableLayout: 'auto'}}>
+        {header}
         <TableBody displayRowCheckbox={false} showRowHover={true}>
           {tasks.map(task => this.buildItem(task, styles))}
         </TableBody>

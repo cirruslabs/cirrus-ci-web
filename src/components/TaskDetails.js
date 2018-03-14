@@ -7,6 +7,7 @@ import Chip from 'material-ui/Chip';
 import Paper from 'material-ui/Paper';
 
 import TaskCommandList from './TaskCommandList'
+import TaskList from './TaskList';
 import NotificationList from "./NotificationList";
 import {isTaskFinalStatus} from "../utils/status";
 import {FontIcon, RaisedButton} from "material-ui";
@@ -137,6 +138,15 @@ class ViewerTaskList extends React.Component {
                     icon={<FontIcon className="material-icons">refresh</FontIcon>}
         />
       </div>;
+    let previousRuns = null;
+    if (task.previousRuns && task.previousRuns.length > 0) {
+      previousRuns = (
+        <Paper>
+          <TaskList tasks={task.previousRuns} header="Previous Runs"/>
+        </Paper>
+      )
+    }
+
     return (
       <div style={styles.main} className="container">
         <Paper zDepth={2} rounded={false}>
@@ -164,6 +174,8 @@ class ViewerTaskList extends React.Component {
           </div>
         </Paper>
         {notificationsComponent}
+        <div style={styles.gap}/>
+        {previousRuns}
         <div style={styles.gap}/>
         <Paper zDepth={2} rounded={false}>
           <TaskCommandList task={task} commands={task.commands}/>
@@ -231,6 +243,24 @@ export default createFragmentContainer(withRouter(ViewerTaskList), {
         owner
         name
         viewerPermission
+      }
+      previousRuns {
+        id
+        name
+        status
+        creationTimestamp
+        scheduledTimestamp
+        durationInSeconds
+        labels
+        statusDurations {
+          status
+          durationInSeconds
+        }
+        commands {
+          name
+          status
+          durationInSeconds
+        }
       }
     }
   `,

@@ -117,7 +117,6 @@ type Repository {
   cloneUrl: String!
   masterBranch: String!
   isPrivate: Boolean!
-  lastMasterBuild: Build
   builds(
     # fetching only nodes before this node (exclusive)
     before: String
@@ -215,6 +214,7 @@ type Task {
   statusDurations: [TaskStatusDuration]
   repository: Repository!
   build: Build!
+  previousRuns: [Task]
 }
 
 type TaskCommand {

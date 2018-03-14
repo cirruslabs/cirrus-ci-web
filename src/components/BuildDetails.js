@@ -217,22 +217,7 @@ export default createFragmentContainer(withRouter(BuildDetails), {
         message
       }
       tasks {
-        id
-        name
-        status
-        creationTimestamp
-        scheduledTimestamp
-        durationInSeconds
-        labels
-        statusDurations {
-          status
-          durationInSeconds
-        }
-        commands {
-          name
-          status
-          durationInSeconds
-        }
+        ...TaskList_task
       }
       repository {
         id

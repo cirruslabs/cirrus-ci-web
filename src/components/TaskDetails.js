@@ -245,22 +245,7 @@ export default createFragmentContainer(withRouter(ViewerTaskList), {
         viewerPermission
       }
       previousRuns {
-        id
-        name
-        status
-        creationTimestamp
-        scheduledTimestamp
-        durationInSeconds
-        labels
-        statusDurations {
-          status
-          durationInSeconds
-        }
-        commands {
-          name
-          status
-          durationInSeconds
-        }
+        ...TaskList_task
       }
     }
   `,

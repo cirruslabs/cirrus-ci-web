@@ -48,7 +48,7 @@ class Header extends React.Component {
         render={({error, props}) => {
           let rightPanel = (
             <div>
-              <FlatButton label="Docs"
+              <FlatButton label="Documentation"
                           style={{color: cirrusColors.cirrusWhite, marginRight: 8}}
                           href="https://cirrus-ci.org/"
                           icon={<FontIcon className="fa fa-book"/>}/>

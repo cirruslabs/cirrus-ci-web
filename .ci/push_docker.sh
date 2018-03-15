@@ -9,4 +9,4 @@ fi
 
 docker login --username $DOCKER_USER_NAME --password $DOCKER_PASSWORD
 
-docker cirrusci/web-front-end:latest
+docker push cirrusci/web-front-end:latest

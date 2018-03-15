@@ -9,7 +9,7 @@ build_task:
   relay_script: yarn run relay
   build_script: yarn run build
 
-deploy_container_builder:
+deploy_docker_builder:
   only_if: $CIRRUS_BRANCH == "master"
   depends_on: build
   environment:

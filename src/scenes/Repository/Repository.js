@@ -26,7 +26,7 @@ const Repository = (props) => (
         return <CirrusLinearProgress/>
       }
       if (!props.repository) {
-        return <ReactMarkdown source="Not found! Probably, you want to [install Cirrus CI first](https://cirrus-ci.org/guide/quick-start/)!"/>
+        return <ReactMarkdown source="Not found! Probably, you want to [install Cirrus CI first](https://cirrus-ci.org/guide/quick-start/)! Or push [`.cirrus.yml` configuration file!](https://cirrus-ci.org/guide/writing-tasks/)."/>
       }
       return <RepositoryBuildList repository={props.repository}/>
     }}

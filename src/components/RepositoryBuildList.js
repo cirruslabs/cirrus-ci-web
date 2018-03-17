@@ -106,10 +106,13 @@ class RepositoryBuildList extends React.Component {
         <TableRowColumn>
           <BuildBranchNameChip build={build} style={styles.chip}/>
           <BuildChangeChip build={build} style={styles.chip}/>
-          <BuildStatusChip build={build} style={styles.chip}/>
+          <BuildStatusChip build={build} style={styles.chip} className="hidden-lg-up"/>
         </TableRowColumn>
         <TableRowColumn style={{width: '100%'}}>
           <ReactMarkdown source={build.changeMessage}/>
+        </TableRowColumn>
+        <TableRowColumn style={{padding: 0}} className="hidden-md-down">
+          <BuildStatusChip build={build} style={styles.chip}/>
         </TableRowColumn>
       </TableRow>
     );

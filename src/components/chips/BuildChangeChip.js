@@ -6,6 +6,7 @@ import Chip from 'material-ui/Chip';
 import FontIcon from 'material-ui/FontIcon';
 import {cirrusColors} from "../../cirrusTheme";
 import {withRouter} from "react-router-dom";
+import {navigateBuild} from "../../utils/navigate";
 
 class BuildChangeChip extends React.Component {
   static contextTypes = {
@@ -15,17 +16,13 @@ class BuildChangeChip extends React.Component {
   render() {
     let build = this.props.build;
     return (
-      <Chip onClick={() => this.handleBranchClick(build)}
+      <Chip onClick={(e) => navigateBuild(this.context.router, e, build)}
             style={this.props.style}>
         <Avatar backgroundColor={cirrusColors.cirrusPrimary}
                 icon={<FontIcon className="material-icons">input</FontIcon>}/>
         {build.changeIdInRepo.substr(0, 6)}
       </Chip>
     );
-  }
-
-  handleBranchClick(build) {
-    this.context.router.history.push("/build/" + build.id);
   }
 }
 

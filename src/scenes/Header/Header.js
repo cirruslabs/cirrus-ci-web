@@ -11,6 +11,7 @@ import environment from '../../createRelayEnvironment';
 import AccountInformation from '../../components/AccountInformation'
 import CirrusCircularProgress from "../../components/CirrusCircularProgress";
 import {cirrusColors} from "../../cirrusTheme";
+import {navigate} from "../../utils/navigate";
 
 function componentForViewer(props) {
   if (!props) {
@@ -58,7 +59,7 @@ class Header extends React.Component {
           return <AppBar
             title="Cirrus CI"
             titleStyle={{cursor: "pointer"}}
-            onTitleClick={() => this.context.router.history.push("/")}
+            onTitleClick={(e) => navigate(this.context.router, e, "/")}
             showMenuIconButton={false}
             iconStyleRight={{marginTop: "auto", marginBottom: "auto"}}
             iconElementRight={rightPanel}

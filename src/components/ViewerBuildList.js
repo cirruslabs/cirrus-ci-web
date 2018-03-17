@@ -12,6 +12,7 @@ import RepositoryNameChip from "./chips/RepositoryNameChip";
 import BuildBranchNameChip from "./chips/BuildBranchNameChip";
 import BuildStatusChip from "./chips/BuildStatusChip";
 import BuildChangeChip from "./chips/BuildChangeChip";
+import {navigateBuild} from "../utils/navigate";
 
 
 class ViewerBuildList extends React.Component {
@@ -44,7 +45,8 @@ class ViewerBuildList extends React.Component {
     if (!builds || builds.edges.length === 0) {
       buildsComponent = (
         <div style={styles.emptyBuilds}>
-          <ReactMarkdown source="No recent builds! Please check [documentation](https://cirrus-ci.org/) on how to start with Cirrus CI."/>
+          <ReactMarkdown
+            source="No recent builds! Please check [documentation](https://cirrus-ci.org/) on how to start with Cirrus CI."/>
         </div>
       );
     }
@@ -65,7 +67,7 @@ class ViewerBuildList extends React.Component {
   buildItem(build, styles) {
     return (
       <TableRow key={build.id}
-                onMouseDown={() => this.handleBuildClick(build.id)}
+                onMouseDown={(e) => navigateBuild(this.context.router, e, build.id)}
                 style={{cursor: "pointer"}}>
         <TableRowColumn style={{padding: 0}}>
           <RepositoryNameChip repository={build.repository} style={styles.chip}/>
@@ -81,14 +83,6 @@ class ViewerBuildList extends React.Component {
         </TableRowColumn>
       </TableRow>
     );
-  }
-
-  handleBuildClick(buildId) {
-    this.context.router.history.push("/build/" + buildId)
-  }
-
-  handleRepositoryClick(repository) {
-    this.context.router.history.push("/github/" + repository.owner + "/" + repository.name)
   }
 }
 

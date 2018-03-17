@@ -13,6 +13,7 @@ import BuildDurationsChart from "./BuildDurationsChart";
 import BuildBranchNameChip from "./chips/BuildBranchNameChip";
 import BuildChangeChip from "./chips/BuildChangeChip";
 import BuildStatusChip from "./chips/BuildStatusChip";
+import {navigateBuild} from "../utils/navigate";
 
 
 class RepositoryBuildList extends React.Component {
@@ -48,7 +49,7 @@ class RepositoryBuildList extends React.Component {
 
     let repositorySettings = null;
 
-    if (repository.viewerPermission === 'WRITE' || repository.viewerPermission === 'ADMIN' ) {
+    if (repository.viewerPermission === 'WRITE' || repository.viewerPermission === 'ADMIN') {
       repositorySettings = (
         <ToolbarGroup>
           <Link to={"/settings/repository/" + repository.id}>
@@ -101,7 +102,7 @@ class RepositoryBuildList extends React.Component {
       <TableRow key={build.id}
                 hovered={isSelectedBuild}
                 onMouseOver={() => (!isSelectedBuild) && this.setState({selectedBuildId: build.id})}
-                onMouseDown={() => this.handleBuildClick(build.id)}
+                onMouseDown={(e) => navigateBuild(this.context.router, e, build.id)}
                 style={{cursor: "pointer"}}>
         <TableRowColumn>
           <BuildBranchNameChip build={build} style={styles.chip}/>
@@ -116,10 +117,6 @@ class RepositoryBuildList extends React.Component {
         </TableRowColumn>
       </TableRow>
     );
-  }
-
-  handleBuildClick(buildId) {
-    this.context.router.history.push("/build/" + buildId)
   }
 }
 

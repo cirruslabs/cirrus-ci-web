@@ -21,6 +21,7 @@ import TaskCommandsProgress from "./TaskCommandsProgress";
 import TaskScheduledChip from "./chips/TaskScheduledChip";
 import {hasWritePermissions} from "../utils/permissions";
 import {shorten} from "../utils/text";
+import {navigateBuild, navigateTask} from "../utils/navigate";
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskInput!) {
@@ -135,9 +136,9 @@ class ViewerTaskList extends React.Component {
 
     let reRunButton = !hasWritePermissions(build.viewerPermission) ? null :
       <RaisedButton label="Re-Run"
-                  primary={true}
-                  onTouchTap={() => this.rerun(task.id)}
-                  icon={<FontIcon className="material-icons">refresh</FontIcon>}
+                    primary={true}
+                    onTouchTap={() => this.rerun(task.id)}
+                    icon={<FontIcon className="material-icons">refresh</FontIcon>}
       />;
     let previousRuns = [];
     if (task.previousRuns && task.previousRuns.length > 0) {
@@ -185,7 +186,7 @@ class ViewerTaskList extends React.Component {
               <RaisedButton label="View All Tasks"
                             primary={false}
                             style={styles.buttonGap}
-                            onTouchTap={() => this.context.router.history.push("/build/" + task.buildId)}
+                            onTouchTap={(e) => navigateBuild(this.context.router, e, task.buildId)}
                             icon={<FontIcon className="material-icons">input</FontIcon>}
               />
               {reRunButton}
@@ -218,7 +219,7 @@ class ViewerTaskList extends React.Component {
         mutation: taskReRunMutation,
         variables: variables,
         onCompleted: (response) => {
-          this.context.router.history.push("/task/" + response.rerun.newTask.id)
+          navigateTask(this.context.router, null, response.rerun.newTask.id)
         },
         onError: err => console.error(err),
       },

@@ -8,6 +8,7 @@ import TaskDurationChip from "./chips/TaskDurationChip";
 import {shorten} from "../utils/text";
 import {createFragmentContainer, graphql} from "react-relay";
 import PropTypes from "prop-types";
+import {navigateTask} from "../utils/navigate";
 
 class TaskListRow extends React.Component {
   static contextTypes = {
@@ -19,7 +20,7 @@ class TaskListRow extends React.Component {
     let styles = this.props.styles;
     return (
       <TableRow key={task.id}
-                onMouseDown={() => this.handleTaskClick(task.id)}
+                onMouseDown={(e) => navigateTask(this.context.router, e, task.id)}
                 style={{cursor: "pointer"}}>
         <TableRowColumn style={{padding: 0}}>
           <TaskNameChip task={task} style={styles.chip}/>
@@ -37,10 +38,6 @@ class TaskListRow extends React.Component {
         </TableRowColumn>
       </TableRow>
     );
-  }
-
-  handleTaskClick(taskId) {
-    this.context.router.history.push("/task/" + taskId)
   }
 }
 

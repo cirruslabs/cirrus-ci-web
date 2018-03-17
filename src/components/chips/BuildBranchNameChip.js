@@ -6,6 +6,7 @@ import Chip from 'material-ui/Chip';
 import FontIcon from 'material-ui/FontIcon';
 import {cirrusColors} from "../../cirrusTheme";
 import {withRouter} from "react-router-dom";
+import {navigate} from "../../utils/navigate";
 
 class BuildBranchNameChip extends React.Component {
   static contextTypes = {
@@ -15,7 +16,7 @@ class BuildBranchNameChip extends React.Component {
   render() {
     let build = this.props.build;
     return (
-      <Chip onClick={() => this.handleBranchClick(build)}
+      <Chip onClick={(e) => this.handleBranchClick(e, build)}
             style={this.props.style}>
         <Avatar backgroundColor={cirrusColors.cirrusPrimary}
                 icon={<FontIcon className="material-icons">call_split</FontIcon>}/>
@@ -24,11 +25,11 @@ class BuildBranchNameChip extends React.Component {
     );
   }
 
-  handleBranchClick(build) {
+  handleBranchClick(event, build) {
     if (build.repository) {
-      this.context.router.history.push("/github/" + build.repository.owner + "/" + build.repository.name + "/" + build.branch)
+      navigate(this.context.router, event, "/github/" + build.repository.owner + "/" + build.repository.name + "/" + build.branch)
     } else if (build.repositoryId) {
-      this.context.router.history.push("/repository/" + build.repositoryId + "/" + build.branch)
+      navigate(this.context.router, event, "/repository/" + build.repositoryId + "/" + build.branch)
     }
   }
 }

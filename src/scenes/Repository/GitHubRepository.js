@@ -6,6 +6,7 @@ import environment from '../../createRelayEnvironment';
 import ReactMarkdown from 'react-markdown';
 import RepositoryBuildList from '../../components/RepositoryBuildList'
 import CirrusLinearProgress from "../../components/CirrusLinearProgress";
+import NotFound from "../NotFound";
 
 const Repository = (props) => {
   let branch = props.match.params.branch;
@@ -27,7 +28,9 @@ const Repository = (props) => {
         return <CirrusLinearProgress/>
       }
       if (!props.githubRepository) {
-        return <ReactMarkdown source="Not found! Probably, you want to [install Cirrus CI first](https://cirrus-ci.org/guide/quick-start/)! Or push [`.cirrus.yml` configuration file!](https://cirrus-ci.org/guide/writing-tasks/)."/>
+        let notFoundMessage =
+          <ReactMarkdown source="Repository not found!<br/>Please [install Cirrus CI](https://cirrus-ci.org/guide/quick-start/) or push [`.cirrus.yml`](https://cirrus-ci.org/guide/writing-tasks/)!"/>;
+        return <NotFound messageComponent={notFoundMessage}/>
       }
       return <RepositoryBuildList repository={props.githubRepository} branch={branch}/>
     }}

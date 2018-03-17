@@ -3,6 +3,7 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import CircularProgress from 'material-ui/CircularProgress';
 import Loadable from 'react-loadable';
 import Header from "./scenes/Header/Header";
+import NotFound from "./scenes/NotFound";
 
 const LoadingComponent = ({isLoading, error}) => {
   if (isLoading) {
@@ -56,17 +57,19 @@ class Routes extends React.Component {
   render() {
     return (
       <BrowserRouter>
-        <div>
+        <div style={{width: "100%", height: "100%"}}>
           <Header/>
           <Switch>
             <Route exact path="/" component={AsyncHome} props={this.props}/>
             <Route exact path="/build/:buildId" component={AsyncBuild} props={this.props}/>
             <Route exact path="/github/:owner/:name/:branch*" component={AsyncGitHubRepository} props={this.props}/>
+            <Route exact path="/github" component={AsyncGitHub} props={this.props}/>
             <Route exact path="/repository/:repositoryId/:branch*" component={AsyncRepository} props={this.props}/>
             <Route exact path="/settings/repository/:repositoryId" component={AsyncRepositorySettings}
                    props={this.props}/>
             <Route exact path="/task/:taskId" component={AsyncTask} props={this.props}/>
-            <Route exact path="/github" component={AsyncGitHub} props={this.props}/>
+            <Route exact path="/:owner/:name/:branch*" component={AsyncGitHubRepository} props={this.props}/>
+            <Route component={NotFound} props={this.props}/>
           </Switch>
         </div>
       </BrowserRouter>

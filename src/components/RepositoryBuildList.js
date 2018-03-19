@@ -40,7 +40,7 @@ class RepositoryBuildList extends React.Component {
         margin: 4,
       },
       buildsChart: {
-        height: 77,
+        height: 150,
       },
     };
 
@@ -63,7 +63,7 @@ class RepositoryBuildList extends React.Component {
 
     let buildsChart = null;
 
-    if (this.props.branch) {
+    if (this.props.branch && builds.length > 5) {
       buildsChart = (
         <Paper zDepth={1} rounded={false} style={styles.buildsChart}>
           <BuildDurationsChart builds={builds.slice().reverse()}
@@ -134,6 +134,7 @@ export default createFragmentContainer(withRouter(RepositoryBuildList), {
             branch
             changeIdInRepo
             changeMessage
+            changeMessageTitle
             durationInSeconds
             status
             changeTimestamp

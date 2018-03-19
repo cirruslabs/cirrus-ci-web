@@ -1,16 +1,41 @@
 import React from 'react';
-import {BarChart, Bar, Rectangle, ResponsiveContainer} from 'recharts';
+import {BarChart, Bar, Rectangle, ResponsiveContainer, YAxis, Tooltip, XAxis} from 'recharts';
 import {buildStatusColor} from "../utils/colors";
+import {formatDuration} from "../utils/time";
+import {navigateBuild} from "../utils/navigate";
+import {withRouter} from "react-router-dom";
+import PropTypes from "prop-types";
 
-export default class BuildDurationsChart extends React.Component {
+const BuildDurationsChartTooltip = (props) => {
+  let style = {
+    padding: 4,
+    backgroundColor: '#FFF'
+  };
+  return <p style={style}>{props.label}</p>;
+};
+
+class BuildDurationsChart extends React.Component {
+  static contextTypes = {
+    router: PropTypes.object
+  };
+
   render() {
     let {builds, selectedBuildId, onSelectBuildId} = this.props;
+    let maxDuration = Math.max(...builds.map((build) => build.durationInSeconds));
+    let ticks = [0];
+    for (let nextTick = 60; nextTick < maxDuration; nextTick += 60) {
+      ticks.push(nextTick);
+    }
     return (
       <ResponsiveContainer height='100%' width='100%'>
         <BarChart data={builds}>
-          <Bar dataKey='durationInSeconds'
+          <YAxis dataKey="durationInSeconds" tickFormatter={formatDuration} ticks={ticks} />
+          <XAxis dataKey="changeMessageTitle" hide={true}/>
+          <Tooltip content={<BuildDurationsChartTooltip/>}/>
+          <Bar dataKey="durationInSeconds"
                isAnimationActive={false}
                shape={(props) => BuildDurationsChart.renderBuildBar(props, selectedBuildId)}
+               onMouseDown={(build, index, event) => navigateBuild(this.context.router, event, build.id)}
                onMouseEnter={(entry) => onSelectBuildId(entry.id)}
                onMouseLeave={() => onSelectBuildId("0")}/>
         </BarChart>
@@ -31,3 +56,5 @@ export default class BuildDurationsChart extends React.Component {
     return <Rectangle {...props} fill={buildStatusColor(props.status)} className="recharts-bar-rectangle" />
   }
 }
+
+export default withRouter(BuildDurationsChart)

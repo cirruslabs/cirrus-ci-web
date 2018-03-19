@@ -138,6 +138,10 @@ export default createFragmentContainer(withRouter(RepositoryBuildList), {
             durationInSeconds
             status
             changeTimestamp
+            repository {
+              owner
+              name
+            }
           }
         }
       }

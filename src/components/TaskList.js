@@ -29,7 +29,7 @@ class TaskList extends React.Component {
       <Table selectable={false} style={{tableLayout: 'auto'}}>
         {header}
         <TableBody displayRowCheckbox={false} showRowHover={true}>
-          {tasks.map(task => <TaskListRow task={task} styles={styles}/>)}
+          {tasks.map(task => <TaskListRow key={task.id} task={task} styles={styles}/>)}
         </TableBody>
       </Table>
     );

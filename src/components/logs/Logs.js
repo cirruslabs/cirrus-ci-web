@@ -1,48 +1,21 @@
 import React from 'react';
-import {Terminal} from 'xterm';
-import 'xterm/dist/xterm.css';
-import * as fit from 'xterm/lib/addons/fit/fit';
+import AnsiUp from 'ansi_up';
+import {cirrusColors} from "../../cirrusTheme";
+
+import './logs.css'
+
+let ansiFormatter = new AnsiUp();
+ansiFormatter.use_classes = true;
 
 class Logs extends React.Component {
   constructor(props) {
     super(props);
-    Terminal.applyAddon(fit);
-    this.term = new Terminal({
-      cursorBlink: false,
-      cols: 200,
-      disableStdin: true,
-      fontFamily: "Monaco,monospace",
-      fontSize: 12,
-    });
-    this.term.on('open', () => {
-      this.term.fit();
-    })
+    let logLines = this.props.logLines || [];
+    this.state = {logs: logLines.join("\n")};
   }
 
   appendLogs(newLogs) {
-    // for some weird reasons just this.term.write(newLogs) doesn't work as intendent
-    let logLines = newLogs.split("\n");
-    if (logLines.length === 0) {
-      return;
-    }
-    this.term.write(logLines.shift());
-    if (logLines.length === 0) {
-      return;
-    }
-    let tail = logLines.pop();
-    logLines.forEach((line) => this.term.writeln(line))
-    this.term.write(tail)
-  }
-
-  componentDidMount() {
-    this.term.open(this.refs.container);
-    if (this.props.logLines) {
-      this.props.logLines.forEach((line) => this.term.writeln(line));
-    }
-  }
-
-  componentWillUnmount() {
-    this.term.destroy()
+    this.setState({logs: this.state.logs + newLogs});
   }
 
   render() {
@@ -50,13 +23,31 @@ class Logs extends React.Component {
       logContainer: {
         overflowY: "scroll",
         minHeight: "50px",
-        maxHeight: "500px",
+        height: "100%",
+        maxWidth: "100%",
+        background: cirrusColors.cirrusDark,
+        padding: 8,
+      },
+      logLine: {
+        width: "100%",
+        display: 'flex',
+        flexWrap: 'wrap',
+        margin: 0,
+        color: cirrusColors.cirrusWhite,
       },
     };
 
     return (
-      <div style={styles.logContainer} ref="container"/>
+      <div style={styles.logContainer}>
+        {this.state.logs.split("\n").map((line, index) => Logs.buildLogLine(line, index, styles.logLine))}
+      </div>
     );
+  }
+
+  static buildLogLine(line, index, style) {
+    return (
+      <div key={index} style={style} className="log-line" dangerouslySetInnerHTML={{__html: ansiFormatter.ansi_to_html(line)}}/>
+    )
   }
 }
 

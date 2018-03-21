@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "ansi_up": "^2.0.2",
     "graphql": "*",
     "graphql-relay": "*",
     "material-ui": "*",
@@ -14,8 +15,7 @@
     "react-relay": "*",
     "react-router-dom": "*",
     "react-tap-event-plugin": "*",
-    "recharts": "*",
-    "xterm": "*"
+    "recharts": "*"
   },
   "devDependencies": {
     "babel-preset-react-app": "*",

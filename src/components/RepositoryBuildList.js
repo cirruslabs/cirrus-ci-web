@@ -109,8 +109,10 @@ class RepositoryBuildList extends React.Component {
           <BuildChangeChip build={build} style={styles.chip}/>
           <BuildStatusChip build={build} style={styles.chip} className="hidden-lg-up"/>
         </TableRowColumn>
-        <TableRowColumn style={{width: '100%'}}>
-          <ReactMarkdown source={build.changeMessage}/>
+        <TableRowColumn style={{width: '100%', maxWidth: 600}}>
+          <div className="card-block">
+            <ReactMarkdown className="card-text" source={build.changeMessage}/>
+          </div>
         </TableRowColumn>
         <TableRowColumn style={{padding: 0}} className="hidden-md-down">
           <BuildStatusChip build={build} style={styles.chip}/>

@@ -75,7 +75,7 @@ class ViewerBuildList extends React.Component {
           <BuildChangeChip build={build} style={styles.chip}/>
           <BuildStatusChip build={build} style={styles.chip} className="hidden-lg-up"/>
         </TableRowColumn>
-        <TableRowColumn style={{maxWidth: '100%', maxWidth: 600}}>
+        <TableRowColumn style={{width: '100%', maxWidth: 600}}>
           <div className="card-block">
             <ReactMarkdown className="card-text" source={build.changeMessage}/>
           </div>

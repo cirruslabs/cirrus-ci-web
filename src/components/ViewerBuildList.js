@@ -77,7 +77,7 @@ class ViewerBuildList extends React.Component {
         </TableRowColumn>
         <TableRowColumn style={{width: '100%', maxWidth: 600}}>
           <div className="card-block">
-            <ReactMarkdown className="card-text" source={build.changeMessage}/>
+            <ReactMarkdown className="card-text" source={build.changeMessageTitle}/>
           </div>
         </TableRowColumn>
         <TableRowColumn style={{padding: 0}} className="hidden-md-down">
@@ -97,7 +97,7 @@ export default createFragmentContainer(withRouter(ViewerBuildList), {
             id
             branch
             changeIdInRepo
-            changeMessage
+            changeMessageTitle
             durationInSeconds
             status
             changeTimestamp

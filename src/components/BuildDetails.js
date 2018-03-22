@@ -109,7 +109,7 @@ class BuildDetails extends React.Component {
     };
 
     let repoUrl = build.repository.cloneUrl.slice(0, -4);
-    let branchUrl = repoUrl + "/tree/" + build.branch;
+    let branchUrl = build.branch.startsWith("pull/") ? `${repoUrl}/${build.branch}` : `${repoUrl}/tree/${build.branch}`;
     let commitUrl = repoUrl + "/commit/" + build.changeIdInRepo;
 
     let notificationsComponent = !build.notifications ? null :
@@ -146,8 +146,8 @@ class BuildDetails extends React.Component {
             </div>
             <div style={styles.gap}/>
             <h5 className="card-title align-middle">
-              Commit <a href={commitUrl}>{build.changeIdInRepo.substr(0, 6)}</a> on branch <a
-              href={branchUrl}>{build.branch}</a>:
+              Commit <a href={commitUrl} target="_blank">{build.changeIdInRepo.substr(0, 6)}</a> on branch <a
+              href={branchUrl} target="_blank">{build.branch}</a>:
             </h5>
             <ReactMarkdown className="card-text" source={build.changeMessage}/>
             <div className="card-body text-right">

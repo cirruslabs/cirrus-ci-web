@@ -35,6 +35,9 @@ let cirrusColors = {
 let cirrusTheme = {
   fontFamily: 'Roboto, sans-serif',
   borderRadius: 2,
+  typography: {
+    fontSize: 16,
+  },
   palette: {
     primary: {
       main: cirrusColors.cirrusPrimary,

@@ -35,18 +35,18 @@ class TaskListRow extends React.Component {
       <TableRow onClick={(e) => navigateTask(this.context.router, e, task.id)}
                 hover={true}
                 style={{cursor: "pointer"}}>
-        <TableCell className={classNames("d-fle", "flex-column", "align-items-start", classes.cell)}>
+        <TableCell className={classNames(classes.cell)}>
           <TaskNameChip task={task} className={classes.chip}/>
-          <TaskDurationChip task={task} className={classNames(classes.chip, "hidden-md-up")}/>
+          <TaskDurationChip task={task} className={classNames(classes.chip, "d-md-none")}/>
         </TableCell>
-        <TableCell className={classNames("hidden-md-down", classes.cell)}>
+        <TableCell className={classNames("d-none", "d-lg-table-cell", classes.cell)}>
           {
             task.labels.map(label => {
               return <Chip key={label} className={classes.chip} label={shorten(label)}/>
             })
           }
         </TableCell>
-        <TableCell className={classNames("hidden-sm-down", classes.cell)}>
+        <TableCell className={classNames("d-none", "d-md-table-cell", classes.cell)}>
           <TaskDurationChip task={task} className={classes.chip}/>
         </TableCell>
       </TableRow>

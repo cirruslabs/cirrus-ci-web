@@ -140,7 +140,7 @@ class BuildDetails extends React.Component {
     return (
       <div className={classNames(classes.main, "container")}>
         <Paper elevation={2}>
-          <div className="card-block">
+          <div className="card-body">
             <div className={classes.wrapper}>
               <RepositoryNameChip className={classes.chip} repository={build.repository}/>
               <BuildStatusChip className={classes.chip} build={build}/>

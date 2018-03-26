@@ -113,14 +113,14 @@ class RepositoryBuildList extends React.Component {
         <TableCell className={classNames("d-flex", "flex-column", "align-items-start", classes.cell)}>
           <BuildBranchNameChip build={build} className={classes.chip}/>
           <BuildChangeChip build={build} className={classes.chip}/>
-          <BuildStatusChip build={build} className={classNames("hidden-lg-up", classes.chip)}/>
+          <BuildStatusChip build={build} className={classNames("d-lg-none", classes.chip)}/>
         </TableCell>
         <TableCell className={classes.cell}>
-          <div className="card-block">
+          <div className="card-body">
             <ReactMarkdown className="card-text" source={build.changeMessageTitle}/>
           </div>
         </TableCell>
-        <TableCell className={classNames("hidden-md-down", classes.cell)}>
+        <TableCell className={classNames("d-none", "d-lg-table-cell", classes.cell)}>
           <BuildStatusChip build={build} className={classes.chip}/>
         </TableCell>
       </TableRow>

@@ -179,7 +179,7 @@ class ViewerTaskList extends React.Component {
     return (
       <div className={`container ${classes.main}`}>
         <Paper elevation={2}>
-          <div className="card-block">
+          <div className="card-body">
             <h4 className={`card-title text-middle ${classes.wrapper}`}>
               <RepositoryNameChip className={classes.chip} repository={repository}/>
               <BuildBranchNameChip className={classes.chip} build={build}/>

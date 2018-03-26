@@ -36,7 +36,7 @@ let cirrusTheme = {
   fontFamily: 'Roboto, sans-serif',
   borderRadius: 2,
   typography: {
-    fontSize: 16,
+    fontSize: 14,
   },
   palette: {
     primary: {

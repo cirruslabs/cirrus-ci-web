@@ -4,6 +4,9 @@ export function navigate(router, event, url) {
   } else {
     router.history.push(url)
   }
+  if (event) {
+    event.stopPropagation();
+  }
 }
 
 export function navigateBuild(router, event, buildId) {

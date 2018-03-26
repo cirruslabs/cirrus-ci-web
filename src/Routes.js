@@ -1,22 +1,10 @@
 import React from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import CircularProgress from 'material-ui/CircularProgress';
+import LoadingComponent from "./components/CirrusLoadingComponent";
 import Loadable from 'react-loadable';
 import Header from "./scenes/Header/Header";
 import NotFound from "./scenes/NotFound";
 
-const LoadingComponent = ({isLoading, error}) => {
-  if (isLoading) {
-    return <CircularProgress/>;
-  }
-  else if (error) {
-    // todo: make it prettier
-    return <div>Sorry, there was a problem loading the page.</div>;
-  }
-  else {
-    return null;
-  }
-};
 
 const AsyncHome = Loadable({
   loader: () => import('./scenes/Home/Home'),

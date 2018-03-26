@@ -1,10 +1,25 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Paper from 'material-ui/Paper';
-import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
+import Toolbar from 'material-ui/Toolbar';
 import RepositorySecuredVariables from "./RepositorySecuredVariables";
 import RepositorySettings from "./RepositorySettings";
 import {createFragmentContainer, graphql} from "react-relay";
+import {Typography, withStyles} from "material-ui";
+import classNames from 'classnames';
+import {cirrusColors} from "../cirrusTheme";
+
+const styles = {
+  main: {
+    paddingTop: 8
+  },
+  title: {
+    backgroundColor: cirrusColors.cirrusGrey
+  },
+  settingGap: {
+    paddingTop: 16
+  },
+};
 
 class RepositorySettingsPage extends React.Component {
   static contextTypes = {
@@ -12,32 +27,25 @@ class RepositorySettingsPage extends React.Component {
   };
 
   render() {
-    let styles = {
-      main: {
-        paddingTop: 8
-      },
-      settingGap: {
-        paddingTop: 16
-      },
-    };
+    let {classes} = this.props;
 
     let repository = this.props.repository;
     console.log(repository);
     return (
-      <div style={styles.main} className="container">
-        <Paper style={styles.settingItem} zDepth={1} rounded={false}>
-          <Toolbar>
-            <ToolbarGroup>
-              <ToolbarTitle text={repository.owner + "/" + repository.name + " repository settings"}/>
-            </ToolbarGroup>
+      <div className={classNames("container", classes.main)}>
+        <Paper elevation={1}>
+          <Toolbar className={classes.title}>
+            <Typography variant="title" color="inherit">
+              {repository.owner + "/" + repository.name + " repository settings"}
+            </Typography>
           </Toolbar>
         </Paper>
-        <div style={styles.settingGap}/>
-        <Paper zDepth={1} rounded={false}>
+        <div className={classes.settingGap}/>
+        <Paper elevation={1}>
           <RepositorySettings {...this.props}/>
         </Paper>
-        <div style={styles.settingGap}/>
-        <Paper zDepth={1} rounded={false}>
+        <div className={classes.settingGap}/>
+        <Paper elevation={1}>
           <RepositorySecuredVariables {...this.props}/>
         </Paper>
       </div>
@@ -45,7 +53,7 @@ class RepositorySettingsPage extends React.Component {
   }
 }
 
-export default createFragmentContainer(RepositorySettingsPage, {
+export default createFragmentContainer(withStyles(styles)(RepositorySettingsPage), {
   repository: graphql`
     fragment RepositorySettingsPage_repository on Repository {
       owner

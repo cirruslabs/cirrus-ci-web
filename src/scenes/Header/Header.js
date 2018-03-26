@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
-import FlatButton from 'material-ui/FlatButton';
-import FontIcon from 'material-ui/FontIcon';
 import {withRouter} from 'react-router-dom'
 
 import {graphql, QueryRenderer} from 'react-relay';
@@ -12,6 +10,7 @@ import AccountInformation from '../../components/AccountInformation'
 import CirrusCircularProgress from "../../components/CirrusCircularProgress";
 import {cirrusColors} from "../../cirrusTheme";
 import {navigate} from "../../utils/navigate";
+import {Button, Icon, Toolbar, Typography, withStyles} from "material-ui";
 
 function componentForViewer(props) {
   if (!props) {
@@ -19,13 +18,29 @@ function componentForViewer(props) {
   }
   let viewer = props.viewer;
   if (!viewer) {
-    return <FlatButton label="Log In"
-                       style={{color: cirrusColors.cirrusWhite}}
-                       href="https://api.cirrus-ci.com/redirect/auth/github"
-                       icon={<FontIcon className="fa fa-github"/>}/>
+    return <Button label="Log In"
+                   style={{color: cirrusColors.cirrusWhite}}
+                   href="https://api.cirrus-ci.com/redirect/auth/github"
+                   icon={<Icon className="fa fa-github"/>}/>
   }
   return <AccountInformation viewer={viewer}/>
 }
+
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  flex: {
+    flex: 1,
+  },
+  menuButton: {
+    marginLeft: -12,
+    marginRight: 20,
+  },
+  leftIcon: {
+    marginRight: theme.spacing.unit,
+  },
+});
 
 class Header extends React.Component {
   static contextTypes = {
@@ -33,6 +48,8 @@ class Header extends React.Component {
   };
 
   render() {
+    const {classes} = this.props;
+
     return (
       <QueryRenderer
         environment={environment}
@@ -47,27 +64,33 @@ class Header extends React.Component {
         }
 
         render={({error, props}) => {
-          let rightPanel = (
-            <div>
-              <FlatButton label="Documentation"
+          return (
+            <div className={classes.root}>
+              <AppBar position="static">
+                <Toolbar>
+                  <Typography variant="title"
+                              className={classes.flex}
+                              style={{cursor: "pointer"}}
+                              onClick={(e) => navigate(this.context.router, e, "/")}
+                              color="inherit">
+                    Cirrus CI
+                  </Typography>
+                  <Button className={classes.button}
                           style={{color: cirrusColors.cirrusWhite, marginRight: 8}}
                           href="https://cirrus-ci.org/"
-                          icon={<FontIcon className="fa fa-book"/>}/>
-              {componentForViewer(props)}
+                  >
+                    <Icon className={`fa fa-book ${classes.leftIcon}`}/>
+                    Documentation
+                  </Button>
+                  {componentForViewer(props)}
+                </Toolbar>
+              </AppBar>
             </div>
           );
-          return <AppBar
-            title="Cirrus CI"
-            titleStyle={{cursor: "pointer"}}
-            onTitleClick={(e) => navigate(this.context.router, e, "/")}
-            showMenuIconButton={false}
-            iconStyleRight={{marginTop: "auto", marginBottom: "auto"}}
-            iconElementRight={rightPanel}
-          />
         }}
       />
     );
   }
 }
 
-export default withRouter(Header);
+export default withRouter(withStyles(styles)(Header));

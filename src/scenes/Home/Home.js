@@ -5,7 +5,7 @@ import {graphql, QueryRenderer} from 'react-relay';
 import environment from '../../createRelayEnvironment';
 import ViewerBuildList from '../../components/ViewerBuildList'
 import CirrusLinearProgress from "../../components/CirrusLinearProgress";
-import {Paper, Toolbar, ToolbarGroup, ToolbarTitle} from "material-ui";
+import {FormGroup, Paper, Toolbar, Typography} from "material-ui";
 
 const Home = (props) => (
   <QueryRenderer
@@ -22,16 +22,16 @@ const Home = (props) => (
 
     render={({error, props}) => {
       if (!props) {
-        return <CirrusLinearProgress />
+        return <CirrusLinearProgress/>
       }
       if (!props.viewer) {
         return (
           <div style={{paddingTop: 8}} className="container">
-            <Paper zDepth={1} rounded={false}>
+            <Paper elevation={1}>
               <Toolbar>
-                <ToolbarGroup>
-                  <ToolbarTitle text="Please Log In to see your recent builds"/>
-                </ToolbarGroup>
+                <FormGroup>
+                  <Typography variant="title" text="Please Log In to see your recent builds"/>
+                </FormGroup>
               </Toolbar>
             </Paper>
           </div>

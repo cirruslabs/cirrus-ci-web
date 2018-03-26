@@ -1,5 +1,4 @@
 import React from 'react';
-import {FontIcon, RaisedButton} from "material-ui";
 import Logs from "./logs/Logs";
 import {graphql, QueryRenderer} from "react-relay";
 import environment from "../createRelayEnvironment";
@@ -7,6 +6,7 @@ import CirrusLinearProgress from "./CirrusLinearProgress";
 import {subscribeTaskCommandLogs} from "../rtu/ConnectionManager";
 import CirrusCircularProgress from "./CirrusCircularProgress";
 import {isTaskCommandFinalStatus} from "../utils/status";
+import {Button, Icon, withStyles} from "material-ui";
 
 function logURL(taskId, command) {
   return "https://api.cirrus-ci.com/v1/task/" + taskId + "/logs/" + command.name + ".log";
@@ -15,6 +15,12 @@ function logURL(taskId, command) {
 function isCommandRunning(command) {
   return command.status === 'EXECUTING'
 }
+
+let styles = {
+  downloadButton: {
+    margin: 8
+  },
+};
 
 class TaskCommandRealTimeLogs extends React.Component {
   constructor() {
@@ -40,8 +46,10 @@ class TaskCommandRealTimeLogs extends React.Component {
   render() {
     let inProgress = !isTaskCommandFinalStatus(this.props.command.status);
     return (
-      <div>
-        <Logs ref={(component) => { this.logs = component; }} />
+      <div style={{width: "100%", height: "100%"}}>
+        <Logs ref={(component) => {
+          this.logs = component;
+        }}/>
         {inProgress ? <CirrusLinearProgress/> : null}
       </div>
     );
@@ -49,22 +57,19 @@ class TaskCommandRealTimeLogs extends React.Component {
 }
 
 const TaskCommandFileLogs = (props) => {
-  let styles = {
-    gap: {
-      paddingTop: 16
-    },
-  };
+  let {classes} = props;
   let command = props.command;
   return (
-    <div>
+    <div style={{width: "100%", height: "100%"}}>
       <TaskCommandLogsTail taskId={props.taskId} commandName={command.name}/>
-      <div style={styles.gap}/>
-      <RaisedButton
-        href={logURL(props.taskId, command)}
-        target="_blank"
-        label="Download Full Logs"
-        icon={<FontIcon className="material-icons">get_app</FontIcon>}
-      />
+      <Button variant="raised"
+              className={classes.downloadButton}
+              href={logURL(props.taskId, command)}
+              target="_blank"
+      >
+        <Icon>get_app</Icon>
+        Download Full Logs
+      </Button>
     </div>
   );
 };
@@ -118,4 +123,4 @@ class TaskCommandLogs extends React.Component {
   }
 }
 
-export default TaskCommandLogs
+export default withStyles(styles)(TaskCommandLogs)

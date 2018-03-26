@@ -2,11 +2,12 @@ import React from 'react';
 
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
-import FontIcon from 'material-ui/FontIcon';
 import {buildStatusColor} from "../../utils/colors";
 import {buildStatusIconName, buildStatusMessage} from "../../utils/status";
 import {graphql, requestSubscription} from "react-relay";
 import environment from "../../createRelayEnvironment";
+import {Icon} from "material-ui";
+import {cirrusColors} from "../../cirrusTheme";
 
 const buildSubscription = graphql`
   subscription BuildStatusChipSubscription(
@@ -44,11 +45,13 @@ class BuildStatusChip extends React.Component {
   render() {
     let build = this.props.build;
     return (
-      <Chip {...this.props}>
-        <Avatar backgroundColor={buildStatusColor(build.status)}
-                icon={<FontIcon className="material-icons">{buildStatusIconName(build.status)}</FontIcon>}/>
-        {buildStatusMessage(build)}
-      </Chip>
+      <Chip className={this.props.className}
+            label={buildStatusMessage(build)}
+            avatar={
+              <Avatar style={{background: buildStatusColor(build.status)}}>
+                <Icon style={{color: cirrusColors.cirrusWhite}}>{buildStatusIconName(build.status)}</Icon>
+              </Avatar>
+            }/>
     );
   }
 }

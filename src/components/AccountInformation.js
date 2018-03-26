@@ -1,27 +1,54 @@
 import React from 'react';
-import {
-  createFragmentContainer,
-  graphql,
-} from 'react-relay';
+import {createFragmentContainer, graphql,} from 'react-relay';
 
 import Avatar from 'material-ui/Avatar';
-import {IconMenu, MenuItem} from "material-ui";
+import {IconButton, Menu, MenuItem, withStyles} from "material-ui";
 
 class AccountInformation extends React.Component {
+  constructor() {
+    super();
+    this.state = {anchorEl: null};
+    this.handleMenuOpen = this.handleMenuOpen.bind(this);
+    this.handleMenuClose = this.handleMenuClose.bind(this);
+  }
+
+  handleMenuOpen(event) {
+    this.setState({anchorEl: event.currentTarget})
+  }
+
+  handleMenuClose() {
+    this.setState({anchorEl: null})
+  }
+
   render() {
+    const {anchorEl} = this.state;
+
     return (
-      <IconMenu
-        iconButtonElement={<Avatar style={{cursor: "pointer"}} src={this.props.viewer.avatarURL}/>}
-        anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-        targetOrigin={{horizontal: 'left', vertical: 'bottom'}}
-      >
-        <MenuItem primaryText="Log Out" href="https://api.cirrus-ci.com/redirect/logout/"/>
-      </IconMenu>
+      <div>
+        <IconButton
+          aria-label="More"
+          aria-owns={anchorEl ? 'long-menu' : null}
+          aria-haspopup="true"
+          onClick={this.handleMenuOpen}
+        >
+          <Avatar style={{cursor: "pointer"}} src={this.props.viewer.avatarURL}/>
+        </IconButton>
+        <Menu
+          id="long-menu"
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={this.handleMenuClose}
+        >
+          <MenuItem href="https://api.cirrus-ci.com/redirect/logout/">
+            Log Out
+          </MenuItem>
+        </Menu>
+      </div>
     );
   }
 }
 
-export default createFragmentContainer(AccountInformation, {
+export default createFragmentContainer(withStyles()(AccountInformation), {
   viewer: graphql`
     fragment AccountInformation_viewer on User {
       id

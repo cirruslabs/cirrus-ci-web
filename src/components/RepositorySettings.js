@@ -1,7 +1,19 @@
 import React from 'react';
 import {commitMutation, createFragmentContainer, graphql} from 'react-relay';
-import RaisedButton from 'material-ui/RaisedButton';
-import {MenuItem, SelectField, Toggle} from "material-ui";
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  MenuItem,
+  Select,
+  Switch,
+  withStyles
+} from "material-ui";
 import environment from "../createRelayEnvironment";
 
 const saveSettingsMutation = graphql`
@@ -33,9 +45,9 @@ class RepositorySettings extends React.Component {
     }))
   }
 
-  handleDecryptEnvironmentVariablesChange(event, key, payload) {
+  handleDecryptEnvironmentVariablesChange(event) {
     this.setState(() => ({
-      decryptEnvironmentVariables: payload
+      decryptEnvironmentVariables: event.target.value
     }))
   }
 
@@ -44,30 +56,39 @@ class RepositorySettings extends React.Component {
       this.state.needsApproval === this.initialSettings.needsApproval &&
       this.state.decryptEnvironmentVariables === this.initialSettings.decryptEnvironmentVariables;
     return (
-      <div className="card-block">
-        <div className="card-body">
-          <Toggle label="Require approval for builds from users without write permissions"
-                  toggled={this.state.needsApproval}
-                  onToggle={this.toggleNeedsApproval}
-          />
-          <SelectField
-            floatingLabelText="Decrypt Secured Environment Variables for builds initialized by:"
-            value={this.state.decryptEnvironmentVariables}
-            onChange={this.handleDecryptEnvironmentVariablesChange}
-            style={{width: '100%'}}
-          >
-            <MenuItem value={'EVERYONE'} primaryText="Everyone" />
-            <MenuItem value={'USERS_WITH_WRITE_PERMISSIONS'} primaryText="Only users with write permissions" />
-          </SelectField>
-        </div>
-        <div className="card-body text-right">
-          <RaisedButton label="Save"
-                        disabled={areSettingsTheSame}
-                        primary={true}
-                        onTouchTap={() => this.onSave()}
-          />
-        </div>
-      </div>
+      <Card>
+        <CardHeader title="Security Preferences"/>
+        <CardContent>
+          <FormControl style={{width: "100%"}}>
+            <FormControlLabel
+              control={
+                <Switch checked={this.state.needsApproval}
+                        onChange={this.toggleNeedsApproval}
+                />
+              }
+              label="Require approval for builds from users without write permissions"
+            />
+          </FormControl>
+          <FormControl style={{width: "100%"}}>
+            <FormHelperText>Decrypt Secured Environment Variables for builds initialized by:</FormHelperText>
+            <Select
+              value={this.state.decryptEnvironmentVariables}
+              onChange={this.handleDecryptEnvironmentVariablesChange}
+              style={{width: '100%'}}
+            >
+              <MenuItem value={'EVERYONE'}>Everyone</MenuItem>
+              <MenuItem value={'USERS_WITH_WRITE_PERMISSIONS'}>Only users with write permissions</MenuItem>
+            </Select>
+          </FormControl>
+        </CardContent>
+        <CardActions>
+          <Button variant="raised"
+                  color="primary"
+                  disabled={areSettingsTheSame}
+                  onTouchTap={() => this.onSave()}
+          >Save</Button>
+        </CardActions>
+      </Card>
     );
   }
 
@@ -98,7 +119,7 @@ class RepositorySettings extends React.Component {
   }
 }
 
-export default createFragmentContainer(RepositorySettings, {
+export default createFragmentContainer(withStyles()(RepositorySettings), {
   repository: graphql`
     fragment RepositorySettings_repository on Repository {
       id

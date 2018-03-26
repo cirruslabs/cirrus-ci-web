@@ -1,34 +1,40 @@
 import React from 'react';
 
-import {Card, CardHeader} from 'material-ui/Card';
+import {Typography, withStyles} from 'material-ui';
 import {notificationColor} from "../utils/colors";
+
+let styles = {
+  notification: {
+    padding: 8,
+  }
+};
 
 class NotificationList extends React.Component {
   render() {
     let notifications = this.props.notifications;
     return (
       <div>
-        {notifications.map(notification => NotificationList.notificationItem(notification))}
+        {notifications.map(notification => this.notificationItem(notification))}
       </div>
     );
   }
 
-  static notificationItem(notification) {
+  notificationItem(notification) {
+    let {classes} = this.props;
     let headerStyle = {
       backgroundColor: notificationColor(notification.level)
     };
     return (
-      <Card key={notification.message}
-            style={{borderRadius: 0}}>
-        <CardHeader
-          title={notification.message}
-          style={headerStyle}
-          actAsExpander={false}
-          showExpandableButton={false}
-        />
-      </Card>
+      <Typography
+        key={notification.message}
+        variant="subheading"
+        style={headerStyle}
+        className={classes.notification}
+      >
+        {notification.message}
+      </Typography>
     );
   }
 }
 
-export default NotificationList;
+export default withStyles(styles)(NotificationList);

@@ -1,9 +1,18 @@
 import React from 'react';
-import CircularProgress from 'material-ui/CircularProgress';
-import {cirrusColors} from './../cirrusTheme'
+import {CircularProgress} from 'material-ui/Progress';
+import {cirrusColors} from "../cirrusTheme";
+import {withStyles} from "material-ui";
 
-const CirrusCircularProgress = (props) => {
-  return <CircularProgress color={cirrusColors.progress} {...props}/>
+const styles = {
+  progress: {
+    color: cirrusColors.success
+  }
 };
 
-export default CirrusCircularProgress
+const CirrusCircularProgress = (props) => {
+  return <CircularProgress classes={{
+    colorPrimary: props.classes.progress,
+  }}/>
+};
+
+export default withStyles(styles)(CirrusCircularProgress)

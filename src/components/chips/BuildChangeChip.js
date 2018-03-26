@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
-import FontIcon from 'material-ui/FontIcon';
 import {cirrusColors} from "../../cirrusTheme";
 import {withRouter} from "react-router-dom";
 import {navigateBuild} from "../../utils/navigate";
+import {Icon} from "material-ui";
 
 class BuildChangeChip extends React.Component {
   static contextTypes = {
@@ -16,12 +16,14 @@ class BuildChangeChip extends React.Component {
   render() {
     let build = this.props.build;
     return (
-      <Chip onClick={(e) => navigateBuild(this.context.router, e, build)}
-            style={this.props.style}>
-        <Avatar backgroundColor={cirrusColors.cirrusPrimary}
-                icon={<FontIcon className="material-icons">input</FontIcon>}/>
-        {build.changeIdInRepo.substr(0, 6)}
-      </Chip>
+      <Chip label={build.changeIdInRepo.substr(0, 6)}
+            avatar={
+              <Avatar style={{background: cirrusColors.cirrusPrimary}}>
+                <Icon style={{color: cirrusColors.cirrusWhite}}>input</Icon>
+              </Avatar>
+            }
+            onClick={(e) => navigateBuild(this.context.router, e, build.id)}
+            className={this.props.className}/>
     );
   }
 }

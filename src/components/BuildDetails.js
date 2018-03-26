@@ -11,8 +11,9 @@ import environment from "../createRelayEnvironment";
 import BuildStatusChip from "./chips/BuildStatusChip";
 import RepositoryNameChip from "./chips/RepositoryNameChip";
 import {hasWritePermissions} from "../utils/permissions";
-import {FontIcon, RaisedButton} from "material-ui";
+import {Button, Icon, withStyles} from "material-ui";
 import {cirrusColors} from "../cirrusTheme";
+import classNames from 'classnames';
 
 const buildApproveMutation = graphql`
   mutation BuildDetailsApproveBuildMutation($input: BuildInput!) {
@@ -52,6 +53,34 @@ const buildSubscription = graphql`
   }
 `;
 
+const styles = {
+  main: {
+    paddingTop: 8
+  },
+  gap: {
+    paddingTop: 16
+  },
+  title: {
+    padding: 0
+  },
+  repoButton: {
+    padding: 0
+  },
+  repoButtonIcon: {
+    fontSize: 48
+  },
+  chip: {
+    marginTop: 4,
+    marginBottom: 4,
+    marginRight: 4,
+  },
+  wrapper: {
+    paddingLeft: 0,
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+};
+
 class BuildDetails extends React.Component {
   static contextTypes = {
     router: PropTypes.object,
@@ -78,42 +107,14 @@ class BuildDetails extends React.Component {
   }
 
   render() {
-    let build = this.props.build;
-
-    let styles = {
-      main: {
-        paddingTop: 8
-      },
-      gap: {
-        paddingTop: 16
-      },
-      title: {
-        padding: 0
-      },
-      repoButton: {
-        padding: 0
-      },
-      repoButtonIcon: {
-        fontSize: 48
-      },
-      chip: {
-        marginTop: 4,
-        marginBottom: 4,
-        marginRight: 4,
-      },
-      wrapper: {
-        paddingLeft: 0,
-        display: 'flex',
-        flexWrap: 'wrap',
-      },
-    };
+    let {build, classes} = this.props;
 
     let repoUrl = build.repository.cloneUrl.slice(0, -4);
     let branchUrl = build.branch.startsWith("pull/") ? `${repoUrl}/${build.branch}` : `${repoUrl}/tree/${build.branch}`;
     let commitUrl = repoUrl + "/commit/" + build.changeIdInRepo;
 
     let notificationsComponent = !build.notifications ? null :
-      <div style={styles.gap}>
+      <div className={classes.gap}>
         <NotificationList notifications={build.notifications}/>
       </div>;
 
@@ -121,30 +122,30 @@ class BuildDetails extends React.Component {
       && hasWritePermissions(build.repository.viewerPermission)
       && build.tasks && build.tasks.length === 0;
     let reTriggerButton = !canBeReTriggered ? null :
-      <RaisedButton label="Re-Trigger"
-                    backgroundColor={cirrusColors.success}
-                    onTouchTap={() => this.reTriggerBuild(build.id)}
-                    icon={<FontIcon className="material-icons">refresh</FontIcon>}
+      <Button variant="raised" label="Re-Trigger"
+              backgroundColor={cirrusColors.success}
+              onTouchTap={() => this.reTriggerBuild(build.id)}
+              icon={<Icon className="material-icons">refresh</Icon>}
       />;
 
 
     let needsApproval = build.status === 'NEEDS_APPROVAL' && hasWritePermissions(build.repository.viewerPermission);
     let approveButton = !needsApproval ? null :
-      <RaisedButton label="Approve"
-                    backgroundColor={cirrusColors.success}
-                    onTouchTap={() => this.approveBuild(build.id)}
-                    icon={<FontIcon className="material-icons">check</FontIcon>}
+      <Button variant="raised" label="Approve"
+              backgroundColor={cirrusColors.success}
+              onTouchTap={() => this.approveBuild(build.id)}
+              icon={<Icon>check</Icon>}
       />;
 
     return (
-      <div style={styles.main} className="container">
-        <Paper zDepth={2} rounded={false}>
+      <div className={classNames(classes.main, "container")}>
+        <Paper elevation={2}>
           <div className="card-block">
-            <div style={styles.wrapper}>
-              <RepositoryNameChip style={styles.chip} repository={build.repository}/>
-              <BuildStatusChip style={styles.chip} build={build}/>
+            <div className={classes.wrapper}>
+              <RepositoryNameChip className={classes.chip} repository={build.repository}/>
+              <BuildStatusChip className={classes.chip} build={build}/>
             </div>
-            <div style={styles.gap}/>
+            <div className={classes.gap}/>
             <h5 className="card-title align-middle">
               Commit <a href={commitUrl} target="_blank">{build.changeIdInRepo.substr(0, 6)}</a> on branch <a
               href={branchUrl} target="_blank">{build.branch}</a>:
@@ -157,8 +158,8 @@ class BuildDetails extends React.Component {
           </div>
         </Paper>
         {notificationsComponent}
-        <div style={styles.gap}/>
-        <Paper zDepth={2} rounded={false}>
+        <div className={classes.gap}/>
+        <Paper elevation={2}>
           <TaskList tasks={build.tasks}/>
         </Paper>
       </div>
@@ -202,7 +203,7 @@ class BuildDetails extends React.Component {
   }
 }
 
-export default createFragmentContainer(withRouter(BuildDetails), {
+export default createFragmentContainer(withRouter(withStyles(styles)(BuildDetails)), {
   build: graphql`
     fragment BuildDetails_build on Build {
       id

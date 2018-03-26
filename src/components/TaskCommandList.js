@@ -2,13 +2,19 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {withRouter} from 'react-router-dom'
 
-import {Card, CardHeader, CardText} from 'material-ui/Card';
 import {commandStatusColor} from "../utils/colors";
 import TaskCommandLogs from "./TaskCommandLogs";
 import {formatDuration} from "../utils/time";
 import {isTaskCommandExecuting, isTaskCommandFinalStatus, isTaskFinalStatus} from "../utils/status";
 import DurationTicker from "./DurationTicker";
-import {cirrusColors} from "../cirrusTheme";
+import {ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, Typography, withStyles} from "material-ui";
+import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
+
+const styles = {
+  details: {
+    padding: 0,
+  }
+};
 
 class TaskCommandList extends React.Component {
   static contextTypes = {
@@ -16,13 +22,6 @@ class TaskCommandList extends React.Component {
   };
 
   render() {
-    let styles = {
-      divider: {
-        widths: '100%',
-        height: 1,
-        backgroundColor: cirrusColors.undefined
-      }
-    };
     let commands = this.props.commands;
     let task = this.props.task;
 
@@ -30,9 +29,6 @@ class TaskCommandList extends React.Component {
     let lastTimestamp = task.executingTimestamp;
     for (let i = 0; i < commands.length; ++i) {
       let command = commands[i];
-      if (i > 0) {
-        commandComponents.push(<div key={i} style={styles.divider}/>);
-      }
       commandComponents.push(this.commandItem(command, lastTimestamp));
       lastTimestamp += command.durationInSeconds * 1000
     }
@@ -44,37 +40,35 @@ class TaskCommandList extends React.Component {
   }
 
   commandItem(command, commandStartTimestamp) {
+    let {classes} = this.props;
     let styles = {
       header: {
         backgroundColor: commandStatusColor(command.status),
       },
-      card: {
-        borderRadius: 0,
-      }
     };
     let finished = isTaskCommandFinalStatus(command.status);
     let expandable = finished || !isTaskFinalStatus(this.props.task.status);
     return (
-      <Card key={command.name}
-            style={styles.card}
-            initiallyExpanded={command.status === 'FAILURE'}>
-        <CardHeader
-          title={command.name}
-          subtitle={
-            finished
-              ? formatDuration(command.durationInSeconds)
-              : (isTaskCommandExecuting(command.status) ? <DurationTicker timestamp={commandStartTimestamp}/> : "")
-          }
-          style={styles.header}
-          actAsExpander={expandable}
-          showExpandableButton={expandable}
-        />
-        <CardText expandable={true}>
+      <ExpansionPanel key={command.name}
+                      CollapseProps={{unmountOnExit: true, timeout: 400}}
+                      disabled={!expandable}
+                      defaultExpanded={command.status === 'FAILURE'}>
+        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>} style={styles.header}>
+          <div>
+            <Typography variant="body1">{command.name}</Typography>
+            <Typography variant="caption">{
+              finished
+                ? formatDuration(command.durationInSeconds)
+                : (isTaskCommandExecuting(command.status) ? <DurationTicker timestamp={commandStartTimestamp}/> : "")
+            }</Typography>
+          </div>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails className={classes.details}>
           <TaskCommandLogs taskId={this.props.task.id} command={command}/>
-        </CardText>
-      </Card>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
     );
   }
 }
 
-export default withRouter(TaskCommandList);
+export default withRouter(withStyles(styles)(TaskCommandList));

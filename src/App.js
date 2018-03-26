@@ -1,17 +1,17 @@
 // @flow
 
-import React, { Component } from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import React, {Component} from 'react';
 
 import './App.css';
 import Routes from './Routes';
 import {cirrusTheme} from './cirrusTheme'
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import {createMuiTheme} from "material-ui";
 
 class App extends Component {
   render() {
     return (
-      <MuiThemeProvider muiTheme={getMuiTheme(cirrusTheme)}>
+      <MuiThemeProvider theme={createMuiTheme(cirrusTheme)}>
         <Routes/>
       </MuiThemeProvider>
     );

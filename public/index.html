@@ -1,33 +1,45 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-110620457-2"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-110620457-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
 
-      gtag('config', 'UA-110620457-2');
-    </script>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="theme-color" content="#212121">
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,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">
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    function gtag() {
+      dataLayer.push(arguments);
+    }
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-    <title>Cirrus CI</title>
-  </head>
-  <body>
-    <noscript>
-      You need to enable JavaScript to run this app.
-    </noscript>
-    <div id="root" style="width: 100%; height: 100%"></div>
-  </body>
+    gtag('js', new Date());
+
+    gtag('config', 'UA-110620457-2');
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="theme-color" content="#212121">
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+  <link rel="icon" type="image/x-icon"
+        href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAAEEfUpiAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsTAAALEwEAmpwYAAABWWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS40LjAiPgogICA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPgogICAgICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgICAgICAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyI+CiAgICAgICAgIDx0aWZmOk9yaWVudGF0aW9uPjE8L3RpZmY6T3JpZW50YXRpb24+CiAgICAgIDwvcmRmOkRlc2NyaXB0aW9uPgogICA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgpMwidZAAAEAElEQVRYCb2XTWgTURDHs8kmrW209RA8BDQXLYVqbfoRIlZiiwhFKAg9+IEHwYOip4IVVJDiQRQ8iKJ4tN56EC+CxkJVKKa2IIoXbS8eKogX+wlpk/U32910u9nE3Wi7sOx782b+8595M293fT7L1dbW1mSZrg4VQ2I+fTJQUqlUoEhVBIlEYp/fupLL5R6qCAr2CC6oVvv5+fmo1aJo3NraOqJ2dHQkMb1hQGk2rS6VxfuBQCBuW9Cn+Xx+lUB7e3u3k4Kmaa+d5CLz4/9tqcWCHH7ausALK5aBAtQr5nb2ohJTFOWHnlyLQWGIoUp0WYUINDQLC+ZAQiSKXWptbW3QFNqe6sLCwpJKvg+DkLct+kDYgSxbjG3XtMz7+voC09PTZ/1+/2Pcy0q/JwATS4CmpqYagsHgF0nTPRYuOQVqGtifMPBRA3lszgkD2YyiGO1G9jktcBWgmxWFAOsg3mcBqJYKl0z3klUvLHYCUE0YS8KgdJvZea/NZY8PMk1LEj+C1sy9tuxiJIwnJycDzg1eBgCHI9FotGlmZiaNmke3WACg17Zs5fj4uHcAg5yfbcxRjYN/bcgS0eQxXiRvPRUBEEYNxjWAPNf71WiMEs7Wi83dYhM0dsGvMniBipyhri6c1QGSIIn6vuuFhKXTmVMWUE4aKnFIPIuxtyrCBubLMNltUnfNQHpnbm7uFE6DhHNbSSaTQqUsXeuiJFy8I/tNEiNKPB4/yqTGqlRuzFFbD8BF6MdDoVBMOtEMo5xdYS0SiWjDw8M5KhEy2suKCslEAyCgyAtwZWVlC9Rc7QT0qwEY4O7EpkFeH2OSGLeXVKJ0IkCX6cavrry6BbfqSW5HR0dXyNUQyT6dzWZ1x8ZpfmViYuKO6G8YASsZqn4/WWrkPk8GOo2MZcne3n/aRKuTMmMlFot9DofDz6jbQxA4YmxDiL1/ICVYyUuhjD/HpUKREH3I1IBITu+D2dnZbgojTGF4ebWZOG6e9TjbhuIZ/MRlC7iXqqqqGuVcyDCIkw6fqnrqSTeOdR3DoThdNsa/WGgdGxv7vilFaByA4uskmXgEiWoK0EfQx60ErGPX0blV5DWmUoTLLS0tzWzDBwgEacn3knPpBCmSQqG4BfWiJ85FH8fHyIL+VUsmvulHIUyusSZCJxKSGSc5YtdXHZrbcbxHakBOQp5vOIxS8q9xAkGPNAAKrhG9KAqu3OKcW5qNqfJEMDbGYwl2xueMfNIdkCwQ/PXNOAl1OvJbQB0s4vQcWVgUIVno3dQM4FN+AtM47jIyMKgiuIVgAFZSaBtCCHxrDZhvxX4yclc+DNO0RhfO5UUvR/H/JKF3D7Ft5f4JkXectk8zmcwn/Mil/AGaLqtVPJXUbwAAAABJRU5ErkJggg==">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+        integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
+          integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+          crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
+          integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+          crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+          integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+          crossorigin="anonymous"></script>
+  <title>Cirrus CI</title>
+</head>
+<body>
+<noscript>
+  You need to enable JavaScript to run this app.
+</noscript>
+<div id="root" style="width: 100%; height: 100%"></div>
+</body>
 </html>

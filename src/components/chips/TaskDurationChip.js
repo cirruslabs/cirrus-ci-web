@@ -2,12 +2,13 @@ import React from 'react';
 
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
-import FontIcon from 'material-ui/FontIcon';
 import {taskStatusColor} from "../../utils/colors";
 import {formatDuration} from "../../utils/time";
 import {isTaskFinalStatus, isTaskInProgressStatus, taskStatusIconName} from "../../utils/status";
 import {graphql, requestSubscription} from "react-relay";
 import environment from "../../createRelayEnvironment";
+import {Icon} from "material-ui";
+import {cirrusColors} from "../../cirrusTheme";
 
 const taskSubscription = graphql`
   subscription TaskDurationChipSubscription(
@@ -57,11 +58,13 @@ class TaskDurationChip extends React.Component {
       setTimeout(() => this.forceUpdate(), 1000);
     }
     return (
-      <Chip {...this.props}>
-        <Avatar backgroundColor={taskStatusColor(task.status)}
-                icon={<FontIcon className="material-icons">{taskStatusIconName(task.status)}</FontIcon>}/>
-        {formatDuration(durationInSeconds)}
-      </Chip>
+      <Chip className={this.props.className}
+            label={formatDuration(durationInSeconds)}
+            avatar={
+              <Avatar style={{background: taskStatusColor(task.status)}}>
+                <Icon style={{color: cirrusColors.cirrusWhite}}>{taskStatusIconName(task.status)}</Icon>
+              </Avatar>
+            }/>
     );
   }
 }

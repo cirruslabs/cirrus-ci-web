@@ -64,9 +64,6 @@ const taskSubscription = graphql`
 `;
 
 const styles = theme => ({
-  main: {
-    paddingTop: 8
-  },
   title: {
     padding: 8,
     background: cirrusColors.cirrusGrey,
@@ -177,7 +174,7 @@ class ViewerTaskList extends React.Component {
     }
 
     return (
-      <div className={`container ${classes.main}`}>
+      <div>
         <Paper elevation={2}>
           <div className="card-body">
             <h4 className={`card-title text-middle ${classes.wrapper}`}>

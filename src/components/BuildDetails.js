@@ -13,7 +13,6 @@ import RepositoryNameChip from "./chips/RepositoryNameChip";
 import {hasWritePermissions} from "../utils/permissions";
 import {Button, Icon, withStyles} from "material-ui";
 import {cirrusColors} from "../cirrusTheme";
-import classNames from 'classnames';
 
 const buildApproveMutation = graphql`
   mutation BuildDetailsApproveBuildMutation($input: BuildInput!) {
@@ -54,9 +53,6 @@ const buildSubscription = graphql`
 `;
 
 const styles = {
-  main: {
-    paddingTop: 8
-  },
   gap: {
     paddingTop: 16
   },
@@ -138,7 +134,7 @@ class BuildDetails extends React.Component {
       />;
 
     return (
-      <div className={classNames(classes.main, "container")}>
+      <div>
         <Paper elevation={2}>
           <div className="card-body">
             <div className={classes.wrapper}>

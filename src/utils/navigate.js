@@ -1,8 +1,10 @@
 export function navigate(router, event, url) {
   if (event && event.metaKey) {
     window.open(url, '_blank');
-  } else {
+  } else if (router) {
     router.history.push(url)
+  } else {
+    window.open(url, "_self");
   }
   if (event) {
     event.stopPropagation();

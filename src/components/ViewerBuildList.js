@@ -18,9 +18,6 @@ import classNames from 'classnames';
 import {cirrusColors} from "../cirrusTheme";
 
 let styles = {
-  main: {
-    paddingTop: 8
-  },
   title: {
     backgroundColor: cirrusColors.cirrusGrey
   },
@@ -58,16 +55,14 @@ class ViewerBuildList extends React.Component {
       );
     }
     return (
-      <div className={classNames("container", classes.main)}>
-        <Paper elevation={1}>
-          <Toolbar className={classes.title}>
-            <Typography variant="title" color="inherit">
-              Recent Builds
-            </Typography>
-          </Toolbar>
-          {buildsComponent}
-        </Paper>
-      </div>
+      <Paper elevation={1}>
+        <Toolbar className={classes.title}>
+          <Typography variant="title" color="inherit">
+            Recent Builds
+          </Typography>
+        </Toolbar>
+        {buildsComponent}
+      </Paper>
     );
   }
 

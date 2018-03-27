@@ -19,9 +19,6 @@ import Icon from "material-ui/Icon";
 import classNames from 'classnames';
 
 let styles = {
-  main: {
-    paddingTop: 8
-  },
   gap: {
     paddingTop: 16
   },
@@ -78,7 +75,7 @@ class RepositoryBuildList extends React.Component {
     }
 
     return (
-      <div className={`container ${classes.main}`}>
+      <div>
         <Paper elevation={1}>
           <Toolbar className="justify-content-between">
             <Typography variant="title" color="inherit">

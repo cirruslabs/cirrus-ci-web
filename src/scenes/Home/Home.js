@@ -26,15 +26,13 @@ const Home = (props) => (
       }
       if (!props.viewer) {
         return (
-          <div style={{paddingTop: 8}} className="container">
-            <Paper elevation={1}>
-              <Toolbar>
-                <FormGroup>
-                  <Typography variant="title" text="Please Log In to see your recent builds"/>
-                </FormGroup>
-              </Toolbar>
-            </Paper>
-          </div>
+          <Paper elevation={1}>
+            <Toolbar>
+              <FormGroup>
+                <Typography variant="title" text="Please Log In to see your recent builds"/>
+              </FormGroup>
+            </Toolbar>
+          </Paper>
         );
       }
       return <ViewerBuildList viewer={props.viewer}/>

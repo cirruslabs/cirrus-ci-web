@@ -2,7 +2,7 @@ import React from 'react';
 import {Icon} from "material-ui";
 
 const NotFound = (props) => (
-  <div style={{width: "100%", height: "100%"}} className="container">
+  <div style={{width: "100%", height: "100%"}}>
     <div className="row justify-content-between align-items-center"
          style={{width: "100%", height: "100%", fontSize: "32px"}}>
       <div className="col text-center">

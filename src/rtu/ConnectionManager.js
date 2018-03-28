@@ -15,7 +15,7 @@ ws.onopen = function open() {
   }
   // send reconnent events so handlers can refresh
   handlersManager.allTopics().forEach(function (topic) {
-    handlersManager.handleNewUpdate(topic, { "type": "reconnect" });
+    handlersManager.handleNewUpdate(topic, {"type": "reconnect"});
   })
 };
 
@@ -46,8 +46,8 @@ export function subscribeObjectUpdates(kind, id, handler) {
   };
   let requestStr = JSON.stringify(request);
   ws.send(requestStr);
-  let topic = kind + '-update-' + id;
-  let topicHandlerDispose = handlersManager.addTopicHandler(topic.toLowerCase().replace("_", "-"), requestStr, handler);
+  let topic = (kind + '-update-' + id).toLowerCase().replace(/_/g, "-");
+  let topicHandlerDispose = handlersManager.addTopicHandler(topic, requestStr, handler);
   return () => {
     topicHandlerDispose();
     request.type = "unsubscribe";

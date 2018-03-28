@@ -226,18 +226,24 @@ class Routes extends React.Component {
             })}
           >
             <div className={classNames("invisible", classes.drawerHeader)}/>
-            <Switch>
-              <Route exact path="/" component={AsyncHome} props={this.props}/>
-              <Route exact path="/build/:buildId" component={AsyncBuild} props={this.props}/>
-              <Route exact path="/github/:owner/:name/:branch*" component={AsyncGitHubRepository} props={this.props}/>
-              <Route exact path="/github" component={AsyncGitHub} props={this.props}/>
-              <Route exact path="/repository/:repositoryId/:branch*" component={AsyncRepository} props={this.props}/>
-              <Route exact path="/settings/repository/:repositoryId" component={AsyncRepositorySettings}
-                     props={this.props}/>
-              <Route exact path="/task/:taskId" component={AsyncTask} props={this.props}/>
-              <Route exact path="/:owner/:name/:branch*" component={AsyncGitHubRepository} props={this.props}/>
-              <Route component={NotFound} props={this.props}/>
-            </Switch>
+            <div
+              className={classNames({
+                ["fluid-container"]: openDrawer,
+                ["container"]: !openDrawer,
+              })}
+            >
+              <Switch>
+                <Route exact path="/" component={AsyncHome} props={this.props}/>
+                <Route exact path="/build/:buildId" component={AsyncBuild} props={this.props}/>
+                <Route exact path="/github/:owner/:name/:branch*" component={AsyncGitHubRepository} props={this.props}/>
+                <Route exact path="/github" component={AsyncGitHub} props={this.props}/>
+                <Route exact path="/repository/:repositoryId/:branch*" component={AsyncRepository} props={this.props}/>
+                <Route exact path="/settings/repository/:repositoryId" component={AsyncRepositorySettings}
+                       props={this.props}/>
+                <Route exact path="/task/:taskId" component={AsyncTask} props={this.props}/>
+                <Route exact path="/:owner/:name/:branch*" component={AsyncGitHubRepository} props={this.props}/>
+                <Route component={NotFound} props={this.props}/>
+              </Switch></div>
           </main>
         </div>
       </BrowserRouter>

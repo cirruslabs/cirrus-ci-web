@@ -22,7 +22,7 @@ const Build = (props) => (
 
     render={({error, props}) => {
       if (!props) {
-        return <CirrusLinearProgress />
+        return <CirrusLinearProgress/>
       }
       return <BuildDetails build={props.build}/>
     }}

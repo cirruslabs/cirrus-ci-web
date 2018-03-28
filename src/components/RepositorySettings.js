@@ -102,8 +102,6 @@ class RepositorySettings extends React.Component {
       },
     };
 
-    console.log(variables.input);
-
     commitMutation(
       environment,
       {

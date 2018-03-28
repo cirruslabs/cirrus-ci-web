@@ -26,7 +26,6 @@ class RepositorySettingsPage extends React.Component {
     let {classes} = this.props;
 
     let repository = this.props.repository;
-    console.log(repository);
     return (
       <div>
         <Paper elevation={1}>

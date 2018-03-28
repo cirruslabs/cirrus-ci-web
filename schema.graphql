@@ -196,6 +196,7 @@ type Root {
 type Subscription {
   task(id: ID!): Task
   build(id: ID!): Build
+  repository(id: ID!): Repository
 }
 
 type Task {

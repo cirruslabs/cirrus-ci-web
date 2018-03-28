@@ -93,7 +93,7 @@
  *
  */
 (function (global, factory) {
-  if (typeof module !== 'undefined' && module.exports){
+  if (typeof module !== 'undefined' && module.exports) {
     module.exports = factory();
   } else {
     global.ReconnectingWebSocket = factory();
@@ -131,7 +131,9 @@
       /** The binary type, possible values 'blob' or 'arraybuffer', default 'blob'. */
       binaryType: 'blob'
     }
-    if (!options) { options = {}; }
+    if (!options) {
+      options = {};
+    }
 
     // Overwrite and define settings with options if they exist.
     for (var key in settings) {
@@ -174,11 +176,21 @@
 
     // Wire up "on*" properties as event handlers
 
-    eventTarget.addEventListener('open',       function(event) { self.onopen(event); });
-    eventTarget.addEventListener('close',      function(event) { self.onclose(event); });
-    eventTarget.addEventListener('connecting', function(event) { self.onconnecting(event); });
-    eventTarget.addEventListener('message',    function(event) { self.onmessage(event); });
-    eventTarget.addEventListener('error',      function(event) { self.onerror(event); });
+    eventTarget.addEventListener('open', function (event) {
+      self.onopen(event);
+    });
+    eventTarget.addEventListener('close', function (event) {
+      self.onclose(event);
+    });
+    eventTarget.addEventListener('connecting', function (event) {
+      self.onconnecting(event);
+    });
+    eventTarget.addEventListener('message', function (event) {
+      self.onmessage(event);
+    });
+    eventTarget.addEventListener('error', function (event) {
+      self.onerror(event);
+    });
 
     // Expose the API required by EventTarget
 
@@ -221,7 +233,7 @@
       }
 
       var localWs = ws;
-      var timeout = setTimeout(function() {
+      var timeout = setTimeout(function () {
         if (self.debug || ReconnectingWebSocket.debugAll) {
           console.debug('ReconnectingWebSocket', 'connection-timeout', self.url);
         }
@@ -230,7 +242,7 @@
         timedOut = false;
       }, self.timeoutInterval);
 
-      ws.onopen = function(event) {
+      ws.onopen = function (event) {
         clearTimeout(timeout);
         if (self.debug || ReconnectingWebSocket.debugAll) {
           console.debug('ReconnectingWebSocket', 'onopen', self.url);
@@ -244,7 +256,7 @@
         eventTarget.dispatchEvent(e);
       };
 
-      ws.onclose = function(event) {
+      ws.onclose = function (event) {
         ws = null;
         if (forcedClose) {
           self.readyState = WebSocket.CLOSED;
@@ -264,13 +276,13 @@
           }
 
           var timeout = self.reconnectInterval * Math.pow(self.reconnectDecay, self.reconnectAttempts);
-          setTimeout(function() {
+          setTimeout(function () {
             self.reconnectAttempts++;
             self.open(true);
           }, timeout > self.maxReconnectInterval ? self.maxReconnectInterval : timeout);
         }
       };
-      ws.onmessage = function(event) {
+      ws.onmessage = function (event) {
         if (self.debug || ReconnectingWebSocket.debugAll) {
           console.debug('ReconnectingWebSocket', 'onmessage', self.url, event.data);
         }
@@ -278,7 +290,7 @@
         e.data = event.data;
         eventTarget.dispatchEvent(e);
       };
-      ws.onerror = function(event) {
+      ws.onerror = function (event) {
         if (self.debug || ReconnectingWebSocket.debugAll) {
           console.debug('ReconnectingWebSocket', 'onerror', self.url, event);
         }
@@ -296,7 +308,7 @@
      *
      * @param data a text string, ArrayBuffer or Blob to send to the server.
      */
-    this.send = function(data) {
+    this.send = function (data) {
       if (ws) {
         if (self.debug || ReconnectingWebSocket.debugAll) {
           console.debug('ReconnectingWebSocket', 'send', self.url, data);
@@ -311,7 +323,7 @@
      * Closes the WebSocket connection or connection attempt, if any.
      * If the connection is already CLOSED, this method does nothing.
      */
-    this.close = function(code, reason) {
+    this.close = function (code, reason) {
       // Default CLOSE_NORMAL code
       if (typeof code === 'undefined') {
         code = 1000;
@@ -326,7 +338,7 @@
      * Additional public API method to refresh the connection if still open (close, re-open).
      * For example, if the app suspects bad data / missed heart beats, it can try to refresh.
      */
-    this.refresh = function() {
+    this.refresh = function () {
       if (ws) {
         ws.close();
       }
@@ -337,15 +349,20 @@
    * An event listener to be called when the WebSocket connection's readyState changes to OPEN;
    * this indicates that the connection is ready to send and receive data.
    */
-  ReconnectingWebSocket.prototype.onopen = function(event) {};
+  ReconnectingWebSocket.prototype.onopen = function (event) {
+  };
   /** An event listener to be called when the WebSocket connection's readyState changes to CLOSED. */
-  ReconnectingWebSocket.prototype.onclose = function(event) {};
+  ReconnectingWebSocket.prototype.onclose = function (event) {
+  };
   /** An event listener to be called when a connection begins being attempted. */
-  ReconnectingWebSocket.prototype.onconnecting = function(event) {};
+  ReconnectingWebSocket.prototype.onconnecting = function (event) {
+  };
   /** An event listener to be called when a message is received from the server. */
-  ReconnectingWebSocket.prototype.onmessage = function(event) {};
+  ReconnectingWebSocket.prototype.onmessage = function (event) {
+  };
   /** An event listener to be called when an error occurs. */
-  ReconnectingWebSocket.prototype.onerror = function(event) {};
+  ReconnectingWebSocket.prototype.onerror = function (event) {
+  };
 
   /**
    * Whether all instances of ReconnectingWebSocket should log debug messages.

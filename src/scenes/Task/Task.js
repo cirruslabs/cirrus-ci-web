@@ -22,7 +22,7 @@ const Task = (props) => (
 
     render={({error, props}) => {
       if (!props) {
-        return <CirrusLinearProgress />
+        return <CirrusLinearProgress/>
       }
       return <TaskDetails task={props.task}/>
     }}

@@ -22,7 +22,7 @@ const RepositorySettings = (props) => (
 
     render={({error, props}) => {
       if (!props) {
-        return <CirrusLinearProgress />
+        return <CirrusLinearProgress/>
       }
       return <RepositorySettingsPage repository={props.repository}/>
     }}

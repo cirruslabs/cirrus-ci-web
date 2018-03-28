@@ -1,10 +1,10 @@
 import {subscribeObjectUpdates} from "./rtu/ConnectionManager";
 
 const {
-    Environment,
-    Network,
-    RecordSource,
-    Store,
+  Environment,
+  Network,
+  RecordSource,
+  Store,
 } = require('relay-runtime');
 
 /**
@@ -52,7 +52,7 @@ function pollingSubscription(
     });
   }, 3333);
 
-  return { dispose: () => clearInterval(intervalId) }
+  return {dispose: () => clearInterval(intervalId)}
 }
 
 function webSocketSubscription(
@@ -73,28 +73,28 @@ function webSocketSubscription(
     });
   });
 
-  return { dispose }
+  return {dispose}
 }
 
 function fetchQuery(
-    operation,
-    variables
+  operation,
+  variables
 ) {
   let query = {
     query: operation.text, // GraphQL text from input
     variables,
   };
   return fetch('https://api.cirrus-ci.com/graphql', {
-        method: 'POST',
-        credentials: 'include', // cookies
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(query),
-    }).then(response => {
-        return response.json();
-    });
+    method: 'POST',
+    credentials: 'include', // cookies
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(query),
+  }).then(response => {
+    return response.json();
+  });
 }
 
 // Create a network layer from the fetch function
@@ -104,6 +104,6 @@ const source = new RecordSource();
 const store = new Store(source);
 
 export default new Environment({
-    network,
-    store,
+  network,
+  store,
 });

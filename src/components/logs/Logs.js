@@ -14,6 +14,13 @@ class Logs extends React.Component {
     this.state = {logs: logLines.join("\n")};
   }
 
+  static buildLogLine(line, index, style) {
+    return (
+      <div key={index} style={style} className="log-line"
+           dangerouslySetInnerHTML={{__html: ansiFormatter.ansi_to_html(line)}}/>
+    )
+  }
+
   appendLogs(newLogs) {
     this.setState({logs: this.state.logs + newLogs});
   }
@@ -42,12 +49,6 @@ class Logs extends React.Component {
         {this.state.logs.split("\n").map((line, index) => Logs.buildLogLine(line, index, styles.logLine))}
       </div>
     );
-  }
-
-  static buildLogLine(line, index, style) {
-    return (
-      <div key={index} style={style} className="log-line" dangerouslySetInnerHTML={{__html: ansiFormatter.ansi_to_html(line)}}/>
-    )
   }
 }
 

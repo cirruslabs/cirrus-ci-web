@@ -28,7 +28,8 @@ const Repository = (props) => (
       }
       if (!props.repository) {
         let notFoundMessage =
-          <ReactMarkdown source="Repository not found! Please [install Cirrus CI](https://cirrus-ci.org/guide/quick-start/) or push [`.cirrus.yml`!](https://cirrus-ci.org/guide/writing-tasks/)."/>;
+          <ReactMarkdown
+            source="Repository not found! Please [install Cirrus CI](https://cirrus-ci.org/guide/quick-start/) or push [`.cirrus.yml`!](https://cirrus-ci.org/guide/writing-tasks/)."/>;
         return <NotFound messageComponent={notFoundMessage}/>
       }
       return <RepositoryBuildList repository={props.repository}/>

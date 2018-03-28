@@ -228,8 +228,8 @@ class Routes extends React.Component {
             <div className={classNames("invisible", classes.drawerHeader)}/>
             <div
               className={classNames({
-                ["fluid-container"]: openDrawer,
-                ["container"]: !openDrawer,
+                "fluid-container": openDrawer,
+                "container": !openDrawer,
               })}
             >
               <Switch>

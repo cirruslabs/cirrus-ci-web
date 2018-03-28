@@ -142,7 +142,7 @@ class Routes extends React.Component {
   constructor() {
     super();
     this.state = {
-      openDrawer: false,
+      openDrawer: localStorage.getItem("cirrusOpenDrawer") === "true",
     };
     this.handleDrawerOpen = this.handleDrawerOpen.bind(this);
     this.handleDrawerClose = this.handleDrawerClose.bind(this);
@@ -150,10 +150,12 @@ class Routes extends React.Component {
 
   handleDrawerOpen() {
     this.setState({openDrawer: true});
+    localStorage.setItem("cirrusOpenDrawer", "true");
   }
 
   handleDrawerClose() {
     this.setState({openDrawer: false});
+    localStorage.setItem("cirrusOpenDrawer", "false");
   }
 
   render() {

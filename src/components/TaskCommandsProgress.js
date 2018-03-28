@@ -1,12 +1,20 @@
 import {isTaskFinalStatus} from "../utils/status";
 import React from "react";
 import {taskStatusColor} from "../utils/colors";
-import {withStyles} from "material-ui";
+import {withStyles, Tooltip, Typography} from "material-ui";
 import classNames from 'classnames';
+import {formatDuration} from "../utils/time";
+import {cirrusColors} from "../cirrusTheme";
+
+let styles = {
+  tooltipTitle: {
+    color: cirrusColors.cirrusWhite
+  }
+};
 
 class TaskCommandsProgress extends React.Component {
   render() {
-    let task = this.props.task;
+    let {classes, task} = this.props;
     let totalDuration = task.statusDurations.reduce(
       (sum, statusDuration) => sum + statusDuration.durationInSeconds,
       0
@@ -40,12 +48,22 @@ class TaskCommandsProgress extends React.Component {
       )
     }
 
-    return (
-      <div className={classNames(this.props.className, "progress")}>
-        {bars}
+    let tooltipTitle = (
+      <div>
+        {task.statusDurations.map(statusDuration =>
+          <Typography variant="caption" className={classes.tooltipTitle}>{formatDuration(statusDuration.durationInSeconds)}: {statusDuration.status}</Typography>)
+        }
       </div>
+    );
+
+    return (
+      <Tooltip placement="bottom" title={tooltipTitle}>
+        <div className={classNames(this.props.className, "progress")}>
+          {bars}
+        </div>
+      </Tooltip>
     );
   }
 }
 
-export default withStyles()(TaskCommandsProgress);
+export default withStyles(styles)(TaskCommandsProgress);

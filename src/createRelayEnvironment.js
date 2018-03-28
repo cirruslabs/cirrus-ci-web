@@ -25,6 +25,8 @@ function subscription(
         taskCommandsSubscriptionDisposer.dispose();
       }
     }
+  } else if (variables['repositoryID'] && operation.text.indexOf("lastDefaultBranchBuild") > 0) {
+    return webSocketSubscription('REPOSITORY_DEFAULT_BRANCH_BUILD', variables['repositoryID'], operation, variables, cacheConfig, config)
   } else if (variables['taskID']) {
     return webSocketSubscription('TASK', variables['taskID'], operation, variables, cacheConfig, config)
   } else if (variables['buildID']) {

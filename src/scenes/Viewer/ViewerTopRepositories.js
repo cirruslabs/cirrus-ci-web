@@ -16,7 +16,7 @@ class ViewerTopRepositories extends React.Component {
           graphql`
           query ViewerTopRepositoriesQuery {
             viewer {
-              ...ViewerTopActiveRepositories_repositories
+              ...ViewerTopActiveRepositories_viewer
             }
           }
         `

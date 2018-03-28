@@ -23,6 +23,7 @@ import {hasWritePermissions} from "../utils/permissions";
 import {shorten} from "../utils/text";
 import {navigateBuild, navigateTask} from "../utils/navigate";
 import {cirrusColors} from "../cirrusTheme";
+import TaskCreatedChip from "./chips/TaskCreatedChip";
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskInput!) {
@@ -80,11 +81,12 @@ const styles = theme => ({
     marginRight: 4,
   },
   wrapper: {
-    paddingTop: 8,
-    paddingBottom: 8,
-    paddingLeft: 0,
+    padding: 0,
     display: 'flex',
     flexWrap: 'wrap',
+  },
+  progress: {
+    marginTop: theme.spacing.unit,
   },
   button: {
     margin: theme.spacing.unit,
@@ -177,15 +179,18 @@ class ViewerTaskList extends React.Component {
       <div>
         <Paper elevation={2}>
           <div className="card-body">
-            <h4 className={`card-title text-middle ${classes.wrapper}`}>
+            <div className={classes.wrapper}>
               <RepositoryNameChip className={classes.chip} repository={repository}/>
               <BuildBranchNameChip className={classes.chip} build={build}/>
               <BuildChangeChip className={classes.chip} build={build}/>
               <TaskNameChip className={classes.chip} task={task}/>
+            </div>
+            <div className={classes.wrapper}>
+              <TaskCreatedChip className={classes.chip} task={task}/>
               {scheduledDurationChip}
               <TaskStatusChip className={classes.chip} task={task}/>
-            </h4>
-            <TaskCommandsProgress task={task}/>
+            </div>
+            <TaskCommandsProgress className={classes.progress} task={task}/>
             <div className={classes.gap}>
               <ReactMarkdown className="card-text" source={build.changeMessage}/>
             </div>

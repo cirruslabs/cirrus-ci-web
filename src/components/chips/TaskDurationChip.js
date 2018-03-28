@@ -55,7 +55,6 @@ class TaskDurationChip extends React.Component {
       durationInSeconds = 0
     } else if (!isTaskFinalStatus(task.status)) {
       durationInSeconds = (Date.now() - task.scheduledTimestamp) / 1000;
-      setTimeout(() => this.forceUpdate(), 1000);
     }
     return (
       <Chip className={this.props.className}

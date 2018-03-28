@@ -13,6 +13,7 @@ import RepositoryNameChip from "./chips/RepositoryNameChip";
 import {hasWritePermissions} from "../utils/permissions";
 import {Button, Icon, withStyles} from "material-ui";
 import {cirrusColors} from "../cirrusTheme";
+import BuildCreatedChip from "./chips/BuildCreatedChip";
 
 const buildApproveMutation = graphql`
   mutation BuildDetailsApproveBuildMutation($input: BuildInput!) {
@@ -139,6 +140,7 @@ class BuildDetails extends React.Component {
           <div className="card-body">
             <div className={classes.wrapper}>
               <RepositoryNameChip className={classes.chip} repository={build.repository}/>
+              <BuildCreatedChip className={classes.chip} build={build}/>
               <BuildStatusChip className={classes.chip} build={build}/>
             </div>
             <div className={classes.gap}/>
@@ -208,6 +210,7 @@ export default createFragmentContainer(withRouter(withStyles(styles)(BuildDetail
       changeTimestamp
       changeMessage
       durationInSeconds
+      buildCreatedTimestamp
       status
       notifications {
         level

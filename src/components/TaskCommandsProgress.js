@@ -1,6 +1,8 @@
 import {isTaskFinalStatus} from "../utils/status";
 import React from "react";
 import {taskStatusColor} from "../utils/colors";
+import {withStyles} from "material-ui";
+import classNames from 'classnames';
 
 class TaskCommandsProgress extends React.Component {
   render() {
@@ -39,11 +41,11 @@ class TaskCommandsProgress extends React.Component {
     }
 
     return (
-      <div className="progress">
+      <div className={classNames(this.props.className, "progress")}>
         {bars}
       </div>
     );
   }
 }
 
-export default TaskCommandsProgress
+export default withStyles()(TaskCommandsProgress);

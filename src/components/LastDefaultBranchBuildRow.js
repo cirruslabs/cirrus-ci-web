@@ -50,6 +50,9 @@ class LastDefaultBranchBuildRow extends React.Component {
   render() {
     let {classes, repository} = this.props;
     let build = repository.lastDefaultBranchBuild;
+    if (!build) {
+      return <div/>;
+    }
     return (
       <TableRow key={build.id}
                 onClick={(e) => navigateBuild(this.context.router, e, build.id)}

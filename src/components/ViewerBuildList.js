@@ -73,11 +73,13 @@ class ViewerBuildList extends React.Component {
                 onClick={(e) => navigateBuild(this.context.router, e, build.id)}
                 hover={true}
                 style={{cursor: "pointer"}}>
-        <TableCell style={{padding: 0}} className="d-flex flex-column align-items-start h-100">
-          <RepositoryNameChip repository={build.repository} className={classes.chip}/>
-          <BuildBranchNameChip build={build} className={classes.chip}/>
-          <BuildChangeChip build={build} className={classes.chip}/>
-          <BuildStatusChip build={build} className={classNames("d-lg-none", classes.chip)}/>
+        <TableCell style={{padding: 0}}>
+          <div className="d-flex flex-column align-items-start">
+            <RepositoryNameChip repository={build.repository} className={classes.chip}/>
+            <BuildBranchNameChip build={build} className={classes.chip}/>
+            <BuildChangeChip build={build} className={classes.chip}/>
+            <BuildStatusChip build={build} className={classNames("d-lg-none", classes.chip)}/>
+          </div>
         </TableCell>
         <TableCell style={{width: '100%', maxWidth: 600}}>
           <div className="card-body">

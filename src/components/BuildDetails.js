@@ -145,8 +145,8 @@ class BuildDetails extends React.Component {
             </div>
             <div className={classes.gap}/>
             <h5 className="card-title align-middle">
-              Commit <a href={commitUrl} target="_blank">{build.changeIdInRepo.substr(0, 6)}</a> on branch <a
-              href={branchUrl} target="_blank">{build.branch}</a>:
+              Commit <a href={commitUrl} target="_blank" rel="noopener">{build.changeIdInRepo.substr(0, 6)}</a> on branch <a
+              href={branchUrl} target="_blank" rel="noopener">{build.branch}</a>:
             </h5>
             <ReactMarkdown className="card-text" source={build.changeMessage}/>
             <div className="card-body text-right">

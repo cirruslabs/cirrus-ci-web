@@ -26,7 +26,7 @@ class NotificationList extends React.Component {
     };
     let link = null;
     if (notification.message === "CI agent stopped responding!") {
-      link = <span>See <a href="https://cirrus-ci.org/faq/#ci-agent-stopped-responding" target="_blank" rel="noopener">documentation</a> for more details.</span>
+      link = <span>See <a href="https://cirrus-ci.org/faq/#ci-agent-stopped-responding" target="_blank" rel="noopener noreferrer">documentation</a> for more details.</span>
     }
     return (
       <Typography

@@ -66,7 +66,7 @@ const TaskCommandFileLogs = (props) => {
               className={classes.downloadButton}
               href={logURL(props.taskId, command)}
               target="_blank"
-              rel="noopener"
+              rel="noopener noreferrer"
       >
         <Icon>get_app</Icon>
         Download Full Logs

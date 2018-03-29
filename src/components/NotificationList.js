@@ -24,6 +24,10 @@ class NotificationList extends React.Component {
     let headerStyle = {
       backgroundColor: notificationColor(notification.level)
     };
+    let link = null;
+    if (notification.message === "CI agent stopped responding!") {
+      link = <span>See <a href="https://cirrus-ci.org/faq/#ci-agent-stopped-responding" target="_blank">documentation</a> for more details.</span>
+    }
     return (
       <Typography
         key={notification.message}
@@ -31,7 +35,7 @@ class NotificationList extends React.Component {
         style={headerStyle}
         className={classes.notification}
       >
-        {notification.message}
+        {notification.message} {link}
       </Typography>
     );
   }

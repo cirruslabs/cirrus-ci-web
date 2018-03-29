@@ -96,7 +96,7 @@ const styles = theme => ({
   },
 });
 
-class ViewerTaskList extends React.Component {
+class TaskDetails extends React.Component {
   static contextTypes = {
     router: PropTypes.object
   };
@@ -248,7 +248,7 @@ class ViewerTaskList extends React.Component {
   }
 }
 
-export default createFragmentContainer(withRouter(withStyles(styles)(ViewerTaskList)), {
+export default createFragmentContainer(withRouter(withStyles(styles)(TaskDetails)), {
   task: graphql`
     fragment TaskDetails_task on Task {
       id

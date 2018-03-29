@@ -1,10 +1,11 @@
 import React from 'react';
 import {createFragmentContainer, graphql, requestSubscription} from "react-relay";
 import environment from "../createRelayEnvironment";
-import {TableCell, TableRow, Typography, withStyles} from "material-ui";
+import {TableCell, TableRow, withStyles} from "material-ui";
 import {withRouter} from "react-router-dom";
 import {navigateBuild} from "../utils/navigate";
 import RepositoryNameChip from "./chips/RepositoryNameChip";
+import ReactMarkdown from 'react-markdown';
 import BuildStatusChip from "./chips/BuildStatusChip";
 
 const buildSubscription = graphql`
@@ -23,6 +24,7 @@ const styles = theme => ({
   },
   message: {
     margin: theme.spacing.unit,
+    width: "100%",
   },
 });
 
@@ -61,13 +63,11 @@ class LastDefaultBranchBuildRow extends React.Component {
         <TableCell style={{padding: 0}}>
           <div className="d-flex justify-content-between">
             <RepositoryNameChip repository={repository} className={classes.chip}/>
-            <BuildStatusChip build={build} className={classes.chip}/>
+            <BuildStatusChip build={build} mini={true} className={classes.chip}/>
           </div>
-          <Typography className={classes.chip}
-                      variant="subheading"
-          >
-            {build.changeMessageTitle}
-          </Typography>
+          <div className={classes.message}>
+            <ReactMarkdown source={build.changeMessageTitle}/>
+          </div>
         </TableCell>
       </TableRow>
     );

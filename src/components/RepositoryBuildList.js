@@ -107,10 +107,12 @@ class RepositoryBuildList extends React.Component {
                 onMouseOver={() => (!isSelectedBuild) && this.setState({selectedBuildId: build.id})}
                 onClick={(e) => navigateBuild(this.context.router, e, build.id)}
                 style={{cursor: "pointer"}}>
-        <TableCell className={classNames("d-flex", "flex-column", "align-items-start", classes.cell)}>
-          <BuildBranchNameChip build={build} className={classes.chip}/>
-          <BuildChangeChip build={build} className={classes.chip}/>
-          <BuildStatusChip build={build} className={classNames("d-lg-none", classes.chip)}/>
+        <TableCell style={{padding: 0}}>
+          <div className="d-flex flex-column align-items-start">
+            <BuildBranchNameChip build={build} className={classes.chip}/>
+            <BuildChangeChip build={build} className={classes.chip}/>
+            <BuildStatusChip build={build} className={classNames("d-lg-none", classes.chip)}/>
+          </div>
         </TableCell>
         <TableCell className={classes.cell}>
           <div className="card-body">

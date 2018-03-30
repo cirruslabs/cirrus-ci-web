@@ -11,6 +11,7 @@ import PropTypes from "prop-types";
 import {navigateTask} from "../utils/navigate";
 import {withStyles} from "material-ui";
 import classNames from 'classnames'
+import TaskCreatedChip from "./chips/TaskCreatedChip";
 
 const styles = {
   chip: {
@@ -37,6 +38,9 @@ class TaskListRow extends React.Component {
                 style={{cursor: "pointer"}}>
         <TableCell className={classNames(classes.cell)}>
           <TaskNameChip task={task} className={classes.chip}/>
+          {
+            this.props.showCreation ? <TaskCreatedChip task={task} className={classes.chip}/> : null
+          }
           <TaskDurationChip task={task} className={classNames(classes.chip, "d-md-none")}/>
         </TableCell>
         <TableCell className={classNames("d-none", "d-lg-table-cell", classes.cell)}>
@@ -46,8 +50,10 @@ class TaskListRow extends React.Component {
             })
           }
         </TableCell>
-        <TableCell className={classNames("d-none", "d-md-table-cell", classes.cell)}>
-          <TaskDurationChip task={task} className={classes.chip}/>
+        <TableCell className={classes.cell}>
+          <div className="d-flex justify-content-end">
+            <TaskDurationChip task={task} className={classes.chip}/>
+          </div>
         </TableCell>
       </TableRow>
     );

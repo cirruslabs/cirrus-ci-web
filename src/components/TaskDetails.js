@@ -152,13 +152,13 @@ class TaskDetails extends React.Component {
       >
         Re-Run
       </Button>;
-    let previousRuns = [];
-    if (task.previousRuns && task.previousRuns.length > 0) {
-      previousRuns = [
+    let allOtherRuns = [];
+    if (task.allOtherRuns && task.allOtherRuns.length > 0) {
+      allOtherRuns = [
         <div className={classes.gap}/>,
         <Paper>
-          <Typography className={classes.title} variant="caption" gutterBottom align="center">Previous Runs</Typography>
-          <TaskList tasks={task.previousRuns}/>
+          <Typography className={classes.title} variant="caption" gutterBottom align="center">All Other Runs</Typography>
+          <TaskList tasks={task.allOtherRuns} showCreation={true}/>
         </Paper>
       ]
     }
@@ -216,7 +216,7 @@ class TaskDetails extends React.Component {
         </Paper>
         {notificationsComponent}
         {dependencies}
-        {previousRuns}
+        {allOtherRuns}
         <div className={classes.gap}/>
         <Paper elevation={2}>
           <TaskCommandList task={task} commands={task.commands}/>
@@ -286,7 +286,7 @@ export default createFragmentContainer(withRouter(withStyles(styles)(TaskDetails
         owner
         name
       }
-      previousRuns {
+      allOtherRuns {
         ...TaskListRow_task
       }
       dependencies {

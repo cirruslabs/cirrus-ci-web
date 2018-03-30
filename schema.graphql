@@ -218,7 +218,9 @@ type Task {
   repository: Repository!
   build: Build!
   previousRuns: [Task]
+  allOtherRuns: [Task]
   dependencies: [Task]
+  automaticReRun: Boolean!
 }
 
 type TaskCommand {

@@ -85,7 +85,7 @@ class RepositorySettings extends React.Component {
           <Button variant="raised"
                   color="primary"
                   disabled={areSettingsTheSame}
-                  onTouchTap={() => this.onSave()}
+                  onClick={() => this.onSave()}
           >Save</Button>
         </CardActions>
       </Card>

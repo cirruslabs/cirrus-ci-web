@@ -121,7 +121,7 @@ class BuildDetails extends React.Component {
     let reTriggerButton = !canBeReTriggered ? null :
       <Button variant="raised" label="Re-Trigger"
               backgroundColor={cirrusColors.success}
-              onTouchTap={() => this.reTriggerBuild(build.id)}
+              onClick={() => this.reTriggerBuild(build.id)}
               icon={<Icon className="material-icons">refresh</Icon>}
       />;
 
@@ -130,7 +130,7 @@ class BuildDetails extends React.Component {
     let approveButton = !needsApproval ? null :
       <Button variant="raised" label="Approve"
               backgroundColor={cirrusColors.success}
-              onTouchTap={() => this.approveBuild(build.id)}
+              onClick={() => this.approveBuild(build.id)}
               icon={<Icon>check</Icon>}
       />;
 

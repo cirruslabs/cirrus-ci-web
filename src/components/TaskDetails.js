@@ -147,7 +147,7 @@ class TaskDetails extends React.Component {
 
     let reRunButton = !hasWritePermissions(build.viewerPermission) ? null :
       <Button variant="raised"
-              onTouchTap={() => this.rerun(task.id)}
+              onClick={() => this.rerun(task.id)}
               icon={<Icon>refresh</Icon>}
       >
         Re-Run
@@ -205,7 +205,7 @@ class TaskDetails extends React.Component {
               <Button variant="raised"
                       color="primary"
                       className={classes.buttonGap}
-                      onTouchTap={(e) => navigateBuild(this.context.router, e, task.buildId)}
+                      onClick={(e) => navigateBuild(this.context.router, e, task.buildId)}
               >
                 <Icon className={classes.leftIcon}>input</Icon>
                 View All Tasks

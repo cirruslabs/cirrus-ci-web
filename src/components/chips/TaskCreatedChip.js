@@ -2,6 +2,7 @@ import React from 'react';
 
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
+import Tooltip from 'material-ui/Tooltip';
 import {taskStatusColor} from "../../utils/colors";
 import {taskStatusIconName} from "../../utils/status";
 import {roundAndPresentDuration} from "../../utils/time";
@@ -10,7 +11,8 @@ import {cirrusColors} from "../../cirrusTheme";
 
 class TaskCreatedChip extends React.Component {
   render() {
-    let durationAgoInSeconds = (Date.now() - this.props.task.creationTimestamp) / 1000;
+    let creationTimestamp = this.props.task.creationTimestamp;
+    let durationAgoInSeconds = (Date.now() - creationTimestamp) / 1000;
     if (durationAgoInSeconds < 60) {
       // force update in a second
       setTimeout(() => this.forceUpdate(), 1000);
@@ -20,13 +22,14 @@ class TaskCreatedChip extends React.Component {
     }
     let durationInSeconds = Math.floor(durationAgoInSeconds);
     return (
-      <Chip className={this.props.className}
-            label={`Created ${roundAndPresentDuration(durationInSeconds)} ago`}
-            avatar={
-              <Avatar style={{backgroundColor: taskStatusColor('CREATED')}}>
-                <Icon style={{color: cirrusColors.cirrusWhite}}>{taskStatusIconName('CREATED')}</Icon>
-              </Avatar>
-            }/>
+      <Tooltip title={`Created at ${new Date(creationTimestamp).toLocaleTimeString()} on ${new Date(creationTimestamp).toDateString()}`} className={this.props.className}>
+        <Chip label={`Created ${roundAndPresentDuration(durationInSeconds)} ago`}
+              avatar={
+                <Avatar style={{backgroundColor: taskStatusColor('CREATED')}}>
+                  <Icon style={{color: cirrusColors.cirrusWhite}}>{taskStatusIconName('CREATED')}</Icon>
+                </Avatar>
+              }/>
+      </Tooltip>
     );
   }
 }

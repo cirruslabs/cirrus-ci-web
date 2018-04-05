@@ -45,7 +45,7 @@ class TaskListRow extends React.Component {
         </TableCell>
         <TableCell className={classNames("d-none", "d-lg-table-cell", classes.cell)}>
           {
-            task.labels.map(label => {
+            task.uniqueLabels.map(label => {
               return <Chip key={label} className={classes.chip} label={shorten(label)}/>
             })
           }
@@ -69,7 +69,7 @@ export default createFragmentContainer(withRouter(withStyles(styles)(TaskListRow
         creationTimestamp
         scheduledTimestamp
         durationInSeconds
-        labels
+        uniqueLabels
         statusDurations {
           status
           durationInSeconds

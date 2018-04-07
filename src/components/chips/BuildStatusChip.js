@@ -46,22 +46,23 @@ class BuildStatusChip extends React.Component {
   render() {
     let {build, mini} = this.props;
     let message = buildStatusMessage(build);
-    let statusAvatar = (
-      <Avatar style={{background: buildStatusColor(build.status)}} className={this.props.className}>
-        <Icon style={{color: cirrusColors.cirrusWhite}}>{buildStatusIconName(build.status)}</Icon>
-      </Avatar>
-    );
     if (mini) {
       return (
         <Tooltip title={message}>
-          {statusAvatar}
+          <Avatar style={{background: buildStatusColor(build.status)}} className={this.props.className}>
+            <Icon style={{color: cirrusColors.cirrusWhite}}>{buildStatusIconName(build.status)}</Icon>
+          </Avatar>
         </Tooltip>
       );
     }
     return (
       <Chip className={this.props.className}
             label={message}
-            avatar={statusAvatar}/>
+            avatar={
+              <Avatar style={{background: buildStatusColor(build.status)}}>
+                <Icon style={{color: cirrusColors.cirrusWhite}}>{buildStatusIconName(build.status)}</Icon>
+              </Avatar>
+            }/>
     );
   }
 }

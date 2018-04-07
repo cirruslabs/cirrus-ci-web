@@ -8,7 +8,7 @@ import {formatDuration} from "../utils/time";
 import {isTaskCommandExecuting, isTaskCommandFinalStatus, isTaskFinalStatus} from "../utils/status";
 import DurationTicker from "./DurationTicker";
 import {ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, Typography, withStyles} from "material-ui";
-import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const styles = {
   details: {

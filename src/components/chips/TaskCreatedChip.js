@@ -22,8 +22,9 @@ class TaskCreatedChip extends React.Component {
     }
     let durationInSeconds = Math.floor(durationAgoInSeconds);
     return (
-      <Tooltip title={`Created at ${new Date(creationTimestamp).toLocaleTimeString()} on ${new Date(creationTimestamp).toDateString()}`} className={this.props.className}>
-        <Chip label={`Created ${roundAndPresentDuration(durationInSeconds)} ago`}
+      <Tooltip title={`Created at ${new Date(creationTimestamp).toLocaleTimeString()} on ${new Date(creationTimestamp).toDateString()}`}>
+        <Chip className={this.props.className}
+              label={`Created ${roundAndPresentDuration(durationInSeconds)} ago`}
               avatar={
                 <Avatar style={{backgroundColor: taskStatusColor('CREATED')}}>
                   <Icon style={{color: cirrusColors.cirrusWhite}}>{taskStatusIconName('CREATED')}</Icon>

@@ -94,6 +94,9 @@ const styles = theme => ({
   leftIcon: {
     marginRight: theme.spacing.unit,
   },
+  automaticReRun: {
+    backgroundColor: cirrusColors.lightWarning,
+  },
 });
 
 class TaskDetails extends React.Component {
@@ -202,6 +205,7 @@ class TaskDetails extends React.Component {
             </Typography>
             <div className={classes.gap}/>
             <div className={classNames("card-body", classes.wrapper)}>
+              { task.automaticReRun ? <Chip className={classNames(classes.chip, classes.automaticReRun)} label="Automatic Re-Run"/> : null }
               {
                 task.labels.map(label => {
                   return <Chip key={label} className={classes.chip} label={shorten(label)}/>
@@ -266,6 +270,7 @@ export default createFragmentContainer(withRouter(withStyles(styles)(TaskDetails
       creationTimestamp
       executingTimestamp
       durationInSeconds
+      automaticReRun
       statusDurations {
         status
         durationInSeconds

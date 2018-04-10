@@ -11,7 +11,6 @@ import TaskList from './TaskList';
 import NotificationList from "./NotificationList";
 import {isTaskFinalStatus} from "../utils/status";
 import {Button, Icon, Typography, withStyles} from "material-ui";
-import ReactMarkdown from 'react-markdown';
 import BuildBranchNameChip from "./chips/BuildBranchNameChip";
 import TaskNameChip from "./chips/TaskNameChip";
 import BuildChangeChip from "./chips/BuildChangeChip";
@@ -24,6 +23,7 @@ import {shorten} from "../utils/text";
 import {navigateBuild, navigateTask} from "../utils/navigate";
 import {cirrusColors} from "../cirrusTheme";
 import TaskCreatedChip from "./chips/TaskCreatedChip";
+import classNames from 'classnames';
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskInput!) {
@@ -135,6 +135,9 @@ class TaskDetails extends React.Component {
       this.closeSubscription();
     }
 
+    let repoUrl = repository.cloneUrl.slice(0, -4);
+    let commitUrl = repoUrl + "/commit/" + build.changeIdInRepo;
+
     let notificationsComponent = (!task.notifications || task.notifications.length === 0) ? null :
       <div className={classes.gap}>
         <NotificationList notifications={task.notifications}/>
@@ -157,7 +160,8 @@ class TaskDetails extends React.Component {
       allOtherRuns = [
         <div className={classes.gap}/>,
         <Paper>
-          <Typography className={classes.title} variant="caption" gutterBottom align="center">All Other Runs</Typography>
+          <Typography className={classes.title} variant="caption" gutterBottom align="center">All Other
+            Runs</Typography>
           <TaskList tasks={task.allOtherRuns} showCreation={true}/>
         </Paper>
       ]
@@ -191,10 +195,13 @@ class TaskDetails extends React.Component {
               <TaskStatusChip className={classes.chip} task={task}/>
             </div>
             <TaskCommandsProgress className={classes.progress} task={task}/>
-            <div className={classes.gap}>
-              <ReactMarkdown className="card-text" source={build.changeMessage}/>
-            </div>
-            <div className={`card-body ${classes.wrapper}`}>
+            <div className={classes.gap}/>
+            <Typography variant="title" gutterBottom>
+              {build.changeMessageTitle} (commit <a href={commitUrl} target="_blank"
+                                                    rel="noopener noreferrer">{build.changeIdInRepo.substr(0, 6)}</a>)
+            </Typography>
+            <div className={classes.gap}/>
+            <div className={classNames("card-body", classes.wrapper)}>
               {
                 task.labels.map(label => {
                   return <Chip key={label} className={classes.chip} label={shorten(label)}/>
@@ -278,13 +285,14 @@ export default createFragmentContainer(withRouter(withStyles(styles)(TaskDetails
         branch
         changeIdInRepo
         changeTimestamp
-        changeMessage
+        changeMessageTitle
         viewerPermission
       }
       repository {
         id
         owner
         name
+        cloneUrl
       }
       allOtherRuns {
         ...TaskListRow_task

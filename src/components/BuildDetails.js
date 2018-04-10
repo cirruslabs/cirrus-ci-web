@@ -3,7 +3,7 @@ import React from 'react';
 import {commitMutation, createFragmentContainer, graphql, requestSubscription,} from 'react-relay';
 import {withRouter} from 'react-router-dom'
 import Paper from 'material-ui/Paper';
-import ReactMarkdown from 'react-markdown';
+import Typography from 'material-ui/Typography';
 
 import TaskList from './TaskList';
 import NotificationList from "./NotificationList";
@@ -144,11 +144,13 @@ class BuildDetails extends React.Component {
               <BuildStatusChip className={classes.chip} build={build}/>
             </div>
             <div className={classes.gap}/>
-            <h5 className="card-title align-middle">
+            <Typography variant="headline" gutterBottom>
+              {build.changeMessageTitle}
+            </Typography>
+            <Typography variant="subheading" gutterBottom>
               Commit <a href={commitUrl} target="_blank" rel="noopener noreferrer">{build.changeIdInRepo.substr(0, 6)}</a> on branch <a
-              href={branchUrl} target="_blank" rel="noopener noreferrer">{build.branch}</a>:
-            </h5>
-            <ReactMarkdown className="card-text" source={build.changeMessage}/>
+              href={branchUrl} target="_blank" rel="noopener noreferrer">{build.branch}</a>.
+            </Typography>
             <div className="card-body text-right">
               {reTriggerButton}
               {approveButton}
@@ -208,7 +210,7 @@ export default createFragmentContainer(withRouter(withStyles(styles)(BuildDetail
       branch
       changeIdInRepo
       changeTimestamp
-      changeMessage
+      changeMessageTitle
       durationInSeconds
       buildCreatedTimestamp
       status

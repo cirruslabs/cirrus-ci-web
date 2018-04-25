@@ -16,7 +16,7 @@ FROM node:9
 WORKDIR /svc/cirrus-ci-web
 EXPOSE 8080
 
-RUN npm install -g serve@6.5.3
+RUN npm install -g serve@6.5.6
 
 COPY --from=builder /tmp/cirrus-ci-web/build/ /svc/cirrus-ci-web/
 

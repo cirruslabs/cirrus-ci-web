@@ -11,7 +11,7 @@ ENV PUBLIC_URL https://cirrus-ci.com/
 
 RUN yarn run build
 
-FROM node:9
+FROM node:10
 
 WORKDIR /svc/cirrus-ci-web
 EXPOSE 8080

@@ -44,7 +44,7 @@ class TaskCommandsProgress extends React.Component {
              style={{width: percent + '%', backgroundColor: taskStatusColor(statusDuration.status)}}
              aria-valuenow={percent}
              aria-valuemin="0"
-             aria-valuemax="100">{percent > 10 ? statusDuration.status : ""}</div>
+             aria-valuemax="100"/>
       )
     }
 

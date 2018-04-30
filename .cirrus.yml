@@ -1,5 +1,5 @@
 container:
-  image: node:9
+  image: node:10
 
 build_task:
   node_modules_cache:

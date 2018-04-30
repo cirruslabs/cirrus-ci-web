@@ -1,4 +1,4 @@
-FROM node:9 as builder
+FROM node:10 as builder
 
 WORKDIR /tmp/cirrus-ci-web
 ADD . /tmp/cirrus-ci-web/

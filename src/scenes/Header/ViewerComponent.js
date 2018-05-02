@@ -30,10 +30,9 @@ class ViewerComponent extends React.Component {
           }
           let viewer = props.viewer;
           if (!viewer) {
-            return <Button label="Log In"
-                           style={{color: cirrusColors.cirrusWhite}}
+            return <Button style={{color: cirrusColors.cirrusWhite}}
                            href="https://api.cirrus-ci.com/redirect/auth/github"
-                           icon={<Icon className="fa fa-github"/>}/>;
+                           icon={<Icon className="fa fa-github"/>}>Log In</Button>;
           }
           return <AccountInformation viewer={viewer}/>;
         }}

@@ -5,6 +5,7 @@ import {graphql, QueryRenderer} from 'react-relay';
 import environment from '../../createRelayEnvironment';
 import CirrusLinearProgress from "../../components/CirrusLinearProgress";
 import ViewerTopActiveRepositories from "../../components/ViewerTopActiveRepositories";
+import {Typography} from "material-ui";
 
 
 class ViewerTopRepositories extends React.Component {
@@ -25,6 +26,9 @@ class ViewerTopRepositories extends React.Component {
         render={({error, props}) => {
           if (!props) {
             return <CirrusLinearProgress/>;
+          }
+          if (!props.viewer) {
+            return <Typography variant="subheading">Please Log In to see your active repositories!</Typography>;
           }
           return <ViewerTopActiveRepositories viewer={props.viewer}/>;
         }}

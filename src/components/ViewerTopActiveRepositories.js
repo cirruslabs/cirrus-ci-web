@@ -20,7 +20,7 @@ class ViewerTopActiveRepositories extends React.Component {
   };
 
   render() {
-    let repositories = this.props.viewer.topActiveRepositories;
+    let repositories = this.props.viewer.topActiveRepositories || [];
 
     return (
       <Table style={{tableLayout: 'auto'}}>

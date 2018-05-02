@@ -29,7 +29,7 @@ const Home = (props) => (
           <Paper elevation={1}>
             <Toolbar>
               <FormGroup>
-                <Typography variant="title" text="Please Log In to see your recent builds"/>
+                <Typography variant="title">Please Log In to see your recent builds</Typography>
               </FormGroup>
             </Toolbar>
           </Paper>

@@ -6,7 +6,7 @@ import {withStyles} from "material-ui";
 
 class TaskList extends React.Component {
   render() {
-    let tasks = this.props.tasks;
+    let tasks = this.props.tasks || [];
     return (
       <Table style={{tableLayout: 'auto'}}>
         <TableBody>

@@ -2,7 +2,7 @@ import pluralize from "pluralize";
 
 export function formatDuration(durationInSeconds) {
   let formatSinglePart = (value) => value < 10 ? "0" + value : value.toString();
-  let duration = durationInSeconds || 0;
+  let duration = Math.max(0, durationInSeconds || 0);
   let seconds = Math.floor(duration % 60);
   duration /= 60;
   let minutes = Math.floor(duration % 60);
@@ -15,7 +15,7 @@ export function formatDuration(durationInSeconds) {
 }
 
 export function roundAndPresentDuration(durationInSeconds) {
-  durationInSeconds = durationInSeconds || 0;
+  durationInSeconds = Math.max(0, durationInSeconds || 0);
   if (durationInSeconds < 60) {
     return pluralize("second", Math.floor(durationInSeconds), true)
   }

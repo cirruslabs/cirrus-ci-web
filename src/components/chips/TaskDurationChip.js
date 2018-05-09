@@ -17,6 +17,7 @@ const taskSubscription = graphql`
     task(id: $taskID) {
       id
       status
+      creationTimestamp
       scheduledTimestamp
       durationInSeconds
     }
@@ -54,7 +55,8 @@ class TaskDurationChip extends React.Component {
     if (!isTaskInProgressStatus(task.status) && !isTaskFinalStatus(task.status)) {
       durationInSeconds = 0
     } else if (!isTaskFinalStatus(task.status)) {
-      durationInSeconds = (Date.now() - task.scheduledTimestamp) / 1000;
+      let timestamp = Math.max(task.creationTimestamp, task.scheduledTimestamp);
+      durationInSeconds = (Date.now() - timestamp) / 1000;
     }
 
     if (!isTaskFinalStatus(task.status)) {

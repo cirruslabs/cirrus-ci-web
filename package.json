@@ -7,7 +7,7 @@
     "classnames": "*",
     "graphql": "*",
     "graphql-relay": "*",
-    "material-ui": "next",
+    "@material-ui/core": "latest",
     "@material-ui/icons": "latest",
     "pluralize": "*",
     "prop-types": "*",

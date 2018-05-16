@@ -3,14 +3,17 @@ import React from 'react';
 import {withRouter} from 'react-router-dom'
 import environment from '../createRelayEnvironment';
 import {commitMutation, createFragmentContainer, graphql, requestSubscription} from 'react-relay';
-import Chip from 'material-ui/Chip';
-import Paper from 'material-ui/Paper';
+import Chip from '@material-ui/core/Chip';
+import Paper from '@material-ui/core/Paper';
 
 import TaskCommandList from './TaskCommandList'
 import TaskList from './TaskList';
 import NotificationList from "./NotificationList";
 import {isTaskFinalStatus} from "../utils/status";
-import {Button, Icon, Typography, withStyles} from "material-ui";
+import {withStyles} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import Icon from "@material-ui/core/Icon";
+import Typography from "@material-ui/core/Typography";
 import BuildBranchNameChip from "./chips/BuildBranchNameChip";
 import TaskNameChip from "./chips/TaskNameChip";
 import BuildChangeChip from "./chips/BuildChangeChip";

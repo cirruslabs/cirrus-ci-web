@@ -2,8 +2,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {commitMutation, createFragmentContainer, graphql, requestSubscription,} from 'react-relay';
 import {withRouter} from 'react-router-dom'
-import Paper from 'material-ui/Paper';
-import Typography from 'material-ui/Typography';
+import Button from '@material-ui/core/Button';
+import Icon from '@material-ui/core/Icon';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 
 import TaskList from './TaskList';
 import NotificationList from "./NotificationList";
@@ -11,7 +13,7 @@ import environment from "../createRelayEnvironment";
 import BuildStatusChip from "./chips/BuildStatusChip";
 import RepositoryNameChip from "./chips/RepositoryNameChip";
 import {hasWritePermissions} from "../utils/permissions";
-import {Button, Icon, withStyles} from "material-ui";
+import {withStyles} from "@material-ui/core";
 import {cirrusColors} from "../cirrusTheme";
 import BuildCreatedChip from "./chips/BuildCreatedChip";
 

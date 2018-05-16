@@ -6,7 +6,9 @@ import CirrusLinearProgress from "./CirrusLinearProgress";
 import {subscribeTaskCommandLogs} from "../rtu/ConnectionManager";
 import CirrusCircularProgress from "./CirrusCircularProgress";
 import {isTaskCommandFinalStatus} from "../utils/status";
-import {Button, Icon, withStyles} from "material-ui";
+import {withStyles} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import Icon from "@material-ui/core/Icon";
 
 function logURL(taskId, command) {
   return "https://api.cirrus-ci.com/v1/task/" + taskId + "/logs/" + command.name + ".log";

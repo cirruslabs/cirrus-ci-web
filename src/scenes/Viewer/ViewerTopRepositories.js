@@ -5,7 +5,7 @@ import {graphql, QueryRenderer} from 'react-relay';
 import environment from '../../createRelayEnvironment';
 import CirrusLinearProgress from "../../components/CirrusLinearProgress";
 import ViewerTopActiveRepositories from "../../components/ViewerTopActiveRepositories";
-import {Typography} from "material-ui";
+import {Typography} from "@material-ui/core";
 
 
 class ViewerTopRepositories extends React.Component {

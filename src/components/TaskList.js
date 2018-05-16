@@ -1,8 +1,9 @@
 import React from 'react';
 
-import Table, {TableBody} from 'material-ui/Table';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
 import TaskListRow from "./TaskListRow";
-import {withStyles} from "material-ui";
+import {withStyles} from "@material-ui/core";
 
 class TaskList extends React.Component {
   render() {

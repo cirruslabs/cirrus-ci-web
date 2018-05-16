@@ -1,7 +1,9 @@
 import {isTaskFinalStatus} from "../utils/status";
 import React from "react";
 import {taskStatusColor} from "../utils/colors";
-import {withStyles, Tooltip, Typography} from "material-ui";
+import {withStyles} from "@material-ui/core";
+import Tooltip from "@material-ui/core/Tooltip";
+import Typography from "@material-ui/core/Typography";
 import classNames from 'classnames';
 import {formatDuration} from "../utils/time";
 import {cirrusColors} from "../cirrusTheme";

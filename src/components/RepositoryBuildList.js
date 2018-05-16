@@ -3,19 +3,22 @@ import React from 'react';
 import {createFragmentContainer, graphql,} from 'react-relay';
 import {Link, withRouter} from 'react-router-dom'
 
-import Table, {TableBody, TableCell, TableRow} from 'material-ui/Table';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
 import ReactMarkdown from 'react-markdown';
-import Paper from 'material-ui/Paper';
-import IconButton from 'material-ui/IconButton';
-import Toolbar from 'material-ui/Toolbar';
-import Typography from 'material-ui/Typography';
+import Paper from '@material-ui/core/Paper';
+import IconButton from '@material-ui/core/IconButton';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import BuildDurationsChart from "./BuildDurationsChart";
 import BuildBranchNameChip from "./chips/BuildBranchNameChip";
 import BuildChangeChip from "./chips/BuildChangeChip";
 import BuildStatusChip from "./chips/BuildStatusChip";
 import {navigateBuild} from "../utils/navigate";
-import {withStyles} from "material-ui";
-import Icon from "material-ui/Icon";
+import {withStyles} from "@material-ui/core";
+import Icon from "@material-ui/core/Icon";
 import classNames from 'classnames';
 
 let styles = {

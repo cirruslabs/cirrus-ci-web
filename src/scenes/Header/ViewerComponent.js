@@ -6,7 +6,8 @@ import environment from '../../createRelayEnvironment';
 import AccountInformation from '../../components/AccountInformation'
 import CirrusCircularProgress from "../../components/CirrusCircularProgress";
 import {cirrusColors} from "../../cirrusTheme";
-import {Button, Icon} from "material-ui";
+import Button from "@material-ui/core/Button";
+import Icon from "@material-ui/core/Icon";
 
 
 class ViewerComponent extends React.Component {

@@ -1,7 +1,9 @@
 import React from 'react';
 import {createFragmentContainer, graphql, requestSubscription} from "react-relay";
 import environment from "../createRelayEnvironment";
-import {TableCell, TableRow, withStyles} from "material-ui";
+import TableCell from "@material-ui/core/TableCell";
+import TableRow from "@material-ui/core/TableRow";
+import {withStyles} from "@material-ui/core";
 import {withRouter} from "react-router-dom";
 import {navigateBuild} from "../utils/navigate";
 import RepositoryNameChip from "./chips/RepositoryNameChip";
@@ -53,7 +55,7 @@ class LastDefaultBranchBuildRow extends React.Component {
     let {classes, repository} = this.props;
     let build = repository.lastDefaultBranchBuild;
     if (!build) {
-      return <div/>;
+      return null;
     }
     return (
       <TableRow key={build.id}

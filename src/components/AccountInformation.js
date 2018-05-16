@@ -1,8 +1,11 @@
 import React from 'react';
-import {createFragmentContainer, graphql,} from 'react-relay';
+import {createFragmentContainer, graphql} from 'react-relay';
 
-import Avatar from 'material-ui/Avatar';
-import {IconButton, Menu, MenuItem, withStyles} from "material-ui";
+import Avatar from '@material-ui/core/Avatar';
+import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import {withStyles} from "@material-ui/core";
 
 class AccountInformation extends React.Component {
   constructor() {

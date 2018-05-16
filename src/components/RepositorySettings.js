@@ -1,19 +1,17 @@
 import React from 'react';
 import {commitMutation, createFragmentContainer, graphql} from 'react-relay';
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  MenuItem,
-  Select,
-  Switch,
-  withStyles
-} from "material-ui";
+import Button from "@material-ui/core/Button"
+import Card from "@material-ui/core/Card"
+import CardActions from "@material-ui/core/CardActions"
+import CardContent from "@material-ui/core/CardContent"
+import CardHeader from "@material-ui/core/CardHeader"
+import FormControl from "@material-ui/core/FormControl"
+import FormControlLabel from "@material-ui/core/FormControlLabel"
+import FormHelperText from "@material-ui/core/FormHelperText"
+import MenuItem from "@material-ui/core/MenuItem"
+import Select from "@material-ui/core/Select"
+import Switch from "@material-ui/core/Switch"
+import {withStyles} from "@material-ui/core";
 import environment from "../createRelayEnvironment";
 
 const saveSettingsMutation = graphql`

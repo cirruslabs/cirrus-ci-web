@@ -1,9 +1,9 @@
-import blue from 'material-ui/colors/blue';
-import grey from 'material-ui/colors/grey';
-import lightGreen from 'material-ui/colors/lightGreen';
-import orange from 'material-ui/colors/orange';
-import red from 'material-ui/colors/red';
-import yellow from 'material-ui/colors/yellow';
+import blue from '@material-ui/core/colors/blue';
+import grey from '@material-ui/core/colors/grey';
+import lightGreen from '@material-ui/core/colors/lightGreen';
+import orange from '@material-ui/core/colors/orange';
+import red from '@material-ui/core/colors/red';
+import yellow from '@material-ui/core/colors/yellow';
 
 let successColor = lightGreen['500'];
 let lightSuccessColor = lightGreen['300'];

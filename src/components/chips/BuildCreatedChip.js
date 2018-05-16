@@ -1,12 +1,12 @@
 import React from 'react';
 
-import Avatar from 'material-ui/Avatar';
-import Chip from 'material-ui/Chip';
-import Tooltip from 'material-ui/Tooltip';
+import Avatar from '@material-ui/core/Avatar';
+import Chip from '@material-ui/core/Chip';
+import Tooltip from '@material-ui/core/Tooltip';
+import Icon from '@material-ui/core/Icon';
 import {taskStatusColor} from "../../utils/colors";
 import {taskStatusIconName} from "../../utils/status";
 import {roundAndPresentDuration} from "../../utils/time";
-import {Icon} from "material-ui";
 import {cirrusColors} from "../../cirrusTheme";
 
 class BuildCreatedChip extends React.Component {

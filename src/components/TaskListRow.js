@@ -1,15 +1,16 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom'
 
-import {TableCell, TableRow} from 'material-ui/Table';
-import Chip from 'material-ui/Chip';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
+import Chip from '@material-ui/core/Chip';
 import TaskNameChip from "./chips/TaskNameChip";
 import TaskDurationChip from "./chips/TaskDurationChip";
 import {shorten} from "../utils/text";
 import {createFragmentContainer, graphql} from "react-relay";
 import PropTypes from "prop-types";
 import {navigateTask} from "../utils/navigate";
-import {withStyles} from "material-ui";
+import {withStyles} from "@material-ui/core";
 import classNames from 'classnames'
 import TaskCreatedChip from "./chips/TaskCreatedChip";
 

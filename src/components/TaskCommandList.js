@@ -7,8 +7,12 @@ import TaskCommandLogs from "./TaskCommandLogs";
 import {formatDuration} from "../utils/time";
 import {isTaskCommandExecuting, isTaskCommandFinalStatus, isTaskFinalStatus} from "../utils/status";
 import DurationTicker from "./DurationTicker";
-import {ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, Typography, withStyles} from "material-ui";
+import {withStyles} from "@material-ui/core";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import Typography from '@material-ui/core/Typography';
 
 const styles = {
   details: {

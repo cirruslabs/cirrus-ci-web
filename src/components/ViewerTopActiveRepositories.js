@@ -3,8 +3,9 @@ import React from 'react';
 import {createFragmentContainer, graphql,} from 'react-relay';
 import {withRouter} from 'react-router-dom'
 
-import Table, {TableBody} from 'material-ui/Table';
-import {withStyles} from "material-ui";
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import {withStyles} from "@material-ui/core";
 import LastDefaultBranchBuildRow from "./LastDefaultBranchBuildRow";
 
 let styles = theme => ({

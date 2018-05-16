@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Avatar from 'material-ui/Avatar';
-import Chip from 'material-ui/Chip';
+import Avatar from '@material-ui/core/Avatar';
+import Chip from '@material-ui/core/Chip';
+import Icon from '@material-ui/core/Icon';
 import {cirrusColors} from "../../cirrusTheme";
 import {withRouter} from "react-router-dom";
 import {navigate} from "../../utils/navigate";
-import {Icon} from "material-ui";
 
 class RepositoryNameChip extends React.Component {
   static contextTypes = {

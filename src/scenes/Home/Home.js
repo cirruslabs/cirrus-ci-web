@@ -5,7 +5,10 @@ import {graphql, QueryRenderer} from 'react-relay';
 import environment from '../../createRelayEnvironment';
 import ViewerBuildList from '../../components/ViewerBuildList'
 import CirrusLinearProgress from "../../components/CirrusLinearProgress";
-import {FormGroup, Paper, Toolbar, Typography} from "material-ui";
+import FormGroup from "@material-ui/core/FormGroup";
+import Paper from "@material-ui/core/Paper";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
 
 const Home = (props) => (
   <QueryRenderer

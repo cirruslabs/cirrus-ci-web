@@ -1,5 +1,5 @@
 import React from 'react';
-import {Icon} from "material-ui";
+import Icon from "@material-ui/core/Icon";
 
 const NotFound = (props) => (
   <div style={{width: "100%", height: "100%"}}>

@@ -1,7 +1,7 @@
 import React from 'react';
-import {LinearProgress} from 'material-ui/Progress';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import {cirrusColors} from "../cirrusTheme";
-import {withStyles} from "material-ui";
+import {withStyles} from "@material-ui/core";
 
 const styles = {
   progress: {

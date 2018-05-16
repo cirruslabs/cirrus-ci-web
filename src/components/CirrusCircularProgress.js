@@ -1,7 +1,7 @@
 import React from 'react';
-import {CircularProgress} from 'material-ui/Progress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import {cirrusColors} from "../cirrusTheme";
-import {withStyles} from "material-ui";
+import {withStyles} from "@material-ui/core";
 
 const styles = {
   progress: {

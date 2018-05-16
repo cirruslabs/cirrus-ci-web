@@ -1,10 +1,10 @@
 import React from 'react';
 
-import Avatar from 'material-ui/Avatar';
-import Chip from 'material-ui/Chip';
+import Avatar from '@material-ui/core/Avatar';
+import Chip from '@material-ui/core/Chip';
+import Icon from '@material-ui/core/Icon';
 import {taskStatusColor} from "../../utils/colors";
 import {taskStatusIconName, taskStatusMessage} from "../../utils/status";
-import {Icon} from "material-ui";
 import {cirrusColors} from "../../cirrusTheme";
 
 export default function (props) {

@@ -6,7 +6,7 @@ import ViewerComponent from "./scenes/Header/ViewerComponent";
 import NotFound from "./scenes/NotFound";
 import {navigate} from "./utils/navigate";
 import {cirrusColors} from "./cirrusTheme";
-import {AppBar, Button, Drawer, Icon, IconButton, Toolbar, Typography, withStyles} from "material-ui";
+import {AppBar, Button, Drawer, Icon, IconButton, Toolbar, Typography, withStyles} from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import PropTypes from "prop-types";

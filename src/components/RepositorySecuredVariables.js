@@ -1,9 +1,14 @@
 import React from 'react';
 import environment from '../createRelayEnvironment';
 import {commitMutation, createFragmentContainer, graphql} from 'react-relay';
-import TextField from 'material-ui/TextField';
-import Button from 'material-ui/Button';
-import {Card, CardActions, CardContent, CardHeader, FormControl, withStyles} from "material-ui";
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import FormControl from '@material-ui/core/FormControl';
+import {withStyles} from "@material-ui/core";
 
 const securedVariableMutation = graphql`
   mutation RepositorySecuredVariablesMutation($input: RepositorySecuredVariableInput!) {

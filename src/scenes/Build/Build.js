@@ -5,6 +5,7 @@ import {graphql, QueryRenderer} from 'react-relay';
 import environment from '../../createRelayEnvironment';
 import BuildDetails from '../../components/BuildDetails'
 import CirrusLinearProgress from "../../components/CirrusLinearProgress";
+import NotFound from "../NotFound";
 
 const Build = (props) => (
   <QueryRenderer
@@ -23,6 +24,9 @@ const Build = (props) => (
     render={({error, props}) => {
       if (!props) {
         return <CirrusLinearProgress/>
+      }
+      if (!props.build) {
+        return <NotFound message={error}/>;
       }
       return <BuildDetails build={props.build}/>
     }}

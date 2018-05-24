@@ -5,6 +5,7 @@ import {graphql, QueryRenderer} from 'react-relay';
 import environment from '../../createRelayEnvironment';
 import CirrusLinearProgress from "../../components/CirrusLinearProgress";
 import RepositorySettingsPage from "../../components/RepositorySettingsPage";
+import NotFound from "../NotFound";
 
 const RepositorySettings = (props) => (
   <QueryRenderer
@@ -23,6 +24,9 @@ const RepositorySettings = (props) => (
     render={({error, props}) => {
       if (!props) {
         return <CirrusLinearProgress/>
+      }
+      if (!props.repository) {
+        return <NotFound message={error}/>;
       }
       return <RepositorySettingsPage repository={props.repository}/>
     }}

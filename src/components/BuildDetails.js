@@ -121,20 +121,18 @@ class BuildDetails extends React.Component {
       && hasWritePermissions(build.repository.viewerPermission)
       && build.tasks && build.tasks.length === 0;
     let reTriggerButton = !canBeReTriggered ? null :
-      <Button variant="raised" label="Re-Trigger"
+      <Button variant="raised"
               backgroundColor={cirrusColors.success}
               onClick={() => this.reTriggerBuild(build.id)}
-              icon={<Icon className="material-icons">refresh</Icon>}
-      />;
+              icon={<Icon className="material-icons">refresh</Icon>}>Re-Trigger</Button>;
 
 
     let needsApproval = build.status === 'NEEDS_APPROVAL' && hasWritePermissions(build.repository.viewerPermission);
     let approveButton = !needsApproval ? null :
-      <Button variant="raised" label="Approve"
+      <Button variant="raised"
               backgroundColor={cirrusColors.success}
               onClick={() => this.approveBuild(build.id)}
-              icon={<Icon>check</Icon>}
-      />;
+              icon={<Icon>check</Icon>}>Approve</Button>;
 
     return (
       <div>

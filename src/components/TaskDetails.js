@@ -27,6 +27,8 @@ import {navigateBuild, navigateTask} from "../utils/navigate";
 import {cirrusColors} from "../cirrusTheme";
 import TaskCreatedChip from "./chips/TaskCreatedChip";
 import classNames from 'classnames';
+import CirrusFavicon from "./CirrusFavicon";
+import {faviconColor} from "../utils/colors";
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskInput!) {
@@ -187,6 +189,7 @@ class TaskDetails extends React.Component {
 
     return (
       <div>
+        <CirrusFavicon color={faviconColor(task.status)}/>
         <Paper elevation={2}>
           <div className="card-body">
             <div className={classes.wrapper}>
@@ -208,7 +211,8 @@ class TaskDetails extends React.Component {
             </Typography>
             <div className={classes.gap}/>
             <div className={classNames("card-body", classes.wrapper)}>
-              { task.automaticReRun ? <Chip className={classNames(classes.chip, classes.automaticReRun)} label="Automatic Re-Run"/> : null }
+              {task.automaticReRun ?
+                <Chip className={classNames(classes.chip, classes.automaticReRun)} label="Automatic Re-Run"/> : null}
               {
                 task.labels.map(label => {
                   return <Chip key={label} className={classes.chip} label={shorten(label)}/>

@@ -5,6 +5,7 @@ import orange from '@material-ui/core/colors/orange';
 import red from '@material-ui/core/colors/red';
 import yellow from '@material-ui/core/colors/yellow';
 
+let darkSuccessColor = lightGreen['700'];
 let successColor = lightGreen['500'];
 let lightSuccessColor = lightGreen['300'];
 
@@ -19,6 +20,7 @@ let cirrusColors = {
   lightInitialization: blue['300'],
   success: successColor,
   lightSuccess: lightSuccessColor,
+  darkSuccess: darkSuccessColor,
   warning: orange['500'],
   lightWarning: orange['300'],
   failure: red['500'],

@@ -34,6 +34,19 @@ export function taskStatusColor(status) {
   }
 }
 
+export function faviconColor(status) {
+  switch (status) {
+    case "COMPLETED":
+      return cirrusColors.darkSuccess;
+    case "ABORTED":
+      return cirrusColors.failure;
+    case "FAILED":
+      return cirrusColors.failure;
+    default:
+      return cirrusColors.warning;
+  }
+}
+
 export function commandStatusColor(status) {
   switch (status) {
     case 'SUCCESS':

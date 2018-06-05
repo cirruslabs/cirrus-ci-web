@@ -16,6 +16,8 @@ import {hasWritePermissions} from "../utils/permissions";
 import {withStyles} from "@material-ui/core";
 import {cirrusColors} from "../cirrusTheme";
 import BuildCreatedChip from "./chips/BuildCreatedChip";
+import {faviconColor} from "../utils/colors";
+import CirrusFavicon from "./CirrusFavicon";
 
 const buildApproveMutation = graphql`
   mutation BuildDetailsApproveBuildMutation($input: BuildInput!) {
@@ -136,6 +138,7 @@ class BuildDetails extends React.Component {
 
     return (
       <div>
+        <CirrusFavicon color={faviconColor(build.status)}/>
         <Paper elevation={2}>
           <div className="card-body">
             <div className={classes.wrapper}>
@@ -148,7 +151,8 @@ class BuildDetails extends React.Component {
               {build.changeMessageTitle}
             </Typography>
             <Typography variant="subheading" gutterBottom>
-              Commit <a href={commitUrl} target="_blank" rel="noopener noreferrer">{build.changeIdInRepo.substr(0, 6)}</a> on branch <a
+              Commit <a href={commitUrl} target="_blank"
+                        rel="noopener noreferrer">{build.changeIdInRepo.substr(0, 6)}</a> on branch <a
               href={branchUrl} target="_blank" rel="noopener noreferrer">{build.branch}</a>.
             </Typography>
             <div className="card-body text-right">

@@ -8,7 +8,6 @@ function updateIcon(color) {
     linkEl.type = 'image/x-icon';
     linkEl.rel = 'icon';
     drawIcon(color, function (url) {
-      console.log(url);
       linkEl.href = url;
     });
   }

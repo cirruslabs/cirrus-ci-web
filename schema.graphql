@@ -58,11 +58,9 @@ enum DecryptEnvironmentVariablesFor {
   EVERYONE
 }
 
-type GitHubOrganization {
-  accountId: Long!
-  accountLogin: String!
-  avatarUrl: String
-  installationId: Long
+type GitHubMarketplacePurchase {
+  planName: String!
+  unitCount: Long!
 }
 
 # Long type
@@ -298,7 +296,7 @@ type User {
     # fetching only the last certain number of nodes
     last: Int
   ): UserBuildsConnection
-  githubOrganizations: [GitHubOrganization]
+  githubMarketplacePurchase: [GitHubMarketplacePurchase]
   topActiveRepositories: [Repository]
 }
 

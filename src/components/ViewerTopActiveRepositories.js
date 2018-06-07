@@ -6,7 +6,7 @@ import {withRouter} from 'react-router-dom'
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import {withStyles} from "@material-ui/core";
-import LastDefaultBranchBuildRow from "./LastDefaultBranchBuildRow";
+import LastDefaultBranchBuildMiniRow from "./LastDefaultBranchBuildMiniRow";
 
 let styles = theme => ({
   message: {
@@ -26,7 +26,7 @@ class ViewerTopActiveRepositories extends React.Component {
     return (
       <Table style={{tableLayout: 'auto'}}>
         <TableBody>
-          {repositories && repositories.map(repo => <LastDefaultBranchBuildRow repository={repo}/>)}
+          {repositories && repositories.map(repo => <LastDefaultBranchBuildMiniRow key={repo.id} repository={repo}/>)}
         </TableBody>
       </Table>
     );
@@ -37,7 +37,7 @@ export default createFragmentContainer(withRouter(withStyles(styles)(ViewerTopAc
   viewer: graphql`
     fragment ViewerTopActiveRepositories_viewer on User {
       topActiveRepositories {
-        ...LastDefaultBranchBuildRow_repository
+        ...LastDefaultBranchBuildMiniRow_repository
       }
     }
   `,

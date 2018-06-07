@@ -5,33 +5,28 @@ import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import {withStyles} from "@material-ui/core";
 import {withRouter} from "react-router-dom";
-import {navigateRepository} from "../utils/navigate";
+import {navigateBuild} from "../utils/navigate";
 import RepositoryNameChip from "./chips/RepositoryNameChip";
 import ReactMarkdown from 'react-markdown';
 import BuildStatusChip from "./chips/BuildStatusChip";
-import classNames from "classnames";
-import BuildChangeChip from "./chips/BuildChangeChip";
 
 const buildSubscription = graphql`
-  subscription LastDefaultBranchBuildRowSubscription(
+  subscription LastDefaultBranchBuildMiniRowSubscription(
     $repositoryID: ID!
   ) {
     repository(id: $repositoryID) {      
-      ...LastDefaultBranchBuildRow_repository
+      ...LastDefaultBranchBuildMiniRow_repository
     }
   }
 `;
 
 const styles = theme => ({
   chip: {
-    margin: 4,
+    margin: theme.spacing.unit,
   },
   message: {
     margin: theme.spacing.unit,
     width: "100%",
-  },
-  cell: {
-    padding: 0,
   },
 });
 
@@ -64,34 +59,27 @@ class LastDefaultBranchBuildRow extends React.Component {
     }
     return (
       <TableRow key={repository.id}
-                onClick={(e) => navigateRepository(this.context.router, e, repository.owner, repository.name)}
+                onClick={(e) => navigateBuild(this.context.router, e, build.id)}
                 hover={true}
                 style={{cursor: "pointer"}}>
-        <TableCell className={classes.cell}>
-          <div className="d-flex flex-column align-items-start">
+        <TableCell style={{padding: 0}}>
+          <div className="d-flex justify-content-between">
             <RepositoryNameChip repository={repository} className={classes.chip}/>
-            <BuildChangeChip build={build} className={classes.chip}/>
+            <BuildStatusChip build={build} mini={true} className={classes.chip}/>
           </div>
-          <div className={classNames("d-lg-none", classes.message)}>
+          <div className={classes.message}>
             <ReactMarkdown source={build.changeMessageTitle}/>
           </div>
-        </TableCell>
-        <TableCell className={classNames(classes.cell, classes.message)}>
-          <div className="card-body">
-            <ReactMarkdown className="card-text" source={build.changeMessageTitle}/>
-          </div>
-        </TableCell>
-        <TableCell className={classes.cell}>
-          <BuildStatusChip build={build} className={classNames("pull-right", classes.chip)}/>
         </TableCell>
       </TableRow>
     );
   }
 }
 
+
 export default createFragmentContainer(withRouter(withStyles(styles)(LastDefaultBranchBuildRow)), {
   repository: graphql`
-    fragment LastDefaultBranchBuildRow_repository on Repository {
+    fragment LastDefaultBranchBuildMiniRow_repository on Repository {
       id
       owner
       name

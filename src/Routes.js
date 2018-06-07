@@ -48,6 +48,11 @@ const AsyncGitHubRepository = Loadable({
   loading: LoadingComponent
 });
 
+const AsyncGitHubOwner = Loadable({
+  loader: () => import('./scenes/GitHub/GitHubOwner'),
+  loading: LoadingComponent
+});
+
 const drawerWidth = 360;
 
 const styles = theme => ({
@@ -235,6 +240,7 @@ class Routes extends React.Component {
               <Switch>
                 <Route exact path="/" component={AsyncHome} props={this.props}/>
                 <Route exact path="/build/:buildId" component={AsyncBuild} props={this.props}/>
+                <Route exact path="/github/:owner" component={AsyncGitHubOwner} props={this.props}/>
                 <Route exact path="/github/:owner/:name/:branch*" component={AsyncGitHubRepository} props={this.props}/>
                 <Route exact path="/github" component={AsyncGitHub} props={this.props}/>
                 <Route exact path="/repository/:repositoryId/:branch*" component={AsyncRepository} props={this.props}/>

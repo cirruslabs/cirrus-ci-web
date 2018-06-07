@@ -23,23 +23,23 @@ type Build {
 }
 
 input BuildInput {
-  clientMutationId: String!
   buildId: ID!
+  clientMutationId: String
 }
 
 type BuildPayload {
-  clientMutationId: String!
   build: Build!
+  clientMutationId: String
 }
 
 input BuildReTriggerInput {
-  clientMutationId: String!
   buildId: ID!
+  clientMutationId: String
 }
 
 type BuildReTriggerPayload {
-  clientMutationId: String!
   build: Build!
+  clientMutationId: String
 }
 
 # Build status.
@@ -158,14 +158,14 @@ type RepositoryBuildsConnection {
 }
 
 input RepositorySecuredVariableInput {
-  clientMutationId: String!
   repositoryId: ID!
   valueToSecure: String!
+  clientMutationId: String
 }
 
 type RepositorySecuredVariablePayload {
-  clientMutationId: String!
   variableName: String!
+  clientMutationId: String
 }
 
 type RepositorySettings {
@@ -174,21 +174,22 @@ type RepositorySettings {
 }
 
 input RepositorySettingsInput {
-  clientMutationId: String!
   repositoryId: ID!
   needsApproval: Boolean
   decryptEnvironmentVariables: DecryptEnvironmentVariablesFor
+  clientMutationId: String
 }
 
 type RepositorySettingsPayload {
-  clientMutationId: String!
   settings: RepositorySettings!
+  clientMutationId: String
 }
 
 type Root {
   viewer: User
   repository(id: ID!): Repository
   githubRepository(owner: String!, name: String!): Repository
+  githubRepositories(owner: String!): [Repository]
   build(id: ID!): Build
   task(id: ID!): Task
 }
@@ -253,13 +254,13 @@ enum TaskCommandType {
 }
 
 input TaskInput {
-  clientMutationId: String!
   taskId: ID!
+  clientMutationId: String
 }
 
 type TaskPayload {
-  clientMutationId: String!
   newTask: Task!
+  clientMutationId: String
 }
 
 # Task status.

@@ -11,6 +11,10 @@ export function navigate(router, event, url) {
   }
 }
 
+export function navigateRepository(router, event, owner, name) {
+  navigate(router, event, "/github/" + owner + "/" + name)
+}
+
 export function navigateBuild(router, event, buildId) {
   navigate(router, event, "/build/" + buildId)
 }

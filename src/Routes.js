@@ -13,6 +13,10 @@ import PropTypes from "prop-types";
 import classNames from 'classnames';
 import ViewerTopRepositories from "./scenes/Viewer/ViewerTopRepositories";
 
+const AsyncViewerProfile = Loadable({
+  loader: () => import('./scenes/Viewer/ViewerProfile'),
+  loading: LoadingComponent
+});
 const AsyncHome = Loadable({
   loader: () => import('./scenes/Home/Home'),
   loading: LoadingComponent
@@ -239,6 +243,7 @@ class Routes extends React.Component {
             >
               <Switch>
                 <Route exact path="/" component={AsyncHome} props={this.props}/>
+                <Route exact path="/settings/profile" component={AsyncViewerProfile} props={this.props}/>
                 <Route exact path="/build/:buildId" component={AsyncBuild} props={this.props}/>
                 <Route exact path="/github/:owner" component={AsyncGitHubOwner} props={this.props}/>
                 <Route exact path="/github/:owner/:name/:branch*" component={AsyncGitHubRepository} props={this.props}/>

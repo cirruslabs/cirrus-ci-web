@@ -296,7 +296,7 @@ type User {
     # fetching only the last certain number of nodes
     last: Int
   ): UserBuildsConnection
-  githubMarketplacePurchase: [GitHubMarketplacePurchase]
+  githubMarketplacePurchase: GitHubMarketplacePurchase
   topActiveRepositories: [Repository]
 }
 

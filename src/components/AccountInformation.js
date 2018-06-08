@@ -5,9 +5,19 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import {withStyles} from "@material-ui/core";
+import {navigate} from "../utils/navigate";
+import {withRouter} from "react-router-dom";
+import PropTypes from "prop-types";
+import Icon from "@material-ui/core/Icon/Icon";
 
 class AccountInformation extends React.Component {
+  static contextTypes = {
+    router: PropTypes.object
+  };
+
   constructor() {
     super();
     this.state = {anchorEl: null};
@@ -42,8 +52,17 @@ class AccountInformation extends React.Component {
           open={Boolean(anchorEl)}
           onClose={this.handleMenuClose}
         >
+          <MenuItem onClick={(event) => navigate(this.context.router, event, "/settings/profile/")}>
+            <ListItemIcon>
+              <Icon>person</Icon>
+            </ListItemIcon>
+            <ListItemText inset primary="Profile"/>
+          </MenuItem>
           <MenuItem href="https://api.cirrus-ci.com/redirect/logout/">
-            Log Out
+            <ListItemIcon>
+              <Icon>directions_run</Icon>
+            </ListItemIcon>
+            <ListItemText inset primary="Log Out"/>
           </MenuItem>
         </Menu>
       </div>
@@ -51,7 +70,7 @@ class AccountInformation extends React.Component {
   }
 }
 
-export default createFragmentContainer(withStyles()(AccountInformation), {
+export default createFragmentContainer(withRouter(withStyles()(AccountInformation)), {
   viewer: graphql`
     fragment AccountInformation_viewer on User {
       id

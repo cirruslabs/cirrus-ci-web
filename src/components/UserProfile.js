@@ -78,7 +78,7 @@ class UserProfile extends React.Component {
               <Button variant="contained"
                       href="https://github.com/marketplace/cirrus-ci">
                 <Icon className={classNames(classes.leftIcon, "fa", "fa-github")}/>
-                Configure
+                {user.githubMarketplacePurchase ? "Edit" : "Configure"}
               </Button>
             </CardActions>
           </Card>

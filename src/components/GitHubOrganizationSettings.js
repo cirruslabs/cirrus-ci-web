@@ -84,7 +84,7 @@ class GitHubOrganizationSettings extends React.Component {
               <Button variant="contained"
                       href="https://github.com/marketplace/cirrus-ci">
                 <Icon className={classNames(classes.leftIcon, "fa", "fa-github")}/>
-                Configure
+                {info.purchase ? "Edit" : "Configure"}
               </Button>
             </CardActions>
           </Card>

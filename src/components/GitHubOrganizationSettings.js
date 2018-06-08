@@ -13,6 +13,7 @@ import CardHeader from "@material-ui/core/CardHeader/CardHeader";
 import Icon from "@material-ui/core/Icon/Icon";
 import {cirrusColors} from "../cirrusTheme";
 import Toolbar from "@material-ui/core/Toolbar/Toolbar";
+import classNames from 'classnames';
 
 
 const styles = theme => ({
@@ -82,7 +83,7 @@ class GitHubOrganizationSettings extends React.Component {
             <CardActions>
               <Button variant="contained"
                       href="https://github.com/marketplace/cirrus-ci">
-                <Icon className={classes.leftIcon} className="fa fa-github"/>
+                <Icon className={classNames(classes.leftIcon, "fa", "fa-github")}/>
                 Configure
               </Button>
             </CardActions>

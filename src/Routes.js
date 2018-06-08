@@ -17,6 +17,7 @@ const AsyncViewerProfile = Loadable({
   loader: () => import('./scenes/Viewer/ViewerProfile'),
   loading: LoadingComponent
 });
+
 const AsyncHome = Loadable({
   loader: () => import('./scenes/Home/Home'),
   loading: LoadingComponent
@@ -52,8 +53,13 @@ const AsyncGitHubRepository = Loadable({
   loading: LoadingComponent
 });
 
-const AsyncGitHubOwner = Loadable({
-  loader: () => import('./scenes/GitHub/GitHubOwner'),
+const AsyncGitHubOrganization = Loadable({
+  loader: () => import('./scenes/GitHub/GitHubOrganization'),
+  loading: LoadingComponent
+});
+
+const AsyncGitHubOrganizationSettingsRenderer = Loadable({
+  loader: () => import('./scenes/GitHub/GitHubOrganizationSettingsRenderer'),
   loading: LoadingComponent
 });
 
@@ -244,13 +250,15 @@ class Routes extends React.Component {
               <Switch>
                 <Route exact path="/" component={AsyncHome} props={this.props}/>
                 <Route exact path="/settings/profile" component={AsyncViewerProfile} props={this.props}/>
+                <Route exact path="/settings/github/:organization" component={AsyncGitHubOrganizationSettingsRenderer}
+                       props={this.props}/>
+                <Route exact path="/settings/repository/:repositoryId" component={AsyncRepositorySettings}
+                       props={this.props}/>
                 <Route exact path="/build/:buildId" component={AsyncBuild} props={this.props}/>
-                <Route exact path="/github/:owner" component={AsyncGitHubOwner} props={this.props}/>
+                <Route exact path="/github/:owner" component={AsyncGitHubOrganization} props={this.props}/>
                 <Route exact path="/github/:owner/:name/:branch*" component={AsyncGitHubRepository} props={this.props}/>
                 <Route exact path="/github" component={AsyncGitHub} props={this.props}/>
                 <Route exact path="/repository/:repositoryId/:branch*" component={AsyncRepository} props={this.props}/>
-                <Route exact path="/settings/repository/:repositoryId" component={AsyncRepositorySettings}
-                       props={this.props}/>
                 <Route exact path="/task/:taskId" component={AsyncTask} props={this.props}/>
                 <Route exact path="/:owner/:name/:branch*" component={AsyncGitHubRepository} props={this.props}/>
                 <Route component={NotFound} props={this.props}/>

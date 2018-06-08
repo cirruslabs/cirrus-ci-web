@@ -4,15 +4,19 @@ import {graphql, QueryRenderer} from 'react-relay';
 
 import environment from '../../createRelayEnvironment';
 import CirrusLinearProgress from "../../components/CirrusLinearProgress";
-import RepositoryList from "../../components/RepositoryList";
+import GitHubOrganizationRepositoryList from "../../components/GitHubOrganizationRepositoryList";
 
-const Repository = (props) => {
+const GitHubOrganization = (props) => {
+  let organization = props.match.params.owner;
   return <QueryRenderer
     environment={environment}
     variables={props.match.params}
     query={
       graphql`
-        query GitHubOwnerRepositoriesQuery($owner: String!) {
+        query GitHubOrganizationQuery($owner: String!) {
+          githubOrganizationInfo(organization: $owner) {
+            role
+          }
           githubRepositories(owner: $owner) {
             ...LastDefaultBranchBuildRow_repository
           }
@@ -24,9 +28,9 @@ const Repository = (props) => {
       if (!props) {
         return <CirrusLinearProgress/>
       }
-      return <RepositoryList repositories={props.githubRepositories}/>
+      return <GitHubOrganizationRepositoryList organization={organization} organizationInfo={props.githubOrganizationInfo} repositories={props.githubRepositories}/>
     }}
   />
 };
 
-export default Repository;
+export default GitHubOrganization;

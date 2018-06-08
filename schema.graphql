@@ -63,6 +63,11 @@ type GitHubMarketplacePurchase {
   unitCount: Long!
 }
 
+type GitHubOrganizationInfo {
+  role: String!
+  purchase: GitHubMarketplacePurchase
+}
+
 # Long type
 scalar Long
 
@@ -188,6 +193,7 @@ type Root {
   repository(id: ID!): Repository
   githubRepository(owner: String!, name: String!): Repository
   githubRepositories(owner: String!): [Repository]
+  githubOrganizationInfo(organization: String!): GitHubOrganizationInfo
   build(id: ID!): Build
   task(id: ID!): Task
 }

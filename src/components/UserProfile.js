@@ -12,7 +12,7 @@ import CardActions from "@material-ui/core/CardActions/CardActions";
 import CardHeader from "@material-ui/core/CardHeader/CardHeader";
 import Icon from "@material-ui/core/Icon/Icon";
 import {cirrusColors} from "../cirrusTheme";
-import Toolbar from "@material-ui/core/es/Toolbar/Toolbar";
+import Toolbar from "@material-ui/core/Toolbar/Toolbar";
 
 
 const styles = theme => ({

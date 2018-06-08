@@ -50,9 +50,15 @@ class GitHubOrganizationSettings extends React.Component {
     );
     if (info.purchase) {
       githubMarketplaceComponent = (
-        <div className={classes.row}>
+        <div>
           <Typography variant="subheading">
-            Purchased GitHub Plan: <b>{info.purchase.planName}</b>
+            Purchased GitHub Plan: <b>{info.purchase.planName}</b> for <b>{info.purchase.unitCount}</b> seats
+          </Typography>
+          <Typography variant="subheading">
+            Amount of monthly active users under the plan: <b>{info.activeUsersAmount}</b>
+          </Typography>
+          <Typography variant="subheading">
+            Available seats: <b>{info.purchase.unitCount - info.activeUsersAmount}</b>
           </Typography>
         </div>
       );
@@ -90,9 +96,12 @@ class GitHubOrganizationSettings extends React.Component {
 export default createFragmentContainer(withRouter(withStyles(styles)(GitHubOrganizationSettings)), {
   info: graphql`
     fragment GitHubOrganizationSettings_info on GitHubOrganizationInfo {
+      name
       role
+      activeUsersAmount
       purchase {
         planName
+        unitCount
       }
     }
   `,

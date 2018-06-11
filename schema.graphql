@@ -59,6 +59,9 @@ enum DecryptEnvironmentVariablesFor {
 }
 
 type GitHubMarketplacePurchase {
+  accountId: Long!
+  login: String!
+  planId: Long!
   planName: String!
   unitCount: Long!
 }

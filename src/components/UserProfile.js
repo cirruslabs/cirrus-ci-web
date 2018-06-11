@@ -35,6 +35,8 @@ const styles = theme => ({
   },
 });
 
+const PERSONAL_PRIVATE_REPOSITORIES_PLAN_ID = 992;
+
 class UserProfile extends React.Component {
   static contextTypes = {
     router: PropTypes.object
@@ -49,6 +51,13 @@ class UserProfile extends React.Component {
         </Typography>
       </div>
     );
+    let actionButton = (
+      <Button variant="contained"
+              href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTI=?account=${user.githubUserName}`}>
+        <Icon className={classNames(classes.leftIcon, "fa", "fa-github")}/>
+        Purchase Plan for Private Repositories
+      </Button>
+    );
     if (user.githubMarketplacePurchase) {
       githubMarketplaceComponent = (
         <div className={classes.row}>
@@ -58,6 +67,16 @@ class UserProfile extends React.Component {
         </div>
       );
     }
+    if (user.githubMarketplacePurchase && user.githubMarketplacePurchase.planId === PERSONAL_PRIVATE_REPOSITORIES_PLAN_ID) {
+      actionButton = (
+        <Button variant="contained"
+                href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTA=?account=${user.githubUserName}`}>
+          <Icon className={classNames(classes.leftIcon, "fa", "fa-github")}/>
+          Cancel Plan
+        </Button>
+      );
+    }
+
     return (
       <div>
         <Paper elevation={1}>
@@ -75,11 +94,7 @@ class UserProfile extends React.Component {
               {githubMarketplaceComponent}
             </CardContent>
             <CardActions>
-              <Button variant="contained"
-                      href="https://github.com/marketplace/cirrus-ci">
-                <Icon className={classNames(classes.leftIcon, "fa", "fa-github")}/>
-                {user.githubMarketplacePurchase ? "Edit" : "Configure"}
-              </Button>
+              {actionButton}
             </CardActions>
           </Card>
         </Paper>
@@ -94,6 +109,8 @@ export default createFragmentContainer(withRouter(withStyles(styles)(UserProfile
       id
       githubUserName
       githubMarketplacePurchase {
+        accountId
+        planId
         planName
       }
     }

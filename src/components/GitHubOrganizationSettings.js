@@ -35,6 +35,8 @@ const styles = theme => ({
   },
 });
 
+const ORGANIZATIONAL_PRIVATE_REPOSITORIES_PLAN_ID = 993;
+
 class GitHubOrganizationSettings extends React.Component {
   static contextTypes = {
     router: PropTypes.object
@@ -42,6 +44,7 @@ class GitHubOrganizationSettings extends React.Component {
 
   render() {
     let {info, organization, classes} = this.props;
+    console.log(info);
     let githubMarketplaceComponent = (
       <div>
         <Typography variant="subheading">
@@ -49,7 +52,15 @@ class GitHubOrganizationSettings extends React.Component {
         </Typography>
       </div>
     );
-    if (info.purchase) {
+    let actionButton = (
+      <Button variant="contained"
+              href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTM=?account=${organization}`}>
+        <Icon className={classNames(classes.leftIcon, "fa", "fa-github")}/>
+        Purchase Plan for Private Repositories
+      </Button>
+    );
+    let cancelPlanButton = null;
+    if (info.purchase && info.purchase.planId === ORGANIZATIONAL_PRIVATE_REPOSITORIES_PLAN_ID) {
       githubMarketplaceComponent = (
         <div>
           <Typography variant="subheading">
@@ -62,6 +73,20 @@ class GitHubOrganizationSettings extends React.Component {
             Available seats: <b>{info.purchase.unitCount - info.activeUsersAmount}</b>
           </Typography>
         </div>
+      );
+      actionButton = (
+        <Button variant="contained"
+                href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTM=?account=${organization}`}>
+          <Icon className={classNames(classes.leftIcon)}>group_add</Icon>
+          Add More Seats
+        </Button>
+      );
+      cancelPlanButton = (
+        <Button variant="contained"
+                href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTA=?account=${organization}`}>
+          <Icon className={classNames(classes.leftIcon, "fa", "fa-github")}/>
+          Cancel Plan
+        </Button>
       );
     }
     return (
@@ -81,11 +106,8 @@ class GitHubOrganizationSettings extends React.Component {
               {githubMarketplaceComponent}
             </CardContent>
             <CardActions>
-              <Button variant="contained"
-                      href="https://github.com/marketplace/cirrus-ci">
-                <Icon className={classNames(classes.leftIcon, "fa", "fa-github")}/>
-                {info.purchase ? "Edit" : "Configure"}
-              </Button>
+              {cancelPlanButton}
+              {actionButton}
             </CardActions>
           </Card>
         </Paper>
@@ -101,6 +123,7 @@ export default createFragmentContainer(withRouter(withStyles(styles)(GitHubOrgan
       role
       activeUsersAmount
       purchase {
+        planId
         planName
         unitCount
       }

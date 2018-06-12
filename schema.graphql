@@ -79,6 +79,7 @@ scalar Long
 type Mutation {
   securedVariable(input: RepositorySecuredVariableInput!): RepositorySecuredVariablePayload
   rerun(input: TaskInput!): TaskPayload
+  abortTask(input: TaskAbortInput!): TaskAbortPayload
   retrigger(input: BuildReTriggerInput!): BuildReTriggerPayload
   saveSettings(input: RepositorySettingsInput!): RepositorySettingsPayload
   approve(input: BuildInput!): BuildPayload
@@ -232,6 +233,16 @@ type Task {
   allOtherRuns: [Task]
   dependencies: [Task]
   automaticReRun: Boolean!
+}
+
+input TaskAbortInput {
+  taskId: ID!
+  clientMutationId: String
+}
+
+type TaskAbortPayload {
+  abortedTask: Task!
+  clientMutationId: String
 }
 
 type TaskCommand {

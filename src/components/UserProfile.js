@@ -77,6 +77,17 @@ class UserProfile extends React.Component {
       );
     }
 
+    let trialComponent = null;
+    if (user.githubMarketplacePurchase.onFreeTrial && user.githubMarketplacePurchase.freeTrialDaysLeft > 0) {
+      trialComponent = (
+        <div className={classes.row}>
+          <Typography variant="subheading">
+            Days of Free Trial left: <b>{user.githubMarketplacePurchase.freeTrialDaysLeft}</b>
+          </Typography>
+        </div>
+      );
+    }
+
     return (
       <div>
         <Paper elevation={1}>
@@ -92,6 +103,7 @@ class UserProfile extends React.Component {
             <CardHeader title="GitHub Settings"/>
             <CardContent>
               {githubMarketplaceComponent}
+              {trialComponent}
             </CardContent>
             <CardActions>
               {actionButton}
@@ -112,6 +124,8 @@ export default createFragmentContainer(withRouter(withStyles(styles)(UserProfile
         accountId
         planId
         planName
+        onFreeTrial
+        freeTrialDaysLeft
       }
     }
   `,

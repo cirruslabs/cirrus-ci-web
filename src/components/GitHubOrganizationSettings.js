@@ -89,6 +89,17 @@ class GitHubOrganizationSettings extends React.Component {
         </Button>
       );
     }
+
+    let trialComponent = null;
+    if (info.purchase.onFreeTrial && info.purchase.freeTrialDaysLeft > 0) {
+      trialComponent = (
+        <div className={classes.row}>
+          <Typography variant="subheading">
+            Days of Free Trial left: <b>{info.purchase.freeTrialDaysLeft}</b>
+          </Typography>
+        </div>
+      );
+    }
     return (
       <div>
         <Paper elevation={1}>
@@ -104,6 +115,7 @@ class GitHubOrganizationSettings extends React.Component {
             <CardHeader title="GitHub Settings"/>
             <CardContent>
               {githubMarketplaceComponent}
+              {trialComponent}
             </CardContent>
             <CardActions>
               {cancelPlanButton}
@@ -126,6 +138,8 @@ export default createFragmentContainer(withRouter(withStyles(styles)(GitHubOrgan
         planId
         planName
         unitCount
+        onFreeTrial
+        freeTrialDaysLeft
       }
     }
   `,

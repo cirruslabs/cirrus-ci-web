@@ -64,6 +64,8 @@ type GitHubMarketplacePurchase {
   planId: Long!
   planName: String!
   unitCount: Long!
+  onFreeTrial: Boolean!
+  freeTrialDaysLeft: Int!
 }
 
 type GitHubOrganizationInfo {

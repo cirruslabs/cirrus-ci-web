@@ -85,7 +85,7 @@ class GitHubOrganizationSettings extends React.Component {
         <Button variant="contained"
                 href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTA=?account=${organization}`}>
           <Icon className={classNames(classes.leftIcon, "fa", "fa-github")}/>
-          Cancel Plan
+          Switch to Free Plan
         </Button>
       );
     }

@@ -58,7 +58,7 @@ class AccountInformation extends React.Component {
             </ListItemIcon>
             <ListItemText inset primary="Profile"/>
           </MenuItem>
-          <MenuItem href="https://api.cirrus-ci.com/redirect/logout/">
+          <MenuItem onClick={(event) => navigate(null, event, "https://api.cirrus-ci.com/redirect/logout/")}>
             <ListItemIcon>
               <Icon>directions_run</Icon>
             </ListItemIcon>

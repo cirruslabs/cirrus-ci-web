@@ -14,6 +14,12 @@ import Icon from "@material-ui/core/Icon/Icon";
 import {cirrusColors} from "../cirrusTheme";
 import Toolbar from "@material-ui/core/Toolbar/Toolbar";
 import classNames from 'classnames';
+import Table from "@material-ui/core/Table/Table";
+import TableBody from "@material-ui/core/TableBody/TableBody";
+import TableRow from "@material-ui/core/es/TableRow/TableRow";
+import TableCell from "@material-ui/core/es/TableCell/TableCell";
+import {navigate} from "../utils/navigate";
+import IconButton from "@material-ui/core/es/IconButton/IconButton";
 
 
 const styles = theme => ({
@@ -78,13 +84,50 @@ class UserProfile extends React.Component {
     }
 
     let trialComponent = null;
-    if (user.githubMarketplacePurchase.onFreeTrial && user.githubMarketplacePurchase.freeTrialDaysLeft > 0) {
+    if (user.githubMarketplacePurchase && user.githubMarketplacePurchase.onFreeTrial && user.githubMarketplacePurchase.freeTrialDaysLeft > 0) {
       trialComponent = (
         <div className={classes.row}>
           <Typography variant="subheading">
             Days of Free Trial left: <b>{user.githubMarketplacePurchase.freeTrialDaysLeft}</b>
           </Typography>
         </div>
+      );
+    }
+
+    let organizationsComponent = null;
+    let organizations = user.organizations || [];
+    if (organizations.length > 0) {
+      organizationsComponent = (
+        <Paper elevation={1}>
+          <Toolbar>
+            <Typography variant="title" color="inherit">
+              Your GitHub Organizations on Cirrus CI
+            </Typography>
+          </Toolbar>
+          <Table style={{tableLayout: 'auto'}}>
+            <TableBody>
+              {
+                organizations.map(organization =>
+                  <TableRow key={organization.name}
+                            onClick={(e) => navigate(this.context.router, e, "/github/" + organization.name)}
+                            hover={true}
+                            style={{cursor: "pointer"}}>
+                    <TableCell>
+                      <Typography variant="headline">{organization.name}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <IconButton tooltip="Organization Settings"
+                                  onClick={(e) => navigate(this.context.router, e, "/settings/github/" + organization.name)}
+                                  className="pull-right">
+                        <Icon>settings</Icon>
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                )
+              }
+            </TableBody>
+          </Table>
+        </Paper>
       );
     }
 
@@ -110,6 +153,8 @@ class UserProfile extends React.Component {
             </CardActions>
           </Card>
         </Paper>
+        <div className={classes.settingGap}/>
+        {organizationsComponent}
       </div>
     );
   }
@@ -126,6 +171,10 @@ export default createFragmentContainer(withRouter(withStyles(styles)(UserProfile
         planName
         onFreeTrial
         freeTrialDaysLeft
+      }
+      organizations {
+        name
+        role
       }
     }
   `,

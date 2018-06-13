@@ -322,6 +322,7 @@ type User {
   ): UserBuildsConnection
   githubMarketplacePurchase: GitHubMarketplacePurchase
   topActiveRepositories: [Repository]
+  organizations: [GitHubOrganizationInfo]
 }
 
 # An edge in a connection

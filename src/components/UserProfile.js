@@ -16,10 +16,10 @@ import Toolbar from "@material-ui/core/Toolbar/Toolbar";
 import classNames from 'classnames';
 import Table from "@material-ui/core/Table/Table";
 import TableBody from "@material-ui/core/TableBody/TableBody";
-import TableRow from "@material-ui/core/es/TableRow/TableRow";
-import TableCell from "@material-ui/core/es/TableCell/TableCell";
+import TableRow from "@material-ui/core/TableRow/TableRow";
+import TableCell from "@material-ui/core/TableCell/TableCell";
 import {navigate} from "../utils/navigate";
-import IconButton from "@material-ui/core/es/IconButton/IconButton";
+import IconButton from "@material-ui/core/IconButton/IconButton";
 
 
 const styles = theme => ({

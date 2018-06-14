@@ -136,7 +136,7 @@ class UserProfile extends React.Component {
         <Paper elevation={1}>
           <Toolbar className={classes.title}>
             <Typography variant="title" color="inherit">
-              Profile Settings
+              Profile Settings for {user.githubUserName}
             </Typography>
           </Toolbar>
         </Paper>

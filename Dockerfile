@@ -16,10 +16,12 @@ FROM node:10
 WORKDIR /svc/cirrus-ci-web
 EXPOSE 8080
 
-RUN npm install -g serve@6.5.6
+COPY --from=builder /tmp/cirrus-ci-web/serve.json /svc/cirrus-ci-web/serve.json
+
+RUN npm install -g serve@8.2.0
 
 COPY --from=builder /tmp/cirrus-ci-web/build/ /svc/cirrus-ci-web/
 
-CMD exec serve --single /svc/cirrus-ci-web/ \
-               --port 8080 \
-               --cache 864000000
+CMD exec serve --single \
+               --listen 8080 \
+               --config serve.json

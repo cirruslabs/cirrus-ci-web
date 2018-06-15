@@ -7,7 +7,6 @@ RUN yarn install && yarn run relay
 
 ENV GENERATE_SOURCEMAP true
 ENV NODE_ENV production
-ENV PUBLIC_URL https://cirrus-ci.com/
 
 RUN yarn run build
 

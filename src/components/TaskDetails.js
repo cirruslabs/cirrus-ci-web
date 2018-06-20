@@ -29,11 +29,24 @@ import TaskCreatedChip from "./chips/TaskCreatedChip";
 import classNames from 'classnames';
 import CirrusFavicon from "./CirrusFavicon";
 import {faviconColor} from "../utils/colors";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskInput!) {
     rerun(input: $input) {
       newTask {
+        id
+      }
+    }
+  }
+`;
+
+const taskCancelMutation = graphql`
+  mutation TaskDetailsCancelMutation($input: TaskAbortInput!) {
+    abortTask(input: $input) {
+      abortedTask {
         id
       }
     }
@@ -159,9 +172,17 @@ class TaskDetails extends React.Component {
     let reRunButton = !hasWritePermissions(build.viewerPermission) ? null :
       <Button variant="raised"
               onClick={() => this.rerun(task.id)}
-              icon={<Icon>refresh</Icon>}
       >
+        <Icon className={classes.leftIcon}>refresh</Icon>
         Re-Run
+      </Button>;
+
+    let abortButton = isTaskFinalStatus(task.status) || !hasWritePermissions(build.viewerPermission) ? null :
+      <Button variant="raised"
+              onClick={() => this.abort(task.id)}
+      >
+        <Icon className={classes.leftIcon}>cancel</Icon>
+        Cancel
       </Button>;
     let allOtherRuns = [];
     if (task.allOtherRuns && task.allOtherRuns.length > 0) {
@@ -191,46 +212,48 @@ class TaskDetails extends React.Component {
       <div>
         <CirrusFavicon color={faviconColor(task.status)}/>
         <Paper elevation={2}>
-          <div className="card-body">
-            <div className={classes.wrapper}>
-              <RepositoryNameChip className={classes.chip} repository={repository}/>
-              <BuildBranchNameChip className={classes.chip} build={build}/>
-              <BuildChangeChip className={classes.chip} build={build}/>
-              <TaskNameChip className={classes.chip} task={task}/>
-            </div>
-            <div className={classes.wrapper}>
-              <TaskCreatedChip className={classes.chip} task={task}/>
-              {scheduledDurationChip}
-              <TaskStatusChip className={classes.chip} task={task}/>
-            </div>
-            <TaskCommandsProgress className={classes.progress} task={task}/>
-            <div className={classes.gap}/>
-            <Typography variant="title" gutterBottom>
-              {build.changeMessageTitle} (commit <a href={commitUrl} target="_blank"
-                                                    rel="noopener noreferrer">{build.changeIdInRepo.substr(0, 6)}</a>)
-            </Typography>
-            <div className={classes.gap}/>
-            <div className={classNames("card-body", classes.wrapper)}>
-              {task.automaticReRun ?
-                <Chip className={classNames(classes.chip, classes.automaticReRun)} label="Automatic Re-Run"/> : null}
-              {
-                task.labels.map(label => {
-                  return <Chip key={label} className={classes.chip} label={shorten(label)}/>
-                })
-              }
-            </div>
-            <div className="card-body text-right">
+          <Card>
+            <CardContent>
+              <div className={classes.wrapper}>
+                <RepositoryNameChip className={classes.chip} repository={repository}/>
+                <BuildBranchNameChip className={classes.chip} build={build}/>
+                <BuildChangeChip className={classes.chip} build={build}/>
+                <TaskNameChip className={classes.chip} task={task}/>
+              </div>
+              <div className={classes.wrapper}>
+                <TaskCreatedChip className={classes.chip} task={task}/>
+                {scheduledDurationChip}
+                <TaskStatusChip className={classes.chip} task={task}/>
+              </div>
+              <TaskCommandsProgress className={classes.progress} task={task}/>
+              <div className={classes.gap}/>
+              <Typography variant="title" gutterBottom>
+                {build.changeMessageTitle} (commit <a href={commitUrl} target="_blank"
+                                                      rel="noopener noreferrer">{build.changeIdInRepo.substr(0, 6)}</a>)
+              </Typography>
+              <div className={classes.gap}/>
+              <div className={classNames("card-body", classes.wrapper)}>
+                {task.automaticReRun ?
+                  <Chip className={classNames(classes.chip, classes.automaticReRun)} label="Automatic Re-Run"/> : null}
+                {
+                  task.labels.map(label => {
+                    return <Chip key={label} className={classes.chip} label={shorten(label)}/>
+                  })
+                }
+              </div>
+            </CardContent>
+            <CardActions className="d-flex flex-wrap justify-content-end">
               <Button variant="raised"
                       color="primary"
-                      className={classes.buttonGap}
                       onClick={(e) => navigateBuild(this.context.router, e, task.buildId)}
               >
                 <Icon className={classes.leftIcon}>input</Icon>
                 View All Tasks
               </Button>
+              {abortButton}
               {reRunButton}
-            </div>
-          </div>
+            </CardActions>
+          </Card>
         </Paper>
         {notificationsComponent}
         {dependencies}
@@ -241,7 +264,8 @@ class TaskDetails extends React.Component {
         </Paper>
         <div className={classes.gap}/>
       </div>
-    );
+    )
+      ;
   }
 
   rerun(taskId) {
@@ -259,6 +283,27 @@ class TaskDetails extends React.Component {
         variables: variables,
         onCompleted: (response) => {
           navigateTask(this.context.router, null, response.rerun.newTask.id)
+        },
+        onError: err => console.error(err),
+      },
+    );
+  }
+
+  abort(taskId) {
+    const variables = {
+      input: {
+        clientMutationId: "abort-" + taskId,
+        taskId: taskId,
+      },
+    };
+
+    commitMutation(
+      environment,
+      {
+        mutation: taskCancelMutation,
+        variables: variables,
+        onCompleted: () => {
+          this.forceUpdate()
         },
         onError: err => console.error(err),
       },

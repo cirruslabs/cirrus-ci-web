@@ -89,7 +89,8 @@ type Mutation {
 
 type Notification {
   level: NotificationLevel
-  message: String
+  message: String!
+  link: String
 }
 
 # Notification level.

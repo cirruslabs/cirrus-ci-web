@@ -18,6 +18,9 @@ import {cirrusColors} from "../cirrusTheme";
 import BuildCreatedChip from "./chips/BuildCreatedChip";
 import {faviconColor} from "../utils/colors";
 import CirrusFavicon from "./CirrusFavicon";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
 
 const buildApproveMutation = graphql`
   mutation BuildDetailsApproveBuildMutation($input: BuildInput!) {
@@ -57,7 +60,7 @@ const buildSubscription = graphql`
   }
 `;
 
-const styles = {
+const styles = theme => ({
   gap: {
     paddingTop: 16
   },
@@ -70,6 +73,9 @@ const styles = {
   repoButtonIcon: {
     fontSize: 48
   },
+  leftIcon: {
+    marginRight: theme.spacing.unit,
+  },
   chip: {
     marginTop: 4,
     marginBottom: 4,
@@ -80,7 +86,7 @@ const styles = {
     display: 'flex',
     flexWrap: 'wrap',
   },
-};
+});
 
 class BuildDetails extends React.Component {
   static contextTypes = {
@@ -125,41 +131,47 @@ class BuildDetails extends React.Component {
     let reTriggerButton = !canBeReTriggered ? null :
       <Button variant="raised"
               backgroundColor={cirrusColors.success}
-              onClick={() => this.reTriggerBuild(build.id)}
-              icon={<Icon className="material-icons">refresh</Icon>}>Re-Trigger</Button>;
+              onClick={() => this.reTriggerBuild(build.id)}>
+        <Icon className={classes.leftIcon}>refresh</Icon>
+        Re-Trigger
+      </Button>;
 
 
     let needsApproval = build.status === 'NEEDS_APPROVAL' && hasWritePermissions(build.repository.viewerPermission);
     let approveButton = !needsApproval ? null :
       <Button variant="raised"
               backgroundColor={cirrusColors.success}
-              onClick={() => this.approveBuild(build.id)}
-              icon={<Icon>check</Icon>}>Approve</Button>;
+              onClick={() => this.approveBuild(build.id)}>
+        <Icon className={classes.leftIcon}>check</Icon>
+        Approve
+      </Button>;
 
     return (
       <div>
         <CirrusFavicon color={faviconColor(build.status)}/>
         <Paper elevation={2}>
-          <div className="card-body">
-            <div className={classes.wrapper}>
-              <RepositoryNameChip className={classes.chip} repository={build.repository}/>
-              <BuildCreatedChip className={classes.chip} build={build}/>
-              <BuildStatusChip className={classes.chip} build={build}/>
-            </div>
-            <div className={classes.gap}/>
-            <Typography variant="headline" gutterBottom>
-              {build.changeMessageTitle}
-            </Typography>
-            <Typography variant="subheading" gutterBottom>
-              Commit <a href={commitUrl} target="_blank"
-                        rel="noopener noreferrer">{build.changeIdInRepo.substr(0, 6)}</a> on branch <a
-              href={branchUrl} target="_blank" rel="noopener noreferrer">{build.branch}</a>.
-            </Typography>
-            <div className="card-body text-right">
-              {reTriggerButton}
-              {approveButton}
-            </div>
-          </div>
+          <Card>
+            <CardContent>
+              <div className={classes.wrapper}>
+                <RepositoryNameChip className={classes.chip} repository={build.repository}/>
+                <BuildCreatedChip className={classes.chip} build={build}/>
+                <BuildStatusChip className={classes.chip} build={build}/>
+              </div>
+              <div className={classes.gap}/>
+              <Typography variant="headline" gutterBottom>
+                {build.changeMessageTitle}
+              </Typography>
+              <Typography variant="subheading" gutterBottom>
+                Commit <a href={commitUrl} target="_blank"
+                          rel="noopener noreferrer">{build.changeIdInRepo.substr(0, 6)}</a> on branch <a
+                href={branchUrl} target="_blank" rel="noopener noreferrer">{build.branch}</a>.
+              </Typography>
+            </CardContent>
+            <CardActions className="d-flex flex-wrap justify-content-end">
+                {reTriggerButton}
+                {approveButton}
+            </CardActions>
+          </Card>
         </Paper>
         {notificationsComponent}
         <div className={classes.gap}/>

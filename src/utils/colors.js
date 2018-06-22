@@ -10,6 +10,8 @@ export function buildStatusColor(status) {
       return cirrusColors.success;
     case "FAILED":
       return cirrusColors.failure;
+    case "ABORTED":
+      return cirrusColors.lightFailure;
     default:
       return cirrusColors.warning;
   }

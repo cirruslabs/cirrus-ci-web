@@ -50,6 +50,7 @@ enum BuildStatus {
   EXECUTING
   FAILED
   COMPLETED
+  ABORTED
 }
 
 # Repository Setting to choose how to decrypt variables.

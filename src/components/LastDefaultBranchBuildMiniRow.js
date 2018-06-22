@@ -9,6 +9,7 @@ import {navigateBuild} from "../utils/navigate";
 import RepositoryNameChip from "./chips/RepositoryNameChip";
 import ReactMarkdown from 'react-markdown';
 import BuildStatusChip from "./chips/BuildStatusChip";
+import PropTypes from "prop-types";
 
 const buildSubscription = graphql`
   subscription LastDefaultBranchBuildMiniRowSubscription(
@@ -31,6 +32,10 @@ const styles = theme => ({
 });
 
 class LastDefaultBranchBuildRow extends React.Component {
+  static contextTypes = {
+    router: PropTypes.object
+  };
+
   componentDidMount() {
     let variables = {repositoryID: this.props.repository.id};
 

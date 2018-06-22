@@ -11,6 +11,7 @@ import ReactMarkdown from 'react-markdown';
 import BuildStatusChip from "./chips/BuildStatusChip";
 import classNames from "classnames";
 import BuildChangeChip from "./chips/BuildChangeChip";
+import PropTypes from "prop-types";
 
 const buildSubscription = graphql`
   subscription LastDefaultBranchBuildRowSubscription(
@@ -36,6 +37,10 @@ const styles = theme => ({
 });
 
 class LastDefaultBranchBuildRow extends React.Component {
+  static contextTypes = {
+    router: PropTypes.object
+  };
+
   componentDidMount() {
     let variables = {repositoryID: this.props.repository.id};
 

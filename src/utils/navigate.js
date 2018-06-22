@@ -1,7 +1,11 @@
 export function navigate(router, event, url) {
+  // remove save host prefix for prod or local
+  url = url.replace("https://cirrus-ci.com", "");
+  url = url.replace("http://localhost:3333/", "");
+
   if (event && event.metaKey) {
     window.open(url, '_blank');
-  } else if (router) {
+  } else if (router && !url.includes("://")) {
     router.history.push(url)
   } else {
     window.open(url, "_self");

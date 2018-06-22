@@ -335,6 +335,7 @@ export default createFragmentContainer(withRouter(withStyles(styles)(TaskDetails
       notifications {
         level
         message
+        link
       }
       build {
         id

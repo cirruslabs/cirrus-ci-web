@@ -3,6 +3,11 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core';
 import {notificationColor} from "../utils/colors";
+import IconButton from "@material-ui/core/IconButton";
+import Icon from "@material-ui/core/Icon";
+import {navigate} from "../utils/navigate";
+import classNames from "classnames";
+import PropTypes from "prop-types";
 
 let styles = {
   notification: {
@@ -11,10 +16,14 @@ let styles = {
 };
 
 class NotificationList extends React.Component {
+  static contextTypes = {
+    router: PropTypes.object
+  };
+
   render() {
     let notifications = this.props.notifications;
     return (
-      <div>
+      <div className="container">
         {notifications.map(notification => this.notificationItem(notification))}
       </div>
     );
@@ -25,19 +34,24 @@ class NotificationList extends React.Component {
     let headerStyle = {
       backgroundColor: notificationColor(notification.level)
     };
-    let link = null;
-    if (notification.message === "CI agent stopped responding!") {
-      link = <span>See <a href="https://cirrus-ci.org/faq/#ci-agent-stopped-responding" target="_blank" rel="noopener noreferrer">documentation</a> for more details.</span>
-    }
+    let linkComponent = !notification.link ? null :
+      <IconButton onClick={(e) => navigate(this.context.router, e, notification.link)}>
+        <Icon>launch</Icon>
+      </IconButton>;
     return (
-      <Typography
-        key={notification.message}
-        variant="subheading"
-        style={headerStyle}
-        className={classes.notification}
-      >
-        {notification.message} {link}
-      </Typography>
+      <div key={notification.message}
+           style={headerStyle}
+           className={classNames("row", "justify-content-between", "align-items-center")}>
+        <Typography
+          variant="subheading"
+          className={classes.notification}
+        >
+          {notification.message}
+        </Typography>
+        <div>
+          {linkComponent}
+        </div>
+      </div>
     );
   }
 }

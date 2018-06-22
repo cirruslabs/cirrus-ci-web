@@ -55,6 +55,7 @@ const buildSubscription = graphql`
       notifications {
         level
         message
+        link
       }
     }
   }
@@ -233,6 +234,7 @@ export default createFragmentContainer(withRouter(withStyles(styles)(BuildDetail
       notifications {
         level
         message
+        link
       }
       tasks {
         ...TaskListRow_task

@@ -53,7 +53,11 @@ class TaskCommandsProgress extends React.Component {
     let tooltipTitle = (
       <div>
         {task.statusDurations.map(statusDuration =>
-          <Typography variant="caption" className={classes.tooltipTitle}>{formatDuration(statusDuration.durationInSeconds)}: {statusDuration.status}</Typography>)
+          <Typography variant="caption" key={statusDuration.status}
+                      className={classes.tooltipTitle}>
+            {formatDuration(statusDuration.durationInSeconds)}: {statusDuration.status}
+          </Typography>
+        )
         }
       </div>
     );

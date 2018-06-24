@@ -53,9 +53,7 @@ const buildSubscription = graphql`
       durationInSeconds
       status
       notifications {
-        level
-        message
-        link
+        ...Notification_notification
       }
     }
   }
@@ -232,9 +230,7 @@ export default createFragmentContainer(withRouter(withStyles(styles)(BuildDetail
       buildCreatedTimestamp
       status
       notifications {
-        level
-        message
-        link
+        ...Notification_notification
       }
       tasks {
         ...TaskListRow_task

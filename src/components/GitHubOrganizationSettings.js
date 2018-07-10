@@ -91,7 +91,7 @@ class GitHubOrganizationSettings extends React.Component {
     }
 
     let trialComponent = null;
-    if (info.purchase.onFreeTrial && info.purchase.freeTrialDaysLeft > 0) {
+    if (info.purchase && info.purchase.onFreeTrial && info.purchase.freeTrialDaysLeft > 0) {
       trialComponent = (
         <div className={classes.row}>
           <Typography variant="subheading">

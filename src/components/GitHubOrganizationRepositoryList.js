@@ -38,7 +38,7 @@ class GitHubOrganizationRepositoryList extends React.Component {
 
     let organizationSettings = null;
 
-    if (organizationInfo.role === 'admin') {
+    if (organizationInfo && organizationInfo.role === 'admin') {
       organizationSettings = (
         <Link to={"/settings/github/" + organization}>
           <IconButton tooltip="Organization Settings">

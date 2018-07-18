@@ -4,6 +4,9 @@ schema {
   subscription: Subscription
 }
 
+# This directive allows results to be deferred during execution
+directive @defer on FIELD
+
 type Build {
   id: ID!
   repositoryId: ID!

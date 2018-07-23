@@ -55,7 +55,7 @@ class TaskDurationChip extends React.Component {
     if (!isTaskInProgressStatus(task.status) && !isTaskFinalStatus(task.status)) {
       durationInSeconds = 0
     } else if (!isTaskFinalStatus(task.status)) {
-      let timestamp = Math.max(task.creationTimestamp, task.scheduledTimestamp);
+      let timestamp = Math.max(task.creationTimestamp, task.scheduledTimestamp, task.executingTimestamp);
       durationInSeconds = (Date.now() - timestamp) / 1000;
     }
 

@@ -69,6 +69,7 @@ export default createFragmentContainer(withRouter(withStyles(styles)(TaskListRow
         status
         creationTimestamp
         scheduledTimestamp
+        executingTimestamp
         durationInSeconds
         uniqueLabels
         statusDurations {

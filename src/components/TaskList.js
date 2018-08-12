@@ -18,4 +18,4 @@ class TaskList extends React.Component {
   }
 }
 
-export default withStyles()(TaskList);
+export default withStyles({})(TaskList);

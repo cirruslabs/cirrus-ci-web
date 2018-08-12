@@ -37,4 +37,4 @@ class BuildBranchNameChip extends React.Component {
   }
 }
 
-export default withRouter(withStyles()(BuildBranchNameChip));
+export default withRouter(withStyles({})(BuildBranchNameChip));

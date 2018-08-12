@@ -70,7 +70,7 @@ class AccountInformation extends React.Component {
   }
 }
 
-export default createFragmentContainer(withRouter(withStyles()(AccountInformation)), {
+export default createFragmentContainer(withRouter(withStyles({})(AccountInformation)), {
   viewer: graphql`
     fragment AccountInformation_viewer on User {
       id

@@ -115,7 +115,7 @@ class RepositorySettings extends React.Component {
   }
 }
 
-export default createFragmentContainer(withStyles()(RepositorySettings), {
+export default createFragmentContainer(withStyles({})(RepositorySettings), {
   repository: graphql`
     fragment RepositorySettings_repository on Repository {
       id

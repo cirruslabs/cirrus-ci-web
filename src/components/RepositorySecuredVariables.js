@@ -100,7 +100,7 @@ class RepositorySecuredVariables extends React.Component {
   }
 }
 
-export default createFragmentContainer(withStyles()(RepositorySecuredVariables), {
+export default createFragmentContainer(withStyles({})(RepositorySecuredVariables), {
   repository: graphql`
     fragment RepositorySecuredVariables_repository on Repository {
       id

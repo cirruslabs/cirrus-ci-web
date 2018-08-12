@@ -25,7 +25,13 @@ export class HandlersManager {
       handlers = this.topicHandlers[topic] = new TopicHandlers();
     }
     this.topicRequests[topic] = request;
-    return handlers.addHandler(handler)
+    let handlerClosable = handlers.addHandler(handler);
+    return () => {
+      handlerClosable();
+      if (this.topicHandlers[topic] && this.topicHandlers[topic].isEmpty()) {
+        delete this.topicHandlers[topic]
+      }
+    }
   }
 }
 
@@ -33,6 +39,10 @@ class TopicHandlers {
   constructor() {
     this.handlersMap = {};
     this.idGenerator = 0;
+  }
+
+  isEmpty() {
+    return Object.keys(this.handlersMap).length === 0
   }
 
   callAllHandlers(data) {

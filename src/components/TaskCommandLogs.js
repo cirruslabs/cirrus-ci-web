@@ -33,7 +33,7 @@ class TaskCommandRealTimeLogs extends React.Component {
 
   componentDidMount() {
     this.subscriptionClosable = subscribeTaskCommandLogs(this.props.taskId, this.props.command.name, (newLogs) => {
-      if (this.logs) {
+      if (this.logs && Array.isArray(newLogs)) {
         this.logs.appendLogs(newLogs)
       }
     })

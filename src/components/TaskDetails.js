@@ -185,26 +185,24 @@ class TaskDetails extends React.Component {
       </Button>;
     let allOtherRuns = [];
     if (task.allOtherRuns && task.allOtherRuns.length > 0) {
-      allOtherRuns = [
-        <div className={classes.gap}/>,
+      allOtherRuns = (
         <Paper>
           <Typography className={classes.title} variant="caption" gutterBottom align="center">All Other
             Runs</Typography>
           <TaskList tasks={task.allOtherRuns} showCreation={true}/>
         </Paper>
-      ]
+      );
     }
     let dependencies = [];
     if (task.dependencies && task.dependencies.length > 0) {
-      dependencies = [
-        <div className={classes.gap}/>,
+      dependencies = (
         <Paper>
           <Typography className={classes.title} variant="caption" gutterBottom align="center">
             Dependencies
           </Typography>
           <TaskList tasks={task.dependencies}/>
         </Paper>
-      ]
+      );
     }
 
     return (
@@ -255,7 +253,9 @@ class TaskDetails extends React.Component {
           </Card>
         </Paper>
         {notificationsComponent}
+        {dependencies ? <div className={classes.gap}/> : null}
         {dependencies}
+        {allOtherRuns ? <div className={classes.gap}/> : null}
         {allOtherRuns}
         <div className={classes.gap}/>
         <Paper elevation={2}>

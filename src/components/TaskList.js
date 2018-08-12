@@ -11,7 +11,7 @@ class TaskList extends React.Component {
     return (
       <Table style={{tableLayout: 'auto'}}>
         <TableBody>
-          {tasks.map(task => <TaskListRow key={task.id} task={task} showCreation={this.props.showCreation || false}/>)}
+          {tasks.map(task => <TaskListRow key={task.id || task.__id} task={task} showCreation={this.props.showCreation || false}/>)}
         </TableBody>
       </Table>
     );

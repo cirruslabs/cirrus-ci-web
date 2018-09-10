@@ -30,6 +30,9 @@ const styles = theme => ({
   expandOpen: {
     transform: 'rotate(180deg)',
   },
+  gap: {
+    paddingTop: 16
+  },
 });
 
 class ComputeCredits extends React.Component {
@@ -54,6 +57,19 @@ class ComputeCredits extends React.Component {
         <CardContent>
           <Typography variant="subheading">
             You have <b>{this.props.info.balanceInCredits || "0.00"}</b> credits left.
+          </Typography>
+          <div className={classes.gap}/>
+          <Typography variant="subheading">
+            Compute credits are used for buying CPU time on Community Clusters for your private or public projects. It
+            allows
+            not to bother about configuring <a href="https://cirrus-ci.org/guide/supported-computing-services/">Compute
+            Services</a> and
+            focus on the product instead of infrastructure.
+          </Typography>
+          <div className={classes.gap}/>
+          <Typography variant="subheading">
+            Read more about compute credits and how to use them in <a
+            href="https://cirrus-ci.org/pricing/#compute-credits">documentation</a>.
           </Typography>
         </CardContent>
         <CardActions>

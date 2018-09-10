@@ -6,20 +6,18 @@ import Icon from '@material-ui/core/Icon';
 import {taskStatusColor} from "../../utils/colors";
 import {formatDuration} from "../../utils/time";
 import {isTaskFinalStatus, isTaskInProgressStatus, taskStatusIconName} from "../../utils/status";
-import {graphql, requestSubscription} from "react-relay";
+import {createFragmentContainer, graphql, requestSubscription} from "react-relay";
 import environment from "../../createRelayEnvironment";
 import {cirrusColors} from "../../cirrusTheme";
+import {withRouter} from "react-router-dom";
+import {withStyles} from "@material-ui/core";
 
 const taskSubscription = graphql`
   subscription TaskDurationChipSubscription(
     $taskID: ID!
   ) {
     task(id: $taskID) {
-      id
-      status
-      creationTimestamp
-      scheduledTimestamp
-      durationInSeconds
+      ...TaskDurationChip_task
     }
   }
 `;
@@ -74,4 +72,14 @@ class TaskDurationChip extends React.Component {
   }
 }
 
-export default TaskDurationChip
+export default createFragmentContainer(TaskDurationChip, {
+  task: graphql`
+    fragment TaskDurationChip_task on Task {
+      id
+      status
+      creationTimestamp
+      scheduledTimestamp
+      durationInSeconds
+    }
+  `,
+});

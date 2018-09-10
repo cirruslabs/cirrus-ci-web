@@ -7,6 +7,33 @@ schema {
 # This directive allows results to be deferred during execution
 directive @defer on FIELD
 
+type AccountTransaction {
+  accountId: Long!
+  timestamp: Long!
+  microCreditsAmount: Long!
+  creditsAmount: String!
+  task: Task
+  repository: Repository
+}
+
+# An edge in a connection
+type AccountTransactionEdge {
+  # The item at the end of the edge
+  node: AccountTransaction
+
+  # cursor marks a unique position or index into the connection
+  cursor: String!
+}
+
+# A connection to a list of items.
+type AccountTransactionsConnection {
+  # a list of edges
+  edges: [AccountTransactionEdge]
+
+  # details about this specific page
+  pageInfo: PageInfo!
+}
+
 type Build {
   id: ID!
   repositoryId: ID!
@@ -73,10 +100,25 @@ type GitHubMarketplacePurchase {
 }
 
 type GitHubOrganizationInfo {
+  id: ID!
   name: String!
   role: String!
   purchase: GitHubMarketplacePurchase
   activeUsersAmount: Int!
+  balanceInCredits: String!
+  transactions(
+    # fetching only nodes before this node (exclusive)
+    before: String
+
+    # fetching only nodes after this node (exclusive)
+    after: String
+
+    # fetching only the first certain number of nodes
+    first: Int
+
+    # fetching only the last certain number of nodes
+    last: Int
+  ): AccountTransactionsConnection
 }
 
 # Long type

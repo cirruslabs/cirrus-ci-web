@@ -14,6 +14,7 @@ import Icon from "@material-ui/core/Icon/Icon";
 import {cirrusColors} from "../cirrusTheme";
 import Toolbar from "@material-ui/core/Toolbar/Toolbar";
 import classNames from 'classnames';
+import ComputeCredits from "./ComputeCredits";
 
 
 const styles = theme => ({
@@ -44,7 +45,6 @@ class GitHubOrganizationSettings extends React.Component {
 
   render() {
     let {info, organization, classes} = this.props;
-    console.log(info);
     let githubMarketplaceComponent = (
       <div>
         <Typography variant="subheading">
@@ -123,6 +123,11 @@ class GitHubOrganizationSettings extends React.Component {
             </CardActions>
           </Card>
         </Paper>
+        <div className={classes.settingGap}/>
+        <Paper elevation={1}>
+          <ComputeCredits info={this.props.info}/>
+        </Paper>
+        <div className={classes.settingGap}/>
       </div>
     );
   }
@@ -141,6 +146,7 @@ export default createFragmentContainer(withRouter(withStyles(styles)(GitHubOrgan
         onFreeTrial
         freeTrialDaysLeft
       }
+      ...ComputeCredits_info
     }
   `,
 });

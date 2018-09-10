@@ -65,22 +65,10 @@ export default createFragmentContainer(withRouter(withStyles(styles)(TaskListRow
   task: graphql`
     fragment TaskListRow_task on Task {
         id
-        name
-        status
-        creationTimestamp
-        scheduledTimestamp
-        executingTimestamp
-        durationInSeconds
+        ...TaskDurationChip_task
+        ...TaskNameChip_task
+        ...TaskCreatedChip_task
         uniqueLabels
-        statusDurations {
-          status
-          durationInSeconds
-        }
-        commands {
-          name
-          status
-          durationInSeconds
-        }
     }
   `,
 });

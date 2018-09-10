@@ -6,7 +6,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Icon from '@material-ui/core/Icon';
 import {buildStatusColor} from "../../utils/colors";
 import {buildStatusIconName, buildStatusMessage} from "../../utils/status";
-import {graphql, requestSubscription} from "react-relay";
+import {createFragmentContainer, graphql, requestSubscription} from "react-relay";
 import environment from "../../createRelayEnvironment";
 import {cirrusColors} from "../../cirrusTheme";
 
@@ -15,9 +15,7 @@ const buildSubscription = graphql`
     $buildID: ID!
   ) {
     build(id: $buildID) {      
-      id
-      durationInSeconds
-      status
+      ...BuildStatusChip_build
     }
   }
 `;
@@ -67,4 +65,12 @@ class BuildStatusChip extends React.Component {
   }
 }
 
-export default BuildStatusChip
+export default createFragmentContainer(BuildStatusChip, {
+  build: graphql`
+    fragment BuildStatusChip_build on Build {
+      id
+      status
+      durationInSeconds
+    }
+  `,
+});

@@ -141,16 +141,10 @@ export default createFragmentContainer(withRouter(withStyles(styles)(RepositoryB
         edges {
           node {
             id
-            branch
-            changeIdInRepo
             changeMessageTitle
-            durationInSeconds
-            status
-            changeTimestamp
-            repository {
-              owner
-              name
-            }
+            ...BuildBranchNameChip_build
+            ...BuildChangeChip_build
+            ...BuildStatusChip_build
           }
         }
       }

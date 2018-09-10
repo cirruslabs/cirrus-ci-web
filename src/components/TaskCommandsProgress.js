@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import classNames from 'classnames';
 import {formatDuration} from "../utils/time";
 import {cirrusColors} from "../cirrusTheme";
+import {createFragmentContainer, graphql} from "react-relay";
 
 let styles = {
   tooltipTitle: {
@@ -72,4 +73,15 @@ class TaskCommandsProgress extends React.Component {
   }
 }
 
-export default withStyles(styles)(TaskCommandsProgress);
+export default createFragmentContainer(withStyles(styles)(TaskCommandsProgress), {
+  task: graphql`
+    fragment TaskCommandsProgress_task on Task {
+      status
+      creationTimestamp
+      statusDurations {
+        status
+        durationInSeconds
+      }
+    }
+  `,
+});

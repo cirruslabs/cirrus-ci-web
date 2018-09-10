@@ -8,6 +8,7 @@ import {cirrusColors} from "../../cirrusTheme";
 import {withRouter} from "react-router-dom";
 import {navigate} from "../../utils/navigate";
 import {withStyles} from "@material-ui/core";
+import {createFragmentContainer, graphql} from "react-relay";
 
 class BuildBranchNameChip extends React.Component {
   static contextTypes = {
@@ -37,4 +38,15 @@ class BuildBranchNameChip extends React.Component {
   }
 }
 
-export default withRouter(withStyles({})(BuildBranchNameChip));
+export default createFragmentContainer(withRouter(withStyles({})(BuildBranchNameChip)), {
+  build: graphql`
+    fragment BuildBranchNameChip_build on Build {
+      id
+      branch
+      repository {
+        owner
+        name
+      }
+    }
+  `,
+});

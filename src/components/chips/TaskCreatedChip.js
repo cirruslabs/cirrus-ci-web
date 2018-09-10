@@ -8,6 +8,7 @@ import {taskStatusColor} from "../../utils/colors";
 import {taskStatusIconName} from "../../utils/status";
 import {roundAndPresentDuration} from "../../utils/time";
 import {cirrusColors} from "../../cirrusTheme";
+import {createFragmentContainer, graphql} from "react-relay";
 
 class TaskCreatedChip extends React.Component {
   render() {
@@ -35,4 +36,10 @@ class TaskCreatedChip extends React.Component {
   }
 }
 
-export default TaskCreatedChip
+export default createFragmentContainer(TaskCreatedChip, {
+  task: graphql`
+    fragment TaskCreatedChip_task on Task {
+      creationTimestamp
+    }
+  `,
+});

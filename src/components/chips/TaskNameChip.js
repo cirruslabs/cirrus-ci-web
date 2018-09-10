@@ -4,8 +4,9 @@ import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import Icon from '@material-ui/core/Icon';
 import {cirrusColors} from "../../cirrusTheme";
+import {createFragmentContainer, graphql} from "react-relay";
 
-export default function (props) {
+function TaskNameChip(props) {
   let task = props.task;
   return (
     <Chip className={props.className}
@@ -17,3 +18,11 @@ export default function (props) {
           }/>
   );
 }
+
+export default createFragmentContainer(TaskNameChip, {
+  task: graphql`
+    fragment TaskNameChip_task on Task {
+      name
+    }
+  `,
+});

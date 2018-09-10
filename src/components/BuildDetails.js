@@ -223,12 +223,11 @@ export default createFragmentContainer(withRouter(withStyles(styles)(BuildDetail
     fragment BuildDetails_build on Build {
       id
       branch
-      changeIdInRepo
-      changeTimestamp
-      changeMessageTitle
-      durationInSeconds
-      buildCreatedTimestamp
       status
+      changeIdInRepo
+      changeMessageTitle
+      ...BuildCreatedChip_build
+      ...BuildStatusChip_build
       notifications {
         ...Notification_notification
       }
@@ -236,9 +235,7 @@ export default createFragmentContainer(withRouter(withStyles(styles)(BuildDetail
         ...TaskListRow_task
       }
       repository {
-        id
-        owner
-        name
+        ...RepositoryNameChip_repository
         cloneUrl
         viewerPermission
       }

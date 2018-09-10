@@ -163,11 +163,6 @@ class TaskDetails extends React.Component {
         <NotificationList notifications={task.notifications}/>
       </div>;
 
-    let scheduledStatusDuration = task.statusDurations.find(it => it.status === 'SCHEDULED');
-    let scheduledDurationChip = scheduledStatusDuration && task.status !== 'SCHEDULED'
-      ? <TaskScheduledChip className={classes.chip} duration={scheduledStatusDuration.durationInSeconds}/>
-      : null;
-
     let reRunButton = !hasWritePermissions(build.viewerPermission) ? null :
       <Button variant="raised"
               onClick={() => this.rerun(task.id)}
@@ -219,7 +214,7 @@ class TaskDetails extends React.Component {
               </div>
               <div className={classes.wrapper}>
                 <TaskCreatedChip className={classes.chip} task={task}/>
-                {scheduledDurationChip}
+                <TaskScheduledChip className={classes.chip} task={task}/>
                 <TaskStatusChip className={classes.chip} task={task}/>
               </div>
               <TaskCommandsProgress className={classes.progress} task={task}/>
@@ -315,39 +310,28 @@ export default createFragmentContainer(withRouter(withStyles(styles)(TaskDetails
     fragment TaskDetails_task on Task {
       id
       buildId
-      name
       status
-      labels
-      creationTimestamp
-      executingTimestamp
-      durationInSeconds
       automaticReRun
-      statusDurations {
-        status
-        durationInSeconds
-      }
-      commands {
-        name
-        status
-        durationInSeconds
-      }
+      ...TaskNameChip_task
+      ...TaskCreatedChip_task
+      ...TaskScheduledChip_task
+      ...TaskStatusChip_task
+      ...TaskCommandsProgress_task
+      ...TaskCommandList_task
+      labels
       notifications {
         ...Notification_notification
       }
       build {
-        id
-        repositoryId
-        branch
         changeIdInRepo
-        changeTimestamp
         changeMessageTitle
         viewerPermission
+        ...BuildBranchNameChip_build
+        ...BuildChangeChip_build
       }
       repository {
-        id
-        owner
-        name
         cloneUrl
+        ...RepositoryNameChip_repository
       }
       allOtherRuns {
         ...TaskListRow_task

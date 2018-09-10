@@ -6,9 +6,10 @@ import Icon from '@material-ui/core/Icon';
 import {taskStatusColor} from "../../utils/colors";
 import {taskStatusIconName, taskStatusMessage} from "../../utils/status";
 import {cirrusColors} from "../../cirrusTheme";
+import {createFragmentContainer, graphql} from "react-relay";
 
-export default function (props) {
-  let task = props.task;
+function TaskStatusChip(props) {
+  let {task} = props;
   return (
     <Chip className={props.className}
           label={taskStatusMessage(task)}
@@ -19,3 +20,12 @@ export default function (props) {
           }/>
   );
 }
+
+export default createFragmentContainer(TaskStatusChip, {
+  task: graphql`
+    fragment TaskStatusChip_task on Task {
+      status
+      durationInSeconds
+    }
+  `,
+});

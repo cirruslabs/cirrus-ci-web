@@ -7,6 +7,7 @@ import Icon from '@material-ui/core/Icon';
 import {cirrusColors} from "../../cirrusTheme";
 import {withRouter} from "react-router-dom";
 import {navigateBuild} from "../../utils/navigate";
+import {createFragmentContainer, graphql} from "react-relay";
 
 class BuildChangeChip extends React.Component {
   static contextTypes = {
@@ -28,4 +29,12 @@ class BuildChangeChip extends React.Component {
   }
 }
 
-export default withRouter(BuildChangeChip);
+export default createFragmentContainer(withRouter(BuildChangeChip), {
+  build: graphql`
+    fragment BuildChangeChip_build on Build {
+      id
+      changeIdInRepo
+    }
+  `,
+});
+

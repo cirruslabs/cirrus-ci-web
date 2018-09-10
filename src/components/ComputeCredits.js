@@ -11,14 +11,41 @@ import Button from "@material-ui/core/Button/Button";
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import ComputeCreditsTransactionsList from "./ComputeCreditsTransactionsList";
 import Typography from "@material-ui/core/Typography/Typography";
+import Collapse from "@material-ui/core/Collapse/Collapse";
+import IconButton from "@material-ui/core/IconButton/IconButton";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import classNames from 'classnames'
+
+const styles = theme => ({
+  expand: {
+    transform: 'rotate(0deg)',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest,
+    }),
+    marginLeft: 'auto',
+    [theme.breakpoints.up('sm')]: {
+      marginRight: -8,
+    },
+  },
+  expandOpen: {
+    transform: 'rotate(180deg)',
+  },
+});
 
 class ComputeCredits extends React.Component {
   static contextTypes = {
     router: PropTypes.object
   };
 
+  state = {expanded: false};
+
+  handleExpandClick = () => {
+    this.setState(state => ({expanded: !state.expanded}));
+  };
+
   render() {
-    let transactionEdges = (this.props.info.transactions || {}).edges || [];
+    let {info, classes} = this.props;
+    let transactionEdges = (info.transactions || {}).edges || [];
     let transactions = transactionEdges.map(edge => edge.node);
 
     return (
@@ -34,17 +61,29 @@ class ComputeCredits extends React.Component {
             <AttachMoneyIcon/>
             Buy More Credits
           </Button>
+          <IconButton
+            className={classNames(classes.expand, {
+              [classes.expandOpen]: this.state.expanded,
+            })}
+            onClick={this.handleExpandClick}
+            aria-expanded={this.state.expanded}
+            aria-label="Show more"
+          >
+            <ExpandMoreIcon/>
+          </IconButton>
         </CardActions>
-        <CardContent>
-          <ComputeCreditsTransactionsList transactions={transactions}/>
-        </CardContent>
+        <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            <ComputeCreditsTransactionsList transactions={transactions}/>
+          </CardContent>
+        </Collapse>
       </Card>
     );
   }
 }
 
 export default createPaginationContainer(
-  withRouter(withStyles({})(ComputeCredits)),
+  withRouter(withStyles(styles)(ComputeCredits)),
   {
     info: graphql`
       fragment ComputeCredits_info on GitHubOrganizationInfo

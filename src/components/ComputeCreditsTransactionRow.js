@@ -12,6 +12,8 @@ import {withStyles} from "@material-ui/core";
 import classNames from 'classnames'
 import RepositoryNameChip from "./chips/RepositoryNameChip";
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import TaskCreatedChip from "./chips/TaskCreatedChip";
+import {navigateTask} from "../utils/navigate";
 
 const styles = {
   chip: {
@@ -34,9 +36,12 @@ class ComputeCreditsTransactionRow extends React.Component {
     let {transaction, classes} = this.props;
     let {task, repository} = transaction;
     return (
-      <TableRow>
+      <TableRow onClick={(e) => navigateTask(this.context.router, e, task.id)}
+                hover={true}
+                style={{cursor: "pointer"}}>
         <TableCell className={classNames(classes.cell)}>
           <TaskNameChip task={task} className={classes.chip}/>
+          <TaskCreatedChip task={task} className={classes.chip}/>
         </TableCell>
         <TableCell className={classes.cell}>
           <RepositoryNameChip repository={repository} className={classes.chip}/>
@@ -47,7 +52,7 @@ class ComputeCreditsTransactionRow extends React.Component {
         <TableCell className={classes.cell}>
           <Chip label={transaction.creditsAmount}
                 avatar={<AttachMoneyIcon/>}
-                className={classes.chip}/>
+                className={classNames(classes.chip, "pull-right")}/>
         </TableCell>
       </TableRow>
     );
@@ -60,7 +65,9 @@ export default createFragmentContainer(withRouter(withStyles(styles)(ComputeCred
         timestamp
         creditsAmount
         task {
+          id
           name
+          ...TaskCreatedChip_task
           ...TaskDurationChip_task
         }
         repository {

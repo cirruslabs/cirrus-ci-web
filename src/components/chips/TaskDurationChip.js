@@ -9,8 +9,6 @@ import {isTaskFinalStatus, isTaskInProgressStatus, taskStatusIconName} from "../
 import {createFragmentContainer, graphql, requestSubscription} from "react-relay";
 import environment from "../../createRelayEnvironment";
 import {cirrusColors} from "../../cirrusTheme";
-import {withRouter} from "react-router-dom";
-import {withStyles} from "@material-ui/core";
 
 const taskSubscription = graphql`
   subscription TaskDurationChipSubscription(

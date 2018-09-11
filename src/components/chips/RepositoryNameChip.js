@@ -5,7 +5,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import Icon from '@material-ui/core/Icon';
 import {cirrusColors} from "../../cirrusTheme";
-import {withRouter} from "react-router-dom";
 import {navigate} from "../../utils/navigate";
 import {createFragmentContainer, graphql} from "react-relay";
 

@@ -4,7 +4,7 @@ import {createFragmentContainer, graphql,} from 'react-relay';
 import {withRouter} from 'react-router-dom'
 import ReactMarkdown from 'react-markdown';
 
-import Table  from '@material-ui/core/Table';
+import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';

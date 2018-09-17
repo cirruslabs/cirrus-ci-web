@@ -78,7 +78,6 @@ class ComputeCredits extends React.Component {
       ...prevState,
       openBuyCredits: false
     }));
-    this.relay.refe();
   };
 
   render() {

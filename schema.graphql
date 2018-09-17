@@ -83,6 +83,19 @@ enum BuildStatus {
   ABORTED
 }
 
+input BuyComputeCreditsInput {
+  accountId: ID!
+  amountOfCredits: String!
+  paymentTokenId: String!
+  clientMutationId: String
+}
+
+type BuyComputeCreditsPayload {
+  error: String
+  info: GitHubOrganizationInfo
+  clientMutationId: String
+}
+
 # Repository Setting to choose how to decrypt variables.
 enum DecryptEnvironmentVariablesFor {
   USERS_WITH_WRITE_PERMISSIONS
@@ -131,6 +144,7 @@ type Mutation {
   retrigger(input: BuildReTriggerInput!): BuildReTriggerPayload
   saveSettings(input: RepositorySettingsInput!): RepositorySettingsPayload
   approve(input: BuildInput!): BuildPayload
+  buyComputeCredits(input: BuyComputeCreditsInput!): BuyComputeCreditsPayload
 }
 
 type Notification {

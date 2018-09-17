@@ -14,7 +14,7 @@ import Icon from "@material-ui/core/Icon/Icon";
 import {cirrusColors} from "../cirrusTheme";
 import Toolbar from "@material-ui/core/Toolbar/Toolbar";
 import classNames from 'classnames';
-import ComputeCredits from "./ComputeCredits";
+import ComputeCredits from "./compute-credits/ComputeCredits";
 
 
 const styles = theme => ({

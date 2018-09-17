@@ -17,7 +17,6 @@ import classNames from 'classnames'
 import ComputeCreditsBuyDialog from "./ComputeCreditsBuyDialog";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import {orange} from "@material-ui/core/colors";
-import {cirrusColors} from "../../cirrusTheme";
 
 const styles = theme => ({
   expand: {
@@ -45,11 +44,10 @@ const styles = theme => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing.unit * 4,
   },
-  buyButton: {
-    color: cirrusColors.cirrusWhite,
-    backgroundColor: orange[700],
+  credits: {
+    color: orange[700],
     '&:hover': {
-      backgroundColor: orange[900],
+      color: orange[900],
     },
   }
 });
@@ -93,14 +91,14 @@ class ComputeCredits extends React.Component {
         <CardHeader title="Compute Credits"/>
         <CardContent>
           <Typography variant="title">
-            You have <b>{this.props.info.balanceInCredits || "0.00"}</b> credits left.
+            You have <b className={classes.credits}>{this.props.info.balanceInCredits || "0.00"}</b> compute credits left.
           </Typography>
           <div className={classes.gap}/>
           <Typography variant="subheading">
             <p>
               Compute credits are used for buying priority CPU time on Community Clusters for your private or public projects. It
-              allows not to bother about configuring <a href="https://cirrus-ci.org/guide/supported-computing-services/">Compute Services</a>
-              and focus on the product instead of infrastructure.
+              allows not to bother about configuring <a href="https://cirrus-ci.org/guide/supported-computing-services/">Compute Services</a> and
+              focus on the product instead of infrastructure.
             </p>
             <p>
               Read more about compute credits and how to use them in <a
@@ -111,9 +109,9 @@ class ComputeCredits extends React.Component {
               different platforms:
             </p>
             <ul>
-              <li>5 compute credits for 1000 minutes of 1 virtual CPU for Linux</li>
-              <li>10 compute credits for 1000 minutes of 1 virtual CPU for Windows</li>
-              <li>30 compute credits for 1000 minutes of 1 CPU with hyper-threading enabled (comparable to 2 vCPUs) for macOS.</li>
+              <li>1000 minutes of 1 virtual CPU for Linux for 5 compute credits</li>
+              <li>1000 minutes of 1 virtual CPU for Windows for 10 compute credits</li>
+              <li>1000 minutes of 1 CPU with hyper-threading enabled (comparable to 2 vCPUs) for macOS for 30 compute credits</li>
             </ul>
             <b>All tasks using compute credits are charged on per-second basis.</b> 2 CPU Linux task takes 30 seconds?
             Pay <b>0.5</b> cents.
@@ -121,7 +119,6 @@ class ComputeCredits extends React.Component {
         </CardContent>
         <CardActions>
           <Button variant="contained"
-                  className={classes.buyButton}
                   onClick={this.handleOpenBuyCredits}>
             <AttachMoneyIcon/>
             Add More Credits

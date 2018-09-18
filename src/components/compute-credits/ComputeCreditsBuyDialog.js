@@ -74,6 +74,13 @@ class ComputeCreditsBuyDialog extends React.Component {
       requestPayerEmail: true,
     });
 
+    paymentRequest.on('cancel', () => {
+      this.setState(prevState => ({
+        ...prevState,
+        makingPayment: false,
+      }));
+    });
+
     paymentRequest.on('token', ({complete, token, ...data}) => {
       const variables = {
         input: {

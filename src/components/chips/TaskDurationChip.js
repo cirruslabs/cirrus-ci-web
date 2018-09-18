@@ -77,6 +77,7 @@ export default createFragmentContainer(TaskDurationChip, {
       status
       creationTimestamp
       scheduledTimestamp
+      executingTimestamp
       durationInSeconds
     }
   `,

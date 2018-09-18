@@ -142,6 +142,8 @@ export default createFragmentContainer(withRouter(withStyles(styles)(RepositoryB
           node {
             id
             changeMessageTitle
+            durationInSeconds
+            status
             ...BuildBranchNameChip_build
             ...BuildChangeChip_build
             ...BuildStatusChip_build

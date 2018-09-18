@@ -9,6 +9,8 @@ directive @defer on FIELD
 
 type AccountTransaction {
   accountId: Long!
+  taskId: Long!
+  repositoryId: Long!
   timestamp: Long!
   microCreditsAmount: Long!
   creditsAmount: String!
@@ -296,6 +298,7 @@ type Task {
   allOtherRuns: [Task]
   dependencies: [Task]
   automaticReRun: Boolean!
+  transaction: AccountTransaction
 }
 
 input TaskAbortInput {

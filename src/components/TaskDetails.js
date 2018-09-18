@@ -32,6 +32,7 @@ import {faviconColor} from "../utils/colors";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
+import TaskTransactionChip from "./chips/TaskTransactionChip";
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskInput!) {
@@ -113,6 +114,9 @@ const styles = theme => ({
   },
   automaticReRun: {
     backgroundColor: cirrusColors.lightWarning,
+  },
+  transaction: {
+    backgroundColor: cirrusColors.lightSuccess,
   },
 });
 
@@ -227,6 +231,7 @@ class TaskDetails extends React.Component {
               <div className={classNames("card-body", classes.wrapper)}>
                 {task.automaticReRun ?
                   <Chip className={classNames(classes.chip, classes.automaticReRun)} label="Automatic Re-Run"/> : null}
+                <TaskTransactionChip className={classes.chip} task={task}/>
                 {
                   task.labels.map(label => {
                     return <Chip key={label} className={classes.chip} label={shorten(label)}/>
@@ -318,6 +323,7 @@ export default createFragmentContainer(withRouter(withStyles(styles)(TaskDetails
       ...TaskStatusChip_task
       ...TaskCommandsProgress_task
       ...TaskCommandList_task
+      ...TaskTransactionChip_task
       labels
       notifications {
         ...Notification_notification

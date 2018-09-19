@@ -8,10 +8,14 @@ import Icon from "@material-ui/core/Icon/Icon";
 
 function TaskTransactionChip(props) {
   let {task} = props;
-  let {transaction} = task;
-  if (!transaction) return <div/>;
+  let {transaction, usedComputeCredits} = task;
+  if (!usedComputeCredits) return <div/>;
+  let tip = "Exact amount of compute credits used hasn't been calculated yet";
+  if (transaction) {
+    tip = `${transaction.creditsAmount} compute credits were charged for this task`;
+  }
   return (
-    <Tooltip title={`${transaction.creditsAmount} compute credits were charged for this task`}>
+    <Tooltip title={tip}>
       <Chip {...props}
             label="compute credits"
             avatar={
@@ -26,6 +30,7 @@ function TaskTransactionChip(props) {
 export default createFragmentContainer(TaskTransactionChip, {
   task: graphql`
     fragment TaskTransactionChip_task on Task {
+      usedComputeCredits
       transaction {
         creditsAmount
       }

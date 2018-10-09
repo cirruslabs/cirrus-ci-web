@@ -15,6 +15,11 @@ import {cirrusColors} from "../cirrusTheme";
 import Toolbar from "@material-ui/core/Toolbar/Toolbar";
 import classNames from 'classnames';
 import ComputeCredits from "./compute-credits/ComputeCredits";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 
 const styles = theme => ({
@@ -43,6 +48,15 @@ class GitHubOrganizationSettings extends React.Component {
     router: PropTypes.object
   };
 
+  state = {
+    showActiveUsers: false,
+  };
+
+
+  handleCloseActiveUsersDialog = () => {
+    this.setState({ showActiveUsers: false });
+  };
+
   render() {
     let {info, organization, classes} = this.props;
     let githubMarketplaceComponent = (
@@ -60,6 +74,7 @@ class GitHubOrganizationSettings extends React.Component {
       </Button>
     );
     let cancelPlanButton = null;
+    let viewActiveUsers = null;
     if (info.purchase && info.purchase.planId === ORGANIZATIONAL_PRIVATE_REPOSITORIES_PLAN_ID) {
       githubMarketplaceComponent = (
         <div>
@@ -73,6 +88,13 @@ class GitHubOrganizationSettings extends React.Component {
             Available seats: <b>{info.purchase.unitCount - info.activeUsersAmount}</b>
           </Typography>
         </div>
+      );
+      viewActiveUsers = (
+        <Button variant="contained"
+                onClick={() => this.setState({ showActiveUsers: true })}>
+          <Icon className={classNames(classes.leftIcon)}>group</Icon>
+          View Active Users
+        </Button>
       );
       actionButton = (
         <Button variant="contained"
@@ -119,6 +141,7 @@ class GitHubOrganizationSettings extends React.Component {
             </CardContent>
             <CardActions>
               {cancelPlanButton}
+              {viewActiveUsers}
               {actionButton}
             </CardActions>
           </Card>
@@ -128,6 +151,22 @@ class GitHubOrganizationSettings extends React.Component {
           <ComputeCredits info={this.props.info}/>
         </Paper>
         <div className={classes.settingGap}/>
+        <Dialog
+          open={this.state.showActiveUsers}
+          onClose={this.handleCloseActiveUsersDialog}
+        >
+          <DialogTitle>Users active in the last 30 days</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              {info.activeUserNames.join("\n")}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleCloseActiveUsersDialog} color="primary">
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     );
   }
@@ -139,6 +178,7 @@ export default createFragmentContainer(withRouter(withStyles(styles)(GitHubOrgan
       name
       role
       activeUsersAmount
+      activeUserNames
       purchase {
         planId
         planName

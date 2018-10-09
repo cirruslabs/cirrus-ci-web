@@ -120,6 +120,7 @@ type GitHubOrganizationInfo {
   role: String!
   purchase: GitHubMarketplacePurchase
   activeUsersAmount: Int!
+  activeUserNames: [String]
   balanceInCredits: String!
   transactions(
     # fetching only nodes before this node (exclusive)

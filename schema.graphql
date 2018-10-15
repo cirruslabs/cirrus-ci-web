@@ -135,6 +135,7 @@ type GitHubOrganizationInfo {
     # fetching only the last certain number of nodes
     last: Int
   ): AccountTransactionsConnection
+  webhookSettings: WebHookSettings
 }
 
 # Long type
@@ -148,6 +149,7 @@ type Mutation {
   saveSettings(input: RepositorySettingsInput!): RepositorySettingsPayload
   approve(input: BuildInput!): BuildPayload
   buyComputeCredits(input: BuyComputeCreditsInput!): BuyComputeCreditsPayload
+  saveWebHookSettings(input: SaveWebHookSettingsInput!): SaveWebHookSettingsPayload
 }
 
 type Notification {
@@ -268,6 +270,18 @@ type Root {
   githubOrganizationInfo(organization: String!): GitHubOrganizationInfo
   build(id: ID!): Build
   task(id: ID!): Task
+}
+
+input SaveWebHookSettingsInput {
+  accountId: ID!
+  webhookURL: String!
+  clientMutationId: String
+}
+
+type SaveWebHookSettingsPayload {
+  error: String
+  info: GitHubOrganizationInfo
+  clientMutationId: String
 }
 
 type Subscription {
@@ -408,5 +422,9 @@ type UserBuildsConnection {
 
   # details about this specific page
   pageInfo: PageInfo!
+}
+
+type WebHookSettings {
+  webhookURL: String
 }
 

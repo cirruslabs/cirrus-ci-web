@@ -9,6 +9,7 @@ import {cirrusColors} from "../../cirrusTheme";
 import Toolbar from "@material-ui/core/Toolbar/Toolbar";
 import ComputeCredits from "../compute-credits/ComputeCredits";
 import GitHubPurchase from "./GitHubPurchase";
+import WebHookSettings from "./WebHookSettings";
 
 
 const styles = theme => ({
@@ -45,6 +46,10 @@ class GitHubOrganizationSettings extends React.Component {
           <ComputeCredits info={this.props.info}/>
         </Paper>
         <div className={classes.settingGap}/>
+        <Paper elevation={1}>
+          <WebHookSettings info={this.props.info}/>
+        </Paper>
+        <div className={classes.settingGap}/>
       </div>
     );
   }
@@ -56,6 +61,7 @@ export default createFragmentContainer(withRouter(withStyles(styles)(GitHubOrgan
       name
       ...GitHubPurchase_info
       ...ComputeCredits_info
+      ...WebHookSettings_info
     }
   `,
 });

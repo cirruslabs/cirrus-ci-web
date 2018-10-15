@@ -5,9 +5,9 @@ import {createFragmentContainer, graphql} from 'react-relay';
 import Paper from '@material-ui/core/Paper';
 import {withStyles} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography/Typography";
-import {cirrusColors} from "../cirrusTheme";
+import {cirrusColors} from "../../cirrusTheme";
 import Toolbar from "@material-ui/core/Toolbar/Toolbar";
-import ComputeCredits from "./compute-credits/ComputeCredits";
+import ComputeCredits from "../compute-credits/ComputeCredits";
 import GitHubPurchase from "./GitHubPurchase";
 
 

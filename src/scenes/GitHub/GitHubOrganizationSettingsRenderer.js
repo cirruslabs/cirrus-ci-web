@@ -5,8 +5,7 @@ import {graphql, QueryRenderer} from 'react-relay';
 import environment from '../../createRelayEnvironment';
 import CirrusLinearProgress from "../../components/CirrusLinearProgress";
 import {Typography} from "@material-ui/core";
-import GitHubOrganizationSettings from "../../components/GitHubOrganizationSettings";
-
+import GitHubOrganizationSettings from "../../components/settings/GitHubOrganizationSettings";
 
 const GitHubOrganizationSettingsRenderer = (props) => {
   let organization = props.match.params.organization;

@@ -9,7 +9,7 @@ import CardContent from "@material-ui/core/CardContent/CardContent";
 import CardActions from "@material-ui/core/CardActions/CardActions";
 import Button from "@material-ui/core/Button/Button";
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import ComputeCreditsTransactionsList from "../ComputeCreditsTransactionsList";
+import ComputeCreditsTransactionsList from "./ComputeCreditsTransactionsList";
 import Typography from "@material-ui/core/Typography/Typography";
 import Collapse from "@material-ui/core/Collapse/Collapse";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';

@@ -4,16 +4,16 @@ import {withRouter} from 'react-router-dom'
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Chip from '@material-ui/core/Chip';
-import TaskNameChip from "./chips/TaskNameChip";
-import TaskDurationChip from "./chips/TaskDurationChip";
+import TaskNameChip from "../chips/TaskNameChip";
+import TaskDurationChip from "../chips/TaskDurationChip";
 import {createFragmentContainer, graphql} from "react-relay";
 import PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core";
 import classNames from 'classnames'
-import RepositoryNameChip from "./chips/RepositoryNameChip";
+import RepositoryNameChip from "../chips/RepositoryNameChip";
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import TaskCreatedChip from "./chips/TaskCreatedChip";
-import {navigateTask} from "../utils/navigate";
+import TaskCreatedChip from "../chips/TaskCreatedChip";
+import {navigateTask} from "../../utils/navigate";
 
 const styles = {
   chip: {

@@ -136,6 +136,19 @@ type GitHubOrganizationInfo {
     last: Int
   ): AccountTransactionsConnection
   webhookSettings: WebHookSettings
+  webhookDeliveries(
+    # fetching only nodes before this node (exclusive)
+    before: String
+
+    # fetching only nodes after this node (exclusive)
+    after: String
+
+    # fetching only the first certain number of nodes
+    first: Int
+
+    # fetching only the last certain number of nodes
+    last: Int
+  ): WebhookDeliveriesConnection
 }
 
 # Long type
@@ -422,6 +435,44 @@ type UserBuildsConnection {
 
   # details about this specific page
   pageInfo: PageInfo!
+}
+
+# A connection to a list of items.
+type WebhookDeliveriesConnection {
+  # a list of edges
+  edges: [WebHookDeliveryEdge]
+
+  # details about this specific page
+  pageInfo: PageInfo!
+}
+
+type WebHookDelivery {
+  id: String!
+  accountId: Long!
+  timestamp: Long!
+  payload: WebHookDeliveryPayload
+  response: WebHookDeliveryResponse
+}
+
+# An edge in a connection
+type WebHookDeliveryEdge {
+  # The item at the end of the edge
+  node: WebHookDelivery
+
+  # cursor marks a unique position or index into the connection
+  cursor: String!
+}
+
+type WebHookDeliveryPayload {
+  event: String!
+  action: String!
+  data: String!
+}
+
+type WebHookDeliveryResponse {
+  status: Int!
+  duration: Long!
+  data: String!
 }
 
 type WebHookSettings {

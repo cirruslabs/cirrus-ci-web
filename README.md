@@ -9,5 +9,6 @@ to minimize amount of business logic.
 
 * Run `yarn install` first to install all external dependencies. 
 * Run `yarn run relay` to compile all GraphQL queries and mutations.
+* Run `yarn run sync-schema` to sync GraphQL schema.
 
 After everything is installed and compiled please run `yarn run start` to start a local server. All changes to sources will be hot reloaded in the browser.

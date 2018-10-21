@@ -283,6 +283,7 @@ type Root {
   githubOrganizationInfo(organization: String!): GitHubOrganizationInfo
   build(id: ID!): Build
   task(id: ID!): Task
+  webhookDelivery(id: String!): WebHookDelivery
 }
 
 input SaveWebHookSettingsInput {
@@ -449,9 +450,10 @@ type WebhookDeliveriesConnection {
 type WebHookDelivery {
   id: String!
   accountId: Long!
+  repositoryId: Long!
   timestamp: Long!
-  payload: WebHookDeliveryPayload
-  response: WebHookDeliveryResponse
+  payload: WebHookDeliveryPayload!
+  response: WebHookDeliveryResponse!
 }
 
 # An edge in a connection

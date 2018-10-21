@@ -13,10 +13,6 @@ import {commitMutation, graphql} from "react-relay";
 import environment from "../../createRelayEnvironment";
 
 const styles = theme => ({
-  dialog: {
-    width: theme.spacing.unit * 50,
-    height: theme.spacing.unit * 150,
-  },
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,

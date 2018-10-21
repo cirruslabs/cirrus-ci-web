@@ -9,7 +9,7 @@ import {cirrusColors} from "../../cirrusTheme";
 import Toolbar from "@material-ui/core/Toolbar/Toolbar";
 import ComputeCredits from "../compute-credits/ComputeCredits";
 import GitHubPurchase from "./GitHubPurchase";
-import WebHookSettings from "./WebHookSettings";
+import WebHookSettings from "../webhooks/WebHookSettings";
 
 
 const styles = theme => ({

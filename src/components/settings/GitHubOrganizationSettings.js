@@ -8,7 +8,7 @@ import Typography from "@material-ui/core/Typography/Typography";
 import {cirrusColors} from "../../cirrusTheme";
 import Toolbar from "@material-ui/core/Toolbar/Toolbar";
 import ComputeCredits from "../compute-credits/ComputeCredits";
-import GitHubPurchase from "./GitHubPurchase";
+import GitHubPurchase from "../purchase/GitHubPurchase";
 import WebHookSettings from "../webhooks/WebHookSettings";
 
 

@@ -19,7 +19,6 @@
     "react-relay": "*",
     "react-router-dom": "*",
     "react-stripe-elements": "*",
-    "react-tap-event-plugin": "*",
     "recharts": "*"
   },
   "devDependencies": {

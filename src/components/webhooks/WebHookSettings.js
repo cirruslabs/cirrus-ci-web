@@ -87,8 +87,7 @@ class WebHookSettings extends React.Component {
           </FormControl>
         </CardContent>
         <CardActions>
-          <Button variant="raised"
-                  color="primary"
+          <Button color="primary"
                   disabled={this.state.inputValue === this.state.initialURL}
                   onClick={() => this.saveWebHookURL()}>Save</Button>
           <IconButton

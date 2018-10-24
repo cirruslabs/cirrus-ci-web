@@ -36,6 +36,27 @@ type AccountTransactionsConnection {
   pageInfo: PageInfo!
 }
 
+type BillingSettings {
+  accountId: Long!
+  enabled: Boolean!
+  billingCreditsLimit: Long!
+  billingEmailAddress: String!
+  invoiceTemplate: String
+}
+
+input BillingSettingsInput {
+  accountId: ID!
+  enabled: Boolean!
+  billingEmailAddress: String!
+  invoiceTemplate: String
+  clientMutationId: String
+}
+
+type BillingSettingsPayload {
+  settings: BillingSettings
+  clientMutationId: String
+}
+
 type Build {
   id: ID!
   repositoryId: ID!
@@ -135,6 +156,7 @@ type GitHubOrganizationInfo {
     # fetching only the last certain number of nodes
     last: Int
   ): AccountTransactionsConnection
+  billingSettings: BillingSettings
   webhookSettings: WebHookSettings
   webhookDeliveries(
     # fetching only nodes before this node (exclusive)
@@ -163,6 +185,7 @@ type Mutation {
   approve(input: BuildInput!): BuildPayload
   buyComputeCredits(input: BuyComputeCreditsInput!): BuyComputeCreditsPayload
   saveWebHookSettings(input: SaveWebHookSettingsInput!): SaveWebHookSettingsPayload
+  saveBillingSettings(input: BillingSettingsInput!): BillingSettingsPayload
 }
 
 type Notification {

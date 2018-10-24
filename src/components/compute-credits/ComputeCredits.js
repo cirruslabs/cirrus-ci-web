@@ -17,6 +17,7 @@ import classNames from 'classnames'
 import ComputeCreditsBuyDialog from "./ComputeCreditsBuyDialog";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import {orange} from "@material-ui/core/colors";
+import BillingSettingsButton from "./BillingSettingsButton";
 
 const styles = theme => ({
   expand: {
@@ -57,7 +58,7 @@ class ComputeCredits extends React.Component {
     router: PropTypes.object
   };
 
-  state = {expanded: false, buyCredits: false};
+  state = {expanded: false, openBuyCredits: false};
 
   handleExpandClick = () => {
     this.setState(prevState => ({
@@ -122,6 +123,7 @@ class ComputeCredits extends React.Component {
             <AttachMoneyIcon/>
             Add More Credits
           </Button>
+          <BillingSettingsButton info={info}/>
           <IconButton
             className={classNames(classes.expand, {
               [classes.expandOpen]: this.state.expanded,
@@ -160,6 +162,7 @@ export default createPaginationContainer(
         id
         name
         balanceInCredits
+        ...BillingSettingsButton_info
         transactions(
           last: $count
           after: $cursor

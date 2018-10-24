@@ -2,7 +2,7 @@ container:
   image: node:10
 
 build_task:
-  use_compute_credits: $CIRRUS_USER_COLLABORATOR == 'true'
+  use_compute_credits: $CIRRUS_BRANCH == 'master'
   node_modules_cache:
     folder: node_modules
     fingerprint_script: cat yarn.lock

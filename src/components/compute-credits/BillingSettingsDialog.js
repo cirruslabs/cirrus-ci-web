@@ -148,10 +148,10 @@ class BillingSettingsDialog extends React.Component {
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.updateSettings} disabled={notChanged} color="primary">
+          <Button onClick={this.updateSettings} disabled={notChanged} color="primary" variant="contained">
             Update
           </Button>
-          <Button onClick={this.props.onClose} color="secondary">
+          <Button onClick={this.props.onClose} color="secondary" variant="contained">
             Close
           </Button>
         </DialogActions>

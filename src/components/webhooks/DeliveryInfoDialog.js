@@ -17,7 +17,7 @@ class DeliveryInfoDialog extends React.Component {
         <DialogTitle>Delivery Info for {delivery.id}</DialogTitle>
         <DeliveryInfoDialogLazyContent deliveryId={delivery.id}/>
         <DialogActions>
-          <Button onClick={this.props.onClose} color="primary" autoFocus>
+          <Button onClick={this.props.onClose} color="primary" variant="contained" autoFocus>
             Close
           </Button>
         </DialogActions>

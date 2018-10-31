@@ -173,7 +173,7 @@ class ComputeCreditsBuyDialog extends React.Component {
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleBuyCredits} disabled={this.state.makingPayment} color="primary">
+          <Button onClick={this.handleBuyCredits} disabled={this.state.makingPayment} color="primary" variant="contained">
             Buy {credits.toLocaleString("en-US", {useGrouping: true})} credits
           </Button>
         </DialogActions>

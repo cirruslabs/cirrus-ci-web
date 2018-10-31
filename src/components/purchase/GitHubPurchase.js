@@ -147,7 +147,7 @@ class GitHubPurchase extends React.Component {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleCloseActiveUsersDialog} color="primary">
+            <Button onClick={this.handleCloseActiveUsersDialog} color="primary" variant="contained">
               Close
             </Button>
           </DialogActions>

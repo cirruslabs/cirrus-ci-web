@@ -129,7 +129,8 @@ class ComputeCreditsBuyDialog extends React.Component {
         this.setState(prevState => ({
           ...prevState,
           makingPayment: false,
-          error: "Can't make payment"
+          error: "Can't make payment. Your browser doesn't support Payment Request API " +
+            "or you don't have an active payment method in your browser."
         }));
       }
     });

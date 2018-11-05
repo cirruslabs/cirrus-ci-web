@@ -75,7 +75,9 @@ class BillingSettingsDialog extends React.Component {
       input: {
         clientMutationId: "save-billing-settings-" + this.props.billingSettings.accountId,
         accountId: this.props.billingSettings.accountId,
-        ...this.state
+        enabled: this.state.enabled,
+        billingEmailAddress: this.state.billingEmailAddress,
+        invoiceTemplate: this.state.invoiceTemplate,
       },
     };
     commitMutation(

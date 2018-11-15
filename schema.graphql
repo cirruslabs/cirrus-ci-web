@@ -65,9 +65,9 @@ type Build {
   changeMessageTitle: String
   changeMessage: String
   durationInSeconds: Long
+  pullRequest: Long
   changeTimestamp: Long!
   buildCreatedTimestamp: Long!
-  buildFinishedTimestamp: Long
   status: BuildStatus
   notifications: [Notification]
   tasks: [Task]
@@ -336,6 +336,7 @@ type Task {
   notifications: [Notification]
   commands: [TaskCommand]
   commandLogsTail(name: String!): [String]
+  statusTimestamp: Long!
   creationTimestamp: Long!
   scheduledTimestamp: Long!
   executingTimestamp: Long!

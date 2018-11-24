@@ -17,7 +17,7 @@ EXPOSE 8080
 
 COPY --from=builder /tmp/cirrus-ci-web/serve.json /svc/cirrus-ci-web/serve.json
 
-RUN npm install -g serve@10.0.0
+RUN npm install -g serve@10.1.1
 
 COPY --from=builder /tmp/cirrus-ci-web/build/ /svc/cirrus-ci-web/
 

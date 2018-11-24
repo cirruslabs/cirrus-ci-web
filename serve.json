@@ -5,7 +5,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "max-age=3600"
+          "value": "public, max-age=3600"
         },
         {
           "key": "Strict-Transport-Security",
@@ -18,7 +18,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "max-age=604800"
+          "value": "public, max-age=604800"
         }
       ]
     }

@@ -37,7 +37,7 @@ type AccountTransactionsConnection {
 }
 
 type ApiAccessToken {
-  token: String
+  maskedToken: String
   creationTimestamp: Long
 }
 

@@ -56,7 +56,7 @@ class GitHubPurchase extends React.Component {
   };
 
   render() {
-    let {info, organization, classes} = this.props;
+    let {info, classes} = this.props;
     let githubMarketplaceComponent = (
       <div>
         <Typography variant="subheading">
@@ -66,7 +66,7 @@ class GitHubPurchase extends React.Component {
     );
     let actionButton = (
       <Button variant="contained"
-              href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTM=?account=${organization}`}>
+              href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTM=?account=${info.name}`}>
         <Icon className={classNames(classes.leftIcon, "fa", "fa-github")}/>
         Purchase Plan for Private Repositories
       </Button>
@@ -96,14 +96,14 @@ class GitHubPurchase extends React.Component {
       );
       actionButton = (
         <Button variant="contained"
-                href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTM=?account=${organization}`}>
+                href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTM=?account=${info.name}`}>
           <Icon className={classNames(classes.leftIcon)}>group_add</Icon>
           Add More Seats
         </Button>
       );
       cancelPlanButton = (
         <Button variant="contained"
-                href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTA=?account=${organization}`}>
+                href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTA=?account=${info.name}`}>
           <Icon className={classNames(classes.leftIcon, "fa", "fa-github")}/>
           Switch to Free Plan
         </Button>

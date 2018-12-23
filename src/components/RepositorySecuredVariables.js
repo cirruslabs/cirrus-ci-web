@@ -1,7 +1,6 @@
 import React from 'react';
 import environment from '../createRelayEnvironment';
 import {commitMutation, createFragmentContainer, graphql} from 'react-relay';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -9,6 +8,8 @@ import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import FormControl from '@material-ui/core/FormControl';
 import {withStyles} from "@material-ui/core";
+import CopyPasteField from "./CopyPasteField";
+import TextField from "@material-ui/core/TextField";
 
 const securedVariableMutation = graphql`
   mutation RepositorySecuredVariablesMutation($input: RepositorySecuredVariableInput!) {
@@ -37,11 +38,10 @@ class RepositorySecuredVariables extends React.Component {
       let valueForYAMLFile = "ENCRYPTED[" + this.state.securedVariableName + "]";
 
       securedComponent = (
-        <TextField name="securedVariable"
-                   multiline={true}
-                   fullWidth={true}
-                   disabled={true}
-                   value={valueForYAMLFile}/>
+        <CopyPasteField name="securedVariable"
+                        multiline={true}
+                        fullWidth={true}
+                        value={valueForYAMLFile}/>
       )
     }
 

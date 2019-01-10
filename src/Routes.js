@@ -101,8 +101,10 @@ const styles = theme => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
   },
+  shiftedFixedWidth: {
+    width: `calc(100% - ${drawerWidth}px)`
+  },
   appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: drawerWidth,
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.easeOut,
@@ -202,6 +204,7 @@ class Routes extends React.Component {
         <div className={classes.appFrame}>
           <AppBar position="static"
                   className={classNames(classes.appBar, {
+                    [classes.shiftedFixedWidth]: openDrawer,
                     [classes.appBarShift]: openDrawer,
                   })}>
             <Toolbar disableGutters={true}>
@@ -237,6 +240,7 @@ class Routes extends React.Component {
           {openDrawer ? drawer : null}
           <main
             className={classNames(classes.content, {
+              [classes.shiftedFixedWidth]: openDrawer,
               [classes.contentShift]: openDrawer,
             })}
           >

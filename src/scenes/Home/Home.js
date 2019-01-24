@@ -8,7 +8,7 @@ import CirrusLinearProgress from "../../components/CirrusLinearProgress";
 import FormGroup from "@material-ui/core/FormGroup";
 import Paper from "@material-ui/core/Paper";
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
+import ReactMarkdown from "react-markdown";
 
 const Home = (props) => (
   <QueryRenderer
@@ -32,7 +32,7 @@ const Home = (props) => (
           <Paper elevation={1}>
             <Toolbar>
               <FormGroup>
-                <Typography variant="title">Please Log In to see your recent builds</Typography>
+                <ReactMarkdown variant="title">Please Log In to see your recent builds. Newcomers please visit [our documentation](https://cirrus-ci.org).</ReactMarkdown>
               </FormGroup>
             </Toolbar>
           </Paper>

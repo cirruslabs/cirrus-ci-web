@@ -32,7 +32,7 @@ const Home = (props) => (
           <Paper elevation={1}>
             <Toolbar>
               <FormGroup>
-                <Typography variant="title">Please Log In to see your recent builds.  Newcomers please visit [our documentation](https://cirrus-ci.org).</Typography>
+                <ReactMarkdown variant="title">Please Log In to see your recent builds. Newcomers please visit [our documentation](https://cirrus-ci.org).</ReactMarkdown>
               </FormGroup>
             </Toolbar>
           </Paper>

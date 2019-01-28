@@ -6,9 +6,9 @@ import CirrusLinearProgress from "./CirrusLinearProgress";
 import {subscribeTaskCommandLogs} from "../rtu/ConnectionManager";
 import CirrusCircularProgress from "./CirrusCircularProgress";
 import {isTaskCommandFinalStatus} from "../utils/status";
-import {withStyles} from "@material-ui/core";
-import Button from "@material-ui/core/Button";
+import {Tooltip, withStyles} from "@material-ui/core";
 import Icon from "@material-ui/core/Icon";
+import Fab from "@material-ui/core/Fab";
 
 function logURL(taskId, command) {
   return "https://api.cirrus-ci.com/v1/task/" + taskId + "/logs/" + command.name + ".log";
@@ -18,11 +18,15 @@ function isCommandRunning(command) {
   return command.status === 'EXECUTING'
 }
 
-let styles = {
-  downloadButton: {
-    margin: 8
+let styles = theme => ({
+  actionButtons: {
+    position: 'absolute',
+    right: 0,
   },
-};
+  downloadButton: {
+    margin: theme.spacing.unit
+  },
+});
 
 class TaskCommandRealTimeLogs extends React.Component {
   constructor() {
@@ -63,16 +67,19 @@ const TaskCommandFileLogs = (props) => {
   let command = props.command;
   return (
     <div style={{width: "100%", height: "100%"}}>
+      <div className={classes.actionButtons}>
+        <Fab variant="raised"
+             className={classes.downloadButton}
+             href={logURL(props.taskId, command)}
+             target="_blank"
+             rel="noopener noreferrer"
+        >
+          <Tooltip title="Download Full Logs">
+            <Icon>get_app</Icon>
+          </Tooltip>
+        </Fab>
+      </div>
       <TaskCommandLogsTail taskId={props.taskId} commandName={command.name}/>
-      <Button variant="raised"
-              className={classes.downloadButton}
-              href={logURL(props.taskId, command)}
-              target="_blank"
-              rel="noopener noreferrer"
-      >
-        <Icon>get_app</Icon>
-        Download Full Logs
-      </Button>
     </div>
   );
 };
@@ -94,7 +101,7 @@ const TaskCommandLogsTail = (props) => (
     render={({error, props}) => {
       if (!props) {
         return (
-          <div style={{width: "100%"}}>
+          <div style={{width: "100%", minHeight: 100}}>
             <div className="text-center">
               <CirrusCircularProgress/>
             </div>

@@ -9,7 +9,7 @@ const NotFound = (props) => (
         <Icon style={{fontSize: "96px"}} className="center-block">sentiment_very_dissatisfied</Icon>
         {
           props.messageComponent ? props.messageComponent :
-            <p>{props.message || "Page Not Found! "}</p><a href="https://cirrus-ci.com" title="Homepage">Go home?</a>
+            <div><p>{props.message || "Page Not Found! "}</p><a href="https://cirrus-ci.com" title="Homepage">Go home?</a></div>
         }
       </div>
     </div>

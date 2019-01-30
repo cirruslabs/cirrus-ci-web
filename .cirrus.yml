@@ -1,5 +1,5 @@
 container:
-  image: node:10
+  image: node:11
 
 build_task:
   use_compute_credits: $CIRRUS_BRANCH == 'master'

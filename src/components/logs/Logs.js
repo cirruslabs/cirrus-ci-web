@@ -28,7 +28,7 @@ class Logs extends React.Component {
   render() {
     let styles = {
       logContainer: {
-        overflowY: "scroll",
+        overflowY: "hidden",
         minHeight: "50px",
         height: "100%",
         maxWidth: "100%",

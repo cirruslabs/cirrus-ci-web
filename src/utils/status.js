@@ -103,7 +103,7 @@ export function taskStatusMessage(task) {
     case "EXECUTING":
       return 'Executing';
     case "ABORTED":
-      return 'Aborted';
+      return 'Aborted in ' + formatDuration(task.durationInSeconds);
     case "COMPLETED":
       return 'Finished in ' + formatDuration(task.durationInSeconds);
     case "FAILED":

@@ -126,7 +126,7 @@ class BuildDetails extends React.Component {
 
     let canBeReTriggered = build.status === 'FAILED'
       && hasWritePermissions(build.repository.viewerPermission)
-      && build.tasks && build.tasks.length === 0;
+      && build.latestGroupTasks && build.latestGroupTasks.length === 0;
     let reTriggerButton = !canBeReTriggered ? null :
       <Button variant="raised"
               backgroundColor={cirrusColors.success}
@@ -175,7 +175,7 @@ class BuildDetails extends React.Component {
         {notificationsComponent}
         <div className={classes.gap}/>
         <Paper elevation={2}>
-          <TaskList tasks={build.tasks}/>
+          <TaskList tasks={build.latestGroupTasks}/>
         </Paper>
       </div>
     );
@@ -231,7 +231,7 @@ export default createFragmentContainer(withRouter(withStyles(styles)(BuildDetail
       notifications {
         ...Notification_notification
       }
-      tasks {
+      latestGroupTasks {
         ...TaskListRow_task
       }
       repository {

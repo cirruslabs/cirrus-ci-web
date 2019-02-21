@@ -76,6 +76,7 @@ type Build {
   status: BuildStatus
   notifications: [Notification]
   tasks: [Task]
+  latestGroupTasks: [Task]
   repository: Repository!
   viewerPermission: PermissionType!
 }

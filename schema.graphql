@@ -110,6 +110,7 @@ enum BuildStatus {
   FAILED
   COMPLETED
   ABORTED
+  ERRORED
 }
 
 input BuyComputeCreditsInput {

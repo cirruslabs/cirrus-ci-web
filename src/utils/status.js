@@ -83,6 +83,8 @@ export function buildStatusMessage(build) {
       // since one can re-run some of build's tasks it's not quite clear
       // what is duration for builds like that
       return 'Executing';
+    case "ERRORED":
+      return 'Errored';
     case "COMPLETED":
       return 'Finished in ' + formatDuration(build.durationInSeconds);
     case "FAILED":

@@ -1,5 +1,13 @@
 {
   "name": "cirrus-ci-web",
+  "description": "The source that powers https://cirrus-ci.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cirruslabs/cirrus-ci-web.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cirruslabs/cirrus-ci-docs/issues"
+  },
   "version": "0.1.0",
   "private": true,
   "dependencies": {

@@ -5,9 +5,7 @@ build_task:
   use_compute_credits: $CIRRUS_BRANCH == 'master'
   node_modules_cache:
     folder: node_modules
-    fingerprint_script:
-      - cat yarn.lock
-      - cat package.json
+    fingerprint_script: cat yarn.lock
     populate_script: yarn install
   relay_script: yarn run relay
   build_script: yarn run build

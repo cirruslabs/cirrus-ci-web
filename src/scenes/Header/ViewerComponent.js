@@ -33,7 +33,7 @@ class ViewerComponent extends React.Component {
           if (!viewer) {
             return <Button style={{color: cirrusColors.cirrusWhite}}
                            href="https://api.cirrus-ci.com/redirect/auth/github"
-                           icon={<Icon className="fa fa-github"/>}>Log in</Button>;
+                           icon={<Icon className="fa fa-github"/>}>Sign in</Button>;
           }
           return <AccountInformation viewer={viewer}/>;
         }}

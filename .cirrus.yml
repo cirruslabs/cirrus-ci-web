@@ -13,7 +13,7 @@ build_task:
 lint_task:
   container:
     image: node:latest
-  install_eslint_script
+  install_eslint_script:
     - npm i -g eslint@latest && eslint --version
   script:
     - find . -name \*.js -exec eslint {} \;

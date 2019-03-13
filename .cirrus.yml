@@ -10,6 +10,15 @@ build_task:
   relay_script: yarn run relay
   build_script: yarn run build
 
+lint_task:
+  container:
+    image: node:latest
+  install_eslint_script
+    - npm i -g eslint@latest && eslint --version
+  script:
+    - find . -name \*.js -exec eslint {} \;
+    - find ../ -name \*.js -exec eslint {} \;
+
 deploy_docker_builder:
   only_if: $CIRRUS_BRANCH == "master"
   depends_on: build

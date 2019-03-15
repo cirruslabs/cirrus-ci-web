@@ -25,6 +25,8 @@ export function taskStatusColor(status) {
       return cirrusColors.initialization;
     case "EXECUTING":
       return cirrusColors.lightSuccess;
+    case "SKIPPED":
+      return cirrusColors.lightSuccess;
     case "COMPLETED":
       return cirrusColors.success;
     case "ABORTED":
@@ -39,6 +41,8 @@ export function taskStatusColor(status) {
 export function faviconColor(status) {
   switch (status) {
     case "COMPLETED":
+      return cirrusColors.darkSuccess;
+    case "SKIPPED":
       return cirrusColors.darkSuccess;
     case "ABORTED":
       return cirrusColors.failure;

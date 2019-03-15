@@ -8,6 +8,8 @@ export function isTaskFinalStatus(status) {
       return true;
     case "FAILED":
       return true;
+    case "SKIPPED":
+      return true;
     default:
       return false;
   }
@@ -56,6 +58,8 @@ export function taskStatusIconName(status) {
     case "EXECUTING":
       return 'play_arrow';
     case "COMPLETED":
+      return 'done';
+    case "SKIPPED":
       return 'done';
     default:
       return 'error';

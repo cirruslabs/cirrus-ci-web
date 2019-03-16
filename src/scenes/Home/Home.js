@@ -32,7 +32,7 @@ const Home = (props) => (
           <Paper elevation={1}>
             <Toolbar>
               <FormGroup>
-                <ReactMarkdown># Welcome to Cirrus CI.></ReactMarkdown>
+                <ReactMarkdown># Welcome to Cirrus CI.</ReactMarkdown>
                 <ReactMarkdown>Please [**sign in**](https://api.cirrus-ci.com/redirect/auth/github) to see your recent builds.</ReactMarkdown>
                 <ReactMarkdown>Just got here? Visit [**our documentation**](https://cirrus-ci.org).</ReactMarkdown>
               </FormGroup>

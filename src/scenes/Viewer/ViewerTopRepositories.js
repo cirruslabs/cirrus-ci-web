@@ -28,7 +28,7 @@ class ViewerTopRepositories extends React.Component {
             return <CirrusLinearProgress/>;
           }
           if (!props.viewer) {
-            return <Typography variant="subheading">Please Log In to see your active repositories!</Typography>;
+            return <Typography variant="subheading">Please sign in to see your active repositories!</Typography>;
           }
           return <ViewerTopActiveRepositories viewer={props.viewer}/>;
         }}

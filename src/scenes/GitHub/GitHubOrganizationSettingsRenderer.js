@@ -28,7 +28,7 @@ const GitHubOrganizationSettingsRenderer = (props) => {
           return <CirrusLinearProgress/>;
         }
         if (props.githubOrganizationInfo === null || props.githubOrganizationInfo.role === "none") {
-          return <Typography variant="subheading">You are not an admin on this organization!</Typography>;
+          return <Typography variant="subheading">You do not have administrator access on this organization!</Typography>;
         }
         return <GitHubOrganizationSettings organization={organization} info={props.githubOrganizationInfo}/>;
       }}

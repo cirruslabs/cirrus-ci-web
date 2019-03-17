@@ -28,6 +28,11 @@ let styles = {
   chip: {
     margin: 4,
   },
+  cell: {
+    padding: 0,
+    width: "100%",
+    maxWidth: "600",
+  },
   emptyBuilds: {
     margin: 8,
   },
@@ -85,12 +90,12 @@ class ViewerBuildList extends React.Component {
             <BuildStatusChip build={build} className={classNames("d-lg-none", classes.chip)}/>
           </div>
         </TableCell>
-        <TableCell style={{width: '100%', maxWidth: 600}}>
+        <TableCell className={classes.cell}>
           <div className="card-body">
             <ReactMarkdown className="card-text" source={build.changeMessageTitle}/>
           </div>
         </TableCell>
-        <TableCell className="d-none d-lg-table-cell">
+        <TableCell className={classNames("d-none", "d-lg-table-cell", classes.cell)}>
           <BuildStatusChip build={build} className={classes.chip}/>
         </TableCell>
       </TableRow>

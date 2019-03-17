@@ -6,7 +6,7 @@ const LoadingComponent = ({isLoading, error}) => {
     return <CirrusCircularProgress/>;
   }
   else if (error) {
-    // todo: make it prettier
+    console.log(error);
     return <div>Sorry, there was a problem loading the page.</div>;
   }
   else {

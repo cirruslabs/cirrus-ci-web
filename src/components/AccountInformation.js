@@ -1,6 +1,5 @@
 import React from 'react';
-import {createFragmentContainer} from 'react-relay';
-import graphql from 'babel-plugin-relay/macro';
+import {createFragmentContainer, graphql} from 'react-relay';
 
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';

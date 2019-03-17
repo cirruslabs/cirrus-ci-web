@@ -9,8 +9,7 @@ import Input from "@material-ui/core/Input/Input";
 import Typography from "@material-ui/core/Typography/Typography";
 import DialogActions from "@material-ui/core/DialogActions/DialogActions";
 import Button from "@material-ui/core/Button/Button";
-import {commitMutation} from "react-relay";
-import graphql from 'babel-plugin-relay/macro';
+import {commitMutation, graphql} from "react-relay";
 import environment from "../../createRelayEnvironment";
 
 const styles = theme => ({

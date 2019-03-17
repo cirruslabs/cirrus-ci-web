@@ -4,8 +4,7 @@ import {withRouter} from 'react-router-dom'
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Chip from '@material-ui/core/Chip';
-import {createFragmentContainer} from "react-relay";
-import graphql from 'babel-plugin-relay/macro';
+import {createFragmentContainer, graphql} from "react-relay";
 import PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core";
 import ReportIcon from '@material-ui/icons/Report';

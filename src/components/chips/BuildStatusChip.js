@@ -6,8 +6,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Icon from '@material-ui/core/Icon';
 import {buildStatusColor} from "../../utils/colors";
 import {buildStatusIconName, buildStatusMessage} from "../../utils/status";
-import {createFragmentContainer, requestSubscription} from "react-relay";
-import graphql from 'babel-plugin-relay/macro';
+import {createFragmentContainer, graphql, requestSubscription} from "react-relay";
 import environment from "../../createRelayEnvironment";
 import {cirrusColors} from "../../cirrusTheme";
 

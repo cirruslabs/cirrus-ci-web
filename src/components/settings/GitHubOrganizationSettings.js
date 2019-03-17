@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {withRouter} from 'react-router-dom'
-import {createFragmentContainer} from 'react-relay';
-import graphql from 'babel-plugin-relay/macro';
+import {createFragmentContainer, graphql} from 'react-relay';
 import Paper from '@material-ui/core/Paper';
 import {withStyles} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography/Typography";

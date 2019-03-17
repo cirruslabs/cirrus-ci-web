@@ -1,7 +1,6 @@
 import React from 'react';
 
-import {QueryRenderer} from 'react-relay';
-import graphql from 'babel-plugin-relay/macro';
+import {graphql, QueryRenderer} from 'react-relay';
 
 import environment from '../../createRelayEnvironment';
 import BuildDetails from '../../components/BuildDetails'

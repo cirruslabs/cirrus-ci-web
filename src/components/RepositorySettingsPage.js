@@ -5,8 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import RepositorySecuredVariables from "./RepositorySecuredVariables";
 import RepositorySettings from "./RepositorySettings";
-import {createFragmentContainer} from "react-relay";
-import graphql from 'babel-plugin-relay/macro';
+import {createFragmentContainer, graphql} from "react-relay";
 import {withStyles} from "@material-ui/core";
 import {cirrusColors} from "../cirrusTheme";
 

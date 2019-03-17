@@ -6,8 +6,7 @@ import Chip from '@material-ui/core/Chip';
 import Icon from '@material-ui/core/Icon';
 import {cirrusColors} from "../../cirrusTheme";
 import {navigate} from "../../utils/navigate";
-import {createFragmentContainer} from "react-relay";
-import graphql from 'babel-plugin-relay/macro';
+import {createFragmentContainer, graphql} from "react-relay";
 
 class RepositoryNameChip extends React.Component {
   static contextTypes = {

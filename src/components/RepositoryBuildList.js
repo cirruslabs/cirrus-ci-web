@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {createFragmentContainer,} from 'react-relay';
-import graphql from 'babel-plugin-relay/macro';
+import {createFragmentContainer, graphql,} from 'react-relay';
 import {Link, withRouter} from 'react-router-dom'
 
 import Table from '@material-ui/core/Table';

@@ -1,6 +1,5 @@
 import React from 'react';
-import {commitMutation, createFragmentContainer} from 'react-relay';
-import graphql from 'babel-plugin-relay/macro';
+import {commitMutation, createFragmentContainer, graphql} from 'react-relay';
 import Button from "@material-ui/core/Button"
 import Card from "@material-ui/core/Card"
 import CardActions from "@material-ui/core/CardActions"

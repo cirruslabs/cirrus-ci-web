@@ -8,8 +8,7 @@ import {taskStatusColor} from "../../utils/colors";
 import {taskStatusIconName} from "../../utils/status";
 import {roundAndPresentDuration} from "../../utils/time";
 import {cirrusColors} from "../../cirrusTheme";
-import {createFragmentContainer} from "react-relay";
-import graphql from 'babel-plugin-relay/macro';
+import {createFragmentContainer, graphql} from "react-relay";
 
 class TaskCreatedChip extends React.Component {
   render() {

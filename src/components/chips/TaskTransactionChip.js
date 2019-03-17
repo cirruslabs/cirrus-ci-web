@@ -1,7 +1,6 @@
 import React from 'react';
 import Chip from '@material-ui/core/Chip';
-import {createFragmentContainer} from "react-relay";
-import graphql from 'babel-plugin-relay/macro';
+import {createFragmentContainer, graphql} from "react-relay";
 import Tooltip from "@material-ui/core/Tooltip/Tooltip";
 import Avatar from "@material-ui/core/Avatar/Avatar";
 import {cirrusColors} from "../../cirrusTheme";

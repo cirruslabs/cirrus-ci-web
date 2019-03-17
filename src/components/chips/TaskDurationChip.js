@@ -6,8 +6,7 @@ import Icon from '@material-ui/core/Icon';
 import {taskStatusColor} from "../../utils/colors";
 import {formatDuration} from "../../utils/time";
 import {isTaskFinalStatus, isTaskInProgressStatus, taskStatusIconName} from "../../utils/status";
-import {createFragmentContainer, requestSubscription} from "react-relay";
-import graphql from 'babel-plugin-relay/macro';
+import {createFragmentContainer, graphql, requestSubscription} from "react-relay";
 import environment from "../../createRelayEnvironment";
 import {cirrusColors} from "../../cirrusTheme";
 

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {commitMutation, createFragmentContainer, graphql, requestSubscription,} from 'react-relay';
+import {commitMutation, createFragmentContainer, requestSubscription,} from 'react-relay';
+import graphql from 'babel-plugin-relay/macro';
 import {withRouter} from 'react-router-dom'
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';

@@ -7,7 +7,8 @@ import Typography from "@material-ui/core/Typography";
 import classNames from 'classnames';
 import {formatDuration} from "../utils/time";
 import {cirrusColors} from "../cirrusTheme";
-import {createFragmentContainer, graphql} from "react-relay";
+import {createFragmentContainer} from "react-relay";
+import graphql from 'babel-plugin-relay/macro';
 
 let styles = {
   tooltipTitle: {

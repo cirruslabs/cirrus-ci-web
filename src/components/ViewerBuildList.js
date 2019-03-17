@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {createFragmentContainer, graphql,} from 'react-relay';
+import {createFragmentContainer,} from 'react-relay';
+import graphql from 'babel-plugin-relay/macro';
 import {withRouter} from 'react-router-dom'
 import ReactMarkdown from 'react-markdown';
 

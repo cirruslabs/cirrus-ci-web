@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {withRouter} from 'react-router-dom'
 import environment from '../createRelayEnvironment';
-import {commitMutation, createFragmentContainer, graphql, requestSubscription} from 'react-relay';
+import {commitMutation, createFragmentContainer, requestSubscription} from 'react-relay';
+import graphql from 'babel-plugin-relay/macro';
 import Chip from '@material-ui/core/Chip';
 import Paper from '@material-ui/core/Paper';
 

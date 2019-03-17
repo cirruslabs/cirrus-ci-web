@@ -14,6 +14,7 @@
     "@material-ui/core": "latest",
     "@material-ui/icons": "latest",
     "ansi_up": "*",
+    "babel-plugin-relay": "*",
     "classnames": "*",
     "graphql": "*",
     "graphql-relay": "*",
@@ -34,8 +35,8 @@
     "flow-bin": "*",
     "get-graphql-schema": "*",
     "js-beautify": "*",
-    "relay-compiler": "*",
-    "relay-modern-scripts": "*"
+    "react-scripts": "*",
+    "relay-compiler": "*"
   },
   "scripts": {
     "start": "PORT=3333 react-scripts start",
@@ -45,5 +46,11 @@
     "sync-schema": "get-graphql-schema https://api.cirrus-ci.com/schema.json > schema.graphql",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

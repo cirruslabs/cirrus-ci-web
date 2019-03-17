@@ -6,7 +6,8 @@ import Icon from '@material-ui/core/Icon';
 import {taskStatusColor} from "../../utils/colors";
 import {taskStatusIconName, taskStatusMessage} from "../../utils/status";
 import {cirrusColors} from "../../cirrusTheme";
-import {createFragmentContainer, graphql} from "react-relay";
+import {createFragmentContainer} from "react-relay";
+import graphql from 'babel-plugin-relay/macro';
 
 function TaskStatusChip(props) {
   let {task} = props;

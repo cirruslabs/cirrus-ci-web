@@ -1,5 +1,6 @@
 import React from 'react';
-import {createPaginationContainer, graphql} from 'react-relay';
+import {createPaginationContainer} from 'react-relay';
+import graphql from 'babel-plugin-relay/macro';
 import {withStyles} from "@material-ui/core";
 import {withRouter} from "react-router-dom";
 import PropTypes from "prop-types";

@@ -1,6 +1,7 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom'
-import {createFragmentContainer, graphql} from "react-relay";
+import {createFragmentContainer} from "react-relay";
+import graphql from 'babel-plugin-relay/macro';
 import PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core";
 import AlarmOffIcon from '@material-ui/icons/AlarmOff';

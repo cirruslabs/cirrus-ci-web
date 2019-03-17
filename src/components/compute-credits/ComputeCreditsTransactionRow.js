@@ -6,7 +6,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Chip from '@material-ui/core/Chip';
 import TaskNameChip from "../chips/TaskNameChip";
 import TaskDurationChip from "../chips/TaskDurationChip";
-import {createFragmentContainer, graphql} from "react-relay";
+import {createFragmentContainer} from "react-relay";
+import graphql from 'babel-plugin-relay/macro';
 import PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core";
 import classNames from 'classnames'

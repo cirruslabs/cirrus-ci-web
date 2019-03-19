@@ -28,10 +28,9 @@ const Repository = (props) => {
         return <CirrusLinearProgress/>
       }
       if (!props.githubRepository) {
-        let notFoundMessage =
-          <ReactMarkdown
-            source="Repository not found! Please [install Cirrus CI](https://cirrus-ci.org/guide/quick-start/) or push [`.cirrus.yml`](https://cirrus-ci.org/guide/writing-tasks/)!"/>;
-        return <NotFound messageComponent={notFoundMessage}/>
+        let notFoundMessage = <ReactMarkdown source="# Repository not found!">;
+        let notFoundExt = <ReactMarkdown source="Please [install Cirrus CI](https://cirrus-ci.org/guide/quick-start/) or push a [`.cirrus.yml`](https://cirrus-ci.org/guide/writing-tasks/) to your repository!"/>;
+        return <NotFound messageComponent={notFoundMessage + notFoundExt}/>
       }
       return <RepositoryBuildList repository={props.githubRepository} branch={branch}/>
     }}

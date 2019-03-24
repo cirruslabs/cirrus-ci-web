@@ -133,7 +133,7 @@ enum DecryptEnvironmentVariablesFor {
 }
 
 input GenerateNewAccessTokenInput {
-  accountId: ID!
+  accountId: ID
   clientMutationId: String
 }
 
@@ -461,6 +461,7 @@ type User {
   githubMarketplacePurchase: GitHubMarketplacePurchase
   topActiveRepositories: [Repository]
   organizations: [GitHubOrganizationInfo]
+  apiToken: ApiAccessToken
 }
 
 """An edge in a connection"""

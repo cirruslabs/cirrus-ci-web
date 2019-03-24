@@ -10,7 +10,7 @@ import Toolbar from "@material-ui/core/Toolbar/Toolbar";
 import ComputeCredits from "../compute-credits/ComputeCredits";
 import GitHubPurchase from "../purchase/GitHubPurchase";
 import WebHookSettings from "../webhooks/WebHookSettings";
-import ApiSettings from "./ApiSettings";
+import OrganizationApiSettings from "./OrganizationApiSettings";
 
 
 const styles = theme => ({
@@ -21,6 +21,7 @@ const styles = theme => ({
     paddingTop: 16
   },
 });
+
 class GitHubOrganizationSettings extends React.Component {
   static contextTypes = {
     router: PropTypes.object
@@ -47,7 +48,7 @@ class GitHubOrganizationSettings extends React.Component {
         </Paper>
         <div className={classes.settingGap}/>
         <Paper elevation={1}>
-          <ApiSettings info={this.props.info}/>
+          <OrganizationApiSettings info={this.props.info}/>
         </Paper>
         <div className={classes.settingGap}/>
         <Paper elevation={1}>
@@ -65,7 +66,7 @@ export default createFragmentContainer(withRouter(withStyles(styles)(GitHubOrgan
       name
       ...GitHubPurchase_info
       ...ComputeCredits_info
-      ...ApiSettings_info
+      ...OrganizationApiSettings_info
       ...WebHookSettings_info
     }
   `,

@@ -20,6 +20,7 @@ import TableRow from "@material-ui/core/TableRow/TableRow";
 import TableCell from "@material-ui/core/TableCell/TableCell";
 import {navigate} from "../utils/navigate";
 import IconButton from "@material-ui/core/IconButton/IconButton";
+import UserApiSettings from "./settings/UserApiSettings";
 
 
 const styles = theme => ({
@@ -154,6 +155,10 @@ class UserProfile extends React.Component {
           </Card>
         </Paper>
         <div className={classes.settingGap}/>
+        <Paper elevation={1}>
+          <UserApiSettings user={this.props.user}/>
+        </Paper>
+        <div className={classes.settingGap}/>
         {organizationsComponent}
       </div>
     );
@@ -176,6 +181,7 @@ export default createFragmentContainer(withRouter(withStyles(styles)(UserProfile
         name
         role
       }
+      ...UserApiSettings_user
     }
   `,
 });

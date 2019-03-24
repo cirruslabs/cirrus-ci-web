@@ -1,7 +1,5 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import {withRouter} from 'react-router-dom'
-import {commitMutation, createFragmentContainer, graphql} from 'react-relay';
+import {commitMutation} from 'react-relay';
 import Paper from '@material-ui/core/Paper';
 import {withStyles} from "@material-ui/core";
 import Button from "@material-ui/core/Button/Button";
@@ -22,38 +20,19 @@ const styles = theme => ({
   },
 });
 
-const genereateNewTokenMutation = graphql`
-  mutation ApiSettingsMutation($input: GenerateNewAccessTokenInput!) {
-    generateNewAccessToken(input: $input) {
-      token
-    }
-  }
-`;
 
-
-class ApiSettings extends React.Component {
-  static contextTypes = {
-    router: PropTypes.object
-  };
-
+class ApiSettingsBase extends React.Component {
   constructor(props) {
     super(props);
-    this.state = props.info.apiToken || {};
+    this.state = props.apiToken || {};
   }
 
   generateNewAccessToken() {
-    const variables = {
-      input: {
-        clientMutationId: `generate-api-token-${this.props.info.id}`,
-        accountId: this.props.info.id
-      },
-    };
-
     commitMutation(
       environment,
       {
-        mutation: genereateNewTokenMutation,
-        variables: variables,
+        mutation: this.props.generateNewTokenMutation,
+        variables: this.props.getMutationVariables(),
         onCompleted: (response) => {
           console.log(response);
           let {generateNewAccessToken} = response;
@@ -100,10 +79,6 @@ class ApiSettings extends React.Component {
       </CardActions>
     );
 
-    if (this.props.info.role !== 'admin') {
-      cardActions = null;
-    }
-
     return (
       <div>
         <Paper elevation={1}>
@@ -111,7 +86,7 @@ class ApiSettings extends React.Component {
             <CardHeader title="API Settings"/>
             <CardContent>
               <Typography variant="subheading">
-                Need an API token for scripts or testing? Generate an organizational access token for quick access to
+                Need an API token for scripts or testing? Generate an access token for quick access to
                 the Cirrus CI API. See <a href="https://cirrus-ci.org/faq/">documentation</a> for more details.
               </Typography>
               {existingTokenComponent}
@@ -125,14 +100,4 @@ class ApiSettings extends React.Component {
   }
 }
 
-export default createFragmentContainer(withRouter(withStyles(styles)(ApiSettings)), {
-  info: graphql`
-    fragment ApiSettings_info on GitHubOrganizationInfo {
-      id
-      role
-      apiToken {
-        maskedToken
-      }
-    }
-  `,
-});
+export default withStyles(styles)(ApiSettingsBase)

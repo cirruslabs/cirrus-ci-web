@@ -81,7 +81,7 @@ class RepositoryBuildList extends React.Component {
       <div>
         <Paper elevation={1}>
           <Toolbar className="justify-content-between">
-            <Typography variant="title" color="inherit">
+            <Typography variant="h6" color="inherit">
               {repository.owner + "/" + repository.name}
             </Typography>
             {repositorySettings}

@@ -80,7 +80,7 @@ class RepositorySettings extends React.Component {
           </FormControl>
         </CardContent>
         <CardActions>
-          <Button variant="raised"
+          <Button variant="contained"
                   color="primary"
                   disabled={areSettingsTheSame}
                   onClick={() => this.onSave()}

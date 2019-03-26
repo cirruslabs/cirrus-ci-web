@@ -33,6 +33,7 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import TaskTransactionChip from "./chips/TaskTransactionChip";
+import TaskArtifacts from "./artifacts/TaskArtifacts";
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskInput!) {
@@ -167,8 +168,13 @@ class TaskDetails extends React.Component {
         <NotificationList notifications={task.notifications}/>
       </div>;
 
+    let artifactsComponent = (!task.artifacts || task.artifacts.length === 0) ? null :
+      <div className={classes.gap}>
+        <TaskArtifacts task={task}/>
+      </div>;
+
     let reRunButton = !hasWritePermissions(build.viewerPermission) ? null :
-      <Button variant="raised"
+      <Button variant="contained"
               onClick={() => this.rerun(task.id)}
       >
         <Icon className={classes.leftIcon}>refresh</Icon>
@@ -176,7 +182,7 @@ class TaskDetails extends React.Component {
       </Button>;
 
     let abortButton = isTaskFinalStatus(task.status) || !hasWritePermissions(build.viewerPermission) ? null :
-      <Button variant="raised"
+      <Button variant="contained"
               onClick={() => this.abort(task.id)}
       >
         <Icon className={classes.leftIcon}>cancel</Icon>
@@ -223,7 +229,7 @@ class TaskDetails extends React.Component {
               </div>
               <TaskCommandsProgress className={classes.progress} task={task}/>
               <div className={classes.gap}/>
-              <Typography variant="title" gutterBottom>
+              <Typography variant="h6" gutterBottom>
                 {build.changeMessageTitle} (commit <a href={commitUrl} target="_blank"
                                                       rel="noopener noreferrer">{build.changeIdInRepo.substr(0, 6)}</a>)
               </Typography>
@@ -240,7 +246,7 @@ class TaskDetails extends React.Component {
               </div>
             </CardContent>
             <CardActions className="d-flex flex-wrap justify-content-end">
-              <Button variant="raised"
+              <Button variant="contained"
                       color="primary"
                       onClick={(e) => navigateBuild(this.context.router, e, task.buildId)}
               >
@@ -253,6 +259,7 @@ class TaskDetails extends React.Component {
           </Card>
         </Paper>
         {notificationsComponent}
+        {artifactsComponent}
         {dependencies ? <div className={classes.gap}/> : null}
         {dependencies}
         {allOtherRuns ? <div className={classes.gap}/> : null}
@@ -323,8 +330,12 @@ export default createFragmentContainer(withRouter(withStyles(styles)(TaskDetails
       ...TaskStatusChip_task
       ...TaskCommandsProgress_task
       ...TaskCommandList_task
+      ...TaskArtifacts_task
       ...TaskTransactionChip_task
       labels
+      artifacts {
+        name
+      }
       notifications {
         ...Notification_notification
       }

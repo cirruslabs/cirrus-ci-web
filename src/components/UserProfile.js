@@ -101,7 +101,7 @@ class UserProfile extends React.Component {
       organizationsComponent = (
         <Paper elevation={1}>
           <Toolbar>
-            <Typography variant="title" color="inherit">
+            <Typography variant="h6" color="inherit">
               Your GitHub Organizations on Cirrus CI
             </Typography>
           </Toolbar>
@@ -114,7 +114,7 @@ class UserProfile extends React.Component {
                             hover={true}
                             style={{cursor: "pointer"}}>
                     <TableCell>
-                      <Typography variant="headline">{organization.name}</Typography>
+                      <Typography variant="h6">{organization.name}</Typography>
                     </TableCell>
                     <TableCell>
                       <IconButton tooltip="Organization Settings"
@@ -136,7 +136,7 @@ class UserProfile extends React.Component {
       <div>
         <Paper elevation={1}>
           <Toolbar className={classes.title}>
-            <Typography variant="title" color="inherit">
+            <Typography variant="h6" color="inherit">
               Profile Settings for {user.githubUserName}
             </Typography>
           </Toolbar>

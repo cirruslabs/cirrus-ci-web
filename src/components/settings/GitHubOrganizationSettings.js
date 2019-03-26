@@ -33,7 +33,7 @@ class GitHubOrganizationSettings extends React.Component {
       <div>
         <Paper elevation={1}>
           <Toolbar className={classes.title}>
-            <Typography variant="title" color="inherit">
+            <Typography variant="h6" color="inherit">
               Settings for {organization} organization
             </Typography>
           </Toolbar>

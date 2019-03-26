@@ -128,7 +128,7 @@ class BuildDetails extends React.Component {
       && hasWritePermissions(build.repository.viewerPermission)
       && build.latestGroupTasks && build.latestGroupTasks.length === 0;
     let reTriggerButton = !canBeReTriggered ? null :
-      <Button variant="raised"
+      <Button variant="contained"
               backgroundColor={cirrusColors.success}
               onClick={() => this.reTriggerBuild(build.id)}>
         <Icon className={classes.leftIcon}>refresh</Icon>
@@ -138,7 +138,7 @@ class BuildDetails extends React.Component {
 
     let needsApproval = build.status === 'NEEDS_APPROVAL' && hasWritePermissions(build.repository.viewerPermission);
     let approveButton = !needsApproval ? null :
-      <Button variant="raised"
+      <Button variant="contained"
               backgroundColor={cirrusColors.success}
               onClick={() => this.approveBuild(build.id)}>
         <Icon className={classes.leftIcon}>check</Icon>
@@ -157,7 +157,7 @@ class BuildDetails extends React.Component {
                 <BuildStatusChip className={classes.chip} build={build}/>
               </div>
               <div className={classes.gap}/>
-              <Typography variant="headline" gutterBottom>
+              <Typography variant="h6" gutterBottom>
                 {build.changeMessageTitle}
               </Typography>
               <Typography variant="subheading" gutterBottom>

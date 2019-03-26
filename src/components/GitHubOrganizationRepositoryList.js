@@ -52,7 +52,7 @@ class GitHubOrganizationRepositoryList extends React.Component {
       <div>
         <Paper elevation={1}>
           <Toolbar className="justify-content-between">
-            <Typography variant="title" color="inherit">
+            <Typography variant="h6" color="inherit">
               Repositories of {this.props.organization} organization
             </Typography>
             {organizationSettings}

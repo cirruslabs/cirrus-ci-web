@@ -41,6 +41,18 @@ type ApiAccessToken {
   creationTimestamp: Long
 }
 
+type ArtifactFileInfo {
+  path: String!
+  size: Long!
+}
+
+type Artifacts {
+  name: String!
+  type: String
+  format: String
+  files: [ArtifactFileInfo]
+}
+
 type BillingSettings {
   accountId: Long!
   enabled: Boolean!
@@ -354,6 +366,7 @@ type Task {
   status: TaskStatus
   notifications: [Notification]
   commands: [TaskCommand]
+  artifacts: [Artifacts]
   commandLogsTail(name: String!): [String]
   statusTimestamp: Long!
   creationTimestamp: Long!

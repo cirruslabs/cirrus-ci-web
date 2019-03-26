@@ -90,7 +90,7 @@ class ComputeCredits extends React.Component {
       <Card>
         <CardHeader title="Compute Credits"/>
         <CardContent>
-          <Typography variant="title">
+          <Typography variant="h6">
             Your current compute credits balance: <b className={classes.credits}>{this.props.info.balanceInCredits || "0.00"}</b>
           </Typography>
           <div className={classes.gap}/>

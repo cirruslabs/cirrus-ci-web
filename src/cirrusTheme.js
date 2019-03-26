@@ -39,7 +39,6 @@ let cirrusTheme = {
   borderRadius: 2,
   typography: {
     useNextVariants: true,
-    fontSize: 14,
   },
   palette: {
     primary: {
@@ -55,7 +54,7 @@ let cirrusTheme = {
       contrastText: cirrusColors.cirrusWhite,
     },
     action: {
-      hover: cirrusColors.cirrusSecondary,
+      hover: cirrusColors.cirrusGrey,
     }
   },
 };

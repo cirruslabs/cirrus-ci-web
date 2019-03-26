@@ -68,7 +68,7 @@ const TaskCommandFileLogs = (props) => {
   return (
     <div style={{width: "100%", height: "100%"}}>
       <div className={classes.actionButtons}>
-        <Fab variant="raised"
+        <Fab variant="contained"
              className={classes.downloadButton}
              href={logURL(props.taskId, command)}
              target="_blank"

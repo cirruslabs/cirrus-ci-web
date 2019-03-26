@@ -62,7 +62,7 @@ class RepositorySecuredVariables extends React.Component {
           </FormControl>
         </CardContent>
         <CardActions>
-          <Button variant="raised"
+          <Button variant="contained"
                   color="primary"
                   disabled={this.state.inputValue === ''}
                   onClick={() => this.encryptCurrentValue()}>Encrypt</Button>

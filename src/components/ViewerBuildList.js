@@ -66,7 +66,7 @@ class ViewerBuildList extends React.Component {
     return (
       <Paper elevation={1}>
         <Toolbar className={classes.title}>
-          <Typography variant="title" color="inherit">
+          <Typography variant="h6" color="inherit">
             Recent Builds
           </Typography>
         </Toolbar>

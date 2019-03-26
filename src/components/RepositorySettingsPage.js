@@ -31,7 +31,7 @@ class RepositorySettingsPage extends React.Component {
       <div>
         <Paper elevation={1}>
           <Toolbar className={classes.title}>
-            <Typography variant="title" color="inherit">
+            <Typography variant="h6" color="inherit">
               {repository.owner + "/" + repository.name + " repository settings"}
             </Typography>
           </Toolbar>

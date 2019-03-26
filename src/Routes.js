@@ -187,7 +187,7 @@ class Routes extends React.Component {
         }}
       >
         <div className={classes.drawerHeader}>
-          <Typography variant="title"
+          <Typography variant="h6"
                       color="inherit">
             Active Repositories
           </Typography>
@@ -216,7 +216,7 @@ class Routes extends React.Component {
               >
                 <MenuIcon/>
               </IconButton>
-              <Typography variant="title"
+              <Typography variant="h6"
                           className={classNames(classes.flex, {
                             [classes.titleShift]: openDrawer,
                           })}

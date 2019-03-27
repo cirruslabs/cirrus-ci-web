@@ -83,13 +83,13 @@ class ArtifactsView extends React.Component {
   };
 
   artifactURL = (name) => {
-    return [
+    let allURLParts = [
       "https://api.cirrus-ci.com/v1/artifact/task",
       this.props.task.id,
-      this.state.selectedArtifactName,
-      this.state.selectedPath.join("/"),
-      name
-    ].filter(it => it !== null).join("/");
+      this.state.selectedArtifactName
+    ].concat(this.state.selectedPath);
+    allURLParts.push(name);
+    return allURLParts.filter(it => it !== null).join("/");
   };
 
   render() {

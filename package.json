@@ -8,6 +8,7 @@
   "bugs": {
     "url": "https://github.com/cirruslabs/cirrus-ci-docs/issues"
   },
+  "homepage": "https://cirrus-ci.com",
   "version": "0.1.0",
   "private": true,
   "license": "MIT",

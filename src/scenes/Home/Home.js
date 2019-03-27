@@ -1,5 +1,4 @@
 import React from 'react';
-
 import {graphql, QueryRenderer} from 'react-relay';
 
 import environment from '../../createRelayEnvironment';
@@ -32,7 +31,7 @@ const Home = (props) => (
           <Paper elevation={1}>
             <Toolbar>
               <FormGroup>
-                <ReactMarkdown># Welcome to Cirrus CI.</ReactMarkdown>
+                <h1>Welcome to Cirrus CI.</h1>
                 <ReactMarkdown>Please [**sign in**](https://api.cirrus-ci.com/redirect/auth/github) to see your recent builds.</ReactMarkdown>
                 <ReactMarkdown>Just got here? Visit [**our documentation**](https://cirrus-ci.org).</ReactMarkdown>
               </FormGroup>

@@ -110,15 +110,14 @@ export default createFragmentContainer(withRouter(withStyles(styles)(ViewerBuild
         edges {
           node {
             id
-            branch
-            changeIdInRepo
             changeMessageTitle
             durationInSeconds
             status
-            changeTimestamp
+            ...BuildBranchNameChip_build
+            ...BuildChangeChip_build
+            ...BuildStatusChip_build
             repository {
-              owner
-              name
+              ...RepositoryNameChip_repository
             }
           }
         }

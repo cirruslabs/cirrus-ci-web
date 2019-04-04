@@ -159,6 +159,7 @@ class UserProfile extends React.Component {
         <Paper elevation={1}>
           <UserComputeCredits user={this.props.user}/>
         </Paper>
+        <div className={classes.settingGap}/>
         <Paper elevation={1}>
           <UserApiSettings user={this.props.user}/>
         </Paper>

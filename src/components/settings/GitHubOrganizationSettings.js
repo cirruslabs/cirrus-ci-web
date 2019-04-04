@@ -7,7 +7,7 @@ import {withStyles} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography/Typography";
 import {cirrusColors} from "../../cirrusTheme";
 import Toolbar from "@material-ui/core/Toolbar/Toolbar";
-import ComputeCredits from "../compute-credits/ComputeCredits";
+import OrganizationComputeCredits from "../compute-credits/OrganizationComputeCredits";
 import GitHubPurchase from "../purchase/GitHubPurchase";
 import WebHookSettings from "../webhooks/WebHookSettings";
 import OrganizationApiSettings from "./OrganizationApiSettings";
@@ -44,7 +44,7 @@ class GitHubOrganizationSettings extends React.Component {
         </Paper>
         <div className={classes.settingGap}/>
         <Paper elevation={1}>
-          <ComputeCredits info={this.props.info}/>
+          <OrganizationComputeCredits info={this.props.info}/>
         </Paper>
         <div className={classes.settingGap}/>
         <Paper elevation={1}>
@@ -65,7 +65,7 @@ export default createFragmentContainer(withRouter(withStyles(styles)(GitHubOrgan
     fragment GitHubOrganizationSettings_info on GitHubOrganizationInfo {
       name
       ...GitHubPurchase_info
-      ...ComputeCredits_info
+      ...OrganizationComputeCredits_info
       ...OrganizationApiSettings_info
       ...WebHookSettings_info
     }

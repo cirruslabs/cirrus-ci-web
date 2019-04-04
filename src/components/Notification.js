@@ -36,7 +36,7 @@ class Notification extends React.Component {
            style={headerStyle}
            className={classNames("row", "justify-content-between", "align-items-center")}>
         <Typography
-          variant="subheading"
+          variant="subtitle1"
           className={classes.notification}
         >
           {notification.message}

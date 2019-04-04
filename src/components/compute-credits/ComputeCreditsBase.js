@@ -1,5 +1,4 @@
 import React from 'react';
-import {createPaginationContainer, graphql} from 'react-relay';
 import {withStyles} from "@material-ui/core";
 import {withRouter} from "react-router-dom";
 import PropTypes from "prop-types";
@@ -53,7 +52,7 @@ const styles = theme => ({
   }
 });
 
-class ComputeCredits extends React.Component {
+class ComputeCreditsBase extends React.Component {
   static contextTypes = {
     router: PropTypes.object
   };
@@ -82,8 +81,8 @@ class ComputeCredits extends React.Component {
   };
 
   render() {
-    let {info, classes} = this.props;
-    let transactionEdges = (info.transactions || {}).edges || [];
+    let {classes} = this.props;
+    let transactionEdges = (this.props.transactions || {}).edges || [];
     let transactions = transactionEdges.map(edge => edge.node);
 
     return (
@@ -91,12 +90,12 @@ class ComputeCredits extends React.Component {
         <CardHeader title="Compute Credits"/>
         <CardContent>
           <Typography variant="h6">
-            Your current compute credits balance: <b className={classes.credits}>{this.props.info.balanceInCredits || "0.00"}</b>
+            Your current compute credits balance: <b className={classes.credits}>{this.props.balanceInCredits || "0.00"}</b>
           </Typography>
           <div className={classes.gap}/>
-          <Typography variant="subheading">
+          <Typography variant="subtitle1">
             <p>
-              Compute credits are used for buying priority CPU time on Community Clusters for your private or public projects. It
+              Compute credits are used for buying <b>priority</b> CPU time on Community Clusters for your private or public projects. It
               allows not to bother about configuring <a href="https://cirrus-ci.org/guide/supported-computing-services/">Compute Services</a> and
               focus on the product instead of infrastructure.
             </p>
@@ -123,7 +122,7 @@ class ComputeCredits extends React.Component {
             <AttachMoneyIcon/>
             Add More Credits
           </Button>
-          <BillingSettingsButton info={info}/>
+          { this.props.billingSettings && <BillingSettingsButton billingSettings={this.props.billingSettings}/> }
           <IconButton
             className={classNames(classes.expand, {
               [classes.expandOpen]: this.state.expanded,
@@ -141,7 +140,7 @@ class ComputeCredits extends React.Component {
           </CardContent>
         </Collapse>
         <ComputeCreditsBuyDialog
-          accountId={this.props.info.id}
+          accountId={this.props.accountId}
           open={this.state.openBuyCredits}
           onClose={this.handleCloseBuyCredits}
         />
@@ -150,61 +149,4 @@ class ComputeCredits extends React.Component {
   }
 }
 
-export default createPaginationContainer(
-  withRouter(withStyles(styles)(ComputeCredits)),
-  {
-    info: graphql`
-      fragment ComputeCredits_info on GitHubOrganizationInfo
-      @argumentDefinitions(
-        count: {type: "Int", defaultValue: 100}
-        cursor: {type: "String"}
-      ) {
-        id
-        name
-        balanceInCredits
-        ...BillingSettingsButton_info
-        transactions(
-          last: $count
-          after: $cursor
-        ) @connection(key: "ComputeCredits_transactions") {
-          edges {
-            node {
-              ...ComputeCreditsTransactionRow_transaction
-            }
-          }
-        }
-      }
-    `,
-  },
-  {
-    direction: 'forward',
-    getConnectionFromProps(props) {
-      return props.info && props.info.transactions;
-    },
-    // This is also the default implementation of `getFragmentVariables` if it isn't provided.
-    getFragmentVariables(prevVars, totalCount) {
-      return {
-        ...prevVars,
-        count: totalCount,
-      };
-    },
-    getVariables(props, {count, cursor}, fragmentVariables) {
-      return {
-        count: count,
-        cursor: cursor,
-        organization: props.info.name
-      };
-    },
-    query: graphql`
-      query ComputeCreditsQuery(
-        $count: Int!
-        $cursor: String
-        $organization: String!
-      ) {
-        githubOrganizationInfo(organization: $organization) {
-          ...ComputeCredits_info @arguments(count: $count, cursor: $cursor)
-        }
-      }
-    `
-  }
-);
+export default withRouter(withStyles(styles)(ComputeCreditsBase));

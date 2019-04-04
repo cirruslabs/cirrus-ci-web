@@ -28,7 +28,7 @@ class ViewerProfile extends React.Component {
             return <CirrusLinearProgress/>;
           }
           if (!props.viewer) {
-            return <Typography variant="subheading">Please sign in to see your profile!</Typography>;
+            return <Typography variant="subtitle1">Please sign in to see your profile!</Typography>;
           }
           return <UserProfile user={props.viewer}/>;
         }}

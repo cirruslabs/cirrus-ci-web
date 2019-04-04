@@ -160,7 +160,7 @@ class BuildDetails extends React.Component {
               <Typography variant="h6" gutterBottom>
                 {build.changeMessageTitle}
               </Typography>
-              <Typography variant="subheading" gutterBottom>
+              <Typography variant="subtitle1" gutterBottom>
                 Commit <a href={commitUrl} target="_blank"
                           rel="noopener noreferrer">{build.changeIdInRepo.substr(0, 6)}</a> on branch <a
                 href={branchUrl} target="_blank" rel="noopener noreferrer">{build.branch}</a>.

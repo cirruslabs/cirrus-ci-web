@@ -21,6 +21,7 @@ import TableCell from "@material-ui/core/TableCell/TableCell";
 import {navigate} from "../utils/navigate";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import UserApiSettings from "./settings/UserApiSettings";
+import UserComputeCredits from "./compute-credits/UserComputeCredits";
 
 
 const styles = theme => ({
@@ -53,7 +54,7 @@ class UserProfile extends React.Component {
     let {user, classes} = this.props;
     let githubMarketplaceComponent = (
       <div>
-        <Typography variant="subheading">
+        <Typography variant="subtitle1">
           No GitHub Marketplace plan has been configured!
         </Typography>
       </div>
@@ -68,7 +69,7 @@ class UserProfile extends React.Component {
     if (user.githubMarketplacePurchase) {
       githubMarketplaceComponent = (
         <div className={classes.row}>
-          <Typography variant="subheading">
+          <Typography variant="subtitle1">
             Purchased GitHub Plan: <b>{user.githubMarketplacePurchase.planName}</b>
           </Typography>
         </div>
@@ -88,7 +89,7 @@ class UserProfile extends React.Component {
     if (user.githubMarketplacePurchase && user.githubMarketplacePurchase.onFreeTrial && user.githubMarketplacePurchase.freeTrialDaysLeft > 0) {
       trialComponent = (
         <div className={classes.row}>
-          <Typography variant="subheading">
+          <Typography variant="subtitle1">
             Days of Free Trial left: <b>{user.githubMarketplacePurchase.freeTrialDaysLeft}</b>
           </Typography>
         </div>
@@ -156,6 +157,9 @@ class UserProfile extends React.Component {
         </Paper>
         <div className={classes.settingGap}/>
         <Paper elevation={1}>
+          <UserComputeCredits user={this.props.user}/>
+        </Paper>
+        <Paper elevation={1}>
           <UserApiSettings user={this.props.user}/>
         </Paper>
         <div className={classes.settingGap}/>
@@ -182,6 +186,7 @@ export default createFragmentContainer(withRouter(withStyles(styles)(UserProfile
         role
       }
       ...UserApiSettings_user
+      ...UserComputeCredits_user
     }
   `,
 });

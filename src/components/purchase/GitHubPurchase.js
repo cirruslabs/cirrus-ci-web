@@ -59,7 +59,7 @@ class GitHubPurchase extends React.Component {
     let {info, classes} = this.props;
     let githubMarketplaceComponent = (
       <div>
-        <Typography variant="subheading">
+        <Typography variant="subtitle1">
           No GitHub Marketplace plan has been configured!
         </Typography>
       </div>
@@ -76,13 +76,13 @@ class GitHubPurchase extends React.Component {
     if (info.purchase && info.purchase.planId === ORGANIZATIONAL_PRIVATE_REPOSITORIES_PLAN_ID) {
       githubMarketplaceComponent = (
         <div>
-          <Typography variant="subheading">
+          <Typography variant="subtitle1">
             Purchased GitHub Plan: <b>{info.purchase.planName}</b> for <b>{info.purchase.unitCount}</b> seats
           </Typography>
-          <Typography variant="subheading">
+          <Typography variant="subtitle1">
             Amount of monthly active users under the plan: <b>{info.activeUsersAmount}</b>
           </Typography>
-          <Typography variant="subheading">
+          <Typography variant="subtitle1">
             Available seats: <b>{info.purchase.unitCount - info.activeUsersAmount}</b>
           </Typography>
         </div>
@@ -114,7 +114,7 @@ class GitHubPurchase extends React.Component {
     if (info.purchase && info.purchase.onFreeTrial && info.purchase.freeTrialDaysLeft > 0) {
       trialComponent = (
         <div className={classes.row}>
-          <Typography variant="subheading">
+          <Typography variant="subtitle1">
             Days of Free Trial left: <b>{info.purchase.freeTrialDaysLeft}</b>
           </Typography>
         </div>

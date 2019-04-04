@@ -135,6 +135,7 @@ input BuyComputeCreditsInput {
 type BuyComputeCreditsPayload {
   error: String
   info: GitHubOrganizationInfo
+  user: User
   clientMutationId: String
 }
 
@@ -474,6 +475,20 @@ type User {
   githubMarketplacePurchase: GitHubMarketplacePurchase
   topActiveRepositories: [Repository]
   organizations: [GitHubOrganizationInfo]
+  balanceInCredits: String!
+  transactions(
+    """fetching only nodes before this node (exclusive)"""
+    before: String
+
+    """fetching only nodes after this node (exclusive)"""
+    after: String
+
+    """fetching only the first certain number of nodes"""
+    first: Int
+
+    """fetching only the last certain number of nodes"""
+    last: Int
+  ): UserTransactionsConnection
   apiToken: ApiAccessToken
 }
 
@@ -490,6 +505,24 @@ type UserBuildEdge {
 type UserBuildsConnection {
   """a list of edges"""
   edges: [UserBuildEdge]
+
+  """details about this specific page"""
+  pageInfo: PageInfo!
+}
+
+"""An edge in a connection"""
+type UserTransactionEdge {
+  """The item at the end of the edge"""
+  node: AccountTransaction
+
+  """cursor marks a unique position or index into the connection"""
+  cursor: String!
+}
+
+"""A connection to a list of items."""
+type UserTransactionsConnection {
+  """a list of edges"""
+  edges: [UserTransactionEdge]
 
   """details about this specific page"""
   pageInfo: PageInfo!

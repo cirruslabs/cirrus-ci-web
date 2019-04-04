@@ -123,7 +123,7 @@ class BillingSettingsDialog extends React.Component {
               label="Auto Pay Enabled"
             />
           </FormControl>
-          <Typography variant="subheading">
+          <Typography variant="subtitle1">
             <p>
               By enabling Auto Pay your repositories will be able to use compute credits in advance. You'll be billed in
               the end of each month for the amount of compute credits that your repositories used that month.

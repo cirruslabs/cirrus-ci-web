@@ -34,7 +34,6 @@ class ApiSettingsBase extends React.Component {
         mutation: this.props.generateNewTokenMutation,
         variables: this.props.getMutationVariables(),
         onCompleted: (response) => {
-          console.log(response);
           let {generateNewAccessToken} = response;
           this.setState(prevState => ({
             ...prevState,
@@ -51,7 +50,7 @@ class ApiSettingsBase extends React.Component {
     let existingTokenComponent = null;
     if (this.state.maskedToken) {
       existingTokenComponent = (
-        <Typography variant="subheading">
+        <Typography variant="subtitle1">
           Current active token: {this.state.maskedToken}
         </Typography>
       );
@@ -85,7 +84,7 @@ class ApiSettingsBase extends React.Component {
           <Card>
             <CardHeader title="API Settings"/>
             <CardContent>
-              <Typography variant="subheading">
+              <Typography variant="subtitle1">
                 Need an API token for scripts or testing? Generate an access token for quick access to
                 the Cirrus CI API. See <a href="https://cirrus-ci.org/faq/">documentation</a> for more details.
               </Typography>

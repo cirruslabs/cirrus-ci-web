@@ -28,6 +28,10 @@ const computeCreditsBuyMutation = graphql`
         id
         balanceInCredits
       }
+      user {
+        id
+        balanceInCredits
+      }
     }
   }
 `;
@@ -137,9 +141,9 @@ class ComputeCreditsBuyDialog extends React.Component {
   }
 
   render() {
-    const {classes, ...other} = this.props;
+    const {classes, accountId, ...other} = this.props;
 
-    let error = this.state.error ? <Typography variant="subheading">{this.state.error}</Typography> : null;
+    let error = this.state.error ? <Typography variant="subtitle1">{this.state.error}</Typography> : null;
 
     let credits = this.state.amountOfCreditsToBuy;
     return (
@@ -153,7 +157,7 @@ class ComputeCreditsBuyDialog extends React.Component {
               value={credits.toLocaleString("en-US", {useGrouping: true})}
               onChange={this.handleAmountChange}
             />
-            <Typography variant="subheading">
+            <Typography variant="subtitle1">
               <p></p>
               <p>
                 This amount of compute credits is equal to one of the following:

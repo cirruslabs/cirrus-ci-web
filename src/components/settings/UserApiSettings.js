@@ -21,7 +21,6 @@ class UserApiSettings extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <ApiSettingsBase
         generateNewTokenMutation={generateNewTokenMutation}

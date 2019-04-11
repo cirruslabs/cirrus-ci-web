@@ -9,7 +9,8 @@ to minimize the amount of business logic.
 
 ## Development Guide
 
-* Run `node npm install -g yarn@latest` to install yarn.
+* Run `bash curl -o- --progress-bar -L https://yarnpkg.com/install.sh | bash` on Linux/macOS to install Yarn.
+* Run `node npm install -g yarn@latest` on Windows to install Yarn.
 * Run `yarn install` to install all external dependencies. 
 * Run `yarn run relay` to compile all GraphQL queries and mutations.
 * Run `yarn run sync-schema` to sync the GraphQL schema.

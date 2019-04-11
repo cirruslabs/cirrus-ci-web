@@ -7,11 +7,11 @@ import {withStyles} from "@material-ui/core";
 import {withRouter} from "react-router-dom";
 import {navigateRepository} from "../utils/navigate";
 import RepositoryNameChip from "./chips/RepositoryNameChip";
-import ReactMarkdown from 'react-markdown';
 import BuildStatusChip from "./chips/BuildStatusChip";
 import classNames from "classnames";
 import BuildChangeChip from "./chips/BuildChangeChip";
 import PropTypes from "prop-types";
+import Typography from "@material-ui/core/Typography";
 
 const buildSubscription = graphql`
   subscription LastDefaultBranchBuildRowSubscription(
@@ -78,12 +78,16 @@ class LastDefaultBranchBuildRow extends React.Component {
             <BuildChangeChip build={build} className={classes.chip}/>
           </div>
           <div className={classNames("d-lg-none", classes.message)}>
-            <ReactMarkdown source={build.changeMessageTitle}/>
+            <Typography variant="h6" color="inherit">
+              {{changeMessageTitle}}
+            </Typography>
           </div>
         </TableCell>
         <TableCell className={classNames(classes.cell, classes.message)}>
           <div className="card-body">
-            <ReactMarkdown className="card-text" source={build.changeMessageTitle}/>
+            <Typography variant="h6" color="inherit">
+              {{changeMessageTitle}}
+            </Typography>
           </div>
         </TableCell>
         <TableCell className={classes.cell}>

@@ -79,7 +79,7 @@ class LastDefaultBranchBuildRow extends React.Component {
           </div>
           <div className={classNames("d-lg-none", classes.message)}>
             <Typography variant="h6" color="inherit">
-              {{changeMessageTitle}}
+              {{build.changeMessageTitle}}
             </Typography>
           </div>
         </TableCell>

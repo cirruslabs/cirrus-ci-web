@@ -119,7 +119,9 @@ class RepositoryBuildList extends React.Component {
         </TableCell>
         <TableCell className={classes.cell}>
           <div className="card-body">
-            <ReactMarkdown className="card-text" source={build.changeMessageTitle}/>
+            <Typography variant="h6" color="inherit">
+              {{build.changeMessageTitle}}
+            </Typography>
           </div>
         </TableCell>
         <TableCell className={classNames("d-none", "d-lg-table-cell", classes.cell)}>

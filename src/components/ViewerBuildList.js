@@ -38,7 +38,6 @@ let styles = {
   },
 };
 
-
 class ViewerBuildList extends React.Component {
   static contextTypes = {
     router: PropTypes.object
@@ -59,7 +58,7 @@ class ViewerBuildList extends React.Component {
       buildsComponent = (
         <div className={classes.emptyBuilds}>
           <ReactMarkdown
-            source="No recent builds! Please check [documentation](https://cirrus-ci.org/) on how to start with Cirrus CI."/>
+            source="No recent builds! Please check the [documentation](https://cirrus-ci.org/) on how to start with Cirrus CI."/>
         </div>
       );
     }
@@ -92,7 +91,9 @@ class ViewerBuildList extends React.Component {
         </TableCell>
         <TableCell className={classes.cell}>
           <div className="card-body">
-            <ReactMarkdown className="card-text" source={build.changeMessageTitle}/>
+            <Typography variant="p" color="inherit">
+              {{build.changeMessageTitle}}
+            </Typography>
           </div>
         </TableCell>
         <TableCell className={classNames("d-none", "d-lg-table-cell", classes.cell)}>

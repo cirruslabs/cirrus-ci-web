@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
-import {List, withStyles} from "@material-ui/core";
+import {List, Tooltip, withStyles} from "@material-ui/core";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -10,6 +10,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import {cirrusColors} from "../../cirrusTheme";
 import Paper from "@material-ui/core/Paper";
 import {withRouter} from "react-router-dom";
+import {navigate} from "../../utils/navigate";
 
 const styles = theme => ({
   root: {
@@ -92,6 +93,14 @@ class ArtifactsView extends React.Component {
     return allURLParts.filter(it => it !== null).join("/");
   };
 
+  artifactArchiveURL = (name) => {
+    return [
+      "https://api.cirrus-ci.com/v1/artifact/task",
+      this.props.task.id,
+      `${name}.zip`
+    ].join("/");
+  };
+
   render() {
     let {task, classes} = this.props;
     let {artifacts} = task;
@@ -128,6 +137,9 @@ class ArtifactsView extends React.Component {
                     onClick={() => this.updateState({selectedArtifactName: artifact.name})}>
             <Icon>folder_open</Icon>
             <ListItemText primary={artifact.name}/>
+            <Tooltip title="Download Archive">
+              <Icon onClick={(e) => navigate(this.context.router, e, this.artifactArchiveURL(artifact.name))}>get_app</Icon>
+            </Tooltip>
           </ListItem>
         )
       }

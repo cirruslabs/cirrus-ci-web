@@ -8,8 +8,10 @@
   "bugs": {
     "url": "https://github.com/cirruslabs/cirrus-ci-docs/issues"
   },
+  "homepage": "https://cirrus-ci.com",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "dependencies": {
     "@material-ui/core": "latest",
     "@material-ui/icons": "latest",

@@ -7,9 +7,9 @@ import {withStyles} from "@material-ui/core";
 import {withRouter} from "react-router-dom";
 import {navigateBuild} from "../utils/navigate";
 import RepositoryNameChip from "./chips/RepositoryNameChip";
-import ReactMarkdown from 'react-markdown';
 import BuildStatusChip from "./chips/BuildStatusChip";
 import PropTypes from "prop-types";
+import Typography from "@material-ui/core/Typography";
 
 const buildSubscription = graphql`
   subscription LastDefaultBranchBuildMiniRowSubscription(
@@ -73,7 +73,9 @@ class LastDefaultBranchBuildRow extends React.Component {
             <BuildStatusChip build={build} mini={true} className={classes.chip}/>
           </div>
           <div className={classes.message}>
-            <ReactMarkdown source={build.changeMessageTitle}/>
+            <Typography variant="h6" color="inherit">
+              {{build.changeMessageTitle}}
+            </Typography>
           </div>
         </TableCell>
       </TableRow>

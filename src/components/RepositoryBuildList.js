@@ -7,7 +7,6 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import ReactMarkdown from 'react-markdown';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -120,7 +119,7 @@ class RepositoryBuildList extends React.Component {
         <TableCell className={classes.cell}>
           <div className="card-body">
             <Typography variant="h6" color="inherit">
-              {{build.changeMessageTitle}}
+              {build.changeMessageTitle}
             </Typography>
           </div>
         </TableCell>

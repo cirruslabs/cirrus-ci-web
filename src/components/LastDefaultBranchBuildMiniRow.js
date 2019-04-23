@@ -74,7 +74,7 @@ class LastDefaultBranchBuildRow extends React.Component {
           </div>
           <div className={classes.message}>
             <Typography variant="h6" color="inherit">
-              {{build.changeMessageTitle}}
+              {build.changeMessageTitle}
             </Typography>
           </div>
         </TableCell>

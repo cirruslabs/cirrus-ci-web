@@ -92,7 +92,7 @@ class ViewerBuildList extends React.Component {
         <TableCell className={classes.cell}>
           <div className="card-body">
             <Typography variant="h6" color="inherit">
-              {{build.changeMessageTitle}}
+              {build.changeMessageTitle}
             </Typography>
           </div>
         </TableCell>

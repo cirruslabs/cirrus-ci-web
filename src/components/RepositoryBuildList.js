@@ -118,7 +118,7 @@ class RepositoryBuildList extends React.Component {
         </TableCell>
         <TableCell className={classes.cell}>
           <div className="card-body">
-            <Typography variant="h6" color="inherit">
+            <Typography variant="body1" color="inherit">
               {build.changeMessageTitle}
             </Typography>
           </div>

@@ -73,7 +73,7 @@ class LastDefaultBranchBuildRow extends React.Component {
             <BuildStatusChip build={build} mini={true} className={classes.chip}/>
           </div>
           <div className={classes.message}>
-            <Typography variant="h6" color="inherit">
+            <Typography variant="body1" color="inherit">
               {build.changeMessageTitle}
             </Typography>
           </div>

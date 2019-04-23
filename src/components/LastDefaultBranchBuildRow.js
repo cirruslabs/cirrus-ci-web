@@ -78,14 +78,14 @@ class LastDefaultBranchBuildRow extends React.Component {
             <BuildChangeChip build={build} className={classes.chip}/>
           </div>
           <div className={classNames("d-lg-none", classes.message)}>
-            <Typography variant="h6" color="inherit">
+            <Typography variant="body1" color="inherit">
               {build.changeMessageTitle}
             </Typography>
           </div>
         </TableCell>
         <TableCell className={classNames(classes.cell, classes.message)}>
           <div className="card-body">
-            <Typography variant="h6" color="inherit">
+            <Typography variant="body1" color="inherit">
               {build.changeMessageTitle}
             </Typography>
           </div>

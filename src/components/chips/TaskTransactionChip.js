@@ -1,10 +1,13 @@
 import React from 'react';
+
+import Avatar from "@material-ui/core/Avatar";
 import Chip from '@material-ui/core/Chip';
-import {createFragmentContainer, graphql} from "react-relay";
-import Tooltip from "@material-ui/core/Tooltip/Tooltip";
-import Avatar from "@material-ui/core/Avatar/Avatar";
+import Icon from "@material-ui/core/Icon";
+import Tooltip from "@material-ui/core/Tooltip";
+
+import {createFragmentContainer} from "react-relay";
+import graphql from 'babel-plugin-relay/macro';
 import {cirrusColors} from "../../cirrusTheme";
-import Icon from "@material-ui/core/Icon/Icon";
 
 function TaskTransactionChip(props) {
   let {task} = props;
@@ -16,7 +19,7 @@ function TaskTransactionChip(props) {
   }
   return (
     <Tooltip title={tip}>
-      <Chip {...props}
+      <Chip className={props.className}
             label="compute credits"
             avatar={
               <Avatar style={{backgroundColor: cirrusColors.success}}>

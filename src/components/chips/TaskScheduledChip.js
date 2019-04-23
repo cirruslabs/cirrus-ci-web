@@ -8,7 +8,8 @@ import {taskStatusColor} from "../../utils/colors";
 import {taskStatusIconName} from "../../utils/status";
 import {formatDuration} from "../../utils/time";
 import {cirrusColors} from "../../cirrusTheme";
-import {createFragmentContainer, graphql} from "react-relay";
+import {createFragmentContainer} from "react-relay";
+import graphql from 'babel-plugin-relay/macro';
 
 function TaskScheduledChip(props) {
   let {task} = props;

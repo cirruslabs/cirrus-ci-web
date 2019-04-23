@@ -37,9 +37,6 @@ let cirrusColors = {
 let cirrusTheme = {
   fontFamily: 'Roboto, sans-serif',
   borderRadius: 2,
-  typography: {
-    useNextVariants: true,
-  },
   palette: {
     primary: {
       main: cirrusColors.cirrusPrimary,
@@ -56,6 +53,15 @@ let cirrusTheme = {
     action: {
       hover: cirrusColors.cirrusGrey,
     }
+  },
+  overrides: {
+    MuiChip: {
+      avatarChildren: {
+        // workaround to fix size of avatar icons in production builds
+        width: "1em",
+        height: "1em",
+      },
+    },
   },
 };
 

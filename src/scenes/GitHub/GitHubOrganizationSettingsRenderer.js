@@ -1,6 +1,7 @@
 import React from 'react';
 
-import {graphql, QueryRenderer} from 'react-relay';
+import {QueryRenderer} from 'react-relay';
+import graphql from 'babel-plugin-relay/macro';
 
 import environment from '../../createRelayEnvironment';
 import CirrusLinearProgress from "../../components/CirrusLinearProgress";
@@ -28,7 +29,8 @@ const GitHubOrganizationSettingsRenderer = (props) => {
           return <CirrusLinearProgress/>;
         }
         if (props.githubOrganizationInfo === null || props.githubOrganizationInfo.role === "none") {
-          return <Typography variant="subtitle1">You do not have administrator access on this organization!</Typography>;
+          return <Typography variant="subtitle1">You do not have administrator access on this
+            organization!</Typography>;
         }
         return <GitHubOrganizationSettings organization={organization} info={props.githubOrganizationInfo}/>;
       }}

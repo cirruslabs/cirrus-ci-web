@@ -8,7 +8,8 @@ import {cirrusColors} from "../../cirrusTheme";
 import {withRouter} from "react-router-dom";
 import {navigate} from "../../utils/navigate";
 import {withStyles} from "@material-ui/core";
-import {createFragmentContainer, graphql} from "react-relay";
+import {createFragmentContainer} from "react-relay";
+import graphql from 'babel-plugin-relay/macro';
 
 class BuildBranchNameChip extends React.Component {
   static contextTypes = {

@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {withRouter} from 'react-router-dom'
 import environment from '../createRelayEnvironment';
-import {commitMutation, createFragmentContainer, graphql, requestSubscription} from 'react-relay';
+import {commitMutation, createFragmentContainer, requestSubscription} from 'react-relay';
+import graphql from 'babel-plugin-relay/macro';
 import Chip from '@material-ui/core/Chip';
 import Paper from '@material-ui/core/Paper';
 
@@ -192,7 +193,7 @@ class TaskDetails extends React.Component {
     if (task.allOtherRuns && task.allOtherRuns.length > 0) {
       allOtherRuns = (
         <Paper>
-          <Typography className={classes.title} variant="caption" gutterBottom align="center">All Other
+          <Typography className={classes.title} variant="caption" gutterBottom display="block" align="center">All Other
             Runs</Typography>
           <TaskList tasks={task.allOtherRuns} showCreation={true}/>
         </Paper>
@@ -202,7 +203,7 @@ class TaskDetails extends React.Component {
     if (task.dependencies && task.dependencies.length > 0) {
       dependencies = (
         <Paper>
-          <Typography className={classes.title} variant="caption" gutterBottom align="center">
+          <Typography className={classes.title} variant="caption" gutterBottom display="block" align="center">
             Dependencies
           </Typography>
           <TaskList tasks={task.dependencies}/>
@@ -236,11 +237,13 @@ class TaskDetails extends React.Component {
               <div className={classes.gap}/>
               <div className={classNames("card-body", classes.wrapper)}>
                 {task.automaticReRun ?
-                  <Chip className={classNames(classes.chip, classes.automaticReRun)} label="Automatic Re-Run"/> : null}
+                  <Chip className={classNames(classes.chip, classes.automaticReRun)}
+                        label="Automatic Re-Run"/> : null}
                 <TaskTransactionChip className={classes.chip} task={task}/>
                 {
                   task.labels.map(label => {
-                    return <Chip key={label} className={classes.chip} label={shorten(label)}/>
+                    return <Chip key={label} className={classes.chip}
+                                 label={shorten(label)}/>
                   })
                 }
               </div>

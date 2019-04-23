@@ -1,5 +1,6 @@
 import React from 'react';
-import {createPaginationContainer, graphql} from 'react-relay';
+import {createPaginationContainer} from 'react-relay';
+import graphql from 'babel-plugin-relay/macro';
 import ComputeCreditsBase from "./ComputeCreditsBase";
 
 

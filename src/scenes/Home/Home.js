@@ -1,6 +1,7 @@
 import React from 'react';
 
-import {graphql, QueryRenderer} from 'react-relay';
+import {QueryRenderer} from 'react-relay';
+import graphql from 'babel-plugin-relay/macro';
 
 import environment from '../../createRelayEnvironment';
 import ViewerBuildList from '../../components/ViewerBuildList'
@@ -33,7 +34,8 @@ const Home = (props) => (
             <Toolbar>
               <FormGroup>
                 <ReactMarkdown># Welcome to Cirrus CI.</ReactMarkdown>
-                <ReactMarkdown>Please [**sign in**](https://api.cirrus-ci.com/redirect/auth/github) to see your recent builds.</ReactMarkdown>
+                <ReactMarkdown>Please [**sign in**](https://api.cirrus-ci.com/redirect/auth/github) to see your recent
+                  builds.</ReactMarkdown>
                 <ReactMarkdown>Just got here? Visit [**our documentation**](https://cirrus-ci.org).</ReactMarkdown>
               </FormGroup>
             </Toolbar>

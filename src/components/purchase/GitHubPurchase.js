@@ -1,16 +1,17 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {withRouter} from 'react-router-dom'
-import {createFragmentContainer, graphql} from 'react-relay';
+import {createFragmentContainer} from 'react-relay';
+import graphql from 'babel-plugin-relay/macro';
 import Paper from '@material-ui/core/Paper';
 import {withStyles} from "@material-ui/core";
-import Button from "@material-ui/core/Button/Button";
-import Card from "@material-ui/core/Card/Card";
-import CardContent from "@material-ui/core/CardContent/CardContent";
-import Typography from "@material-ui/core/Typography/Typography";
-import CardActions from "@material-ui/core/CardActions/CardActions";
-import CardHeader from "@material-ui/core/CardHeader/CardHeader";
-import Icon from "@material-ui/core/Icon/Icon";
+import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
+import CardActions from "@material-ui/core/CardActions";
+import CardHeader from "@material-ui/core/CardHeader";
+import Icon from "@material-ui/core/Icon";
 import {cirrusColors} from "../../cirrusTheme";
 import classNames from 'classnames';
 import Dialog from '@material-ui/core/Dialog';
@@ -52,7 +53,7 @@ class GitHubPurchase extends React.Component {
 
 
   handleCloseActiveUsersDialog = () => {
-    this.setState({ showActiveUsers: false });
+    this.setState({showActiveUsers: false});
   };
 
   render() {
@@ -89,7 +90,7 @@ class GitHubPurchase extends React.Component {
       );
       viewActiveUsers = (
         <Button variant="contained"
-                onClick={() => this.setState({ showActiveUsers: true })}>
+                onClick={() => this.setState({showActiveUsers: true})}>
           <Icon className={classNames(classes.leftIcon)}>group</Icon>
           View Active Users
         </Button>

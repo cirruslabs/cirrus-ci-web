@@ -2,14 +2,14 @@ import React from 'react';
 import {commitMutation} from 'react-relay';
 import Paper from '@material-ui/core/Paper';
 import {withStyles} from "@material-ui/core";
-import Button from "@material-ui/core/Button/Button";
-import Card from "@material-ui/core/Card/Card";
-import CardContent from "@material-ui/core/CardContent/CardContent";
-import Typography from "@material-ui/core/Typography/Typography";
-import CardActions from "@material-ui/core/CardActions/CardActions";
-import CardHeader from "@material-ui/core/CardHeader/CardHeader";
+import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
+import CardActions from "@material-ui/core/CardActions";
+import CardHeader from "@material-ui/core/CardHeader";
 import environment from "../../createRelayEnvironment";
-import TextField from "@material-ui/core/TextField/TextField";
+import TextField from "@material-ui/core/TextField";
 
 
 const styles = theme => ({

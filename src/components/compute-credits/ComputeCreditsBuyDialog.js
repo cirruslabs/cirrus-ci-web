@@ -2,14 +2,15 @@ import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
-import DialogContent from "@material-ui/core/DialogContent/DialogContent";
-import FormControl from "@material-ui/core/FormControl/FormControl";
-import InputLabel from "@material-ui/core/InputLabel/InputLabel";
-import Input from "@material-ui/core/Input/Input";
-import Typography from "@material-ui/core/Typography/Typography";
-import DialogActions from "@material-ui/core/DialogActions/DialogActions";
-import Button from "@material-ui/core/Button/Button";
-import {commitMutation, graphql} from "react-relay";
+import DialogContent from "@material-ui/core/DialogContent";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Input from "@material-ui/core/Input";
+import Typography from "@material-ui/core/Typography";
+import DialogActions from "@material-ui/core/DialogActions";
+import Button from "@material-ui/core/Button";
+import {commitMutation} from "react-relay";
+import graphql from 'babel-plugin-relay/macro';
 import environment from "../../createRelayEnvironment";
 
 const styles = theme => ({
@@ -178,7 +179,8 @@ class ComputeCreditsBuyDialog extends React.Component {
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleBuyCredits} disabled={this.state.makingPayment} color="primary" variant="contained">
+          <Button onClick={this.handleBuyCredits} disabled={this.state.makingPayment} color="primary"
+                  variant="contained">
             Buy {credits.toLocaleString("en-US", {useGrouping: true})} credits
           </Button>
         </DialogActions>

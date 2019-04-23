@@ -4,7 +4,8 @@ import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import Icon from '@material-ui/core/Icon';
 import {cirrusColors} from "../../cirrusTheme";
-import {createFragmentContainer, graphql} from "react-relay";
+import {createFragmentContainer} from "react-relay";
+import graphql from 'babel-plugin-relay/macro';
 
 function TaskNameChip(props) {
   let task = props.task;

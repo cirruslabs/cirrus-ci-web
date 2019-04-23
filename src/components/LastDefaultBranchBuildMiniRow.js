@@ -1,5 +1,6 @@
 import React from 'react';
-import {createFragmentContainer, graphql, requestSubscription} from "react-relay";
+import {createFragmentContainer, requestSubscription} from "react-relay";
+import graphql from 'babel-plugin-relay/macro';
 import environment from "../createRelayEnvironment";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";

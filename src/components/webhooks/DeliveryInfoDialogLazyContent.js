@@ -1,6 +1,7 @@
 import React from 'react';
 
-import {graphql, QueryRenderer} from 'react-relay';
+import {QueryRenderer} from 'react-relay';
+import graphql from 'babel-plugin-relay/macro';
 
 import environment from '../../createRelayEnvironment';
 import CirrusLinearProgress from "../../components/CirrusLinearProgress";

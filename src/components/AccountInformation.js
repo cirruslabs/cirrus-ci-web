@@ -1,5 +1,6 @@
 import React from 'react';
-import {createFragmentContainer, graphql} from 'react-relay';
+import {createFragmentContainer} from 'react-relay';
+import graphql from 'babel-plugin-relay/macro';
 
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
@@ -11,7 +12,7 @@ import {withStyles} from "@material-ui/core";
 import {navigate} from "../utils/navigate";
 import {withRouter} from "react-router-dom";
 import PropTypes from "prop-types";
-import Icon from "@material-ui/core/Icon/Icon";
+import Icon from "@material-ui/core/Icon";
 
 class AccountInformation extends React.Component {
   static contextTypes = {

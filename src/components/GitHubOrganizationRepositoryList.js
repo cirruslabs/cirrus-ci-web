@@ -6,12 +6,12 @@ import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import LastDefaultBranchBuildRow from "./LastDefaultBranchBuildRow";
-import {withStyles} from "@material-ui/core/index.es";
-import Toolbar from "@material-ui/core/Toolbar/Toolbar";
-import Typography from "@material-ui/core/Typography/Typography";
+import {withStyles} from "@material-ui/core";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
 import Link from "react-router-dom/Link";
-import IconButton from "@material-ui/core/IconButton/IconButton";
-import Icon from "@material-ui/core/Icon/Icon";
+import IconButton from "@material-ui/core/IconButton";
+import Icon from "@material-ui/core/Icon";
 
 let styles = {
   gap: {

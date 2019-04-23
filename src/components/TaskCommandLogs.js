@@ -1,6 +1,7 @@
 import React from 'react';
 import Logs from "./logs/Logs";
-import {graphql, QueryRenderer} from "react-relay";
+import {QueryRenderer} from "react-relay";
+import graphql from 'babel-plugin-relay/macro';
 import environment from "../createRelayEnvironment";
 import CirrusLinearProgress from "./CirrusLinearProgress";
 import {subscribeTaskCommandLogs} from "../rtu/ConnectionManager";

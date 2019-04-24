@@ -135,7 +135,9 @@ class ArtifactsView extends React.Component {
         items.push(
           <ListItem key={artifact.name} button
                     onClick={() => this.updateState({selectedArtifactName: artifact.name})}>
-            <Icon>folder_open</Icon>
+            <ListItemIcon>
+              <Icon>folder_open</Icon>
+            </ListItemIcon>
             <ListItemText primary={artifact.name}/>
             <Tooltip title="Download Archive">
               <Icon onClick={(e) => navigate(this.context.router, e, this.artifactArchiveURL(artifact.name))}>get_app</Icon>

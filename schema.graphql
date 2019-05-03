@@ -209,6 +209,7 @@ scalar Long
 
 type Mutation {
   securedVariable(input: RepositorySecuredVariableInput!): RepositorySecuredVariablePayload
+  createBuild(input: RepositoryCreateBuildInput!): RepositoryCreateBuildPayload
   rerun(input: TaskInput!): TaskPayload
   abortTask(input: TaskAbortInput!): TaskAbortPayload
   retrigger(input: BuildReTriggerInput!): BuildReTriggerPayload
@@ -300,6 +301,19 @@ type RepositoryBuildsConnection {
 
   """details about this specific page"""
   pageInfo: PageInfo!
+}
+
+input RepositoryCreateBuildInput {
+  repositoryId: ID!
+  branch: String!
+  sha: String
+  configOverride: String
+  clientMutationId: String
+}
+
+type RepositoryCreateBuildPayload {
+  build: Build!
+  clientMutationId: String
 }
 
 input RepositorySecuredVariableInput {

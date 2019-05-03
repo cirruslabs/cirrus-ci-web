@@ -20,6 +20,7 @@ import {navigateBuild} from "../utils/navigate";
 import {withStyles} from "@material-ui/core";
 import Icon from "@material-ui/core/Icon";
 import classNames from 'classnames';
+import CreateBuildDialog from "./CreateBuildDialog";
 
 let styles = {
   gap: {
@@ -36,6 +37,13 @@ let styles = {
   buildsChart: {
     height: 150,
   },
+  horizontalGap: {
+    paddingLeft: 4
+  },
+  wrapper: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
 };
 
 class RepositoryBuildList extends React.Component {
@@ -46,7 +54,10 @@ class RepositoryBuildList extends React.Component {
 
   constructor() {
     super();
-    this.state = {selectedBuildId: "0"};
+    this.state = {
+      selectedBuildId: 0,
+      openCreateDialog: false
+    };
   }
 
   render() {
@@ -54,7 +65,7 @@ class RepositoryBuildList extends React.Component {
     let builds = repository.builds.edges.map(edge => edge.node, styles);
 
     let repositorySettings = null;
-
+    let repositoryAction = null;
     if (repository.viewerPermission === 'WRITE' || repository.viewerPermission === 'ADMIN') {
       repositorySettings = (
         <Link to={"/settings/repository/" + repository.id}>
@@ -63,6 +74,14 @@ class RepositoryBuildList extends React.Component {
           </IconButton>
         </Link>
       );
+      repositoryAction = [
+        <div key="create-build-gap" className={classes.horizontalGap}/>,
+        <IconButton tooltip="Create Build"
+                    key="create-build-button"
+                    onClick={() => this.setState(prevState => ({...prevState, openCreateDialog: true}))}>
+          <Icon>add_circle</Icon>
+        </IconButton>
+      ]
     }
 
     let buildsChart = null;
@@ -81,12 +100,18 @@ class RepositoryBuildList extends React.Component {
       <div>
         <Paper elevation={1}>
           <Toolbar className="justify-content-between">
-            <Typography variant="h6" color="inherit">
-              {repository.owner + "/" + repository.name}
-            </Typography>
+            <div className={classes.wrapper}>
+              <Typography className="align-self-center" variant="h6" color="inherit">
+                {repository.owner + "/" + repository.name}
+              </Typography>
+              {repositoryAction}
+            </div>
             {repositorySettings}
           </Toolbar>
         </Paper>
+        {this.state.openCreateDialog && <CreateBuildDialog repository={repository}
+                                                           open={this.state.openCreateDialog}
+                                                           onClose={() => this.setState(prevState => ({...prevState, openCreateDialog: false}))}/>}
         {buildsChart}
         <div className={classes.gap}/>
         <Paper elevation={1}>
@@ -139,6 +164,7 @@ export default createFragmentContainer(withRouter(withStyles(styles)(RepositoryB
       owner
       name
       viewerPermission
+      ...CreateBuildDialog_repository
       builds(last: 100, branch: $branch) {
         edges {
           node {

@@ -14,8 +14,8 @@
   "license": "MIT",
   "dependencies": {
     "@material-ui/core": "next",
-    "@material-ui/styles": "next",
     "@material-ui/icons": "next",
+    "@material-ui/styles": "next",
     "ansi_up": "*",
     "babel-plugin-relay": "*",
     "classnames": "*",
@@ -25,6 +25,7 @@
     "pluralize": "*",
     "prop-types": "*",
     "react": "*",
+    "react-ace": "^6.5.0",
     "react-dom": "*",
     "react-loadable": "*",
     "react-markdown": "*",

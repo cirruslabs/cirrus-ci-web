@@ -15,7 +15,7 @@ import {navigate} from "../../utils/navigate";
 const styles = theme => ({
   root: {
     width: '100%',
-    maxWidth: 360,
+    maxWidth: "360px",
     backgroundColor: theme.palette.background.paper,
   },
   title: {

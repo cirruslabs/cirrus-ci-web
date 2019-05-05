@@ -32,7 +32,7 @@ let styles = {
   cell: {
     padding: 0,
     width: "100%",
-    maxWidth: "600",
+    maxWidth: "600px",
   },
   emptyBuilds: {
     margin: 8,

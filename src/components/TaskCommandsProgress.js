@@ -41,11 +41,15 @@ class TaskCommandsProgress extends React.Component {
       } else {
         totalPercent += percent;
       }
+      let colorStatus = statusDuration.status;
+      if (colorStatus === "EXECUTING") {
+        colorStatus = task.status;
+      }
       bars.push(
         <div className="progress-bar"
              role="progressbar"
              key={statusDuration.status}
-             style={{width: percent + '%', backgroundColor: taskStatusColor(statusDuration.status)}}
+             style={{width: percent + '%', backgroundColor: taskStatusColor(colorStatus)}}
              aria-valuenow={percent}
              aria-valuemin="0"
              aria-valuemax="100"/>

@@ -26,7 +26,7 @@ class OrganizationApiSettings extends React.Component {
     return (
       <ApiSettingsBase
         generateNewTokenMutation={generateNewTokenMutation}
-        getMutationVariables={this.getMutationVariables}
+        getMutationVariables={this.getMutationVariables.bind(this)}
         apiToken={this.props.info.apiToken}
       />
     );

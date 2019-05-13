@@ -83,6 +83,8 @@ type Build {
   changeMessage: String
   durationInSeconds: Long
   pullRequest: Long
+  isSenderUserCollaborator: Boolean
+  senderUserPermissions: String
   changeTimestamp: Long!
   buildCreatedTimestamp: Long!
   status: BuildStatus
@@ -93,12 +95,12 @@ type Build {
   viewerPermission: PermissionType!
 }
 
-input BuildInput {
+input BuildApproveInput {
   buildId: ID!
   clientMutationId: String
 }
 
-type BuildPayload {
+type BuildApprovePayload {
   build: Build!
   clientMutationId: String
 }
@@ -214,7 +216,8 @@ type Mutation {
   abortTask(input: TaskAbortInput!): TaskAbortPayload
   retrigger(input: BuildReTriggerInput!): BuildReTriggerPayload
   saveSettings(input: RepositorySettingsInput!): RepositorySettingsPayload
-  approve(input: BuildInput!): BuildPayload
+  approve(input: BuildApproveInput!): BuildApprovePayload
+  trigger(input: TaskTriggerInput!): TaskTriggerPayload
   buyComputeCredits(input: BuyComputeCreditsInput!): BuyComputeCreditsPayload
   saveWebHookSettings(input: SaveWebHookSettingsInput!): SaveWebHookSettingsPayload
   saveBillingSettings(input: BillingSettingsInput!): BillingSettingsPayload
@@ -461,11 +464,22 @@ enum TaskStatus {
   FAILED
   COMPLETED
   SKIPPED
+  PAUSED
 }
 
 type TaskStatusDuration {
   status: TaskStatus!
   durationInSeconds: Long!
+}
+
+input TaskTriggerInput {
+  taskId: ID!
+  clientMutationId: String
+}
+
+type TaskTriggerPayload {
+  task: Task!
+  clientMutationId: String
 }
 
 type User {

@@ -24,7 +24,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 
 const buildApproveMutation = graphql`
-  mutation BuildDetailsApproveBuildMutation($input: BuildInput!) {
+  mutation BuildDetailsApproveBuildMutation($input: BuildApproveInput!) {
     approve(input: $input) {
       build {
         id

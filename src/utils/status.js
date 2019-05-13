@@ -61,6 +61,8 @@ export function taskStatusIconName(status) {
       return 'done';
     case "SKIPPED":
       return 'done';
+    case "PAUSED":
+      return 'pause';
     default:
       return 'error';
   }

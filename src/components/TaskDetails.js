@@ -46,6 +46,16 @@ const taskReRunMutation = graphql`
   }
 `;
 
+const taskTriggerMutation = graphql`
+  mutation TaskDetailsTriggerMutation($input: TaskTriggerInput!) {
+    trigger(input: $input) {
+      task {
+        id
+      }
+    }
+  }
+`;
+
 const taskCancelMutation = graphql`
   mutation TaskDetailsCancelMutation($input: TaskAbortInput!) {
     abortTask(input: $input) {
@@ -182,6 +192,14 @@ class TaskDetails extends React.Component {
         Re-Run
       </Button>;
 
+    let triggerButton = !hasWritePermissions(build.viewerPermission) || task.status !== "PAUSED" ? null :
+      <Button variant="contained"
+              onClick={() => this.trigger(task.id)}
+      >
+        <Icon className={classes.leftIcon}>play_circle_filled</Icon>
+        Trigger
+      </Button>;
+
     let abortButton = isTaskFinalStatus(task.status) || !hasWritePermissions(build.viewerPermission) ? null :
       <Button variant="contained"
               onClick={() => this.abort(task.id)}
@@ -258,6 +276,7 @@ class TaskDetails extends React.Component {
               </Button>
               {abortButton}
               {reRunButton}
+              {triggerButton}
             </CardActions>
           </Card>
         </Paper>
@@ -273,8 +292,7 @@ class TaskDetails extends React.Component {
         </Paper>
         <div className={classes.gap}/>
       </div>
-    )
-      ;
+    );
   }
 
   rerun(taskId) {
@@ -292,6 +310,27 @@ class TaskDetails extends React.Component {
         variables: variables,
         onCompleted: (response) => {
           navigateTask(this.context.router, null, response.rerun.newTask.id)
+        },
+        onError: err => console.error(err),
+      },
+    );
+  }
+
+  trigger(taskId) {
+    const variables = {
+      input: {
+        clientMutationId: "trigger-" + taskId,
+        taskId: taskId,
+      },
+    };
+
+    commitMutation(
+      environment,
+      {
+        mutation: taskTriggerMutation,
+        variables: variables,
+        onCompleted: () => {
+          this.forceUpdate()
         },
         onError: err => console.error(err),
       },

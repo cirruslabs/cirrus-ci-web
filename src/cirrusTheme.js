@@ -27,6 +27,7 @@ let cirrusColors = {
   lightFailure: red['300'],
   undefined: grey['400'],
   executing: yellow['700'],
+  paused: yellow['500'],
   skipped: lightGreen['100'],
   aborted: orange['300'],
 };

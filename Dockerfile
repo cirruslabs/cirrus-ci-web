@@ -1,4 +1,4 @@
-FROM node:11 as builder
+FROM node:12 as builder
 
 WORKDIR /tmp/cirrus-ci-web
 ADD . /tmp/cirrus-ci-web/
@@ -10,7 +10,7 @@ ENV NODE_ENV production
 
 RUN yarn run build
 
-FROM node:11
+FROM node:12
 
 WORKDIR /svc/cirrus-ci-web
 EXPOSE 8080

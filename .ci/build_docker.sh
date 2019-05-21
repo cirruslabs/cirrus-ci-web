@@ -2,4 +2,4 @@
 
 set -e
 
-docker build --tag cirrusci/web-front-end:latest .
+docker build --cache-from cirrusci/web-front-end:latest --tag cirrusci/web-front-end:latest .

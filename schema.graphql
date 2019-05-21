@@ -211,6 +211,7 @@ scalar Long
 
 type Mutation {
   securedVariable(input: RepositorySecuredVariableInput!): RepositorySecuredVariablePayload
+  securedOrganizationVariable(input: OrganizationSecuredVariableInput!): OrganizationSecuredVariablePayload
   createBuild(input: RepositoryCreateBuildInput!): RepositoryCreateBuildPayload
   rerun(input: TaskInput!): TaskPayload
   abortTask(input: TaskAbortInput!): TaskAbortPayload
@@ -235,6 +236,17 @@ enum NotificationLevel {
   INFO
   WARNING
   ERROR
+}
+
+input OrganizationSecuredVariableInput {
+  organizationId: ID!
+  valueToSecure: String!
+  clientMutationId: String
+}
+
+type OrganizationSecuredVariablePayload {
+  variableName: String!
+  clientMutationId: String
 }
 
 """Information about pagination in a connection."""

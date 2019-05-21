@@ -12,6 +12,7 @@ import OrganizationComputeCredits from "../compute-credits/OrganizationComputeCr
 import GitHubPurchase from "../purchase/GitHubPurchase";
 import WebHookSettings from "../webhooks/WebHookSettings";
 import OrganizationApiSettings from "./OrganizationApiSettings";
+import OrganizationSecuredVariables from "../OrganizationSecuredVariables";
 
 
 const styles = theme => ({
@@ -49,6 +50,10 @@ class GitHubOrganizationSettings extends React.Component {
         </Paper>
         <div className={classes.settingGap}/>
         <Paper elevation={1}>
+          <OrganizationSecuredVariables info={this.props.info}/>
+        </Paper>
+        <div className={classes.settingGap}/>
+        <Paper elevation={1}>
           <OrganizationApiSettings info={this.props.info}/>
         </Paper>
         <div className={classes.settingGap}/>
@@ -68,6 +73,7 @@ export default createFragmentContainer(withRouter(withStyles(styles)(GitHubOrgan
       ...GitHubPurchase_info
       ...OrganizationComputeCredits_info
       ...OrganizationApiSettings_info
+      ...OrganizationSecuredVariables_info
       ...WebHookSettings_info
     }
   `,

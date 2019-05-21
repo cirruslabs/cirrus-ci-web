@@ -10,14 +10,14 @@ ENV NODE_ENV production
 
 RUN yarn run build
 
-FROM node:12
+FROM node:12-alpine
 
 WORKDIR /svc/cirrus-ci-web
 EXPOSE 8080
 
 COPY --from=builder /tmp/cirrus-ci-web/serve.json /svc/cirrus-ci-web/serve.json
 
-RUN npm install -g serve@10.1.1
+RUN npm install -g serve@11.0.0
 
 COPY --from=builder /tmp/cirrus-ci-web/build/ /svc/cirrus-ci-web/
 

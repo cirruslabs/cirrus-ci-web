@@ -18,7 +18,7 @@ import {navigateBuild} from "../utils/navigate";
 import 'brace/mode/yaml';
 import 'brace/theme/github';
 
-const securedVariableMutation = graphql`
+const createBuildMutation = graphql`
   mutation CreateBuildDialogMutation($input: RepositoryCreateBuildInput!) {
     createBuild(input: $input) {
       build {
@@ -144,7 +144,7 @@ class CreateBuildDialog extends React.Component {
     commitMutation(
       environment,
       {
-        mutation: securedVariableMutation,
+        mutation: createBuildMutation,
         variables: variables,
         onCompleted: (response) => {
           console.log(response);

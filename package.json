@@ -13,9 +13,9 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
-    "@material-ui/core": "next",
-    "@material-ui/icons": "next",
-    "@material-ui/styles": "next",
+    "@material-ui/core": "latest",
+    "@material-ui/icons": "latest",
+    "@material-ui/styles": "latest",
     "ansi_up": "*",
     "babel-plugin-relay": "*",
     "classnames": "*",

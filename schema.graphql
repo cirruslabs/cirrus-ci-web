@@ -83,6 +83,7 @@ type Build {
   changeMessage: String
   durationInSeconds: Long
   pullRequest: Long
+  checkSuiteId: Long
   isSenderUserCollaborator: Boolean
   senderUserPermissions: String
   changeTimestamp: Long!
@@ -366,6 +367,7 @@ type Root {
   githubRepositories(owner: String!): [Repository]
   githubOrganizationInfo(organization: String!): GitHubOrganizationInfo
   build(id: ID!): Build
+  searchBuilds(repositoryOwner: String!, repositoryName: String!, SHA: String): [Build]
   task(id: ID!): Task
   webhookDelivery(id: String!): WebHookDelivery
 }

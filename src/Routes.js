@@ -23,8 +23,13 @@ const AsyncHome = Loadable({
   loading: LoadingComponent
 });
 
-const AsyncBuild = Loadable({
-  loader: () => import('./scenes/Build/Build'),
+const AsyncBuildById = Loadable({
+  loader: () => import('./scenes/Build/BuildById'),
+  loading: LoadingComponent
+});
+
+const AsyncBuildBySHA = Loadable({
+  loader: () => import('./scenes/Build/BuildBySHA'),
   loading: LoadingComponent
 });
 
@@ -258,7 +263,8 @@ class Routes extends React.Component {
                        props={this.props}/>
                 <Route exact path="/settings/repository/:repositoryId" component={AsyncRepositorySettings}
                        props={this.props}/>
-                <Route exact path="/build/:buildId" component={AsyncBuild} props={this.props}/>
+                <Route exact path="/build/:buildId" component={AsyncBuildById} props={this.props}/>
+                <Route exact path="/build/:owner/:name/:SHA" component={AsyncBuildBySHA} props={this.props}/>
                 <Route exact path="/github/:owner" component={AsyncGitHubOrganization} props={this.props}/>
                 <Route exact path="/github/:owner/:name/:branch*" component={AsyncGitHubRepository} props={this.props}/>
                 <Route exact path="/github" component={AsyncGitHub} props={this.props}/>

@@ -8,13 +8,13 @@ import BuildDetails from '../../components/BuildDetails'
 import CirrusLinearProgress from "../../components/CirrusLinearProgress";
 import NotFound from "../NotFound";
 
-const Build = (props) => (
+const BuildById = (props) => (
   <QueryRenderer
     environment={environment}
     variables={props.match.params}
     query={
       graphql`
-        query BuildQuery($buildId: ID!) {
+        query BuildByIdQuery($buildId: ID!) {
           build(id: $buildId) {
             ...BuildDetails_build
           }
@@ -34,4 +34,4 @@ const Build = (props) => (
   />
 );
 
-export default Build;
+export default BuildById;

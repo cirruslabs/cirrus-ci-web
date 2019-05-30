@@ -82,6 +82,7 @@ type Build {
   changeMessageTitle: String
   changeMessage: String
   durationInSeconds: Long
+  clockDurationInSeconds: Long
   pullRequest: Long
   checkSuiteId: Long
   isSenderUserCollaborator: Boolean

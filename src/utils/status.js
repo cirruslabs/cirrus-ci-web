@@ -81,8 +81,8 @@ export function buildStatusIconName(status) {
   }
 }
 
-export function buildStatusMessage(build) {
-  switch (build.status) {
+export function buildStatusMessage(status, durationInSeconds) {
+  switch (status) {
     case "CREATED":
       return 'Created';
     case "EXECUTING":
@@ -92,11 +92,11 @@ export function buildStatusMessage(build) {
     case "ERRORED":
       return 'Errored';
     case "COMPLETED":
-      return 'Finished in ' + formatDuration(build.durationInSeconds);
+      return 'Finished in ' + formatDuration(durationInSeconds);
     case "FAILED":
-      return 'Failed in ' + formatDuration(build.durationInSeconds);
+      return 'Failed in ' + formatDuration(durationInSeconds);
     default:
-      return build.status;
+      return status;
   }
 }
 

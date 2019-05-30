@@ -8,7 +8,11 @@ const handlersManager = new HandlersManager();
 ws.onopen = function open() {
   let allTopicSubscribeRequests = handlersManager.allRequests();
   allTopicSubscribeRequests.forEach(function (request) {
-    ws.send(request);
+    try {
+      ws.send(request);
+    } catch (e) {
+      console.log("Failed to resubscribe!", request);
+    }
   });
   if (process.env.NODE_ENV === 'development') {
     console.log("Subscribing to " + allTopicSubscribeRequests.length + " topics!");
@@ -45,13 +49,21 @@ export function subscribeObjectUpdates(kind, id, handler) {
     id: id,
   };
   let requestStr = JSON.stringify(request);
-  ws.send(requestStr);
+  try {
+    ws.send(requestStr);
+  } catch (e) {
+    console.log("Failed to subscribe!", request, e)
+  }
   let topic = (kind + '-update-' + id).toLowerCase().replace(/_/g, "-");
   let topicHandlerDispose = handlersManager.addTopicHandler(topic, requestStr, handler);
   return () => {
     topicHandlerDispose();
     request.type = "unsubscribe";
-    ws.send(JSON.stringify(request));
+    try {
+      ws.send(JSON.stringify(request));
+    } catch (e) {
+      console.log("Failed to unsubscribe!", request, e)
+    }
   }
 }
 
@@ -61,7 +73,11 @@ export function subscribeTaskCommandLogs(taskId, command, handler) {
     taskId: taskId,
     command: command,
   });
-  ws.send(request);
+  try {
+    ws.send(request);
+  } catch (e) {
+    console.log("Failed to subscribe to logs!", taskId, command, e)
+  }
   let topic = 'task-log-' + taskId + '-' + command;
   return handlersManager.addTopicHandler(topic, request, handler)
 }

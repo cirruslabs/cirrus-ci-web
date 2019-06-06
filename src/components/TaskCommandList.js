@@ -56,7 +56,7 @@ class TaskCommandList extends React.Component {
     let expandable = finished || !isTaskFinalStatus(this.props.task.status);
     return (
       <ExpansionPanel key={command.name}
-                      CollapseProps={{unmountOnExit: true, timeout: 400}}
+                      TransitionProps={{unmountOnExit: true, timeout: 400}}
                       disabled={!expandable}
                       defaultExpanded={command.status === 'FAILURE'}>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>} style={styles.header}>

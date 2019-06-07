@@ -28,6 +28,9 @@ let styles = theme => ({
     color: cirrusColors.cirrusWhite,
     '&:hover': {
       background: cirrusColors.cirrusLightDark,
+    },
+    '&:focus': {
+      outline: 0,
     }
   },
   logLineHighlighted: {
@@ -73,6 +76,7 @@ class Logs extends React.Component {
         highLightedLineStart: parseInt(startLine.replace("L", ""), 10),
         highLightedLineEnd: parseInt(endLine.replace("L", ""), 10)
       }));
+      document.getElementById(startLine).focus();
     }
   }
 
@@ -86,6 +90,7 @@ class Logs extends React.Component {
       <div className={classes.logContainer}>
         {this.state.logs.split("\n").map((line, index) =>
           <div id={"L" + index}
+               tabIndex="0" // to make it focusable
                key={index}
                className={
                  classNames(

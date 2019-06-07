@@ -45,7 +45,7 @@ class Logs extends React.Component {
       logs: logLines.join("\n"),
       highLightedLineStart: NaN,
       highLightedLineEnd: NaN
-    }
+    };
   }
 
   componentDidMount(): void {
@@ -104,7 +104,11 @@ class Logs extends React.Component {
   }
 
   selectLine(event, lineNumber) {
-    this.props.history.push(`/task/${this.props.taskId}?command=${this.props.commandName}#L${lineNumber}`);
+    let lineRange = `L${lineNumber}`;
+    if (event.shiftKey) {
+      lineRange = `L${this.state.highLightedLineStart}-L${lineNumber}`;
+    }
+    this.props.history.push(`/task/${this.props.taskId}?command=${this.props.commandName}#${lineRange}`);
     this.forceUpdate();
   }
 }

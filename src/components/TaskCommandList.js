@@ -15,6 +15,7 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 import {createFragmentContainer} from "react-relay";
 import graphql from 'babel-plugin-relay/macro';
+import * as queryString from "query-string";
 
 const styles = {
   details: {
@@ -47,18 +48,19 @@ class TaskCommandList extends React.Component {
 
   commandItem(command, commandStartTimestamp) {
     let {classes} = this.props;
+    const selectedCommandName = queryString.parse(this.props.location.search).command;
     let styles = {
       header: {
         backgroundColor: commandStatusColor(command.status),
       },
     };
     let finished = isTaskCommandFinalStatus(command.status);
-    let expandable = finished || !isTaskFinalStatus(this.props.task.status);
+    let expandable = command.name === selectedCommandName || finished || !isTaskFinalStatus(this.props.task.status);
     return (
       <ExpansionPanel key={command.name}
                       TransitionProps={{unmountOnExit: true, timeout: 400}}
                       disabled={!expandable}
-                      defaultExpanded={command.status === 'FAILURE'}>
+                      defaultExpanded={command.name === selectedCommandName || command.status === 'FAILURE'}>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>} style={styles.header}>
           <div>
             <Typography variant="body1">{command.name}</Typography>

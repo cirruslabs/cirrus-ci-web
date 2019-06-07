@@ -10,6 +10,8 @@ import {isTaskCommandFinalStatus} from "../utils/status";
 import {Tooltip, withStyles} from "@material-ui/core";
 import Icon from "@material-ui/core/Icon";
 import Fab from "@material-ui/core/Fab";
+import PropTypes from "prop-types";
+import {withRouter} from "react-router-dom";
 
 function logURL(taskId, command) {
   return "https://api.cirrus-ci.com/v1/task/" + taskId + "/logs/" + command.name + ".log";
@@ -63,32 +65,39 @@ class TaskCommandRealTimeLogs extends React.Component {
   }
 }
 
-const TaskCommandFileLogs = (props) => {
-  let {classes} = props;
-  let command = props.command;
-  return (
-    <div style={{width: "100%", height: "100%"}}>
-      <div className={classes.actionButtons}>
-        <Fab variant="contained"
-             className={classes.downloadButton}
-             href={logURL(props.taskId, command)}
-             target="_blank"
-             rel="noopener noreferrer"
-        >
-          <Tooltip title="Download Full Logs">
-            <Icon>get_app</Icon>
-          </Tooltip>
-        </Fab>
-      </div>
-      <TaskCommandLogsTail taskId={props.taskId} commandName={command.name}/>
-    </div>
-  );
-};
+class TaskCommandFileLogs extends React.Component {
+  static contextTypes = {
+    router: PropTypes.object
+  };
 
-const TaskCommandLogsTail = (props) => (
+  render() {
+    let {taskId, classes} = this.props;
+    let command = this.props.command;
+    return (
+      <div style={{width: "100%", height: "100%"}}>
+        <div className={classes.actionButtons}>
+          <Fab variant="contained"
+               className={classes.downloadButton}
+               href={logURL(taskId, command)}
+               target="_blank"
+               rel="noopener noreferrer"
+          >
+            <Tooltip title="Download Full Logs">
+              <Icon>get_app</Icon>
+            </Tooltip>
+          </Fab>
+        </div>
+        <TaskCommandLogsTail taskId={taskId}
+                             commandName={command.name}/>
+      </div>
+    );
+  }
+}
+
+const TaskCommandLogsTail = (loadingProps) => (
   <QueryRenderer
     environment={environment}
-    variables={props}
+    variables={loadingProps}
     query={
       graphql`
         query TaskCommandLogsTailQuery($taskId: ID!, $commandName: String!) {
@@ -109,7 +118,7 @@ const TaskCommandLogsTail = (props) => (
           </div>
         );
       }
-      return <Logs logLines={props.task.commandLogsTail}/>
+      return <Logs logLines={props.task.commandLogsTail} {...loadingProps}/>
     }}
   />
 );
@@ -134,4 +143,4 @@ class TaskCommandLogs extends React.Component {
   }
 }
 
-export default withStyles(styles)(TaskCommandLogs)
+export default withRouter(withStyles(styles)(TaskCommandLogs))

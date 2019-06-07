@@ -24,6 +24,7 @@
     "js-base64": "*",
     "pluralize": "*",
     "prop-types": "*",
+    "query-string": "^6.6.0",
     "react": "*",
     "react-ace": "^6.5.0",
     "react-dom": "*",

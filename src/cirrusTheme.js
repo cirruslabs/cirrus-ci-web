@@ -13,6 +13,7 @@ let cirrusColors = {
   cirrusPrimary: grey['900'],
   cirrusSecondary: grey['700'],
   cirrusDark: grey['900'],
+  cirrusLightDark: grey['700'],
   cirrusGrey: grey['300'],
   cirrusWhite: grey['50'],
   progress: successColor,

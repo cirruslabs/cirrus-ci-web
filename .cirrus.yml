@@ -8,7 +8,7 @@ build_task:
     fingerprint_script: cat package-lock.json
     populate_script: npm ci
   relay_script: npm run relay
-  build_script: npm build
+  build_script: npm run build
 
 deploy_docker_builder:
   only_if: $CIRRUS_BRANCH == "master"

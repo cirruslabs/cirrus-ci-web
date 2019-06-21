@@ -5,10 +5,10 @@ build_task:
   use_compute_credits: $CIRRUS_BRANCH == 'master'
   node_modules_cache:
     folder: node_modules
-    fingerprint_script: cat yarn.lock
-    populate_script: yarn install
-  relay_script: yarn run relay
-  build_script: yarn run build
+    fingerprint_script: cat package-lock.json
+    populate_script: npm ci
+  relay_script: npm run relay
+  build_script: npm build
 
 deploy_docker_builder:
   only_if: $CIRRUS_BRANCH == "master"

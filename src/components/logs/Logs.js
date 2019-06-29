@@ -41,11 +41,9 @@ let styles = theme => ({
 class Logs extends React.Component {
   constructor(props) {
     super(props);
-    let logLines = this.props.logLines || [];
     window.onhashchange = this.updateLinesSelection;
     window.onpopstate = this.updateLinesSelection;
     this.state = {
-      logs: logLines.join("\n"),
       highLightedLineStart: NaN,
       highLightedLineEnd: NaN
     };
@@ -80,15 +78,11 @@ class Logs extends React.Component {
     }
   }
 
-  appendLogs(newLogs) {
-    this.setState({logs: this.state.logs + newLogs});
-  }
-
   render() {
     let {classes} = this.props;
     return (
       <div className={classes.logContainer}>
-        {this.state.logs.split("\n").map((line, index) =>
+        {this.props.logs.split("\n").map((line, index) =>
           <div id={"L" + index}
                tabIndex="0" // to make it focusable
                key={index}

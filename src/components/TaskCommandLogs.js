@@ -70,7 +70,7 @@ class TaskCommandRealTimeLogs extends React.Component {
     return (
       <div style={{width: "100%", height: "100%"}}>
         {inProgress ? null : downloadButton}
-        <Logs logs={initialLogLines.join("\n") + this.state.additionalLogs}/>
+        <Logs taskId={taskId} commandName={command.name} logs={initialLogLines.join("\n") + this.state.additionalLogs}/>
         {inProgress ? <CirrusLinearProgress/> : null}
       </div>
     );

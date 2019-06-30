@@ -116,13 +116,13 @@ const styles = theme => ({
     flexWrap: 'wrap',
   },
   progress: {
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing(1.0),
   },
   button: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(1.0),
   },
   leftIcon: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1.0),
   },
   automaticReRun: {
     backgroundColor: cirrusColors.lightWarning,

@@ -81,16 +81,16 @@ const styles = theme => ({
     display: 'none',
   },
   menuButton: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(1.0),
   },
   leftIcon: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1.0),
   },
   titleShift: {
-    marginLeft: 2 * theme.spacing.unit,
+    marginLeft: 2 * theme.spacing(1.0),
   },
   viewer: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1.0),
   },
   appFrame: {
     width: "100%",
@@ -135,10 +135,10 @@ const styles = theme => ({
   content: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
-    paddingTop: theme.spacing.unit,
-    paddingBottom: theme.spacing.unit,
-    paddingLeft: theme.spacing.unit * 3,
-    paddingRight: theme.spacing.unit * 3,
+    paddingTop: theme.spacing(1.0),
+    paddingBottom: theme.spacing(1.0),
+    paddingLeft: theme.spacing(1.0) * 3,
+    paddingRight: theme.spacing(1.0) * 3,
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,

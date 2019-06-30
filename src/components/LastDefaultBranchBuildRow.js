@@ -29,7 +29,7 @@ const styles = theme => ({
     margin: 4,
   },
   message: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(1.0),
     width: "100%",
   },
   cell: {

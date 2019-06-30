@@ -36,7 +36,7 @@ const styles = theme => ({
     alignItems: 'center',
   },
   leftIcon: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1.0),
   },
 });
 

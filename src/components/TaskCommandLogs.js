@@ -22,7 +22,7 @@ let styles = theme => ({
     right: 0,
   },
   downloadButton: {
-    margin: theme.spacing.unit
+    margin: theme.spacing(1.0)
   },
 });
 

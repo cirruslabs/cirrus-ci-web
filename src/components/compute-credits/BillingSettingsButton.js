@@ -11,7 +11,7 @@ import BillingSettingsDialog from "./BillingSettingsDialog";
 
 const styles = theme => ({
   leftIcon: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1.0),
   },
 });
 

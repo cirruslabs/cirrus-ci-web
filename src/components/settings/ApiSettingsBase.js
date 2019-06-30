@@ -15,8 +15,8 @@ import TextField from "@material-ui/core/TextField";
 const styles = theme => ({
   textField: {
     width: "100%",
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing(1.0),
+    marginRight: theme.spacing(1.0),
   },
 });
 

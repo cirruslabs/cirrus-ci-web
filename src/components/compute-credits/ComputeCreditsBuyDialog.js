@@ -15,8 +15,8 @@ import environment from "../../createRelayEnvironment";
 
 const styles = theme => ({
   textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing(1.0),
+    marginRight: theme.spacing(1.0),
     width: 200,
   },
 });

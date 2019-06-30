@@ -74,7 +74,7 @@ const styles = theme => ({
     fontSize: 48
   },
   leftIcon: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1.0),
   },
   chip: {
     marginTop: 4,

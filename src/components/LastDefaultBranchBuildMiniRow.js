@@ -24,10 +24,10 @@ const buildSubscription = graphql`
 
 const styles = theme => ({
   chip: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(1.0),
   },
   message: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(1.0),
     width: "100%",
   },
 });

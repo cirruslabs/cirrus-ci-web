@@ -56,7 +56,7 @@ class TaskCommandRealTimeLogs extends React.Component {
     let {classes, taskId, command, initialLogLines} = this.props;
     let inProgress = !isTaskCommandFinalStatus(command.status);
     let downloadButton = <div className={classes.actionButtons}>
-      <Fab variant="contained"
+      <Fab variant="round"
            className={classes.downloadButton}
            href={logURL(taskId, command)}
            target="_blank"

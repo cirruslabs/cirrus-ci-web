@@ -54,7 +54,7 @@ class TaskCommandList extends React.Component {
         backgroundColor: commandStatusColor(command.status),
       },
     };
-    let finished = isTaskCommandFinalStatus(command.status);
+    let finished = command.durationInSeconds > 0 || isTaskCommandFinalStatus(command.status);
     let expandable = command.name === selectedCommandName || finished || !isTaskFinalStatus(this.props.task.status);
     return (
       <ExpansionPanel key={command.name}

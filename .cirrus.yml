@@ -9,7 +9,7 @@ build_task:
     populate_script: npm ci
   relay_script: npm run relay
   build_script: npm run build
-  clean_cache_script: rm -rf node_modules/.cache/babel-loader
+  clean_cache_script: rm -rf node_modules/.cache
 
 deploy_docker_builder:
   only_if: $CIRRUS_BRANCH == "master"

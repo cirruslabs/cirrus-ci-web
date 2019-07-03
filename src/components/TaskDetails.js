@@ -35,6 +35,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import TaskTransactionChip from "./chips/TaskTransactionChip";
 import TaskArtifacts from "./artifacts/TaskArtifacts";
+import TaskOptionalChip from "./chips/TaskOptionalChip";
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskInput!) {
@@ -258,6 +259,7 @@ class TaskDetails extends React.Component {
                   <Chip className={classNames(classes.chip, classes.automaticReRun)}
                         label="Automatic Re-Run"/> : null}
                 <TaskTransactionChip className={classes.chip} task={task}/>
+                <TaskOptionalChip className={classes.chip} task={task}/>
                 {
                   task.labels.map(label => {
                     return <Chip key={label} className={classes.chip}
@@ -374,6 +376,7 @@ export default createFragmentContainer(withRouter(withStyles(styles)(TaskDetails
       ...TaskCommandList_task
       ...TaskArtifacts_task
       ...TaskTransactionChip_task
+      ...TaskOptionalChip_task
       labels
       artifacts {
         name

@@ -39,10 +39,16 @@ ws.onmessage = function incoming(event) {
   let message = JSON.parse(event.data);
   let data = message.data || {};
   let topic = message.topic || '';
+  if (process.env.NODE_ENV === 'development') {
+    console.log("Incoming update", message);
+  }
   handlersManager.handleNewUpdate(topic, data);
 };
 
 export function subscribeObjectUpdates(kind, id, handler) {
+  if (process.env.NODE_ENV === 'development') {
+    console.log("Subscribing to", kind, id);
+  }
   let request = {
     type: 'subscribe',
     kind: kind,
@@ -68,6 +74,9 @@ export function subscribeObjectUpdates(kind, id, handler) {
 }
 
 export function subscribeTaskCommandLogs(taskId, command, handler) {
+  if (process.env.NODE_ENV === 'development') {
+    console.log("Subscribing to logs", taskId, command);
+  }
   let request = JSON.stringify({
     type: 'logs',
     taskId: taskId,

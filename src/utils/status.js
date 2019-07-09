@@ -15,6 +15,18 @@ export function isTaskFinalStatus(status) {
   }
 }
 
+export function isBuildFinalStatus(status) {
+  switch (status) {
+    case "ABORTED":
+    case "ERRORED":
+    case "COMPLETED":
+    case "FAILED":
+      return true;
+    default:
+      return false;
+  }
+}
+
 export function isTaskExecuting(status) {
   return status === 'EXECUTING';
 }

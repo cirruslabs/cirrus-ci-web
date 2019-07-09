@@ -5,7 +5,7 @@ import Chip from '@material-ui/core/Chip';
 import Tooltip from '@material-ui/core/Tooltip';
 import Icon from '@material-ui/core/Icon';
 import {buildStatusColor} from "../../utils/colors";
-import {buildStatusIconName, buildStatusMessage} from "../../utils/status";
+import {buildStatusIconName, buildStatusMessage, isBuildFinalStatus} from "../../utils/status";
 import {createFragmentContainer, requestSubscription} from "react-relay";
 import graphql from 'babel-plugin-relay/macro';
 import environment from "../../createRelayEnvironment";
@@ -24,6 +24,10 @@ const buildSubscription = graphql`
 
 class BuildStatusChip extends React.Component {
   componentDidMount() {
+    if (isBuildFinalStatus(this.props.build.status)) {
+      return
+    }
+
     let variables = {buildID: this.props.build.id};
 
     this.subscription = requestSubscription(

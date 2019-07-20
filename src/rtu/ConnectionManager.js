@@ -25,7 +25,7 @@ ws.onopen = function open() {
 
 ws.onerror = function error(err) {
   if (process.env.NODE_ENV === 'development') {
-    console.log(err);
+    console.log("Web Socket error", err);
   }
 };
 
@@ -63,6 +63,9 @@ export function subscribeObjectUpdates(kind, id, handler) {
   let topic = (kind + '-update-' + id).toLowerCase().replace(/_/g, "-");
   let topicHandlerDispose = handlersManager.addTopicHandler(topic, requestStr, handler);
   return () => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log("Unsubscribing from", kind, id);
+    }
     topicHandlerDispose();
     request.type = "unsubscribe";
     try {

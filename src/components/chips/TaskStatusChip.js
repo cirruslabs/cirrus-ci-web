@@ -8,10 +8,11 @@ import {taskStatusIconName, taskStatusMessage} from "../../utils/status";
 import {cirrusColors} from "../../cirrusTheme";
 import {createFragmentContainer} from "react-relay";
 import graphql from 'babel-plugin-relay/macro';
+import Tooltip from "@material-ui/core/Tooltip";
 
 function TaskStatusChip(props) {
   let {task} = props;
-  return (
+  let chip = (
     <Chip className={props.className}
           label={taskStatusMessage(task)}
           avatar={
@@ -20,6 +21,14 @@ function TaskStatusChip(props) {
             </Avatar>
           }/>
   );
+  if (task.executingTimestamp && task.executingTimestamp > 0) {
+    return (
+      <Tooltip title={`Execution started at ${new Date(task.executingTimestamp).toLocaleTimeString()}`}>
+        {chip}
+      </Tooltip>
+    );
+  }
+  return chip
 }
 
 export default createFragmentContainer(TaskStatusChip, {
@@ -27,6 +36,7 @@ export default createFragmentContainer(TaskStatusChip, {
     fragment TaskStatusChip_task on Task {
       status
       durationInSeconds
+      executingTimestamp
     }
   `,
 });

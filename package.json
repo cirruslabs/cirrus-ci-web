@@ -28,6 +28,7 @@
     "react": "*",
     "react-ace": "*",
     "react-dom": "*",
+    "react-https-redirect": "^1.1.0",
     "react-loadable": "*",
     "react-markdown": "*",
     "react-relay": "*",
@@ -44,7 +45,7 @@
     "relay-compiler": "*"
   },
   "scripts": {
-    "start": "PORT=3333 HTTPS=true react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "flow": "flow",
     "relay": "npx relay-compiler --verbose --watchman false --src ./src --schema schema.graphql",

@@ -11,7 +11,7 @@ import CirrusFavicon from "./components/CirrusFavicon";
 
 class App extends Component {
   render() {
-    if(location.protocol !== 'https:' && process.env.NODE_ENV !== 'development') location.protocol = 'https:';
+    if(request.protocol !== 'https:' && process.env.NODE_ENV !== 'development') request.protocol = 'https:';
     return (
       <ThemeProvider theme={createMuiTheme(cirrusTheme)}>
         <CirrusFavicon/>

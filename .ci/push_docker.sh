@@ -2,8 +2,7 @@
 
 set -e
 
-if [ "$CIRRUS_BRANCH" != "master" ]
-then
+if [ "$CIRRUS_BRANCH" != "master" ]; then
     exit 0
 fi
 

@@ -412,6 +412,7 @@ type Task {
   previousRuns: [Task]
   repository: Repository!
   repositoryId: ID!
+  requiredPRLabels: [String]
   scheduledTimestamp: Long!
   status: TaskStatus
   statusDurations: [TaskStatusDuration]

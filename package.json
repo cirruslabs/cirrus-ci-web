@@ -44,7 +44,7 @@
     "relay-compiler": "*"
   },
   "scripts": {
-    "start": "PORT=3333 react-scripts start",
+    "start": "PORT=3333 HTTPS=true react-scripts start",
     "build": "react-scripts build",
     "flow": "flow",
     "relay": "npx relay-compiler --verbose --watchman false --src ./src --schema schema.graphql",

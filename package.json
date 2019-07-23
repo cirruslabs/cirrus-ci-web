@@ -28,7 +28,6 @@
     "react": "*",
     "react-ace": "*",
     "react-dom": "*",
-    "react-https-redirect": "^1.1.0",
     "react-loadable": "*",
     "react-markdown": "*",
     "react-relay": "*",

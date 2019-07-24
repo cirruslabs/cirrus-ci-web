@@ -1,7 +1,7 @@
 export function shorten(text, maxLength = 40) {
   if (text.length <= maxLength) {
-    return text
+    return text;
   } else {
-    return text.substr(0, maxLength) + "..."
+    return text.substr(0, maxLength) + '...';
   }
 }

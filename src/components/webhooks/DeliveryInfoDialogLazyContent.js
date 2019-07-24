@@ -1,19 +1,19 @@
 import React from 'react';
 
-import {QueryRenderer} from 'react-relay';
+import { QueryRenderer } from 'react-relay';
 import graphql from 'babel-plugin-relay/macro';
 
 import environment from '../../createRelayEnvironment';
-import CirrusLinearProgress from "../../components/CirrusLinearProgress";
-import DeliveryInfoDialogContent from "./DeliveryInfoDialogContent";
+import CirrusLinearProgress from '../../components/CirrusLinearProgress';
+import DeliveryInfoDialogContent from './DeliveryInfoDialogContent';
 
-const DeliveryInfoDialogLazyContent = (props) => {
+const DeliveryInfoDialogLazyContent = props => {
   let deliveryId = props.deliveryId;
-  return <QueryRenderer
-    environment={environment}
-    variables={{deliveryId: deliveryId}}
-    query={
-      graphql`
+  return (
+    <QueryRenderer
+      environment={environment}
+      variables={{ deliveryId: deliveryId }}
+      query={graphql`
         query DeliveryInfoDialogLazyContentQuery($deliveryId: String!) {
           webhookDelivery(id: $deliveryId) {
             id
@@ -30,16 +30,15 @@ const DeliveryInfoDialogLazyContent = (props) => {
             }
           }
         }
-      `
-    }
-
-    render={({error, props}) => {
-      if (!props) {
-        return <CirrusLinearProgress/>
-      }
-      return <DeliveryInfoDialogContent delivery={props.webhookDelivery}/>
-    }}
-  />
+      `}
+      render={({ error, props }) => {
+        if (!props) {
+          return <CirrusLinearProgress />;
+        }
+        return <DeliveryInfoDialogContent delivery={props.webhookDelivery} />;
+      }}
+    />
+  );
 };
 
 export default DeliveryInfoDialogLazyContent;

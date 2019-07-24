@@ -39,7 +39,10 @@
     "babel-preset-react-app": "*",
     "flow-bin": "*",
     "get-graphql-schema": "*",
+    "husky": "^3.0.1",
     "js-beautify": "*",
+    "lint-staged": "^9.2.0",
+    "prettier": "^1.18.2",
     "react-scripts": "*",
     "relay-compiler": "*"
   },
@@ -50,7 +53,20 @@
     "relay": "npx relay-compiler --verbose --watchman false --src ./src --schema schema.graphql",
     "sync-schema": "get-graphql-schema https://api.cirrus-ci.com/schema.json > schema.graphql",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prettier": "prettier --write \"{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
+    "prettier-check": "prettier --check  \"{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "browserslist": [
     ">0.2%",

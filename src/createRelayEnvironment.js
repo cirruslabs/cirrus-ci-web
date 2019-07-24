@@ -1,85 +1,87 @@
-import {subscribeObjectUpdates} from "./rtu/ConnectionManager";
+import { subscribeObjectUpdates } from './rtu/ConnectionManager';
 
-const {
-  Environment,
-  Network,
-  RecordSource,
-  Store,
-} = require('relay-runtime');
+const { Environment, Network, RecordSource, Store } = require('relay-runtime');
 
 /**
  * See RelayNetwork.js:43 for details how it used in Relay
  */
-function subscription(
-  operation,
-  variables,
-  cacheConfig,
-  config
-) {
-  if (variables['taskID'] && operation.text.indexOf("commands") > 0) {
-    let taskSubscriptionDisposer = webSocketSubscription('TASK', variables['taskID'], operation, variables, cacheConfig, config);
-    let taskCommandsSubscriptionDisposer = webSocketSubscription('TASK_COMMANDS', variables['taskID'], operation, variables, cacheConfig, config);
+function subscription(operation, variables, cacheConfig, config) {
+  if (variables['taskID'] && operation.text.indexOf('commands') > 0) {
+    let taskSubscriptionDisposer = webSocketSubscription(
+      'TASK',
+      variables['taskID'],
+      operation,
+      variables,
+      cacheConfig,
+      config,
+    );
+    let taskCommandsSubscriptionDisposer = webSocketSubscription(
+      'TASK_COMMANDS',
+      variables['taskID'],
+      operation,
+      variables,
+      cacheConfig,
+      config,
+    );
     return {
       dispose: () => {
         taskSubscriptionDisposer.dispose();
         taskCommandsSubscriptionDisposer.dispose();
-      }
-    }
-  } else if (variables['repositoryID'] && operation.text.indexOf("lastDefaultBranchBuild") > 0) {
-    return webSocketSubscription('REPOSITORY_DEFAULT_BRANCH_BUILD', variables['repositoryID'], operation, variables, cacheConfig, config)
+      },
+    };
+  } else if (variables['repositoryID'] && operation.text.indexOf('lastDefaultBranchBuild') > 0) {
+    return webSocketSubscription(
+      'REPOSITORY_DEFAULT_BRANCH_BUILD',
+      variables['repositoryID'],
+      operation,
+      variables,
+      cacheConfig,
+      config,
+    );
   } else if (variables['taskID']) {
-    return webSocketSubscription('TASK', variables['taskID'], operation, variables, cacheConfig, config)
+    return webSocketSubscription('TASK', variables['taskID'], operation, variables, cacheConfig, config);
   } else if (variables['buildID']) {
-    return webSocketSubscription('BUILD', variables['buildID'], operation, variables, cacheConfig, config)
+    return webSocketSubscription('BUILD', variables['buildID'], operation, variables, cacheConfig, config);
   } else {
-    return pollingSubscription(operation, variables, cacheConfig, config)
+    return pollingSubscription(operation, variables, cacheConfig, config);
   }
 }
 
-function pollingSubscription(
-  operation,
-  variables,
-  cacheConfig,
-  config
-) {
-  let {onError, onNext} = config;
+function pollingSubscription(operation, variables, cacheConfig, config) {
+  let { onError, onNext } = config;
 
   let intervalId = setInterval(() => {
-    fetchQuery(operation, variables).then(response => {
-      onNext(response);
-    }, error => {
-      onError && onError(error)
-    });
+    fetchQuery(operation, variables).then(
+      response => {
+        onNext(response);
+      },
+      error => {
+        onError && onError(error);
+      },
+    );
   }, 3333);
 
-  return {dispose: () => clearInterval(intervalId)}
+  return { dispose: () => clearInterval(intervalId) };
 }
 
-function webSocketSubscription(
-  kind,
-  id,
-  operation,
-  variables,
-  cacheConfig,
-  config
-) {
-  let {onError, onNext} = config;
+function webSocketSubscription(kind, id, operation, variables, cacheConfig, config) {
+  let { onError, onNext } = config;
 
   let dispose = subscribeObjectUpdates(kind, id, () => {
-    fetchQuery(operation, variables).then(response => {
-      onNext(response);
-    }, error => {
-      onError && onError(error)
-    });
+    fetchQuery(operation, variables).then(
+      response => {
+        onNext(response);
+      },
+      error => {
+        onError && onError(error);
+      },
+    );
   });
 
-  return {dispose}
+  return { dispose };
 }
 
-function fetchQuery(
-  operation,
-  variables
-) {
+function fetchQuery(operation, variables) {
   let query = {
     query: operation.text, // GraphQL text from input
     variables,
@@ -88,8 +90,8 @@ function fetchQuery(
     method: 'POST',
     credentials: 'include', // cookies
     headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(query),
   }).then(response => {

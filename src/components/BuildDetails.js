@@ -1,27 +1,27 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {commitMutation, createFragmentContainer, requestSubscription,} from 'react-relay';
+import { commitMutation, createFragmentContainer, requestSubscription } from 'react-relay';
 import graphql from 'babel-plugin-relay/macro';
-import {withRouter} from 'react-router-dom'
+import { withRouter } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 import TaskList from './TaskList';
-import NotificationList from "./NotificationList";
-import environment from "../createRelayEnvironment";
-import BuildStatusChip from "./chips/BuildStatusChip";
-import RepositoryNameChip from "./chips/RepositoryNameChip";
-import {hasWritePermissions} from "../utils/permissions";
-import {withStyles} from "@material-ui/core";
-import {cirrusColors} from "../cirrusTheme";
-import BuildCreatedChip from "./chips/BuildCreatedChip";
-import {faviconColor} from "../utils/colors";
-import CirrusFavicon from "./CirrusFavicon";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
+import NotificationList from './NotificationList';
+import environment from '../createRelayEnvironment';
+import BuildStatusChip from './chips/BuildStatusChip';
+import RepositoryNameChip from './chips/RepositoryNameChip';
+import { hasWritePermissions } from '../utils/permissions';
+import { withStyles } from '@material-ui/core';
+import { cirrusColors } from '../cirrusTheme';
+import BuildCreatedChip from './chips/BuildCreatedChip';
+import { faviconColor } from '../utils/colors';
+import CirrusFavicon from './CirrusFavicon';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
 
 const buildApproveMutation = graphql`
   mutation BuildDetailsApproveBuildMutation($input: BuildApproveInput!) {
@@ -46,10 +46,8 @@ const buildReTriggerMutation = graphql`
 `;
 
 const buildSubscription = graphql`
-  subscription BuildDetailsSubscription(
-    $buildID: ID!
-  ) {
-    build(id: $buildID) {      
+  subscription BuildDetailsSubscription($buildID: ID!) {
+    build(id: $buildID) {
       id
       durationInSeconds
       status
@@ -62,16 +60,16 @@ const buildSubscription = graphql`
 
 const styles = theme => ({
   gap: {
-    paddingTop: 16
+    paddingTop: 16,
   },
   title: {
-    padding: 0
+    padding: 0,
   },
   repoButton: {
-    padding: 0
+    padding: 0,
   },
   repoButtonIcon: {
-    fontSize: 48
+    fontSize: 48,
   },
   leftIcon: {
     marginRight: theme.spacing(1.0),
@@ -94,15 +92,12 @@ class BuildDetails extends React.Component {
   };
 
   componentDidMount() {
-    let variables = {buildID: this.props.build.id};
+    let variables = { buildID: this.props.build.id };
 
-    this.subscription = requestSubscription(
-      environment,
-      {
-        subscription: buildSubscription,
-        variables: variables
-      }
-    );
+    this.subscription = requestSubscription(environment, {
+      subscription: buildSubscription,
+      variables: variables,
+    });
   }
 
   componentWillUnmount() {
@@ -110,61 +105,67 @@ class BuildDetails extends React.Component {
   }
 
   closeSubscription() {
-    this.subscription && this.subscription.dispose && this.subscription.dispose()
+    this.subscription && this.subscription.dispose && this.subscription.dispose();
   }
 
   render() {
-    let {build, classes} = this.props;
+    let { build, classes } = this.props;
 
     let repoUrl = build.repository.cloneUrl.slice(0, -4);
-    let branchUrl = build.branch.startsWith("pull/") ? `${repoUrl}/${build.branch}` : `${repoUrl}/tree/${build.branch}`;
-    let commitUrl = repoUrl + "/commit/" + build.changeIdInRepo;
+    let branchUrl = build.branch.startsWith('pull/') ? `${repoUrl}/${build.branch}` : `${repoUrl}/tree/${build.branch}`;
+    let commitUrl = repoUrl + '/commit/' + build.changeIdInRepo;
 
-    let notificationsComponent = !build.notifications ? null :
+    let notificationsComponent = !build.notifications ? null : (
       <div className={classes.gap}>
-        <NotificationList notifications={build.notifications}/>
-      </div>;
+        <NotificationList notifications={build.notifications} />
+      </div>
+    );
 
-    let canBeReTriggered = (build.status === 'FAILED' || build.status === 'ERRORED')
-      && hasWritePermissions(build.repository.viewerPermission)
-      && build.latestGroupTasks && build.latestGroupTasks.length === 0;
-    let reTriggerButton = !canBeReTriggered ? null :
-      <Button variant="contained"
-              backgroundColor={cirrusColors.success}
-              onClick={() => this.reTriggerBuild(build.id)}>
+    let canBeReTriggered =
+      (build.status === 'FAILED' || build.status === 'ERRORED') &&
+      hasWritePermissions(build.repository.viewerPermission) &&
+      build.latestGroupTasks &&
+      build.latestGroupTasks.length === 0;
+    let reTriggerButton = !canBeReTriggered ? null : (
+      <Button variant="contained" backgroundColor={cirrusColors.success} onClick={() => this.reTriggerBuild(build.id)}>
         <Icon className={classes.leftIcon}>refresh</Icon>
         Re-Trigger
-      </Button>;
-
+      </Button>
+    );
 
     let needsApproval = build.status === 'NEEDS_APPROVAL' && hasWritePermissions(build.repository.viewerPermission);
-    let approveButton = !needsApproval ? null :
-      <Button variant="contained"
-              backgroundColor={cirrusColors.success}
-              onClick={() => this.approveBuild(build.id)}>
+    let approveButton = !needsApproval ? null : (
+      <Button variant="contained" backgroundColor={cirrusColors.success} onClick={() => this.approveBuild(build.id)}>
         <Icon className={classes.leftIcon}>check</Icon>
         Approve
-      </Button>;
+      </Button>
+    );
 
     return (
       <div>
-        <CirrusFavicon color={faviconColor(build.status)}/>
+        <CirrusFavicon color={faviconColor(build.status)} />
         <Paper elevation={2}>
           <Card>
             <CardContent>
               <div className={classes.wrapper}>
-                <RepositoryNameChip className={classes.chip} repository={build.repository}/>
-                <BuildCreatedChip className={classes.chip} build={build}/>
-                <BuildStatusChip className={classes.chip} build={build}/>
+                <RepositoryNameChip className={classes.chip} repository={build.repository} />
+                <BuildCreatedChip className={classes.chip} build={build} />
+                <BuildStatusChip className={classes.chip} build={build} />
               </div>
-              <div className={classes.gap}/>
+              <div className={classes.gap} />
               <Typography variant="h6" gutterBottom>
                 {build.changeMessageTitle}
               </Typography>
               <Typography variant="subtitle1" gutterBottom>
-                Commit <a href={commitUrl} target="_blank"
-                          rel="noopener noreferrer">{build.changeIdInRepo.substr(0, 6)}</a> on branch <a
-                href={branchUrl} target="_blank" rel="noopener noreferrer">{build.branch}</a>.
+                Commit{' '}
+                <a href={commitUrl} target="_blank" rel="noopener noreferrer">
+                  {build.changeIdInRepo.substr(0, 6)}
+                </a>{' '}
+                on branch{' '}
+                <a href={branchUrl} target="_blank" rel="noopener noreferrer">
+                  {build.branch}
+                </a>
+                .
               </Typography>
             </CardContent>
             <CardActions className="d-flex flex-wrap justify-content-end">
@@ -174,9 +175,9 @@ class BuildDetails extends React.Component {
           </Card>
         </Paper>
         {notificationsComponent}
-        <div className={classes.gap}/>
+        <div className={classes.gap} />
         <Paper elevation={2}>
-          <TaskList tasks={build.latestGroupTasks}/>
+          <TaskList tasks={build.latestGroupTasks} />
         </Paper>
       </div>
     );
@@ -185,37 +186,31 @@ class BuildDetails extends React.Component {
   approveBuild(buildId) {
     const variables = {
       input: {
-        clientMutationId: "approve-build-" + buildId,
+        clientMutationId: 'approve-build-' + buildId,
         buildId: buildId,
       },
     };
 
-    commitMutation(
-      environment,
-      {
-        mutation: buildApproveMutation,
-        variables: variables,
-        onError: err => console.error(err),
-      },
-    );
+    commitMutation(environment, {
+      mutation: buildApproveMutation,
+      variables: variables,
+      onError: err => console.error(err),
+    });
   }
 
   reTriggerBuild(buildId) {
     const variables = {
       input: {
-        clientMutationId: "re-trigger-build-" + buildId,
+        clientMutationId: 're-trigger-build-' + buildId,
         buildId: buildId,
       },
     };
 
-    commitMutation(
-      environment,
-      {
-        mutation: buildReTriggerMutation,
-        variables: variables,
-        onError: err => console.error(err),
-      },
-    );
+    commitMutation(environment, {
+      mutation: buildReTriggerMutation,
+      variables: variables,
+      onError: err => console.error(err),
+    });
   }
 }
 

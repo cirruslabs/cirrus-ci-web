@@ -1,27 +1,27 @@
 import React from 'react';
 import AnsiUp from 'ansi_up';
-import {cirrusColors} from "../../cirrusTheme";
+import { cirrusColors } from '../../cirrusTheme';
 
-import './logs.css'
-import {withRouter} from "react-router-dom";
-import classNames from 'classnames'
-import {withStyles} from "@material-ui/styles";
-import * as queryString from "query-string";
+import './logs.css';
+import { withRouter } from 'react-router-dom';
+import classNames from 'classnames';
+import { withStyles } from '@material-ui/styles';
+import * as queryString from 'query-string';
 
 let ansiFormatter = new AnsiUp();
 ansiFormatter.use_classes = true;
 
 let styles = theme => ({
   logContainer: {
-    overflowY: "hidden",
-    minHeight: "50px",
-    height: "100%",
-    maxWidth: "100%",
+    overflowY: 'hidden',
+    minHeight: '50px',
+    height: '100%',
+    maxWidth: '100%',
     background: cirrusColors.cirrusDark,
     padding: 8,
   },
   logLine: {
-    width: "100%",
+    width: '100%',
     display: 'flex',
     flexWrap: 'wrap',
     margin: 0,
@@ -31,7 +31,7 @@ let styles = theme => ({
     },
     '&:focus': {
       outline: 0,
-    }
+    },
   },
   logLineHighlighted: {
     background: cirrusColors.cirrusLightDark,
@@ -45,7 +45,7 @@ class Logs extends React.Component {
     window.onpopstate = this.updateLinesSelection;
     this.state = {
       highLightedLineStart: NaN,
-      highLightedLineEnd: NaN
+      highLightedLineEnd: NaN,
     };
   }
 
@@ -56,7 +56,6 @@ class Logs extends React.Component {
     });
   }
 
-
   componentWillUnmount(): void {
     this.unlisten();
   }
@@ -64,40 +63,37 @@ class Logs extends React.Component {
   updateLinesSelection() {
     let hash = window.location.hash;
     if (hash && queryString.parse(this.props.location.search).command === this.props.commandName) {
-      let [startLine, endLine] = hash.replace("#", "").split("-");
+      let [startLine, endLine] = hash.replace('#', '').split('-');
       if (!endLine) {
         endLine = startLine;
       }
 
       this.setState(prevState => ({
         ...prevState,
-        highLightedLineStart: parseInt(startLine.replace("L", ""), 10),
-        highLightedLineEnd: parseInt(endLine.replace("L", ""), 10)
+        highLightedLineStart: parseInt(startLine.replace('L', ''), 10),
+        highLightedLineEnd: parseInt(endLine.replace('L', ''), 10),
       }));
       document.getElementById(startLine).focus();
     }
   }
 
   render() {
-    let {classes} = this.props;
+    let { classes } = this.props;
     return (
       <div className={classes.logContainer}>
-        {this.props.logs.split("\n").map((line, index) =>
-          <div id={"L" + index}
-               tabIndex="0" // to make it focusable
-               key={index}
-               className={
-                 classNames(
-                   "log-line",
-                   classes.logLine,
-                   {
-                     [classes.logLineHighlighted]: (this.state.highLightedLineStart <= index && index <= this.state.highLightedLineEnd)
-                   }
-                 )
-               }
-               onClick={(e) => this.selectLine(e, index)}
-               dangerouslySetInnerHTML={{__html: ansiFormatter.ansi_to_html(line)}}/>
-        )}
+        {this.props.logs.split('\n').map((line, index) => (
+          <div
+            id={'L' + index}
+            tabIndex="0" // to make it focusable
+            key={index}
+            className={classNames('log-line', classes.logLine, {
+              [classes.logLineHighlighted]:
+                this.state.highLightedLineStart <= index && index <= this.state.highLightedLineEnd,
+            })}
+            onClick={e => this.selectLine(e, index)}
+            dangerouslySetInnerHTML={{ __html: ansiFormatter.ansi_to_html(line) }}
+          />
+        ))}
       </div>
     );
   }
@@ -112,4 +108,4 @@ class Logs extends React.Component {
   }
 }
 
-export default withRouter(withStyles(styles)(Logs))
+export default withRouter(withStyles(styles)(Logs));

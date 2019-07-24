@@ -1,6 +1,5 @@
 import React from 'react';
-import {formatDuration} from "../utils/time";
-
+import { formatDuration } from '../utils/time';
 
 class DurationTicker extends React.Component {
   render() {
@@ -10,4 +9,4 @@ class DurationTicker extends React.Component {
   }
 }
 
-export default DurationTicker
+export default DurationTicker;

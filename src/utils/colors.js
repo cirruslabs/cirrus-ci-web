@@ -1,16 +1,16 @@
-import {cirrusColors} from './../cirrusTheme'
+import { cirrusColors } from './../cirrusTheme';
 
 export function buildStatusColor(status) {
   switch (status) {
-    case "CREATED":
+    case 'CREATED':
       return cirrusColors.initialization;
-    case "EXECUTING":
+    case 'EXECUTING':
       return cirrusColors.executing;
-    case "COMPLETED":
+    case 'COMPLETED':
       return cirrusColors.success;
-    case "FAILED":
+    case 'FAILED':
       return cirrusColors.failure;
-    case "ABORTED":
+    case 'ABORTED':
       return cirrusColors.lightFailure;
     default:
       return cirrusColors.warning;
@@ -19,21 +19,21 @@ export function buildStatusColor(status) {
 
 export function taskStatusColor(status) {
   switch (status) {
-    case "CREATED":
+    case 'CREATED':
       return cirrusColors.lightInitialization;
-    case "SCHEDULED":
+    case 'SCHEDULED':
       return cirrusColors.initialization;
-    case "EXECUTING":
+    case 'EXECUTING':
       return cirrusColors.executing;
-    case "PAUSED":
+    case 'PAUSED':
       return cirrusColors.paused;
-    case "SKIPPED":
+    case 'SKIPPED':
       return cirrusColors.lightSuccess;
-    case "COMPLETED":
+    case 'COMPLETED':
       return cirrusColors.success;
-    case "ABORTED":
+    case 'ABORTED':
       return cirrusColors.lightFailure;
-    case "FAILED":
+    case 'FAILED':
       return cirrusColors.failure;
     default:
       return cirrusColors.undefined;
@@ -42,18 +42,18 @@ export function taskStatusColor(status) {
 
 export function faviconColor(status) {
   switch (status) {
-    case "COMPLETED":
+    case 'COMPLETED':
       return cirrusColors.darkSuccess;
-    case "SKIPPED":
+    case 'SKIPPED':
       return cirrusColors.darkSuccess;
-    case "ABORTED":
+    case 'ABORTED':
       return cirrusColors.failure;
-    case "FAILED":
+    case 'FAILED':
       return cirrusColors.failure;
-    case "EXECUTING":
-    case "CREATED":
-    case "SCHEDULED":
-    case "PAUSED":
+    case 'EXECUTING':
+    case 'CREATED':
+    case 'SCHEDULED':
+    case 'PAUSED':
       return cirrusColors.executing;
     default:
       return cirrusColors.warning;

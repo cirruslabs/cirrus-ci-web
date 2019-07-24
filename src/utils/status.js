@@ -1,14 +1,14 @@
-import {formatDuration} from "./time";
+import { formatDuration } from './time';
 
 export function isTaskFinalStatus(status) {
   switch (status) {
-    case "ABORTED":
+    case 'ABORTED':
       return true;
-    case "COMPLETED":
+    case 'COMPLETED':
       return true;
-    case "FAILED":
+    case 'FAILED':
       return true;
-    case "SKIPPED":
+    case 'SKIPPED':
       return true;
     default:
       return false;
@@ -17,10 +17,10 @@ export function isTaskFinalStatus(status) {
 
 export function isBuildFinalStatus(status) {
   switch (status) {
-    case "ABORTED":
-    case "ERRORED":
-    case "COMPLETED":
-    case "FAILED":
+    case 'ABORTED':
+    case 'ERRORED':
+    case 'COMPLETED':
+    case 'FAILED':
       return true;
     default:
       return false;
@@ -33,9 +33,9 @@ export function isTaskExecuting(status) {
 
 export function isTaskInProgressStatus(status) {
   switch (status) {
-    case "SCHEDULED":
+    case 'SCHEDULED':
       return true;
-    case "EXECUTING":
+    case 'EXECUTING':
       return true;
     default:
       return false;
@@ -48,13 +48,13 @@ export function isTaskCommandExecuting(status) {
 
 export function isTaskCommandFinalStatus(status) {
   switch (status) {
-    case "ABORTED":
+    case 'ABORTED':
       return true;
-    case "SUCCESS":
+    case 'SUCCESS':
       return true;
-    case "FAILURE":
+    case 'FAILURE':
       return true;
-    case "SKIPPED":
+    case 'SKIPPED':
       return true;
     default:
       return false;
@@ -63,17 +63,17 @@ export function isTaskCommandFinalStatus(status) {
 
 export function taskStatusIconName(status) {
   switch (status) {
-    case "CREATED":
+    case 'CREATED':
       return 'cloud';
-    case "SCHEDULED":
+    case 'SCHEDULED':
       return 'linear_scale';
-    case "EXECUTING":
+    case 'EXECUTING':
       return 'play_arrow';
-    case "COMPLETED":
+    case 'COMPLETED':
       return 'done';
-    case "SKIPPED":
+    case 'SKIPPED':
       return 'done';
-    case "PAUSED":
+    case 'PAUSED':
       return 'pause';
     default:
       return 'error';
@@ -82,11 +82,11 @@ export function taskStatusIconName(status) {
 
 export function buildStatusIconName(status) {
   switch (status) {
-    case "CREATED":
+    case 'CREATED':
       return 'cloud';
-    case "EXECUTING":
+    case 'EXECUTING':
       return 'play_arrow';
-    case "COMPLETED":
+    case 'COMPLETED':
       return 'done';
     default:
       return 'error';
@@ -95,17 +95,17 @@ export function buildStatusIconName(status) {
 
 export function buildStatusMessage(status, durationInSeconds) {
   switch (status) {
-    case "CREATED":
+    case 'CREATED':
       return 'Created';
-    case "EXECUTING":
+    case 'EXECUTING':
       // since one can re-run some of build's tasks it's not quite clear
       // what is duration for builds like that
       return 'Executing';
-    case "ERRORED":
+    case 'ERRORED':
       return 'Errored';
-    case "COMPLETED":
+    case 'COMPLETED':
       return 'Finished in ' + formatDuration(durationInSeconds);
-    case "FAILED":
+    case 'FAILED':
       return 'Failed in ' + formatDuration(durationInSeconds);
     default:
       return status;
@@ -114,21 +114,21 @@ export function buildStatusMessage(status, durationInSeconds) {
 
 export function taskStatusMessage(task) {
   switch (task.status) {
-    case "CREATED":
+    case 'CREATED':
       return 'Created';
-    case "TRIGGERED":
+    case 'TRIGGERED':
       return 'Triggered';
-    case "SCHEDULED":
+    case 'SCHEDULED':
       return 'Scheduled';
-    case "EXECUTING":
+    case 'EXECUTING':
       return 'Executing';
-    case "ABORTED":
+    case 'ABORTED':
       return 'Aborted in ' + formatDuration(task.durationInSeconds);
-    case "COMPLETED":
+    case 'COMPLETED':
       return 'Finished in ' + formatDuration(task.durationInSeconds);
-    case "FAILED":
+    case 'FAILED':
       return 'Failed in ' + formatDuration(task.durationInSeconds);
-    case "SKIPPED":
+    case 'SKIPPED':
       return 'Skipped';
     default:
       return task.status;

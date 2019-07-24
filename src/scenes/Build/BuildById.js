@@ -1,35 +1,32 @@
 import React from 'react';
 
-import {QueryRenderer} from 'react-relay';
+import { QueryRenderer } from 'react-relay';
 import graphql from 'babel-plugin-relay/macro';
 
 import environment from '../../createRelayEnvironment';
-import BuildDetails from '../../components/BuildDetails'
-import CirrusLinearProgress from "../../components/CirrusLinearProgress";
-import NotFound from "../NotFound";
+import BuildDetails from '../../components/BuildDetails';
+import CirrusLinearProgress from '../../components/CirrusLinearProgress';
+import NotFound from '../NotFound';
 
-const BuildById = (props) => (
+const BuildById = props => (
   <QueryRenderer
     environment={environment}
     variables={props.match.params}
-    query={
-      graphql`
-        query BuildByIdQuery($buildId: ID!) {
-          build(id: $buildId) {
-            ...BuildDetails_build
-          }
+    query={graphql`
+      query BuildByIdQuery($buildId: ID!) {
+        build(id: $buildId) {
+          ...BuildDetails_build
         }
-      `
-    }
-
-    render={({error, props}) => {
+      }
+    `}
+    render={({ error, props }) => {
       if (!props) {
-        return <CirrusLinearProgress/>
+        return <CirrusLinearProgress />;
       }
       if (!props.build) {
-        return <NotFound message={error}/>;
+        return <NotFound message={error} />;
       }
-      return <BuildDetails build={props.build}/>
+      return <BuildDetails build={props.build} />;
     }}
   />
 );

@@ -5,17 +5,17 @@ export class HandlersManager {
   }
 
   allRequests() {
-    return Object.values(this.topicRequests)
+    return Object.values(this.topicRequests);
   }
 
   allTopics() {
-    return Object.keys(this.topicRequests)
+    return Object.keys(this.topicRequests);
   }
 
   handleNewUpdate(topic, data) {
     let topicHandlers = this.topicHandlers[topic];
     if (topicHandlers) {
-      topicHandlers.callAllHandlers(data)
+      topicHandlers.callAllHandlers(data);
     }
   }
 
@@ -29,9 +29,9 @@ export class HandlersManager {
     return () => {
       handlerClosable();
       if (this.topicHandlers[topic] && this.topicHandlers[topic].isEmpty()) {
-        delete this.topicHandlers[topic]
+        delete this.topicHandlers[topic];
       }
-    }
+    };
   }
 }
 
@@ -42,24 +42,24 @@ class TopicHandlers {
   }
 
   isEmpty() {
-    return Object.keys(this.handlersMap).length === 0
+    return Object.keys(this.handlersMap).length === 0;
   }
 
   callAllHandlers(data) {
-    Object.keys(this.handlersMap).forEach((key) => {
+    Object.keys(this.handlersMap).forEach(key => {
       try {
         this.handlersMap[key](data);
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
-    })
+    });
   }
 
   addHandler(handler) {
     let handlerId = ++this.idGenerator;
     this.handlersMap[handlerId] = handler;
     return () => {
-      delete this.handlersMap[handlerId]
-    }
+      delete this.handlersMap[handlerId];
+    };
   }
 }

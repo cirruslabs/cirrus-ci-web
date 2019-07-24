@@ -1,9 +1,11 @@
 import React from 'react';
-import Notification from "./Notification";
+import Notification from './Notification';
 
-const NotificationList = ({notifications}) => (
+const NotificationList = ({ notifications }) => (
   <div className="container">
-    {notifications.map(notification => <Notification notification={notification}/>)}
+    {notifications.map(notification => (
+      <Notification notification={notification} />
+    ))}
   </div>
 );
 

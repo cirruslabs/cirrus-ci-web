@@ -2,7 +2,6 @@ container:
   image: node:12
 
 build_task:
-  auto_cancellation: false
   use_compute_credits: $CIRRUS_BRANCH == 'master'
   node_modules_cache:
     folder: node_modules

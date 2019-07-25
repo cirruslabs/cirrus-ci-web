@@ -39,10 +39,10 @@
     "babel-preset-react-app": "*",
     "flow-bin": "*",
     "get-graphql-schema": "*",
-    "husky": "^3.0.1",
+    "husky": "*",
     "js-beautify": "*",
-    "lint-staged": "^9.2.0",
-    "prettier": "^1.18.2",
+    "lint-staged": "*",
+    "prettier": "*",
     "react-scripts": "*",
     "relay-compiler": "*"
   },

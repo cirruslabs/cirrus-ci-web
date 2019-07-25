@@ -17,6 +17,8 @@ import ComputeCreditsBuyDialog from './ComputeCreditsBuyDialog';
 import IconButton from '@material-ui/core/IconButton/IconButton';
 import { orange } from '@material-ui/core/colors';
 import BillingSettingsButton from './BillingSettingsButton';
+import { createFragmentContainer } from 'react-relay';
+import graphql from 'babel-plugin-relay/macro';
 
 const styles = theme => ({
   expand: {
@@ -126,7 +128,7 @@ class ComputeCreditsBase extends React.Component {
             <AttachMoneyIcon />
             Add More Credits
           </Button>
-          {this.props.billingSettings && <BillingSettingsButton billingSettings={this.props.billingSettings} />}
+          <BillingSettingsButton info={this.props.info} />
           <IconButton
             className={classNames(classes.expand, {
               [classes.expandOpen]: this.state.expanded,
@@ -153,4 +155,13 @@ class ComputeCreditsBase extends React.Component {
   }
 }
 
-export default withRouter(withStyles(styles)(ComputeCreditsBase));
+export default createFragmentContainer(withRouter(withStyles(styles)(ComputeCreditsBase)), {
+  info: graphql`
+    fragment ComputeCreditsBase_info on GitHubOrganizationInfo {
+      id
+      name
+      balanceInCredits
+      ...BillingSettingsButton_info
+    }
+  `,
+});

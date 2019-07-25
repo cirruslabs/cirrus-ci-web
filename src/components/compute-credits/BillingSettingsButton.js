@@ -30,7 +30,11 @@ class BillingSettingsButton extends React.Component {
   };
 
   render() {
-    let { billingSettings, classes, className } = this.props;
+    let { info, classes, className } = this.props;
+    if (!info) return null;
+
+    let { billingSettings } = info;
+    if (!billingSettings) return null;
 
     return (
       <div className={className}>

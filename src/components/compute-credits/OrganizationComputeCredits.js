@@ -5,7 +5,7 @@ import ComputeCreditsBase from './ComputeCreditsBase';
 
 class OrganizationComputeCredits extends React.Component {
   render() {
-    return <ComputeCreditsBase accountId={this.props.info.id} {...this.props.info} />;
+    return <ComputeCreditsBase info={this.props.info} accountId={this.props.info.id} />;
   }
 }
 
@@ -16,9 +16,7 @@ export default createPaginationContainer(
       fragment OrganizationComputeCredits_info on GitHubOrganizationInfo
         @argumentDefinitions(count: { type: "Int", defaultValue: 100 }, cursor: { type: "String" }) {
         id
-        name
-        balanceInCredits
-        ...BillingSettingsButton_info
+        ...ComputeCreditsBase_info
         transactions(last: $count, after: $cursor) @connection(key: "OrganizationComputeCredits_transactions") {
           edges {
             node {

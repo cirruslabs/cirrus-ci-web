@@ -1,19 +1,23 @@
 import React from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import {cirrusColors} from "../cirrusTheme";
-import {withStyles} from "@material-ui/core";
+import { cirrusColors } from '../cirrusTheme';
+import { withStyles } from '@material-ui/core';
 
 const styles = {
   progress: {
-    backgroundColor: cirrusColors.success
-  }
+    backgroundColor: cirrusColors.success,
+  },
 };
 
-const CirrusLinearProgress = (props) => {
-  return <LinearProgress mode="indeterminate"
-                         classes={{
-                           barColorPrimary: props.classes.progress,
-                         }}/>
+const CirrusLinearProgress = props => {
+  return (
+    <LinearProgress
+      mode="indeterminate"
+      classes={{
+        barColorPrimary: props.classes.progress,
+      }}
+    />
+  );
 };
 
-export default withStyles(styles)(CirrusLinearProgress)
+export default withStyles(styles)(CirrusLinearProgress);

@@ -1,7 +1,7 @@
 import React from 'react';
-import {createFragmentContainer} from 'react-relay';
+import { createFragmentContainer } from 'react-relay';
 import graphql from 'babel-plugin-relay/macro';
-import ApiSettingsBase from "./ApiSettingsBase";
+import ApiSettingsBase from './ApiSettingsBase';
 
 const generateNewTokenMutation = graphql`
   mutation OrganizationApiSettingsMutation($input: GenerateNewAccessTokenInput!) {
@@ -11,13 +11,12 @@ const generateNewTokenMutation = graphql`
   }
 `;
 
-
 class OrganizationApiSettings extends React.Component {
   getMutationVariables() {
     return {
       input: {
         clientMutationId: `generate-api-token-${this.props.info.id}`,
-        accountId: this.props.info.id
+        accountId: this.props.info.id,
       },
     };
   }

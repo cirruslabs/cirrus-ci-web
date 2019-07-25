@@ -1,22 +1,22 @@
 import React from 'react';
-import {cirrusColors} from "../cirrusTheme";
-import {Base64} from 'js-base64';
+import { cirrusColors } from '../cirrusTheme';
+import { Base64 } from 'js-base64';
 
 function updateIcon(color) {
   let linkEl = document.getElementById('favicon');
   if (linkEl) {
     linkEl.type = 'image/x-icon';
     linkEl.rel = 'icon';
-    drawIcon(color, function (url) {
+    drawIcon(color, function(url) {
       linkEl.href = url;
     });
   }
-  return <div/>;
+  return <div />;
 }
 
 function drawIcon(color, cb) {
   let img = document.createElement('img');
-  img.onload = function () {
+  img.onload = function() {
     let canvas = document.createElement('canvas');
     canvas.width = img.width;
     canvas.height = img.height;
@@ -27,7 +27,7 @@ function drawIcon(color, cb) {
 
     cb(context.canvas.toDataURL());
   };
-  img.src = "data:image/svg+xml;base64," + Base64.encode(iconSVG(color));
+  img.src = 'data:image/svg+xml;base64,' + Base64.encode(iconSVG(color));
 }
 
 function iconSVG(color) {
@@ -46,7 +46,7 @@ function iconSVG(color) {
         </g>
     </g>
 </svg>
-`
+`;
 }
 
 class CirrusFavicon extends React.Component {

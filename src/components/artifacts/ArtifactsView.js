@@ -1,149 +1,153 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Typography from "@material-ui/core/Typography";
-import {List, Tooltip, withStyles} from "@material-ui/core";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Icon from "@material-ui/core/Icon";
-import Toolbar from "@material-ui/core/Toolbar";
-import {cirrusColors} from "../../cirrusTheme";
-import Paper from "@material-ui/core/Paper";
-import {withRouter} from "react-router-dom";
-import {navigate} from "../../utils/navigate";
+import React from 'react';
+import PropTypes from 'prop-types';
+import Typography from '@material-ui/core/Typography';
+import { List, Tooltip, withStyles } from '@material-ui/core';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Icon from '@material-ui/core/Icon';
+import Toolbar from '@material-ui/core/Toolbar';
+import { cirrusColors } from '../../cirrusTheme';
+import Paper from '@material-ui/core/Paper';
+import { withRouter } from 'react-router-dom';
+import { navigate } from '../../utils/navigate';
 
 const styles = theme => ({
   root: {
     width: '100%',
-    maxWidth: "360px",
+    maxWidth: '360px',
     backgroundColor: theme.palette.background.paper,
   },
   title: {
-    backgroundColor: cirrusColors.cirrusGrey
+    backgroundColor: cirrusColors.cirrusGrey,
   },
 });
 
-
 class ArtifactsView extends React.Component {
   static contextTypes = {
-    router: PropTypes.object
+    router: PropTypes.object,
   };
 
-  state = {selectedArtifactName: null, selectedPath: []};
+  state = { selectedArtifactName: null, selectedPath: [] };
 
   _getSelectedArtifact() {
-    for (let artifact of (this.props.task.artifacts || [])) {
+    for (let artifact of this.props.task.artifacts || []) {
       if (artifact.name && artifact.name === this.state.selectedArtifactName) {
-        return artifact
+        return artifact;
       }
     }
-    return null
+    return null;
   }
 
   _currentPath() {
     if (!this.state.selectedArtifactName) {
-      return null
+      return null;
     }
     if (this.state.selectedPath.length === 0) {
-      return this.state.selectedArtifactName
+      return this.state.selectedArtifactName;
     }
-    return this.state.selectedArtifactName + "/" + this.state.selectedPath.join("/")
+    return this.state.selectedArtifactName + '/' + this.state.selectedPath.join('/');
   }
 
   _getScopedArtifactInfos() {
     let currentArtifact = this._getSelectedArtifact();
     if (!currentArtifact) {
-      return []
+      return [];
     }
 
-    let selectedPrefix = this.state.selectedPath.length === 0 ? "" : this.state.selectedPath.join("/") + "/";
+    let selectedPrefix = this.state.selectedPath.length === 0 ? '' : this.state.selectedPath.join('/') + '/';
     let results = [];
 
     let files = currentArtifact.files;
     for (let fileInfo of files) {
-      if (selectedPrefix === "" || fileInfo.path.startsWith(selectedPrefix)) {
+      if (selectedPrefix === '' || fileInfo.path.startsWith(selectedPrefix)) {
         let subPath = fileInfo.path.substring(selectedPrefix.length);
-        let folderName = subPath.substring(0, subPath.indexOf("/"));
+        let folderName = subPath.substring(0, subPath.indexOf('/'));
         results.push({
           path: subPath,
           folder: folderName,
           size: fileInfo.size,
-          isTopLevel: subPath.indexOf("/") === -1
-        })
+          isTopLevel: subPath.indexOf('/') === -1,
+        });
       }
     }
 
-    return results
+    return results;
   }
 
-  updateState = (partialState) => {
+  updateState = partialState => {
     this.setState(prevState => ({
       ...prevState,
-      ...partialState
+      ...partialState,
     }));
   };
 
-  artifactURL = (name) => {
+  artifactURL = name => {
     let allURLParts = [
-      "https://api.cirrus-ci.com/v1/artifact/task",
+      'https://api.cirrus-ci.com/v1/artifact/task',
       this.props.task.id,
-      this.state.selectedArtifactName
+      this.state.selectedArtifactName,
     ].concat(this.state.selectedPath);
     allURLParts.push(name);
-    return allURLParts.filter(it => it !== null).join("/");
+    return allURLParts.filter(it => it !== null).join('/');
   };
 
-  artifactArchiveURL = (name) => {
-    return [
-      "https://api.cirrus-ci.com/v1/artifact/task",
-      this.props.task.id,
-      `${name}.zip`
-    ].join("/");
+  artifactArchiveURL = name => {
+    return ['https://api.cirrus-ci.com/v1/artifact/task', this.props.task.id, `${name}.zip`].join('/');
   };
 
   render() {
-    let {task, classes} = this.props;
-    let {artifacts} = task;
+    let { task, classes } = this.props;
+    let { artifacts } = task;
 
     let items = [];
 
     // ... if needed
     if (this.state.selectedPath.length > 0) {
       items.push(
-        <ListItem key="..." button
-                  onClick={() => this.updateState({selectedPath: this.state.selectedPath.slice(0, this.state.selectedPath.length - 1)})}>
+        <ListItem
+          key="..."
+          button
+          onClick={() =>
+            this.updateState({ selectedPath: this.state.selectedPath.slice(0, this.state.selectedPath.length - 1) })
+          }
+        >
           <ListItemIcon>
             <Icon>folder</Icon>
           </ListItemIcon>
-          <ListItemText primary="..."/>
-        </ListItem>
-      )
+          <ListItemText primary="..." />
+        </ListItem>,
+      );
     } else if (this.state.selectedArtifactName) {
       items.push(
-        <ListItem key="..." button
-                  onClick={() => this.updateState({selectedArtifactName: null})}>
+        <ListItem key="..." button onClick={() => this.updateState({ selectedArtifactName: null })}>
           <ListItemIcon>
             <Icon>folder</Icon>
           </ListItemIcon>
-          <ListItemText primary="..."/>
-        </ListItem>
-      )
+          <ListItemText primary="..." />
+        </ListItem>,
+      );
     }
 
     if (!this.state.selectedArtifactName) {
       for (let artifact of artifacts) {
         items.push(
-          <ListItem key={artifact.name} button
-                    onClick={() => this.updateState({selectedArtifactName: artifact.name})}>
+          <ListItem
+            key={artifact.name}
+            button
+            onClick={() => this.updateState({ selectedArtifactName: artifact.name })}
+          >
             <ListItemIcon>
               <Icon>folder_open</Icon>
             </ListItemIcon>
-            <ListItemText primary={artifact.name}/>
+            <ListItemText primary={artifact.name} />
             <Tooltip title="Download Archive">
-              <Icon onClick={(e) => navigate(this.context.router, e, this.artifactArchiveURL(artifact.name))}>get_app</Icon>
+              <Icon onClick={e => navigate(this.context.router, e, this.artifactArchiveURL(artifact.name))}>
+                get_app
+              </Icon>
             </Tooltip>
-          </ListItem>
-        )
+          </ListItem>,
+        );
       }
     } else {
       let folders = {};
@@ -152,28 +156,30 @@ class ArtifactsView extends React.Component {
         if (!info.isTopLevel && !folders[info.folder]) {
           folders[info.folder] = true;
           items.push(
-            <ListItem key={info.folder} button
-                      onClick={() => this.updateState({selectedPath: this.state.selectedPath.concat([info.folder])})}>
+            <ListItem
+              key={info.folder}
+              button
+              onClick={() => this.updateState({ selectedPath: this.state.selectedPath.concat([info.folder]) })}
+            >
               <ListItemIcon>
                 <Icon>folder_open</Icon>
               </ListItemIcon>
-              <ListItemText primary={info.folder}/>
-            </ListItem>
-          )
+              <ListItemText primary={info.folder} />
+            </ListItem>,
+          );
         }
       }
 
       for (let info of scopedArtifactInfos) {
         if (info.isTopLevel) {
           items.push(
-            <ListItem key={info.path} button
-                      onClick={() => window.open(this.artifactURL(info.path), '_blank')}>
+            <ListItem key={info.path} button onClick={() => window.open(this.artifactURL(info.path), '_blank')}>
               <ListItemIcon>
                 <Icon>insert_drive_file</Icon>
               </ListItemIcon>
-              <ListItemText primary={info.path}/>
-            </ListItem>
-          )
+              <ListItemText primary={info.path} />
+            </ListItem>,
+          );
         }
       }
     }
@@ -182,15 +188,13 @@ class ArtifactsView extends React.Component {
       <Paper elevation={1}>
         <Toolbar className={classes.title}>
           <Typography variant="h6" color="inherit">
-            {this._currentPath() || "Artifacts"}
+            {this._currentPath() || 'Artifacts'}
           </Typography>
         </Toolbar>
-        <List>
-          {items}
-        </List>
+        <List>{items}</List>
       </Paper>
     );
   }
 }
 
-export default withRouter(withStyles(styles)(ArtifactsView))
+export default withRouter(withStyles(styles)(ArtifactsView));

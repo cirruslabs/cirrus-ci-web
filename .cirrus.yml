@@ -1,14 +1,18 @@
 container:
   image: node:12
 
-build_task:
+task:
   use_compute_credits: $CIRRUS_BRANCH == 'master'
   node_modules_cache:
     folder: node_modules
     fingerprint_script: cat package-lock.json
     populate_script: npm ci
-  relay_script: npm run relay
-  build_script: npm run build
+  matrix:
+    - name: Build
+      relay_script: npm run relay
+      build_script: npm run build
+    - name: Prettier
+      prettier_check_script: npm run prettier-check
   on_failure:
     npm_logs_artifacts:
       path: /root/.npm/_logs/**

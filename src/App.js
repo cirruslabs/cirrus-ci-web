@@ -1,20 +1,20 @@
 // @flow
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 import './App.css';
 import Routes from './Routes';
-import {cirrusTheme} from './cirrusTheme'
-import {ThemeProvider} from '@material-ui/styles';
-import {createMuiTheme} from "@material-ui/core";
-import CirrusFavicon from "./components/CirrusFavicon";
+import { cirrusTheme } from './cirrusTheme';
+import { ThemeProvider } from '@material-ui/styles';
+import { createMuiTheme } from '@material-ui/core';
+import CirrusFavicon from './components/CirrusFavicon';
 
 class App extends Component {
   render() {
     return (
       <ThemeProvider theme={createMuiTheme(cirrusTheme)}>
-        <CirrusFavicon/>
-        <Routes/>
+        <CirrusFavicon />
+        <Routes />
       </ThemeProvider>
     );
   }

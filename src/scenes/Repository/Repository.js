@@ -1,39 +1,36 @@
 import React from 'react';
 
-import {QueryRenderer} from 'react-relay';
+import { QueryRenderer } from 'react-relay';
 import graphql from 'babel-plugin-relay/macro';
 
 import environment from '../../createRelayEnvironment';
 import ReactMarkdown from 'react-markdown';
-import RepositoryBuildList from '../../components/RepositoryBuildList'
-import CirrusLinearProgress from "../../components/CirrusLinearProgress";
-import NotFound from "../NotFound";
+import RepositoryBuildList from '../../components/RepositoryBuildList';
+import CirrusLinearProgress from '../../components/CirrusLinearProgress';
+import NotFound from '../NotFound';
 
-const Repository = (props) => (
+const Repository = props => (
   <QueryRenderer
     environment={environment}
     variables={props.match.params}
-    query={
-      graphql`
-        query RepositoryQuery($repositoryId: ID!, $branch: String) {
-          repository(id: $repositoryId) {
-            ...RepositoryBuildList_repository
-          }
+    query={graphql`
+      query RepositoryQuery($repositoryId: ID!, $branch: String) {
+        repository(id: $repositoryId) {
+          ...RepositoryBuildList_repository
         }
-      `
-    }
-
-    render={({error, props}) => {
+      }
+    `}
+    render={({ error, props }) => {
       if (!props) {
-        return <CirrusLinearProgress/>
+        return <CirrusLinearProgress />;
       }
       if (!props.repository) {
-        let notFoundMessage =
-          <ReactMarkdown
-            source="Repository not found! Please [install Cirrus CI](https://cirrus-ci.org/guide/quick-start/) or push [`.cirrus.yml`!](https://cirrus-ci.org/guide/writing-tasks/)."/>;
-        return <NotFound messageComponent={notFoundMessage}/>
+        let notFoundMessage = (
+          <ReactMarkdown source="Repository not found! Please [install Cirrus CI](https://cirrus-ci.org/guide/quick-start/) or push [`.cirrus.yml`!](https://cirrus-ci.org/guide/writing-tasks/)." />
+        );
+        return <NotFound messageComponent={notFoundMessage} />;
       }
-      return <RepositoryBuildList repository={props.repository}/>
+      return <RepositoryBuildList repository={props.repository} />;
     }}
   />
 );

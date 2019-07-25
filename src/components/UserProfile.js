@@ -1,39 +1,38 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {withRouter} from 'react-router-dom'
-import {createFragmentContainer} from 'react-relay';
+import { withRouter } from 'react-router-dom';
+import { createFragmentContainer } from 'react-relay';
 import graphql from 'babel-plugin-relay/macro';
 import Paper from '@material-ui/core/Paper';
-import {withStyles} from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
-import CardActions from "@material-ui/core/CardActions";
-import CardHeader from "@material-ui/core/CardHeader";
-import Icon from "@material-ui/core/Icon";
-import {cirrusColors} from "../cirrusTheme";
-import Toolbar from "@material-ui/core/Toolbar";
+import { withStyles } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+import CardActions from '@material-ui/core/CardActions';
+import CardHeader from '@material-ui/core/CardHeader';
+import Icon from '@material-ui/core/Icon';
+import { cirrusColors } from '../cirrusTheme';
+import Toolbar from '@material-ui/core/Toolbar';
 import classNames from 'classnames';
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
-import {navigate} from "../utils/navigate";
-import IconButton from "@material-ui/core/IconButton";
-import UserApiSettings from "./settings/UserApiSettings";
-import UserComputeCredits from "./compute-credits/UserComputeCredits";
-
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
+import { navigate } from '../utils/navigate';
+import IconButton from '@material-ui/core/IconButton';
+import UserApiSettings from './settings/UserApiSettings';
+import UserComputeCredits from './compute-credits/UserComputeCredits';
 
 const styles = theme => ({
   title: {
-    backgroundColor: cirrusColors.cirrusGrey
+    backgroundColor: cirrusColors.cirrusGrey,
   },
   settingGap: {
-    paddingTop: 16
+    paddingTop: 16,
   },
   gap: {
-    paddingTop: 16
+    paddingTop: 16,
   },
   row: {
     display: 'flex',
@@ -48,22 +47,22 @@ const PERSONAL_PRIVATE_REPOSITORIES_PLAN_ID = 992;
 
 class UserProfile extends React.Component {
   static contextTypes = {
-    router: PropTypes.object
+    router: PropTypes.object,
   };
 
   render() {
-    let {user, classes} = this.props;
+    let { user, classes } = this.props;
     let githubMarketplaceComponent = (
       <div>
-        <Typography variant="subtitle1">
-          No GitHub Marketplace plan has been configured!
-        </Typography>
+        <Typography variant="subtitle1">No GitHub Marketplace plan has been configured!</Typography>
       </div>
     );
     let actionButton = (
-      <Button variant="contained"
-              href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTI=?account=${user.githubUserName}`}>
-        <Icon className={classNames(classes.leftIcon, "fa", "fa-github")}/>
+      <Button
+        variant="contained"
+        href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTI=?account=${user.githubUserName}`}
+      >
+        <Icon className={classNames(classes.leftIcon, 'fa', 'fa-github')} />
         Purchase Plan for Private Repositories
       </Button>
     );
@@ -76,18 +75,27 @@ class UserProfile extends React.Component {
         </div>
       );
     }
-    if (user.githubMarketplacePurchase && user.githubMarketplacePurchase.planId === PERSONAL_PRIVATE_REPOSITORIES_PLAN_ID) {
+    if (
+      user.githubMarketplacePurchase &&
+      user.githubMarketplacePurchase.planId === PERSONAL_PRIVATE_REPOSITORIES_PLAN_ID
+    ) {
       actionButton = (
-        <Button variant="contained"
-                href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTA=?account=${user.githubUserName}`}>
-          <Icon className={classNames(classes.leftIcon, "fa", "fa-github")}/>
+        <Button
+          variant="contained"
+          href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTA=?account=${user.githubUserName}`}
+        >
+          <Icon className={classNames(classes.leftIcon, 'fa', 'fa-github')} />
           Switch to Free Plan
         </Button>
       );
     }
 
     let trialComponent = null;
-    if (user.githubMarketplacePurchase && user.githubMarketplacePurchase.onFreeTrial && user.githubMarketplacePurchase.freeTrialDaysLeft > 0) {
+    if (
+      user.githubMarketplacePurchase &&
+      user.githubMarketplacePurchase.onFreeTrial &&
+      user.githubMarketplacePurchase.freeTrialDaysLeft > 0
+    ) {
       trialComponent = (
         <div className={classes.row}>
           <Typography variant="subtitle1">
@@ -107,27 +115,29 @@ class UserProfile extends React.Component {
               Your GitHub Organizations on Cirrus CI
             </Typography>
           </Toolbar>
-          <Table style={{tableLayout: 'auto'}}>
+          <Table style={{ tableLayout: 'auto' }}>
             <TableBody>
-              {
-                organizations.map(organization =>
-                  <TableRow key={organization.name}
-                            onClick={(e) => navigate(this.context.router, e, "/github/" + organization.name)}
-                            hover={true}
-                            style={{cursor: "pointer"}}>
-                    <TableCell>
-                      <Typography variant="h6">{organization.name}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <IconButton tooltip="Organization Settings"
-                                  onClick={(e) => navigate(this.context.router, e, "/settings/github/" + organization.name)}
-                                  className="pull-right">
-                        <Icon>settings</Icon>
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                )
-              }
+              {organizations.map(organization => (
+                <TableRow
+                  key={organization.name}
+                  onClick={e => navigate(this.context.router, e, '/github/' + organization.name)}
+                  hover={true}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <TableCell>
+                    <Typography variant="h6">{organization.name}</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <IconButton
+                      tooltip="Organization Settings"
+                      onClick={e => navigate(this.context.router, e, '/settings/github/' + organization.name)}
+                      className="pull-right"
+                    >
+                      <Icon>settings</Icon>
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </Paper>
@@ -143,28 +153,26 @@ class UserProfile extends React.Component {
             </Typography>
           </Toolbar>
         </Paper>
-        <div className={classes.settingGap}/>
+        <div className={classes.settingGap} />
         <Paper elevation={1}>
           <Card>
-            <CardHeader title="GitHub Settings"/>
+            <CardHeader title="GitHub Settings" />
             <CardContent>
               {githubMarketplaceComponent}
               {trialComponent}
             </CardContent>
-            <CardActions>
-              {actionButton}
-            </CardActions>
+            <CardActions>{actionButton}</CardActions>
           </Card>
         </Paper>
-        <div className={classes.settingGap}/>
+        <div className={classes.settingGap} />
         <Paper elevation={1}>
-          <UserComputeCredits user={this.props.user}/>
+          <UserComputeCredits user={this.props.user} />
         </Paper>
-        <div className={classes.settingGap}/>
+        <div className={classes.settingGap} />
         <Paper elevation={1}>
-          <UserApiSettings user={this.props.user}/>
+          <UserApiSettings user={this.props.user} />
         </Paper>
-        <div className={classes.settingGap}/>
+        <div className={classes.settingGap} />
         {organizationsComponent}
       </div>
     );

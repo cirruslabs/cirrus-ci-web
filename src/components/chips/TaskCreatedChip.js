@@ -4,11 +4,11 @@ import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import Icon from '@material-ui/core/Icon';
 import Tooltip from '@material-ui/core/Tooltip';
-import {taskStatusColor} from "../../utils/colors";
-import {taskStatusIconName} from "../../utils/status";
-import {roundAndPresentDuration} from "../../utils/time";
-import {cirrusColors} from "../../cirrusTheme";
-import {createFragmentContainer} from "react-relay";
+import { taskStatusColor } from '../../utils/colors';
+import { taskStatusIconName } from '../../utils/status';
+import { roundAndPresentDuration } from '../../utils/time';
+import { cirrusColors } from '../../cirrusTheme';
+import { createFragmentContainer } from 'react-relay';
 import graphql from 'babel-plugin-relay/macro';
 
 class TaskCreatedChip extends React.Component {
@@ -25,14 +25,19 @@ class TaskCreatedChip extends React.Component {
     let durationInSeconds = Math.floor(durationAgoInSeconds);
     return (
       <Tooltip
-        title={`Created at ${new Date(creationTimestamp).toLocaleTimeString()} on ${new Date(creationTimestamp).toDateString()}`}>
-        <Chip className={this.props.className}
-              label={`Created ${roundAndPresentDuration(durationInSeconds)} ago`}
-              avatar={
-                <Avatar style={{backgroundColor: taskStatusColor('CREATED')}}>
-                  <Icon style={{color: cirrusColors.cirrusWhite}}>{taskStatusIconName('CREATED')}</Icon>
-                </Avatar>
-              }/>
+        title={`Created at ${new Date(creationTimestamp).toLocaleTimeString()} on ${new Date(
+          creationTimestamp,
+        ).toDateString()}`}
+      >
+        <Chip
+          className={this.props.className}
+          label={`Created ${roundAndPresentDuration(durationInSeconds)} ago`}
+          avatar={
+            <Avatar style={{ backgroundColor: taskStatusColor('CREATED') }}>
+              <Icon style={{ color: cirrusColors.cirrusWhite }}>{taskStatusIconName('CREATED')}</Icon>
+            </Avatar>
+          }
+        />
       </Tooltip>
     );
   }

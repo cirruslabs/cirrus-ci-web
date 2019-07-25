@@ -1,25 +1,23 @@
 import React from 'react';
-import {commitMutation} from 'react-relay';
+import { commitMutation } from 'react-relay';
 import Paper from '@material-ui/core/Paper';
-import {withStyles} from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
-import CardActions from "@material-ui/core/CardActions";
-import CardHeader from "@material-ui/core/CardHeader";
-import environment from "../../createRelayEnvironment";
-import TextField from "@material-ui/core/TextField";
-
+import { withStyles } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+import CardActions from '@material-ui/core/CardActions';
+import CardHeader from '@material-ui/core/CardHeader';
+import environment from '../../createRelayEnvironment';
+import TextField from '@material-ui/core/TextField';
 
 const styles = theme => ({
   textField: {
-    width: "100%",
+    width: '100%',
     marginLeft: theme.spacing(1.0),
     marginRight: theme.spacing(1.0),
   },
 });
-
 
 class ApiSettingsBase extends React.Component {
   constructor(props) {
@@ -28,31 +26,26 @@ class ApiSettingsBase extends React.Component {
   }
 
   generateNewAccessToken() {
-    commitMutation(
-      environment,
-      {
-        mutation: this.props.generateNewTokenMutation,
-        variables: this.props.getMutationVariables(),
-        onCompleted: (response) => {
-          let {generateNewAccessToken} = response;
-          this.setState(prevState => ({
-            ...prevState,
-            newToken: generateNewAccessToken.token
-          }));
-        },
-        onError: err => console.error(err),
+    commitMutation(environment, {
+      mutation: this.props.generateNewTokenMutation,
+      variables: this.props.getMutationVariables(),
+      onCompleted: response => {
+        let { generateNewAccessToken } = response;
+        this.setState(prevState => ({
+          ...prevState,
+          newToken: generateNewAccessToken.token,
+        }));
       },
-    );
+      onError: err => console.error(err),
+    });
   }
 
   render() {
-    let {classes} = this.props;
+    let { classes } = this.props;
     let existingTokenComponent = null;
     if (this.state.maskedToken) {
       existingTokenComponent = (
-        <Typography variant="subtitle1">
-          Current active token: {this.state.maskedToken}
-        </Typography>
+        <Typography variant="subtitle1">Current active token: {this.state.maskedToken}</Typography>
       );
     }
     let newTokenComponent = null;
@@ -71,8 +64,7 @@ class ApiSettingsBase extends React.Component {
     }
     let cardActions = (
       <CardActions>
-        <Button variant="contained"
-                onClick={() => this.generateNewAccessToken()}>
+        <Button variant="contained" onClick={() => this.generateNewAccessToken()}>
           Generate New Token
         </Button>
       </CardActions>
@@ -82,11 +74,11 @@ class ApiSettingsBase extends React.Component {
       <div>
         <Paper elevation={1}>
           <Card>
-            <CardHeader title="API Settings"/>
+            <CardHeader title="API Settings" />
             <CardContent>
               <Typography variant="subtitle1">
-                Need an API token for scripts or testing? Generate an access token for quick access to
-                the Cirrus CI API. See <a href="https://cirrus-ci.org/faq/">documentation</a> for more details.
+                Need an API token for scripts or testing? Generate an access token for quick access to the Cirrus CI
+                API. See <a href="https://cirrus-ci.org/faq/">documentation</a> for more details.
               </Typography>
               {existingTokenComponent}
               {newTokenComponent}
@@ -99,4 +91,4 @@ class ApiSettingsBase extends React.Component {
   }
 }
 
-export default withStyles(styles)(ApiSettingsBase)
+export default withStyles(styles)(ApiSettingsBase);

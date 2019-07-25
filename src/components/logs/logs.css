@@ -1,4 +1,5 @@
-.log-line, .log-line span {
+.log-line,
+.log-line span {
   word-wrap: normal;
   font-family: Monaco, monospace;
   font-size: 12px;

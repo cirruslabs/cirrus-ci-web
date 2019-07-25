@@ -1,8 +1,8 @@
-import React from 'react'
-import classNames from 'classnames'
-import PropTypes from 'prop-types'
-import { withStyles } from '@material-ui/core/styles'
-import MuiTextField from '@material-ui/core/TextField'
+import React from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import MuiTextField from '@material-ui/core/TextField';
 
 const styles = theme => ({
   input: {
@@ -20,7 +20,7 @@ function CopyPasteField(props) {
   return (
     <MuiTextField
       onFocus={event => {
-        event.target.select()
+        event.target.select();
       }}
       InputProps={{
         ...InputProps,
@@ -29,7 +29,7 @@ function CopyPasteField(props) {
       }}
       {...other}
     />
-  )
+  );
 }
 
 CopyPasteField.propTypes = {
@@ -37,4 +37,4 @@ CopyPasteField.propTypes = {
   InputProps: PropTypes.object,
 };
 
-export default withStyles(styles)(CopyPasteField)
+export default withStyles(styles)(CopyPasteField);

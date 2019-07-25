@@ -1,7 +1,7 @@
 import React from 'react';
-import {createFragmentContainer} from 'react-relay';
+import { createFragmentContainer } from 'react-relay';
 import graphql from 'babel-plugin-relay/macro';
-import ApiSettingsBase from "./ApiSettingsBase";
+import ApiSettingsBase from './ApiSettingsBase';
 
 const generateNewTokenMutation = graphql`
   mutation UserApiSettingsMutation($input: GenerateNewAccessTokenInput!) {
@@ -11,12 +11,11 @@ const generateNewTokenMutation = graphql`
   }
 `;
 
-
 class UserApiSettings extends React.Component {
   getMutationVariables() {
     return {
       input: {
-        clientMutationId: `generate-user-api-token-${this.props.user.id}`
+        clientMutationId: `generate-user-api-token-${this.props.user.id}`,
       },
     };
   }

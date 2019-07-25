@@ -1,14 +1,14 @@
 export function navigate(router, event, url) {
   // remove save host prefix for prod or local
-  url = url.replace("https://cirrus-ci.com", "");
-  url = url.replace("http://localhost:3333/", "");
+  url = url.replace('https://cirrus-ci.com', '');
+  url = url.replace('http://localhost:3333/', '');
 
   if (event && event.metaKey) {
     window.open(url, '_blank');
-  } else if (router && !url.includes("://")) {
-    router.history.push(url)
+  } else if (router && !url.includes('://')) {
+    router.history.push(url);
   } else {
-    window.open(url, "_self");
+    window.open(url, '_self');
   }
   if (event) {
     event.stopPropagation();
@@ -16,13 +16,13 @@ export function navigate(router, event, url) {
 }
 
 export function navigateRepository(router, event, owner, name) {
-  navigate(router, event, "/github/" + owner + "/" + name)
+  navigate(router, event, '/github/' + owner + '/' + name);
 }
 
 export function navigateBuild(router, event, buildId) {
-  navigate(router, event, "/build/" + buildId)
+  navigate(router, event, '/build/' + buildId);
 }
 
 export function navigateTask(router, event, taskId) {
-  navigate(router, event, "/task/" + taskId)
+  navigate(router, event, '/task/' + taskId);
 }

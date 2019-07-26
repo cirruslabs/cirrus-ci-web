@@ -13,6 +13,9 @@ task:
       build_script: npm run build
     - name: Prettier
       prettier_check_script: npm run prettier-check
+    - name: TypeScript
+      generate_relay_types_script: npm run relay
+      typecheck_script: npm run typecheck
   on_failure:
     npm_logs_artifacts:
       path: /root/.npm/_logs/**

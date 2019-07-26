@@ -9,9 +9,26 @@ to minimize the amount of business logic.
 
 ## Development Guide
 
-* Run `node npm install -g yarn@latest` to install yarn.
-* Run `yarn install` to install all external dependencies. 
-* Run `yarn run relay` to compile all GraphQL queries and mutations.
-* Run `yarn run sync-schema` to sync the GraphQL schema.
+- Run `npm ci` to install all external dependencies.
+- Run `npm run relay` to compile all GraphQL queries and mutations.
+- Run `npm run sync-schema` to sync the GraphQL schema.
 
-After everything is installed and compiled, run `yarn run start` to start a local server. All changes will be instantly ready to view in your browser.
+After everything is installed and compiled, run `npm start` to start a local server. All changes will be instantly ready to view in your browser.
+
+## Productivity Tips
+
+### Disable Type Checking temporarely
+
+This app is written in TypeScript and whenever TypeScript finds a static type error it will display an "error overlay" in the browser which prevents you "seeing" the app even if it was compilable to JS.
+Sometimes during quick experimentation this can be annoying. 
+Therefore you can disable typechecking temporarily by running the app with: 
+```
+npm run start-untyped
+```
+
+### VS Code
+
+If you happen to use VS Code, here are some recommended extensions which work well with this app:
+- Prettier - for autoformatting
+- Visual Studio IntelliCode - provides AI based code completion
+- GraphQL (prisma.vscode-graphql)

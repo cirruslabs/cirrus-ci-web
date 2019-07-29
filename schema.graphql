@@ -143,6 +143,12 @@ type BuyComputeCreditsPayload {
   user: User
 }
 
+type DayDate {
+  day: Int
+  month: Int
+  year: Int
+}
+
 """Repository Setting to choose how to decrypt variables."""
 enum DecryptEnvironmentVariablesFor {
   EVERYONE
@@ -211,6 +217,21 @@ type GitHubOrganizationInfo {
 """Long type"""
 scalar Long
 
+type MetricsChart {
+  dataUnits: String
+  points: [TimePoint]
+  title: String
+}
+
+input MetricsQueryParameters {
+  branch: String
+  isCommunity: Boolean
+  isPR: Boolean
+  platform: PlatformType
+  status: TaskStatus
+  usedComputeCredits: Boolean
+}
+
 type Mutation {
   abortTask(input: TaskAbortInput!): TaskAbortPayload
   approve(input: BuildApproveInput!): BuildApprovePayload
@@ -274,6 +295,14 @@ enum PermissionType {
   WRITE
 }
 
+"""Task platform."""
+enum PlatformType {
+  DARWIN
+  FREEBSD
+  LINUX
+  WINDOWS
+}
+
 type Repository {
   builds(
     """fetching only nodes after this node (exclusive)"""
@@ -296,6 +325,7 @@ type Repository {
   isPrivate: Boolean!
   lastDefaultBranchBuild: Build
   masterBranch: String!
+  metrics(parameters: MetricsQueryParameters): [MetricsChart]
   name: String!
   owner: String!
   settings: RepositorySettings
@@ -497,6 +527,11 @@ input TaskTriggerInput {
 type TaskTriggerPayload {
   clientMutationId: String
   task: Task!
+}
+
+type TimePoint {
+  date: DayDate
+  value: Float
 }
 
 type User {

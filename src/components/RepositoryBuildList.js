@@ -86,6 +86,14 @@ class RepositoryBuildList extends React.Component {
       ];
     }
 
+    let repositoryMetrics = (
+      <Link to={'/metrics/repository/' + repository.owner + '/' + repository.name}>
+        <IconButton tooltip="Repository Metrics">
+          <Icon>timeline</Icon>
+        </IconButton>
+      </Link>
+    );
+
     let buildsChart = null;
 
     if (this.props.branch && builds.length > 5) {
@@ -110,7 +118,10 @@ class RepositoryBuildList extends React.Component {
               </Typography>
               {repositoryAction}
             </div>
-            {repositorySettings}
+            <div>
+              {repositoryMetrics}
+              {repositorySettings}
+            </div>
           </Toolbar>
         </Paper>
         {this.state.openCreateDialog && (

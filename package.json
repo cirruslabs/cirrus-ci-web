@@ -33,6 +33,7 @@
     "react-relay": "*",
     "react-router-dom": "*",
     "react-stripe-elements": "*",
+    "react-vis": "^1.11.7",
     "recharts": "*"
   },
   "devDependencies": {

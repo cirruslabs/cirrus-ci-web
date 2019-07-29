@@ -1,6 +1,11 @@
 import pluralize from 'pluralize';
 
 export function formatDuration(durationInSeconds) {
+  if (durationInSeconds >= 24 * 60 * 60) {
+    let hours = durationInSeconds / 60 / 60;
+    return Math.round(hours) + 'h';
+  }
+
   let formatSinglePart = value => (value < 10 ? '0' + value : value.toString());
   let duration = Math.max(0, durationInSeconds || 0);
   let seconds = Math.floor(duration % 60);

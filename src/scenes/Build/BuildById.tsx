@@ -8,11 +8,16 @@ import BuildDetails from '../../components/BuildDetails';
 import CirrusLinearProgress from '../../components/CirrusLinearProgress';
 import NotFound from '../NotFound';
 import { RouteComponentProps } from 'react-router';
+import { BuildByIdQuery } from './__generated__/BuildByIdQuery.graphql';
 
-interface Props extends RouteComponentProps {}
+interface MatchParams {
+  buildId: string;
+}
+
+interface Props extends RouteComponentProps<MatchParams> {}
 
 const BuildById = (props: Props) => (
-  <QueryRenderer
+  <QueryRenderer<BuildByIdQuery>
     environment={environment}
     variables={props.match.params}
     query={graphql`
@@ -22,7 +27,7 @@ const BuildById = (props: Props) => (
         }
       }
     `}
-    render={({ error, props }: any) => {
+    render={({ error, props }) => {
       if (!props) {
         return <CirrusLinearProgress />;
       }

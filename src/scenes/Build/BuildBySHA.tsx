@@ -7,9 +7,10 @@ import environment from '../../createRelayEnvironment';
 import BuildDetails from '../../components/BuildDetails';
 import CirrusLinearProgress from '../../components/CirrusLinearProgress';
 import NotFound from '../NotFound';
+import { BuildBySHAQuery } from './__generated__/BuildBySHAQuery.graphql';
 
 const BuildBySHA = props => (
-  <QueryRenderer
+  <QueryRenderer<BuildBySHAQuery>
     environment={environment}
     variables={props.match.params}
     query={graphql`
@@ -19,7 +20,7 @@ const BuildBySHA = props => (
         }
       }
     `}
-    render={({ error, props }: any) => {
+    render={({ error, props }) => {
       if (!props) {
         return <CirrusLinearProgress />;
       }

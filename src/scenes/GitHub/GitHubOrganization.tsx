@@ -7,13 +7,14 @@ import environment from '../../createRelayEnvironment';
 import CirrusLinearProgress from '../../components/CirrusLinearProgress';
 import GitHubOrganizationRepositoryList from '../../components/GitHubOrganizationRepositoryList';
 import { RouteComponentProps } from 'react-router';
+import { GitHubOrganizationQuery } from './__generated__/GitHubOrganizationQuery.graphql';
 
 interface Props extends RouteComponentProps<{ owner: 'owner' }> {}
 
 const GitHubOrganization = (props: Props) => {
   let organization = props.match.params.owner;
   return (
-    <QueryRenderer
+    <QueryRenderer<GitHubOrganizationQuery>
       environment={environment}
       variables={props.match.params}
       query={graphql`
@@ -26,7 +27,7 @@ const GitHubOrganization = (props: Props) => {
           }
         }
       `}
-      render={({ error, props }: any) => {
+      render={({ error, props }) => {
         if (!props) {
           return <CirrusLinearProgress />;
         }

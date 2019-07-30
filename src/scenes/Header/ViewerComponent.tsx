@@ -12,6 +12,7 @@ import Icon from '@material-ui/core/Icon';
 import { createStyles, WithStyles, withStyles } from '@material-ui/core';
 import { Theme } from '@material-ui/core';
 import classNames from 'classnames';
+import { ViewerComponentQuery } from './__generated__/ViewerComponentQuery.graphql';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -23,7 +24,7 @@ const styles = (theme: Theme) =>
 class ViewerComponent extends React.Component<WithStyles<typeof styles>> {
   render() {
     return (
-      <QueryRenderer
+      <QueryRenderer<ViewerComponentQuery>
         environment={environment}
         query={graphql`
           query ViewerComponentQuery {
@@ -33,7 +34,7 @@ class ViewerComponent extends React.Component<WithStyles<typeof styles>> {
           }
         `}
         variables={{}}
-        render={({ error, props }: any) => {
+        render={({ error, props }) => {
           if (!props) {
             return <CirrusCircularProgress />;
           }

@@ -13,8 +13,8 @@ task:
       build_script: npm run build
     - name: Prettier
       prettier_check_script: npm run prettier-check
-    - name: TypeScript
-      generate_relay_types_script: npm run relay
+    - name: Type Check
+      relay_script: npm run relay
       typecheck_script: npm run typecheck
   on_failure:
     npm_logs_artifacts:
@@ -26,6 +26,7 @@ deploy_docker_builder:
   depends_on:
     - Build
     - Prettier
+    - Type Check
   environment:
     DOCKER_USER_NAME: ENCRYPTED[5eb941ed91706fab3eb53bfd01dc3b88caee18e11f9df18b4663875f83e9e390eeb0db087278035b61bf5b24e8f96328]
     DOCKER_PASSWORD: ENCRYPTED[5e9b3eb1391a7a0cf259c41920ce60d034660cc49f0b85b2738eb53d9a537b90d0d2173d6321096facd11f5e5a9e31c3]

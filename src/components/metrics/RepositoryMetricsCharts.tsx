@@ -1,14 +1,15 @@
 import React from 'react';
 
 import { QueryRenderer } from 'react-relay';
-import graphql from 'babel-plugin-relay/macro';
+import { graphql } from 'babel-plugin-relay/macro';
 
 import environment from '../../createRelayEnvironment';
 import MetricsChart from './MetricsChart';
 import CirrusLinearProgress from '../CirrusLinearProgress';
+import { RepositoryMetricsChartsQuery } from './__generated__/RepositoryMetricsChartsQuery.graphql';
 
 const RepositoryMetricsCharts = props => (
-  <QueryRenderer
+  <QueryRenderer<RepositoryMetricsChartsQuery>
     environment={environment}
     variables={{
       repositoryId: props.repositoryId,
@@ -33,7 +34,7 @@ const RepositoryMetricsCharts = props => (
         return <CirrusLinearProgress />;
       }
       let metrics = props.repository.metrics || [];
-      let chartComponents = metrics.map(chart => <MetricsChart key={chart.__id} chart={chart} />);
+      let chartComponents = metrics.map((chart, index) => <MetricsChart key={index} chart={chart} />);
       return <div>{chartComponents}</div>;
     }}
   />

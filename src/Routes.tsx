@@ -54,6 +54,11 @@ const AsyncRepositorySettings = Loadable({
   loading: LoadingComponent,
 });
 
+const AsyncRepositoryMetrics = Loadable({
+  loader: () => import('./scenes/RepositoryMetrics/RepositoryMetrics'),
+  loading: LoadingComponent,
+});
+
 const AsyncTask = Loadable({
   loader: () => import('./scenes/Task/Task'),
   loading: LoadingComponent,
@@ -294,6 +299,12 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                 />
                 <Route exact path="/github" component={AsyncGitHub} props={this.props} />
                 <Route exact path="/repository/:repositoryId/:branch*" component={AsyncRepository} props={this.props} />
+                <Route
+                  exact
+                  path="/metrics/repository/:owner/:name"
+                  component={AsyncRepositoryMetrics}
+                  props={this.props}
+                />
                 <Route exact path="/task/:taskId" component={AsyncTask} props={this.props} />
                 <Route exact path="/:owner/:name/:branch*" component={AsyncGitHubRepository} props={this.props} />
                 <Route component={NotFound} props={this.props} />

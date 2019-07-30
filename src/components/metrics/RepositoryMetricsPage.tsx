@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
+import { graphql } from 'babel-plugin-relay/macro';
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import { createFragmentContainer } from 'react-relay';
-import graphql from 'babel-plugin-relay/macro';
-import { withStyles } from '@material-ui/core';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core';
 import RepositoryMetricsCharts from './RepositoryMetricsCharts';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -14,26 +14,39 @@ import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import { RouteComponentProps } from 'react-router';
+import { RepositoryMetricsPage_repository } from './__generated__/RepositoryMetricsPage_repository.graphql';
+import { MetricsQueryParameters } from './__generated__/RepositoryMetricsChartsQuery.graphql';
 
-const styles = theme => ({
-  title: { 'text-align': 'center' },
-  settingGap: {
-    paddingTop: 16,
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 180,
-  },
-});
+const styles = theme =>
+  createStyles({
+    title: { 'text-align': 'center' },
+    settingGap: {
+      paddingTop: 16,
+    },
+    formControl: {
+      margin: theme.spacing(1),
+      minWidth: 180,
+    },
+  });
 
-class RepositoryMetricsPage extends React.Component {
+interface Props extends RouteComponentProps<{}>, WithStyles<typeof styles> {
+  repository: RepositoryMetricsPage_repository;
+}
+
+interface State {
+  parameters: MetricsQueryParameters;
+}
+
+class RepositoryMetricsPage extends React.Component<Props, State> {
   static contextTypes = {
     router: PropTypes.object,
   };
 
-  state = {
-    parameters: {},
-  };
+  constructor(props: Props) {
+    super(props);
+    this.state = { parameters: {} };
+  }
 
   handleChange(event) {
     this.setState(oldState => ({
@@ -47,7 +60,6 @@ class RepositoryMetricsPage extends React.Component {
 
   render() {
     let { classes } = this.props;
-
     let repository = this.props.repository;
 
     return (
@@ -62,7 +74,7 @@ class RepositoryMetricsPage extends React.Component {
                 <FormControl className={classes.formControl}>
                   <InputLabel htmlFor="platform-helper">Platform</InputLabel>
                   <Select
-                    value={this.state.parameters.platform || ''}
+                    value={(this.state.parameters || {}).platform || ''}
                     onChange={event => this.handleChange(event)}
                     input={<Input name="platform" id="platform-helper" />}
                   >
@@ -78,7 +90,7 @@ class RepositoryMetricsPage extends React.Component {
                 <FormControl className={classes.formControl}>
                   <InputLabel htmlFor="status-helper">Task Status</InputLabel>
                   <Select
-                    value={this.state.parameters.status || ''}
+                    value={(this.state.parameters || {}).status || ''}
                     onChange={event => this.handleChange(event)}
                     input={<Input name="status" id="status-helper" />}
                   >
@@ -92,27 +104,27 @@ class RepositoryMetricsPage extends React.Component {
                 <FormControl className={classes.formControl}>
                   <InputLabel htmlFor="pr-helper">Pull Request</InputLabel>
                   <Select
-                    value={this.state.parameters.isPR || ''}
+                    value={(this.state.parameters || {}).isPR || ''}
                     onChange={event => this.handleChange(event)}
                     input={<Input name="isPR" id="pr-helper" />}
                   >
                     <MenuItem value="">
                       <em>All Tasks</em>
                     </MenuItem>
-                    <MenuItem value={true}>PR Tasks Only</MenuItem>
-                    <MenuItem value={false}>Non-PR Tasks Only</MenuItem>
+                    <MenuItem value="true">PR Tasks Only</MenuItem>
+                    <MenuItem value="false">Non-PR Tasks Only</MenuItem>
                   </Select>
                 </FormControl>
                 <FormControl className={classes.formControl}>
                   <InputLabel htmlFor="compute-credits-helper">Compute Credits</InputLabel>
                   <Select
-                    value={this.state.parameters.usedComputeCredits || ''}
+                    value={(this.state.parameters || {}).usedComputeCredits || ''}
                     onChange={event => this.handleChange(event)}
                     input={<Input name="usedComputeCredits" id="compute-credits-helper" />}
                   >
                     <MenuItem value="" />
-                    <MenuItem value={true}>Used</MenuItem>
-                    <MenuItem value={false}>Not Used</MenuItem>
+                    <MenuItem value="true">Used</MenuItem>
+                    <MenuItem value="false">Not Used</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -122,7 +134,7 @@ class RepositoryMetricsPage extends React.Component {
         <div className={classes.settingGap} />
         <RepositoryMetricsCharts
           repositoryId={repository.id}
-          parameters={cleanEmptyOrNullValues(this.state.parameters || {})}
+          parameters={cleanEmptyOrNullValues(this.state.parameters || {} || {})}
         />
       </div>
     );

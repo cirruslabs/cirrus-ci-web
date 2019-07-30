@@ -1,6 +1,10 @@
-import { cirrusColors } from './../cirrusTheme';
+import { cirrusColors } from '../cirrusTheme';
+import { BuildStatus } from '../components/chips/__generated__/BuildStatusChip_build.graphql';
+import { TaskStatus } from '../components/chips/__generated__/TaskStatusChip_task.graphql';
+import { TaskCommandStatus } from '../components/__generated__/TaskCommandList_task.graphql';
+import { NotificationLevel } from '../components/__generated__/Notification_notification.graphql';
 
-export function buildStatusColor(status) {
+export function buildStatusColor(status: BuildStatus) {
   switch (status) {
     case 'CREATED':
       return cirrusColors.initialization;
@@ -17,7 +21,7 @@ export function buildStatusColor(status) {
   }
 }
 
-export function taskStatusColor(status) {
+export function taskStatusColor(status: TaskStatus) {
   switch (status) {
     case 'CREATED':
       return cirrusColors.lightInitialization;
@@ -40,7 +44,7 @@ export function taskStatusColor(status) {
   }
 }
 
-export function faviconColor(status) {
+export function faviconColor(status: BuildStatus | TaskStatus) {
   switch (status) {
     case 'COMPLETED':
       return cirrusColors.darkSuccess;
@@ -60,7 +64,7 @@ export function faviconColor(status) {
   }
 }
 
-export function commandStatusColor(status) {
+export function commandStatusColor(status: TaskCommandStatus) {
   switch (status) {
     case 'SUCCESS':
       return cirrusColors.lightSuccess;
@@ -77,7 +81,7 @@ export function commandStatusColor(status) {
   }
 }
 
-export function notificationColor(level) {
+export function notificationColor(level: NotificationLevel) {
   switch (level) {
     case 'INFO':
       return cirrusColors.success;

@@ -5,7 +5,6 @@ import { graphql } from 'babel-plugin-relay/macro';
 
 import environment from '../../createRelayEnvironment';
 import CirrusLinearProgress from '../../components/CirrusLinearProgress';
-import { Typography } from '@material-ui/core';
 import GitHubOrganizationSettings from '../../components/settings/GitHubOrganizationSettings';
 import { RouteComponentProps } from 'react-router';
 import { GitHubOrganizationSettingsRendererQuery } from './__generated__/GitHubOrganizationSettingsRendererQuery.graphql';

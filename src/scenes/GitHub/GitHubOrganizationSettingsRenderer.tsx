@@ -6,10 +6,7 @@ import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
 import CirrusLinearProgress from '../../components/CirrusLinearProgress';
 import GitHubOrganizationSettings from '../../components/settings/GitHubOrganizationSettings';
-import { RouteComponentProps } from 'react-router';
 import { GitHubOrganizationSettingsRendererQuery } from './__generated__/GitHubOrganizationSettingsRendererQuery.graphql';
-
-interface Props extends RouteComponentProps<{ organization: 'organization' }> {}
 
 const GitHubOrganizationSettingsRenderer = props => {
   let organization = props.match.params.organization;

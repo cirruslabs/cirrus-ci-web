@@ -102,9 +102,11 @@ class RepositoryBuildList extends React.Component<Props, State> {
 
     let repositoryMetrics = (
       <Link to={'/metrics/repository/' + repository.owner + '/' + repository.name}>
-        <IconButton tooltip="Repository Metrics">
-          <Icon>timeline</Icon>
-        </IconButton>
+        <Tooltip title="Repository Metrics">
+          <IconButton>
+            <Icon>timeline</Icon>
+          </IconButton>
+        </Tooltip>
       </Link>
     );
 

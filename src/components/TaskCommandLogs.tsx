@@ -11,10 +11,7 @@ import { Tooltip, withStyles, WithStyles, createStyles } from '@material-ui/core
 import Icon from '@material-ui/core/Icon';
 import Fab from '@material-ui/core/Fab';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import {
-  TaskCommandLogsTailQuery,
-  TaskCommandLogsTailQueryResponse,
-} from './__generated__/TaskCommandLogsTailQuery.graphql';
+import { TaskCommandLogsTailQuery } from './__generated__/TaskCommandLogsTailQuery.graphql';
 
 function logURL(taskId, command) {
   return 'https://api.cirrus-ci.com/v1/task/' + taskId + '/logs/' + command.name + '.log';

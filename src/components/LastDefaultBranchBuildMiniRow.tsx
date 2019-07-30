@@ -75,8 +75,8 @@ class LastDefaultBranchBuildRow extends React.Component<Props> {
       >
         <TableCell style={{ padding: 0 }}>
           <div className="d-flex justify-content-between">
-            <RepositoryNameChip repository={repository as any} className={classes.chip} />
-            <BuildStatusChip build={build as any} mini={true} className={classes.chip} />
+            <RepositoryNameChip repository={repository} className={classes.chip} />
+            <BuildStatusChip build={build} mini={true} className={classes.chip} />
           </div>
           <div className={classes.message}>
             <Typography variant="body1" color="inherit">
@@ -103,7 +103,9 @@ export default createFragmentContainer(withRouter(withStyles(styles)(LastDefault
         durationInSeconds
         status
         changeTimestamp
+        ...BuildStatusChip_build
       }
+      ...RepositoryNameChip_repository
     }
   `,
 });

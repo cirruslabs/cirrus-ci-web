@@ -11,6 +11,10 @@ import { Tooltip, withStyles, WithStyles, createStyles } from '@material-ui/core
 import Icon from '@material-ui/core/Icon';
 import Fab from '@material-ui/core/Fab';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
+import {
+  TaskCommandLogsTailQuery,
+  TaskCommandLogsTailQueryResponse,
+} from './__generated__/TaskCommandLogsTailQuery.graphql';
 
 function logURL(taskId, command) {
   return 'https://api.cirrus-ci.com/v1/task/' + taskId + '/logs/' + command.name + '.log';
@@ -33,7 +37,7 @@ interface Props extends WithStyles<typeof styles> {
     name: string;
     status: unknown;
   };
-  initialLogLines: unknown[];
+  initialLogLines: string[];
 }
 
 interface State {
@@ -112,7 +116,7 @@ interface TaskCommandLogsProps extends RouteComponentProps, WithStyles<typeof st
 class TaskCommandLogs extends React.Component<TaskCommandLogsProps> {
   render() {
     return (
-      <QueryRenderer
+      <QueryRenderer<TaskCommandLogsTailQuery>
         environment={environment}
         variables={{ taskId: this.props.taskId, commandName: this.props.command.name }}
         query={graphql`
@@ -122,7 +126,7 @@ class TaskCommandLogs extends React.Component<TaskCommandLogsProps> {
             }
           }
         `}
-        render={({ error, props }: any) => {
+        render={({ error, props }) => {
           if (!props) {
             return (
               <div style={{ width: '100%', minHeight: 100 }}>
@@ -132,7 +136,9 @@ class TaskCommandLogs extends React.Component<TaskCommandLogsProps> {
               </div>
             );
           }
-          return <TaskCommandRealTimeLogs initialLogLines={props.task.commandLogsTail || []} {...this.props} />;
+          return (
+            <TaskCommandRealTimeLogs initialLogLines={(props.task.commandLogsTail || []).concat()} {...this.props} />
+          );
         }}
       />
     );

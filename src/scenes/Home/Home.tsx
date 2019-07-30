@@ -10,9 +10,10 @@ import FormGroup from '@material-ui/core/FormGroup';
 import Paper from '@material-ui/core/Paper';
 import Toolbar from '@material-ui/core/Toolbar';
 import ReactMarkdown from 'react-markdown';
+import { HomeViewerQuery } from './__generated__/HomeViewerQuery.graphql';
 
 const Home = props => (
-  <QueryRenderer
+  <QueryRenderer<HomeViewerQuery>
     environment={environment}
     query={graphql`
       query HomeViewerQuery {
@@ -22,7 +23,7 @@ const Home = props => (
       }
     `}
     variables={{}}
-    render={({ error, props }: any) => {
+    render={({ error, props }) => {
       if (!props) {
         return <CirrusLinearProgress />;
       }

@@ -7,11 +7,12 @@ import environment from '../../createRelayEnvironment';
 import CirrusLinearProgress from '../../components/CirrusLinearProgress';
 import { Typography } from '@material-ui/core';
 import UserProfile from '../../components/UserProfile';
+import { ViewerProfileQuery } from './__generated__/ViewerProfileQuery.graphql';
 
 class ViewerProfile extends React.Component {
   render() {
     return (
-      <QueryRenderer
+      <QueryRenderer<ViewerProfileQuery>
         environment={environment}
         query={graphql`
           query ViewerProfileQuery {
@@ -21,7 +22,7 @@ class ViewerProfile extends React.Component {
           }
         `}
         variables={{}}
-        render={({ error, props }: any) => {
+        render={({ error, props }) => {
           if (!props) {
             return <CirrusLinearProgress />;
           }

@@ -7,9 +7,10 @@ import environment from '../../createRelayEnvironment';
 import CirrusLinearProgress from '../../components/CirrusLinearProgress';
 import RepositorySettingsPage from '../../components/RepositorySettingsPage';
 import NotFound from '../NotFound';
+import { RepositorySettingsQuery } from './__generated__/RepositorySettingsQuery.graphql';
 
 const RepositorySettings = props => (
-  <QueryRenderer
+  <QueryRenderer<RepositorySettingsQuery>
     environment={environment}
     variables={props.match.params}
     query={graphql`
@@ -19,7 +20,7 @@ const RepositorySettings = props => (
         }
       }
     `}
-    render={({ error, props }: any) => {
+    render={({ error, props }) => {
       if (!props) {
         return <CirrusLinearProgress />;
       }

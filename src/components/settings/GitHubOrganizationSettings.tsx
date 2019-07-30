@@ -36,7 +36,12 @@ class GitHubOrganizationSettings extends React.Component<Props> {
   };
 
   render() {
-    let { organization, classes } = this.props;
+    let { organization, info, classes } = this.props;
+
+    if (info || info.role === 'none') {
+      return <Typography variant="subtitle1">You do not have administrator access on this organization!</Typography>;
+    }
+
     return (
       <div>
         <Paper elevation={1}>
@@ -48,23 +53,23 @@ class GitHubOrganizationSettings extends React.Component<Props> {
         </Paper>
         <div className={classes.settingGap} />
         <Paper elevation={1}>
-          <GitHubPurchase info={this.props.info} />
+          <GitHubPurchase info={info} />
         </Paper>
         <div className={classes.settingGap} />
         <Paper elevation={1}>
-          <OrganizationComputeCredits info={this.props.info} />
+          <OrganizationComputeCredits info={info} />
         </Paper>
         <div className={classes.settingGap} />
         <Paper elevation={1}>
-          <OrganizationSecuredVariables info={this.props.info} />
+          <OrganizationSecuredVariables info={info} />
         </Paper>
         <div className={classes.settingGap} />
         <Paper elevation={1}>
-          <OrganizationApiSettings info={this.props.info} />
+          <OrganizationApiSettings info={info} />
         </Paper>
         <div className={classes.settingGap} />
         <Paper elevation={1}>
-          <WebHookSettings info={this.props.info} />
+          <WebHookSettings info={info} />
         </Paper>
         <div className={classes.settingGap} />
       </div>
@@ -76,6 +81,7 @@ export default createFragmentContainer(withRouter(withStyles(styles)(GitHubOrgan
   info: graphql`
     fragment GitHubOrganizationSettings_info on GitHubOrganizationInfo {
       name
+      role
       ...GitHubPurchase_info
       ...OrganizationComputeCredits_info
       ...OrganizationApiSettings_info

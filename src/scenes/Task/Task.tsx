@@ -7,9 +7,10 @@ import environment from '../../createRelayEnvironment';
 import TaskDetails from '../../components/TaskDetails';
 import CirrusLinearProgress from '../../components/CirrusLinearProgress';
 import NotFound from '../NotFound';
+import { TaskQuery } from './__generated__/TaskQuery.graphql';
 
 const Task = props => (
-  <QueryRenderer
+  <QueryRenderer<TaskQuery>
     environment={environment}
     variables={props.match.params}
     query={graphql`
@@ -19,7 +20,7 @@ const Task = props => (
         }
       }
     `}
-    render={({ error, props }: any) => {
+    render={({ error, props }) => {
       if (!props) {
         return <CirrusLinearProgress />;
       }

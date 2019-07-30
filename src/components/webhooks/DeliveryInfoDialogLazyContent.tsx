@@ -6,11 +6,12 @@ import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
 import CirrusLinearProgress from '../../components/CirrusLinearProgress';
 import DeliveryInfoDialogContent from './DeliveryInfoDialogContent';
+import { DeliveryInfoDialogLazyContentQuery } from './__generated__/DeliveryInfoDialogLazyContentQuery.graphql';
 
 const DeliveryInfoDialogLazyContent = props => {
   let deliveryId = props.deliveryId;
   return (
-    <QueryRenderer
+    <QueryRenderer<DeliveryInfoDialogLazyContentQuery>
       environment={environment}
       variables={{ deliveryId: deliveryId }}
       query={graphql`
@@ -31,7 +32,7 @@ const DeliveryInfoDialogLazyContent = props => {
           }
         }
       `}
-      render={({ error, props }: any) => {
+      render={({ error, props }) => {
         if (!props) {
           return <CirrusLinearProgress />;
         }

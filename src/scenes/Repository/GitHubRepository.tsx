@@ -8,11 +8,12 @@ import ReactMarkdown from 'react-markdown';
 import RepositoryBuildList from '../../components/RepositoryBuildList';
 import CirrusLinearProgress from '../../components/CirrusLinearProgress';
 import NotFound from '../NotFound';
+import { GitHubRepositoryQuery } from './__generated__/GitHubRepositoryQuery.graphql';
 
 const Repository = props => {
   let branch = props.match.params.branch;
   return (
-    <QueryRenderer
+    <QueryRenderer<GitHubRepositoryQuery>
       environment={environment}
       variables={props.match.params}
       query={graphql`
@@ -22,7 +23,7 @@ const Repository = props => {
           }
         }
       `}
-      render={({ error, props }: any) => {
+      render={({ error, props }) => {
         if (!props) {
           return <CirrusLinearProgress />;
         }

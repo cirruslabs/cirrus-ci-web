@@ -7,6 +7,7 @@ import environment from '../../createRelayEnvironment';
 import CirrusLinearProgress from '../../components/CirrusLinearProgress';
 import ViewerTopActiveRepositories from '../../components/ViewerTopActiveRepositories';
 import { Typography } from '@material-ui/core';
+import { ViewerTopRepositoriesQuery } from './__generated__/ViewerTopRepositoriesQuery.graphql';
 
 interface Props {
   className?: string;
@@ -15,7 +16,7 @@ interface Props {
 class ViewerTopRepositories extends React.Component<Props> {
   render() {
     return (
-      <QueryRenderer
+      <QueryRenderer<ViewerTopRepositoriesQuery>
         environment={environment}
         query={graphql`
           query ViewerTopRepositoriesQuery {
@@ -25,7 +26,7 @@ class ViewerTopRepositories extends React.Component<Props> {
           }
         `}
         variables={{}}
-        render={({ error, props }: any) => {
+        render={({ error, props }) => {
           if (!props) {
             return <CirrusLinearProgress />;
           }

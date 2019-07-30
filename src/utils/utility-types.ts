@@ -13,3 +13,8 @@ export type NodeOfConnection<T> = T extends {
 export interface UnspecifiedCallbackFunction {
   (...args: any[]): any;
 }
+
+export interface QueryRendererResponse<R> {
+  error: Error | null;
+  props: R | null;
+}

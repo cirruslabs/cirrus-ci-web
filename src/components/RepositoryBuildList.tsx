@@ -22,6 +22,8 @@ import Icon from '@material-ui/core/Icon';
 import classNames from 'classnames';
 import CreateBuildDialog from './CreateBuildDialog';
 import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildList_repository.graphql';
+import { NodeOfConnection } from '../utils/utility-types';
+import { createLinkToRepository } from '../utils/github';
 
 let styles = createStyles({
   gap: {
@@ -53,7 +55,7 @@ interface Props extends RouteComponentProps, WithStyles<typeof styles> {
 }
 
 interface State {
-  selectedBuildId: number;
+  selectedBuildId?: string;
   openCreateDialog: boolean;
 }
 
@@ -66,7 +68,7 @@ class RepositoryBuildList extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      selectedBuildId: 0,
+      selectedBuildId: null,
       openCreateDialog: false,
     };
   }
@@ -87,17 +89,19 @@ class RepositoryBuildList extends React.Component<Props, State> {
           </Link>
         </Tooltip>
       );
-      repositoryAction = [
-        <div key="create-build-gap" className={classes.horizontalGap} />,
-        <Tooltip title="Create Build">
-          <IconButton
-            key="create-build-button"
-            onClick={() => this.setState(prevState => ({ ...prevState, openCreateDialog: true }))}
-          >
-            <Icon>add_circle</Icon>
-          </IconButton>
-        </Tooltip>,
-      ];
+      repositoryAction = (
+        <>
+          <div key="create-build-gap" className={classes.horizontalGap} />
+          <Tooltip title="Create Build">
+            <IconButton
+              key="create-build-button"
+              onClick={() => this.setState(prevState => ({ ...prevState, openCreateDialog: true }))}
+            >
+              <Icon>add_circle</Icon>
+            </IconButton>
+          </Tooltip>
+        </>
+      );
     }
 
     let repositoryMetrics = (
@@ -110,9 +114,13 @@ class RepositoryBuildList extends React.Component<Props, State> {
       </Link>
     );
 
-    const repositoryLink = (
+    const repositoryLinkButton = (
       <Tooltip title="Open in GitHub">
-        <IconButton href={repoToLink(repository, this.props.branch)} target="_blank" rel="noopener noreferrer">
+        <IconButton
+          href={createLinkToRepository(repository, this.props.branch)}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <Icon className={classNames('fa', 'fa-github')} />
         </IconButton>
       </Tooltip>
@@ -144,7 +152,7 @@ class RepositoryBuildList extends React.Component<Props, State> {
             </div>
             <div>
               {repositoryMetrics}
-              {repositoryLink}
+              {repositoryLinkButton}
               {repositorySettings}
             </div>
           </Toolbar>
@@ -167,7 +175,7 @@ class RepositoryBuildList extends React.Component<Props, State> {
     );
   }
 
-  buildItem(build) {
+  buildItem(build: NodeOfConnection<RepositoryBuildList_repository['builds']>) {
     let { classes } = this.props;
     let isSelectedBuild = this.state.selectedBuildId === build.id;
     return (

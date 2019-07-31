@@ -12,6 +12,7 @@ import Icon from '@material-ui/core/Icon';
 import Fab from '@material-ui/core/Fab';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { TaskCommandLogsTailQuery } from './__generated__/TaskCommandLogsTailQuery.graphql';
+import { TaskCommandStatus } from './__generated__/TaskCommandList_task.graphql';
 
 function logURL(taskId, command) {
   return 'https://api.cirrus-ci.com/v1/task/' + taskId + '/logs/' + command.name + '.log';
@@ -28,24 +29,24 @@ let styles = theme =>
     },
   });
 
-interface Props extends WithStyles<typeof styles> {
+interface RealTimeLogsProps extends WithStyles<typeof styles> {
   taskId: string;
   command: {
     name: string;
-    status: unknown;
+    status: TaskCommandStatus;
   };
-  initialLogLines: string[];
+  initialLogLines: ReadonlyArray<string>;
 }
 
-interface State {
+interface RealTimeLogsState {
   realTimeLogs: boolean;
   additionalLogs: string;
 }
 
-class TaskCommandRealTimeLogs extends React.Component<Props, State> {
+class TaskCommandRealTimeLogs extends React.Component<RealTimeLogsProps, RealTimeLogsState> {
   subscriptionClosable?: ReturnType<typeof subscribeTaskCommandLogs>;
 
-  constructor(props: Props) {
+  constructor(props: RealTimeLogsProps) {
     super(props);
     this.subscriptionClosable = null;
     this.state = {
@@ -106,7 +107,7 @@ interface TaskCommandLogsProps extends RouteComponentProps, WithStyles<typeof st
   taskId: string;
   command: {
     name: string;
-    status: unknown;
+    status: TaskCommandStatus;
   };
 }
 
@@ -133,9 +134,7 @@ class TaskCommandLogs extends React.Component<TaskCommandLogsProps> {
               </div>
             );
           }
-          return (
-            <TaskCommandRealTimeLogs initialLogLines={(props.task.commandLogsTail || []).concat()} {...this.props} />
-          );
+          return <TaskCommandRealTimeLogs initialLogLines={props.task.commandLogsTail || []} {...this.props} />;
         }}
       />
     );

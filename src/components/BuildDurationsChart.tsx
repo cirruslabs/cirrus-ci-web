@@ -18,7 +18,7 @@ const BuildDurationsChartTooltip = props => {
 
 interface Props extends RouteComponentProps {
   builds: NodeOfConnection<RepositoryBuildList_repository['builds']>[];
-  selectedBuildId: number;
+  selectedBuildId: string;
   onSelectBuildId: UnspecifiedCallbackFunction;
 }
 

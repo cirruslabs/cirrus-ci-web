@@ -30,8 +30,7 @@ class ViewerTopActiveRepositories extends React.Component<Props> {
     return (
       <Table style={{ tableLayout: 'auto' }}>
         <TableBody>
-          {repositories &&
-            repositories.map((repo: any) => <LastDefaultBranchBuildMiniRow key={repo.id} repository={repo} />)}
+          {repositories && repositories.map(repo => <LastDefaultBranchBuildMiniRow key={repo.id} repository={repo} />)}
         </TableBody>
       </Table>
     );
@@ -42,6 +41,7 @@ export default createFragmentContainer(withRouter(withStyles(styles)(ViewerTopAc
   viewer: graphql`
     fragment ViewerTopActiveRepositories_viewer on User {
       topActiveRepositories {
+        id
         ...LastDefaultBranchBuildMiniRow_repository
       }
     }

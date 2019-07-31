@@ -17,6 +17,7 @@ import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import * as queryString from 'query-string';
 import { TaskCommandList_task } from './__generated__/TaskCommandList_task.graphql';
+import { ItemOfArray } from '../utils/utility-types';
 
 const styles = {
   details: {
@@ -26,7 +27,6 @@ const styles = {
 
 interface Props extends RouteComponentProps, WithStyles<typeof styles> {
   task: TaskCommandList_task;
-  commands: unknown;
 }
 
 class TaskCommandList extends React.Component<Props> {
@@ -48,7 +48,7 @@ class TaskCommandList extends React.Component<Props> {
     return <div>{commandComponents}</div>;
   }
 
-  commandItem(command, commandStartTimestamp) {
+  commandItem(command: ItemOfArray<TaskCommandList_task['commands']>, commandStartTimestamp: number) {
     let { classes } = this.props;
     const selectedCommandName = queryString.parse(this.props.location.search).command;
     let styles = {

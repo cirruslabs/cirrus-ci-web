@@ -298,7 +298,7 @@ class TaskDetails extends React.Component<Props> {
         {allOtherRuns}
         <div className={classes.gap} />
         <Paper elevation={2}>
-          <TaskCommandList task={task} commands={(task as any).commands} />
+          <TaskCommandList task={task} />
         </Paper>
         <div className={classes.gap} />
       </div>

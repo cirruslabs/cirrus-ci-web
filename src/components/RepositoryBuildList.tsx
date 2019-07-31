@@ -110,6 +110,14 @@ class RepositoryBuildList extends React.Component<Props, State> {
       </Link>
     );
 
+    const repositoryLink = (
+      <Tooltip title="Open in GitHub">
+        <IconButton href={repoToLink(repository, this.props.branch)} target="_blank" rel="noopener noreferrer">
+          <Icon className={classNames('fa', 'fa-github')} />
+        </IconButton>
+      </Tooltip>
+    );
+
     let buildsChart = null;
 
     if (this.props.branch && builds.length > 5) {
@@ -136,6 +144,7 @@ class RepositoryBuildList extends React.Component<Props, State> {
             </div>
             <div>
               {repositoryMetrics}
+              {repositoryLink}
               {repositorySettings}
             </div>
           </Toolbar>

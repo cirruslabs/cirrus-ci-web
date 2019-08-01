@@ -6,7 +6,11 @@ const { Environment, Network, RecordSource, Store } = require('relay-runtime');
  * See RelayNetwork.js:43 for details how it used in Relay
  */
 function subscription(operation, variables, cacheConfig, config) {
-  if (variables['taskID'] && operation.text.indexOf('commands') > 0) {
+  if (operation.text.indexOf('Details') > 0) {
+    // todo: remove once https://github.com/cirruslabs/cirrus-ci-web/issues/88 is fixed
+    // temporary workaround for polling subscription for *Details components
+    return pollingSubscription(operation, variables, cacheConfig, config);
+  } else if (variables['taskID'] && operation.text.indexOf('commands') > 0) {
     let taskSubscriptionDisposer = webSocketSubscription(
       'TASK',
       variables['taskID'],
@@ -48,6 +52,9 @@ function subscription(operation, variables, cacheConfig, config) {
 }
 
 function pollingSubscription(operation, variables, cacheConfig, config) {
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Polling subscription', operation, variables);
+  }
   let { onError, onNext } = config;
 
   let intervalId = setInterval(() => {
@@ -65,6 +72,9 @@ function pollingSubscription(operation, variables, cacheConfig, config) {
 }
 
 function webSocketSubscription(kind, id, operation, variables, cacheConfig, config) {
+  if (process.env.NODE_ENV === 'development') {
+    console.log('WS subscription to ' + kind + '/' + id);
+  }
   let { onError, onNext } = config;
 
   let dispose = subscribeObjectUpdates(kind, id, () => {

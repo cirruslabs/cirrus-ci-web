@@ -11,6 +11,7 @@ import { withStyles } from '@material-ui/core';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { BuildBranchNameChip_build } from './__generated__/BuildBranchNameChip_build.graphql';
+import { shorten } from '../../utils/text';
 
 interface Props extends RouteComponentProps {
   className?: string;
@@ -27,7 +28,7 @@ class BuildBranchNameChip extends React.Component<Props> {
     return (
       <Chip
         className={this.props.className}
-        label={build.branch}
+        label={shorten(build.branch)}
         avatar={
           <Avatar style={{ background: cirrusColors.cirrusPrimary }}>
             <Icon style={{ color: cirrusColors.cirrusWhite }}>call_split</Icon>

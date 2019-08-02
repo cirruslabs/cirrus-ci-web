@@ -29,7 +29,16 @@ interface Props extends RouteComponentProps, WithStyles<typeof styles> {
   task: TaskCommandList_task;
 }
 
-class TaskCommandList extends React.Component<Props> {
+interface State {
+  userChosenCommandExpansionState: { [taskName: string]: boolean };
+}
+
+class TaskCommandList extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = { userChosenCommandExpansionState: {} };
+  }
+
   static contextTypes = {
     router: PropTypes.object,
   };
@@ -48,6 +57,15 @@ class TaskCommandList extends React.Component<Props> {
     return <div>{commandComponents}</div>;
   }
 
+  setUserChosenCommandExpansionState(commandName: string, expanded: boolean) {
+    this.setState({
+      userChosenCommandExpansionState: {
+        ...this.state.userChosenCommandExpansionState,
+        [commandName]: expanded,
+      },
+    });
+  }
+
   commandItem(command: ItemOfArray<TaskCommandList_task['commands']>, commandStartTimestamp: number) {
     let { classes } = this.props;
     const selectedCommandName = queryString.parse(this.props.location.search).command;
@@ -58,12 +76,18 @@ class TaskCommandList extends React.Component<Props> {
     };
     let finished = command.durationInSeconds > 0 || isTaskCommandFinalStatus(command.status);
     let expandable = command.name === selectedCommandName || finished || !isTaskFinalStatus(this.props.task.status);
+
+    const isCommandExpanded = this.state.userChosenCommandExpansionState.hasOwnProperty(command.name)
+      ? this.state.userChosenCommandExpansionState[command.name]
+      : command.name === selectedCommandName || command.status === 'FAILURE' || command.status === 'EXECUTING';
+
     return (
       <ExpansionPanel
         key={command.name}
         TransitionProps={{ unmountOnExit: true, timeout: 400 }}
         disabled={!expandable}
-        defaultExpanded={command.name === selectedCommandName || command.status === 'FAILURE'}
+        onChange={() => this.setUserChosenCommandExpansionState(command.name, !isCommandExpanded)}
+        expanded={isCommandExpanded}
       >
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} style={styles.header}>
           <div>

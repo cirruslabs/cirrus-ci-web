@@ -38,7 +38,7 @@ class GitHubOrganizationSettings extends React.Component<Props> {
   render() {
     let { organization, info, classes } = this.props;
 
-    if (info || info.role === 'none') {
+    if (!info || info.role === 'none') {
       return <Typography variant="subtitle1">You do not have administrator access on this organization!</Typography>;
     }
 

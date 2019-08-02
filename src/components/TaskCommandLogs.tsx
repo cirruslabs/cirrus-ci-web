@@ -7,10 +7,10 @@ import CirrusLinearProgress from './CirrusLinearProgress';
 import { subscribeTaskCommandLogs } from '../rtu/ConnectionManager';
 import CirrusCircularProgress from './CirrusCircularProgress';
 import { isTaskCommandFinalStatus } from '../utils/status';
-import { Tooltip, withStyles, WithStyles, createStyles } from '@material-ui/core';
+import { createStyles, Tooltip, WithStyles, withStyles } from '@material-ui/core';
 import Icon from '@material-ui/core/Icon';
 import Fab from '@material-ui/core/Fab';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { TaskCommandLogsTailQuery } from './__generated__/TaskCommandLogsTailQuery.graphql';
 import { TaskCommandStatus } from './__generated__/TaskCommandList_task.graphql';
 
@@ -58,10 +58,13 @@ class TaskCommandRealTimeLogs extends React.Component<RealTimeLogsProps, RealTim
   componentDidMount() {
     if (!this.state.realTimeLogs) return;
     this.subscriptionClosable = subscribeTaskCommandLogs(this.props.taskId, this.props.command.name, newLogs => {
-      this.setState(prevState => ({
-        ...prevState,
-        additionalLogs: prevState.additionalLogs + newLogs,
-      }));
+      // can be an object on a websocket reconnect
+      if (typeof newLogs === 'string' || newLogs instanceof String) {
+        this.setState(prevState => ({
+          ...prevState,
+          additionalLogs: prevState.additionalLogs + newLogs,
+        }));
+      }
     });
   }
 

@@ -72,7 +72,7 @@ class TaskCommandList extends React.Component<Props> {
               {finished ? (
                 formatDuration(command.durationInSeconds)
               ) : isTaskCommandExecuting(command.status) ? (
-                <DurationTicker timestamp={commandStartTimestamp} />
+                <DurationTicker startTimestamp={commandStartTimestamp} />
               ) : (
                 ''
               )}

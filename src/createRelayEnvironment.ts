@@ -1,12 +1,17 @@
 import { subscribeObjectUpdates } from './rtu/ConnectionManager';
 
-const { Environment, Network, RecordSource, Store } = require('relay-runtime');
+import { Environment, Network, RecordSource, Store, SubscribeFunction } from 'relay-runtime';
 
 /**
  * See RelayNetwork.js:43 for details how it used in Relay
  */
-function subscription(operation, variables, cacheConfig, config) {
-  if (variables['taskID'] && operation.text.indexOf('commands') > 0) {
+const subscription: SubscribeFunction = function subscription(operation, variables, cacheConfig, config) {
+  // debugger;
+  if (operation.text.includes('Details')) {
+    // todo: remove once https://github.com/cirruslabs/cirrus-ci-web/issues/88 is fixed
+    // temporary workaround for polling subscription for *Details components and Logs
+    return pollingSubscription(operation, variables, cacheConfig, config, 1500);
+  } else if (variables['taskID'] && operation.text.includes('commands')) {
     let taskSubscriptionDisposer = webSocketSubscription(
       'TASK',
       variables['taskID'],
@@ -45,9 +50,12 @@ function subscription(operation, variables, cacheConfig, config) {
   } else {
     return pollingSubscription(operation, variables, cacheConfig, config);
   }
-}
+};
 
-function pollingSubscription(operation, variables, cacheConfig, config) {
+function pollingSubscription(operation, variables, cacheConfig, config, pollingInterval = 3333) {
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Polling subscription', operation, variables);
+  }
   let { onError, onNext } = config;
 
   let intervalId = setInterval(() => {
@@ -59,12 +67,15 @@ function pollingSubscription(operation, variables, cacheConfig, config) {
         onError && onError(error);
       },
     );
-  }, 3333);
+  }, pollingInterval);
 
   return { dispose: () => clearInterval(intervalId) };
 }
 
 function webSocketSubscription(kind, id, operation, variables, cacheConfig, config) {
+  if (process.env.NODE_ENV === 'development') {
+    console.log('WS subscription to ' + kind + '/' + id);
+  }
   let { onError, onNext } = config;
 
   let dispose = subscribeObjectUpdates(kind, id, () => {

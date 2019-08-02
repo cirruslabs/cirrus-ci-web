@@ -21,6 +21,7 @@ import CirrusFavicon from './CirrusFavicon';
 import NotificationList from './NotificationList';
 import TaskList from './TaskList';
 import { BuildDetails_build } from './__generated__/BuildDetails_build.graphql';
+import { isBuildFinalStatus } from '../utils/status';
 
 const buildApproveMutation = graphql`
   mutation BuildDetailsApproveBuildMutation($input: BuildApproveInput!) {
@@ -100,10 +101,12 @@ class BuildDetails extends React.Component<Props> {
   componentDidMount() {
     let variables = { buildID: this.props.build.id };
 
-    this.subscription = requestSubscription(environment, {
-      subscription: buildSubscription,
-      variables: variables,
-    });
+    if (!isBuildFinalStatus(this.props.build.status)) {
+      this.subscription = requestSubscription(environment, {
+        subscription: buildSubscription,
+        variables: variables,
+      });
+    }
   }
 
   componentWillUnmount() {

@@ -1,12 +1,12 @@
 import React from 'react';
 import Logs from './logs/Logs';
-import { QueryRenderer } from 'react-relay';
+import { QueryRenderer, fetchQuery } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../createRelayEnvironment';
 import CirrusLinearProgress from './CirrusLinearProgress';
 import { subscribeTaskCommandLogs } from '../rtu/ConnectionManager';
 import CirrusCircularProgress from './CirrusCircularProgress';
-import { isTaskCommandFinalStatus } from '../utils/status';
+import { isTaskCommandFinalStatus, isTaskFinalStatus } from '../utils/status';
 import { Tooltip, withStyles, WithStyles, createStyles } from '@material-ui/core';
 import Icon from '@material-ui/core/Icon';
 import Fab from '@material-ui/core/Fab';
@@ -39,36 +39,81 @@ interface RealTimeLogsProps extends WithStyles<typeof styles> {
 }
 
 interface RealTimeLogsState {
-  realTimeLogs: boolean;
-  additionalLogs: string;
+  streamedLogLines: string;
 }
 
+enum RealTimeMode {
+  SUBSCRIPTION = 'subscription',
+  POLLING = 'polling',
+}
+
+// TODO: Once subscription / websocket based updates work reliably, we can and should remove the polling based implementation
+const CURRENT_REALTIME_MODE = RealTimeMode.POLLING;
+const AUTO_REFRESH_POLLING_INTERVAL_MS = 2000;
+
+const taskCommandLogsTailQuery = graphql`
+  query TaskCommandLogsTailQuery($taskId: ID!, $commandName: String!) {
+    task(id: $taskId) {
+      commandLogsTail(name: $commandName)
+    }
+  }
+`;
+
 class TaskCommandRealTimeLogs extends React.Component<RealTimeLogsProps, RealTimeLogsState> {
-  subscriptionClosable?: ReturnType<typeof subscribeTaskCommandLogs>;
+  subscriptionClosable?: ReturnType<typeof subscribeTaskCommandLogs> | null = null;
 
   constructor(props: RealTimeLogsProps) {
     super(props);
-    this.subscriptionClosable = null;
     this.state = {
-      realTimeLogs: !isTaskCommandFinalStatus(props.command.status),
-      additionalLogs: '\n',
+      streamedLogLines: '\n',
     };
   }
 
-  componentDidMount() {
-    if (!this.state.realTimeLogs) return;
-    this.subscriptionClosable = subscribeTaskCommandLogs(this.props.taskId, this.props.command.name, newLogs => {
-      this.setState(prevState => ({
-        ...prevState,
-        additionalLogs: prevState.additionalLogs + newLogs,
-      }));
-    });
+  private shouldStreamLogs(props: RealTimeLogsProps) {
+    return !isTaskFinalStatus(props.command.status);
   }
 
-  componentWillUnmount() {
+  componentDidMount() {
+    if (this.shouldStreamLogs(this.props)) {
+      this.subscribeRealtimeLogs();
+    }
+  }
+
+  componentDidUpdate(prevProps: RealTimeLogsProps) {
+    if (!this.shouldStreamLogs(prevProps) && this.shouldStreamLogs(this.props)) {
+      this.subscribeRealtimeLogs();
+    } else if (this.shouldStreamLogs(prevProps) && !this.shouldStreamLogs(this.props)) {
+      this.unsubscribeRealtimeLogs();
+    }
+  }
+
+  subscribeRealtimeLogs() {
+    if (CURRENT_REALTIME_MODE === RealTimeMode.POLLING) {
+      const interval = setInterval(() => {
+        fetchQuery<TaskCommandLogsTailQuery>(environment, taskCommandLogsTailQuery, {
+          taskId: this.props.taskId,
+          commandName: this.props.command.name,
+        });
+      }, AUTO_REFRESH_POLLING_INTERVAL_MS);
+      this.subscriptionClosable = () => clearInterval(interval);
+    } else if (CURRENT_REALTIME_MODE === RealTimeMode.SUBSCRIPTION) {
+      this.subscriptionClosable = subscribeTaskCommandLogs(this.props.taskId, this.props.command.name, newLogs => {
+        this.setState(prevState => ({
+          ...prevState,
+          streamedLogLines: prevState.streamedLogLines + newLogs,
+        }));
+      });
+    }
+  }
+
+  unsubscribeRealtimeLogs() {
     if (this.subscriptionClosable) {
       this.subscriptionClosable();
     }
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeRealtimeLogs();
   }
 
   render() {
@@ -95,7 +140,7 @@ class TaskCommandRealTimeLogs extends React.Component<RealTimeLogsProps, RealTim
         <Logs
           taskId={taskId}
           commandName={command.name}
-          logs={initialLogLines.join('\n') + this.state.additionalLogs}
+          logs={initialLogLines.join('\n') + this.state.streamedLogLines}
         />
         {inProgress ? <CirrusLinearProgress /> : null}
       </div>
@@ -117,13 +162,7 @@ class TaskCommandLogs extends React.Component<TaskCommandLogsProps> {
       <QueryRenderer<TaskCommandLogsTailQuery>
         environment={environment}
         variables={{ taskId: this.props.taskId, commandName: this.props.command.name }}
-        query={graphql`
-          query TaskCommandLogsTailQuery($taskId: ID!, $commandName: String!) {
-            task(id: $taskId) {
-              commandLogsTail(name: $commandName)
-            }
-          }
-        `}
+        query={taskCommandLogsTailQuery}
         render={({ error, props }) => {
           if (!props) {
             return (

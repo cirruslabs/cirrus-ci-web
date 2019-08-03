@@ -57,7 +57,7 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "start-untyped": "TS_CHECKS=false npm start",
+    "start-untyped": "TS_CHECKS=\"false\" react-app-rewired start",
     "build": "react-app-rewired build",
     "relay": "npx relay-compiler --verbose --watchman false --src ./src --schema schema.graphql --language typescript",
     "sync-schema": "get-graphql-schema https://api.cirrus-ci.com/schema.json > schema.graphql",

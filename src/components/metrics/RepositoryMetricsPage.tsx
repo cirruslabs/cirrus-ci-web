@@ -72,19 +72,27 @@ class RepositoryMetricsPage extends React.Component<Props, State> {
               </Typography>
               <Grid container direction="row" justify="center">
                 <FormControl className={classes.formControl}>
-                  <InputLabel htmlFor="platform-helper">Platform</InputLabel>
+                  <InputLabel htmlFor="type-helper">Instance Type</InputLabel>
                   <Select
-                    value={(this.state.parameters || {}).platform || ''}
+                    value={(this.state.parameters || {}).type || ''}
                     onChange={event => this.handleChange(event)}
-                    input={<Input name="platform" id="platform-helper" />}
+                    input={<Input name="type" id="type-helper" />}
                   >
                     <MenuItem value="">
                       <em>Any</em>
                     </MenuItem>
-                    <MenuItem value={'LINUX'}>Linux</MenuItem>
-                    <MenuItem value={'DARWIN'}>Mac OS</MenuItem>
-                    <MenuItem value={'WINDOWS'}>Windows</MenuItem>
-                    <MenuItem value={'FREEBSD'}>FreeBSD</MenuItem>
+                    <MenuItem value={'container'}>Linux Container</MenuItem>
+                    <MenuItem value={'windows_container'}>Windows Container</MenuItem>
+                    <MenuItem value={'osx_instance'}>OSX Instance</MenuItem>
+                    <MenuItem value={'pipe'}>Docker Pipe</MenuItem>
+                    <MenuItem value={'freebsd_instance'}>FreeBSD Instance</MenuItem>
+                    <MenuItem value={'gce_instance'}>GCE Instance</MenuItem>
+                    <MenuItem value={'gke_container'}>GKE Container</MenuItem>
+                    <MenuItem value={'gke_pipe'}>GKE Docker Pipe</MenuItem>
+                    <MenuItem value={'ec2_instance'}>EC2 Instance</MenuItem>
+                    <MenuItem value={'eks_container'}>EKS Container</MenuItem>
+                    <MenuItem value={'aci_container'}>Azure Container Instances</MenuItem>
+                    <MenuItem value={'anka_instance'}>Anka Instance</MenuItem>
                   </Select>
                 </FormControl>
                 <FormControl className={classes.formControl}>

@@ -26,7 +26,7 @@
     "prop-types": "*",
     "query-string": "*",
     "react": "*",
-    "react-ace": "*",
+    "react-ace": "^7.0.2",
     "react-dom": "*",
     "react-loadable": "*",
     "react-markdown": "*",

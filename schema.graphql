@@ -4,24 +4,27 @@ schema {
   subscription: Subscription
 }
 
+"""This directive allows results to be deferred during execution"""
+directive @defer on FIELD
+
 type AccountTransaction {
   accountId: Long!
-  taskId: Long!
-  repositoryId: Long!
-  timestamp: Long!
-  microCreditsAmount: Long!
   creditsAmount: String!
-  task: Task
+  microCreditsAmount: Long!
   repository: Repository
+  repositoryId: Long!
+  task: Task
+  taskId: Long!
+  timestamp: Long!
 }
 
 """An edge in a connection"""
 type AccountTransactionEdge {
-  """The item at the end of the edge"""
-  node: AccountTransaction
-
   """cursor marks a unique position or index into the connection"""
   cursor: String!
+
+  """The item at the end of the edge"""
+  node: AccountTransaction
 }
 
 """A connection to a list of items."""
@@ -34,8 +37,8 @@ type AccountTransactionsConnection {
 }
 
 type ApiAccessToken {
-  maskedToken: String
   creationTimestamp: Long
+  maskedToken: String
 }
 
 type ArtifactFileInfo {
@@ -44,53 +47,53 @@ type ArtifactFileInfo {
 }
 
 type Artifacts {
+  files: [ArtifactFileInfo]
+  format: String
   name: String!
   type: String
-  format: String
-  files: [ArtifactFileInfo]
 }
 
 type BillingSettings {
   accountId: Long!
-  enabled: Boolean!
   billingCreditsLimit: Long!
   billingEmailAddress: String!
+  enabled: Boolean!
   invoiceTemplate: String
 }
 
 input BillingSettingsInput {
   accountId: ID!
-  enabled: Boolean!
   billingEmailAddress: String!
-  invoiceTemplate: String
   clientMutationId: String
+  enabled: Boolean!
+  invoiceTemplate: String
 }
 
 type BillingSettingsPayload {
-  settings: BillingSettings
   clientMutationId: String
+  settings: BillingSettings
 }
 
 type Build {
-  id: ID!
-  repositoryId: ID!
   branch: String!
-  changeIdInRepo: String!
-  changeMessageTitle: String
-  changeMessage: String
-  durationInSeconds: Long
-  clockDurationInSeconds: Long
-  pullRequest: Long
-  checkSuiteId: Long
-  isSenderUserCollaborator: Boolean
-  senderUserPermissions: String
-  changeTimestamp: Long!
   buildCreatedTimestamp: Long!
-  status: BuildStatus
-  notifications: [Notification]
-  tasks: [Task]
+  changeIdInRepo: String!
+  changeMessage: String
+  changeMessageTitle: String
+  changeTimestamp: Long!
+  checkSuiteId: Long
+  clockDurationInSeconds: Long
+  durationInSeconds: Long
+  id: ID!
+  isSenderUserCollaborator: Boolean
   latestGroupTasks: [Task]
+  notifications: [Notification]
+  pullRequest: Long
   repository: Repository!
+  repositoryId: ID!
+  senderUserPermissions: String
+  status: BuildStatus
+  tasks: [Task]
   viewerPermission: PermissionType!
 }
 
@@ -116,40 +119,40 @@ type BuildReTriggerPayload {
 
 """Build status."""
 enum BuildStatus {
+  ABORTED
+  COMPLETED
   CREATED
-  NEEDS_APPROVAL
-  TRIGGERED
+  ERRORED
   EXECUTING
   FAILED
-  COMPLETED
-  ABORTED
-  ERRORED
+  NEEDS_APPROVAL
+  TRIGGERED
 }
 
 input BuyComputeCreditsInput {
   accountId: ID!
   amountOfCredits: String!
-  paymentTokenId: String!
   clientMutationId: String
+  paymentTokenId: String!
 }
 
 type BuyComputeCreditsPayload {
+  clientMutationId: String
   error: String
   info: GitHubOrganizationInfo
   user: User
-  clientMutationId: String
 }
 
 type DayDate {
-  year: Int
-  month: Int
   day: Int
+  month: Int
+  year: Int
 }
 
 """Repository Setting to choose how to decrypt variables."""
 enum DecryptEnvironmentVariablesFor {
-  USERS_WITH_WRITE_PERMISSIONS
   EVERYONE
+  USERS_WITH_WRITE_PERMISSIONS
 }
 
 input GenerateNewAccessTokenInput {
@@ -158,34 +161,36 @@ input GenerateNewAccessTokenInput {
 }
 
 type GenerateNewAccessTokenPayload {
-  token: String!
   clientMutationId: String
+  token: String!
 }
 
 type GitHubMarketplacePurchase {
   accountId: Long!
+  freeTrialDaysLeft: Int!
   login: String!
+  onFreeTrial: Boolean!
   planId: Long!
   planName: String!
   unitCount: Long!
-  onFreeTrial: Boolean!
-  freeTrialDaysLeft: Int!
 }
 
 type GitHubOrganizationInfo {
+  activeUserNames: [String]
+  activeUsersAmount: Int!
+  apiToken: ApiAccessToken
+  balanceInCredits: String!
+  billingSettings: BillingSettings
   id: ID!
   name: String!
-  role: String!
   purchase: GitHubMarketplacePurchase
-  activeUsersAmount: Int!
-  activeUserNames: [String]
-  balanceInCredits: String!
+  role: String!
   transactions(
-    """fetching only nodes before this node (exclusive)"""
-    before: String
-
     """fetching only nodes after this node (exclusive)"""
     after: String
+
+    """fetching only nodes before this node (exclusive)"""
+    before: String
 
     """fetching only the first certain number of nodes"""
     first: Int
@@ -193,14 +198,12 @@ type GitHubOrganizationInfo {
     """fetching only the last certain number of nodes"""
     last: Int
   ): AccountTransactionsConnection
-  billingSettings: BillingSettings
-  webhookSettings: WebHookSettings
   webhookDeliveries(
-    """fetching only nodes before this node (exclusive)"""
-    before: String
-
     """fetching only nodes after this node (exclusive)"""
     after: String
+
+    """fetching only nodes before this node (exclusive)"""
+    before: String
 
     """fetching only the first certain number of nodes"""
     first: Int
@@ -208,70 +211,72 @@ type GitHubOrganizationInfo {
     """fetching only the last certain number of nodes"""
     last: Int
   ): WebhookDeliveriesConnection
-  apiToken: ApiAccessToken
+  webhookSettings: WebHookSettings
 }
 
 """Long type"""
 scalar Long
 
 type MetricsChart {
-  title: String
-  points: [TimePoint]
   dataUnits: String
+  points: [TimePoint]
+  title: String
 }
 
 input MetricsQueryParameters {
-  status: TaskStatus
-  platform: PlatformType
-  type: String
+  branch: String
   isCommunity: Boolean
   isPR: Boolean
+  platform: PlatformType
+  status: TaskStatus
   usedComputeCredits: Boolean
-  branch: String
 }
 
 type Mutation {
-  securedVariable(input: RepositorySecuredVariableInput!): RepositorySecuredVariablePayload
-  securedOrganizationVariable(input: OrganizationSecuredVariableInput!): OrganizationSecuredVariablePayload
-  createBuild(input: RepositoryCreateBuildInput!): RepositoryCreateBuildPayload
-  rerun(input: TaskInput!): TaskPayload
   abortTask(input: TaskAbortInput!): TaskAbortPayload
-  retrigger(input: BuildReTriggerInput!): BuildReTriggerPayload
-  saveSettings(input: RepositorySettingsInput!): RepositorySettingsPayload
   approve(input: BuildApproveInput!): BuildApprovePayload
-  trigger(input: TaskTriggerInput!): TaskTriggerPayload
   buyComputeCredits(input: BuyComputeCreditsInput!): BuyComputeCreditsPayload
-  saveWebHookSettings(input: SaveWebHookSettingsInput!): SaveWebHookSettingsPayload
-  saveBillingSettings(input: BillingSettingsInput!): BillingSettingsPayload
+  createBuild(input: RepositoryCreateBuildInput!): RepositoryCreateBuildPayload
   generateNewAccessToken(input: GenerateNewAccessTokenInput!): GenerateNewAccessTokenPayload
+  rerun(input: TaskInput!): TaskPayload
+  retrigger(input: BuildReTriggerInput!): BuildReTriggerPayload
+  saveBillingSettings(input: BillingSettingsInput!): BillingSettingsPayload
+  saveSettings(input: RepositorySettingsInput!): RepositorySettingsPayload
+  saveWebHookSettings(input: SaveWebHookSettingsInput!): SaveWebHookSettingsPayload
+  securedOrganizationVariable(input: OrganizationSecuredVariableInput!): OrganizationSecuredVariablePayload
+  securedVariable(input: RepositorySecuredVariableInput!): RepositorySecuredVariablePayload
+  trigger(input: TaskTriggerInput!): TaskTriggerPayload
 }
 
 type Notification {
   level: NotificationLevel
-  message: String!
   link: String
+  message: String!
 }
 
 """Notification level."""
 enum NotificationLevel {
+  ERROR
   INFO
   WARNING
-  ERROR
 }
 
 input OrganizationSecuredVariableInput {
+  clientMutationId: String
   organizationId: ID!
   valueToSecure: String!
-  clientMutationId: String
 }
 
 type OrganizationSecuredVariablePayload {
-  variableName: String!
   clientMutationId: String
+  variableName: String!
 }
 
 """Information about pagination in a connection."""
 type PageInfo {
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+
   """When paginating forwards, are there more items?"""
   hasNextPage: Boolean!
 
@@ -280,63 +285,60 @@ type PageInfo {
 
   """When paginating backwards, the cursor to continue."""
   startCursor: String
-
-  """When paginating forwards, the cursor to continue."""
-  endCursor: String
 }
 
 """User access level."""
 enum PermissionType {
+  ADMIN
   NONE
   READ
   WRITE
-  ADMIN
 }
 
 """Task platform."""
 enum PlatformType {
-  LINUX
   DARWIN
-  WINDOWS
   FREEBSD
+  LINUX
+  WINDOWS
 }
 
 type Repository {
-  id: ID!
-  owner: String!
-  name: String!
-  cloneUrl: String!
-  masterBranch: String!
-  isPrivate: Boolean!
   builds(
+    """fetching only nodes after this node (exclusive)"""
+    after: String
+
     """fetching only nodes before this node (exclusive)"""
     before: String
 
-    """fetching only nodes after this node (exclusive)"""
-    after: String
+    """branch to fetch builds for"""
+    branch: String
 
     """fetching only the first certain number of nodes"""
     first: Int
 
     """fetching only the last certain number of nodes"""
     last: Int
-
-    """branch to fetch builds for"""
-    branch: String
   ): RepositoryBuildsConnection
+  cloneUrl: String!
+  id: ID!
+  isPrivate: Boolean!
+  lastDefaultBranchBuild: Build
+  masterBranch: String!
+  metrics(parameters: MetricsQueryParameters): [MetricsChart]
+  name: String!
+  owner: String!
   settings: RepositorySettings
   viewerPermission: PermissionType
-  lastDefaultBranchBuild: Build
-  metrics(parameters: MetricsQueryParameters): [MetricsChart]
 }
 
 """An edge in a connection"""
 type RepositoryBuildEdge {
-  """The item at the end of the edge"""
-  node: Build
-
   """cursor marks a unique position or index into the connection"""
   cursor: String!
+
+  """The item at the end of the edge"""
+  node: Build
 }
 
 """A connection to a list of items."""
@@ -349,11 +351,11 @@ type RepositoryBuildsConnection {
 }
 
 input RepositoryCreateBuildInput {
-  repositoryId: ID!
   branch: String!
-  sha: String
-  configOverride: String
   clientMutationId: String
+  configOverride: String
+  repositoryId: ID!
+  sha: String
 }
 
 type RepositoryCreateBuildPayload {
@@ -362,98 +364,98 @@ type RepositoryCreateBuildPayload {
 }
 
 input RepositorySecuredVariableInput {
+  clientMutationId: String
   repositoryId: ID!
   valueToSecure: String!
-  clientMutationId: String
 }
 
 type RepositorySecuredVariablePayload {
-  variableName: String!
   clientMutationId: String
+  variableName: String!
 }
 
 type RepositorySettings {
-  needsApproval: Boolean
   decryptEnvironmentVariables: DecryptEnvironmentVariablesFor
+  needsApproval: Boolean
 }
 
 input RepositorySettingsInput {
-  repositoryId: ID!
-  needsApproval: Boolean
-  decryptEnvironmentVariables: DecryptEnvironmentVariablesFor
   clientMutationId: String
+  decryptEnvironmentVariables: DecryptEnvironmentVariablesFor
+  needsApproval: Boolean
+  repositoryId: ID!
 }
 
 type RepositorySettingsPayload {
-  settings: RepositorySettings!
   clientMutationId: String
+  settings: RepositorySettings!
 }
 
 type Root {
-  viewer: User
-  repository(id: ID!): Repository
-  githubRepository(owner: String!, name: String!): Repository
-  githubRepositories(owner: String!): [Repository]
-  githubOrganizationInfo(organization: String!): GitHubOrganizationInfo
   build(id: ID!): Build
-  searchBuilds(repositoryOwner: String!, repositoryName: String!, SHA: String): [Build]
+  githubOrganizationInfo(organization: String!): GitHubOrganizationInfo
+  githubRepositories(owner: String!): [Repository]
+  githubRepository(name: String!, owner: String!): Repository
+  repository(id: ID!): Repository
+  searchBuilds(SHA: String, repositoryName: String!, repositoryOwner: String!): [Build]
   task(id: ID!): Task
+  viewer: User
   webhookDelivery(id: String!): WebHookDelivery
 }
 
 input SaveWebHookSettingsInput {
   accountId: ID!
-  webhookURL: String!
   clientMutationId: String
+  webhookURL: String!
 }
 
 type SaveWebHookSettingsPayload {
+  clientMutationId: String
   error: String
   info: GitHubOrganizationInfo
-  clientMutationId: String
 }
 
 type Subscription {
-  task(id: ID!): Task
   build(id: ID!): Build
   repository(id: ID!): Repository
+  task(id: ID!): Task
 }
 
 type Task {
-  id: ID!
-  buildId: ID!
-  repositoryId: ID!
-  name: String!
-  status: TaskStatus
-  notifications: [Notification]
-  commands: [TaskCommand]
+  allOtherRuns: [Task]
   artifacts: [Artifacts]
+  automaticReRun: Boolean!
+  build: Build!
+  buildId: ID!
   commandLogsTail(name: String!): [String]
-  statusTimestamp: Long!
+  commands: [TaskCommand]
   creationTimestamp: Long!
-  scheduledTimestamp: Long!
+  dependencies: [Task]
+  durationInSeconds: Long!
   executingTimestamp: Long!
   finalStatusTimestamp: Long!
-  durationInSeconds: Long!
+  id: ID!
   labels: [String]
-  uniqueLabels: [String]
-  requiredPRLabels: [String]
+  name: String!
+  notifications: [Notification]
   optional: Boolean
-  statusDurations: [TaskStatusDuration]
-  repository: Repository!
-  build: Build!
   previousRuns: [Task]
-  allOtherRuns: [Task]
-  dependencies: [Task]
-  automaticReRun: Boolean!
+  repository: Repository!
+  repositoryId: ID!
+  requiredPRLabels: [String]
+  scheduledTimestamp: Long!
+  status: TaskStatus
+  statusDurations: [TaskStatusDuration]
+  statusTimestamp: Long!
+  transaction: AccountTransaction
+  uniqueLabels: [String]
   useComputeCredits: Boolean!
   usedComputeCredits: Boolean!
-  transaction: AccountTransaction
 }
 
 input TaskAbortInput {
-  taskId: ID!
   clientMutationId: String
+  taskId: ID!
 }
 
 type TaskAbortPayload {
@@ -462,69 +464,69 @@ type TaskAbortPayload {
 }
 
 type TaskCommand {
-  name: String
-  type: TaskCommandType
-  status: TaskCommandStatus
   durationInSeconds: Int
+  name: String
+  status: TaskCommandStatus
+  type: TaskCommandType
 }
 
 """Task Command status."""
 enum TaskCommandStatus {
-  UNDEFINED
-  SUCCESS
-  FAILURE
-  EXECUTING
-  SKIPPED
   ABORTED
+  EXECUTING
+  FAILURE
+  SKIPPED
+  SUCCESS
+  UNDEFINED
 }
 
 """Task Command type."""
 enum TaskCommandType {
-  WAIT
-  EXIT
-  EXECUTE_SCRIPT
   CACHE
-  UPLOAD_CACHE
   CLONE
   EXECUTE_BACKGROUND_SCRIPT
+  EXECUTE_SCRIPT
+  EXIT
+  UPLOAD_CACHE
+  WAIT
 }
 
 input TaskInput {
-  taskId: ID!
   clientMutationId: String
+  taskId: ID!
 }
 
 type TaskPayload {
-  newTask: Task!
   clientMutationId: String
+  newTask: Task!
 }
 
 """Task status."""
 enum TaskStatus {
-  CREATED
-  TRIGGERED
-  SCHEDULED
-  EXECUTING
   ABORTED
-  FAILED
   COMPLETED
-  SKIPPED
+  CREATED
+  EXECUTING
+  FAILED
   PAUSED
+  SCHEDULED
+  SKIPPED
+  TRIGGERED
 }
 
 type TaskStatusDuration {
-  status: TaskStatus!
   durationInSeconds: Long!
+  status: TaskStatus!
 }
 
 input TaskTriggerInput {
-  taskId: ID!
   clientMutationId: String
+  taskId: ID!
 }
 
 type TaskTriggerPayload {
-  task: Task!
   clientMutationId: String
+  task: Task!
 }
 
 type TimePoint {
@@ -533,16 +535,15 @@ type TimePoint {
 }
 
 type User {
-  id: ID!
-  githubUserId: Long
-  githubUserName: String!
+  apiToken: ApiAccessToken
   avatarURL: String
+  balanceInCredits: String!
   builds(
-    """fetching only nodes before this node (exclusive)"""
-    before: String
-
     """fetching only nodes after this node (exclusive)"""
     after: String
+
+    """fetching only nodes before this node (exclusive)"""
+    before: String
 
     """fetching only the first certain number of nodes"""
     first: Int
@@ -551,15 +552,17 @@ type User {
     last: Int
   ): UserBuildsConnection
   githubMarketplacePurchase: GitHubMarketplacePurchase
-  topActiveRepositories: [Repository]
+  githubUserId: Long
+  githubUserName: String!
+  id: ID!
   organizations: [GitHubOrganizationInfo]
-  balanceInCredits: String!
+  topActiveRepositories: [Repository]
   transactions(
-    """fetching only nodes before this node (exclusive)"""
-    before: String
-
     """fetching only nodes after this node (exclusive)"""
     after: String
+
+    """fetching only nodes before this node (exclusive)"""
+    before: String
 
     """fetching only the first certain number of nodes"""
     first: Int
@@ -567,16 +570,15 @@ type User {
     """fetching only the last certain number of nodes"""
     last: Int
   ): UserTransactionsConnection
-  apiToken: ApiAccessToken
 }
 
 """An edge in a connection"""
 type UserBuildEdge {
-  """The item at the end of the edge"""
-  node: Build
-
   """cursor marks a unique position or index into the connection"""
   cursor: String!
+
+  """The item at the end of the edge"""
+  node: Build
 }
 
 """A connection to a list of items."""
@@ -590,11 +592,11 @@ type UserBuildsConnection {
 
 """An edge in a connection"""
 type UserTransactionEdge {
-  """The item at the end of the edge"""
-  node: AccountTransaction
-
   """cursor marks a unique position or index into the connection"""
   cursor: String!
+
+  """The item at the end of the edge"""
+  node: AccountTransaction
 }
 
 """A connection to a list of items."""
@@ -616,36 +618,35 @@ type WebhookDeliveriesConnection {
 }
 
 type WebHookDelivery {
-  id: String!
   accountId: Long!
-  repositoryId: Long!
-  timestamp: Long!
+  id: String!
   payload: WebHookDeliveryPayload!
+  repositoryId: Long!
   response: WebHookDeliveryResponse!
+  timestamp: Long!
 }
 
 """An edge in a connection"""
 type WebHookDeliveryEdge {
-  """The item at the end of the edge"""
-  node: WebHookDelivery
-
   """cursor marks a unique position or index into the connection"""
   cursor: String!
+
+  """The item at the end of the edge"""
+  node: WebHookDelivery
 }
 
 type WebHookDeliveryPayload {
-  event: String!
   action: String!
   data: String!
+  event: String!
 }
 
 type WebHookDeliveryResponse {
-  status: Int!
-  duration: Long!
   data: String!
+  duration: Long!
+  status: Int!
 }
 
 type WebHookSettings {
   webhookURL: String
 }
-

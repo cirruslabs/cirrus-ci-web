@@ -20,9 +20,8 @@ import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import ComputeCreditsBuyDialog from './ComputeCreditsBuyDialog';
 import ComputeCreditsTransactionsList from './ComputeCreditsTransactionsList';
-import { BillingSettingsButton_info } from './__generated__/BillingSettingsButton_info.graphql';
-import { getNodesFromConnection } from '../../utils/graphql';
-import { OrganizationComputeCredits_info } from './__generated__/OrganizationComputeCredits_info.graphql';
+import { ComputeCreditsBase_info } from './__generated__/ComputeCreditsBase_info.graphql';
+import { ComputeCreditsTransactionRow_transaction } from './__generated__/ComputeCreditsTransactionRow_transaction.graphql';
 
 const styles = theme =>
   createStyles({
@@ -60,8 +59,8 @@ const styles = theme =>
   });
 
 interface Props extends WithStyles<typeof styles>, RouteComponentProps {
-  transactions?: OrganizationComputeCredits_info['transactions'];
-  info?: BillingSettingsButton_info;
+  transactions?: Array<ComputeCreditsTransactionRow_transaction>;
+  info?: ComputeCreditsBase_info;
   balanceInCredits?: string;
   accountId: string;
 }
@@ -100,7 +99,6 @@ class ComputeCreditsBase extends React.Component<Props, State> {
 
   render() {
     let { classes } = this.props;
-    let transactions = this.props.transactions ? getNodesFromConnection(this.props.transactions) : [];
 
     return (
       <Card>
@@ -143,7 +141,7 @@ class ComputeCreditsBase extends React.Component<Props, State> {
             <AttachMoneyIcon />
             Add More Credits
           </Button>
-          <BillingSettingsButton info={this.props.info as any} />
+          <BillingSettingsButton info={this.props.info} />
           <IconButton
             className={classNames(classes.expand, {
               [classes.expandOpen]: this.state.expanded,
@@ -157,7 +155,7 @@ class ComputeCreditsBase extends React.Component<Props, State> {
         </CardActions>
         <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            <ComputeCreditsTransactionsList transactions={transactions} />
+            <ComputeCreditsTransactionsList transactions={this.props.transactions || []} />
           </CardContent>
         </Collapse>
         <ComputeCreditsBuyDialog
@@ -173,9 +171,6 @@ class ComputeCreditsBase extends React.Component<Props, State> {
 export default createFragmentContainer(withRouter(withStyles(styles)(ComputeCreditsBase)), {
   info: graphql`
     fragment ComputeCreditsBase_info on GitHubOrganizationInfo {
-      id
-      name
-      balanceInCredits
       ...BillingSettingsButton_info
     }
   `,

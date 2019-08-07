@@ -3,6 +3,7 @@ import { createPaginationContainer, RelayPaginationProp } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import ComputeCreditsBase from './ComputeCreditsBase';
 import { UserComputeCredits_user } from './__generated__/UserComputeCredits_user.graphql';
+import { getNodesFromConnection } from '../../utils/graphql';
 
 interface Props {
   relay: RelayPaginationProp;
@@ -12,7 +13,13 @@ interface Props {
 
 class UserComputeCredits extends React.Component<Props> {
   render() {
-    return <ComputeCreditsBase accountId={this.props.user.githubUserId} {...this.props.user} />;
+    return (
+      <ComputeCreditsBase
+        accountId={this.props.user.githubUserId}
+        balanceInCredits={this.props.user.balanceInCredits}
+        transactions={getNodesFromConnection(this.props.user.transactions)}
+      />
+    );
   }
 }
 

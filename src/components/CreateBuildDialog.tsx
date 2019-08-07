@@ -102,7 +102,7 @@ class CreateBuildDialog extends React.Component<Props, State> {
           Create new build for {repository.owner}/{repository.name}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>Please customize parameters for a build.</DialogContentText>
+          <DialogContentText>Customize parameters for build. (Optional)</DialogContentText>
           <TextField
             margin="dense"
             id="branch"
@@ -119,14 +119,17 @@ class CreateBuildDialog extends React.Component<Props, State> {
             label="Optional SHA"
             fullWidth
           />
-          <DialogContentText>Optionally you can override build configuration:</DialogContentText>
+          <DialogContentText>Optionally, you can override build configuration:</DialogContentText>
           <AceEditor
             mode="yaml"
             theme="github"
+            placeholder="Add a custom configuration here to use custom instructions for this build."
             onChange={this.onConfigChange}
             value={this.state.configOverride}
             name="CONFIG_OVERRIDE"
             editorProps={{ $blockScrolling: true }}
+            highlightActiveLine={true}
+            showGutter={true}
           />
         </DialogContent>
         <DialogActions>

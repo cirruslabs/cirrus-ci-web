@@ -648,4 +648,3 @@ type WebHookDeliveryResponse {
 type WebHookSettings {
   webhookURL: String
 }
-

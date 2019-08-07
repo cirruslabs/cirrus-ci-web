@@ -16,7 +16,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { navigateBuild } from '../utils/navigate';
 
 import 'brace/mode/yaml';
-import 'brace/theme/xcode';
+import 'brace/theme/github';
 import { CreateBuildDialog_repository } from './__generated__/CreateBuildDialog_repository.graphql';
 import { CreateBuildDialogMutationResponse } from './__generated__/CreateBuildDialogMutation.graphql';
 
@@ -122,7 +122,7 @@ class CreateBuildDialog extends React.Component<Props, State> {
           <DialogContentText>Optionally, you can override build configuration:</DialogContentText>
           <AceEditor
             mode="yaml"
-            theme="xcode"
+            theme="github"
             placeholder="Add a custom configuration here to use custom instructions for this build."
             onChange={this.onConfigChange}
             value={this.state.configOverride}

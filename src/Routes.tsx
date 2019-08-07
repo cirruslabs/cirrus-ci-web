@@ -250,7 +250,21 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
               >
                 Cirrus CI
               </Typography>
-              <Button style={{ color: cirrusColors.cirrusWhite, marginRight: 8 }} href="https://cirrus-ci.org/">
+              <Button
+                style={{ color: cirrusColors.cirrusWhite, marginRight: 8 }}
+                href="https://github.com/cirruslabs/cirrus-ci-web"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Icon className={classNames('fa', 'fa-github', classes.leftIcon)} />
+                GitHub
+              </Button>
+              <Button
+                style={{ color: cirrusColors.cirrusWhite, marginRight: 8 }}
+                href="https://cirrus-ci.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Icon className={classNames('fa', 'fa-book', classes.leftIcon)} />
                 Documentation
               </Button>

@@ -15,9 +15,15 @@ to minimize the amount of business logic.
 
 After everything is installed and compiled, run `npm start` to start a local server. All changes will be instantly ready to view in your browser.
 
+## Authentication from localhost
+
+In order to authenticate with `api.cirrus-ci.com` from locally running Cirrus CI Web simply login on [cirrus-ci.com](https://cirrus-ci.com)
+and remove `Same-Site` restrictions for `cirrusUserId` and `cirrusAuthToken` cookies for `api.cirrus-ci.com` ([EditThisCookie](http://www.editthiscookie.com/)
+cookie editor works just fine for it).
+
 ## Productivity Tips
 
-### Disable Type Checking temporarely
+### Disable Type Checking temporarily
 
 This app is written in TypeScript and whenever TypeScript finds a static type error it will display an "error overlay" in the browser which prevents you "seeing" the app even if it was compilable to JS.
 Sometimes during quick experimentation this can be annoying. 

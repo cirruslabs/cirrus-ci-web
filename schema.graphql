@@ -234,7 +234,8 @@ type Mutation {
   securedVariable(input: RepositorySecuredVariableInput!): RepositorySecuredVariablePayload
   securedOrganizationVariable(input: OrganizationSecuredVariableInput!): OrganizationSecuredVariablePayload
   createBuild(input: RepositoryCreateBuildInput!): RepositoryCreateBuildPayload
-  rerun(input: TaskInput!): TaskPayload
+  rerun(input: TaskReRunInput!): TaskReRunPayload
+  batchReRun(input: TasksReRunInput!): TasksReRunPayload
   abortTask(input: TaskAbortInput!): TaskAbortPayload
   retrigger(input: BuildReTriggerInput!): BuildReTriggerPayload
   saveSettings(input: RepositorySettingsInput!): RepositorySettingsPayload
@@ -489,13 +490,23 @@ enum TaskCommandType {
   EXECUTE_BACKGROUND_SCRIPT
 }
 
-input TaskInput {
+input TaskReRunInput {
   taskId: ID!
   clientMutationId: String
 }
 
-type TaskPayload {
+type TaskReRunPayload {
   newTask: Task!
+  clientMutationId: String
+}
+
+input TasksReRunInput {
+  taskIds: [ID]
+  clientMutationId: String
+}
+
+type TasksReRunPayload {
+  newTasks: [Task]
   clientMutationId: String
 }
 
@@ -648,3 +659,4 @@ type WebHookDeliveryResponse {
 type WebHookSettings {
   webhookURL: String
 }
+

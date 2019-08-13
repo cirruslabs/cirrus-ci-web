@@ -39,7 +39,7 @@ import { TaskDetails_task } from './__generated__/TaskDetails_task.graphql';
 import { TaskDetailsReRunMutationResponse } from './__generated__/TaskDetailsReRunMutation.graphql';
 
 const taskReRunMutation = graphql`
-  mutation TaskDetailsReRunMutation($input: TaskInput!) {
+  mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
     rerun(input: $input) {
       newTask {
         id

@@ -45,7 +45,7 @@ class TaskListRow extends React.Component<Props> {
         <TableCell className={classNames(classes.cell)}>
           <TaskNameChip task={task} className={classes.chip} />
           {this.props.showCreation ? <TaskCreatedChip task={task} className={classes.chip} /> : null}
-          <TaskDurationChip task={task} className={classNames(classes.chip, 'd-md-none')} />
+          <TaskDurationChip task={task} className={classNames(classes.chip, 'd-none', 'd-md-none')} />
         </TableCell>
         <TableCell className={classNames('d-none', 'd-lg-table-cell', classes.cell)}>
           {task.uniqueLabels.map(label => {

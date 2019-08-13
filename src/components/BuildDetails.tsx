@@ -53,6 +53,21 @@ const buildSubscription = graphql`
       notifications {
         ...Notification_notification
       }
+      latestGroupTasks {
+        id
+        status
+        ...TaskListRow_task
+      }
+    }
+  }
+`;
+
+const taskBatchReRunMutation = graphql`
+  mutation BuildDetailsReRunMutation($input: TasksReRunInput!) {
+    batchReRun(input: $input) {
+      newTasks {
+        id
+      }
     }
   }
 `;
@@ -139,6 +154,15 @@ class BuildDetails extends React.Component<Props> {
       </Button>
     );
 
+    let failedTaskIds = build.latestGroupTasks.filter(task => task.status === 'FAILED').map(task => task.id);
+    let reRunAllTasksButton =
+      failedTaskIds.length === 0 ? null : (
+        <Button variant="contained" onClick={() => this.batchReRun(failedTaskIds)}>
+          <Icon className={classes.leftIcon}>refresh</Icon>
+          Re-Run Failed Tasks
+        </Button>
+      );
+
     let needsApproval = build.status === 'NEEDS_APPROVAL' && hasWritePermissions(build.repository.viewerPermission);
     let approveButton = !needsApproval ? null : (
       <Button variant="contained" onClick={() => this.approveBuild(build.id)}>
@@ -177,6 +201,7 @@ class BuildDetails extends React.Component<Props> {
             <CardActions className="d-flex flex-wrap justify-content-end">
               {reTriggerButton}
               {approveButton}
+              {reRunAllTasksButton}
             </CardActions>
           </Card>
         </Paper>
@@ -218,6 +243,25 @@ class BuildDetails extends React.Component<Props> {
       onError: err => console.error(err),
     });
   }
+
+  batchReRun(taskIds) {
+    const variables = {
+      input: {
+        clientMutationId: 'batch-rerun-' + this.props.build.id,
+        taskIds: taskIds,
+      },
+      buildId: this.props.build.id,
+    };
+
+    commitMutation(environment, {
+      mutation: taskBatchReRunMutation,
+      variables: variables,
+      onCompleted: () => {
+        this.forceUpdate();
+      },
+      onError: err => console.error(err),
+    });
+  }
 }
 
 export default createFragmentContainer(withRouter(withStyles(styles)(BuildDetails)), {
@@ -234,6 +278,8 @@ export default createFragmentContainer(withRouter(withStyles(styles)(BuildDetail
         ...Notification_notification
       }
       latestGroupTasks {
+        id
+        status
         ...TaskListRow_task
       }
       repository {

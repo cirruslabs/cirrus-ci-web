@@ -256,7 +256,7 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Icon className={classNames('fa', 'fa-github', classes.leftIcon)} />
+                <Icon className={classNames('fas', 'fa-code', classes.leftIcon)} />
                 <span className="d-none d-md-block">GitHub</span>
               </Button>
               <Button

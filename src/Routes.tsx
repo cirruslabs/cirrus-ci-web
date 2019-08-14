@@ -257,7 +257,7 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                 rel="noopener noreferrer"
               >
                 <Icon className={classNames('fa', 'fa-github', classes.leftIcon)} />
-                <span className="d-none">GitHub</span>
+                <span className="d-none d-md-block">GitHub</span>
               </Button>
               <Button
                 style={{ color: cirrusColors.cirrusWhite, marginRight: 8 }}
@@ -266,7 +266,7 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                 rel="noopener noreferrer"
               >
                 <Icon className={classNames('fa', 'fa-book', classes.leftIcon)} />
-                <span className="d-none">Documentation</span>
+                <span className="d-none d-md-block">Documentation</span>
               </Button>
               <div className={classes.viewer}>
                 <ViewerComponent />

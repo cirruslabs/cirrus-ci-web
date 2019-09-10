@@ -3,7 +3,7 @@ export function navigate(router, event, url) {
   url = url.replace('https://cirrus-ci.com', '');
   url = url.replace('http://localhost:3333/', '');
 
-  if (event && event.metaKey) {
+  if (event && (event.metaKey || event.ctrlKey || event.button === 1)) {
     window.open(url, '_blank');
   } else if (router && !url.includes('://')) {
     router.history.push(url);

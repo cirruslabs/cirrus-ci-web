@@ -151,7 +151,6 @@ const styles = theme =>
     },
     content: {
       flexGrow: 1,
-      backgroundColor: theme.palette.background.default,
       paddingTop: theme.spacing(1.0),
       paddingBottom: theme.spacing(1.0),
       paddingLeft: theme.spacing(1.0) * 3,

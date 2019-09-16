@@ -14,6 +14,9 @@ import PropTypes from 'prop-types';
 import AceEditor from 'react-ace';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { navigateBuild } from '../utils/navigate';
+import { positions, Provider } from 'react-alert';
+import AlertTemplate from 'react-alert-template-basic';
+import { useAlert } from "react-alert";
 
 import 'brace/mode/yaml';
 import 'brace/theme/github';
@@ -68,6 +71,7 @@ class CreateBuildDialog extends React.Component<Props, State> {
       configOverride: '',
       branch: props.repository.masterBranch,
       sha: '',
+      error: false
     };
   }
 
@@ -96,6 +100,22 @@ class CreateBuildDialog extends React.Component<Props, State> {
 
   render() {
     let { repository } = this.props;
+    if(error) {
+      const options = {
+        timeout: 5000,
+        position: positions.BOTTOM_CENTER
+      };
+      this.alert = false
+      return (
+        <div>
+          <Provider template={AlertTemplate} {...options}>
+            useAlert().error(
+              "Failed to create build. Are all provided variables correct?"
+            )
+          </Provider>
+        </div>
+      );
+    }
     return (
       <Dialog open={this.props.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">
@@ -164,7 +184,13 @@ class CreateBuildDialog extends React.Component<Props, State> {
         console.log(response);
         navigateBuild(this.context.router, null, response.createBuild.build.id);
       },
-      onError: err => console.error(err),
+      onError: err => {
+        if(process.NODE_ENV != "DEVELOPMENT") {
+          this.error = true
+        } else {
+          console.error(err)
+        }
+      },
     });
   };
 }

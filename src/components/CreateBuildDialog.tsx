@@ -186,7 +186,14 @@ class CreateBuildDialog extends React.Component<Props, State> {
       },
       onError: err => {
         if(process.NODE_ENV != "DEVELOPMENT") {
-          this.error = true
+          let sha = this.sha
+          let configOverride = this.configOverride
+          this.setState({
+            configOverride: configOverride,
+            branch: props.repository.masterBranch,
+            sha: sha,
+            error: true
+          };
         } else {
           console.error(err)
         }

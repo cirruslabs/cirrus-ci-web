@@ -185,16 +185,15 @@ class CreateBuildDialog extends React.Component<Props, State> {
         navigateBuild(this.context.router, null, response.createBuild.build.id);
       },
       onError: err => {
-        if(process.NODE_ENV != "DEVELOPMENT") {
-          let sha = this.sha
-          let configOverride = this.configOverride
-          this.setState({
-            configOverride: configOverride,
-            branch: props.repository.masterBranch,
-            sha: sha,
-            error: true
-          };
-        } else {
+        let sha = this.sha
+        let configOverride = this.configOverride
+        this.setState({
+          configOverride: configOverride,
+          branch: props.repository.masterBranch,
+          sha: sha,
+          error: true
+        });
+        if(process.NODE_ENV == "DEVELOPMENT") {
           console.error(err)
         }
       },

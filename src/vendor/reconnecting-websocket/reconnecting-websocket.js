@@ -233,7 +233,7 @@
       }
 
       var localWs = ws;
-      var timeout = setTimeout(function () {
+      var timeout = setTimeout(() => {
         if (self.debug || ReconnectingWebSocket.debugAll) {
           console.debug('ReconnectingWebSocket', 'connection-timeout', self.url);
         }
@@ -256,7 +256,7 @@
         eventTarget.dispatchEvent(e);
       };
 
-      ws.onclose = function (event) {
+      ws.onclose = event => {
         ws = null;
         if (forcedClose) {
           self.readyState = WebSocket.CLOSED;
@@ -276,13 +276,13 @@
           }
 
           var timeout = self.reconnectInterval * Math.pow(self.reconnectDecay, self.reconnectAttempts);
-          setTimeout(function () {
+          setTimeout(() => {
             self.reconnectAttempts++;
             self.open(true);
           }, timeout > self.maxReconnectInterval ? self.maxReconnectInterval : timeout);
         }
       };
-      ws.onmessage = function (event) {
+      ws.onmessage = event => {
         if (self.debug || ReconnectingWebSocket.debugAll) {
           console.debug('ReconnectingWebSocket', 'onmessage', self.url, event.data);
         }
@@ -290,7 +290,7 @@
         e.data = event.data;
         eventTarget.dispatchEvent(e);
       };
-      ws.onerror = function (event) {
+      ws.onerror = event => {
         if (self.debug || ReconnectingWebSocket.debugAll) {
           console.debug('ReconnectingWebSocket', 'onerror', self.url, event);
         }
@@ -308,7 +308,7 @@
      *
      * @param data a text string, ArrayBuffer or Blob to send to the server.
      */
-    this.send = function (data) {
+    this.send = data => {
       if (ws) {
         if (self.debug || ReconnectingWebSocket.debugAll) {
           console.debug('ReconnectingWebSocket', 'send', self.url, data);
@@ -323,7 +323,7 @@
      * Closes the WebSocket connection or connection attempt, if any.
      * If the connection is already CLOSED, this method does nothing.
      */
-    this.close = function (code, reason) {
+    this.close = (code, reason) => {
       // Default CLOSE_NORMAL code
       if (typeof code === 'undefined') {
         code = 1000;
@@ -338,7 +338,7 @@
      * Additional public API method to refresh the connection if still open (close, re-open).
      * For example, if the app suspects bad data / missed heart beats, it can try to refresh.
      */
-    this.refresh = function () {
+    this.refresh = () => {
       if (ws) {
         ws.close();
       }
@@ -349,20 +349,15 @@
    * An event listener to be called when the WebSocket connection's readyState changes to OPEN;
    * this indicates that the connection is ready to send and receive data.
    */
-  ReconnectingWebSocket.prototype.onopen = function (event) {
-  };
+  ReconnectingWebSocket.prototype.onopen = event => {};
   /** An event listener to be called when the WebSocket connection's readyState changes to CLOSED. */
-  ReconnectingWebSocket.prototype.onclose = function (event) {
-  };
+  ReconnectingWebSocket.prototype.onclose = event => {};
   /** An event listener to be called when a connection begins being attempted. */
-  ReconnectingWebSocket.prototype.onconnecting = function (event) {
-  };
+  ReconnectingWebSocket.prototype.onconnecting = event => {};
   /** An event listener to be called when a message is received from the server. */
-  ReconnectingWebSocket.prototype.onmessage = function (event) {
-  };
+  ReconnectingWebSocket.prototype.onmessage = event => {};
   /** An event listener to be called when an error occurs. */
-  ReconnectingWebSocket.prototype.onerror = function (event) {
-  };
+  ReconnectingWebSocket.prototype.onerror = event => {};
 
   /**
    * Whether all instances of ReconnectingWebSocket should log debug messages.

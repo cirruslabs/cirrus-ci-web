@@ -100,12 +100,12 @@ class CreateBuildDialog extends React.Component<Props, State> {
 
   render() {
     let { repository } = this.props;
-    if(error) {
+    if(this.state.error) {
       const options = {
         timeout: 5000,
         position: positions.BOTTOM_CENTER
       };
-      this.alert = false
+      this.state.error = false
       return (
         <div>
           <Provider template={AlertTemplate} {...options}>
@@ -185,14 +185,7 @@ class CreateBuildDialog extends React.Component<Props, State> {
         navigateBuild(this.context.router, null, response.createBuild.build.id);
       },
       onError: err => {
-        let sha = this.sha
-        let configOverride = this.configOverride
-        this.setState({
-          configOverride: configOverride,
-          branch: props.repository.masterBranch,
-          sha: sha,
-          error: true
-        });
+        this.state.alert = true
         if(process.NODE_ENV == "DEVELOPMENT") {
           console.error(err)
         }

@@ -5,8 +5,9 @@ ADD package.json package-lock.json /tmp/cirrus-ci-web/
 
 RUN npm ci
 
-ENV GENERATE_SOURCEMAP true
-ENV NODE_ENV production
+ENV \
+    GENERATE_SOURCEMAP true \
+    NODE_ENV production
 
 ADD . /tmp/cirrus-ci-web/
 RUN npm run relay && npm run build

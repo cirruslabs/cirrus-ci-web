@@ -57,6 +57,7 @@ interface State {
   branch: string;
   configOverride: string;
   sha: string;
+  error: boolean;
 }
 
 class CreateBuildDialog extends React.Component<Props, State> {

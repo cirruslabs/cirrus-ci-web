@@ -90,7 +90,6 @@
  *
  * timeoutInterval
  * - The maximum time in milliseconds to wait for a connection to succeed before closing and retrying. Accepts integer. Default: 2000.
- *
  */
 (function (global, factory) {
   if (typeof module !== 'undefined' && module.exports) {
@@ -98,14 +97,12 @@
   } else {
     global.ReconnectingWebSocket = factory();
   }
-})(this, function () {
-
+})(this, () => {
   if (!('WebSocket' in window)) {
     return;
   }
 
   function ReconnectingWebSocket(url, protocols, options) {
-
     // Default settings
     var settings = {
 
@@ -176,21 +173,11 @@
 
     // Wire up "on*" properties as event handlers
 
-    eventTarget.addEventListener('open', function (event) {
-      self.onopen(event);
-    });
-    eventTarget.addEventListener('close', function (event) {
-      self.onclose(event);
-    });
-    eventTarget.addEventListener('connecting', function (event) {
-      self.onconnecting(event);
-    });
-    eventTarget.addEventListener('message', function (event) {
-      self.onmessage(event);
-    });
-    eventTarget.addEventListener('error', function (event) {
-      self.onerror(event);
-    });
+    eventTarget.addEventListener('open', event => self.onopen(event));
+    eventTarget.addEventListener('close', event => self.onclose(event));
+    eventTarget.addEventListener('connecting', event => self.onconnecting(event));
+    eventTarget.addEventListener('message', event => self.onmessage(event));
+    eventTarget.addEventListener('error', event => self.onerror(event));
 
     // Expose the API required by EventTarget
 
@@ -198,24 +185,13 @@
     this.removeEventListener = eventTarget.removeEventListener.bind(eventTarget);
     this.dispatchEvent = eventTarget.dispatchEvent.bind(eventTarget);
 
-    /**
-     * This function generates an event that is compatible with standard
-     * compliant browsers and IE9 - IE11
-     *
-     * This will prevent the error:
-     * Object doesn't support this action
-     *
-     * http://stackoverflow.com/questions/19345392/why-arent-my-parameters-getting-passed-through-to-a-dispatched-event/19345563#19345563
-     * @param s String The name that the event should use
-     * @param args Object an optional object that the event will use
-     */
     function generateEvent(s, args) {
       var evt = document.createEvent("CustomEvent");
       evt.initCustomEvent(s, false, false, args);
       return evt;
     };
 
-    this.open = function (reconnectAttempt) {
+    this.open = reconnectAttempt => {
       ws = new WebSocket(self.url, protocols || []);
       ws.binaryType = this.binaryType;
 

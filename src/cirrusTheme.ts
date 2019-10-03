@@ -4,7 +4,6 @@ import lightGreen from '@material-ui/core/colors/lightGreen';
 import orange from '@material-ui/core/colors/orange';
 import red from '@material-ui/core/colors/red';
 import yellow from '@material-ui/core/colors/yellow';
-import { createMuiTheme } from '@material-ui/core';
 
 let darkSuccessColor = lightGreen['700'];
 let successColor = lightGreen['500'];
@@ -59,7 +58,4 @@ let cirrusTheme = {
   },
 };
 
-// theme converted to object Material UI under
-let asMuiTheme = createMuiTheme(cirrusTheme);
-
-export { cirrusColors, cirrusTheme, asMuiTheme };
+export { cirrusColors, cirrusTheme };

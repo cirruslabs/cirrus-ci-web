@@ -1,2 +1,0 @@
-1. Once https://github.com/facebook/create-react-app/pull/6931 lands we can remove `react-app-rewired`, `config-overrided.js` and change `"start-untyped": "TS_CHECKS=false npm start",` to  `"start-untyped": "TSC_COMPILE_ON_ERROR=true npm start",`.
-   This seems to land in create-react-app v3.1.

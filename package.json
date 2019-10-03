@@ -65,6 +65,9 @@
     "prettier": "prettier --write \"{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
     "prettier-check": "prettier --check  \"{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
   },
+  "babelMacros": {
+    "relay": {}
+  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"

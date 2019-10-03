@@ -57,15 +57,6 @@ let cirrusTheme = {
       hover: cirrusColors.cirrusGrey,
     },
   },
-  overrides: {
-    MuiChip: {
-      avatarChildren: {
-        // workaround to fix size of avatar icons in production builds
-        width: '1em',
-        height: '1em',
-      },
-    },
-  },
 };
 
 // theme converted to object Material UI under

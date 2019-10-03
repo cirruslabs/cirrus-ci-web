@@ -56,7 +56,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start-untyped": "TSC_COMPILE_ON_ERROR=true start",
+    "start-untyped": "TSC_COMPILE_ON_ERROR=\"true\" react-scripts start",
     "build": "react-scripts build",
     "relay": "npx relay-compiler --verbose --watchman false --src ./src --schema schema.graphql --language typescript",
     "sync-schema": "get-graphql-schema https://api.cirrus-ci.com/schema.json > schema.graphql",

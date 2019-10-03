@@ -360,7 +360,7 @@ class TaskDetails extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(withRouter(withStyles(styles)(TaskDetails)), {
+export default createFragmentContainer(withStyles(styles)(withRouter(TaskDetails)), {
   task: graphql`
     fragment TaskDetails_task on Task {
       id

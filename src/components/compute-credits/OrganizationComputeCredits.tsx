@@ -14,7 +14,7 @@ class OrganizationComputeCredits extends React.Component<Props> {
   render() {
     return (
       <ComputeCreditsBase
-        accountId={this.props.info.id}
+        accountId={parseInt(this.props.info.id, 10)}
         balanceInCredits={this.props.info.balanceInCredits}
         info={this.props.info}
         transactions={getNodesFromConnection(this.props.info.transactions)}

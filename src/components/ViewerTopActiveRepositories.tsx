@@ -5,7 +5,7 @@ import { graphql } from 'babel-plugin-relay/macro';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { createFragmentContainer } from 'react-relay';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import LastDefaultBranchBuildMiniRow from './LastDefaultBranchBuildMiniRow';
 import { ViewerTopActiveRepositories_viewer } from './__generated__/ViewerTopActiveRepositories_viewer.graphql';
 
@@ -37,7 +37,7 @@ class ViewerTopActiveRepositories extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(withRouter(withStyles(styles)(ViewerTopActiveRepositories)), {
+export default createFragmentContainer(withStyles(styles)(withRouter(ViewerTopActiveRepositories)), {
   viewer: graphql`
     fragment ViewerTopActiveRepositories_viewer on User {
       topActiveRepositories {

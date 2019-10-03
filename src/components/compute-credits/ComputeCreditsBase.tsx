@@ -62,7 +62,7 @@ interface Props extends WithStyles<typeof styles>, RouteComponentProps {
   transactions?: Array<ComputeCreditsTransactionRow_transaction>;
   info?: ComputeCreditsBase_info;
   balanceInCredits?: string;
-  accountId: string;
+  accountId: number;
 }
 
 interface State {
@@ -168,7 +168,7 @@ class ComputeCreditsBase extends React.Component<Props, State> {
   }
 }
 
-export default createFragmentContainer(withRouter(withStyles(styles)(ComputeCreditsBase)), {
+export default createFragmentContainer(withStyles(styles)(withRouter(ComputeCreditsBase)), {
   info: graphql`
     fragment ComputeCreditsBase_info on GitHubOrganizationInfo {
       ...BillingSettingsButton_info

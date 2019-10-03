@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
-import { List, Tooltip, withStyles, createStyles, WithStyles } from '@material-ui/core';
+import { createStyles, List, Tooltip, withStyles, WithStyles } from '@material-ui/core';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -9,7 +9,7 @@ import Icon from '@material-ui/core/Icon';
 import Toolbar from '@material-ui/core/Toolbar';
 import { cirrusColors } from '../../cirrusTheme';
 import Paper from '@material-ui/core/Paper';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { navigate } from '../../utils/navigate';
 import { TaskArtifacts_task } from './__generated__/TaskArtifacts_task.graphql';
 
@@ -203,4 +203,4 @@ class ArtifactsView extends React.Component<Props> {
   }
 }
 
-export default withRouter(withStyles(styles)(ArtifactsView));
+export default withStyles(styles)(withRouter(ArtifactsView));

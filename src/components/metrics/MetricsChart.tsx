@@ -136,7 +136,7 @@ class MetricsChart extends React.Component<Props, State> {
   }
 }
 
-export default createFragmentContainer(withRouter(withStyles(styles)(MetricsChart)), {
+export default createFragmentContainer(withStyles(styles)(withRouter(MetricsChart)), {
   chart: graphql`
     fragment MetricsChart_chart on MetricsChart {
       title

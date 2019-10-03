@@ -2,9 +2,9 @@ import React from 'react';
 import AnsiUp from 'ansi_up';
 import { cirrusColors } from '../../cirrusTheme';
 import './logs.css';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import classNames from 'classnames';
-import { withStyles, WithStyles, createStyles } from '@material-ui/styles';
+import { createStyles, WithStyles, withStyles } from '@material-ui/styles';
 import * as queryString from 'query-string';
 import { UnregisterCallback } from 'history';
 
@@ -122,4 +122,4 @@ class Logs extends React.Component<Props, State> {
   }
 }
 
-export default withRouter(withStyles(styles)(Logs));
+export default withStyles(styles)(withRouter(Logs));

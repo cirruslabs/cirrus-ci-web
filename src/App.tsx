@@ -3,15 +3,14 @@
 import React, { Component } from 'react';
 
 import Routes from './Routes';
-import { cirrusTheme } from './cirrusTheme';
+import { asMuiTheme } from './cirrusTheme';
 import { ThemeProvider } from '@material-ui/styles';
-import { createMuiTheme } from '@material-ui/core';
 import CirrusFavicon from './components/CirrusFavicon';
 
 class App extends Component {
   render() {
     return (
-      <ThemeProvider theme={createMuiTheme(cirrusTheme)}>
+      <ThemeProvider theme={asMuiTheme}>
         <CirrusFavicon />
         <Routes />
       </ThemeProvider>

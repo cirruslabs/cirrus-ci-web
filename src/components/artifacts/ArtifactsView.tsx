@@ -194,7 +194,7 @@ class ArtifactsView extends React.Component<Props> {
       <Paper elevation={1}>
         <Toolbar className={classes.title}>
           <Typography variant="h6" color="inherit">
-            {this._currentPath() || 'Artifacts'}
+            {'Artifacts' + this._currentPath() == null? '' : (' in ', this._currentPath())}
           </Typography>
         </Toolbar>
         <List>{items}</List>

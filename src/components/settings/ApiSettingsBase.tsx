@@ -10,6 +10,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardHeader from '@material-ui/core/CardHeader';
 import environment from '../../createRelayEnvironment';
 import TextField from '@material-ui/core/TextField';
+import Https from '@material-ui/icons/Https';
 
 const styles = theme =>
   createStyles({
@@ -76,6 +77,7 @@ class ApiSettingsBase extends React.Component<Props, State> {
     let cardActions = (
       <CardActions>
         <Button variant="contained" onClick={() => this.generateNewAccessToken()}>
+          <Https className={classes.leftIcon} />
           Generate New Token
         </Button>
       </CardActions>
@@ -89,7 +91,7 @@ class ApiSettingsBase extends React.Component<Props, State> {
             <CardContent>
               <Typography variant="subtitle1">
                 Need an API token for scripts or testing? Generate an access token for quick access to the Cirrus CI
-                API. See <a href="https://cirrus-ci.org/faq/">documentation</a> for more details.
+                API. See the <a href="https://cirrus-ci.org/faq/">documentation</a> for more details.
               </Typography>
               {existingTokenComponent}
               {newTokenComponent}

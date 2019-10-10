@@ -195,12 +195,13 @@ class TaskDetails extends React.Component<Props> {
         </div>
       );
 
-    let reRunButton = !hasWritePermissions(build.viewerPermission) ? null : (
-      <Button variant="contained" onClick={() => this.rerun(task.id)}>
-        <Icon className={classes.leftIcon}>refresh</Icon>
-        Re-Run
-      </Button>
-    );
+    let reRunButton =
+      !hasWritePermissions(build.viewerPermission) || !isTaskFinalStatus(task.status) ? null : (
+        <Button variant="contained" onClick={() => this.rerun(task.id)}>
+          <Icon className={classes.leftIcon}>refresh</Icon>
+          Re-Run
+        </Button>
+      );
 
     let taskIsTriggerable = task.status === 'PAUSED';
     let taskIsPreTriggerable = task.status === 'CREATED' && task.triggerType === 'MANUAL';

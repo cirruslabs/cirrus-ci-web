@@ -450,6 +450,7 @@ type Task {
   useComputeCredits: Boolean!
   usedComputeCredits: Boolean!
   transaction: AccountTransaction
+  triggerType: TaskTriggerType!
 }
 
 input TaskAbortInput {
@@ -536,6 +537,12 @@ input TaskTriggerInput {
 type TaskTriggerPayload {
   task: Task!
   clientMutationId: String
+}
+
+"""Task trigger type."""
+enum TaskTriggerType {
+  AUTOMATIC
+  MANUAL
 }
 
 type TimePoint {

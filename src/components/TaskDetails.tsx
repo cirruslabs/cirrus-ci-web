@@ -53,6 +53,8 @@ const taskTriggerMutation = graphql`
     trigger(input: $input) {
       task {
         id
+        status
+        triggerType
       }
     }
   }
@@ -63,6 +65,7 @@ const taskCancelMutation = graphql`
     abortTask(input: $input) {
       abortedTask {
         id
+        status
       }
     }
   }
@@ -199,11 +202,20 @@ class TaskDetails extends React.Component<Props> {
       </Button>
     );
 
+    let taskIsTriggerable = task.status === 'PAUSED';
+    let taskIsPreTriggerable = task.status === 'CREATED' && task.triggerType === 'MANUAL';
     let triggerButton =
-      !hasWritePermissions(build.viewerPermission) || task.status !== 'PAUSED' ? null : (
+      !hasWritePermissions(build.viewerPermission) || !taskIsTriggerable ? null : (
         <Button variant="contained" onClick={() => this.trigger(task.id)}>
           <Icon className={classes.leftIcon}>play_circle_filled</Icon>
           Trigger
+        </Button>
+      );
+    let preTriggerButton =
+      !hasWritePermissions(build.viewerPermission) || !taskIsPreTriggerable ? null : (
+        <Button variant="contained" onClick={() => this.trigger(task.id)}>
+          <Icon className={classes.leftIcon}>play_circle_filled</Icon>
+          Pre-Trigger
         </Button>
       );
 
@@ -287,6 +299,7 @@ class TaskDetails extends React.Component<Props> {
               {abortButton}
               {reRunButton}
               {triggerButton}
+              {preTriggerButton}
             </CardActions>
           </Card>
         </Paper>
@@ -366,6 +379,7 @@ export default createFragmentContainer(withStyles(styles)(withRouter(TaskDetails
       id
       buildId
       status
+      triggerType
       automaticReRun
       ...TaskNameChip_task
       ...TaskCreatedChip_task

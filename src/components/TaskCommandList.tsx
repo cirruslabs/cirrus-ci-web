@@ -48,6 +48,32 @@ class TaskCommandList extends React.Component<Props> {
     return <div>{commandComponents}</div>;
   }
 
+  buildKey(command: ItemOfArray<TaskCommandList_task['commands']>, name) {
+    /**
+     * Returned array indexes guide:
+     * 0: Display name
+     * 1: Material UI icon
+     */
+    // stringbuilder for name to be displayed
+    let sb = []
+    switch (command.type) {
+      case CLONE:
+        sb = ["Clone", <CloudDownloadIcon />]
+      case EXECUTE_BACKGROUND_SCRIPT:
+      case EXECUTE_SCRIPT:
+        sb = [command.name, <DNSIcon />]
+      case CACHE:
+        let e = "Populate " + name + " cache";
+        sb = [e, <FileCopyIcon />]
+      case UPLOAD_CACHE:
+        let e = "Upload " + name + " cache";
+        sb = [e, <FileCopyIcon />]
+      default:
+        return name
+    }
+    return sb
+  }
+
   commandItem(command: ItemOfArray<TaskCommandList_task['commands']>, commandStartTimestamp: number) {
     let { classes } = this.props;
     const selectedCommandName = queryString.parse(this.props.location.search).command;
@@ -58,6 +84,8 @@ class TaskCommandList extends React.Component<Props> {
     };
     let finished = command.durationInSeconds > 0 || isTaskCommandFinalStatus(command.status);
     let expandable = command.name === selectedCommandName || finished || !isTaskFinalStatus(this.props.task.status);
+    let key = null
+    
     return (
       <ExpansionPanel
         key={command.name}

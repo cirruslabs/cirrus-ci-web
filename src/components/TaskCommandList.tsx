@@ -10,6 +10,9 @@ import DurationTicker from './DurationTicker';
 import { withStyles, WithStyles } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import Dns from '@material-ui/icons/Dns';
+import CloudDownload from '@material-ui/icons/CloudDownload';
+import Folder from '@material-ui/icons/Folder';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
@@ -58,16 +61,16 @@ class TaskCommandList extends React.Component<Props> {
     let sb = []
     switch (command.type) {
       case CLONE:
-        sb = ["Clone", <CloudDownloadIcon />]
+        sb = ["Clone", <CloudDownload />]
       case EXECUTE_BACKGROUND_SCRIPT:
       case EXECUTE_SCRIPT:
-        sb = [command.name, <DNSIcon />]
+        sb = [command.name, <Dns />]
       case CACHE:
         let e = "Populate " + name + " cache";
-        sb = [e, <FileCopyIcon />]
+        sb = [e, <Folder />]
       case UPLOAD_CACHE:
         let e = "Upload " + name + " cache";
-        sb = [e, <FileCopyIcon />]
+        sb = [e, <Folder />]
       default:
         return name
     }
@@ -84,17 +87,17 @@ class TaskCommandList extends React.Component<Props> {
     };
     let finished = command.durationInSeconds > 0 || isTaskCommandFinalStatus(command.status);
     let expandable = command.name === selectedCommandName || finished || !isTaskFinalStatus(this.props.task.status);
-    
+    const thekey = buildKey(command, command.name)
     return (
       <ExpansionPanel
-        key=buildKey(command, command.name)
+        key={thekey}
         TransitionProps={{ unmountOnExit: true, timeout: 400 }}
         disabled={!expandable}
         defaultExpanded={command.name === selectedCommandName || command.status === 'FAILURE'}
       >
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} style={styles.header}>
           <div>
-            <Typography variant="body1">{command.name}</Typography>
+            <Typography variant="body1">{thekey}</Typography>
             <Typography variant="caption">
               {finished ? (
                 formatDuration(command.durationInSeconds)

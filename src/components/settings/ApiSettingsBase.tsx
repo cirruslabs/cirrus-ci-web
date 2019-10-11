@@ -77,7 +77,6 @@ class ApiSettingsBase extends React.Component<Props, State> {
     let cardActions = (
       <CardActions>
         <Button variant="contained" onClick={() => this.generateNewAccessToken()} startIcon={<Https />}>
-          <Https />
           Generate New Token
         </Button>
       </CardActions>

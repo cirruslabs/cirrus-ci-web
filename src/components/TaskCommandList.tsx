@@ -90,14 +90,14 @@ class TaskCommandList extends React.Component<Props> {
     const thekey = buildKey(command, command.name)
     return (
       <ExpansionPanel
-        key={thekey}
+        key={thekey[0]}
         TransitionProps={{ unmountOnExit: true, timeout: 400 }}
         disabled={!expandable}
         defaultExpanded={command.name === selectedCommandName || command.status === 'FAILURE'}
       >
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} style={styles.header}>
           <div>
-            <Typography variant="body1">{thekey}</Typography>
+            <Typography variant="body1">{thekey[0]}</Typography>
             <Typography variant="caption">
               {finished ? (
                 formatDuration(command.durationInSeconds)

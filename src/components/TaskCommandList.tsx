@@ -84,11 +84,10 @@ class TaskCommandList extends React.Component<Props> {
     };
     let finished = command.durationInSeconds > 0 || isTaskCommandFinalStatus(command.status);
     let expandable = command.name === selectedCommandName || finished || !isTaskFinalStatus(this.props.task.status);
-    let key = null
     
     return (
       <ExpansionPanel
-        key={command.name}
+        key=buildKey(command, command.name)
         TransitionProps={{ unmountOnExit: true, timeout: 400 }}
         disabled={!expandable}
         defaultExpanded={command.name === selectedCommandName || command.status === 'FAILURE'}

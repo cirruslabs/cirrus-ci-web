@@ -11,6 +11,7 @@ type AccountTransaction {
   timestamp: Int!
   microCreditsAmount: Int!
   creditsAmount: String!
+  initialCreditsAmount: String
   task: Task
   repository: Repository
 }
@@ -209,6 +210,11 @@ type GitHubOrganizationInfo {
     last: Int
   ): WebhookDeliveriesConnection
   apiToken: ApiAccessToken
+}
+
+type InstanceResources {
+  cpu: Float!
+  memory: Int!
 }
 
 """Int type"""
@@ -451,6 +457,7 @@ type Task {
   usedComputeCredits: Boolean!
   transaction: AccountTransaction
   triggerType: TaskTriggerType!
+  instanceResources: InstanceResources
 }
 
 input TaskAbortInput {

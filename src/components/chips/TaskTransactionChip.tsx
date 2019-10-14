@@ -17,6 +17,9 @@ function TaskTransactionChip(props) {
   if (transaction) {
     tip = `${transaction.creditsAmount} compute credits were charged for this task`;
   }
+  if (transaction && transaction.initialCreditsAmount) {
+    tip += ` (corrected from ${transaction.initialCreditsAmount})`;
+  }
   return (
     <Tooltip title={tip}>
       <Chip
@@ -38,6 +41,7 @@ export default createFragmentContainer(TaskTransactionChip, {
       usedComputeCredits
       transaction {
         creditsAmount
+        initialCreditsAmount
       }
     }
   `,

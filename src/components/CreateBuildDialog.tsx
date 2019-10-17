@@ -16,7 +16,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { navigateBuild } from '../utils/navigate';
 import { positions, Provider } from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
-import { useAlert } from "react-alert";
+import { useAlert } from 'react-alert';
 
 import 'brace/mode/yaml';
 import 'brace/theme/github';
@@ -72,7 +72,7 @@ class CreateBuildDialog extends React.Component<Props, State> {
       configOverride: '',
       branch: props.repository.masterBranch,
       sha: '',
-      error: false
+      error: false,
     };
   }
 
@@ -101,18 +101,16 @@ class CreateBuildDialog extends React.Component<Props, State> {
 
   render() {
     let { repository } = this.props;
-    if(this.state.error) {
+    if (this.state.error) {
       const options = {
         timeout: 5000,
-        position: positions.BOTTOM_CENTER
+        position: positions.BOTTOM_CENTER,
       };
-      this.state.error = false
+      this.state.error = false;
       return (
         <div>
           <Provider template={AlertTemplate} {...options}>
-            useAlert().error(
-              "Failed to create build. Are all provided variables correct?"
-            )
+            useAlert().error( "Failed to create build. Are all provided variables correct?" )
           </Provider>
         </div>
       );
@@ -186,9 +184,9 @@ class CreateBuildDialog extends React.Component<Props, State> {
         navigateBuild(this.context.router, null, response.createBuild.build.id);
       },
       onError: err => {
-        this.state.alert = true
-        if(process.NODE_ENV == "DEVELOPMENT") {
-          console.error(err)
+        this.state.alert = true;
+        if (process.NODE_ENV == 'DEVELOPMENT') {
+          console.error(err);
         }
       },
     });

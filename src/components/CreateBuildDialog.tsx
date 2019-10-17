@@ -189,9 +189,6 @@ class CreateBuildDialog extends React.Component<Props, State> {
         this.setState({
           error: true
         });
-        if (process.env.NODE_ENV == 'DEVELOPMENT') {
-          console.error(err);
-        }
       },
     });
   };

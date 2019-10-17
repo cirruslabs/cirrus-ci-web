@@ -13,9 +13,9 @@ function TaskTransactionChip(props) {
   let { task } = props;
   let { transaction, usedComputeCredits } = task;
   if (!usedComputeCredits) return <div />;
-  let tip = "Exact amount of compute credits used hasn't been calculated yet";
+  let tip = 'Compute credit cost will be calculated at the end of the task.';
   if (transaction) {
-    tip = `${transaction.creditsAmount} compute credits were charged for this task`;
+    tip = `${transaction.creditsAmount} compute credits were charged for this task.`;
   }
   if (transaction && transaction.initialCreditsAmount) {
     tip += ` (corrected from ${transaction.initialCreditsAmount})`;

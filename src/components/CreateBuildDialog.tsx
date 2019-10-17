@@ -115,7 +115,7 @@ class CreateBuildDialog extends React.Component<Props, State> {
       return (
         <div>
           <Provider template={AlertTemplate} {...options}>
-            {useAlert().error( "Failed to create build. Are all provided variables correct?" )}
+            {useAlert().error('Failed to create build. Are all provided variables correct?')}
           </Provider>
         </div>
       );

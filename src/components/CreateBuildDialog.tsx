@@ -106,7 +106,12 @@ class CreateBuildDialog extends React.Component<Props, State> {
         timeout: 5000,
         position: positions.BOTTOM_CENTER
       };
-      this.state.error = false
+      this.setState({
+        configOverride: this.state.configOverride,
+        branch: this.state.branch,
+        sha: this.state.sha,
+        error: false
+      })
       return (
         <div>
           <Provider template={AlertTemplate} {...options}>
@@ -186,7 +191,12 @@ class CreateBuildDialog extends React.Component<Props, State> {
         navigateBuild(this.context.router, null, response.createBuild.build.id);
       },
       onError: err => {
-        this.state.alert = true
+        this.setState({
+          configOverride: this.state.configOverride,
+          branch: this.state.branch,
+          sha: this.state.sha,
+          error: true
+        })
         if(process.NODE_ENV == "DEVELOPMENT") {
           console.error(err)
         }

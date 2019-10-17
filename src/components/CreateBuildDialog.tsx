@@ -107,7 +107,7 @@ class CreateBuildDialog extends React.Component<Props, State> {
         position: positions.BOTTOM_CENTER,
       };
       this.setState({
-        error: false
+        error: false,
       });
       return (
         <div>
@@ -187,7 +187,7 @@ class CreateBuildDialog extends React.Component<Props, State> {
       },
       onError: err => {
         this.setState({
-          error: true
+          error: true,
         });
       },
     });

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { commandStatusColor } from '../utils/colors';
 import TaskCommandLogs from './TaskCommandLogs';
@@ -87,7 +87,7 @@ class TaskCommandList extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(withRouter(withStyles(styles)(TaskCommandList)), {
+export default createFragmentContainer(withStyles(styles)(withRouter(TaskCommandList)), {
   task: graphql`
     fragment TaskCommandList_task on Task {
       id

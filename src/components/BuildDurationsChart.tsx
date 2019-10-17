@@ -3,7 +3,7 @@ import { Bar, BarChart, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } 
 import { buildStatusColor } from '../utils/colors';
 import { formatDuration } from '../utils/time';
 import { navigateBuild } from '../utils/navigate';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildList_repository.graphql';
 import { NodeOfConnection, UnspecifiedCallbackFunction } from '../utils/utility-types';
@@ -48,7 +48,7 @@ class BuildDurationsChart extends React.Component<Props> {
 
   render() {
     let { builds, selectedBuildId, onSelectBuildId } = this.props;
-    let maxDuration = Math.max(...builds.map(build => build.durationInSeconds));
+    let maxDuration = Math.max(...builds.map(build => build.durationInSeconds || 0));
     let ticks = [0];
     for (let nextTick = 60; nextTick < maxDuration; nextTick += 60) {
       ticks.push(nextTick);

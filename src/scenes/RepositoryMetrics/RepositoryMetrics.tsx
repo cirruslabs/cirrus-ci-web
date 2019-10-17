@@ -42,4 +42,4 @@ class RepositoryMetrics extends React.Component<Props> {
   }
 }
 
-export default withRouter(withStyles(styles)(RepositoryMetrics));
+export default withStyles(styles)(withRouter(RepositoryMetrics));

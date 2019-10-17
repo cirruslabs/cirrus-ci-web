@@ -173,7 +173,7 @@ class BillingSettingsDialog extends React.Component<Props, State> {
   }
 }
 
-export default createFragmentContainer(withRouter(withStyles(styles)(BillingSettingsDialog)), {
+export default createFragmentContainer(withStyles(styles)(withRouter(BillingSettingsDialog)), {
   billingSettings: graphql`
     fragment BillingSettingsDialog_billingSettings on BillingSettings {
       accountId

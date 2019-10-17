@@ -1,11 +1,11 @@
 import React from 'react';
-import { createFragmentContainer, requestSubscription, Disposable } from 'react-relay';
+import { createFragmentContainer, Disposable, requestSubscription } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../createRelayEnvironment';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import { withStyles, WithStyles } from '@material-ui/core';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { navigateRepository } from '../utils/navigate';
 import RepositoryNameChip from './chips/RepositoryNameChip';
 import BuildStatusChip from './chips/BuildStatusChip';
@@ -103,7 +103,7 @@ class LastDefaultBranchBuildRow extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(withRouter(withStyles(styles)(LastDefaultBranchBuildRow)), {
+export default createFragmentContainer(withStyles(styles)(withRouter(LastDefaultBranchBuildRow)), {
   repository: graphql`
     fragment LastDefaultBranchBuildRow_repository on Repository {
       id

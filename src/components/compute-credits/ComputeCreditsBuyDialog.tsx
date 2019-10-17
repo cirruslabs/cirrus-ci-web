@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles, createStyles, WithStyles } from '@material-ui/core/styles';
+import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -40,7 +40,7 @@ const computeCreditsBuyMutation = graphql`
 `;
 
 interface Props extends WithStyles<typeof styles> {
-  accountId: string;
+  accountId: number;
   onClose: UnspecifiedCallbackFunction;
   open: boolean;
 }

@@ -264,7 +264,7 @@ class BuildDetails extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(withRouter(withStyles(styles)(BuildDetails)), {
+export default createFragmentContainer(withStyles(styles)(withRouter(BuildDetails)), {
   build: graphql`
     fragment BuildDetails_build on Build {
       id

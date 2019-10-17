@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
@@ -84,7 +84,7 @@ class DeliveryRow extends React.Component<Props, State> {
   }
 }
 
-export default createFragmentContainer(withRouter(withStyles(styles)(DeliveryRow)), {
+export default createFragmentContainer(withStyles(styles)(withRouter(DeliveryRow)), {
   delivery: graphql`
     fragment DeliveryRow_delivery on WebHookDelivery {
       id

@@ -1,84 +1,50 @@
 import { subscribeObjectUpdates } from './rtu/ConnectionManager';
 
-const { Environment, Network, RecordSource, Store } = require('relay-runtime');
+const { Environment, Network, RecordSource, Store, Observable } = require('relay-runtime');
 
 /**
  * See RelayNetwork.js:43 for details how it used in Relay
  */
-function subscription(operation, variables, cacheConfig, config) {
+function subscription(operation, variables, cacheConfig) {
   if (variables['taskID'] && operation.text.indexOf('commands') > 0) {
-    let taskSubscriptionDisposer = webSocketSubscription(
-      'TASK',
-      variables['taskID'],
-      operation,
-      variables,
-      cacheConfig,
-      config,
-    );
-    let taskCommandsSubscriptionDisposer = webSocketSubscription(
-      'TASK_COMMANDS',
-      variables['taskID'],
-      operation,
-      variables,
-      cacheConfig,
-      config,
-    );
-    return {
-      dispose: () => {
-        taskSubscriptionDisposer.dispose();
-        taskCommandsSubscriptionDisposer.dispose();
-      },
-    };
+    return webSocketSubscriptions(operation, variables, [
+      ['TASK', variables['taskID']],
+      ['TASK_COMMANDS', variables['taskID']],
+    ]);
   } else if (variables['repositoryID'] && operation.text.indexOf('lastDefaultBranchBuild') > 0) {
-    return webSocketSubscription(
-      'REPOSITORY_DEFAULT_BRANCH_BUILD',
-      variables['repositoryID'],
-      operation,
-      variables,
-      cacheConfig,
-      config,
-    );
+    return webSocketSubscriptions(operation, variables, [
+      ['REPOSITORY_DEFAULT_BRANCH_BUILD', variables['repositoryID']],
+    ]);
   } else if (variables['taskID']) {
-    return webSocketSubscription('TASK', variables['taskID'], operation, variables, cacheConfig, config);
+    return webSocketSubscriptions(operation, variables, [['TASK', variables['taskID']]]);
   } else if (variables['buildID']) {
-    return webSocketSubscription('BUILD', variables['buildID'], operation, variables, cacheConfig, config);
-  } else {
-    return pollingSubscription(operation, variables, cacheConfig, config);
+    return webSocketSubscriptions(operation, variables, [['BUILD', variables['buildID']]]);
   }
 }
 
-function pollingSubscription(operation, variables, cacheConfig, config) {
-  let { onError, onNext } = config;
+function webSocketSubscriptions(operation, variables, kind2id: Array<[string, string]>) {
+  let dataSource = null;
 
-  let intervalId = setInterval(() => {
-    fetchQuery(operation, variables).then(
-      response => {
-        onNext(response);
-      },
-      error => {
-        onError && onError(error);
-      },
-    );
-  }, 3333);
-
-  return { dispose: () => clearInterval(intervalId) };
-}
-
-function webSocketSubscription(kind, id, operation, variables, cacheConfig, config) {
-  let { onError, onNext } = config;
-
-  let dispose = subscribeObjectUpdates(kind, id, () => {
-    fetchQuery(operation, variables).then(
-      response => {
-        onNext(response);
-      },
-      error => {
-        onError && onError(error);
-      },
-    );
+  let result = Observable.create(sink => {
+    dataSource = sink;
   });
 
-  return { dispose };
+  kind2id.forEach(kindIdPair => {
+    let [kind, id] = kindIdPair;
+    let dispose = subscribeObjectUpdates(kind, id, () => {
+      fetchQuery(operation, variables).then(
+        response => {
+          dataSource && dataSource.next(response);
+        },
+        error => {
+          dataSource && dataSource.error(error);
+        },
+      );
+    });
+    result = result.finally(dispose);
+  });
+
+  return result;
 }
 
 function fetchQuery(operation, variables) {

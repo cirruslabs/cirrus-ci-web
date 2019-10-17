@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 
-import './App.css';
 import Routes from './Routes';
 import { cirrusTheme } from './cirrusTheme';
 import { ThemeProvider } from '@material-ui/styles';

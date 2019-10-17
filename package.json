@@ -27,6 +27,8 @@
     "query-string": "*",
     "react": "*",
     "react-ace": "*",
+    "react-alert": "*",
+    "react-alert-template-basic": "*",
     "react-dom": "*",
     "react-loadable": "*",
     "react-markdown": "*",
@@ -34,9 +36,7 @@
     "react-router-dom": "*",
     "react-stripe-elements": "*",
     "react-vis": "^1.11.7",
-    "recharts": "*",
-    "react-alert": "*",
-    "react-alert-template-basic": "*"
+    "recharts": "*"
   },
   "devDependencies": {
     "@types/jest": "*",

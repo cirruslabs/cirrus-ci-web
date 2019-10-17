@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import PropTypes from 'prop-types';
@@ -66,7 +66,7 @@ class BillingSettingsButton extends React.Component<Props, State> {
   }
 }
 
-export default createFragmentContainer(withRouter(withStyles(styles)(BillingSettingsButton)), {
+export default createFragmentContainer(withStyles(styles)(withRouter(BillingSettingsButton)), {
   info: graphql`
     fragment BillingSettingsButton_info on GitHubOrganizationInfo {
       billingSettings {

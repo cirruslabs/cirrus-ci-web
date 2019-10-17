@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import LastDefaultBranchBuildRow from './LastDefaultBranchBuildRow';
-import { withStyles, Tooltip, WithStyles } from '@material-ui/core';
+import { Tooltip, withStyles, WithStyles } from '@material-ui/core';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Link from 'react-router-dom/Link';
@@ -80,4 +80,4 @@ class GitHubOrganizationRepositoryList extends React.Component<Props> {
   }
 }
 
-export default withRouter(withStyles(styles)(GitHubOrganizationRepositoryList));
+export default withStyles(styles)(withRouter(GitHubOrganizationRepositoryList));

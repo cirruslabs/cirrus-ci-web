@@ -1,6 +1,6 @@
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import React from 'react';
 
 import Typography from '@material-ui/core/Typography';
@@ -53,7 +53,7 @@ class Notification extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(withRouter(withStyles(styles)(Notification)), {
+export default createFragmentContainer(withStyles(styles)(withRouter(Notification)), {
   notification: graphql`
     fragment Notification_notification on Notification {
       level

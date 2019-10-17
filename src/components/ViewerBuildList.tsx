@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 
 import Table from '@material-ui/core/Table';
@@ -109,7 +109,7 @@ class ViewerBuildList extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(withRouter(withStyles(styles)(ViewerBuildList)), {
+export default createFragmentContainer(withStyles(styles)(withRouter(ViewerBuildList)), {
   viewer: graphql`
     fragment ViewerBuildList_viewer on User {
       builds(last: 100) {

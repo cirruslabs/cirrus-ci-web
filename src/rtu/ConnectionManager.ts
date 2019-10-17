@@ -5,7 +5,7 @@ const ws = new ReconnectingWebSocket('wss://api.cirrus-ci.com/ws');
 
 const handlersManager = new HandlersManager();
 
-ws.onopen = function open() {
+ws.onopen = () => {
   let allTopicSubscribeRequests = handlersManager.allRequests();
   allTopicSubscribeRequests.forEach(function(request) {
     try {
@@ -23,19 +23,19 @@ ws.onopen = function open() {
   });
 };
 
-ws.onerror = function error(err) {
+ws.onerror = err => {
   if (process.env.NODE_ENV === 'development') {
     console.log('Web Socket error', err);
   }
 };
 
-ws.onclose = function close() {
+ws.onclose = () => {
   if (process.env.NODE_ENV === 'development') {
     console.log('disconnected', Date.now());
   }
 };
 
-ws.onmessage = function incoming(event) {
+ws.onmessage = event => {
   let message = JSON.parse(event.data);
   let data = message.data || {};
   let topic = message.topic || '';

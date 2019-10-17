@@ -5,12 +5,13 @@ schema {
 }
 
 type AccountTransaction {
-  accountId: Long!
-  taskId: Long!
-  repositoryId: Long!
-  timestamp: Long!
-  microCreditsAmount: Long!
+  accountId: Int!
+  taskId: Int!
+  repositoryId: Int!
+  timestamp: Int!
+  microCreditsAmount: Int!
   creditsAmount: String!
+  initialCreditsAmount: String
   task: Task
   repository: Repository
 }
@@ -35,12 +36,12 @@ type AccountTransactionsConnection {
 
 type ApiAccessToken {
   maskedToken: String
-  creationTimestamp: Long
+  creationTimestamp: Int
 }
 
 type ArtifactFileInfo {
   path: String!
-  size: Long!
+  size: Int!
 }
 
 type Artifacts {
@@ -51,9 +52,9 @@ type Artifacts {
 }
 
 type BillingSettings {
-  accountId: Long!
+  accountId: Int!
   enabled: Boolean!
-  billingCreditsLimit: Long!
+  billingCreditsLimit: Int!
   billingEmailAddress: String!
   invoiceTemplate: String
 }
@@ -78,14 +79,14 @@ type Build {
   changeIdInRepo: String!
   changeMessageTitle: String
   changeMessage: String
-  durationInSeconds: Long
-  clockDurationInSeconds: Long
-  pullRequest: Long
-  checkSuiteId: Long
+  durationInSeconds: Int
+  clockDurationInSeconds: Int
+  pullRequest: Int
+  checkSuiteId: Int
   isSenderUserCollaborator: Boolean
   senderUserPermissions: String
-  changeTimestamp: Long!
-  buildCreatedTimestamp: Long!
+  changeTimestamp: Int!
+  buildCreatedTimestamp: Int!
   status: BuildStatus
   notifications: [Notification]
   tasks: [Task]
@@ -163,11 +164,11 @@ type GenerateNewAccessTokenPayload {
 }
 
 type GitHubMarketplacePurchase {
-  accountId: Long!
+  accountId: Int!
   login: String!
-  planId: Long!
+  planId: Int!
   planName: String!
-  unitCount: Long!
+  unitCount: Int!
   onFreeTrial: Boolean!
   freeTrialDaysLeft: Int!
 }
@@ -211,8 +212,13 @@ type GitHubOrganizationInfo {
   apiToken: ApiAccessToken
 }
 
-"""Long type"""
-scalar Long
+type InstanceResources {
+  cpu: Float!
+  memory: Int!
+}
+
+"""Int type"""
+scalar Int
 
 type MetricsChart {
   title: String
@@ -430,12 +436,12 @@ type Task {
   commands: [TaskCommand]
   artifacts: [Artifacts]
   commandLogsTail(name: String!): [String]
-  statusTimestamp: Long!
-  creationTimestamp: Long!
-  scheduledTimestamp: Long!
-  executingTimestamp: Long!
-  finalStatusTimestamp: Long!
-  durationInSeconds: Long!
+  statusTimestamp: Int!
+  creationTimestamp: Int!
+  scheduledTimestamp: Int!
+  executingTimestamp: Int!
+  finalStatusTimestamp: Int!
+  durationInSeconds: Int!
   labels: [String]
   uniqueLabels: [String]
   requiredPRLabels: [String]
@@ -450,6 +456,8 @@ type Task {
   useComputeCredits: Boolean!
   usedComputeCredits: Boolean!
   transaction: AccountTransaction
+  triggerType: TaskTriggerType!
+  instanceResources: InstanceResources
 }
 
 input TaskAbortInput {
@@ -525,7 +533,7 @@ enum TaskStatus {
 
 type TaskStatusDuration {
   status: TaskStatus!
-  durationInSeconds: Long!
+  durationInSeconds: Int!
 }
 
 input TaskTriggerInput {
@@ -538,6 +546,12 @@ type TaskTriggerPayload {
   clientMutationId: String
 }
 
+"""Task trigger type."""
+enum TaskTriggerType {
+  AUTOMATIC
+  MANUAL
+}
+
 type TimePoint {
   date: DayDate
   value: Float
@@ -545,7 +559,7 @@ type TimePoint {
 
 type User {
   id: ID!
-  githubUserId: Long
+  githubUserId: Int
   githubUserName: String!
   avatarURL: String
   builds(
@@ -628,9 +642,9 @@ type WebhookDeliveriesConnection {
 
 type WebHookDelivery {
   id: String!
-  accountId: Long!
-  repositoryId: Long!
-  timestamp: Long!
+  accountId: Int!
+  repositoryId: Int!
+  timestamp: Int!
   payload: WebHookDeliveryPayload!
   response: WebHookDeliveryResponse!
 }
@@ -652,7 +666,7 @@ type WebHookDeliveryPayload {
 
 type WebHookDeliveryResponse {
   status: Int!
-  duration: Long!
+  duration: Int!
   data: String!
 }
 

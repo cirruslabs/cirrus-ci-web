@@ -144,4 +144,4 @@ class TaskCommandLogs extends React.Component<TaskCommandLogsProps> {
   }
 }
 
-export default withRouter(withStyles(styles)(TaskCommandLogs));
+export default withStyles(styles)(withRouter(TaskCommandLogs));

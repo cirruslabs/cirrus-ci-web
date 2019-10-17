@@ -53,6 +53,8 @@ const taskTriggerMutation = graphql`
     trigger(input: $input) {
       task {
         id
+        status
+        triggerType
       }
     }
   }
@@ -63,6 +65,7 @@ const taskCancelMutation = graphql`
     abortTask(input: $input) {
       abortedTask {
         id
+        status
       }
     }
   }
@@ -192,18 +195,28 @@ class TaskDetails extends React.Component<Props> {
         </div>
       );
 
-    let reRunButton = !hasWritePermissions(build.viewerPermission) ? null : (
-      <Button variant="contained" onClick={() => this.rerun(task.id)}>
-        <Icon className={classes.leftIcon}>refresh</Icon>
-        Re-Run
-      </Button>
-    );
+    let reRunButton =
+      !hasWritePermissions(build.viewerPermission) || !isTaskFinalStatus(task.status) ? null : (
+        <Button variant="contained" onClick={() => this.rerun(task.id)}>
+          <Icon className={classes.leftIcon}>refresh</Icon>
+          Re-Run
+        </Button>
+      );
 
+    let taskIsTriggerable = task.status === 'PAUSED';
+    let taskIsPreTriggerable = task.status === 'CREATED' && task.triggerType === 'MANUAL';
     let triggerButton =
-      !hasWritePermissions(build.viewerPermission) || task.status !== 'PAUSED' ? null : (
+      !hasWritePermissions(build.viewerPermission) || !taskIsTriggerable ? null : (
         <Button variant="contained" onClick={() => this.trigger(task.id)}>
           <Icon className={classes.leftIcon}>play_circle_filled</Icon>
           Trigger
+        </Button>
+      );
+    let preTriggerButton =
+      !hasWritePermissions(build.viewerPermission) || !taskIsPreTriggerable ? null : (
+        <Button variant="contained" onClick={() => this.trigger(task.id)}>
+          <Icon className={classes.leftIcon}>play_circle_filled</Icon>
+          Pre-Trigger
         </Button>
       );
 
@@ -287,6 +300,7 @@ class TaskDetails extends React.Component<Props> {
               {abortButton}
               {reRunButton}
               {triggerButton}
+              {preTriggerButton}
             </CardActions>
           </Card>
         </Paper>
@@ -360,12 +374,13 @@ class TaskDetails extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(withRouter(withStyles(styles)(TaskDetails)), {
+export default createFragmentContainer(withStyles(styles)(withRouter(TaskDetails)), {
   task: graphql`
     fragment TaskDetails_task on Task {
       id
       buildId
       status
+      triggerType
       automaticReRun
       ...TaskNameChip_task
       ...TaskCreatedChip_task

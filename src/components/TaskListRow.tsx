@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
@@ -62,7 +62,7 @@ class TaskListRow extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(withRouter(withStyles(styles)(TaskListRow)), {
+export default createFragmentContainer(withStyles(styles)(withRouter(TaskListRow)), {
   task: graphql`
     fragment TaskListRow_task on Task {
       id

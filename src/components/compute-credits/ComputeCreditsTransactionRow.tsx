@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
@@ -65,7 +65,7 @@ class ComputeCreditsTransactionRow extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(withRouter(withStyles(styles)(ComputeCreditsTransactionRow)), {
+export default createFragmentContainer(withStyles(styles)(withRouter(ComputeCreditsTransactionRow)), {
   transaction: graphql`
     fragment ComputeCreditsTransactionRow_transaction on AccountTransaction {
       timestamp

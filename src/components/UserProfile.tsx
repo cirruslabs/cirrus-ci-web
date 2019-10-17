@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import Paper from '@material-ui/core/Paper';
-import { withStyles, createStyles, WithStyles, Tooltip } from '@material-ui/core';
+import { createStyles, Tooltip, WithStyles, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -186,7 +186,7 @@ class UserProfile extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(withRouter(withStyles(styles)(UserProfile)), {
+export default createFragmentContainer(withStyles(styles)(withRouter(UserProfile)), {
   user: graphql`
     fragment UserProfile_user on User {
       id

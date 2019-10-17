@@ -1,0 +1,15 @@
+{
+  "name": "Cirrus CI GraphQL Schema",
+  "schemaPath": "schema.graphql",
+  "extensions": {
+    "endpoints": {
+      "Cirrus CI GraphQL Endpoint": {
+        "url": "https://api.cirrus-ci.com/graphql",
+        "headers": {
+          "user-agent": "JS GraphQL"
+        },
+        "introspect": false
+      }
+    }
+  }
+}

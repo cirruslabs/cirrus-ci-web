@@ -5,7 +5,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import Icon from '@material-ui/core/Icon';
 import { cirrusColors } from '../../cirrusTheme';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { navigate } from '../../utils/navigate';
 import { withStyles } from '@material-ui/core';
 import { createFragmentContainer } from 'react-relay';
@@ -52,7 +52,7 @@ class BuildBranchNameChip extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(withRouter(withStyles({})(BuildBranchNameChip)), {
+export default createFragmentContainer(withStyles({})(withRouter(BuildBranchNameChip)), {
   build: graphql`
     fragment BuildBranchNameChip_build on Build {
       id

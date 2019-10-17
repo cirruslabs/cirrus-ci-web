@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -17,7 +17,7 @@ import BuildBranchNameChip from './chips/BuildBranchNameChip';
 import BuildChangeChip from './chips/BuildChangeChip';
 import BuildStatusChip from './chips/BuildStatusChip';
 import { navigateBuild } from '../utils/navigate';
-import { withStyles, WithStyles, createStyles, Tooltip } from '@material-ui/core';
+import { createStyles, Tooltip, withStyles, WithStyles } from '@material-ui/core';
 import Icon from '@material-ui/core/Icon';
 import classNames from 'classnames';
 import CreateBuildDialog from './CreateBuildDialog';
@@ -209,7 +209,7 @@ class RepositoryBuildList extends React.Component<Props, State> {
   }
 }
 
-export default createFragmentContainer(withRouter(withStyles(styles)(RepositoryBuildList)), {
+export default createFragmentContainer(withStyles(styles)(withRouter(RepositoryBuildList)), {
   repository: graphql`
     fragment RepositoryBuildList_repository on Repository {
       id

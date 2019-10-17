@@ -8,11 +8,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { withStyles, WithStyles, createStyles } from '@material-ui/core';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
 import AceEditor from 'react-ace';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { navigateBuild } from '../utils/navigate';
 import { positions, Provider } from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
@@ -205,7 +205,7 @@ class CreateBuildDialog extends React.Component<Props, State> {
   };
 }
 
-export default createFragmentContainer(withRouter(withStyles(styles)(CreateBuildDialog)), {
+export default createFragmentContainer(withStyles(styles)(withRouter(CreateBuildDialog)), {
   repository: graphql`
     fragment CreateBuildDialog_repository on Repository {
       id

@@ -9,8 +9,8 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import FormControl from '@material-ui/core/FormControl';
-import { withStyles, WithStyles, createStyles } from '@material-ui/core';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import classNames from 'classnames';
@@ -159,7 +159,7 @@ class WebHookSettings extends React.Component<Props, State> {
 }
 
 export default createPaginationContainer(
-  withRouter(withStyles(styles)(WebHookSettings)),
+  withStyles(styles)(withRouter(WebHookSettings)) as typeof WebHookSettings,
   {
     info: graphql`
       fragment WebHookSettings_info on GitHubOrganizationInfo

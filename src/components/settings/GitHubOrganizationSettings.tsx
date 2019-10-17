@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import Paper from '@material-ui/core/Paper';
-import { withStyles, WithStyles, createStyles } from '@material-ui/core';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { cirrusColors } from '../../cirrusTheme';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -77,7 +77,7 @@ class GitHubOrganizationSettings extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(withRouter(withStyles(styles)(GitHubOrganizationSettings)), {
+export default createFragmentContainer(withStyles(styles)(withRouter(GitHubOrganizationSettings)), {
   info: graphql`
     fragment GitHubOrganizationSettings_info on GitHubOrganizationInfo {
       name

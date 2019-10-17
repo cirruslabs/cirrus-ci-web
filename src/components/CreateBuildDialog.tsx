@@ -107,10 +107,7 @@ class CreateBuildDialog extends React.Component<Props, State> {
         position: positions.BOTTOM_CENTER,
       };
       this.setState({
-        configOverride: this.state.configOverride,
-        branch: this.state.branch,
-        sha: this.state.sha,
-        error: false,
+        error: false
       });
       return (
         <div>
@@ -190,10 +187,7 @@ class CreateBuildDialog extends React.Component<Props, State> {
       },
       onError: err => {
         this.setState({
-          configOverride: this.state.configOverride,
-          branch: this.state.branch,
-          sha: this.state.sha,
-          error: true,
+          error: true
         });
         if (process.env.NODE_ENV == 'DEVELOPMENT') {
           console.error(err);

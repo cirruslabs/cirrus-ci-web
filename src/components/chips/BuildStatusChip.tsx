@@ -63,23 +63,23 @@ class BuildStatusChip extends React.Component<Props> {
       );
     }
     return (
-      <Chip
-        className={this.props.className}
-        label={message}
-        avatar={
-          <Tooltip
-            title={
-              build.clockDurationInSeconds
-                ? `Clock duration: ${formatDuration(build.clockDurationInSeconds)}`
-                : 'Clock duration is not calculated yet!'
-            }
-          >
+      <Tooltip
+        title={
+          build.clockDurationInSeconds
+            ? `Clock duration: ${formatDuration(build.clockDurationInSeconds)}`
+            : 'Clock duration is not calculated yet!'
+        }
+      >
+        <Chip
+          className={this.props.className}
+          label={message}
+          avatar={
             <Avatar style={{ background: buildStatusColor(build.status) }}>
               <Icon style={{ color: cirrusColors.cirrusWhite }}>{buildStatusIconName(build.status)}</Icon>
             </Avatar>
-          </Tooltip>
-        }
-      />
+          }
+        />
+      </Tooltip>
     );
   }
 }

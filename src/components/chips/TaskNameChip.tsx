@@ -13,6 +13,9 @@ function TaskNameChip(props) {
     <Chip
       className={props.className}
       label={task.name}
+      onClick={() => {
+        /* this empty handler helps Vimium (http://vimium.github.io/) to recognize that task names are clickable */
+      }}
       avatar={
         <Avatar style={{ backgroundColor: cirrusColors.cirrusPrimary }}>
           <Icon style={{ color: cirrusColors.cirrusWhite }}>bookmark</Icon>

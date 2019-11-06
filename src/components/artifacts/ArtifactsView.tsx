@@ -194,7 +194,7 @@ class ArtifactsView extends React.Component<Props> {
       <Paper elevation={1}>
         <Toolbar className={classes.title}>
           <Typography variant="h6" color="inherit">
-            "Artifacts"
+            Artifacts
           </Typography>
           <Typography variant="subtitle" color="inherit">
             {

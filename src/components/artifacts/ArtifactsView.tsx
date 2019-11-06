@@ -197,10 +197,7 @@ class ArtifactsView extends React.Component<Props> {
             Artifacts
           </Typography>
           <Typography variant="subtitle" color="inherit">
-            {
-              this._currentPath() == null ? ''
-              : ' in ' + this._currentPath()
-            }
+            { this._currentPath() }
           </Typography>
         </Toolbar>
         <List>{items}</List>

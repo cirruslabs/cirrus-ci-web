@@ -89,7 +89,7 @@ class ApiSettingsBase extends React.Component<Props, State> {
             <CardContent>
               <Typography variant="subtitle1">
                 Need an API token for scripts or testing? Generate an access token for quick access to the Cirrus CI
-                API. See <a href="https://cirrus-ci.org/faq/">documentation</a> for more details.
+                API. See the <a href="https://cirrus-ci.org/faq/">documentation</a> for more details.
               </Typography>
               {existingTokenComponent}
               {newTokenComponent}

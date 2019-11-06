@@ -10,7 +10,6 @@ import CardActions from '@material-ui/core/CardActions';
 import CardHeader from '@material-ui/core/CardHeader';
 import environment from '../../createRelayEnvironment';
 import TextField from '@material-ui/core/TextField';
-import Https from '@material-ui/icons/Https';
 
 const styles = theme =>
   createStyles({
@@ -76,7 +75,7 @@ class ApiSettingsBase extends React.Component<Props, State> {
     }
     let cardActions = (
       <CardActions>
-        <Button variant="contained" onClick={() => this.generateNewAccessToken()} startIcon={<Https />}>
+        <Button variant="contained" onClick={() => this.generateNewAccessToken()}}>
           Generate New Token
         </Button>
       </CardActions>

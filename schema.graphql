@@ -90,6 +90,7 @@ type Build {
   status: BuildStatus
   notifications: [Notification]
   tasks: [Task]
+  taskGroupsAmount: Int
   latestGroupTasks: [Task]
   repository: Repository!
   viewerPermission: PermissionType!

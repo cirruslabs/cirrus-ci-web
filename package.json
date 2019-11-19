@@ -62,8 +62,8 @@
     "sync-schema": "get-graphql-schema https://api.cirrus-ci.com/schema.json | sed -e 's/Long/Int/g' > schema.graphql",
     "test": "react-scripts test --env=jsdom",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "prettier": "prettier --write \"{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
-    "prettier-check": "prettier --check  \"{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
+    "prettier": "prettier --write \"{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md,htmp}\"",
+    "prettier-check": "prettier --check  \"{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md,html}\""
   },
   "babelMacros": {
     "relay": {}
@@ -74,7 +74,7 @@
     }
   },
   "lint-staged": {
-    "{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+    "{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md,html}": [
       "prettier --write",
       "git add"
     ]

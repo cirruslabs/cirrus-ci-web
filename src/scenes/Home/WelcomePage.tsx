@@ -10,12 +10,7 @@ export default withStyles({
   },
 })(props => {
   return (
-    <Paper
-      style={{
-        padding: '35px',
-        margin: '15px',
-      }}
-    >
+    <Paper>
       <ReactMarkdown># Welcome to Cirrus CI.</ReactMarkdown>
       <ReactMarkdown>
         Please [**sign in**](https://api.cirrus-ci.com/redirect/auth/github) to see your recent builds.

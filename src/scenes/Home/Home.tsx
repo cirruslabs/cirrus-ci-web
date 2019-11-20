@@ -6,8 +6,7 @@ import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
 import ViewerBuildList from '../../components/ViewerBuildList';
 import CirrusLinearProgress from '../../components/CirrusLinearProgress';
-import Paper from '@material-ui/core/Paper';
-import ReactMarkdown from 'react-markdown';
+import ISplashPage from './ISplashPage';
 import { HomeViewerQuery } from './__generated__/HomeViewerQuery.graphql';
 
 const Home = props => (
@@ -25,22 +24,11 @@ const Home = props => (
       if (!props) {
         return <CirrusLinearProgress />;
       }
-      return props.viewer ? (
-        <ViewerBuildList viewer={props.viewer} />
-      ) : (
-        <Paper
-          style={{
-            padding: '35px',
-            margin: '15px',
-          }}
-        >
-          <ReactMarkdown># Welcome to Cirrus CI.</ReactMarkdown>
-          <ReactMarkdown>
-            Please [**sign in**](https://api.cirrus-ci.com/redirect/auth/github) to see your recent builds.
-          </ReactMarkdown>
-          <ReactMarkdown>Just got here? Visit [**our documentation**](https://cirrus-ci.org).</ReactMarkdown>
-        </Paper>
-      );
+      if(props.viewer) {
+        return <ViewerBuildList viewer={props.viewer} />;
+      } else {
+        return <ISplashPage />;
+      }
     }}
   />
 );

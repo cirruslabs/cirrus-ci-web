@@ -24,7 +24,7 @@ const Home = props => (
       if (!props) {
         return <CirrusLinearProgress />;
       }
-      if(props.viewer) {
+      if (props.viewer) {
         return <ViewerBuildList viewer={props.viewer} />;
       } else {
         return <ISplashPage />;

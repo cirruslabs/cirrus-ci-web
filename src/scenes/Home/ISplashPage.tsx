@@ -1,6 +1,6 @@
-import React from "react"
-import Paper from "@material-ui/core/Paper"
-import ReactMarkdown from "react-markdown"
+import React from 'react';
+import Paper from '@material-ui/core/Paper';
+import ReactMarkdown from 'react-markdown';
 
 /**
  * @author Reece Dunham
@@ -19,5 +19,5 @@ export default props => {
       </ReactMarkdown>
       <ReactMarkdown>Just got here? Visit [**our documentation**](https://cirrus-ci.org).</ReactMarkdown>
     </Paper>
-  )
-}
+  );
+};

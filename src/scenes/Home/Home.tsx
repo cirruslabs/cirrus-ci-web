@@ -6,7 +6,7 @@ import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
 import ViewerBuildList from '../../components/ViewerBuildList';
 import CirrusLinearProgress from '../../components/CirrusLinearProgress';
-import Welcome from './WelcomePage';
+import WelcomePage from './WelcomePage';
 import { HomeViewerQuery } from './__generated__/HomeViewerQuery.graphql';
 
 const Home = props => (
@@ -27,7 +27,7 @@ const Home = props => (
       if (props.viewer) {
         return <ViewerBuildList viewer={props.viewer} />;
       } else {
-        return <Welcome />;
+        return <WelcomePage />;
       }
     }}
   />

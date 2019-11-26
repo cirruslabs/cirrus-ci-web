@@ -21,6 +21,7 @@ import CirrusFavicon from './CirrusFavicon';
 import NotificationList from './NotificationList';
 import TaskList from './TaskList';
 import { BuildDetails_build } from './__generated__/BuildDetails_build.graphql';
+import { TaskDetailsCancelMutation } from './__generated__/TaskDetailsCancelMutation.graphql';
 
 const buildApproveMutation = graphql`
   mutation BuildDetailsApproveBuildMutation($input: BuildApproveInput!) {

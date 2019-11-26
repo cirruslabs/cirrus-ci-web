@@ -174,7 +174,7 @@ class TaskDetails extends React.Component<Props> {
     let repository = task.repository;
 
     if (isTaskFinalStatus(task.status)) {
-      // no need to be subscripted anymore
+      // no need to be subscribed anymore
       this.closeSubscription();
     }
 

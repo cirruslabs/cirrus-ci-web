@@ -163,6 +163,13 @@ class BuildDetails extends React.Component<Props> {
         </Button>
       );
 
+    let cancelAllTasksButton = (
+      <Button variant="contained" onClick={() => this.getAndCancelAll(build)}>
+        <Icon className={classes.leftIcon}>Cancel</Icon>
+        Cancel All Tasks
+      </Button>
+    );
+
     let needsApproval = build.status === 'NEEDS_APPROVAL' && hasWritePermissions(build.repository.viewerPermission);
     let approveButton = !needsApproval ? null : (
       <Button variant="contained" onClick={() => this.approveBuild(build.id)}>
@@ -202,6 +209,7 @@ class BuildDetails extends React.Component<Props> {
               {reTriggerButton}
               {approveButton}
               {reRunAllTasksButton}
+              {cancelAllTasksButton}
             </CardActions>
           </Card>
         </Paper>
@@ -242,6 +250,24 @@ class BuildDetails extends React.Component<Props> {
       variables: variables,
       onError: err => console.error(err),
     });
+  }
+
+  getAndCancelAll(build) {
+    for (let i = 0; i < build.tasks.length; i++) {
+      let task = build.tasks[i];
+      const variables = {
+        input: {
+          clientMutationId: 'abort-' + task.id,
+          taskId: task.id,
+        },
+      };
+
+      commitMutation(environment, {
+        mutation: buildReTriggerMutation,
+        variables: variables,
+        onError: err => console.error(err),
+      });
+    }
   }
 
   batchReRun(taskIds) {

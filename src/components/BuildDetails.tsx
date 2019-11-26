@@ -165,7 +165,7 @@ class BuildDetails extends React.Component<Props> {
 
     let cancelAllTasksButton = (
       <Button variant="contained" onClick={() => this.getAndCancelAll(build)}>
-        <Icon className={classes.leftIcon}>Cancel</Icon>
+        <Icon className={classes.leftIcon}>cancel</Icon>
         Cancel All Tasks
       </Button>
     );

@@ -8,8 +8,6 @@ import Button from '@material-ui/core/Button/Button';
 import { DeliveryRow_delivery } from './__generated__/DeliveryRow_delivery.graphql';
 import { UnspecifiedCallbackFunction } from '../../utils/utility-types';
 
-const styles = theme => ({});
-
 interface Props {
   delivery: DeliveryRow_delivery;
   onClose: UnspecifiedCallbackFunction;
@@ -34,4 +32,4 @@ class DeliveryInfoDialog extends React.Component<Props> {
   }
 }
 
-export default withStyles(styles)(DeliveryInfoDialog);
+export default withStyles({})(DeliveryInfoDialog);

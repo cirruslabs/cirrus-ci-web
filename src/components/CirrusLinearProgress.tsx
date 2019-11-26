@@ -10,9 +10,16 @@ const styles = {
 };
 
 const CirrusLinearProgress = props => {
+  const [isForwards, setIsForwards] = React.useState(true);
+
+  // hacky way to tell react to run this every 2 seconds
+  React.useEffect(() => {
+    setTimeout(() => setIsForwards(!isForwards), 2000);
+  });
+
   return (
     <LinearProgress
-      variant="indeterminate"
+      variant={isForwards ? 'indeterminate' : 'query'}
       classes={{
         barColorPrimary: props.classes.progress,
       }}

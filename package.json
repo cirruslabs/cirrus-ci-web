@@ -37,6 +37,7 @@
     "recharts": "*"
   },
   "devDependencies": {
+    "@types/classnames": "*",
     "@types/jest": "*",
     "@types/node": "*",
     "@types/react": "*",

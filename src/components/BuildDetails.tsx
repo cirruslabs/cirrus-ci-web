@@ -62,6 +62,17 @@ const buildSubscription = graphql`
   }
 `;
 
+const taskCancelMutation = graphql`
+  mutation TaskDetailsCancelMutation($input: TaskAbortInput!) {
+    abortTask(input: $input) {
+      abortedTask {
+        id
+        status
+      }
+    }
+  }
+`;
+
 const taskBatchReRunMutation = graphql`
   mutation BuildDetailsReRunMutation($input: TasksReRunInput!) {
     batchReRun(input: $input) {
@@ -263,7 +274,7 @@ class BuildDetails extends React.Component<Props> {
       };
 
       commitMutation(environment, {
-        mutation: buildReTriggerMutation,
+        mutation: taskCancelMutation,
         variables: variables,
         onError: err => console.error(err),
       });

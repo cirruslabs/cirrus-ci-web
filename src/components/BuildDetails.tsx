@@ -21,7 +21,6 @@ import CirrusFavicon from './CirrusFavicon';
 import NotificationList from './NotificationList';
 import TaskList from './TaskList';
 import { BuildDetails_build } from './__generated__/BuildDetails_build.graphql';
-import { TaskDetailsCancelMutation } from './__generated__/TaskDetailsCancelMutation.graphql';
 
 const buildApproveMutation = graphql`
   mutation BuildDetailsApproveBuildMutation($input: BuildApproveInput!) {
@@ -58,17 +57,6 @@ const buildSubscription = graphql`
         id
         status
         ...TaskListRow_task
-      }
-    }
-  }
-`;
-
-const taskCancelMutation = graphql`
-  mutation TaskDetailsCancelMutation($input: TaskAbortInput!) {
-    abortTask(input: $input) {
-      abortedTask {
-        id
-        status
       }
     }
   }
@@ -175,13 +163,6 @@ class BuildDetails extends React.Component<Props> {
         </Button>
       );
 
-    let cancelAllTasksButton = (
-      <Button variant="contained" onClick={() => this.getAndCancelAll(build)}>
-        <Icon className={classes.leftIcon}>cancel</Icon>
-        Cancel All Tasks
-      </Button>
-    );
-
     let needsApproval = build.status === 'NEEDS_APPROVAL' && hasWritePermissions(build.repository.viewerPermission);
     let approveButton = !needsApproval ? null : (
       <Button variant="contained" onClick={() => this.approveBuild(build.id)}>
@@ -221,7 +202,6 @@ class BuildDetails extends React.Component<Props> {
               {reTriggerButton}
               {approveButton}
               {reRunAllTasksButton}
-              {cancelAllTasksButton}
             </CardActions>
           </Card>
         </Paper>
@@ -262,24 +242,6 @@ class BuildDetails extends React.Component<Props> {
       variables: variables,
       onError: err => console.error(err),
     });
-  }
-
-  getAndCancelAll(build) {
-    for (let i = 0; i < build.tasks.length; i++) {
-      let task = build.tasks[i];
-      const variables = {
-        input: {
-          clientMutationId: 'abort-' + task.id,
-          taskId: task.id,
-        },
-      };
-
-      commitMutation(environment, {
-        mutation: taskCancelMutation,
-        variables: variables,
-        onError: err => console.error(err),
-      });
-    }
   }
 
   batchReRun(taskIds) {

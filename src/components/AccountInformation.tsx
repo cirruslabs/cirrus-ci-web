@@ -13,15 +13,7 @@ import { navigate } from '../utils/navigate';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Icon from '@material-ui/core/Icon';
-import { createStyles } from '@material-ui/core';
 import { AccountInformation_viewer } from './__generated__/AccountInformation_viewer.graphql';
-
-const styles = theme =>
-  createStyles({
-    root: {
-      minWidth: 20,
-    },
-  });
 
 interface Props extends RouteComponentProps {
   viewer: AccountInformation_viewer;

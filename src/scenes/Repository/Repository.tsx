@@ -10,7 +10,7 @@ import CirrusLinearProgress from '../../components/CirrusLinearProgress';
 import NotFound from '../NotFound';
 import { RepositoryQuery } from './__generated__/RepositoryQuery.graphql';
 
-const Repository = props => (
+export default props => (
   <QueryRenderer<RepositoryQuery>
     environment={environment}
     variables={props.match.params}
@@ -35,5 +35,3 @@ const Repository = props => (
     }}
   />
 );
-
-export default Repository;

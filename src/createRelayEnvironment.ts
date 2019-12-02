@@ -2,7 +2,7 @@ import { subscribeObjectUpdates } from './rtu/ConnectionManager';
 
 const { Environment, Network, RecordSource, Store, Observable } = require('relay-runtime');
 
-/**
+/*
  * See RelayNetwork.js:43 for details how it used in Relay
  */
 function subscription(operation, variables, cacheConfig) {
@@ -25,20 +25,14 @@ function subscription(operation, variables, cacheConfig) {
 function webSocketSubscriptions(operation, variables, kind2id: Array<[string, string]>) {
   let dataSource = null;
 
-  let result = Observable.create(sink => {
-    dataSource = sink;
-  });
+  let result = Observable.create(sink => (dataSource = sink));
 
   kind2id.forEach(kindIdPair => {
     let [kind, id] = kindIdPair;
     let dispose = subscribeObjectUpdates(kind, id, () => {
       fetchQuery(operation, variables).then(
-        response => {
-          dataSource && dataSource.next(response);
-        },
-        error => {
-          dataSource && dataSource.error(error);
-        },
+        response => dataSource && dataSource.next(response),
+        error => dataSource && dataSource.error(error),
       );
     });
     result = result.finally(dispose);

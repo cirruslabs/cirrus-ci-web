@@ -14,8 +14,7 @@
   "license": "MIT",
   "dependencies": {
     "@material-ui/core": "~4.4.3",
-    "@material-ui/icons": "~4.4.3",
-    "@material-ui/styles": "~4.4.3",
+    "@material-ui/icons": "^4.5.1",
     "ansi_up": "*",
     "babel-plugin-relay": "*",
     "classnames": "*",
@@ -63,7 +62,8 @@
     "test": "react-scripts test --env=jsdom",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "prettier": "prettier --write \"{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md,html}\"",
-    "prettier-check": "prettier --check  \"{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md,html}\""
+    "prettier-check": "prettier --check  \"{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md,html}\"",
+    "bootstrap": "npm run relay && npm run sync-schema"
   },
   "babelMacros": {
     "relay": {}
@@ -80,7 +80,7 @@
     ]
   },
   "browserslist": [
-    ">0.1%",
+    ">0%",
     "not dead",
     "not op_mini all"
   ]

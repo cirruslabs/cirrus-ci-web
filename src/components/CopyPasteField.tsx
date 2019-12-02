@@ -2,6 +2,9 @@ import React from 'react';
 import classNames from 'classnames';
 import { withStyles, createStyles, WithStyles } from '@material-ui/core/styles';
 import MuiTextField, { StandardTextFieldProps } from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import CopyIcon from '@material-ui/icons/FileCopy';
+import { copyToClipboard } from '../utils/pageManipulation';
 
 const styles = theme =>
   createStyles({
@@ -19,11 +22,15 @@ type Props = WithStyles<typeof styles> & StandardTextFieldProps;
 function CopyPasteField(props: Props) {
   const { classes, InputProps = {}, ...other } = props;
 
-  return (
+  InputProps.endAdornment = (
+    <InputAdornment position="end">
+      <CopyIcon onClick={e => copyToClipboard(actualComponent)} />
+    </InputAdornment>
+  );
+
+  const actualComponent = (
     <MuiTextField
-      onFocus={event => {
-        event.target.select();
-      }}
+      onFocus={event => event.target.select()}
       InputProps={{
         ...InputProps,
         disableUnderline: true,
@@ -32,6 +39,8 @@ function CopyPasteField(props: Props) {
       {...other}
     />
   );
+
+  return <div>{actualComponent}</div>;
 }
 
 export default withStyles(styles)(CopyPasteField);

@@ -47,7 +47,7 @@ class OrganizationSecuredVariables extends React.Component<Props, State> {
     let securedComponent = null;
 
     if (this.state.securedVariableName) {
-      let valueForYAMLFile = 'ENCRYPTED[' + this.state.securedVariableName + ']';
+      let valueForYAMLFile = `ENCRYPTED[${this.state.securedVariableName}]`;
 
       securedComponent = (
         <CopyPasteField name="securedVariable" multiline={true} fullWidth={true} value={valueForYAMLFile} />
@@ -56,12 +56,12 @@ class OrganizationSecuredVariables extends React.Component<Props, State> {
 
     return (
       <Card>
-        <CardHeader title="Organization Level Secured Variables" />
+        <CardHeader title="Organization-Level Secured Variables" />
         <CardContent>
           <FormControl style={{ width: '100%' }}>
             <TextField
               name="securedVariableValue"
-              placeholder="Enter value to create a secure variable for"
+              placeholder="Value to create a secure variable for"
               value={this.state.inputValue}
               disabled={this.state.securedVariable !== undefined}
               onChange={this.handleChange}

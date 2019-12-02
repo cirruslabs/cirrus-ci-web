@@ -48,7 +48,7 @@ class RepositorySecuredVariables extends React.Component<Props, State> {
 
     if (this.state.securedVariableName) {
       // todo: simplify coping
-      let valueForYAMLFile = 'ENCRYPTED[' + this.state.securedVariableName + ']';
+      let valueForYAMLFile = `ENCRYPTED[${this.state.securedVariableName}]`;
 
       securedComponent = (
         <CopyPasteField name="securedVariable" multiline={true} fullWidth={true} value={valueForYAMLFile} />

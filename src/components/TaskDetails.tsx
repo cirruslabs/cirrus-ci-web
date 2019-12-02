@@ -37,6 +37,7 @@ import TaskCommandsProgress from './TaskCommandsProgress';
 import TaskList from './TaskList';
 import { TaskDetails_task } from './__generated__/TaskDetails_task.graphql';
 import { TaskDetailsReRunMutationResponse } from './__generated__/TaskDetailsReRunMutation.graphql';
+import TaskResourcesChip from './chips/TaskResourcesChip';
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
@@ -283,6 +284,7 @@ class TaskDetails extends React.Component<Props> {
                 ) : null}
                 <TaskTransactionChip className={classes.chip} task={task} />
                 <TaskOptionalChip className={classes.chip} task={task} />
+                <TaskResourcesChip className={classes.chip} task={task} />
                 {task.labels.map(label => {
                   return <Chip key={label} className={classes.chip} label={shorten(label)} />;
                 })}
@@ -391,6 +393,7 @@ export default createFragmentContainer(withStyles(styles)(withRouter(TaskDetails
       ...TaskArtifacts_task
       ...TaskTransactionChip_task
       ...TaskOptionalChip_task
+      ...TaskResourcesChip_task
       labels
       artifacts {
         name

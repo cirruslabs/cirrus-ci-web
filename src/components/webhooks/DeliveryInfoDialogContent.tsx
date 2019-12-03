@@ -10,15 +10,9 @@ interface Props {
 }
 
 export default (props: Props) => {
-  let [state, setState] = React.useState({
-    value: null,
-  });
+  let [state, setState] = React.useState(null);
 
-  let handleChange = (event, value) => {
-    setState({
-      value: value,
-    });
-  };
+  let handleChange = (event, value) => setState(value);
 
   const { delivery } = props;
 
@@ -28,7 +22,7 @@ export default (props: Props) => {
 
   return (
     <DialogContent>
-      <Tabs value={state.value} onChange={handleChange} indicatorColor="primary" textColor="primary" centered>
+      <Tabs value={state} onChange={handleChange} indicatorColor="primary" textColor="primary" centered>
         <Tab label="Payload" />
         <Tab label="Response" />
       </Tabs>

@@ -26,8 +26,8 @@ export default (props: Props) => {
         <Tab label="Payload" />
         <Tab label="Response" />
       </Tabs>
-      {value === 0 && payloadTab}
-      {value === 1 && responseTab}
+      {state === 0 && payloadTab}
+      {state === 1 && responseTab}
     </DialogContent>
   );
 };

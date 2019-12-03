@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default (props: Props) => {
-  let [state, setState] = React.useState(null);
+  let [state, setState] = React.useState(0);
 
   let handleChange = (event, value) => setState(value);
 

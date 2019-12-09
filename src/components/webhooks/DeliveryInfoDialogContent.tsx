@@ -9,7 +9,7 @@ interface Props {
   delivery: DeliveryInfoDialogLazyContentQueryResponse['webhookDelivery'];
 }
 
-class DeliveryInfoDialogContent extends React.Component<Props> {
+export default class DeliveryInfoDialogContent extends React.Component<Props> {
   state = {
     value: 0,
   };
@@ -46,5 +46,3 @@ class DeliveryInfoDialogContent extends React.Component<Props> {
     );
   }
 }
-
-export default DeliveryInfoDialogContent;

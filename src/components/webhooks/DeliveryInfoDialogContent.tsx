@@ -9,25 +9,42 @@ interface Props {
   delivery: DeliveryInfoDialogLazyContentQueryResponse['webhookDelivery'];
 }
 
-export default (props: Props) => {
-  let [state, setState] = React.useState(0);
+class DeliveryInfoDialogContent extends React.Component<Props> {
+  state = {
+    value: 0,
+  };
 
-  let handleChange = (event, value) => setState(value);
+  handleChange = (event, value) => {
+    this.setState(prevState => ({
+      ...prevState,
+      value: value,
+    }));
+  };
 
-  const { delivery } = props;
+  render() {
+    const { delivery } = this.props;
 
-  let payloadTab = <ReactMarkdown source={'```json\n' + delivery.payload.data + '\n```'} />;
+    let payloadTab = <ReactMarkdown source={'```json\n' + delivery.payload.data + '\n```'} />;
 
-  let responseTab = <ReactMarkdown source={'```\n' + delivery.response.data + '\n```'} />;
+    let responseTab = <ReactMarkdown source={'```\n' + delivery.response.data + '\n```'} />;
 
-  return (
-    <DialogContent>
-      <Tabs value={state} onChange={handleChange} indicatorColor="primary" textColor="primary" centered>
-        <Tab label="Payload" />
-        <Tab label="Response" />
-      </Tabs>
-      {state === 0 && payloadTab}
-      {state === 1 && responseTab}
-    </DialogContent>
-  );
-};
+    return (
+      <DialogContent>
+        <Tabs
+          value={this.state.value}
+          onChange={this.handleChange}
+          indicatorColor="primary"
+          textColor="primary"
+          centered
+        >
+          <Tab label="Payload" />
+          <Tab label="Response" />
+        </Tabs>
+        {this.state.value === 0 && payloadTab}
+        {this.state.value === 1 && responseTab}
+      </DialogContent>
+    );
+  }
+}
+
+export default DeliveryInfoDialogContent;

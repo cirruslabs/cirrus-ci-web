@@ -13,17 +13,20 @@ interface Props {
   open: boolean;
 }
 
-export default (props: Props) => {
-  const { delivery, ...other } = props;
-  return (
-    <Dialog {...other}>
-      <DialogTitle>Delivery Info for {delivery.id}</DialogTitle>
-      <DeliveryInfoDialogLazyContent deliveryId={delivery.id} />
-      <DialogActions>
-        <Button onClick={props.onClose} color="primary" variant="contained" autoFocus>
-          Close
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
-};
+export default class DeliveryInfoDialog extends React.Component<Props> {
+  render() {
+    const { delivery, ...other } = this.props;
+
+    return (
+      <Dialog {...other}>
+        <DialogTitle>Delivery Info for {delivery.id}</DialogTitle>
+        <DeliveryInfoDialogLazyContent deliveryId={delivery.id} />
+        <DialogActions>
+          <Button onClick={this.props.onClose} color="primary" variant="contained" autoFocus>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  }
+}

@@ -9,7 +9,7 @@ import CirrusLinearProgress from '../../components/CirrusLinearProgress';
 import NotFound from '../NotFound';
 import { TaskQuery } from './__generated__/TaskQuery.graphql';
 
-const Task = props => (
+export default props => (
   <QueryRenderer<TaskQuery>
     environment={environment}
     variables={props.match.params}
@@ -31,5 +31,3 @@ const Task = props => (
     }}
   />
 );
-
-export default Task;

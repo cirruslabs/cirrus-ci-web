@@ -47,6 +47,10 @@ let styles = createStyles({
     display: 'flex',
     flexWrap: 'wrap',
   },
+  link: {
+    color: 'inherit',
+    textDecoration: 'none',
+  },
 });
 
 interface Props extends RouteComponentProps, WithStyles<typeof styles> {
@@ -82,7 +86,7 @@ class RepositoryBuildList extends React.Component<Props, State> {
     if (repository.viewerPermission === 'WRITE' || repository.viewerPermission === 'ADMIN') {
       repositorySettings = (
         <Tooltip title="Repository Settings">
-          <Link to={'/settings/repository/' + repository.id}>
+          <Link to={'/settings/repository/' + repository.id} className={classes.link}>
             <IconButton>
               <Icon>settings</Icon>
             </IconButton>
@@ -115,9 +119,10 @@ class RepositoryBuildList extends React.Component<Props, State> {
     );
 
     const repositoryLinkButton = (
-      <Tooltip title="Open in GitHub">
+      <Tooltip title="Open on GitHub">
         <IconButton
           href={createLinkToRepository(repository, this.props.branch)}
+          className={classes.link}
           target="_blank"
           rel="noopener noreferrer"
         >

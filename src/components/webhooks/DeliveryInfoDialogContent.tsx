@@ -1,18 +1,15 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import ReactMarkdown from 'react-markdown';
 import { DeliveryInfoDialogLazyContentQueryResponse } from './__generated__/DeliveryInfoDialogLazyContentQuery.graphql';
 
-const styles = theme => ({});
-
 interface Props {
   delivery: DeliveryInfoDialogLazyContentQueryResponse['webhookDelivery'];
 }
 
-class DeliveryInfoDialogContent extends React.Component<Props> {
+export default class DeliveryInfoDialogContent extends React.Component<Props> {
   state = {
     value: 0,
   };
@@ -49,5 +46,3 @@ class DeliveryInfoDialogContent extends React.Component<Props> {
     );
   }
 }
-
-export default withStyles(styles)(DeliveryInfoDialogContent);

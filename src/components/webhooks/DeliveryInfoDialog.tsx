@@ -1,5 +1,4 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import DeliveryInfoDialogLazyContent from './DeliveryInfoDialogLazyContent';
@@ -8,15 +7,13 @@ import Button from '@material-ui/core/Button/Button';
 import { DeliveryRow_delivery } from './__generated__/DeliveryRow_delivery.graphql';
 import { UnspecifiedCallbackFunction } from '../../utils/utility-types';
 
-const styles = theme => ({});
-
 interface Props {
   delivery: DeliveryRow_delivery;
   onClose: UnspecifiedCallbackFunction;
   open: boolean;
 }
 
-class DeliveryInfoDialog extends React.Component<Props> {
+export default class DeliveryInfoDialog extends React.Component<Props> {
   render() {
     const { delivery, ...other } = this.props;
 
@@ -33,5 +30,3 @@ class DeliveryInfoDialog extends React.Component<Props> {
     );
   }
 }
-
-export default withStyles(styles)(DeliveryInfoDialog);

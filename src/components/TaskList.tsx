@@ -3,15 +3,14 @@ import React from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TaskListRow from './TaskListRow';
-import { withStyles, WithStyles } from '@material-ui/core';
 import { TaskListRow_task } from './__generated__/TaskListRow_task.graphql';
 
-interface Props extends WithStyles<{}> {
+interface Props {
   tasks: ReadonlyArray<TaskListRow_task>;
   showCreation?: boolean;
 }
 
-class TaskList extends React.Component<Props> {
+export default class TaskList extends React.Component<Props> {
   render() {
     let tasks = this.props.tasks || [];
     return (
@@ -29,5 +28,3 @@ class TaskList extends React.Component<Props> {
     );
   }
 }
-
-export default withStyles({})(TaskList);

@@ -8,7 +8,6 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import FormControl from '@material-ui/core/FormControl';
-import { withStyles } from '@material-ui/core';
 import CopyPasteField from './CopyPasteField';
 import TextField from '@material-ui/core/TextField';
 import { OrganizationSecuredVariablesMutationResponse } from './__generated__/OrganizationSecuredVariablesMutation.graphql';
@@ -109,7 +108,7 @@ class OrganizationSecuredVariables extends React.Component<Props, State> {
   }
 }
 
-export default createFragmentContainer(withStyles({})(OrganizationSecuredVariables), {
+export default createFragmentContainer(OrganizationSecuredVariables, {
   info: graphql`
     fragment OrganizationSecuredVariables_info on GitHubOrganizationInfo {
       id

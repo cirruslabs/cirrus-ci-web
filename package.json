@@ -15,6 +15,7 @@
   "dependencies": {
     "@material-ui/core": "~4.4.3",
     "@material-ui/icons": "^4.5.1",
+    "@types/pluralize": "0.0.29",
     "ansi_up": "*",
     "babel-plugin-relay": "*",
     "classnames": "*",
@@ -49,7 +50,7 @@
     "husky": "*",
     "lint-staged": "*",
     "prettier": "*",
-    "react-scripts": "^3.2.0",
+    "react-scripts": "^3.3.0",
     "relay-compiler": "*",
     "relay-compiler-language-typescript": "*",
     "typescript": "*"

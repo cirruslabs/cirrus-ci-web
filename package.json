@@ -15,7 +15,6 @@
   "dependencies": {
     "@material-ui/core": "~4.4.3",
     "@material-ui/icons": "^4.5.1",
-    "@types/pluralize": "0.0.29",
     "ansi_up": "*",
     "babel-plugin-relay": "*",
     "classnames": "*",
@@ -45,6 +44,7 @@
     "@types/react-relay": "*",
     "@types/react-router-dom": "*",
     "@types/relay-runtime": "*",
+    "@types/pluralize": "*",
     "babel-preset-react-app": "*",
     "get-graphql-schema": "*",
     "husky": "*",

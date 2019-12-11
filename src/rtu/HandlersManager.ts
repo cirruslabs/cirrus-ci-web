@@ -64,8 +64,6 @@ class TopicHandlers {
   addHandler(handler) {
     let handlerId = ++this.idGenerator;
     this.handlersMap[handlerId] = handler;
-    return () => {
-      delete this.handlersMap[handlerId];
-    };
+    return () => delete this.handlersMap[handlerId];
   }
 }

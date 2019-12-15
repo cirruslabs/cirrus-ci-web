@@ -7,16 +7,14 @@ function updateIcon(color) {
   if (linkEl) {
     linkEl.type = 'image/x-icon';
     linkEl.rel = 'icon';
-    drawIcon(color, function(url) {
-      linkEl.href = url;
-    });
+    drawIcon(color, url => (linkEl.href = url));
   }
   return <div />;
 }
 
 function drawIcon(color, cb) {
   let img = document.createElement('img');
-  img.onload = function() {
+  img.onload = () => {
     let canvas = document.createElement('canvas');
     canvas.width = img.width;
     canvas.height = img.height;
@@ -53,15 +51,11 @@ interface Props {
   color?: string;
 }
 
-class CirrusFavicon extends React.Component<Props> {
-  componentWillUnmount() {
-    updateIcon(null);
-  }
+export default (props: Props) => {
+  React.useEffect(() => {
+    updateIcon(props.color);
+    return () => updateIcon(null);
+  });
 
-  render() {
-    updateIcon(this.props.color);
-    return null;
-  }
-}
-
-export default CirrusFavicon;
+  return null;
+};

@@ -10,21 +10,19 @@ interface Props {
   info: OrganizationComputeCredits_info;
 }
 
-class OrganizationComputeCredits extends React.Component<Props> {
-  render() {
-    return (
-      <ComputeCreditsBase
-        accountId={parseInt(this.props.info.id, 10)}
-        balanceInCredits={this.props.info.balanceInCredits}
-        info={this.props.info}
-        transactions={getNodesFromConnection(this.props.info.transactions)}
-      />
-    );
-  }
-}
+let component = (props: Props) => {
+  return (
+    <ComputeCreditsBase
+      accountId={parseInt(props.info.id, 10)}
+      balanceInCredits={props.info.balanceInCredits}
+      info={props.info}
+      transactions={getNodesFromConnection(props.info.transactions)}
+    />
+  );
+};
 
 export default createPaginationContainer(
-  OrganizationComputeCredits,
+  component,
   {
     info: graphql`
       fragment OrganizationComputeCredits_info on GitHubOrganizationInfo

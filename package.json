@@ -39,6 +39,7 @@
   "devDependencies": {
     "@types/classnames": "*",
     "@types/jest": "*",
+    "@types/js-base64": "^2.3.1",
     "@types/node": "*",
     "@types/pluralize": "*",
     "@types/react": "*",

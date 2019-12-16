@@ -4,7 +4,7 @@ ports:
 # start up tasks
 tasks:
 - init: npm i
-- command: npm run bootstrap
+  command: npm run bootstrap
 
 vscode:
   extensions:

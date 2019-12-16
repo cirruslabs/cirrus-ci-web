@@ -11,7 +11,7 @@ body {
   white-space: normal;
 }
 
-.MuiChip {
+.MuiChip .MuiAvatar {
   width: 1em;
   height: 1em;
 }

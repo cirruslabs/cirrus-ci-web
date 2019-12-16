@@ -10,3 +10,8 @@ body {
 .card-text {
   white-space: normal;
 }
+
+.MuiChip {
+  width: 1em;
+  height: 1em;
+}

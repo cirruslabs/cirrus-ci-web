@@ -1,5 +1,3 @@
 import React from 'react';
 
-const GitHub = props => <div>GitHub</div>;
-
-export default GitHub;
+export default props => <div>GitHub</div>;

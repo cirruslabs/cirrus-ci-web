@@ -9,7 +9,7 @@ import CirrusLinearProgress from '../../components/CirrusLinearProgress';
 import NotFound from '../NotFound';
 import { BuildBySHAQuery } from './__generated__/BuildBySHAQuery.graphql';
 
-const BuildBySHA = props => (
+export default props => (
   <QueryRenderer<BuildBySHAQuery>
     environment={environment}
     variables={props.match.params}
@@ -31,5 +31,3 @@ const BuildBySHA = props => (
     }}
   />
 );
-
-export default BuildBySHA;

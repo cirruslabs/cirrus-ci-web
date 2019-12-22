@@ -7,7 +7,6 @@ import Icon from '@material-ui/core/Icon';
 import { cirrusColors } from '../../cirrusTheme';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { navigate } from '../../utils/navigate';
-import { withStyles } from '@material-ui/core';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { BuildBranchNameChip_build } from './__generated__/BuildBranchNameChip_build.graphql';
@@ -52,7 +51,7 @@ class BuildBranchNameChip extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(withStyles({})(withRouter(BuildBranchNameChip)), {
+export default createFragmentContainer(withRouter(BuildBranchNameChip), {
   build: graphql`
     fragment BuildBranchNameChip_build on Build {
       id

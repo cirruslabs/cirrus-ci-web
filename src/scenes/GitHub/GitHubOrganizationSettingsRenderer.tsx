@@ -8,7 +8,7 @@ import CirrusLinearProgress from '../../components/CirrusLinearProgress';
 import GitHubOrganizationSettings from '../../components/settings/GitHubOrganizationSettings';
 import { GitHubOrganizationSettingsRendererQuery } from './__generated__/GitHubOrganizationSettingsRendererQuery.graphql';
 
-const GitHubOrganizationSettingsRenderer = props => {
+export default props => {
   let organization = props.match.params.organization;
   return (
     <QueryRenderer<GitHubOrganizationSettingsRendererQuery>
@@ -30,5 +30,3 @@ const GitHubOrganizationSettingsRenderer = props => {
     />
   );
 };
-
-export default GitHubOrganizationSettingsRenderer;

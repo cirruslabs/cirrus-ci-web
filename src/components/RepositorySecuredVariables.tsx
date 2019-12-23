@@ -8,6 +8,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import FormControl from '@material-ui/core/FormControl';
+import { withStyles } from '@material-ui/core';
 import CopyPasteField from './CopyPasteField';
 import TextField from '@material-ui/core/TextField';
 import { RepositorySecuredVariables_repository } from './__generated__/RepositorySecuredVariables_repository.graphql';
@@ -47,7 +48,7 @@ class RepositorySecuredVariables extends React.Component<Props, State> {
 
     if (this.state.securedVariableName) {
       // todo: simplify coping
-      let valueForYAMLFile = `ENCRYPTED[${this.state.securedVariableName}]`;
+      let valueForYAMLFile = 'ENCRYPTED[' + this.state.securedVariableName + ']';
 
       securedComponent = (
         <CopyPasteField name="securedVariable" multiline={true} fullWidth={true} value={valueForYAMLFile} />
@@ -109,7 +110,7 @@ class RepositorySecuredVariables extends React.Component<Props, State> {
   }
 }
 
-export default createFragmentContainer(RepositorySecuredVariables, {
+export default createFragmentContainer(withStyles({})(RepositorySecuredVariables), {
   repository: graphql`
     fragment RepositorySecuredVariables_repository on Repository {
       id

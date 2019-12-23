@@ -8,6 +8,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import { withStyles } from '@material-ui/core';
 import { navigate } from '../utils/navigate';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -74,7 +75,7 @@ class AccountInformation extends React.Component<Props, State> {
   }
 }
 
-export default createFragmentContainer(withRouter(AccountInformation), {
+export default createFragmentContainer(withStyles({})(withRouter(AccountInformation)), {
   viewer: graphql`
     fragment AccountInformation_viewer on User {
       id

@@ -13,8 +13,9 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
-    "@material-ui/core": "^4.7.2",
-    "@material-ui/icons": "^4.5.1",
+    "@material-ui/core": "~4.4.3",
+    "@material-ui/icons": "~4.4.3",
+    "@material-ui/styles": "~4.4.3",
     "ansi_up": "*",
     "babel-plugin-relay": "*",
     "classnames": "*",
@@ -27,7 +28,6 @@
     "react": "*",
     "react-ace": "*",
     "react-dom": "*",
-    "react-helmet": "^5.2.1",
     "react-loadable": "*",
     "react-markdown": "*",
     "react-relay": "*",
@@ -39,12 +39,9 @@
   "devDependencies": {
     "@types/classnames": "*",
     "@types/jest": "*",
-    "@types/js-base64": "*",
     "@types/node": "*",
-    "@types/pluralize": "*",
     "@types/react": "*",
     "@types/react-dom": "*",
-    "@types/react-helmet": "*",
     "@types/react-relay": "*",
     "@types/react-router-dom": "*",
     "@types/relay-runtime": "*",
@@ -62,13 +59,12 @@
     "start": "react-scripts start",
     "start-untyped": "TSC_COMPILE_ON_ERROR=\"true\" react-scripts start",
     "build": "react-scripts build",
+    "relay": "npx relay-compiler --verbose --watchman false --src ./src --schema schema.graphql --language typescript",
+    "sync-schema": "get-graphql-schema https://api.cirrus-ci.com/schema.json | sed -e 's/Long/Int/g' > schema.graphql",
     "test": "react-scripts test --env=jsdom",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "prettier": "prettier --write \"{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md,html}\"",
-    "prettier-check": "prettier --check  \"{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md,html}\"",
-    "relay": "npx relay-compiler --verbose --watchman false --src ./src --schema schema.graphql --language typescript",
-    "sync-schema": "get-graphql-schema https://api.cirrus-ci.com/schema.json | sed -e 's/Long/Int/g' > schema.graphql",
-    "bootstrap": "npm run relay && npm run sync-schema"
+    "prettier-check": "prettier --check  \"{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md,html}\""
   },
   "babelMacros": {
     "relay": {}
@@ -85,7 +81,7 @@
     ]
   },
   "browserslist": [
-    ">0%",
+    ">0.1%",
     "not dead",
     "not op_mini all"
   ]

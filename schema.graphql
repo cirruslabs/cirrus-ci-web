@@ -246,7 +246,6 @@ type Mutation {
   abortTask(input: TaskAbortInput!): TaskAbortPayload
   retrigger(input: BuildReTriggerInput!): BuildReTriggerPayload
   saveSettings(input: RepositorySettingsInput!): RepositorySettingsPayload
-  saveCronSettings(input: RepositoryCronSettingsInput!): RepositoryCronSettingsPayload
   approve(input: BuildApproveInput!): BuildApprovePayload
   trigger(input: TaskTriggerInput!): TaskTriggerPayload
   buyComputeCredits(input: BuyComputeCreditsInput!): BuyComputeCreditsPayload
@@ -334,7 +333,6 @@ type Repository {
     branch: String
   ): RepositoryBuildsConnection
   settings: RepositorySettings
-  cronSettings: [RepositoryCronSettings]
   viewerPermission: PermissionType
   lastDefaultBranchBuild: Build
   metrics(parameters: MetricsQueryParameters): [MetricsChart]
@@ -368,27 +366,6 @@ input RepositoryCreateBuildInput {
 
 type RepositoryCreateBuildPayload {
   build: Build!
-  clientMutationId: String
-}
-
-type RepositoryCronSettings {
-  name: String!
-  expression: String!
-  branch: String!
-  nextInvocationTimestamp: Int!
-  lastInvocationBuild: Build
-}
-
-input RepositoryCronSettingsInput {
-  repositoryId: ID!
-  name: String!
-  expression: String!
-  branch: String!
-  clientMutationId: String
-}
-
-type RepositoryCronSettingsPayload {
-  settings: [RepositoryCronSettings]
   clientMutationId: String
 }
 

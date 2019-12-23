@@ -8,7 +8,7 @@ import MetricsChart from './MetricsChart';
 import CirrusLinearProgress from '../CirrusLinearProgress';
 import { RepositoryMetricsChartsQuery } from './__generated__/RepositoryMetricsChartsQuery.graphql';
 
-export default props => (
+const RepositoryMetricsCharts = props => (
   <QueryRenderer<RepositoryMetricsChartsQuery>
     environment={environment}
     variables={{
@@ -39,3 +39,5 @@ export default props => (
     }}
   />
 );
+
+export default RepositoryMetricsCharts;

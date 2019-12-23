@@ -11,15 +11,17 @@ interface Props {
   info?: any;
 }
 
-let UserComputeCredits = (props: Props) => {
-  return (
-    <ComputeCreditsBase
-      accountId={props.user.githubUserId}
-      balanceInCredits={props.user.balanceInCredits}
-      transactions={getNodesFromConnection(props.user.transactions)}
-    />
-  );
-};
+class UserComputeCredits extends React.Component<Props> {
+  render() {
+    return (
+      <ComputeCreditsBase
+        accountId={this.props.user.githubUserId}
+        balanceInCredits={this.props.user.balanceInCredits}
+        transactions={getNodesFromConnection(this.props.user.transactions)}
+      />
+    );
+  }
+}
 
 export default createPaginationContainer(
   UserComputeCredits,

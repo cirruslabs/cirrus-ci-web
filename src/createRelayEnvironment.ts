@@ -2,7 +2,7 @@ import { subscribeObjectUpdates } from './rtu/ConnectionManager';
 
 const { Environment, Network, RecordSource, Store, Observable } = require('relay-runtime');
 
-/*
+/**
  * See RelayNetwork.js:43 for details how it used in Relay
  */
 function subscription(operation, variables, cacheConfig) {
@@ -25,14 +25,20 @@ function subscription(operation, variables, cacheConfig) {
 function webSocketSubscriptions(operation, variables, kind2id: Array<[string, string]>) {
   let dataSource = null;
 
-  let result = Observable.create(sink => (dataSource = sink));
+  let result = Observable.create(sink => {
+    dataSource = sink;
+  });
 
   kind2id.forEach(kindIdPair => {
     let [kind, id] = kindIdPair;
     let dispose = subscribeObjectUpdates(kind, id, () => {
       fetchQuery(operation, variables).then(
-        response => dataSource && dataSource.next(response),
-        error => dataSource && dataSource.error(error),
+        response => {
+          dataSource && dataSource.next(response);
+        },
+        error => {
+          dataSource && dataSource.error(error);
+        },
       );
     });
     result = result.finally(dispose);
@@ -41,21 +47,22 @@ function webSocketSubscriptions(operation, variables, kind2id: Array<[string, st
   return result;
 }
 
-async function fetchQuery(operation, variables) {
+function fetchQuery(operation, variables) {
   let query = {
     query: operation.text, // GraphQL text from input
     variables,
   };
-  const response = await fetch('https://api.cirrus-ci.com/graphql', {
+  return fetch('https://api.cirrus-ci.com/graphql', {
     method: 'POST',
-    credentials: 'include',
+    credentials: 'include', // cookies
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(query),
+  }).then(response => {
+    return response.json();
   });
-  return response.json();
 }
 
 // Create a network layer from the fetch function

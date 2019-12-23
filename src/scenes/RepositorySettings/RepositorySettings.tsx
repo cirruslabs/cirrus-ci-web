@@ -9,7 +9,7 @@ import RepositorySettingsPage from '../../components/RepositorySettingsPage';
 import NotFound from '../NotFound';
 import { RepositorySettingsQuery } from './__generated__/RepositorySettingsQuery.graphql';
 
-export default props => (
+const RepositorySettings = props => (
   <QueryRenderer<RepositorySettingsQuery>
     environment={environment}
     variables={props.match.params}
@@ -31,3 +31,5 @@ export default props => (
     }}
   />
 );
+
+export default RepositorySettings;

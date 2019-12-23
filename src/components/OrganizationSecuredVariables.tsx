@@ -8,6 +8,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import FormControl from '@material-ui/core/FormControl';
+import { withStyles } from '@material-ui/core';
 import CopyPasteField from './CopyPasteField';
 import TextField from '@material-ui/core/TextField';
 import { OrganizationSecuredVariablesMutationResponse } from './__generated__/OrganizationSecuredVariablesMutation.graphql';
@@ -46,7 +47,7 @@ class OrganizationSecuredVariables extends React.Component<Props, State> {
     let securedComponent = null;
 
     if (this.state.securedVariableName) {
-      let valueForYAMLFile = `ENCRYPTED[${this.state.securedVariableName}]`;
+      let valueForYAMLFile = 'ENCRYPTED[' + this.state.securedVariableName + ']';
 
       securedComponent = (
         <CopyPasteField name="securedVariable" multiline={true} fullWidth={true} value={valueForYAMLFile} />
@@ -55,12 +56,12 @@ class OrganizationSecuredVariables extends React.Component<Props, State> {
 
     return (
       <Card>
-        <CardHeader title="Organization-Level Secured Variables" />
+        <CardHeader title="Organization Level Secured Variables" />
         <CardContent>
           <FormControl style={{ width: '100%' }}>
             <TextField
               name="securedVariableValue"
-              placeholder="Value to create a secure variable for"
+              placeholder="Enter value to create a secure variable for"
               value={this.state.inputValue}
               disabled={this.state.securedVariable !== undefined}
               onChange={this.handleChange}
@@ -108,7 +109,7 @@ class OrganizationSecuredVariables extends React.Component<Props, State> {
   }
 }
 
-export default createFragmentContainer(OrganizationSecuredVariables, {
+export default createFragmentContainer(withStyles({})(OrganizationSecuredVariables), {
   info: graphql`
     fragment OrganizationSecuredVariables_info on GitHubOrganizationInfo {
       id

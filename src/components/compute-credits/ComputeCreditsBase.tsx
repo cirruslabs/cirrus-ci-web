@@ -22,7 +22,6 @@ import ComputeCreditsBuyDialog from './ComputeCreditsBuyDialog';
 import ComputeCreditsTransactionsList from './ComputeCreditsTransactionsList';
 import { ComputeCreditsBase_info } from './__generated__/ComputeCreditsBase_info.graphql';
 import { ComputeCreditsTransactionRow_transaction } from './__generated__/ComputeCreditsTransactionRow_transaction.graphql';
-import DocumentHead from 'react-helmet';
 
 const styles = theme =>
   createStyles({
@@ -104,9 +103,6 @@ class ComputeCreditsBase extends React.Component<Props, State> {
     return (
       <Card>
         <CardHeader title="Compute Credits" />
-        <DocumentHead>
-          <script src="https://js.stripe.com/v3/" async></script>
-        </DocumentHead>
         <CardContent>
           <Typography variant="h6">
             Your current compute credits balance:{' '}

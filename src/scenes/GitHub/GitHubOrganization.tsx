@@ -11,7 +11,7 @@ import { GitHubOrganizationQuery } from './__generated__/GitHubOrganizationQuery
 
 interface Props extends RouteComponentProps<{ owner: 'owner' }> {}
 
-export default (props: Props) => {
+const GitHubOrganization = (props: Props) => {
   let organization = props.match.params.owner;
   return (
     <QueryRenderer<GitHubOrganizationQuery>
@@ -42,3 +42,5 @@ export default (props: Props) => {
     />
   );
 };
+
+export default GitHubOrganization;

@@ -10,7 +10,7 @@ import CirrusLinearProgress from '../../components/CirrusLinearProgress';
 import NotFound from '../NotFound';
 import { GitHubRepositoryQuery } from './__generated__/GitHubRepositoryQuery.graphql';
 
-export default props => {
+const Repository = props => {
   let branch = props.match.params.branch;
   return (
     <QueryRenderer<GitHubRepositoryQuery>
@@ -29,7 +29,7 @@ export default props => {
         }
         if (!props.githubRepository) {
           let notFoundMessage = (
-            <ReactMarkdown source="Repository not found! Please [install Cirrus CI](https://cirrus-ci.org/guide/quick-start/) or push a [`.cirrus.yml`](https://cirrus-ci.org/guide/writing-tasks/)!" />
+            <ReactMarkdown source="Repository not found! Please [install Cirrus CI](https://cirrus-ci.org/guide/quick-start/) or push [`.cirrus.yml`](https://cirrus-ci.org/guide/writing-tasks/)!" />
           );
           return <NotFound messageComponent={notFoundMessage} />;
         }
@@ -38,3 +38,5 @@ export default props => {
     />
   );
 };
+
+export default Repository;

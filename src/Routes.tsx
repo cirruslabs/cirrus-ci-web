@@ -232,7 +232,7 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
             <Toolbar disableGutters={true}>
               <IconButton
                 color="inherit"
-                aria-label="open menu"
+                aria-label="open drawer"
                 onClick={this.handleDrawerOpen}
                 className={classNames(classes.menuButton, openDrawer && classes.hide)}
               >

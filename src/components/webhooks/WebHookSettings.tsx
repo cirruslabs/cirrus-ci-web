@@ -90,7 +90,7 @@ class WebHookSettings extends React.Component<Props, State> {
     let { info, classes } = this.props;
     return (
       <Card>
-        <CardHeader title="Webhook Settings" />
+        <CardHeader title="WebHook Settings" />
         <CardContent>
           <FormControl style={{ width: '100%' }}>
             <TextField

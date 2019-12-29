@@ -17,7 +17,7 @@
     "@material-ui/icons": "^4.5.1",
     "ansi_up": "*",
     "babel-plugin-relay": "*",
-    "classnames": "*",
+    "classnames": "^2.2.6",
     "graphql": "*",
     "graphql-relay": "*",
     "js-base64": "*",
@@ -54,7 +54,7 @@
     "lint-staged": "*",
     "prettier": "*",
     "react-scripts": "^3.2.0",
-    "relay-compiler": "*",
+    "relay-compiler": "^8.0.0",
     "relay-compiler-language-typescript": "*",
     "typescript": "*"
   },

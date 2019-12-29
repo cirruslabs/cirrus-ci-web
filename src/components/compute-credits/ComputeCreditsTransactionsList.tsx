@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default (props: Props) => {
-  let transactions = this.props.transactions || [];
+  let transactions = props.transactions || [];
   return (
     <Table style={{ tableLayout: 'auto' }}>
       <TableBody>

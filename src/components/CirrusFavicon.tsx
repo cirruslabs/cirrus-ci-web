@@ -53,9 +53,9 @@ interface Props {
 
 export default (props: Props) => {
   React.useEffect(() => {
-    updateIcon(props.color);
     return () => updateIcon(null);
   });
 
+  updateIcon(props.color);
   return null;
 };

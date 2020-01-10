@@ -4,6 +4,7 @@ import { createPaginationContainer, RelayPaginationProp } from 'react-relay';
 import ComputeCreditsBase from './ComputeCreditsBase';
 import { OrganizationComputeCredits_info } from './__generated__/OrganizationComputeCredits_info.graphql';
 import OrganizationComputeCreditsTransactionsList from './OrganizationComputeCreditsTransactionsList';
+import ComputeCreditsTransactionsList from './ComputeCreditsTransactionsList';
 
 interface Props {
   relay: RelayPaginationProp;
@@ -17,7 +18,9 @@ class OrganizationComputeCredits extends React.Component<Props> {
         accountId={parseInt(this.props.info.id, 10)}
         balanceInCredits={this.props.info.balanceInCredits}
         info={this.props.info}
-        transactionsComponent={<OrganizationComputeCreditsTransactionsList info={this.props.info} />}
+        transactionsComponent={
+          <ComputeCreditsTransactionsList transactions={this.props.info.transactions.edges.map(edge => edge.node)} />
+        }
       />
     );
   }
@@ -33,15 +36,21 @@ export default createPaginationContainer(
         name
         balanceInCredits
         ...ComputeCreditsBase_info
-        ...OrganizationComputeCreditsTransactionsList_info @arguments(count: $count, cursor: $cursor)
+        transactions(last: $count, after: $cursor) @connection(key: "OrganizationComputeCredits_transactions") {
+          edges {
+            node {
+              taskId
+              ...ComputeCreditsTransactionRow_transaction
+            }
+          }
+        }
       }
     `,
   },
   {
     direction: 'forward',
     getConnectionFromProps(props) {
-      console.log('props', props);
-      return props.info && props.info['transactions'];
+      return props.info && props.info.transactions;
     },
     // This is also the default implementation of `getFragmentVariables` if it isn't provided.
     getFragmentVariables(prevVars, totalCount) {

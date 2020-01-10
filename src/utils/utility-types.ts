@@ -17,9 +17,3 @@ export type ItemOfArray<ArrayType> = ArrayType extends ReadonlyArray<infer Item>
 export interface UnspecifiedCallbackFunction {
   (...args: any[]): any;
 }
-
-export function extractComposedFragmentRef<Refs extends string>(obj: {
-  readonly ' $fragmentRefs': FragmentRefs<Refs>;
-}): FragmentRef<Refs> {
-  return (obj[' $fragmentRefs'] as unknown) as FragmentRef<Refs>;
-}

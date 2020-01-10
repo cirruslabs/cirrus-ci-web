@@ -75,6 +75,7 @@ export default createFragmentContainer(withStyles(styles)(withRouter(ComputeCred
         name
         ...TaskCreatedChip_task
         ...TaskDurationChip_task
+        ...TaskNameChip_task
       }
       repository {
         ...RepositoryNameChip_repository

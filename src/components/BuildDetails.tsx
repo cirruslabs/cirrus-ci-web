@@ -208,7 +208,7 @@ class BuildDetails extends React.Component<Props> {
         {notificationsComponent}
         <div className={classes.gap} />
         <Paper elevation={2}>
-          <TaskList tasks={build.latestGroupTasks as any} />
+          <TaskList tasks={build.latestGroupTasks} />
         </Paper>
       </div>
     );

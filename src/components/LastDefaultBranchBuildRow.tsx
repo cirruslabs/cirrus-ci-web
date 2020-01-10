@@ -14,6 +14,7 @@ import BuildChangeChip from './chips/BuildChangeChip';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import { LastDefaultBranchBuildRow_repository } from './__generated__/LastDefaultBranchBuildRow_repository.graphql';
+import { extractComposedFragmentRef } from '../utils/utility-types';
 
 const buildSubscription = graphql`
   subscription LastDefaultBranchBuildRowSubscription($repositoryID: ID!) {
@@ -80,7 +81,10 @@ class LastDefaultBranchBuildRow extends React.Component<Props> {
         <TableCell className={classes.cell}>
           <div className="d-flex flex-column align-items-start">
             <RepositoryNameChip repository={repository} className={classes.chip} />
-            <BuildChangeChip build={build} className={classes.chip} />
+            <BuildChangeChip
+              build={extractComposedFragmentRef(repository.lastDefaultBranchBuild)}
+              className={classes.chip}
+            />
           </div>
           <div className={classNames('d-lg-none', classes.message)}>
             <Typography variant="body1" color="inherit">

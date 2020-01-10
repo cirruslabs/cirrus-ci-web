@@ -3,7 +3,7 @@ import React from 'react';
 import { createPaginationContainer, RelayPaginationProp } from 'react-relay';
 import ComputeCreditsBase from './ComputeCreditsBase';
 import { OrganizationComputeCredits_info } from './__generated__/OrganizationComputeCredits_info.graphql';
-import { getNodesFromConnection } from '../../utils/graphql';
+import OrganizationComputeCreditsTransactionsList from './OrganizationComputeCreditsTransactionsList';
 
 interface Props {
   relay: RelayPaginationProp;
@@ -17,7 +17,7 @@ class OrganizationComputeCredits extends React.Component<Props> {
         accountId={parseInt(this.props.info.id, 10)}
         balanceInCredits={this.props.info.balanceInCredits}
         info={this.props.info}
-        transactions={getNodesFromConnection(this.props.info.transactions)}
+        transactionsComponent={<OrganizationComputeCreditsTransactionsList info={this.props.info} />}
       />
     );
   }
@@ -33,20 +33,15 @@ export default createPaginationContainer(
         name
         balanceInCredits
         ...ComputeCreditsBase_info
-        transactions(last: $count, after: $cursor) @connection(key: "OrganizationComputeCredits_transactions") {
-          edges {
-            node {
-              ...ComputeCreditsTransactionRow_transaction
-            }
-          }
-        }
+        ...OrganizationComputeCreditsTransactionsList_info @arguments(count: $count, cursor: $cursor)
       }
     `,
   },
   {
     direction: 'forward',
     getConnectionFromProps(props) {
-      return props.info && props.info.transactions;
+      console.log('props', props);
+      return props.info && props.info['transactions'];
     },
     // This is also the default implementation of `getFragmentVariables` if it isn't provided.
     getFragmentVariables(prevVars, totalCount) {

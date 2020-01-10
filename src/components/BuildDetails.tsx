@@ -101,7 +101,7 @@ const styles = theme =>
     },
   });
 
-interface Props extends WithStyles<typeof styles>, RouteComponentProps<{}> {
+interface Props extends WithStyles<typeof styles>, RouteComponentProps {
   build: BuildDetails_build;
 }
 

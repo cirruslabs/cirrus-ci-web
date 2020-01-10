@@ -3,7 +3,6 @@ import React from 'react';
 import { createPaginationContainer, RelayPaginationProp } from 'react-relay';
 import ComputeCreditsBase from './ComputeCreditsBase';
 import { OrganizationComputeCredits_info } from './__generated__/OrganizationComputeCredits_info.graphql';
-import OrganizationComputeCreditsTransactionsList from './OrganizationComputeCreditsTransactionsList';
 import ComputeCreditsTransactionsList from './ComputeCreditsTransactionsList';
 
 interface Props {

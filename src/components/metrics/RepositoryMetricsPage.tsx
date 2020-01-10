@@ -30,7 +30,7 @@ const styles = theme =>
     },
   });
 
-interface Props extends RouteComponentProps<{}>, WithStyles<typeof styles> {
+interface Props extends RouteComponentProps, WithStyles<typeof styles> {
   repository: RepositoryMetricsPage_repository;
 }
 

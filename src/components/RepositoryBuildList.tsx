@@ -216,7 +216,7 @@ class RepositoryBuildList extends React.Component<Props, State> {
 
 export default createFragmentContainer(withStyles(styles)(withRouter(RepositoryBuildList)), {
   repository: graphql`
-    fragment RepositoryBuildList_repository on Repository {
+    fragment RepositoryBuildList_repository on Repository @argumentDefinitions(branch: { type: "String" }) {
       id
       owner
       name

@@ -4,6 +4,7 @@ import lightGreen from '@material-ui/core/colors/lightGreen';
 import orange from '@material-ui/core/colors/orange';
 import red from '@material-ui/core/colors/red';
 import yellow from '@material-ui/core/colors/yellow';
+import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme';
 
 let darkSuccessColor = lightGreen['700'];
 let successColor = lightGreen['500'];
@@ -36,9 +37,13 @@ let cirrusColors = {
 /**
  *  Fork of lightBaseTheme.js
  */
-let cirrusTheme = {
-  fontFamily: 'Roboto, sans-serif',
-  borderRadius: 2,
+let cirrusTheme: ThemeOptions = {
+  typography: {
+    fontFamily: 'Roboto, sans-serif',
+  },
+  shape: {
+    borderRadius: 2,
+  },
   palette: {
     primary: {
       main: cirrusColors.cirrusPrimary,
@@ -58,10 +63,13 @@ let cirrusTheme = {
   },
   overrides: {
     MuiChip: {
-      avatarChildren: {
-        // workaround to fix size of avatar icons in production builds
-        width: '1em',
-        height: '1em',
+      root: {
+        '& $avatar': {
+          marginLeft: 0,
+          marginRight: 0,
+          width: 32,
+          height: 32,
+        },
       },
     },
   },

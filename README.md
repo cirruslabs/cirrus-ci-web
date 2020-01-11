@@ -15,6 +15,16 @@ to minimize the amount of business logic.
 
 After everything is installed and compiled, run `npm start` to start a local server. All changes will be instantly ready to view in your browser.
 
+### Running Production Build Locally
+
+Running a production build locally might be useful for testing large refactoring or major upgrades. In order to do so
+please build a Docker image locally and then simply run the image via Docker CLI:
+
+```bash
+./.ci/build_docker.sh
+docker run -p 8080:8080 cirrusci/web-front-end:latest
+```
+
 ## Authentication from localhost
 
 In order to authenticate with `api.cirrus-ci.com` from locally running Cirrus CI Web simply login on [cirrus-ci.com](https://cirrus-ci.com)

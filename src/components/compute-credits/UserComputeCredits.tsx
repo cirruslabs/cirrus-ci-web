@@ -3,7 +3,7 @@ import { createPaginationContainer, RelayPaginationProp } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import ComputeCreditsBase from './ComputeCreditsBase';
 import { UserComputeCredits_user } from './__generated__/UserComputeCredits_user.graphql';
-import { getNodesFromConnection } from '../../utils/graphql';
+import ComputeCreditsTransactionsList from './ComputeCreditsTransactionsList';
 
 interface Props {
   relay: RelayPaginationProp;
@@ -17,7 +17,9 @@ class UserComputeCredits extends React.Component<Props> {
       <ComputeCreditsBase
         accountId={this.props.user.githubUserId}
         balanceInCredits={this.props.user.balanceInCredits}
-        transactions={getNodesFromConnection(this.props.user.transactions)}
+        transactionsComponent={
+          <ComputeCreditsTransactionsList transactions={this.props.user.transactions.edges.map(edge => edge.node)} />
+        }
       />
     );
   }
@@ -34,6 +36,7 @@ export default createPaginationContainer(
         transactions(last: $count, after: $cursor) @connection(key: "UserComputeCredits_transactions") {
           edges {
             node {
+              taskId
               ...ComputeCreditsTransactionRow_transaction
             }
           }
@@ -44,7 +47,7 @@ export default createPaginationContainer(
   {
     direction: 'forward',
     getConnectionFromProps(props) {
-      return props.info && props.info.transactions;
+      return props.user && props.user.transactions;
     },
     // This is also the default implementation of `getFragmentVariables` if it isn't provided.
     getFragmentVariables(prevVars, totalCount) {

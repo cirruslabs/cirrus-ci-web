@@ -19,21 +19,16 @@ import BillingSettingsButton from './BillingSettingsButton';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import ComputeCreditsBuyDialog from './ComputeCreditsBuyDialog';
-import ComputeCreditsTransactionsList from './ComputeCreditsTransactionsList';
 import { ComputeCreditsBase_info } from './__generated__/ComputeCreditsBase_info.graphql';
-import { ComputeCreditsTransactionRow_transaction } from './__generated__/ComputeCreditsTransactionRow_transaction.graphql';
 
 const styles = theme =>
   createStyles({
     expand: {
       transform: 'rotate(0deg)',
+      marginLeft: 'auto',
       transition: theme.transitions.create('transform', {
         duration: theme.transitions.duration.shortest,
       }),
-      marginLeft: 'auto',
-      [theme.breakpoints.up('sm')]: {
-        marginRight: -8,
-      },
     },
     expandOpen: {
       transform: 'rotate(180deg)',
@@ -59,7 +54,7 @@ const styles = theme =>
   });
 
 interface Props extends WithStyles<typeof styles>, RouteComponentProps {
-  transactions?: Array<ComputeCreditsTransactionRow_transaction>;
+  transactionsComponent: JSX.Element;
   info?: ComputeCreditsBase_info;
   balanceInCredits?: string;
   accountId: number;
@@ -136,7 +131,7 @@ class ComputeCreditsBase extends React.Component<Props, State> {
             Pay <b>0.5</b> cents.
           </Typography>
         </CardContent>
-        <CardActions>
+        <CardActions disableSpacing>
           <Button variant="contained" onClick={this.handleOpenBuyCredits}>
             <AttachMoneyIcon />
             Add More Credits
@@ -154,9 +149,7 @@ class ComputeCreditsBase extends React.Component<Props, State> {
           </IconButton>
         </CardActions>
         <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-          <CardContent>
-            <ComputeCreditsTransactionsList transactions={this.props.transactions || []} />
-          </CardContent>
+          <CardContent>{this.props.transactionsComponent}</CardContent>
         </Collapse>
         <ComputeCreditsBuyDialog
           accountId={this.props.accountId}

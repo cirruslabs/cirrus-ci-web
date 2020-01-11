@@ -25,13 +25,10 @@ const styles = theme =>
   createStyles({
     expand: {
       transform: 'rotate(0deg)',
+      marginLeft: 'auto',
       transition: theme.transitions.create('transform', {
         duration: theme.transitions.duration.shortest,
       }),
-      marginLeft: 'auto',
-      [theme.breakpoints.up('sm')]: {
-        marginRight: -8,
-      },
     },
     expandOpen: {
       transform: 'rotate(180deg)',
@@ -134,7 +131,7 @@ class ComputeCreditsBase extends React.Component<Props, State> {
             Pay <b>0.5</b> cents.
           </Typography>
         </CardContent>
-        <CardActions>
+        <CardActions disableSpacing>
           <Button variant="contained" onClick={this.handleOpenBuyCredits}>
             <AttachMoneyIcon />
             Add More Credits

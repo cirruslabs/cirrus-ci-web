@@ -19,7 +19,7 @@ export default props => {
       query={graphql`
         query GitHubRepositoryQuery($owner: String!, $name: String!, $branch: String) {
           githubRepository(owner: $owner, name: $name) {
-            ...RepositoryBuildList_repository
+            ...RepositoryBuildList_repository @arguments(branch: $branch)
           }
         }
       `}

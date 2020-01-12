@@ -3,23 +3,25 @@ import React from 'react';
 import { createPaginationContainer, RelayPaginationProp } from 'react-relay';
 import ComputeCreditsBase from './ComputeCreditsBase';
 import { OrganizationComputeCredits_info } from './__generated__/OrganizationComputeCredits_info.graphql';
-import { getNodesFromConnection } from '../../utils/graphql';
+import ComputeCreditsTransactionsList from './ComputeCreditsTransactionsList';
 
 interface Props {
   relay: RelayPaginationProp;
   info: OrganizationComputeCredits_info;
 }
 
-let component = (props: Props) => {
+let OrganizationComputeCredits = (props: Props) => {
   return (
     <ComputeCreditsBase
       accountId={parseInt(props.info.id, 10)}
       balanceInCredits={props.info.balanceInCredits}
       info={props.info}
-      transactions={getNodesFromConnection(props.info.transactions)}
+      transactionsComponent={
+        <ComputeCreditsTransactionsList transactions={props.info.transactions.edges.map(edge => edge.node)} />
+      }
     />
   );
-};
+}
 
 export default createPaginationContainer(
   component,
@@ -34,6 +36,7 @@ export default createPaginationContainer(
         transactions(last: $count, after: $cursor) @connection(key: "OrganizationComputeCredits_transactions") {
           edges {
             node {
+              taskId
               ...ComputeCreditsTransactionRow_transaction
             }
           }

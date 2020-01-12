@@ -130,7 +130,7 @@
 
       /** The binary type, possible values 'blob' or 'arraybuffer', default 'blob'. */
       binaryType: 'blob'
-    }
+    };
     if (!options) {
       options = {};
     }
@@ -296,7 +296,7 @@
         }
         eventTarget.dispatchEvent(generateEvent('error'));
       };
-    }
+    };
 
     // Whether or not to create a websocket upon instantiation
     if (this.automaticOpen === true) {

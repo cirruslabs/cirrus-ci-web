@@ -25,7 +25,7 @@ const styles = theme =>
     },
   });
 
-interface Props extends RouteComponentProps<{}>, WithStyles<typeof styles> {
+interface Props extends RouteComponentProps, WithStyles<typeof styles> {
   task: TaskArtifacts_task;
 }
 

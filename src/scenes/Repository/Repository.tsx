@@ -17,7 +17,7 @@ export default props => (
     query={graphql`
       query RepositoryQuery($repositoryId: ID!, $branch: String) {
         repository(id: $repositoryId) {
-          ...RepositoryBuildList_repository
+          ...RepositoryBuildList_repository @arguments(branch: $branch)
         }
       }
     `}

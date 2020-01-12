@@ -235,7 +235,7 @@ class TaskDetails extends React.Component<Props> {
           <Typography className={classes.title} variant="caption" gutterBottom display="block" align="center">
             All Other Runs
           </Typography>
-          <TaskList tasks={task.allOtherRuns as any} showCreation={true} />
+          <TaskList tasks={task.allOtherRuns} showCreation={true} />
         </Paper>
       );
     }
@@ -246,7 +246,7 @@ class TaskDetails extends React.Component<Props> {
           <Typography className={classes.title} variant="caption" gutterBottom display="block" align="center">
             Dependencies
           </Typography>
-          <TaskList tasks={task.dependencies as any} />
+          <TaskList tasks={task.dependencies} />
         </Paper>
       );
     }
@@ -413,9 +413,11 @@ export default createFragmentContainer(withStyles(styles)(withRouter(TaskDetails
         ...RepositoryNameChip_repository
       }
       allOtherRuns {
+        id
         ...TaskListRow_task
       }
       dependencies {
+        id
         ...TaskListRow_task
       }
     }

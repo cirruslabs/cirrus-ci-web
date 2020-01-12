@@ -13,8 +13,8 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
-    "@material-ui/core": "~4.4.3",
-    "@material-ui/icons": "^4.5.1",
+    "@material-ui/core": "*",
+    "@material-ui/icons": "*",
     "ansi_up": "*",
     "babel-plugin-relay": "*",
     "classnames": "^2.2.6",
@@ -33,7 +33,7 @@
     "react-relay": "*",
     "react-router-dom": "*",
     "react-stripe-elements": "*",
-    "react-vis": "^1.11.7",
+    "react-vis": "*",
     "recharts": "*"
   },
   "devDependencies": {

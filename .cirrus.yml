@@ -11,6 +11,8 @@ task:
   matrix:
     - name: Build
       build_script: npm run build
+      build_artifacts:
+        path: build
     - name: Prettier
       prettier_check_script: npm run prettier-check
     - name: Type Check

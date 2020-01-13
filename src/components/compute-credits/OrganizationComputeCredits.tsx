@@ -24,7 +24,7 @@ let OrganizationComputeCredits = (props: Props) => {
 };
 
 export default createPaginationContainer(
-  component,
+  OrganizationComputeCredits,
   {
     info: graphql`
       fragment OrganizationComputeCredits_info on GitHubOrganizationInfo

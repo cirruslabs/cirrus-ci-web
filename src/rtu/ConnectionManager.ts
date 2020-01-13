@@ -7,7 +7,7 @@ const handlersManager = new HandlersManager();
 
 ws.onopen = () => {
   let allTopicSubscribeRequests = handlersManager.allRequests();
-  allTopicSubscribeRequests.forEach(function(request) {
+  allTopicSubscribeRequests.forEach(request => {
     try {
       ws.send(request);
     } catch (e) {

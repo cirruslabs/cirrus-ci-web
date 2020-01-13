@@ -22,4 +22,4 @@ export default (props: Props) => {
       </TableBody>
     </Table>
   );
-}
+};

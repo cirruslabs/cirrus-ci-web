@@ -66,7 +66,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "prettier": "prettier --write \"{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md,html}\"",
     "prettier-check": "prettier --check  \"{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md,html}\"",
-    "relay": "npx relay-compiler --verbose --watchman false --src ./src --schema schema.graphql --language typescript",
+    "relay": "relay-compiler --verbose --watchman false --src ./src --schema schema.graphql --language typescript",
     "sync-schema": "get-graphql-schema https://api.cirrus-ci.com/schema.json | sed -e 's/Long/Int/g' > schema.graphql",
     "bootstrap": "npm run relay && npm run sync-schema"
   },

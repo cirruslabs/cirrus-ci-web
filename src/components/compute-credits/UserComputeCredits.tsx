@@ -21,7 +21,7 @@ let UserComputeCredits = (props: Props) => {
       }
     />
   );
-}
+};
 
 export default createPaginationContainer(
   UserComputeCredits,

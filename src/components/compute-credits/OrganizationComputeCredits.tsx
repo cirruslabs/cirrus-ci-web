@@ -21,7 +21,7 @@ let OrganizationComputeCredits = (props: Props) => {
       }
     />
   );
-}
+};
 
 export default createPaginationContainer(
   component,

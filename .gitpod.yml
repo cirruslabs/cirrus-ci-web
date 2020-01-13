@@ -2,8 +2,8 @@ ports:
 - port: 3333
 
 # start up tasks
-#tasks:
-#- command: npm run bootstrap
+tasks:
+- command: npm run bootstrap
 
 vscode:
   extensions:

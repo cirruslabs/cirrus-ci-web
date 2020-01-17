@@ -23,7 +23,7 @@
     "js-base64": "*",
     "pluralize": "*",
     "prop-types": "*",
-    "query-string": "*",
+    "query-string": "^6.10.0",
     "react": "*",
     "react-ace": "*",
     "react-dom": "*",
@@ -38,25 +38,25 @@
   },
   "devDependencies": {
     "@types/classnames": "*",
-    "@types/jest": "*",
+    "@types/jest": "^24.9.0",
     "@types/js-base64": "*",
-    "@types/node": "*",
+    "@types/node": "^13.1.7",
     "@types/pluralize": "*",
     "@types/react": "*",
     "@types/react-dom": "*",
     "@types/react-helmet": "*",
     "@types/react-relay": "*",
     "@types/react-router-dom": "*",
-    "@types/relay-runtime": "*",
+    "@types/relay-runtime": "^8.0.1",
     "babel-preset-react-app": "*",
     "get-graphql-schema": "*",
-    "husky": "*",
+    "husky": "^4.0.10",
     "lint-staged": "*",
     "prettier": "*",
-    "react-scripts": "^3.2.0",
+    "react-scripts": "3.2.0",
     "relay-compiler": "*",
     "relay-compiler-language-typescript": "*",
-    "typescript": "*"
+    "typescript": "^3.7.5"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -85,7 +85,7 @@
     ]
   },
   "browserslist": [
-    ">0%",
+    ">0.2%",
     "not dead",
     "not op_mini all"
   ]

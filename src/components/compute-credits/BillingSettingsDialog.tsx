@@ -106,9 +106,7 @@ class BillingSettingsDialog extends React.Component<Props, State> {
         }));
         this.props.onClose();
       },
-      onError: err => {
-        console.log(err);
-      },
+      onError: err => console.log(err),
     });
   };
 

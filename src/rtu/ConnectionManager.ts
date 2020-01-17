@@ -7,7 +7,7 @@ const handlersManager = new HandlersManager();
 
 ws.onopen = () => {
   let allTopicSubscribeRequests = handlersManager.allRequests();
-  allTopicSubscribeRequests.forEach(function(request) {
+  allTopicSubscribeRequests.forEach(request => {
     try {
       ws.send(request);
     } catch (e) {
@@ -18,9 +18,7 @@ ws.onopen = () => {
     console.log('Subscribing to ' + allTopicSubscribeRequests.length + ' topics!');
   }
   // send reconnent events so handlers can refresh
-  handlersManager.allTopics().forEach(function(topic) {
-    handlersManager.handleNewUpdate(topic, { type: 'reconnect' });
-  });
+  handlersManager.allTopics().forEach(topic => handlersManager.handleNewUpdate(topic, { type: 'reconnect' }));
 };
 
 ws.onerror = err => {

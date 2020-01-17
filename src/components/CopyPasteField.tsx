@@ -23,6 +23,7 @@ function CopyPasteField(props: Props) {
     <MuiTextField
       onFocus={event => {
         event.target.select();
+        document.execCommand('copy');
       }}
       InputProps={{
         ...InputProps,

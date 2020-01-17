@@ -10,20 +10,18 @@ interface Props {
   info: OrganizationComputeCredits_info;
 }
 
-class OrganizationComputeCredits extends React.Component<Props> {
-  render() {
-    return (
-      <ComputeCreditsBase
-        accountId={parseInt(this.props.info.id, 10)}
-        balanceInCredits={this.props.info.balanceInCredits}
-        info={this.props.info}
-        transactionsComponent={
-          <ComputeCreditsTransactionsList transactions={this.props.info.transactions.edges.map(edge => edge.node)} />
-        }
-      />
-    );
-  }
-}
+let OrganizationComputeCredits = (props: Props) => {
+  return (
+    <ComputeCreditsBase
+      accountId={parseInt(props.info.id, 10)}
+      balanceInCredits={props.info.balanceInCredits}
+      info={props.info}
+      transactionsComponent={
+        <ComputeCreditsTransactionsList transactions={props.info.transactions.edges.map(edge => edge.node)} />
+      }
+    />
+  );
+};
 
 export default createPaginationContainer(
   OrganizationComputeCredits,

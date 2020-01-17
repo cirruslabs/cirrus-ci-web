@@ -66,7 +66,6 @@ class LastDefaultBranchBuildRow extends React.Component<Props> {
 
   render() {
     let { classes, repository } = this.props;
-    console.log(repository);
     let build = repository.lastDefaultBranchBuild;
     if (!build) {
       return null;

@@ -8,7 +8,7 @@ import CirrusLinearProgress from '../../components/CirrusLinearProgress';
 import DeliveryInfoDialogContent from './DeliveryInfoDialogContent';
 import { DeliveryInfoDialogLazyContentQuery } from './__generated__/DeliveryInfoDialogLazyContentQuery.graphql';
 
-const DeliveryInfoDialogLazyContent = props => {
+export default props => {
   let deliveryId = props.deliveryId;
   return (
     <QueryRenderer<DeliveryInfoDialogLazyContentQuery>
@@ -41,5 +41,3 @@ const DeliveryInfoDialogLazyContent = props => {
     />
   );
 };
-
-export default DeliveryInfoDialogLazyContent;

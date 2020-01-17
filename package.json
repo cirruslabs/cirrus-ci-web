@@ -15,19 +15,19 @@
   "dependencies": {
     "@material-ui/core": "*",
     "@material-ui/icons": "*",
-    "@material-ui/styles": "*",
     "ansi_up": "*",
     "babel-plugin-relay": "*",
-    "classnames": "*",
+    "classnames": "^2.2.6",
     "graphql": "*",
     "graphql-relay": "*",
     "js-base64": "*",
     "pluralize": "*",
     "prop-types": "*",
-    "query-string": "*",
+    "query-string": "^6.10.0",
     "react": "*",
     "react-ace": "*",
     "react-dom": "*",
+    "react-helmet": "^5.2.1",
     "react-loadable": "*",
     "react-markdown": "*",
     "react-relay": "*",
@@ -38,33 +38,37 @@
   },
   "devDependencies": {
     "@types/classnames": "*",
-    "@types/jest": "*",
-    "@types/node": "*",
+    "@types/jest": "^24.9.0",
+    "@types/js-base64": "*",
+    "@types/node": "^13.1.7",
+    "@types/pluralize": "*",
     "@types/react": "*",
     "@types/react-dom": "*",
+    "@types/react-helmet": "*",
     "@types/react-relay": "*",
     "@types/react-router-dom": "*",
-    "@types/relay-runtime": "*",
+    "@types/relay-runtime": "^8.0.1",
     "babel-preset-react-app": "*",
     "get-graphql-schema": "*",
-    "husky": "*",
+    "husky": "^4.0.10",
     "lint-staged": "*",
     "prettier": "*",
-    "react-scripts": "^3.2.0",
+    "react-scripts": "3.2.0",
     "relay-compiler": "*",
     "relay-compiler-language-typescript": "*",
-    "typescript": "*"
+    "typescript": "^3.7.5"
   },
   "scripts": {
     "start": "react-scripts start",
     "start-untyped": "TSC_COMPILE_ON_ERROR=\"true\" react-scripts start",
     "build": "react-scripts build",
-    "relay": "npx relay-compiler --verbose --watchman false --src ./src --schema schema.graphql --language typescript",
-    "sync-schema": "get-graphql-schema https://api.cirrus-ci.com/schema.json | sed -e 's/Long/Int/g' > schema.graphql",
     "test": "react-scripts test --env=jsdom",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "prettier": "prettier --write \"{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md,html}\"",
-    "prettier-check": "prettier --check  \"{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md,html}\""
+    "prettier-check": "prettier --check  \"{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md,html}\"",
+    "relay": "relay-compiler --verbose --watchman false --src ./src --schema schema.graphql --language typescript",
+    "sync-schema": "get-graphql-schema https://api.cirrus-ci.com/schema.json | sed -e 's/Long/Int/g' > schema.graphql",
+    "bootstrap": "npm run relay && npm run sync-schema"
   },
   "babelMacros": {
     "relay": {}
@@ -81,7 +85,7 @@
     ]
   },
   "browserslist": [
-    ">0.1%",
+    ">0.2%",
     "not dead",
     "not op_mini all"
   ]

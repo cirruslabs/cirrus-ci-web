@@ -1,0 +1,10 @@
+ports:
+- port: 3333
+
+# start up tasks
+tasks:
+- command: npm i && npm run bootstrap
+
+vscode:
+  extensions:
+    - Prisma.vscode-graphql@0.2.2:6ap2woKzS9yXaebpPlenNQ==

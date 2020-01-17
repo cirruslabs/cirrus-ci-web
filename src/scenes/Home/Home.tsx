@@ -9,7 +9,7 @@ import CirrusLinearProgress from '../../components/CirrusLinearProgress';
 import WelcomePage from './WelcomePage';
 import { HomeViewerQuery } from './__generated__/HomeViewerQuery.graphql';
 
-const Home = props => (
+export default props => (
   <QueryRenderer<HomeViewerQuery>
     environment={environment}
     query={graphql`
@@ -32,5 +32,3 @@ const Home = props => (
     }}
   />
 );
-
-export default Home;

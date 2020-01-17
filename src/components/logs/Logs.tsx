@@ -63,14 +63,14 @@ class Logs extends React.Component<Props, State> {
     };
   }
 
-  componentDidMount(): void {
+  componentDidMount() {
     this.updateLinesSelection();
     this.unlisten = this.props.history.listen((location, action) => {
       this.updateLinesSelection();
     });
   }
 
-  componentWillUnmount(): void {
+  componentWillUnmount() {
     this.unlisten();
   }
 

@@ -9,11 +9,8 @@ import NotFound from '../NotFound';
 import RepositoryMetricsPage from '../../components/metrics/RepositoryMetricsPage';
 import { RepositoryMetricsQuery } from './__generated__/RepositoryMetricsQuery.graphql';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core';
 
-const styles = theme => createStyles({});
-
-interface Props extends WithStyles<typeof styles>, RouteComponentProps<{ owner: 'owner'; name: 'name' }> {}
+interface Props extends RouteComponentProps<{ owner: 'owner'; name: 'name' }> {}
 
 class RepositoryMetrics extends React.Component<Props> {
   render() {
@@ -42,4 +39,4 @@ class RepositoryMetrics extends React.Component<Props> {
   }
 }
 
-export default withStyles(styles)(withRouter(RepositoryMetrics));
+export default withRouter(RepositoryMetrics);

@@ -16,7 +16,7 @@ interface MatchParams {
 
 interface Props extends RouteComponentProps<MatchParams> {}
 
-const BuildById = (props: Props) => (
+export default (props: Props) => (
   <QueryRenderer<BuildByIdQuery>
     environment={environment}
     variables={props.match.params}
@@ -38,5 +38,3 @@ const BuildById = (props: Props) => (
     }}
   />
 );
-
-export default BuildById;

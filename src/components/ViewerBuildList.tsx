@@ -112,7 +112,7 @@ class ViewerBuildList extends React.Component<Props> {
 export default createFragmentContainer(withStyles(styles)(withRouter(ViewerBuildList)), {
   viewer: graphql`
     fragment ViewerBuildList_viewer on User {
-      builds(last: 100) {
+      builds(last: 50) {
         edges {
           node {
             id

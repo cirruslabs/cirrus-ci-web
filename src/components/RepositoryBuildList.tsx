@@ -222,7 +222,7 @@ export default createFragmentContainer(withStyles(styles)(withRouter(RepositoryB
       name
       viewerPermission
       ...CreateBuildDialog_repository
-      builds(last: 100, branch: $branch) {
+      builds(last: 50, branch: $branch) {
         edges {
           node {
             id

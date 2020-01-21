@@ -28,7 +28,7 @@ export default createPaginationContainer(
   {
     user: graphql`
       fragment UserComputeCredits_user on User
-        @argumentDefinitions(count: { type: "Int", defaultValue: 100 }, cursor: { type: "String" }) {
+        @argumentDefinitions(count: { type: "Int", defaultValue: 50 }, cursor: { type: "String" }) {
         githubUserId
         balanceInCredits
         transactions(last: $count, after: $cursor) @connection(key: "UserComputeCredits_transactions") {

@@ -51,7 +51,7 @@ interface Props {
   color?: string;
 }
 
-class CirrusFavicon extends React.Component<Props> {
+export default class CirrusFavicon extends React.Component<Props> {
   componentWillUnmount() {
     updateIcon(null);
   }

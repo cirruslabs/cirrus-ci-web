@@ -51,11 +51,13 @@ interface Props {
   color?: string;
 }
 
-export default (props: Props) => {
-  React.useEffect(() => {
-    return () => updateIcon(null);
-  });
+class CirrusFavicon extends React.Component<Props> {
+  componentWillUnmount() {
+    updateIcon(null);
+  }
 
-  updateIcon(props.color);
-  return null;
-};
+  render() {
+    updateIcon(this.props.color);
+    return null;
+  }
+}

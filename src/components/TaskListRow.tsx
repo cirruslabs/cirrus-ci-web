@@ -22,6 +22,9 @@ const styles = {
     marginBottom: 4,
     marginLeft: 4,
   },
+  lastChip: {
+    marginRight: 4,
+  },
   cell: {
     padding: 0,
     height: '100%',
@@ -54,7 +57,7 @@ class TaskListRow extends React.Component<Props> {
         </TableCell>
         <TableCell className={classes.cell}>
           <div className="d-flex justify-content-end">
-            <TaskDurationChip task={task} className={classes.chip} />
+            <TaskDurationChip task={task} className={classNames(classes.chip, classes.lastChip)} />
           </div>
         </TableCell>
       </TableRow>

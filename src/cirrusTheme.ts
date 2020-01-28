@@ -16,6 +16,7 @@ let cirrusColors = {
   cirrusDark: grey['900'],
   cirrusLightDark: grey['700'],
   cirrusGrey: grey['300'],
+  cirrusLightGrey: grey['200'],
   cirrusWhite: grey['50'],
   progress: successColor,
   initialization: blue['500'],
@@ -58,7 +59,7 @@ let cirrusTheme: ThemeOptions = {
       contrastText: cirrusColors.cirrusWhite,
     },
     action: {
-      hover: cirrusColors.cirrusGrey,
+      hover: cirrusColors.cirrusLightGrey,
     },
   },
   overrides: {

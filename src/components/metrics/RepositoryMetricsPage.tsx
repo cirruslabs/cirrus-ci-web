@@ -3,7 +3,7 @@ import { graphql } from 'babel-plugin-relay/macro';
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import { createFragmentContainer } from 'react-relay';
-import { createStyles, WithStyles, withStyles } from '@material-ui/core';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
 import RepositoryMetricsCharts from './RepositoryMetricsCharts';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -83,7 +83,7 @@ class RepositoryMetricsPage extends React.Component<Props, State> {
                     </MenuItem>
                     <MenuItem value={'container'}>Linux Container</MenuItem>
                     <MenuItem value={'windows_container'}>Windows Container</MenuItem>
-                    <MenuItem value={'osx_instance'}>OSX Instance</MenuItem>
+                    <MenuItem value={'osx_instance'}>macOS VM</MenuItem>
                     <MenuItem value={'pipe'}>Docker Pipe</MenuItem>
                     <MenuItem value={'freebsd_instance'}>FreeBSD Instance</MenuItem>
                     <MenuItem value={'gce_instance'}>GCE Instance</MenuItem>

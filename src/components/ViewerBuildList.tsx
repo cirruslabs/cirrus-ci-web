@@ -22,6 +22,7 @@ import { withStyles, WithStyles } from '@material-ui/core';
 import classNames from 'classnames';
 import { cirrusColors } from '../cirrusTheme';
 import { ViewerBuildList_viewer } from './__generated__/ViewerBuildList_viewer.graphql';
+import Head from 'react-helmet';
 
 let styles = {
   title: {
@@ -67,6 +68,9 @@ class ViewerBuildList extends React.Component<Props> {
     }
     return (
       <Paper elevation={1}>
+        <Head>
+          <title>Recent Builds - Cirrus CI</title>
+        </Head>
         <Toolbar className={classes.title}>
           <Typography variant="h6" color="inherit">
             Recent Builds

@@ -21,6 +21,7 @@ import CirrusFavicon from './CirrusFavicon';
 import NotificationList from './NotificationList';
 import TaskList from './TaskList';
 import { BuildDetails_build } from './__generated__/BuildDetails_build.graphql';
+import Head from 'react-helmet';
 
 const buildApproveMutation = graphql`
   mutation BuildDetailsApproveBuildMutation($input: BuildApproveInput!) {
@@ -174,6 +175,9 @@ class BuildDetails extends React.Component<Props> {
     return (
       <div>
         <CirrusFavicon color={faviconColor(build.status)} />
+        <Head>
+          <title>Build for {build.changeIdInRepo.substring(0, 6)} - Cirrus CI</title>
+        </Head>
         <Paper elevation={2}>
           <Card>
             <CardContent>
@@ -256,9 +260,7 @@ class BuildDetails extends React.Component<Props> {
     commitMutation(environment, {
       mutation: taskBatchReRunMutation,
       variables: variables,
-      onCompleted: () => {
-        this.forceUpdate();
-      },
+      onCompleted: () => this.forceUpdate(),
       onError: err => console.error(err),
     });
   }

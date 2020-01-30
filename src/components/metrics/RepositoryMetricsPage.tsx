@@ -17,6 +17,7 @@ import Grid from '@material-ui/core/Grid';
 import { RouteComponentProps } from 'react-router';
 import { RepositoryMetricsPage_repository } from './__generated__/RepositoryMetricsPage_repository.graphql';
 import { MetricsQueryParameters } from './__generated__/RepositoryMetricsChartsQuery.graphql';
+import Head from 'react-helmet';
 
 const styles = theme =>
   createStyles({
@@ -64,11 +65,16 @@ class RepositoryMetricsPage extends React.Component<Props, State> {
 
     return (
       <div>
+        <Head>
+          <title>
+            {repository.owner}/{repository.name}'s Metrics - Cirrus CI
+          </title>
+        </Head>
         <Paper elevation={1}>
           <Card>
             <CardContent>
               <Typography gutterBottom variant="h5" component="h2" className={classes.title}>
-                Metrics for tasks of {repository.owner}/{repository.name} repository
+                {repository.owner}/{repository.name}'s Metrics
               </Typography>
               <Grid container direction="row" justify="center">
                 <FormControl className={classes.formControl}>

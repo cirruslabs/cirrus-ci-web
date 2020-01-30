@@ -24,6 +24,7 @@ import IconButton from '@material-ui/core/IconButton';
 import UserApiSettings from './settings/UserApiSettings';
 import UserComputeCredits from './compute-credits/UserComputeCredits';
 import { UserProfile_user } from './__generated__/UserProfile_user.graphql';
+import Head from 'react-helmet';
 
 const styles = theme =>
   createStyles({
@@ -153,6 +154,9 @@ class UserProfile extends React.Component<Props> {
 
     return (
       <div>
+        <Head>
+          <title>Your Profile - Cirrus CI</title>
+        </Head>
         <Paper elevation={1}>
           <Toolbar className={classes.title}>
             <Typography variant="h6" color="inherit">

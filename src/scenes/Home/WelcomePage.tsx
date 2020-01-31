@@ -3,6 +3,7 @@ import Paper from '@material-ui/core/Paper';
 import ReactMarkdown from 'react-markdown';
 import { withStyles } from '@material-ui/core/styles';
 import { createStyles } from '@material-ui/core';
+import Head from 'react-helmet';
 
 const styles = theme =>
   createStyles({
@@ -15,6 +16,9 @@ const styles = theme =>
 let welcomePage = props => {
   return (
     <Paper className={props.classes.paper}>
+      <Head>
+        <title>Welcome - Cirrus CI</title>
+      </Head>
       <ReactMarkdown># Welcome to Cirrus CI.</ReactMarkdown>
       <ReactMarkdown>
         Please [**sign in**](https://api.cirrus-ci.com/redirect/auth/github) to see your recent builds.

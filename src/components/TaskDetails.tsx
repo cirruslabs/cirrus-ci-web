@@ -38,7 +38,7 @@ import TaskList from './TaskList';
 import { TaskDetails_task } from './__generated__/TaskDetails_task.graphql';
 import { TaskDetailsReRunMutationResponse } from './__generated__/TaskDetailsReRunMutation.graphql';
 import TaskResourcesChip from './chips/TaskResourcesChip';
-import Head from 'react-helmet';
+import TaskTitleWrapper from './chips/TaskTitleWrapper';
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
@@ -255,6 +255,7 @@ class TaskDetails extends React.Component<Props> {
     return (
       <div>
         <CirrusFavicon color={faviconColor(task.status)} />
+        <TaskTitleWrapper task={task} />
         <Paper elevation={2}>
           <Card>
             <CardContent>

@@ -200,23 +200,25 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
     let { openDrawer } = this.state;
 
     const drawer = (
-      <Drawer
-        variant="persistent"
-        open={openDrawer}
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-      >
-        <div className={classes.drawerHeader}>
-          <Typography variant="h6" color="inherit">
-            Active Repositories
-          </Typography>
-          <IconButton onClick={this.handleDrawerClose}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </div>
-        <ViewerTopRepositories className={classes.topRepositories} />
-      </Drawer>
+      <nav>
+        <Drawer
+          variant="persistent"
+          open={openDrawer}
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+        >
+          <div className={classes.drawerHeader}>
+            <Typography variant="h6" color="inherit">
+              Active Repositories
+            </Typography>
+            <IconButton onClick={this.handleDrawerClose}>
+              <ChevronLeftIcon />
+            </IconButton>
+          </div>
+          <ViewerTopRepositories className={classes.topRepositories} />
+        </Drawer>
+      </nav>
     );
 
     return (
@@ -232,7 +234,7 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
             <Toolbar disableGutters={true}>
               <IconButton
                 color="inherit"
-                aria-label="open menu"
+                aria-label="open navigation"
                 onClick={this.handleDrawerOpen}
                 className={classNames(classes.menuButton, openDrawer && classes.hide)}
               >

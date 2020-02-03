@@ -38,6 +38,7 @@ import TaskList from './TaskList';
 import { TaskDetails_task } from './__generated__/TaskDetails_task.graphql';
 import { TaskDetailsReRunMutationResponse } from './__generated__/TaskDetailsReRunMutation.graphql';
 import TaskResourcesChip from './chips/TaskResourcesChip';
+import Head from 'react-helmet';
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
@@ -253,6 +254,9 @@ class TaskDetails extends React.Component<Props> {
 
     return (
       <div>
+        <Head>
+          <title>{task.name} - Cirrus CI</title>
+        </Head>
         <CirrusFavicon color={faviconColor(task.status)} />
         <Paper elevation={2}>
           <Card>
@@ -380,6 +384,7 @@ export default createFragmentContainer(withStyles(styles)(withRouter(TaskDetails
   task: graphql`
     fragment TaskDetails_task on Task {
       id
+      name
       buildId
       status
       triggerType

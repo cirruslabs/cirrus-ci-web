@@ -20,7 +20,7 @@ import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import ComputeCreditsBuyDialog from './ComputeCreditsBuyDialog';
 import { ComputeCreditsBase_info } from './__generated__/ComputeCreditsBase_info.graphql';
-import DocumentHead from 'react-helmet';
+import Head from 'react-helmet';
 
 const styles = theme =>
   createStyles({
@@ -99,9 +99,9 @@ class ComputeCreditsBase extends React.Component<Props, State> {
     return (
       <Card>
         <CardHeader title="Compute Credits" />
-        <DocumentHead>
+        <Head>
           <script src="https://js.stripe.com/v3/" async></script>
-        </DocumentHead>
+        </Head>
         <CardContent>
           <Typography variant="h6">
             Your current compute credits balance:{' '}

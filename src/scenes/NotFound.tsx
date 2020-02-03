@@ -1,11 +1,15 @@
 import React from 'react';
 import Icon from '@material-ui/core/Icon';
+import Head from 'react-helmet';
 
 export default props => (
   <div
     className="row justify-content-between align-items-center"
     style={{ width: '100%', height: '100%', fontSize: '32px' }}
   >
+    <Head>
+      <title>Page Not Found - Cirrus CI</title>
+    </Head>
     <div className="col text-center">
       <Icon style={{ fontSize: '96px' }} className="center-block">
         sentiment_very_dissatisfied

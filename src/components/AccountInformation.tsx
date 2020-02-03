@@ -48,7 +48,7 @@ class AccountInformation extends React.Component<Props, State> {
     return (
       <div>
         <IconButton
-          aria-label="More"
+          aria-label="menu"
           aria-owns={anchorEl ? 'long-menu' : undefined}
           aria-haspopup="true"
           onClick={this.handleMenuOpen}

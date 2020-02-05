@@ -176,7 +176,7 @@ class BuildDetails extends React.Component<Props> {
       <div>
         <CirrusFavicon color={faviconColor(build.status)} />
         <Head>
-          <title>Build for {build.changeIdInRepo.substring(0, 6)} - Cirrus CI</title>
+          <title>{build.changeMessageTitle} - Cirrus CI</title>
         </Head>
         <Paper elevation={2}>
           <Card>

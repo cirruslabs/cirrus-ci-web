@@ -17,9 +17,8 @@ import { cirrusColors } from '../cirrusTheme';
 import environment from '../createRelayEnvironment';
 import { faviconColor } from '../utils/colors';
 import { navigateBuild, navigateTask } from '../utils/navigate';
-import { hasWritePermissions } from '../utils/permissions';
 import { isTaskFinalStatus } from '../utils/status';
-import { shorten } from '../utils/text';
+import { shorten, hasWritePermissions } from '../utils/utilities';
 import TaskArtifacts from './artifacts/TaskArtifacts';
 import BuildBranchNameChip from './chips/BuildBranchNameChip';
 import BuildChangeChip from './chips/BuildChangeChip';
@@ -354,9 +353,7 @@ class TaskDetails extends React.Component<Props> {
     commitMutation(environment, {
       mutation: taskTriggerMutation,
       variables: variables,
-      onCompleted: () => {
-        this.forceUpdate();
-      },
+      onCompleted: () => this.forceUpdate(),
       onError: err => console.error(err),
     });
   }

@@ -13,7 +13,7 @@ import { commitMutation, createFragmentContainer, Disposable, requestSubscriptio
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import environment from '../createRelayEnvironment';
 import { faviconColor } from '../utils/colors';
-import { hasWritePermissions } from '../utils/permissions';
+import { hasWritePermissions } from '../utils/utilities';
 import BuildCreatedChip from './chips/BuildCreatedChip';
 import BuildStatusChip from './chips/BuildStatusChip';
 import RepositoryNameChip from './chips/RepositoryNameChip';

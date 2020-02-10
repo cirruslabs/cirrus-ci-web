@@ -10,7 +10,7 @@ import { navigate } from '../../utils/navigate';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { BuildBranchNameChip_build } from './__generated__/BuildBranchNameChip_build.graphql';
-import { shorten } from '../../utils/text';
+import { shorten } from '../../utils/utilities';
 
 interface Props extends RouteComponentProps {
   className?: string;

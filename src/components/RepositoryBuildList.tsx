@@ -23,7 +23,8 @@ import classNames from 'classnames';
 import CreateBuildDialog from './CreateBuildDialog';
 import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildList_repository.graphql';
 import { NodeOfConnection } from '../utils/utility-types';
-import { createLinkToRepository } from '../utils/github';
+import { createLinkToRepository } from '../utils/utilities';
+import Head from 'react-helmet';
 
 let styles = createStyles({
   gap: {
@@ -147,6 +148,11 @@ class RepositoryBuildList extends React.Component<Props, State> {
 
     return (
       <div>
+        <Head>
+          <title>
+            {repository.owner}/{repository.name} - Cirrus CI
+          </title>
+        </Head>
         <Paper elevation={1}>
           <Toolbar className="justify-content-between">
             <div className={classes.wrapper}>

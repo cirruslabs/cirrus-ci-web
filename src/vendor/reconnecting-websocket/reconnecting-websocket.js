@@ -65,12 +65,16 @@
  * =======
  * Options can either be passed upon instantiation or set after instantiation:
  *
- * var socket = new ReconnectingWebSocket(url, null, { reconnectInterval: 4000 });
+ * var socket = new ReconnectingWebSocket(url, null, { debug: true, reconnectInterval: 4000 });
  *
  * or
  *
  * var socket = new ReconnectingWebSocket(url);
+ * socket.debug = true;
  * socket.reconnectInterval = 4000;
+ *
+ * debug
+ * - Whether this instance should log debug messages. Accepts true or false. Default: false.
  *
  * automaticOpen
  * - Whether or not the websocket should attempt to connect immediately upon instantiation. The socket can be manually opened or closed at any time using ws.open() and ws.close().
@@ -86,22 +90,28 @@
  *
  * timeoutInterval
  * - The maximum time in milliseconds to wait for a connection to succeed before closing and retrying. Accepts integer. Default: 2000.
+ *
  */
-((global, factory) => {
+(function (global, factory) {
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = factory();
   } else {
     global.ReconnectingWebSocket = factory();
   }
-})(this, () => {
+})(this, function () {
 
   if (!('WebSocket' in window)) {
     return;
   }
 
   function ReconnectingWebSocket(url, protocols, options) {
+
     // Default settings
     var settings = {
+
+      /** Whether this instance should log debug messages. */
+      debug: false,
+
       /** Whether or not the websocket should attempt to connect immediately upon instantiation. */
       automaticOpen: true,
 
@@ -166,11 +176,21 @@
 
     // Wire up "on*" properties as event handlers
 
-    eventTarget.addEventListener('open', event => self.onopen(event));
-    eventTarget.addEventListener('close', event => self.onclose(event));
-    eventTarget.addEventListener('connecting', event => self.onconnecting(event));
-    eventTarget.addEventListener('message', event => self.onmessage(event));
-    eventTarget.addEventListener('error', event => self.onerror(event));
+    eventTarget.addEventListener('open', function (event) {
+      self.onopen(event);
+    });
+    eventTarget.addEventListener('close', function (event) {
+      self.onclose(event);
+    });
+    eventTarget.addEventListener('connecting', function (event) {
+      self.onconnecting(event);
+    });
+    eventTarget.addEventListener('message', function (event) {
+      self.onmessage(event);
+    });
+    eventTarget.addEventListener('error', function (event) {
+      self.onerror(event);
+    });
 
     // Expose the API required by EventTarget
 
@@ -193,9 +213,9 @@
       var evt = document.createEvent("CustomEvent");
       evt.initCustomEvent(s, false, false, args);
       return evt;
-    }
+    };
 
-    this.open = reconnectAttempt => {
+    this.open = function (reconnectAttempt) {
       ws = new WebSocket(self.url, protocols || []);
       ws.binaryType = this.binaryType;
 
@@ -208,13 +228,13 @@
         this.reconnectAttempts = 0;
       }
 
-      if (process.env.NODE_ENV === "development") {
+      if (self.debug || ReconnectingWebSocket.debugAll) {
         console.debug('ReconnectingWebSocket', 'attempt-connect', self.url);
       }
 
       var localWs = ws;
       var timeout = setTimeout(() => {
-        if (process.env.NODE_ENV === "development") {
+        if (self.debug || ReconnectingWebSocket.debugAll) {
           console.debug('ReconnectingWebSocket', 'connection-timeout', self.url);
         }
         timedOut = true;
@@ -222,9 +242,9 @@
         timedOut = false;
       }, self.timeoutInterval);
 
-      ws.onopen = event => {
+      ws.onopen = function (event) {
         clearTimeout(timeout);
-        if (process.env.NODE_ENV === "development") {
+        if (self.debug || ReconnectingWebSocket.debugAll) {
           console.debug('ReconnectingWebSocket', 'onopen', self.url);
         }
         self.protocol = ws.protocol;
@@ -249,7 +269,7 @@
           e.wasClean = event.wasClean;
           eventTarget.dispatchEvent(e);
           if (!reconnectAttempt && !timedOut) {
-            if (process.env.NODE_ENV === "development") {
+            if (self.debug || ReconnectingWebSocket.debugAll) {
               console.debug('ReconnectingWebSocket', 'onclose', self.url);
             }
             eventTarget.dispatchEvent(generateEvent('close'));
@@ -263,7 +283,7 @@
         }
       };
       ws.onmessage = event => {
-        if (process.env.NODE_ENV === "development") {
+        if (self.debug || ReconnectingWebSocket.debugAll) {
           console.debug('ReconnectingWebSocket', 'onmessage', self.url, event.data);
         }
         var e = generateEvent('message');
@@ -271,7 +291,7 @@
         eventTarget.dispatchEvent(e);
       };
       ws.onerror = event => {
-        if (process.env.NODE_ENV === "development") {
+        if (self.debug || ReconnectingWebSocket.debugAll) {
           console.debug('ReconnectingWebSocket', 'onerror', self.url, event);
         }
         eventTarget.dispatchEvent(generateEvent('error'));
@@ -290,7 +310,7 @@
      */
     this.send = data => {
       if (ws) {
-        if (process.env.NODE_ENV === "development") {
+        if (self.debug || ReconnectingWebSocket.debugAll) {
           console.debug('ReconnectingWebSocket', 'send', self.url, data);
         }
         return ws.send(data);
@@ -338,6 +358,12 @@
   ReconnectingWebSocket.prototype.onmessage = event => {};
   /** An event listener to be called when an error occurs. */
   ReconnectingWebSocket.prototype.onerror = event => {};
+
+  /**
+   * Whether all instances of ReconnectingWebSocket should log debug messages.
+   * Setting this to true is the equivalent of setting all instances of ReconnectingWebSocket.debug to true.
+   */
+  ReconnectingWebSocket.debugAll = false;
 
   ReconnectingWebSocket.CONNECTING = WebSocket.CONNECTING;
   ReconnectingWebSocket.OPEN = WebSocket.OPEN;

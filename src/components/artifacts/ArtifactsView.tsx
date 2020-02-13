@@ -98,9 +98,8 @@ class ArtifactsView extends React.Component<Props> {
     return allURLParts.filter(it => it !== null).join('/');
   };
 
-  artifactArchiveURL = name => {
-    return ['https://api.cirrus-ci.com/v1/artifact/task', this.props.task.id, `${name}.zip`].join('/');
-  };
+  artifactArchiveURL = name =>
+    ['https://api.cirrus-ci.com/v1/artifact/task', this.props.task.id, `${name}.zip`].join('/');
 
   render() {
     let { task, classes } = this.props;

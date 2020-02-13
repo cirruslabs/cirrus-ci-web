@@ -1,7 +1,6 @@
 import React from 'react';
 import AnsiUp from 'ansi_up';
 import { cirrusColors } from '../../cirrusTheme';
-import './logs.css';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import { createStyles, WithStyles, withStyles } from '@material-ui/styles';

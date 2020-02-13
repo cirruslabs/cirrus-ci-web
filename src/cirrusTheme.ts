@@ -35,7 +35,7 @@ let cirrusColors = {
   aborted: orange['300'],
 };
 
-/**
+/*
  *  Fork of lightBaseTheme.js
  */
 let cirrusTheme: ThemeOptions = {

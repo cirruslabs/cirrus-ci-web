@@ -67,7 +67,7 @@ class BuildStatusChip extends React.Component<Props> {
         title={
           build.clockDurationInSeconds
             ? `Clock duration: ${formatDuration(build.clockDurationInSeconds)}`
-            : 'Clock duration is not calculated yet!'
+            : 'Clock duration not calculated yet!'
         }
       >
         <Chip

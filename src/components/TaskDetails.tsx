@@ -354,9 +354,7 @@ class TaskDetails extends React.Component<Props> {
     commitMutation(environment, {
       mutation: taskTriggerMutation,
       variables: variables,
-      onCompleted: () => {
-        this.forceUpdate();
-      },
+      onCompleted: () => this.forceUpdate(),
       onError: err => console.error(err),
     });
   }

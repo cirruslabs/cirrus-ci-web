@@ -23,7 +23,7 @@ import { navigate } from '../../utils/navigate';
 import IconButton from '@material-ui/core/IconButton';
 import UserApiSettings from '../settings/UserApiSettings';
 import UserComputeCredits from '../compute-credits/UserComputeCredits';
-import { UserProfile_user } from '../__generated__/UserProfile_user.graphql';
+import { UserProfile_user } from './__generated__/UserProfile_user.graphql';
 import Head from 'react-helmet';
 
 const styles = theme =>

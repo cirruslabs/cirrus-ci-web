@@ -13,7 +13,7 @@ import classNames from 'classnames';
 import BuildChangeChip from '../chips/BuildChangeChip';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
-import { LastDefaultBranchBuildRow_repository } from '../__generated__/LastDefaultBranchBuildRow_repository.graphql';
+import { LastDefaultBranchBuildRow_repository } from './__generated__/LastDefaultBranchBuildRow_repository.graphql';
 
 const buildSubscription = graphql`
   subscription LastDefaultBranchBuildRowSubscription($repositoryID: ID!) {

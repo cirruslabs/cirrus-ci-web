@@ -11,7 +11,7 @@ import RepositoryNameChip from '../chips/RepositoryNameChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
-import { LastDefaultBranchBuildMiniRow_repository } from '../__generated__/LastDefaultBranchBuildMiniRow_repository.graphql';
+import { LastDefaultBranchBuildMiniRow_repository } from './__generated__/LastDefaultBranchBuildMiniRow_repository.graphql';
 
 const buildSubscription = graphql`
   subscription LastDefaultBranchBuildMiniRowSubscription($repositoryID: ID!) {

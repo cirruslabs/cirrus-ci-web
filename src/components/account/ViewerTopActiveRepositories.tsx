@@ -7,7 +7,7 @@ import React from 'react';
 import { createFragmentContainer } from 'react-relay';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import LastDefaultBranchBuildMiniRow from '../builds/LastDefaultBranchBuildMiniRow';
-import { ViewerTopActiveRepositories_viewer } from '../__generated__/ViewerTopActiveRepositories_viewer.graphql';
+import { ViewerTopActiveRepositories_viewer } from './__generated__/ViewerTopActiveRepositories_viewer.graphql';
 
 let styles = theme => ({
   message: {

@@ -1,8 +1,9 @@
 import { cirrusColors } from '../cirrusTheme';
 import { BuildStatus } from '../components/chips/__generated__/BuildStatusChip_build.graphql';
 import { TaskStatus } from '../components/chips/__generated__/TaskStatusChip_task.graphql';
-import { TaskCommandStatus } from '../components/__generated__/TaskCommandList_task.graphql';
-import { NotificationLevel } from '../components/__generated__/Notification_notification.graphql';
+import { graphql } from 'babel-plugin-relay/macro';
+import { TaskCommandStatus } from './__generated__/colors_TaskCommand.graphql';
+import { NotificationLevel } from './__generated__/colors_Notification.graphql';
 
 export function buildStatusColor(status: BuildStatus) {
   switch (status) {
@@ -64,6 +65,12 @@ export function faviconColor(status: BuildStatus | TaskStatus) {
   }
 }
 
+graphql`
+  fragment colors_TaskCommand on TaskCommand {
+    status
+  }
+`;
+
 export function commandStatusColor(status: TaskCommandStatus) {
   switch (status) {
     case 'SUCCESS':
@@ -81,6 +88,11 @@ export function commandStatusColor(status: TaskCommandStatus) {
   }
 }
 
+graphql`
+  fragment colors_Notification on Notification {
+    level
+  }
+`;
 export function notificationColor(level: NotificationLevel) {
   switch (level) {
     case 'INFO':

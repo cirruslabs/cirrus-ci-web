@@ -11,7 +11,7 @@ import Icon from '@material-ui/core/Icon';
 import { navigate } from '../../utils/navigate';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { Notification_notification } from '../__generated__/Notification_notification.graphql';
+import { Notification_notification } from './__generated__/Notification_notification.graphql';
 
 let styles = {
   notification: {

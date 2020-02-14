@@ -35,8 +35,8 @@ import NotificationList from '../common/NotificationList';
 import TaskCommandList from './TaskCommandList';
 import TaskCommandsProgress from './TaskCommandsProgress';
 import TaskList from './TaskList';
-import { TaskDetails_task } from '../__generated__/TaskDetails_task.graphql';
-import { TaskDetailsReRunMutationResponse } from '../__generated__/TaskDetailsReRunMutation.graphql';
+import { TaskDetails_task } from './__generated__/TaskDetails_task.graphql';
+import { TaskDetailsReRunMutationResponse } from './__generated__/TaskDetailsReRunMutation.graphql';
 import TaskResourcesChip from '../chips/TaskResourcesChip';
 import Head from 'react-helmet';
 

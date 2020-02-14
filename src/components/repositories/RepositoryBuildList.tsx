@@ -21,7 +21,7 @@ import { createStyles, Tooltip, withStyles, WithStyles } from '@material-ui/core
 import Icon from '@material-ui/core/Icon';
 import classNames from 'classnames';
 import CreateBuildDialog from '../builds/CreateBuildDialog';
-import { RepositoryBuildList_repository } from '../__generated__/RepositoryBuildList_repository.graphql';
+import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildList_repository.graphql';
 import { NodeOfConnection } from '../../utils/utility-types';
 import { createLinkToRepository } from '../../utils/github';
 import Head from 'react-helmet';

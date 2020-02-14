@@ -17,8 +17,8 @@ import { navigateBuild } from '../../utils/navigate';
 
 import 'ace-builds/src-noconflict/mode-yaml';
 import 'ace-builds/src-noconflict/theme-github';
-import { CreateBuildDialog_repository } from '../__generated__/CreateBuildDialog_repository.graphql';
-import { CreateBuildDialogMutationResponse } from '../__generated__/CreateBuildDialogMutation.graphql';
+import { CreateBuildDialog_repository } from './__generated__/CreateBuildDialog_repository.graphql';
+import { CreateBuildDialogMutationResponse } from './__generated__/CreateBuildDialogMutation.graphql';
 
 const createBuildMutation = graphql`
   mutation CreateBuildDialogMutation($input: RepositoryCreateBuildInput!) {

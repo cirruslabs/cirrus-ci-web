@@ -14,7 +14,7 @@ import { navigateTask } from '../../utils/navigate';
 import { withStyles, WithStyles } from '@material-ui/core';
 import classNames from 'classnames';
 import TaskCreatedChip from '../chips/TaskCreatedChip';
-import { TaskListRow_task } from '../__generated__/TaskListRow_task.graphql';
+import { TaskListRow_task } from './__generated__/TaskListRow_task.graphql';
 
 const styles = {
   chip: {

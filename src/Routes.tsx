@@ -84,6 +84,11 @@ const AsyncGitHubOrganizationSettingsRenderer = Loadable({
   loading: LoadingComponent,
 });
 
+const AsyncApiExplorerRenderer = Loadable({
+  loader: () => import('./components/explorer/ApiExplorer'),
+  loading: LoadingComponent,
+});
+
 const drawerWidth = 360;
 
 const styles = theme =>
@@ -290,6 +295,7 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
             >
               <Switch>
                 <Route exact path="/" component={AsyncHome} props={this.props} />
+                <Route exact path="/explorer" component={AsyncApiExplorerRenderer} props={this.props} />
                 <Route exact path="/settings/profile" component={AsyncViewerProfile} props={this.props} />
                 <Route
                   exact

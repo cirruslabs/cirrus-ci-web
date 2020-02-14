@@ -12,18 +12,18 @@ import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import BuildDurationsChart from './BuildDurationsChart';
-import BuildBranchNameChip from './chips/BuildBranchNameChip';
-import BuildChangeChip from './chips/BuildChangeChip';
-import BuildStatusChip from './chips/BuildStatusChip';
-import { navigateBuild } from '../utils/navigate';
+import BuildDurationsChart from '../builds/BuildDurationsChart';
+import BuildBranchNameChip from '../chips/BuildBranchNameChip';
+import BuildChangeChip from '../chips/BuildChangeChip';
+import BuildStatusChip from '../chips/BuildStatusChip';
+import { navigateBuild } from '../../utils/navigate';
 import { createStyles, Tooltip, withStyles, WithStyles } from '@material-ui/core';
 import Icon from '@material-ui/core/Icon';
 import classNames from 'classnames';
-import CreateBuildDialog from './CreateBuildDialog';
-import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildList_repository.graphql';
-import { NodeOfConnection } from '../utils/utility-types';
-import { createLinkToRepository } from '../utils/github';
+import CreateBuildDialog from '../builds/CreateBuildDialog';
+import { RepositoryBuildList_repository } from '../__generated__/RepositoryBuildList_repository.graphql';
+import { NodeOfConnection } from '../../utils/utility-types';
+import { createLinkToRepository } from '../../utils/github';
 import Head from 'react-helmet';
 
 let styles = createStyles({

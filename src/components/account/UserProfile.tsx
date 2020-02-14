@@ -12,18 +12,18 @@ import Typography from '@material-ui/core/Typography';
 import CardActions from '@material-ui/core/CardActions';
 import CardHeader from '@material-ui/core/CardHeader';
 import Icon from '@material-ui/core/Icon';
-import { cirrusColors } from '../cirrusTheme';
+import { cirrusColors } from '../../cirrusTheme';
 import Toolbar from '@material-ui/core/Toolbar';
 import classNames from 'classnames';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
-import { navigate } from '../utils/navigate';
+import { navigate } from '../../utils/navigate';
 import IconButton from '@material-ui/core/IconButton';
-import UserApiSettings from './settings/UserApiSettings';
-import UserComputeCredits from './compute-credits/UserComputeCredits';
-import { UserProfile_user } from './__generated__/UserProfile_user.graphql';
+import UserApiSettings from '../settings/UserApiSettings';
+import UserComputeCredits from '../compute-credits/UserComputeCredits';
+import { UserProfile_user } from '../__generated__/UserProfile_user.graphql';
 import Head from 'react-helmet';
 
 const styles = theme =>

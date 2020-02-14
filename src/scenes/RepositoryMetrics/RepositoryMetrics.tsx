@@ -4,7 +4,7 @@ import { QueryRenderer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 
 import environment from '../../createRelayEnvironment';
-import CirrusLinearProgress from '../../components/CirrusLinearProgress';
+import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
 import NotFound from '../NotFound';
 import RepositoryMetricsPage from '../../components/metrics/RepositoryMetricsPage';
 import { RepositoryMetricsQuery } from './__generated__/RepositoryMetricsQuery.graphql';

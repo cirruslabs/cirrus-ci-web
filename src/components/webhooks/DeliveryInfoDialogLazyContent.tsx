@@ -4,7 +4,7 @@ import { QueryRenderer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 
 import environment from '../../createRelayEnvironment';
-import CirrusLinearProgress from '../../components/CirrusLinearProgress';
+import CirrusLinearProgress from '../common/CirrusLinearProgress';
 import DeliveryInfoDialogContent from './DeliveryInfoDialogContent';
 import { DeliveryInfoDialogLazyContentQuery } from './__generated__/DeliveryInfoDialogLazyContentQuery.graphql';
 

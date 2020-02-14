@@ -5,7 +5,7 @@ import { graphql } from 'babel-plugin-relay/macro';
 
 import environment from '../../createRelayEnvironment';
 import MetricsChart from './MetricsChart';
-import CirrusLinearProgress from '../CirrusLinearProgress';
+import CirrusLinearProgress from '../common/CirrusLinearProgress';
 import { RepositoryMetricsChartsQuery } from './__generated__/RepositoryMetricsChartsQuery.graphql';
 
 export default props => (

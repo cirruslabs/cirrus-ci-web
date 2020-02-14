@@ -11,16 +11,16 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { commitMutation, createFragmentContainer, Disposable, requestSubscription } from 'react-relay';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import environment from '../createRelayEnvironment';
-import { faviconColor } from '../utils/colors';
-import { hasWritePermissions } from '../utils/permissions';
-import BuildCreatedChip from './chips/BuildCreatedChip';
-import BuildStatusChip from './chips/BuildStatusChip';
-import RepositoryNameChip from './chips/RepositoryNameChip';
-import CirrusFavicon from './CirrusFavicon';
-import NotificationList from './NotificationList';
-import TaskList from './TaskList';
-import { BuildDetails_build } from './__generated__/BuildDetails_build.graphql';
+import environment from '../../createRelayEnvironment';
+import { faviconColor } from '../../utils/colors';
+import { hasWritePermissions } from '../../utils/permissions';
+import BuildCreatedChip from '../chips/BuildCreatedChip';
+import BuildStatusChip from '../chips/BuildStatusChip';
+import RepositoryNameChip from '../chips/RepositoryNameChip';
+import CirrusFavicon from '../common/CirrusFavicon';
+import NotificationList from '../common/NotificationList';
+import TaskList from '../tasks/TaskList';
+import { BuildDetails_build } from '../__generated__/BuildDetails_build.graphql';
 import Head from 'react-helmet';
 
 const buildApproveMutation = graphql`

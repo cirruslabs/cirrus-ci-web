@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { commandStatusColor } from '../utils/colors';
+import { commandStatusColor } from '../../utils/colors';
 import TaskCommandLogs from './TaskCommandLogs';
-import { formatDuration } from '../utils/time';
-import { isTaskCommandExecuting, isTaskCommandFinalStatus, isTaskFinalStatus } from '../utils/status';
-import DurationTicker from './DurationTicker';
+import { formatDuration } from '../../utils/time';
+import { isTaskCommandExecuting, isTaskCommandFinalStatus, isTaskFinalStatus } from '../../utils/status';
+import DurationTicker from '../common/DurationTicker';
 import { withStyles, WithStyles } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
@@ -16,8 +16,8 @@ import Typography from '@material-ui/core/Typography';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import * as queryString from 'query-string';
-import { TaskCommandList_task } from './__generated__/TaskCommandList_task.graphql';
-import { ItemOfArray } from '../utils/utility-types';
+import { TaskCommandList_task } from '../__generated__/TaskCommandList_task.graphql';
+import { ItemOfArray } from '../../utils/utility-types';
 
 const styles = {
   details: {

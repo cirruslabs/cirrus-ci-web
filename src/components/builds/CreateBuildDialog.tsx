@@ -1,5 +1,5 @@
 import React from 'react';
-import environment from '../createRelayEnvironment';
+import environment from '../../createRelayEnvironment';
 import { commitMutation, createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import Button from '@material-ui/core/Button';
@@ -13,12 +13,12 @@ import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
 import AceEditor from 'react-ace';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { navigateBuild } from '../utils/navigate';
+import { navigateBuild } from '../../utils/navigate';
 
 import 'ace-builds/src-noconflict/mode-yaml';
 import 'ace-builds/src-noconflict/theme-github';
-import { CreateBuildDialog_repository } from './__generated__/CreateBuildDialog_repository.graphql';
-import { CreateBuildDialogMutationResponse } from './__generated__/CreateBuildDialogMutation.graphql';
+import { CreateBuildDialog_repository } from '../__generated__/CreateBuildDialog_repository.graphql';
+import { CreateBuildDialogMutationResponse } from '../__generated__/CreateBuildDialogMutation.graphql';
 
 const createBuildMutation = graphql`
   mutation CreateBuildDialogMutation($input: RepositoryCreateBuildInput!) {

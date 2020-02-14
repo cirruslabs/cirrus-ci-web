@@ -8,11 +8,11 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { navigate } from '../utils/navigate';
+import { navigate } from '../../utils/navigate';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Icon from '@material-ui/core/Icon';
-import { AccountInformation_viewer } from './__generated__/AccountInformation_viewer.graphql';
+import { AccountInformation_viewer } from '../__generated__/AccountInformation_viewer.graphql';
 
 interface Props extends RouteComponentProps {
   viewer: AccountInformation_viewer;

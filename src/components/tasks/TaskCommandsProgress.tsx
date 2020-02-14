@@ -1,15 +1,15 @@
-import { isTaskFinalStatus } from '../utils/status';
+import { isTaskFinalStatus } from '../../utils/status';
 import React from 'react';
-import { taskStatusColor } from '../utils/colors';
+import { taskStatusColor } from '../../utils/colors';
 import { withStyles, WithStyles } from '@material-ui/core';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import classNames from 'classnames';
-import { formatDuration } from '../utils/time';
-import { cirrusColors } from '../cirrusTheme';
+import { formatDuration } from '../../utils/time';
+import { cirrusColors } from '../../cirrusTheme';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { TaskCommandsProgress_task } from './__generated__/TaskCommandsProgress_task.graphql';
+import { TaskCommandsProgress_task } from '../__generated__/TaskCommandsProgress_task.graphql';
 
 let styles = {
   tooltipTitle: {

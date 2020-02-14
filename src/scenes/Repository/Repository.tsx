@@ -5,8 +5,8 @@ import { graphql } from 'babel-plugin-relay/macro';
 
 import environment from '../../createRelayEnvironment';
 import ReactMarkdown from 'react-markdown';
-import RepositoryBuildList from '../../components/RepositoryBuildList';
-import CirrusLinearProgress from '../../components/CirrusLinearProgress';
+import RepositoryBuildList from '../../components/repositories/RepositoryBuildList';
+import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
 import NotFound from '../NotFound';
 import { RepositoryQuery } from './__generated__/RepositoryQuery.graphql';
 

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Bar, BarChart, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { buildStatusColor } from '../utils/colors';
-import { formatDuration } from '../utils/time';
-import { navigateBuild } from '../utils/navigate';
+import { buildStatusColor } from '../../utils/colors';
+import { formatDuration } from '../../utils/time';
+import { navigateBuild } from '../../utils/navigate';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildList_repository.graphql';
-import { NodeOfConnection, UnspecifiedCallbackFunction } from '../utils/utility-types';
+import { RepositoryBuildList_repository } from '../__generated__/RepositoryBuildList_repository.graphql';
+import { NodeOfConnection, UnspecifiedCallbackFunction } from '../../utils/utility-types';
 
 const BuildDurationsChartTooltip = props => {
   let style = {

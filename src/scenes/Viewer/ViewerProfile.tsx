@@ -4,9 +4,9 @@ import { QueryRenderer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 
 import environment from '../../createRelayEnvironment';
-import CirrusLinearProgress from '../../components/CirrusLinearProgress';
+import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
 import { Typography } from '@material-ui/core';
-import UserProfile from '../../components/UserProfile';
+import UserProfile from '../../components/account/UserProfile';
 import { ViewerProfileQuery } from './__generated__/ViewerProfileQuery.graphql';
 
 export default props => {

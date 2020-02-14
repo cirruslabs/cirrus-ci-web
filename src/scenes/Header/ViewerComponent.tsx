@@ -4,8 +4,8 @@ import { QueryRenderer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 
 import environment from '../../createRelayEnvironment';
-import AccountInformation from '../../components/AccountInformation';
-import CirrusCircularProgress from '../../components/CirrusCircularProgress';
+import AccountInformation from '../../components/account/AccountInformation';
+import CirrusCircularProgress from '../../components/common/CirrusCircularProgress';
 import { cirrusColors } from '../../cirrusTheme';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';

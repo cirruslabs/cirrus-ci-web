@@ -4,8 +4,8 @@ import { QueryRenderer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 
 import environment from '../../createRelayEnvironment';
-import ViewerBuildList from '../../components/ViewerBuildList';
-import CirrusLinearProgress from '../../components/CirrusLinearProgress';
+import ViewerBuildList from '../../components/account/ViewerBuildList';
+import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
 import WelcomePage from './WelcomePage';
 import { HomeViewerQuery } from './__generated__/HomeViewerQuery.graphql';
 

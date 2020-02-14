@@ -1,18 +1,18 @@
 import React from 'react';
-import Logs from './logs/Logs';
+import Logs from '../logs/Logs';
 import { QueryRenderer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import environment from '../createRelayEnvironment';
-import CirrusLinearProgress from './CirrusLinearProgress';
-import { subscribeTaskCommandLogs } from '../rtu/ConnectionManager';
-import CirrusCircularProgress from './CirrusCircularProgress';
-import { isTaskCommandFinalStatus } from '../utils/status';
+import environment from '../../createRelayEnvironment';
+import CirrusLinearProgress from '../common/CirrusLinearProgress';
+import { subscribeTaskCommandLogs } from '../../rtu/ConnectionManager';
+import CirrusCircularProgress from '../common/CirrusCircularProgress';
+import { isTaskCommandFinalStatus } from '../../utils/status';
 import { createStyles, Tooltip, WithStyles, withStyles } from '@material-ui/core';
 import Icon from '@material-ui/core/Icon';
 import Fab from '@material-ui/core/Fab';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { TaskCommandLogsTailQuery } from './__generated__/TaskCommandLogsTailQuery.graphql';
-import { TaskCommandStatus } from './__generated__/TaskCommandList_task.graphql';
+import { TaskCommandLogsTailQuery } from '../__generated__/TaskCommandLogsTailQuery.graphql';
+import { TaskCommandStatus } from '../__generated__/TaskCommandList_task.graphql';
 
 function logURL(taskId, command) {
   return 'https://api.cirrus-ci.com/v1/task/' + taskId + '/logs/' + command.name + '.log';

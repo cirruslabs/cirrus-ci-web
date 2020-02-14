@@ -12,9 +12,9 @@ import Switch from '@material-ui/core/Switch';
 import { graphql } from 'babel-plugin-relay/macro';
 import React from 'react';
 import { commitMutation, createFragmentContainer } from 'react-relay';
-import environment from '../createRelayEnvironment';
-import { RepositorySettings_repository } from './__generated__/RepositorySettings_repository.graphql';
-import { RepositorySettingsMutationResponse } from './__generated__/RepositorySettingsMutation.graphql';
+import environment from '../../createRelayEnvironment';
+import { RepositorySettings_repository } from '../__generated__/RepositorySettings_repository.graphql';
+import { RepositorySettingsMutationResponse } from '../__generated__/RepositorySettingsMutation.graphql';
 
 const saveSettingsMutation = graphql`
   mutation RepositorySettingsMutation($input: RepositorySettingsInput!) {

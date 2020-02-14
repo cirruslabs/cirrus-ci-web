@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatDuration } from '../utils/time';
+import { formatDuration } from '../../utils/time';
 
 interface Props {
   startTimestamp: number;

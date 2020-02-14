@@ -3,8 +3,8 @@ import React from 'react';
 import { QueryRenderer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
-import CirrusLinearProgress from '../../components/CirrusLinearProgress';
-import ViewerTopActiveRepositories from '../../components/ViewerTopActiveRepositories';
+import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
+import ViewerTopActiveRepositories from '../../components/account/ViewerTopActiveRepositories';
 import Typography from '@material-ui/core/Typography';
 import { ViewerTopRepositoriesQuery } from './__generated__/ViewerTopRepositoriesQuery.graphql';
 

@@ -4,8 +4,8 @@ import { QueryRenderer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 
 import environment from '../../createRelayEnvironment';
-import TaskDetails from '../../components/TaskDetails';
-import CirrusLinearProgress from '../../components/CirrusLinearProgress';
+import TaskDetails from '../../components/tasks/TaskDetails';
+import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
 import NotFound from '../NotFound';
 import { TaskQuery } from './__generated__/TaskQuery.graphql';
 

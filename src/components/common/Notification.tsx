@@ -5,13 +5,13 @@ import React from 'react';
 
 import Typography from '@material-ui/core/Typography';
 import { withStyles, WithStyles } from '@material-ui/core';
-import { notificationColor } from '../utils/colors';
+import { notificationColor } from '../../utils/colors';
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
-import { navigate } from '../utils/navigate';
+import { navigate } from '../../utils/navigate';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { Notification_notification } from './__generated__/Notification_notification.graphql';
+import { Notification_notification } from '../__generated__/Notification_notification.graphql';
 
 let styles = {
   notification: {

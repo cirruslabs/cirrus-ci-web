@@ -1,5 +1,5 @@
 import React from 'react';
-import environment from '../createRelayEnvironment';
+import environment from '../../createRelayEnvironment';
 import { commitMutation, createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import Button from '@material-ui/core/Button';
@@ -8,10 +8,10 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import FormControl from '@material-ui/core/FormControl';
-import CopyPasteField from './CopyPasteField';
+import CopyPasteField from '../common/CopyPasteField';
 import TextField from '@material-ui/core/TextField';
-import { RepositorySecuredVariables_repository } from './__generated__/RepositorySecuredVariables_repository.graphql';
-import { RepositorySecuredVariablesMutationResponse } from './__generated__/RepositorySecuredVariablesMutation.graphql';
+import { RepositorySecuredVariables_repository } from '../__generated__/RepositorySecuredVariables_repository.graphql';
+import { RepositorySecuredVariablesMutationResponse } from '../__generated__/RepositorySecuredVariablesMutation.graphql';
 
 const securedVariableMutation = graphql`
   mutation RepositorySecuredVariablesMutation($input: RepositorySecuredVariableInput!) {

@@ -12,7 +12,7 @@ import OrganizationComputeCredits from '../compute-credits/OrganizationComputeCr
 import GitHubPurchase from '../purchase/GitHubPurchase';
 import WebHookSettings from '../webhooks/WebHookSettings';
 import OrganizationApiSettings from './OrganizationApiSettings';
-import OrganizationSecuredVariables from '../OrganizationSecuredVariables';
+import OrganizationSecuredVariables from './OrganizationSecuredVariables';
 import { GitHubOrganizationSettings_info } from './__generated__/GitHubOrganizationSettings_info.graphql';
 
 const styles = theme =>

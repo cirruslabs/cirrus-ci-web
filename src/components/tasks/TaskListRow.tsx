@@ -4,17 +4,17 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Chip from '@material-ui/core/Chip';
-import TaskNameChip from './chips/TaskNameChip';
-import TaskDurationChip from './chips/TaskDurationChip';
-import { shorten } from '../utils/text';
+import TaskNameChip from '../chips/TaskNameChip';
+import TaskDurationChip from '../chips/TaskDurationChip';
+import { shorten } from '../../utils/text';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import PropTypes from 'prop-types';
-import { navigateTask } from '../utils/navigate';
+import { navigateTask } from '../../utils/navigate';
 import { withStyles, WithStyles } from '@material-ui/core';
 import classNames from 'classnames';
-import TaskCreatedChip from './chips/TaskCreatedChip';
-import { TaskListRow_task } from './__generated__/TaskListRow_task.graphql';
+import TaskCreatedChip from '../chips/TaskCreatedChip';
+import { TaskListRow_task } from '../__generated__/TaskListRow_task.graphql';
 
 const styles = {
   chip: {

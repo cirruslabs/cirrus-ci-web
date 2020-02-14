@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import LoadingComponent from './components/CirrusLoadingComponent';
+import LoadingComponent from './components/common/CirrusLoadingComponent';
 import Loadable from 'react-loadable';
 import ViewerComponent from './scenes/Header/ViewerComponent';
 import NotFound from './scenes/NotFound';

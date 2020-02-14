@@ -1,5 +1,5 @@
 import React from 'react';
-import { cirrusColors } from '../cirrusTheme';
+import { cirrusColors } from '../../cirrusTheme';
 import { Base64 } from 'js-base64';
 
 function updateIcon(color) {

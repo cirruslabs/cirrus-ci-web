@@ -4,8 +4,8 @@ import { QueryRenderer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 
 import environment from '../../createRelayEnvironment';
-import CirrusLinearProgress from '../../components/CirrusLinearProgress';
-import GitHubOrganizationRepositoryList from '../../components/GitHubOrganizationRepositoryList';
+import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
+import GitHubOrganizationRepositoryList from '../../components/account/GitHubOrganizationRepositoryList';
 import { RouteComponentProps } from 'react-router';
 import { GitHubOrganizationQuery } from './__generated__/GitHubOrganizationQuery.graphql';
 

@@ -39,6 +39,7 @@ import { TaskDetails_task } from './__generated__/TaskDetails_task.graphql';
 import { TaskDetailsReRunMutationResponse } from './__generated__/TaskDetailsReRunMutation.graphql';
 import TaskResourcesChip from '../chips/TaskResourcesChip';
 import Head from 'react-helmet';
+import ExecutionInfo from '../common/ExecutionInfo';
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
@@ -293,6 +294,7 @@ class TaskDetails extends React.Component<Props> {
                   return <Chip key={label} className={classes.chip} label={shorten(label)} />;
                 })}
               </div>
+              {task.executionInfo ? <ExecutionInfo info={task.executionInfo} /> : null}
             </CardContent>
             <CardActions className="d-flex flex-wrap justify-content-end">
               <Button
@@ -422,6 +424,9 @@ export default createFragmentContainer(withStyles(styles)(withRouter(TaskDetails
       dependencies {
         id
         ...TaskListRow_task
+      }
+      executionInfo {
+        ...ExecutionInfo_info
       }
     }
   `,

@@ -154,6 +154,16 @@ enum DecryptEnvironmentVariablesFor {
   EVERYONE
 }
 
+type ExecutionEvent {
+  timestamp: Int!
+  message: String!
+}
+
+type ExecutionInfo {
+  labels: [String]
+  events: [ExecutionEvent]
+}
+
 input GenerateNewAccessTokenInput {
   accountId: ID
   clientMutationId: String
@@ -482,6 +492,7 @@ type Task {
   transaction: AccountTransaction
   triggerType: TaskTriggerType!
   instanceResources: InstanceResources
+  executionInfo: ExecutionInfo
 }
 
 input TaskAbortInput {

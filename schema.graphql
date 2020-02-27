@@ -256,7 +256,8 @@ type Mutation {
   abortTask(input: TaskAbortInput!): TaskAbortPayload
   retrigger(input: BuildReTriggerInput!): BuildReTriggerPayload
   saveSettings(input: RepositorySettingsInput!): RepositorySettingsPayload
-  saveCronSettings(input: RepositoryCronSettingsInput!): RepositoryCronSettingsPayload
+  saveCronSettings(input: RepositorySaveCronSettingsInput!): RepositorySaveCronSettingsPayload
+  removeCronSettings(input: RepositoryRemoveCronSettingsInput!): RepositoryRemoveCronSettingsPayload
   approve(input: BuildApproveInput!): BuildApprovePayload
   trigger(input: TaskTriggerInput!): TaskTriggerPayload
   buyComputeCredits(input: BuyComputeCreditsInput!): BuyComputeCreditsPayload
@@ -389,7 +390,18 @@ type RepositoryCronSettings {
   lastInvocationBuild: Build
 }
 
-input RepositoryCronSettingsInput {
+input RepositoryRemoveCronSettingsInput {
+  repositoryId: ID!
+  name: String!
+  clientMutationId: String
+}
+
+type RepositoryRemoveCronSettingsPayload {
+  settings: [RepositoryCronSettings]
+  clientMutationId: String
+}
+
+input RepositorySaveCronSettingsInput {
   repositoryId: ID!
   name: String!
   expression: String!
@@ -397,7 +409,7 @@ input RepositoryCronSettingsInput {
   clientMutationId: String
 }
 
-type RepositoryCronSettingsPayload {
+type RepositorySaveCronSettingsPayload {
   settings: [RepositoryCronSettings]
   clientMutationId: String
 }

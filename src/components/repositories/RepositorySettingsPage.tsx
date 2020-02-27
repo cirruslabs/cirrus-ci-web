@@ -10,6 +10,7 @@ import { graphql } from 'babel-plugin-relay/macro';
 import { withStyles, WithStyles } from '@material-ui/core';
 import { cirrusColors } from '../../cirrusTheme';
 import { RepositorySettingsPage_repository } from './__generated__/RepositorySettingsPage_repository.graphql';
+import RepositoryCronSettings from './RepositoryCronSettings';
 
 const styles = {
   title: {
@@ -50,6 +51,10 @@ class RepositorySettingsPage extends React.Component<Props> {
         <Paper elevation={1}>
           <RepositorySecuredVariables {...this.props} />
         </Paper>
+        <div className={classes.settingGap} />
+        <Paper elevation={1}>
+          <RepositoryCronSettings {...this.props} />
+        </Paper>
       </div>
     );
   }
@@ -62,6 +67,7 @@ export default createFragmentContainer(withStyles(styles)(RepositorySettingsPage
       name
       ...RepositorySecuredVariables_repository
       ...RepositorySettings_repository
+      ...RepositoryCronSettings_repository
     }
   `,
 });

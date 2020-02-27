@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import LoadingComponent from './components/common/CirrusLoadingComponent';
-import Loadable from 'react-loadable';
+import loadable from '@loadable/component';
 import ViewerComponent from './scenes/Header/ViewerComponent';
 import NotFound from './scenes/NotFound';
 import { navigate } from './utils/navigate';
@@ -9,6 +8,7 @@ import { cirrusColors } from './cirrusTheme';
 import {
   AppBar,
   Button,
+  createStyles,
   Drawer,
   Icon,
   IconButton,
@@ -16,7 +16,6 @@ import {
   Typography,
   withStyles,
   WithStyles,
-  createStyles,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -24,70 +23,33 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ViewerTopRepositories from './scenes/Viewer/ViewerTopRepositories';
 
-const AsyncViewerProfile = Loadable({
-  loader: () => import('./scenes/Viewer/ViewerProfile'),
-  loading: LoadingComponent,
-});
+const AsyncViewerProfile = loadable(() => import('./scenes/Viewer/ViewerProfile'));
 
-const AsyncHome = Loadable({
-  loader: () => import('./scenes/Home/Home'),
-  loading: LoadingComponent,
-});
+const AsyncHome = loadable(() => import('./scenes/Home/Home'));
 
-const AsyncBuildById = Loadable({
-  loader: () => import('./scenes/Build/BuildById'),
-  loading: LoadingComponent,
-});
+const AsyncBuildById = loadable(() => import('./scenes/Build/BuildById'));
 
-const AsyncBuildBySHA = Loadable({
-  loader: () => import('./scenes/Build/BuildBySHA'),
-  loading: LoadingComponent,
-});
+const AsyncBuildBySHA = loadable(() => import('./scenes/Build/BuildBySHA'));
 
-const AsyncRepository = Loadable({
-  loader: () => import('./scenes/Repository/Repository'),
-  loading: LoadingComponent,
-});
+const AsyncRepository = loadable(() => import('./scenes/Repository/Repository'));
 
-const AsyncRepositorySettings = Loadable({
-  loader: () => import('./scenes/RepositorySettings/RepositorySettings'),
-  loading: LoadingComponent,
-});
+const AsyncRepositorySettings = loadable(() => import('./scenes/RepositorySettings/RepositorySettings'));
 
-const AsyncRepositoryMetrics = Loadable({
-  loader: () => import('./scenes/RepositoryMetrics/RepositoryMetrics'),
-  loading: LoadingComponent,
-});
+const AsyncRepositoryMetrics = loadable(() => import('./scenes/RepositoryMetrics/RepositoryMetrics'));
 
-const AsyncTask = Loadable({
-  loader: () => import('./scenes/Task/Task'),
-  loading: LoadingComponent,
-});
+const AsyncTask = loadable(() => import('./scenes/Task/Task'));
 
-const AsyncGitHub = Loadable({
-  loader: () => import('./scenes/GitHub/GitHub'),
-  loading: LoadingComponent,
-});
+const AsyncGitHub = loadable(() => import('./scenes/GitHub/GitHub'));
 
-const AsyncGitHubRepository = Loadable({
-  loader: () => import('./scenes/Repository/GitHubRepository'),
-  loading: LoadingComponent,
-});
+const AsyncGitHubRepository = loadable(() => import('./scenes/Repository/GitHubRepository'));
 
-const AsyncGitHubOrganization = Loadable({
-  loader: () => import('./scenes/GitHub/GitHubOrganization'),
-  loading: LoadingComponent,
-});
+const AsyncGitHubOrganization = loadable(() => import('./scenes/GitHub/GitHubOrganization'));
 
-const AsyncGitHubOrganizationSettingsRenderer = Loadable({
-  loader: () => import('./scenes/GitHub/GitHubOrganizationSettingsRenderer'),
-  loading: LoadingComponent,
-});
+const AsyncGitHubOrganizationSettingsRenderer = loadable(() =>
+  import('./scenes/GitHub/GitHubOrganizationSettingsRenderer'),
+);
 
-const AsyncApiExplorerRenderer = Loadable({
-  loader: () => import('./components/explorer/ApiExplorer'),
-  loading: LoadingComponent,
-});
+const AsyncApiExplorerRenderer = loadable(() => import('./components/explorer/ApiExplorer'));
 
 const drawerWidth = 360;
 

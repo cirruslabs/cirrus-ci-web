@@ -3,6 +3,7 @@
     "react-app"
   ],
   "plugins": [
-    "relay"
+    "relay",
+    "@loadable/babel-plugin"
   ]
 }

@@ -1,7 +1,5 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import LoadingComponent from './components/common/CirrusLoadingComponent';
-import Loadable from 'react-loadable';
 import ViewerComponent from './scenes/Header/ViewerComponent';
 import NotFound from './scenes/NotFound';
 import { navigate } from './utils/navigate';
@@ -23,71 +21,35 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ViewerTopRepositories from './scenes/Viewer/ViewerTopRepositories';
+import CirrusCircularProgress from './components/common/CirrusCircularProgress';
 
-const AsyncViewerProfile = Loadable({
-  loader: () => import('./scenes/Viewer/ViewerProfile'),
-  loading: LoadingComponent,
-});
+const AsyncViewerProfile = React.lazy(() => import('./scenes/Viewer/ViewerProfile'));
 
-const AsyncHome = Loadable({
-  loader: () => import('./scenes/Home/Home'),
-  loading: LoadingComponent,
-});
+const AsyncHome = React.lazy(() => import('./scenes/Home/Home'));
 
-const AsyncBuildById = Loadable({
-  loader: () => import('./scenes/Build/BuildById'),
-  loading: LoadingComponent,
-});
+const AsyncBuildById = React.lazy(() => import('./scenes/Build/BuildById'));
 
-const AsyncBuildBySHA = Loadable({
-  loader: () => import('./scenes/Build/BuildBySHA'),
-  loading: LoadingComponent,
-});
+const AsyncBuildBySHA = React.lazy(() => import('./scenes/Build/BuildBySHA'));
 
-const AsyncRepository = Loadable({
-  loader: () => import('./scenes/Repository/Repository'),
-  loading: LoadingComponent,
-});
+const AsyncRepository = React.lazy(() => import('./scenes/Repository/Repository'));
 
-const AsyncRepositorySettings = Loadable({
-  loader: () => import('./scenes/RepositorySettings/RepositorySettings'),
-  loading: LoadingComponent,
-});
+const AsyncRepositorySettings = React.lazy(() => import('./scenes/RepositorySettings/RepositorySettings'));
 
-const AsyncRepositoryMetrics = Loadable({
-  loader: () => import('./scenes/RepositoryMetrics/RepositoryMetrics'),
-  loading: LoadingComponent,
-});
+const AsyncRepositoryMetrics = React.lazy(() => import('./scenes/RepositoryMetrics/RepositoryMetrics'));
 
-const AsyncTask = Loadable({
-  loader: () => import('./scenes/Task/Task'),
-  loading: LoadingComponent,
-});
+const AsyncTask = React.lazy(() => import('./scenes/Task/Task'));
 
-const AsyncGitHub = Loadable({
-  loader: () => import('./scenes/GitHub/GitHub'),
-  loading: LoadingComponent,
-});
+const AsyncGitHub = React.lazy(() => import('./scenes/GitHub/GitHub'));
 
-const AsyncGitHubRepository = Loadable({
-  loader: () => import('./scenes/Repository/GitHubRepository'),
-  loading: LoadingComponent,
-});
+const AsyncGitHubRepository = React.lazy(() => import('./scenes/Repository/GitHubRepository'));
 
-const AsyncGitHubOrganization = Loadable({
-  loader: () => import('./scenes/GitHub/GitHubOrganization'),
-  loading: LoadingComponent,
-});
+const AsyncGitHubOrganization = React.lazy(() => import('./scenes/GitHub/GitHubOrganization'));
 
-const AsyncGitHubOrganizationSettingsRenderer = Loadable({
-  loader: () => import('./scenes/GitHub/GitHubOrganizationSettingsRenderer'),
-  loading: LoadingComponent,
-});
+const AsyncGitHubOrganizationSettingsRenderer = React.lazy(() =>
+  import('./scenes/GitHub/GitHubOrganizationSettingsRenderer'),
+);
 
-const AsyncApiExplorerRenderer = Loadable({
-  loader: () => import('./components/explorer/ApiExplorer'),
-  loading: LoadingComponent,
-});
+const AsyncApiExplorerRenderer = React.lazy(() => import('./components/explorer/ApiExplorer'));
 
 const drawerWidth = 360;
 
@@ -293,43 +255,50 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                 container: !openDrawer,
               })}
             >
-              <Switch>
-                <Route exact path="/" component={AsyncHome} props={this.props} />
-                <Route exact path="/explorer" component={AsyncApiExplorerRenderer} props={this.props} />
-                <Route exact path="/settings/profile" component={AsyncViewerProfile} props={this.props} />
-                <Route
-                  exact
-                  path="/settings/github/:organization"
-                  component={AsyncGitHubOrganizationSettingsRenderer}
-                  props={this.props}
-                />
-                <Route
-                  exact
-                  path="/settings/repository/:repositoryId"
-                  component={AsyncRepositorySettings}
-                  props={this.props}
-                />
-                <Route exact path="/build/:buildId" component={AsyncBuildById} props={this.props} />
-                <Route exact path="/build/:owner/:name/:SHA" component={AsyncBuildBySHA} props={this.props} />
-                <Route exact path="/github/:owner" component={AsyncGitHubOrganization} props={this.props} />
-                <Route
-                  exact
-                  path="/github/:owner/:name/:branch*"
-                  component={AsyncGitHubRepository}
-                  props={this.props}
-                />
-                <Route exact path="/github" component={AsyncGitHub} props={this.props} />
-                <Route exact path="/repository/:repositoryId/:branch*" component={AsyncRepository} props={this.props} />
-                <Route
-                  exact
-                  path="/metrics/repository/:owner/:name"
-                  component={AsyncRepositoryMetrics}
-                  props={this.props}
-                />
-                <Route exact path="/task/:taskId" component={AsyncTask} props={this.props} />
-                <Route exact path="/:owner/:name/:branch*" component={AsyncGitHubRepository} props={this.props} />
-                <Route component={NotFound} props={this.props} />
-              </Switch>
+              <Suspense fallback={<CirrusCircularProgress />}>
+                <Switch>
+                  <Route exact path="/" component={AsyncHome} props={this.props} />
+                  <Route exact path="/explorer" component={AsyncApiExplorerRenderer} props={this.props} />
+                  <Route exact path="/settings/profile" component={AsyncViewerProfile} props={this.props} />
+                  <Route
+                    exact
+                    path="/settings/github/:organization"
+                    component={AsyncGitHubOrganizationSettingsRenderer}
+                    props={this.props}
+                  />
+                  <Route
+                    exact
+                    path="/settings/repository/:repositoryId"
+                    component={AsyncRepositorySettings}
+                    props={this.props}
+                  />
+                  <Route exact path="/build/:buildId" component={AsyncBuildById} props={this.props} />
+                  <Route exact path="/build/:owner/:name/:SHA" component={AsyncBuildBySHA} props={this.props} />
+                  <Route exact path="/github/:owner" component={AsyncGitHubOrganization} props={this.props} />
+                  <Route
+                    exact
+                    path="/github/:owner/:name/:branch*"
+                    component={AsyncGitHubRepository}
+                    props={this.props}
+                  />
+                  <Route exact path="/github" component={AsyncGitHub} props={this.props} />
+                  <Route
+                    exact
+                    path="/repository/:repositoryId/:branch*"
+                    component={AsyncRepository}
+                    props={this.props}
+                  />
+                  <Route
+                    exact
+                    path="/metrics/repository/:owner/:name"
+                    component={AsyncRepositoryMetrics}
+                    props={this.props}
+                  />
+                  <Route exact path="/task/:taskId" component={AsyncTask} props={this.props} />
+                  <Route exact path="/:owner/:name/:branch*" component={AsyncGitHubRepository} props={this.props} />
+                  <Route component={NotFound} props={this.props} />
+                </Switch>
+              </Suspense>
             </div>
           </main>
         </div>

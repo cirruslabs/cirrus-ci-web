@@ -65,9 +65,6 @@ const styles = theme =>
     menuButton: {
       margin: theme.spacing(1.0),
     },
-    leftIcon: {
-      marginRight: theme.spacing(1.0),
-    },
     titleShift: {
       marginLeft: 2 * theme.spacing(1.0),
     },

@@ -8,7 +8,6 @@ import {
   AppBar,
   Button,
   Drawer,
-  Icon,
   IconButton,
   Toolbar,
   Typography,
@@ -18,6 +17,8 @@ import {
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import BookIcon from '@material-ui/icons/Book';
+import CodeIcon from '@material-ui/icons/Code';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ViewerTopRepositories from './scenes/Viewer/ViewerTopRepositories';
@@ -55,9 +56,6 @@ const drawerWidth = 360;
 
 const styles = theme =>
   createStyles({
-    root: {
-      flexGrow: 1,
-    },
     flex: {
       flex: 1,
     },
@@ -123,15 +121,15 @@ const styles = theme =>
       paddingLeft: theme.spacing(1.0) * 3,
       paddingRight: theme.spacing(1.0) * 3,
       transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.sharp,
+        easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.leavingScreen,
       }),
       marginLeft: 0,
     },
     contentShift: {
       transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
+        easing: theme.transitions.easing.easeOut * 2,
+        duration: theme.transitions.duration.enteringScreen * 4,
       }),
       padding: 0,
       marginLeft: 0,
@@ -223,8 +221,8 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                 href="https://github.com/cirruslabs/cirrus-ci-web"
                 target="_blank"
                 rel="noopener noreferrer"
+                startIcon={<CodeIcon />}
               >
-                <Icon className={classNames('fa', 'fa-code', classes.leftIcon)} />
                 <span className="d-none d-md-block">Source</span>
               </Button>
               <Button
@@ -232,8 +230,8 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                 href="https://cirrus-ci.org/"
                 target="_blank"
                 rel="noopener noreferrer"
+                startIcon={<BookIcon />}
               >
-                <Icon className={classNames('fa', 'fa-book', classes.leftIcon)} />
                 <span className="d-none d-md-block">Documentation</span>
               </Button>
               <div className={classes.viewer}>

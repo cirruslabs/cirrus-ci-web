@@ -123,11 +123,10 @@ class RepositoryBuildList extends React.Component<Props, State> {
       <Tooltip title="Open on GitHub">
         <IconButton
           href={createLinkToRepository(repository, this.props.branch)}
-          className={classes.link}
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Icon className={classNames('fa', 'fa-github')} />
+          <Icon className={classNames('fa', 'fa-github', classes.link)} />
         </IconButton>
       </Tooltip>
     );

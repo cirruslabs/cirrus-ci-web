@@ -125,8 +125,8 @@ const styles = theme =>
     },
     contentShift: {
       transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.easeOut * 2,
-        duration: theme.transitions.duration.enteringScreen * 4,
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
       }),
       padding: 0,
       marginLeft: 0,

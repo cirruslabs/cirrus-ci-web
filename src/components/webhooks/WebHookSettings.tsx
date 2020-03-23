@@ -36,13 +36,10 @@ const styles = theme =>
   createStyles({
     expand: {
       transform: 'rotate(0deg)',
+      marginLeft: 'auto',
       transition: theme.transitions.create('transform', {
         duration: theme.transitions.duration.shortest,
       }),
-      marginLeft: 'auto',
-      [theme.breakpoints.up('sm')]: {
-        marginRight: -8,
-      },
     },
     expandOpen: {
       transform: 'rotate(180deg)',
@@ -102,7 +99,7 @@ class WebHookSettings extends React.Component<Props, State> {
             />
           </FormControl>
         </CardContent>
-        <CardActions>
+        <CardActions disableSpacing>
           <Button
             color="primary"
             variant="contained"

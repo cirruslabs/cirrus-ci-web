@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default (props: Props) => {
-  const deliveries = this.props.deliveries ? getNodesFromConnection(this.props.deliveries) : [];
+  const deliveries = props.deliveries ? getNodesFromConnection(props.deliveries) : [];
   return (
     <Table style={{ tableLayout: 'auto' }}>
       <TableBody>

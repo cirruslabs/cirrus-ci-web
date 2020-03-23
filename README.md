@@ -1,8 +1,8 @@
-# Web front end for [Cirrus CI](https://cirrus-ci.com/)
+# Web front end for [Cirrus CI](https://cirrus-ci.org/)
 
 [![Build Status](https://api.cirrus-ci.com/github/cirruslabs/cirrus-ci-web.svg)](https://cirrus-ci.com/github/cirruslabs/cirrus-ci-web)
 
-Front end for [Cirrus CI](https://cirrus-ci.com/) that uses [Relay](https://github.com/facebook/relay) framework
+Front end for [Cirrus CI](https://cirrus-ci.org/) that uses [Relay](https://github.com/facebook/relay) framework
 to minimize the amount of business logic.
 
 ## Development Guide

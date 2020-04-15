@@ -1,4 +1,4 @@
-# Web front end for [Cirrus CI](https://cirrus-ci.org/)
+# Web Front-End for [Cirrus CI](https://cirrus-ci.org/)
 
 [![Build Status](https://api.cirrus-ci.com/github/cirruslabs/cirrus-ci-web.svg)](https://cirrus-ci.com/github/cirruslabs/cirrus-ci-web)
 

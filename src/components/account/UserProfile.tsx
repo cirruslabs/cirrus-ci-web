@@ -24,7 +24,7 @@ import IconButton from '@material-ui/core/IconButton';
 import UserApiSettings from '../settings/UserApiSettings';
 import UserComputeCredits from '../compute-credits/UserComputeCredits';
 import { UserProfile_user } from './__generated__/UserProfile_user.graphql';
-import Head from 'react-helmet';
+import { Helmet as Head } from 'react-helmet';
 
 const styles = theme =>
   createStyles({
@@ -117,37 +117,37 @@ class UserProfile extends React.Component<Props> {
     if (organizations.length > 0) {
       organizationsComponent = (
         <Paper elevation={1}>
-          <Toolbar>
-            <Typography variant="h6" color="inherit">
-              Your GitHub Organizations on Cirrus CI
-            </Typography>
-          </Toolbar>
-          <Table style={{ tableLayout: 'auto' }}>
-            <TableBody>
-              {organizations.map(organization => (
-                <TableRow
-                  key={organization.name}
-                  onClick={e => navigate(this.context.router, e, '/github/' + organization.name)}
-                  hover={true}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <TableCell>
-                    <Typography variant="h6">{organization.name}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Tooltip title="Organization settings">
-                      <IconButton
-                        onClick={e => navigate(this.context.router, e, '/settings/github/' + organization.name)}
-                        className="pull-right"
-                      >
-                        <Icon>settings</Icon>
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <Card>
+            <CardHeader title="Your GitHub Organizations" />
+            <CardContent>
+              <Table style={{ tableLayout: 'auto' }}>
+                <TableBody>
+                  {organizations.map(organization => (
+                    <TableRow
+                      key={organization.name}
+                      onClick={e => navigate(this.context.router, e, '/github/' + organization.name)}
+                      hover={true}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <TableCell>
+                        <Typography variant="h6">{organization.name}</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Tooltip title="Organization settings">
+                          <IconButton
+                            onClick={e => navigate(this.context.router, e, '/settings/github/' + organization.name)}
+                            className="pull-right"
+                          >
+                            <Icon>settings</Icon>
+                          </IconButton>
+                        </Tooltip>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
         </Paper>
       );
     }
@@ -155,12 +155,12 @@ class UserProfile extends React.Component<Props> {
     return (
       <div>
         <Head>
-          <title>Your Profile - Cirrus CI</title>
+          <title>Settings - Cirrus CI</title>
         </Head>
         <Paper elevation={1}>
           <Toolbar className={classes.title}>
             <Typography variant="h6" color="inherit">
-              Profile Settings for {user.githubUserName}
+              Settings for {user.githubUserName}
             </Typography>
           </Toolbar>
         </Paper>

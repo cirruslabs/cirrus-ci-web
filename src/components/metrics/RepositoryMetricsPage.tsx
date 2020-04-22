@@ -17,7 +17,7 @@ import Grid from '@material-ui/core/Grid';
 import { RouteComponentProps } from 'react-router';
 import { RepositoryMetricsPage_repository } from './__generated__/RepositoryMetricsPage_repository.graphql';
 import { MetricsQueryParameters } from './__generated__/RepositoryMetricsChartsQuery.graphql';
-import Head from 'react-helmet';
+import { Helmet as Head } from 'react-helmet';
 
 const styles = theme =>
   createStyles({

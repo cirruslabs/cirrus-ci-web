@@ -24,7 +24,7 @@ import CreateBuildDialog from '../builds/CreateBuildDialog';
 import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildList_repository.graphql';
 import { NodeOfConnection } from '../../utils/utility-types';
 import { createLinkToRepository } from '../../utils/github';
-import Head from 'react-helmet';
+import { Helmet as Head } from 'react-helmet';
 
 let styles = createStyles({
   gap: {

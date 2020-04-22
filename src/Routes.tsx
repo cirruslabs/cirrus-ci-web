@@ -157,6 +157,12 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
     localStorage.setItem('cirrusOpenDrawer', 'true');
   }
 
+  getNavbarTitleStyling() {
+    const shared = { cursor: 'pointer' };
+
+    return this.state.openDrawer ? { marginLeft: '15px', ...shared } : shared;
+  }
+
   handleDrawerClose() {
     this.setState({ openDrawer: false });
     localStorage.setItem('cirrusOpenDrawer', 'false');
@@ -212,7 +218,7 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                 className={classNames(classes.flex, {
                   [classes.titleShift]: openDrawer,
                 })}
-                style={{ cursor: 'pointer' }}
+                style={this.getNavbarTitleStyling()}
                 onClick={e => navigate(this.context.router, e, '/')}
                 color="inherit"
               >

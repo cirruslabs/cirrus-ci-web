@@ -42,7 +42,7 @@ class MetricsChart extends React.Component<Props, State> {
     let { hoveredPointIndex } = this.state;
 
     let points = chart.points;
-    let chartData = points.map(function(point, index) {
+    let chartData = points.map(function (point, index) {
       return { x: index, y: point.value };
     });
     let chartDateTicks = [];

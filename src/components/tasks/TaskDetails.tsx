@@ -38,7 +38,7 @@ import TaskList from './TaskList';
 import { TaskDetails_task } from './__generated__/TaskDetails_task.graphql';
 import { TaskDetailsReRunMutationResponse } from './__generated__/TaskDetailsReRunMutation.graphql';
 import TaskResourcesChip from '../chips/TaskResourcesChip';
-import Head from 'react-helmet';
+import { Helmet as Head } from 'react-helmet';
 import ExecutionInfo from '../common/ExecutionInfo';
 
 const taskReRunMutation = graphql`

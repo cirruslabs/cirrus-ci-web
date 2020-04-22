@@ -3,7 +3,7 @@ import React from 'react';
 import GraphiQL from 'graphiql';
 import 'graphiql/graphiql.css';
 
-export default function() {
+export default function () {
   return (
     <div style={{ height: '100vh' }}>
       <GraphiQL

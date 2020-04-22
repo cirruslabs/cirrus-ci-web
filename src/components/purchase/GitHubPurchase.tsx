@@ -13,6 +13,8 @@ import CardActions from '@material-ui/core/CardActions';
 import CardHeader from '@material-ui/core/CardHeader';
 import Icon from '@material-ui/core/Icon';
 import GitHubIcon from '@material-ui/icons/GitHub';
+import GroupIcon from '@material-ui/icons/Group';
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import { cirrusColors } from '../../cirrusTheme';
 import classNames from 'classnames';
 import Dialog from '@material-ui/core/Dialog';
@@ -36,9 +38,6 @@ const styles = theme =>
     row: {
       display: 'flex',
       alignItems: 'center',
-    },
-    leftIcon: {
-      marginRight: theme.spacing(1.0),
     },
   });
 
@@ -71,9 +70,9 @@ class GitHubPurchase extends React.Component<Props> {
     let actionButton = (
       <Button
         variant="contained"
+        startIcon={<GitHubIcon />}
         href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTM=?account=${info.name}`}
       >
-        <GitHubIcon className={classes.leftIcon} />
         Purchase Plan for Private Repositories
       </Button>
     );
@@ -94,26 +93,25 @@ class GitHubPurchase extends React.Component<Props> {
         </div>
       );
       viewActiveUsers = (
-        <Button variant="contained" onClick={() => this.setState({ showActiveUsers: true })}>
-          <Icon className={classNames(classes.leftIcon)}>group</Icon>
+        <Button variant="contained" startIcon={<GroupIcon />} onClick={() => this.setState({ showActiveUsers: true })}>
           View Active Users
         </Button>
       );
       actionButton = (
         <Button
           variant="contained"
+          startIcon={<GroupAddIcon />}
           href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTM=?account=${info.name}`}
         >
-          <Icon className={classNames(classes.leftIcon)}>group_add</Icon>
           Add More Seats
         </Button>
       );
       cancelPlanButton = (
         <Button
           variant="contained"
+          startIcon={<GitHubIcon />}
           href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTA=?account=${info.name}`}
         >
-          <GitHubIcon className={classes.leftIcon} />
           Switch to Free Plan
         </Button>
       );

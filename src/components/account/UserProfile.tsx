@@ -41,9 +41,6 @@ const styles = theme =>
       display: 'flex',
       alignItems: 'center',
     },
-    leftIcon: {
-      marginRight: theme.spacing(1.0),
-    },
   });
 
 const PERSONAL_PRIVATE_REPOSITORIES_PLAN_ID = 992;
@@ -67,9 +64,9 @@ class UserProfile extends React.Component<Props> {
     let actionButton = (
       <Button
         variant="contained"
+        startIcon={<GitHubIcon />}
         href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTI=?account=${user.githubUserName}`}
       >
-        <GitHubIcon className={classes.leftIcon} />
         Purchase Plan for Private Repositories
       </Button>
     );
@@ -89,9 +86,9 @@ class UserProfile extends React.Component<Props> {
       actionButton = (
         <Button
           variant="contained"
+          startIcon={<GitHubIcon />}
           href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTA=?account=${user.githubUserName}`}
         >
-          <GitHubIcon className={classes.leftIcon} />
           Switch to Free Plan
         </Button>
       );

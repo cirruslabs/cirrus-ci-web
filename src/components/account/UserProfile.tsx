@@ -31,9 +31,6 @@ const styles = theme =>
     title: {
       backgroundColor: cirrusColors.cirrusGrey,
     },
-    settingGap: {
-      paddingTop: 16,
-    },
     gap: {
       paddingTop: 16,
     },
@@ -113,39 +110,37 @@ class UserProfile extends React.Component<Props> {
     let organizations = user.organizations || [];
     if (organizations.length > 0) {
       organizationsComponent = (
-        <Paper elevation={1}>
-          <Card>
-            <CardHeader title="Your GitHub Organizations" />
-            <CardContent>
-              <Table style={{ tableLayout: 'auto' }}>
-                <TableBody>
-                  {organizations.map(organization => (
-                    <TableRow
-                      key={organization.name}
-                      onClick={e => navigate(this.context.router, e, '/github/' + organization.name)}
-                      hover={true}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      <TableCell>
-                        <Typography variant="h6">{organization.name}</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Tooltip title="Organization settings">
-                          <IconButton
-                            onClick={e => navigate(this.context.router, e, '/settings/github/' + organization.name)}
-                            className="pull-right"
-                          >
-                            <Icon>settings</Icon>
-                          </IconButton>
-                        </Tooltip>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        </Paper>
+        <Card>
+          <CardHeader title="Your GitHub Organizations" />
+          <CardContent>
+            <Table style={{ tableLayout: 'auto' }}>
+              <TableBody>
+                {organizations.map(organization => (
+                  <TableRow
+                    key={organization.name}
+                    onClick={e => navigate(this.context.router, e, '/github/' + organization.name)}
+                    hover={true}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <TableCell>
+                      <Typography variant="h6">{organization.name}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Tooltip title="Organization settings">
+                        <IconButton
+                          onClick={e => navigate(this.context.router, e, '/settings/github/' + organization.name)}
+                          className="pull-right"
+                        >
+                          <Icon>settings</Icon>
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
       );
     }
 
@@ -161,26 +156,20 @@ class UserProfile extends React.Component<Props> {
             </Typography>
           </Toolbar>
         </Paper>
-        <div className={classes.settingGap} />
-        <Paper elevation={1}>
-          <Card>
-            <CardHeader title="GitHub Settings" />
-            <CardContent>
-              {githubMarketplaceComponent}
-              {trialComponent}
-            </CardContent>
-            <CardActions>{actionButton}</CardActions>
-          </Card>
-        </Paper>
-        <div className={classes.settingGap} />
-        <Paper elevation={1}>
-          <UserComputeCredits user={this.props.user} />
-        </Paper>
-        <div className={classes.settingGap} />
-        <Paper elevation={1}>
-          <UserApiSettings user={this.props.user} />
-        </Paper>
-        <div className={classes.settingGap} />
+        <div className={classes.gap} />
+        <Card>
+          <CardHeader title="GitHub Settings" />
+          <CardContent>
+            {githubMarketplaceComponent}
+            {trialComponent}
+          </CardContent>
+          <CardActions>{actionButton}</CardActions>
+        </Card>
+        <div className={classes.gap} />
+        <UserComputeCredits user={this.props.user} />
+        <div className={classes.gap} />
+        <UserApiSettings user={this.props.user} />
+        <div className={classes.gap} />
         {organizationsComponent}
       </div>
     );

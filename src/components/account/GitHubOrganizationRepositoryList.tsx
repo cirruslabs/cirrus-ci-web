@@ -28,9 +28,9 @@ let styles = {
 };
 
 interface Props extends RouteComponentProps, WithStyles<typeof styles> {
-  organization;
-  organizationInfo;
-  repositories;
+  organization: string;
+  organizationInfo: any;
+  repositories: any;
 }
 
 class GitHubOrganizationRepositoryList extends React.Component<Props> {
@@ -61,7 +61,7 @@ class GitHubOrganizationRepositoryList extends React.Component<Props> {
         <Paper elevation={1}>
           <Toolbar className="justify-content-between">
             <Typography variant="h6" color="inherit">
-              Repositories of {this.props.organization} organization
+              {this.props.organization}'s Repositories
             </Typography>
             {organizationSettings}
           </Toolbar>

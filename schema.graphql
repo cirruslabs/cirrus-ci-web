@@ -499,6 +499,8 @@ type Task {
   allOtherRuns: [Task]
   dependencies: [Task]
   automaticReRun: Boolean!
+  automaticallyReRunnable: Boolean!
+  experimental: Boolean!
   useComputeCredits: Boolean!
   usedComputeCredits: Boolean!
   transaction: AccountTransaction

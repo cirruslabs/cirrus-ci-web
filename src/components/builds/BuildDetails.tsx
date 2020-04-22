@@ -21,7 +21,7 @@ import CirrusFavicon from '../common/CirrusFavicon';
 import NotificationList from '../common/NotificationList';
 import TaskList from '../tasks/TaskList';
 import { BuildDetails_build } from './__generated__/BuildDetails_build.graphql';
-import Head from 'react-helmet';
+import { Helmet as Head } from 'react-helmet';
 
 const buildApproveMutation = graphql`
   mutation BuildDetailsApproveBuildMutation($input: BuildApproveInput!) {

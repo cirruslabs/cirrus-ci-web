@@ -55,12 +55,12 @@ class AccountInformation extends React.Component<Props, State> {
         >
           <Avatar style={{ cursor: 'pointer' }} src={this.props.viewer.avatarURL} />
         </IconButton>
-        <Menu id="long-menu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={this.handleMenuClose}>
+        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={this.handleMenuClose}>
           <MenuItem onClick={event => navigate(this.context.router, event, '/settings/profile/')}>
             <ListItemIcon>
-              <Icon>person</Icon>
+              <Icon>settings</Icon>
             </ListItemIcon>
-            <ListItemText inset primary="Profile" />
+            <ListItemText inset primary="Settings" />
           </MenuItem>
           <MenuItem onClick={event => navigate(null, event, 'https://api.cirrus-ci.com/redirect/logout/')}>
             <ListItemIcon>

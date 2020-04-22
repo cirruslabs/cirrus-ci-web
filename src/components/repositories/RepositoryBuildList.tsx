@@ -19,6 +19,7 @@ import BuildStatusChip from '../chips/BuildStatusChip';
 import { navigateBuild } from '../../utils/navigate';
 import { createStyles, Tooltip, withStyles, WithStyles } from '@material-ui/core';
 import Icon from '@material-ui/core/Icon';
+import GitHubIcon from '@material-ui/icons/GitHub';
 import classNames from 'classnames';
 import CreateBuildDialog from '../builds/CreateBuildDialog';
 import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildList_repository.graphql';
@@ -127,7 +128,7 @@ class RepositoryBuildList extends React.Component<Props, State> {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Icon className={classNames('fa', 'fa-github')} />
+          <GitHubIcon />
         </IconButton>
       </Tooltip>
     );

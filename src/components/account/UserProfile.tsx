@@ -12,9 +12,9 @@ import Typography from '@material-ui/core/Typography';
 import CardActions from '@material-ui/core/CardActions';
 import CardHeader from '@material-ui/core/CardHeader';
 import Icon from '@material-ui/core/Icon';
+import GitHubIcon from '@material-ui/icons/GitHub';
 import { cirrusColors } from '../../cirrusTheme';
 import Toolbar from '@material-ui/core/Toolbar';
-import classNames from 'classnames';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
@@ -41,9 +41,6 @@ const styles = theme =>
       display: 'flex',
       alignItems: 'center',
     },
-    leftIcon: {
-      marginRight: theme.spacing(1.0),
-    },
   });
 
 const PERSONAL_PRIVATE_REPOSITORIES_PLAN_ID = 992;
@@ -67,9 +64,9 @@ class UserProfile extends React.Component<Props> {
     let actionButton = (
       <Button
         variant="contained"
+        startIcon={<GitHubIcon />}
         href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTI=?account=${user.githubUserName}`}
       >
-        <Icon className={classNames(classes.leftIcon, 'fa', 'fa-github')} />
         Purchase Plan for Private Repositories
       </Button>
     );
@@ -89,9 +86,9 @@ class UserProfile extends React.Component<Props> {
       actionButton = (
         <Button
           variant="contained"
+          startIcon={<GitHubIcon />}
           href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTA=?account=${user.githubUserName}`}
         >
-          <Icon className={classNames(classes.leftIcon, 'fa', 'fa-github')} />
           Switch to Free Plan
         </Button>
       );

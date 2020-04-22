@@ -12,9 +12,9 @@ import Typography from '@material-ui/core/Typography';
 import CardActions from '@material-ui/core/CardActions';
 import CardHeader from '@material-ui/core/CardHeader';
 import Icon from '@material-ui/core/Icon';
+import GitHubIcon from '@material-ui/icons/GitHub';
 import { cirrusColors } from '../../cirrusTheme';
 import Toolbar from '@material-ui/core/Toolbar';
-import classNames from 'classnames';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
@@ -69,7 +69,7 @@ class UserProfile extends React.Component<Props> {
         variant="contained"
         href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTI=?account=${user.githubUserName}`}
       >
-        <Icon className={classNames(classes.leftIcon, 'fa', 'fa-github')} />
+        <GitHubIcon className={classes.leftIcon} />
         Purchase Plan for Private Repositories
       </Button>
     );
@@ -91,7 +91,7 @@ class UserProfile extends React.Component<Props> {
           variant="contained"
           href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTA=?account=${user.githubUserName}`}
         >
-          <Icon className={classNames(classes.leftIcon, 'fa', 'fa-github')} />
+          <GitHubIcon className={classes.leftIcon} />
           Switch to Free Plan
         </Button>
       );

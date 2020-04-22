@@ -7,15 +7,16 @@ import { cirrusColors } from './cirrusTheme';
 import {
   AppBar,
   Button,
+  createStyles,
   Drawer,
-  Icon,
   IconButton,
   Toolbar,
   Typography,
-  withStyles,
   WithStyles,
-  createStyles,
+  withStyles,
 } from '@material-ui/core';
+import BookIcon from '@material-ui/icons/Book';
+import CodeIcon from '@material-ui/icons/Code';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import PropTypes from 'prop-types';
@@ -224,7 +225,7 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Icon className={classNames('fa', 'fa-code', classes.leftIcon)} />
+                <CodeIcon className={classes.leftIcon} />
                 <span className="d-none d-md-block">Source</span>
               </Button>
               <Button
@@ -233,7 +234,7 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Icon className={classNames('fa', 'fa-book', classes.leftIcon)} />
+                <BookIcon className={classes.leftIcon} />
                 <span className="d-none d-md-block">Documentation</span>
               </Button>
               <div className={classes.viewer}>

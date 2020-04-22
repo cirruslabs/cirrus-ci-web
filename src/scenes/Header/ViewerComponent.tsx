@@ -8,10 +8,8 @@ import AccountInformation from '../../components/account/AccountInformation';
 import CirrusCircularProgress from '../../components/common/CirrusCircularProgress';
 import { cirrusColors } from '../../cirrusTheme';
 import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
-import { createStyles, WithStyles, withStyles } from '@material-ui/core';
-import { Theme } from '@material-ui/core';
-import classNames from 'classnames';
+import GitHubIcon from '@material-ui/icons/GitHub';
+import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core';
 import { ViewerComponentQuery } from './__generated__/ViewerComponentQuery.graphql';
 
 const styles = (theme: Theme) =>
@@ -42,7 +40,7 @@ class ViewerComponent extends React.Component<WithStyles<typeof styles>> {
           if (!viewer) {
             return (
               <Button style={{ color: cirrusColors.cirrusWhite }} href="https://api.cirrus-ci.com/redirect/auth/github">
-                <Icon className={classNames('fa', 'fa-github', this.props.classes.leftIcon)} />
+                <GitHubIcon className={this.props.classes.leftIcon} />
                 Sign in
               </Button>
             );

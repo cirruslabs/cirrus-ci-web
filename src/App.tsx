@@ -8,7 +8,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core';
 import CirrusFavicon from './components/common/CirrusFavicon';
 
-export default props => {
+export default () => {
   return (
     <ThemeProvider theme={createMuiTheme(cirrusTheme)}>
       <CirrusFavicon />

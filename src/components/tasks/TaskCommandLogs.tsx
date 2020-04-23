@@ -14,7 +14,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { TaskCommandLogsTailQuery } from './__generated__/TaskCommandLogsTailQuery.graphql';
 import { TaskCommandStatus } from './__generated__/TaskCommandList_task.graphql';
 
-function logURL(taskId, command) {
+function logURL(taskId: string, command) {
   return 'https://api.cirrus-ci.com/v1/task/' + taskId + '/logs/' + command.name + '.log';
 }
 

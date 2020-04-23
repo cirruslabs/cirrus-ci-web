@@ -4,7 +4,6 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Chip from '@material-ui/core/Chip';
-import Icon from '@material-ui/core/Icon';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { graphql } from 'babel-plugin-relay/macro';
@@ -40,6 +39,10 @@ import { TaskDetailsReRunMutationResponse } from './__generated__/TaskDetailsReR
 import TaskResourcesChip from '../chips/TaskResourcesChip';
 import { Helmet as Head } from 'react-helmet';
 import ExecutionInfo from '../common/ExecutionInfo';
+import Refresh from '@material-ui/icons/Refresh';
+import PlayCircleFilled from '@material-ui/icons/PlayCircleFilled';
+import Cancel from '@material-ui/icons/Cancel';
+import ArrowBack from '@material-ui/icons/ArrowBack';
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
@@ -125,12 +128,6 @@ const styles = theme =>
     progress: {
       marginTop: theme.spacing(1.0),
     },
-    button: {
-      margin: theme.spacing(1.0),
-    },
-    leftIcon: {
-      marginRight: theme.spacing(1.0),
-    },
     automaticReRun: {
       backgroundColor: cirrusColors.lightWarning,
     },
@@ -200,8 +197,7 @@ class TaskDetails extends React.Component<Props> {
 
     let reRunButton =
       !hasWritePermissions(build.viewerPermission) || !isTaskFinalStatus(task.status) ? null : (
-        <Button variant="contained" onClick={() => this.rerun(task.id)}>
-          <Icon className={classes.leftIcon}>refresh</Icon>
+        <Button variant="contained" onClick={() => this.rerun(task.id)} startIcon={<Refresh />}>
           Re-Run
         </Button>
       );
@@ -210,23 +206,20 @@ class TaskDetails extends React.Component<Props> {
     let taskIsPreTriggerable = task.status === 'CREATED' && task.triggerType === 'MANUAL';
     let triggerButton =
       !hasWritePermissions(build.viewerPermission) || !taskIsTriggerable ? null : (
-        <Button variant="contained" onClick={() => this.trigger(task.id)}>
-          <Icon className={classes.leftIcon}>play_circle_filled</Icon>
+        <Button variant="contained" onClick={() => this.trigger(task.id)} startIcon={<PlayCircleFilled />}>
           Trigger
         </Button>
       );
     let preTriggerButton =
       !hasWritePermissions(build.viewerPermission) || !taskIsPreTriggerable ? null : (
-        <Button variant="contained" onClick={() => this.trigger(task.id)}>
-          <Icon className={classes.leftIcon}>play_circle_filled</Icon>
+        <Button variant="contained" onClick={() => this.trigger(task.id)} startIcon={<PlayCircleFilled />}>
           Pre-Trigger
         </Button>
       );
 
     let abortButton =
       isTaskFinalStatus(task.status) || !hasWritePermissions(build.viewerPermission) ? null : (
-        <Button variant="contained" onClick={() => this.abort(task.id)}>
-          <Icon className={classes.leftIcon}>cancel</Icon>
+        <Button variant="contained" onClick={() => this.abort(task.id)} startIcon={<Cancel />}>
           Cancel
         </Button>
       );
@@ -301,8 +294,8 @@ class TaskDetails extends React.Component<Props> {
                 variant="contained"
                 color="primary"
                 onClick={e => navigateBuild(this.context.router, e, task.buildId)}
+                startIcon={<ArrowBack />}
               >
-                <Icon className={classes.leftIcon}>input</Icon>
                 View All Tasks
               </Button>
               {abortButton}
@@ -327,7 +320,7 @@ class TaskDetails extends React.Component<Props> {
     );
   }
 
-  rerun(taskId) {
+  rerun(taskId: string) {
     const variables = {
       input: {
         clientMutationId: 'rerun-' + taskId,

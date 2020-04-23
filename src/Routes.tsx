@@ -22,7 +22,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ViewerTopRepositories from './scenes/Viewer/ViewerTopRepositories';
-import CirrusCircularProgress from './components/common/CirrusCircularProgress';
+import CirrusLinearProgress from './components/common/CirrusLinearProgress';
 
 const AsyncViewerProfile = React.lazy(() => import('./scenes/Viewer/ViewerProfile'));
 
@@ -39,8 +39,6 @@ const AsyncRepositorySettings = React.lazy(() => import('./scenes/RepositorySett
 const AsyncRepositoryMetrics = React.lazy(() => import('./scenes/RepositoryMetrics/RepositoryMetrics'));
 
 const AsyncTask = React.lazy(() => import('./scenes/Task/Task'));
-
-const AsyncGitHub = React.lazy(() => import('./scenes/GitHub/GitHub'));
 
 const AsyncGitHubRepository = React.lazy(() => import('./scenes/Repository/GitHubRepository'));
 
@@ -262,7 +260,7 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                 container: !openDrawer,
               })}
             >
-              <Suspense fallback={<CirrusCircularProgress />}>
+              <Suspense fallback={<CirrusLinearProgress />}>
                 <Switch>
                   <Route exact path="/" component={AsyncHome} props={this.props} />
                   <Route exact path="/explorer" component={AsyncApiExplorerRenderer} props={this.props} />
@@ -288,7 +286,6 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                     component={AsyncGitHubRepository}
                     props={this.props}
                   />
-                  <Route exact path="/github" component={AsyncGitHub} props={this.props} />
                   <Route
                     exact
                     path="/repository/:repositoryId/:branch*"

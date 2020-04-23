@@ -3,7 +3,6 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Icon from '@material-ui/core/Icon';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { graphql } from 'babel-plugin-relay/macro';
@@ -22,6 +21,8 @@ import NotificationList from '../common/NotificationList';
 import TaskList from '../tasks/TaskList';
 import { BuildDetails_build } from './__generated__/BuildDetails_build.graphql';
 import { Helmet as Head } from 'react-helmet';
+import Refresh from '@material-ui/icons/Refresh';
+import Check from '@material-ui/icons/Check';
 
 const buildApproveMutation = graphql`
   mutation BuildDetailsApproveBuildMutation($input: BuildApproveInput!) {
@@ -77,18 +78,6 @@ const styles = theme =>
   createStyles({
     gap: {
       paddingTop: 16,
-    },
-    title: {
-      padding: 0,
-    },
-    repoButton: {
-      padding: 0,
-    },
-    repoButtonIcon: {
-      fontSize: 48,
-    },
-    leftIcon: {
-      marginRight: theme.spacing(1.0),
     },
     chip: {
       marginTop: 4,
@@ -149,8 +138,7 @@ class BuildDetails extends React.Component<Props> {
       build.latestGroupTasks &&
       build.latestGroupTasks.length === 0;
     let reTriggerButton = !canBeReTriggered ? null : (
-      <Button variant="contained" onClick={() => this.reTriggerBuild(build.id)}>
-        <Icon className={classes.leftIcon}>refresh</Icon>
+      <Button variant="contained" onClick={() => this.reTriggerBuild(build.id)} startIcon={<Refresh />}>
         Re-Trigger
       </Button>
     );
@@ -158,16 +146,14 @@ class BuildDetails extends React.Component<Props> {
     let failedTaskIds = build.latestGroupTasks.filter(task => task.status === 'FAILED').map(task => task.id);
     let reRunAllTasksButton =
       failedTaskIds.length === 0 ? null : (
-        <Button variant="contained" onClick={() => this.batchReRun(failedTaskIds)}>
-          <Icon className={classes.leftIcon}>refresh</Icon>
+        <Button variant="contained" onClick={() => this.batchReRun(failedTaskIds)} startIcon={<Refresh />}>
           Re-Run Failed Tasks
         </Button>
       );
 
     let needsApproval = build.status === 'NEEDS_APPROVAL' && hasWritePermissions(build.repository.viewerPermission);
     let approveButton = !needsApproval ? null : (
-      <Button variant="contained" onClick={() => this.approveBuild(build.id)}>
-        <Icon className={classes.leftIcon}>check</Icon>
+      <Button variant="contained" onClick={() => this.approveBuild(build.id)} startIcon={<Check />}>
         Approve
       </Button>
     );

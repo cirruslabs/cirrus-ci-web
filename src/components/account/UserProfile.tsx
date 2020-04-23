@@ -4,14 +4,13 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import Paper from '@material-ui/core/Paper';
-import { createStyles, Tooltip, WithStyles, withStyles } from '@material-ui/core';
+import { Tooltip, WithStyles, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import CardActions from '@material-ui/core/CardActions';
 import CardHeader from '@material-ui/core/CardHeader';
-import Icon from '@material-ui/core/Icon';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import { cirrusColors } from '../../cirrusTheme';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -25,20 +24,20 @@ import UserApiSettings from '../settings/UserApiSettings';
 import UserComputeCredits from '../compute-credits/UserComputeCredits';
 import { UserProfile_user } from './__generated__/UserProfile_user.graphql';
 import { Helmet as Head } from 'react-helmet';
+import Settings from '@material-ui/icons/Settings';
 
-const styles = theme =>
-  createStyles({
-    title: {
-      backgroundColor: cirrusColors.cirrusGrey,
-    },
-    gap: {
-      paddingTop: 16,
-    },
-    row: {
-      display: 'flex',
-      alignItems: 'center',
-    },
-  });
+const styles = {
+  title: {
+    backgroundColor: cirrusColors.cirrusGrey,
+  },
+  gap: {
+    paddingTop: 16,
+  },
+  row: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+};
 
 const PERSONAL_PRIVATE_REPOSITORIES_PLAN_ID = 992;
 
@@ -131,7 +130,7 @@ class UserProfile extends React.Component<Props> {
                           onClick={e => navigate(this.context.router, e, '/settings/github/' + organization.name)}
                           className="pull-right"
                         >
-                          <Icon>settings</Icon>
+                          <Settings />
                         </IconButton>
                       </Tooltip>
                     </TableCell>

@@ -3,7 +3,6 @@ import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import Paper from '@material-ui/core/Paper';
 import { createStyles, WithStyles, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -127,20 +126,18 @@ class GitHubPurchase extends React.Component<Props> {
     }
     return (
       <div>
-        <Paper elevation={1}>
-          <Card>
-            <CardHeader title="GitHub Settings" />
-            <CardContent>
-              {githubMarketplaceComponent}
-              {trialComponent}
-            </CardContent>
-            <CardActions>
-              {cancelPlanButton}
-              {viewActiveUsers}
-              {actionButton}
-            </CardActions>
-          </Card>
-        </Paper>
+        <Card>
+          <CardHeader title="GitHub Settings" />
+          <CardContent>
+            {githubMarketplaceComponent}
+            {trialComponent}
+          </CardContent>
+          <CardActions>
+            {cancelPlanButton}
+            {viewActiveUsers}
+            {actionButton}
+          </CardActions>
+        </Card>
         <Dialog open={this.state.showActiveUsers} onClose={this.handleCloseActiveUsersDialog}>
           <DialogTitle>Users active in the last 30 days</DialogTitle>
           <DialogContent>

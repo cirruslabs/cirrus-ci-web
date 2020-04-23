@@ -1,6 +1,6 @@
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
-import Icon from '@material-ui/core/Icon';
+import AccessTime from '@material-ui/icons/AccessTime';
 import Tooltip from '@material-ui/core/Tooltip';
 import { graphql } from 'babel-plugin-relay/macro';
 import React from 'react';
@@ -27,7 +27,7 @@ class NextCronInvocationTimeChip extends React.Component<Props> {
           label={`Next invocation: ${new Date(nextInvocationTimestamp).toLocaleTimeString()}`}
           avatar={
             <Avatar style={{ background: cirrusColors.cirrusPrimary }}>
-              <Icon style={{ color: cirrusColors.cirrusWhite }}>access_time</Icon>
+              <AccessTime style={{ color: cirrusColors.cirrusWhite }} />
             </Avatar>
           }
         />

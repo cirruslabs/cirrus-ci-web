@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
-import Icon from '@material-ui/core/Icon';
+import CallSplit from '@material-ui/icons/CallSplit';
 import { cirrusColors } from '../../cirrusTheme';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { navigate } from '../../utils/navigate';
@@ -30,7 +30,7 @@ class BuildBranchNameChip extends React.Component<Props> {
         label={shorten(build.branch)}
         avatar={
           <Avatar style={{ background: cirrusColors.cirrusPrimary }}>
-            <Icon style={{ color: cirrusColors.cirrusWhite }}>call_split</Icon>
+            <CallSplit style={{ color: cirrusColors.cirrusWhite }} />
           </Avatar>
         }
         onClick={e => this.handleBranchClick(e, build)}

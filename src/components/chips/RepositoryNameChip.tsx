@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
-import Icon from '@material-ui/core/Icon';
+import Storage from '@material-ui/icons/Storage';
 import { cirrusColors } from '../../cirrusTheme';
 import { navigate } from '../../utils/navigate';
 import { createFragmentContainer } from 'react-relay';
@@ -27,7 +27,7 @@ class RepositoryNameChip extends React.Component<Props> {
         label={repository.owner + '/' + repository.name}
         avatar={
           <Avatar style={{ background: cirrusColors.cirrusPrimary }}>
-            <Icon style={{ color: cirrusColors.cirrusWhite }}>storage</Icon>
+            <Storage style={{ color: cirrusColors.cirrusWhite }} />
           </Avatar>
         }
         onClick={e => this.handleRepositoryClick(e, repository)}

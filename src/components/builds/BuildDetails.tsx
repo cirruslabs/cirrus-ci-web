@@ -164,37 +164,35 @@ class BuildDetails extends React.Component<Props> {
         <Head>
           <title>{build.changeMessageTitle} - Cirrus CI</title>
         </Head>
-        <Paper elevation={2}>
-          <Card>
-            <CardContent>
-              <div className={classes.wrapper}>
-                <RepositoryNameChip className={classes.chip} repository={build.repository} />
-                <BuildCreatedChip className={classes.chip} build={build} />
-                <BuildStatusChip className={classes.chip} build={build} />
-              </div>
-              <div className={classes.gap} />
-              <Typography variant="h6" gutterBottom>
-                {build.changeMessageTitle}
-              </Typography>
-              <Typography variant="subtitle1" gutterBottom>
-                Commit{' '}
-                <a href={commitUrl} target="_blank" rel="noopener noreferrer">
-                  {build.changeIdInRepo.substr(0, 6)}
-                </a>{' '}
-                on branch{' '}
-                <a href={branchUrl} target="_blank" rel="noopener noreferrer">
-                  {build.branch}
-                </a>
-                .
-              </Typography>
-            </CardContent>
-            <CardActions className="d-flex flex-wrap justify-content-end">
-              {reTriggerButton}
-              {approveButton}
-              {reRunAllTasksButton}
-            </CardActions>
-          </Card>
-        </Paper>
+        <Card>
+          <CardContent>
+            <div className={classes.wrapper}>
+              <RepositoryNameChip className={classes.chip} repository={build.repository} />
+              <BuildCreatedChip className={classes.chip} build={build} />
+              <BuildStatusChip className={classes.chip} build={build} />
+            </div>
+            <div className={classes.gap} />
+            <Typography variant="h6" gutterBottom>
+              {build.changeMessageTitle}
+            </Typography>
+            <Typography variant="subtitle1" gutterBottom>
+              Commit{' '}
+              <a href={commitUrl} target="_blank" rel="noopener noreferrer">
+                {build.changeIdInRepo.substr(0, 6)}
+              </a>{' '}
+              on branch{' '}
+              <a href={branchUrl} target="_blank" rel="noopener noreferrer">
+                {build.branch}
+              </a>
+              .
+            </Typography>
+          </CardContent>
+          <CardActions className="d-flex flex-wrap justify-content-end">
+            {reTriggerButton}
+            {approveButton}
+            {reRunAllTasksButton}
+          </CardActions>
+        </Card>
         {notificationsComponent}
         <div className={classes.gap} />
         <Paper elevation={2}>

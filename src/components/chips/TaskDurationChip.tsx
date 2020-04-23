@@ -49,7 +49,7 @@ class TaskDurationChip extends React.Component<Props> {
   }
 
   render() {
-    let task = this.props.task;
+    let { task, className } = this.props;
     let durationInSeconds = task.durationInSeconds;
     if (!isTaskInProgressStatus(task.status) && !isTaskFinalStatus(task.status)) {
       durationInSeconds = 0;
@@ -63,7 +63,7 @@ class TaskDurationChip extends React.Component<Props> {
     }
     return (
       <Chip
-        className={this.props.className}
+        className={className}
         label={formatDuration(durationInSeconds)}
         avatar={
           <Avatar style={{ background: taskStatusColor(task.status) }}>

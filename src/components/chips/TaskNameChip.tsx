@@ -2,23 +2,23 @@ import React from 'react';
 
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
-import Icon from '@material-ui/core/Icon';
+import Bookmark from '@material-ui/icons/Bookmark';
 import { cirrusColors } from '../../cirrusTheme';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 
 function TaskNameChip(props) {
-  let task = props.task;
+  let { task, className } = props;
   return (
     <Chip
-      className={props.className}
+      className={className}
       label={task.name}
       onClick={() => {
         /* this empty handler helps Vimium (http://vimium.github.io/) to recognize that task names are clickable */
       }}
       avatar={
         <Avatar style={{ backgroundColor: cirrusColors.cirrusPrimary }}>
-          <Icon style={{ color: cirrusColors.cirrusWhite }}>bookmark</Icon>
+          <Bookmark style={{ color: cirrusColors.cirrusWhite }} />
         </Avatar>
       }
     />

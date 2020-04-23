@@ -252,59 +252,57 @@ class TaskDetails extends React.Component<Props> {
           <title>{task.name} - Cirrus CI</title>
         </Head>
         <CirrusFavicon color={faviconColor(task.status)} />
-        <Paper elevation={2}>
-          <Card>
-            <CardContent>
-              <div className={classes.wrapper}>
-                <RepositoryNameChip className={classes.chip} repository={repository} />
-                <BuildBranchNameChip className={classes.chip} build={build} />
-                <BuildChangeChip className={classes.chip} build={build} />
-                <TaskNameChip className={classes.chip} task={task} />
-              </div>
-              <div className={classes.wrapper}>
-                <TaskCreatedChip className={classes.chip} task={task} />
-                <TaskScheduledChip className={classes.chip} task={task} />
-                <TaskStatusChip className={classes.chip} task={task} />
-              </div>
-              <TaskCommandsProgress className={classes.progress} task={task} />
-              <div className={classes.gap} />
-              <Typography variant="h6" gutterBottom>
-                {build.changeMessageTitle} (commit{' '}
-                <a href={commitUrl} target="_blank" rel="noopener noreferrer">
-                  {build.changeIdInRepo.substr(0, 6)}
-                </a>
-                )
-              </Typography>
-              <div className={classes.gap} />
-              <div className={classNames('card-body', classes.wrapper)}>
-                {task.automaticReRun ? (
-                  <Chip className={classNames(classes.chip, classes.automaticReRun)} label="Automatic Re-Run" />
-                ) : null}
-                <TaskTransactionChip className={classes.chip} task={task} />
-                <TaskOptionalChip className={classes.chip} task={task} />
-                <TaskResourcesChip className={classes.chip} task={task} />
-                {task.labels.map(label => {
-                  return <Chip key={label} className={classes.chip} label={shorten(label)} />;
-                })}
-              </div>
-              {task.executionInfo ? <ExecutionInfo info={task.executionInfo} /> : null}
-            </CardContent>
-            <CardActions className="d-flex flex-wrap justify-content-end">
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={e => navigateBuild(this.context.router, e, task.buildId)}
-                startIcon={<ArrowBack />}
-              >
-                View All Tasks
-              </Button>
-              {abortButton}
-              {reRunButton}
-              {triggerButton}
-              {preTriggerButton}
-            </CardActions>
-          </Card>
-        </Paper>
+        <Card>
+          <CardContent>
+            <div className={classes.wrapper}>
+              <RepositoryNameChip className={classes.chip} repository={repository} />
+              <BuildBranchNameChip className={classes.chip} build={build} />
+              <BuildChangeChip className={classes.chip} build={build} />
+              <TaskNameChip className={classes.chip} task={task} />
+            </div>
+            <div className={classes.wrapper}>
+              <TaskCreatedChip className={classes.chip} task={task} />
+              <TaskScheduledChip className={classes.chip} task={task} />
+              <TaskStatusChip className={classes.chip} task={task} />
+            </div>
+            <TaskCommandsProgress className={classes.progress} task={task} />
+            <div className={classes.gap} />
+            <Typography variant="h6" gutterBottom>
+              {build.changeMessageTitle} (commit{' '}
+              <a href={commitUrl} target="_blank" rel="noopener noreferrer">
+                {build.changeIdInRepo.substr(0, 6)}
+              </a>
+              )
+            </Typography>
+            <div className={classes.gap} />
+            <div className={classNames('card-body', classes.wrapper)}>
+              {task.automaticReRun ? (
+                <Chip className={classNames(classes.chip, classes.automaticReRun)} label="Automatic Re-Run" />
+              ) : null}
+              <TaskTransactionChip className={classes.chip} task={task} />
+              <TaskOptionalChip className={classes.chip} task={task} />
+              <TaskResourcesChip className={classes.chip} task={task} />
+              {task.labels.map(label => {
+                return <Chip key={label} className={classes.chip} label={shorten(label)} />;
+              })}
+            </div>
+            {task.executionInfo ? <ExecutionInfo info={task.executionInfo} /> : null}
+          </CardContent>
+          <CardActions className="d-flex flex-wrap justify-content-end">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={e => navigateBuild(this.context.router, e, task.buildId)}
+              startIcon={<ArrowBack />}
+            >
+              View All Tasks
+            </Button>
+            {abortButton}
+            {reRunButton}
+            {triggerButton}
+            {preTriggerButton}
+          </CardActions>
+        </Card>
         {notificationsComponent}
         {artifactsComponent}
         {dependencies ? <div className={classes.gap} /> : null}

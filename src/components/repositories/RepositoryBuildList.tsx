@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -18,7 +18,6 @@ import BuildChangeChip from '../chips/BuildChangeChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import { navigateBuild } from '../../utils/navigate';
 import { createStyles, Tooltip, withStyles, WithStyles } from '@material-ui/core';
-import Icon from '@material-ui/core/Icon';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import classNames from 'classnames';
 import CreateBuildDialog from '../builds/CreateBuildDialog';
@@ -26,6 +25,9 @@ import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildL
 import { NodeOfConnection } from '../../utils/utility-types';
 import { createLinkToRepository } from '../../utils/github';
 import { Helmet as Head } from 'react-helmet';
+import Settings from '@material-ui/icons/Settings';
+import AddCircle from '@material-ui/icons/AddCircle';
+import Timeline from '@material-ui/icons/Timeline';
 
 let styles = createStyles({
   gap: {
@@ -48,10 +50,6 @@ let styles = createStyles({
   wrapper: {
     display: 'flex',
     flexWrap: 'wrap',
-  },
-  link: {
-    color: 'inherit',
-    textDecoration: 'none',
   },
 });
 
@@ -88,11 +86,11 @@ class RepositoryBuildList extends React.Component<Props, State> {
     if (repository.viewerPermission === 'WRITE' || repository.viewerPermission === 'ADMIN') {
       repositorySettings = (
         <Tooltip title="Repository Settings">
-          <Link to={'/settings/repository/' + repository.id} className={classes.link}>
+          <a href={'/settings/repository/' + repository.id}>
             <IconButton>
-              <Icon>settings</Icon>
+              <Settings />
             </IconButton>
-          </Link>
+          </a>
         </Tooltip>
       );
       repositoryAction = (
@@ -103,7 +101,7 @@ class RepositoryBuildList extends React.Component<Props, State> {
               key="create-build-button"
               onClick={() => this.setState(prevState => ({ ...prevState, openCreateDialog: true }))}
             >
-              <Icon>add_circle</Icon>
+              <AddCircle />
             </IconButton>
           </Tooltip>
         </>
@@ -111,25 +109,22 @@ class RepositoryBuildList extends React.Component<Props, State> {
     }
 
     let repositoryMetrics = (
-      <Link to={'/metrics/repository/' + repository.owner + '/' + repository.name}>
+      <a href={'/metrics/repository/' + repository.owner + '/' + repository.name}>
         <Tooltip title="Repository Metrics">
           <IconButton>
-            <Icon>timeline</Icon>
+            <Timeline />
           </IconButton>
         </Tooltip>
-      </Link>
+      </a>
     );
 
     const repositoryLinkButton = (
       <Tooltip title="Open on GitHub">
-        <IconButton
-          href={createLinkToRepository(repository, this.props.branch)}
-          className={classes.link}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <GitHubIcon />
-        </IconButton>
+        <a href={createLinkToRepository(repository, this.props.branch)} target="_blank" rel="noopener noreferrer">
+          <IconButton>
+            <GitHubIcon />
+          </IconButton>
+        </a>
       </Tooltip>
     );
 

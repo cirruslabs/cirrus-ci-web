@@ -14,7 +14,7 @@ let styles = theme =>
   createStyles({
     logContainer: {
       overflowY: 'hidden',
-      minHeight: '50px',
+      minHeight: '70px',
       height: '100%',
       maxWidth: '100%',
       background: cirrusColors.cirrusDark,

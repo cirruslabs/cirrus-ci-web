@@ -54,9 +54,6 @@ const drawerWidth = 360;
 
 const styles = theme =>
   createStyles({
-    root: {
-      flexGrow: 1,
-    },
     flex: {
       flex: 1,
     },
@@ -122,7 +119,7 @@ const styles = theme =>
       paddingLeft: theme.spacing(1.0) * 3,
       paddingRight: theme.spacing(1.0) * 3,
       transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.sharp,
+        easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.leavingScreen,
       }),
       marginLeft: 0,

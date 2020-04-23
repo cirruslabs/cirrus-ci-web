@@ -1,31 +1,33 @@
 import { subscribeObjectUpdates } from './rtu/ConnectionManager';
 
-const { Environment, Network, RecordSource, Store, Observable } = require('relay-runtime');
+import { Environment, Network, RecordSource, Store, Observable, SubscribeFunction } from 'relay-runtime';
 
 /*
  * See RelayNetwork.js:43 for details how it used in Relay
  */
-function subscription(operation, variables, cacheConfig) {
+let subscription: SubscribeFunction = (operation, variables, cacheConfig) => {
   if (variables['taskID'] && operation.text.indexOf('commands') > 0) {
     return webSocketSubscriptions(operation, variables, [
       ['TASK', variables['taskID']],
       ['TASK_COMMANDS', variables['taskID']],
-    ]);
+    ]) as any;
   } else if (variables['repositoryID'] && operation.text.indexOf('lastDefaultBranchBuild') > 0) {
     return webSocketSubscriptions(operation, variables, [
       ['REPOSITORY_DEFAULT_BRANCH_BUILD', variables['repositoryID']],
-    ]);
+    ]) as any;
   } else if (variables['taskID']) {
-    return webSocketSubscriptions(operation, variables, [['TASK', variables['taskID']]]);
+    return webSocketSubscriptions(operation, variables, [['TASK', variables['taskID']]]) as any;
   } else if (variables['buildID']) {
-    return webSocketSubscriptions(operation, variables, [['BUILD', variables['buildID']]]);
+    return webSocketSubscriptions(operation, variables, [['BUILD', variables['buildID']]]) as any;
   }
-}
+};
 
 function webSocketSubscriptions(operation, variables, kind2id: Array<[string, string]>) {
   let dataSource = null;
 
-  let result = Observable.create(sink => (dataSource = sink));
+  let result = Observable.create(sink => {
+    dataSource = sink;
+  });
 
   kind2id.forEach(kindIdPair => {
     let [kind, id] = kindIdPair;

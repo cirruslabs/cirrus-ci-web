@@ -26,12 +26,6 @@ const styles = theme =>
     title: {
       backgroundColor: cirrusColors.cirrusGrey,
     },
-    settingGap: {
-      paddingTop: 16,
-    },
-    gap: {
-      paddingTop: 16,
-    },
     row: {
       display: 'flex',
       alignItems: 'center',

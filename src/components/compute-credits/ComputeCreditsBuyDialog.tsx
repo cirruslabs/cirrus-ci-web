@@ -1,5 +1,4 @@
 import React from 'react';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -13,15 +12,6 @@ import { commitMutation } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
 import { UnspecifiedCallbackFunction } from '../../utils/utility-types';
-
-const styles = theme =>
-  createStyles({
-    textField: {
-      marginLeft: theme.spacing(1.0),
-      marginRight: theme.spacing(1.0),
-      width: 200,
-    },
-  });
 
 const computeCreditsBuyMutation = graphql`
   mutation ComputeCreditsBuyDialogMutation($input: BuyComputeCreditsInput!) {
@@ -39,7 +29,7 @@ const computeCreditsBuyMutation = graphql`
   }
 `;
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   accountId: number;
   onClose: UnspecifiedCallbackFunction;
   open: boolean;
@@ -51,7 +41,7 @@ interface State {
   error?: string;
 }
 
-class ComputeCreditsBuyDialog extends React.Component<Props, State> {
+export default class ComputeCreditsBuyDialog extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -154,7 +144,7 @@ class ComputeCreditsBuyDialog extends React.Component<Props, State> {
   }
 
   render() {
-    const { classes, accountId, ...other } = this.props;
+    const { accountId, ...other } = this.props;
 
     let error = this.state.error ? <Typography variant="subtitle1">{this.state.error}</Typography> : null;
 
@@ -203,5 +193,3 @@ class ComputeCreditsBuyDialog extends React.Component<Props, State> {
     );
   }
 }
-
-export default withStyles(styles)(ComputeCreditsBuyDialog);

@@ -19,11 +19,6 @@ import FolderOpen from '@material-ui/icons/FolderOpen';
 
 const styles = theme =>
   createStyles({
-    root: {
-      width: '100%',
-      maxWidth: '360px',
-      backgroundColor: theme.palette.background.paper,
-    },
     title: {
       backgroundColor: cirrusColors.cirrusGrey,
     },

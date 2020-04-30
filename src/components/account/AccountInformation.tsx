@@ -11,15 +11,16 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { navigate } from '../../utils/navigate';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Icon from '@material-ui/core/Icon';
 import { AccountInformation_viewer } from './__generated__/AccountInformation_viewer.graphql';
+import Settings from '@material-ui/icons/Settings';
+import DirectionsRun from '@material-ui/icons/DirectionsRun';
 
 interface Props extends RouteComponentProps {
   viewer: AccountInformation_viewer;
 }
 
 type State = {
-  anchorEl: SyntheticEvent['currentTarget'] | null;
+  anchorEl?: SyntheticEvent['currentTarget'];
 };
 
 class AccountInformation extends React.Component<Props, State> {
@@ -55,16 +56,16 @@ class AccountInformation extends React.Component<Props, State> {
         >
           <Avatar style={{ cursor: 'pointer' }} src={this.props.viewer.avatarURL} />
         </IconButton>
-        <Menu id="long-menu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={this.handleMenuClose}>
+        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={this.handleMenuClose}>
           <MenuItem onClick={event => navigate(this.context.router, event, '/settings/profile/')}>
             <ListItemIcon>
-              <Icon>person</Icon>
+              <Settings />
             </ListItemIcon>
-            <ListItemText inset primary="Profile" />
+            <ListItemText inset primary="Settings" />
           </MenuItem>
           <MenuItem onClick={event => navigate(null, event, 'https://api.cirrus-ci.com/redirect/logout/')}>
             <ListItemIcon>
-              <Icon>directions_run</Icon>
+              <DirectionsRun />
             </ListItemIcon>
             <ListItemText inset primary="Log Out" />
           </MenuItem>

@@ -8,7 +8,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { createStyles, WithStyles, withStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
 import AceEditor from 'react-ace';
@@ -30,21 +29,7 @@ const createBuildMutation = graphql`
   }
 `;
 
-const styles = theme =>
-  createStyles({
-    root: {
-      margin: 0,
-      padding: theme.spacing(2),
-    },
-    closeButton: {
-      position: 'absolute',
-      right: theme.spacing(1),
-      top: theme.spacing(1),
-      color: theme.palette.grey[500],
-    },
-  });
-
-interface Props extends WithStyles<typeof styles>, RouteComponentProps {
+interface Props extends RouteComponentProps {
   onClose: Function;
   open: boolean;
   repository: CreateBuildDialog_repository;
@@ -169,7 +154,7 @@ class CreateBuildDialog extends React.Component<Props, State> {
   };
 }
 
-export default createFragmentContainer(withStyles(styles)(withRouter(CreateBuildDialog)), {
+export default createFragmentContainer(withRouter(CreateBuildDialog), {
   repository: graphql`
     fragment CreateBuildDialog_repository on Repository {
       id

@@ -9,7 +9,7 @@ interface State {
   currentTimestamp: number;
 }
 
-class DurationTicker extends React.Component<Props, State> {
+export default class DurationTicker extends React.Component<Props, State> {
   secondsTicker: NodeJS.Timeout;
 
   constructor(props: Props) {
@@ -37,5 +37,3 @@ class DurationTicker extends React.Component<Props, State> {
     return <span>{formatDuration((this.state.currentTimestamp - this.props.startTimestamp) / 1000)}</span>;
   }
 }
-
-export default DurationTicker;

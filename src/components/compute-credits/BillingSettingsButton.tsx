@@ -3,24 +3,17 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import PropTypes from 'prop-types';
-import { withStyles, WithStyles } from '@material-ui/core';
 import AlarmOffIcon from '@material-ui/icons/AlarmOff';
 import AlarmOnIcon from '@material-ui/icons/AlarmOn';
 import Button from '@material-ui/core/Button';
 import BillingSettingsDialog from './BillingSettingsDialog';
 import { BillingSettingsButton_info } from './__generated__/BillingSettingsButton_info.graphql';
 
-const styles = theme => ({
-  leftIcon: {
-    marginRight: theme.spacing(1.0),
-  },
-});
-
 interface State {
   openDialog: boolean;
 }
 
-interface Props extends WithStyles<typeof styles>, RouteComponentProps {
+interface Props extends RouteComponentProps {
   info: BillingSettingsButton_info;
   className?: string;
 }
@@ -40,7 +33,7 @@ class BillingSettingsButton extends React.Component<Props, State> {
   };
 
   render() {
-    let { info, classes, className } = this.props;
+    let { info, className } = this.props;
     if (!info) return null;
 
     let { billingSettings } = info;
@@ -48,12 +41,11 @@ class BillingSettingsButton extends React.Component<Props, State> {
 
     return (
       <div className={className}>
-        <Button variant="contained" onClick={this.toggleDialog}>
-          {billingSettings.enabled ? (
-            <AlarmOnIcon className={classes.leftIcon} />
-          ) : (
-            <AlarmOffIcon className={classes.leftIcon} />
-          )}
+        <Button
+          variant="contained"
+          onClick={this.toggleDialog}
+          startIcon={billingSettings.enabled ? <AlarmOnIcon /> : <AlarmOffIcon />}
+        >
           {billingSettings.enabled ? 'Edit Auto Pay' : 'Set up Auto Pay'}
         </Button>
         <BillingSettingsDialog
@@ -66,7 +58,7 @@ class BillingSettingsButton extends React.Component<Props, State> {
   }
 }
 
-export default createFragmentContainer(withStyles(styles)(withRouter(BillingSettingsButton)), {
+export default createFragmentContainer(withRouter(BillingSettingsButton), {
   info: graphql`
     fragment BillingSettingsButton_info on GitHubOrganizationInfo {
       billingSettings {

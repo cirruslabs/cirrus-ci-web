@@ -22,7 +22,7 @@ import { withStyles, WithStyles } from '@material-ui/core';
 import classNames from 'classnames';
 import { cirrusColors } from '../../cirrusTheme';
 import { ViewerBuildList_viewer } from './__generated__/ViewerBuildList_viewer.graphql';
-import Head from 'react-helmet';
+import { Helmet as Head } from 'react-helmet';
 
 let styles = {
   title: {
@@ -99,7 +99,7 @@ class ViewerBuildList extends React.Component<Props> {
           </div>
         </TableCell>
         <TableCell className={classes.cell}>
-          <div className="card-body">
+          <div>
             <Typography variant="body1" color="inherit">
               {build.changeMessageTitle}
             </Typography>

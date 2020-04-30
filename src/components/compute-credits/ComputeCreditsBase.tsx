@@ -20,7 +20,7 @@ import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import ComputeCreditsBuyDialog from './ComputeCreditsBuyDialog';
 import { ComputeCreditsBase_info } from './__generated__/ComputeCreditsBase_info.graphql';
-import Head from 'react-helmet';
+import { Helmet as Head } from 'react-helmet';
 
 const styles = theme =>
   createStyles({

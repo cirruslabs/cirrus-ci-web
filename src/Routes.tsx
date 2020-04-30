@@ -22,7 +22,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ViewerTopRepositories from './scenes/Viewer/ViewerTopRepositories';
-import CirrusCircularProgress from './components/common/CirrusCircularProgress';
+import CirrusLinearProgress from './components/common/CirrusLinearProgress';
 
 const AsyncViewerProfile = React.lazy(() => import('./scenes/Viewer/ViewerProfile'));
 
@@ -40,8 +40,6 @@ const AsyncRepositoryMetrics = React.lazy(() => import('./scenes/RepositoryMetri
 
 const AsyncTask = React.lazy(() => import('./scenes/Task/Task'));
 
-const AsyncGitHub = React.lazy(() => import('./scenes/GitHub/GitHub'));
-
 const AsyncGitHubRepository = React.lazy(() => import('./scenes/Repository/GitHubRepository'));
 
 const AsyncGitHubOrganization = React.lazy(() => import('./scenes/GitHub/GitHubOrganization'));
@@ -56,9 +54,6 @@ const drawerWidth = 360;
 
 const styles = theme =>
   createStyles({
-    root: {
-      flexGrow: 1,
-    },
     flex: {
       flex: 1,
     },
@@ -124,7 +119,7 @@ const styles = theme =>
       paddingLeft: theme.spacing(1.0) * 3,
       paddingRight: theme.spacing(1.0) * 3,
       transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.sharp,
+        easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.leavingScreen,
       }),
       marginLeft: 0,
@@ -156,6 +151,12 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
   handleDrawerOpen() {
     this.setState({ openDrawer: true });
     localStorage.setItem('cirrusOpenDrawer', 'true');
+  }
+
+  getNavbarTitleStyling() {
+    const shared = { cursor: 'pointer' };
+
+    return this.state.openDrawer ? { marginLeft: '15px', ...shared } : shared;
   }
 
   handleDrawerClose() {
@@ -213,7 +214,7 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                 className={classNames(classes.flex, {
                   [classes.titleShift]: openDrawer,
                 })}
-                style={{ cursor: 'pointer' }}
+                style={this.getNavbarTitleStyling()}
                 onClick={e => navigate(this.context.router, e, '/')}
                 color="inherit"
               >
@@ -256,7 +257,7 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                 container: !openDrawer,
               })}
             >
-              <Suspense fallback={<CirrusCircularProgress />}>
+              <Suspense fallback={<CirrusLinearProgress />}>
                 <Switch>
                   <Route exact path="/" component={AsyncHome} props={this.props} />
                   <Route exact path="/explorer" component={AsyncApiExplorerRenderer} props={this.props} />
@@ -282,7 +283,6 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                     component={AsyncGitHubRepository}
                     props={this.props}
                   />
-                  <Route exact path="/github" component={AsyncGitHub} props={this.props} />
                   <Route
                     exact
                     path="/repository/:repositoryId/:branch*"

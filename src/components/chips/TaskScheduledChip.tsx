@@ -12,13 +12,13 @@ import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 
 function TaskScheduledChip(props) {
-  let { task } = props;
+  let { task, className } = props;
   let scheduledStatusDuration = task.statusDurations.find(it => it.status === 'SCHEDULED');
   if (scheduledStatusDuration && task.status !== 'SCHEDULED') {
     return (
       <Tooltip title="Time it took to find available resources and start execution of this task.">
         <Chip
-          className={props.className}
+          className={className}
           label={`Scheduled in ${formatDuration(scheduledStatusDuration.durationInSeconds)}`}
           avatar={
             <Avatar style={{ backgroundColor: taskStatusColor('SCHEDULED') }}>

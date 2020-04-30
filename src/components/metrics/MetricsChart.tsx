@@ -13,7 +13,6 @@ import { MetricsChart_chart } from './__generated__/MetricsChart_chart.graphql';
 const styles = theme =>
   createStyles({
     title: { 'text-align': 'center' },
-    chip: {},
   });
 
 interface Props extends RouteComponentProps, WithStyles<typeof styles> {
@@ -42,7 +41,7 @@ class MetricsChart extends React.Component<Props, State> {
     let { hoveredPointIndex } = this.state;
 
     let points = chart.points;
-    let chartData = points.map(function(point, index) {
+    let chartData = points.map(function (point, index) {
       return { x: index, y: point.value };
     });
     let chartDateTicks = [];
@@ -61,10 +60,7 @@ class MetricsChart extends React.Component<Props, State> {
       let date = new Date(hoveredPoint.date.year, hoveredPoint.date.month - 1, hoveredPoint.date.day);
       hint = (
         <Hint value={chartData[hoveredPointIndex]}>
-          <Chip
-            className={classes.chip}
-            label={this.formatValue(hoveredPoint.value) + ' on ' + date.toLocaleDateString()}
-          />
+          <Chip label={this.formatValue(hoveredPoint.value) + ' on ' + date.toLocaleDateString()} />
         </Hint>
       );
     }

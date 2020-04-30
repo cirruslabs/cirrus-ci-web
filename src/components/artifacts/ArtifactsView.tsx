@@ -5,21 +5,20 @@ import { createStyles, List, Tooltip, withStyles, WithStyles } from '@material-u
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Icon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import { cirrusColors } from '../../cirrusTheme';
 import Paper from '@material-ui/core/Paper';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { navigate } from '../../utils/navigate';
 import { TaskArtifacts_task } from './__generated__/TaskArtifacts_task.graphql';
+import Folder from '@material-ui/icons/Folder';
+import InsertDriveFile from '@material-ui/icons/InsertDriveFile';
+import GetApp from '@material-ui/icons/GetApp';
+import FolderOpen from '@material-ui/icons/FolderOpen';
 
 const styles = theme =>
   createStyles({
-    root: {
-      width: '100%',
-      maxWidth: '360px',
-      backgroundColor: theme.palette.background.paper,
-    },
     title: {
       backgroundColor: cirrusColors.cirrusGrey,
     },
@@ -118,7 +117,7 @@ class ArtifactsView extends React.Component<Props> {
           }
         >
           <ListItemIcon>
-            <Icon>folder</Icon>
+            <Folder />
           </ListItemIcon>
           <ListItemText primary="..." />
         </ListItem>,
@@ -127,7 +126,7 @@ class ArtifactsView extends React.Component<Props> {
       items.push(
         <ListItem key="..." button onClick={() => this.updateState({ selectedArtifactName: null })}>
           <ListItemIcon>
-            <Icon>folder</Icon>
+            <Folder />
           </ListItemIcon>
           <ListItemText primary="..." />
         </ListItem>,
@@ -143,13 +142,13 @@ class ArtifactsView extends React.Component<Props> {
             onClick={() => this.updateState({ selectedArtifactName: artifact.name })}
           >
             <ListItemIcon>
-              <Icon>folder_open</Icon>
+              <FolderOpen />
             </ListItemIcon>
             <ListItemText primary={artifact.name} />
             <Tooltip title="Download All Files (.zip)">
-              <Icon onClick={e => navigate(this.context.router, e, this.artifactArchiveURL(artifact.name))}>
-                get_app
-              </Icon>
+              <IconButton onClick={e => navigate(this.context.router, e, this.artifactArchiveURL(artifact.name))}>
+                <GetApp />
+              </IconButton>
             </Tooltip>
           </ListItem>,
         );
@@ -167,7 +166,7 @@ class ArtifactsView extends React.Component<Props> {
               onClick={() => this.updateState({ selectedPath: this.state.selectedPath.concat([info.folder]) })}
             >
               <ListItemIcon>
-                <Icon>folder_open</Icon>
+                <Folder />
               </ListItemIcon>
               <ListItemText primary={info.folder} />
             </ListItem>,
@@ -180,7 +179,7 @@ class ArtifactsView extends React.Component<Props> {
           items.push(
             <ListItem key={info.path} button onClick={() => window.open(this.artifactURL(info.path), '_blank')}>
               <ListItemIcon>
-                <Icon>insert_drive_file</Icon>
+                <InsertDriveFile />
               </ListItemIcon>
               <ListItemText primary={info.path} />
             </ListItem>,

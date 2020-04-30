@@ -10,7 +10,7 @@ let darkSuccessColor = lightGreen['700'];
 let successColor = lightGreen['500'];
 let lightSuccessColor = lightGreen['300'];
 
-let cirrusColors = {
+export let cirrusColors = {
   cirrusPrimary: grey['900'],
   cirrusSecondary: grey['700'],
   cirrusDark: grey['900'],
@@ -38,7 +38,7 @@ let cirrusColors = {
 /*
  *  Fork of lightBaseTheme.js
  */
-let cirrusTheme: ThemeOptions = {
+export let cirrusTheme: ThemeOptions = {
   typography: {
     fontFamily: 'Roboto, sans-serif',
   },
@@ -75,5 +75,3 @@ let cirrusTheme: ThemeOptions = {
     },
   },
 };
-
-export { cirrusColors, cirrusTheme };

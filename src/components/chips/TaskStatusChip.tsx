@@ -11,10 +11,10 @@ import { graphql } from 'babel-plugin-relay/macro';
 import { Tooltip } from '@material-ui/core';
 
 function TaskStatusChip(props) {
-  let { task } = props;
+  let { task, className } = props;
   let chip = (
     <Chip
-      className={props.className}
+      className={className}
       label={taskStatusMessage(task)}
       avatar={
         <Avatar style={{ backgroundColor: taskStatusColor(task.status) }}>

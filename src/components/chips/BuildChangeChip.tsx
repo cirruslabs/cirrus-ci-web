@@ -1,6 +1,6 @@
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
-import Icon from '@material-ui/core/Icon';
+import Input from '@material-ui/icons/Input';
 import { graphql } from 'babel-plugin-relay/macro';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -21,17 +21,17 @@ class BuildChangeChip extends React.Component<Props> {
   };
 
   render() {
-    let build = this.props.build;
+    let { build, className } = this.props;
     return (
       <Chip
         label={build.changeIdInRepo.substr(0, 6)}
         avatar={
           <Avatar style={{ background: cirrusColors.cirrusPrimary }}>
-            <Icon style={{ color: cirrusColors.cirrusWhite }}>input</Icon>
+            <Input style={{ color: cirrusColors.cirrusWhite }} />
           </Avatar>
         }
         onClick={e => navigateBuild(this.context.router, e, build.id)}
-        className={this.props.className}
+        className={className}
       />
     );
   }

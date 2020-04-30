@@ -3,7 +3,6 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Icon from '@material-ui/core/Icon';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { graphql } from 'babel-plugin-relay/macro';
@@ -21,7 +20,9 @@ import CirrusFavicon from '../common/CirrusFavicon';
 import NotificationList from '../common/NotificationList';
 import TaskList from '../tasks/TaskList';
 import { BuildDetails_build } from './__generated__/BuildDetails_build.graphql';
-import Head from 'react-helmet';
+import { Helmet as Head } from 'react-helmet';
+import Refresh from '@material-ui/icons/Refresh';
+import Check from '@material-ui/icons/Check';
 
 const buildApproveMutation = graphql`
   mutation BuildDetailsApproveBuildMutation($input: BuildApproveInput!) {
@@ -77,18 +78,6 @@ const styles = theme =>
   createStyles({
     gap: {
       paddingTop: 16,
-    },
-    title: {
-      padding: 0,
-    },
-    repoButton: {
-      padding: 0,
-    },
-    repoButtonIcon: {
-      fontSize: 48,
-    },
-    leftIcon: {
-      marginRight: theme.spacing(1.0),
     },
     chip: {
       marginTop: 4,
@@ -149,8 +138,7 @@ class BuildDetails extends React.Component<Props> {
       build.latestGroupTasks &&
       build.latestGroupTasks.length === 0;
     let reTriggerButton = !canBeReTriggered ? null : (
-      <Button variant="contained" onClick={() => this.reTriggerBuild(build.id)}>
-        <Icon className={classes.leftIcon}>refresh</Icon>
+      <Button variant="contained" onClick={() => this.reTriggerBuild(build.id)} startIcon={<Refresh />}>
         Re-Trigger
       </Button>
     );
@@ -158,16 +146,14 @@ class BuildDetails extends React.Component<Props> {
     let failedTaskIds = build.latestGroupTasks.filter(task => task.status === 'FAILED').map(task => task.id);
     let reRunAllTasksButton =
       failedTaskIds.length === 0 ? null : (
-        <Button variant="contained" onClick={() => this.batchReRun(failedTaskIds)}>
-          <Icon className={classes.leftIcon}>refresh</Icon>
+        <Button variant="contained" onClick={() => this.batchReRun(failedTaskIds)} startIcon={<Refresh />}>
           Re-Run Failed Tasks
         </Button>
       );
 
     let needsApproval = build.status === 'NEEDS_APPROVAL' && hasWritePermissions(build.repository.viewerPermission);
     let approveButton = !needsApproval ? null : (
-      <Button variant="contained" onClick={() => this.approveBuild(build.id)}>
-        <Icon className={classes.leftIcon}>check</Icon>
+      <Button variant="contained" onClick={() => this.approveBuild(build.id)} startIcon={<Check />}>
         Approve
       </Button>
     );
@@ -178,37 +164,35 @@ class BuildDetails extends React.Component<Props> {
         <Head>
           <title>{build.changeMessageTitle} - Cirrus CI</title>
         </Head>
-        <Paper elevation={2}>
-          <Card>
-            <CardContent>
-              <div className={classes.wrapper}>
-                <RepositoryNameChip className={classes.chip} repository={build.repository} />
-                <BuildCreatedChip className={classes.chip} build={build} />
-                <BuildStatusChip className={classes.chip} build={build} />
-              </div>
-              <div className={classes.gap} />
-              <Typography variant="h6" gutterBottom>
-                {build.changeMessageTitle}
-              </Typography>
-              <Typography variant="subtitle1" gutterBottom>
-                Commit{' '}
-                <a href={commitUrl} target="_blank" rel="noopener noreferrer">
-                  {build.changeIdInRepo.substr(0, 6)}
-                </a>{' '}
-                on branch{' '}
-                <a href={branchUrl} target="_blank" rel="noopener noreferrer">
-                  {build.branch}
-                </a>
-                .
-              </Typography>
-            </CardContent>
-            <CardActions className="d-flex flex-wrap justify-content-end">
-              {reTriggerButton}
-              {approveButton}
-              {reRunAllTasksButton}
-            </CardActions>
-          </Card>
-        </Paper>
+        <Card>
+          <CardContent>
+            <div className={classes.wrapper}>
+              <RepositoryNameChip className={classes.chip} repository={build.repository} />
+              <BuildCreatedChip className={classes.chip} build={build} />
+              <BuildStatusChip className={classes.chip} build={build} />
+            </div>
+            <div className={classes.gap} />
+            <Typography variant="h6" gutterBottom>
+              {build.changeMessageTitle}
+            </Typography>
+            <Typography variant="subtitle1" gutterBottom>
+              Commit{' '}
+              <a href={commitUrl} target="_blank" rel="noopener noreferrer">
+                {build.changeIdInRepo.substr(0, 6)}
+              </a>{' '}
+              on branch{' '}
+              <a href={branchUrl} target="_blank" rel="noopener noreferrer">
+                {build.branch}
+              </a>
+              .
+            </Typography>
+          </CardContent>
+          <CardActions className="d-flex flex-wrap justify-content-end">
+            {reTriggerButton}
+            {approveButton}
+            {reRunAllTasksButton}
+          </CardActions>
+        </Card>
         {notificationsComponent}
         <div className={classes.gap} />
         <Paper elevation={2}>

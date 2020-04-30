@@ -51,12 +51,12 @@ class BuildStatusChip extends React.Component<Props> {
   }
 
   render() {
-    let { build, mini } = this.props;
+    let { build, mini, className } = this.props;
     let message = buildStatusMessage(build.status, build.durationInSeconds);
     if (mini) {
       return (
         <Tooltip title={message}>
-          <Avatar style={{ background: buildStatusColor(build.status) }} className={this.props.className}>
+          <Avatar style={{ background: buildStatusColor(build.status) }} className={className}>
             <Icon style={{ color: cirrusColors.cirrusWhite }}>{buildStatusIconName(build.status)}</Icon>
           </Avatar>
         </Tooltip>
@@ -71,7 +71,7 @@ class BuildStatusChip extends React.Component<Props> {
         }
       >
         <Chip
-          className={this.props.className}
+          className={className}
           label={message}
           avatar={
             <Avatar style={{ background: buildStatusColor(build.status) }}>

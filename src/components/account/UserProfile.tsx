@@ -4,14 +4,14 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import Paper from '@material-ui/core/Paper';
-import { createStyles, Tooltip, WithStyles, withStyles } from '@material-ui/core';
+import Tooltip from '@material-ui/core/Tooltip';
+import { WithStyles, withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import CardActions from '@material-ui/core/CardActions';
 import CardHeader from '@material-ui/core/CardHeader';
-import Icon from '@material-ui/core/Icon';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import { cirrusColors } from '../../cirrusTheme';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -24,24 +24,21 @@ import IconButton from '@material-ui/core/IconButton';
 import UserApiSettings from '../settings/UserApiSettings';
 import UserComputeCredits from '../compute-credits/UserComputeCredits';
 import { UserProfile_user } from './__generated__/UserProfile_user.graphql';
-import Head from 'react-helmet';
+import { Helmet as Head } from 'react-helmet';
+import Settings from '@material-ui/icons/Settings';
 
-const styles = theme =>
-  createStyles({
-    title: {
-      backgroundColor: cirrusColors.cirrusGrey,
-    },
-    settingGap: {
-      paddingTop: 16,
-    },
-    gap: {
-      paddingTop: 16,
-    },
-    row: {
-      display: 'flex',
-      alignItems: 'center',
-    },
-  });
+const styles = {
+  title: {
+    backgroundColor: cirrusColors.cirrusGrey,
+  },
+  gap: {
+    paddingTop: 16,
+  },
+  row: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+};
 
 const PERSONAL_PRIVATE_REPOSITORIES_PLAN_ID = 992;
 
@@ -113,12 +110,8 @@ class UserProfile extends React.Component<Props> {
     let organizations = user.organizations || [];
     if (organizations.length > 0) {
       organizationsComponent = (
-        <Paper elevation={1}>
-          <Toolbar>
-            <Typography variant="h6" color="inherit">
-              Your GitHub Organizations on Cirrus CI
-            </Typography>
-          </Toolbar>
+        <Card>
+          <CardHeader title="Your GitHub Organizations" />
           <Table style={{ tableLayout: 'auto' }}>
             <TableBody>
               {organizations.map(organization => (
@@ -128,7 +121,7 @@ class UserProfile extends React.Component<Props> {
                   hover={true}
                   style={{ cursor: 'pointer' }}
                 >
-                  <TableCell>
+                  <TableCell style={{ width: '90%' }}>
                     <Typography variant="h6">{organization.name}</Typography>
                   </TableCell>
                   <TableCell>
@@ -137,7 +130,7 @@ class UserProfile extends React.Component<Props> {
                         onClick={e => navigate(this.context.router, e, '/settings/github/' + organization.name)}
                         className="pull-right"
                       >
-                        <Icon>settings</Icon>
+                        <Settings />
                       </IconButton>
                     </Tooltip>
                   </TableCell>
@@ -145,42 +138,36 @@ class UserProfile extends React.Component<Props> {
               ))}
             </TableBody>
           </Table>
-        </Paper>
+        </Card>
       );
     }
 
     return (
       <div>
         <Head>
-          <title>Your Profile - Cirrus CI</title>
+          <title>Settings - Cirrus CI</title>
         </Head>
         <Paper elevation={1}>
           <Toolbar className={classes.title}>
             <Typography variant="h6" color="inherit">
-              Profile Settings for {user.githubUserName}
+              Settings for {user.githubUserName}
             </Typography>
           </Toolbar>
         </Paper>
-        <div className={classes.settingGap} />
-        <Paper elevation={1}>
-          <Card>
-            <CardHeader title="GitHub Settings" />
-            <CardContent>
-              {githubMarketplaceComponent}
-              {trialComponent}
-            </CardContent>
-            <CardActions>{actionButton}</CardActions>
-          </Card>
-        </Paper>
-        <div className={classes.settingGap} />
-        <Paper elevation={1}>
-          <UserComputeCredits user={this.props.user} />
-        </Paper>
-        <div className={classes.settingGap} />
-        <Paper elevation={1}>
-          <UserApiSettings user={this.props.user} />
-        </Paper>
-        <div className={classes.settingGap} />
+        <div className={classes.gap} />
+        <Card>
+          <CardHeader title="GitHub Settings" />
+          <CardContent>
+            {githubMarketplaceComponent}
+            {trialComponent}
+          </CardContent>
+          <CardActions>{actionButton}</CardActions>
+        </Card>
+        <div className={classes.gap} />
+        <UserComputeCredits user={this.props.user} />
+        <div className={classes.gap} />
+        <UserApiSettings user={this.props.user} />
+        <div className={classes.gap} />
         {organizationsComponent}
       </div>
     );

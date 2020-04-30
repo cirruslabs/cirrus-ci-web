@@ -112,34 +112,32 @@ class UserProfile extends React.Component<Props> {
       organizationsComponent = (
         <Card>
           <CardHeader title="Your GitHub Organizations" />
-          <CardContent>
-            <Table style={{ tableLayout: 'auto' }}>
-              <TableBody>
-                {organizations.map(organization => (
-                  <TableRow
-                    key={organization.name}
-                    onClick={e => navigate(this.context.router, e, '/github/' + organization.name)}
-                    hover={true}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <TableCell>
-                      <Typography variant="h6">{organization.name}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Tooltip title="Organization settings">
-                        <IconButton
-                          onClick={e => navigate(this.context.router, e, '/settings/github/' + organization.name)}
-                          className="pull-right"
-                        >
-                          <Settings />
-                        </IconButton>
-                      </Tooltip>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
+          <Table style={{ tableLayout: 'auto' }}>
+            <TableBody>
+              {organizations.map(organization => (
+                <TableRow
+                  key={organization.name}
+                  onClick={e => navigate(this.context.router, e, '/github/' + organization.name)}
+                  hover={true}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <TableCell style={{ width: '90%' }}>
+                    <Typography variant="h6">{organization.name}</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Tooltip title="Organization settings">
+                      <IconButton
+                        onClick={e => navigate(this.context.router, e, '/settings/github/' + organization.name)}
+                        className="pull-right"
+                      >
+                        <Settings />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </Card>
       );
     }

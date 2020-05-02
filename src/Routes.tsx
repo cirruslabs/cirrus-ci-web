@@ -52,7 +52,7 @@ const AsyncApiExplorerRenderer = React.lazy(() => import('./components/explorer/
 
 const drawerWidth = 360;
 
-const styles = theme =>
+export const styles = theme =>
   createStyles({
     flex: {
       flex: 1,

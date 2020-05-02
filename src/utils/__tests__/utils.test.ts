@@ -1,7 +1,7 @@
-import { buildStatusColor, taskStatusColor, faviconColor } from './colors';
-import { createLinkToRepository } from './github';
-import { cirrusColors } from '../cirrusTheme';
-import { hasWritePermissions } from './permissions';
+import { buildStatusColor, taskStatusColor, faviconColor } from '../colors';
+import { createLinkToRepository } from '../github';
+import { cirrusColors } from '../../cirrusTheme';
+import { hasWritePermissions } from '../permissions';
 
 describe('utils/colors tests', () => {
   it('gets the correct build status color', () => {

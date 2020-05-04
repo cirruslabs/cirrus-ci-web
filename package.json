@@ -13,7 +13,7 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
-    "@material-ui/core": "^4.9.12",
+    "@material-ui/core": "^4.9.13",
     "@material-ui/icons": "^4.9.1",
     "ansi_up": "^4.0.4",
     "babel-plugin-relay": "^9.1.0",
@@ -43,14 +43,15 @@
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.7",
     "@types/react-helmet": "^5.0.15",
-    "@types/react-relay": "^7.0.3",
+    "@types/react-relay": "^7.0.6",
     "@types/react-router-dom": "^5.1.5",
     "@types/relay-runtime": "^8.0.9",
     "get-graphql-schema": "^2.1.2",
     "husky": "^4.2.5",
-    "lint-staged": "^10.2.2",
     "prettier": "^2.0.5",
+    "pretty-quick": "^2.0.1",
     "react-scripts": "3.4.1",
+    "react-test-renderer": "^16.13.1",
     "relay-compiler": "^9.1.0",
     "relay-compiler-language-typescript": "^12.0.1",
     "typescript": "^3.8.3"
@@ -72,13 +73,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "pretty-quick --staged"
     }
-  },
-  "lint-staged": {
-    "{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md,html}": [
-      "prettier --write"
-    ]
   },
   "browserslist": [
     ">0.2%",

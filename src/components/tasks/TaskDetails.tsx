@@ -43,6 +43,8 @@ import Refresh from '@material-ui/icons/Refresh';
 import PlayCircleFilled from '@material-ui/icons/PlayCircleFilled';
 import Cancel from '@material-ui/icons/Cancel';
 import ArrowBack from '@material-ui/icons/ArrowBack';
+import TaskExperimentalChip from '../chips/TaskExperimentalChip';
+import TaskStatefulChip from '../chips/TaskStatefulChip';
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
@@ -281,6 +283,8 @@ class TaskDetails extends React.Component<Props> {
               ) : null}
               <TaskTransactionChip className={classes.chip} task={task} />
               <TaskOptionalChip className={classes.chip} task={task} />
+              <TaskExperimentalChip className={classes.chip} task={task} />
+              <TaskStatefulChip className={classes.chip} task={task} />
               <TaskResourcesChip className={classes.chip} task={task} />
               {task.labels.map(label => {
                 return <Chip key={label} className={classes.chip} label={shorten(label)} />;
@@ -390,6 +394,9 @@ export default createFragmentContainer(withStyles(styles)(withRouter(TaskDetails
       ...TaskTransactionChip_task
       ...TaskOptionalChip_task
       ...TaskResourcesChip_task
+      ...TaskExperimentalChip_task
+      ...TaskStatefulChip_task
+      ...TaskOptionalChip_task
       labels
       artifacts {
         name

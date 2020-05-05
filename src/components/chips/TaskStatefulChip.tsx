@@ -2,33 +2,33 @@ import React from 'react';
 
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
-import Report from '@material-ui/icons/Report';
+import SecurityIcon from '@material-ui/icons/Security';
 
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { cirrusColors } from '../../cirrusTheme';
 
-function TaskOptionalChip(props) {
+function TaskStatefulChip(props) {
   let { task } = props;
-  let { optional } = task;
-  if (!optional) return <div />;
+  let { stateful } = task;
+  if (!stateful) return <div />;
   return (
     <Chip
       className={props.className}
-      label="Optional"
+      label="Stateful"
       avatar={
-        <Avatar style={{ backgroundColor: cirrusColors.lightWarning }}>
-          <Report style={{ color: cirrusColors.cirrusWhite }} />
+        <Avatar style={{ backgroundColor: cirrusColors.success }}>
+          <SecurityIcon style={{ color: cirrusColors.cirrusWhite }} />
         </Avatar>
       }
     />
   );
 }
 
-export default createFragmentContainer(TaskOptionalChip, {
+export default createFragmentContainer(TaskStatefulChip, {
   task: graphql`
-    fragment TaskOptionalChip_task on Task {
-      optional
+    fragment TaskStatefulChip_task on Task {
+      stateful
     }
   `,
 });

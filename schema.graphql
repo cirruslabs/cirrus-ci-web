@@ -501,6 +501,7 @@ type Task {
   automaticReRun: Boolean!
   automaticallyReRunnable: Boolean!
   experimental: Boolean!
+  stateful: Boolean!
   useComputeCredits: Boolean!
   usedComputeCredits: Boolean!
   transaction: AccountTransaction

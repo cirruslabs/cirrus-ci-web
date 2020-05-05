@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div
+  className="MuiPaper-root welcomePage-paper-1 MuiPaper-elevation1 MuiPaper-rounded"
+>
+  <h1>
+    Welcome to Cirrus CI.
+  </h1>
+  <p>
+    Please 
+    <a
+      href="https://api.cirrus-ci.com/redirect/auth/github"
+    >
+      <strong>
+        sign in
+      </strong>
+    </a>
+     to see your recent builds.
+  </p>
+  <p>
+    Just got here? Visit 
+    <a
+      href="https://cirrus-ci.org"
+    >
+      <strong>
+        our documentation
+      </strong>
+    </a>
+    .
+  </p>
+</div>
+`;

@@ -8,12 +8,14 @@ export default function () {
     <div style={{ height: '100vh' }}>
       <GraphiQL
         schema={undefined}
-        query={`query {
+        query={`
+query {
   viewer {
     id
     githubUserName
   }
-}`}
+}
+`}
         fetcher={async graphQLParams => {
           const data = await fetch('https://api.cirrus-ci.com/graphql', {
             method: 'POST',

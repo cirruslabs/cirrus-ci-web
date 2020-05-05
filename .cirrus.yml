@@ -1,5 +1,5 @@
 container:
-  image: node:13
+  image: node:14
 
 task:
   use_compute_credits: $CIRRUS_BRANCH == 'master'
@@ -12,8 +12,8 @@ task:
   matrix:
     - name: Build
       build_script: npm run build
-      production_build_snapshot_artifacts:
-        path: build/**/**
+    - name: Tests
+      test_script: npm run test
     - name: Prettier
       prettier_check_script: npm run prettier-check
     - name: Type Check

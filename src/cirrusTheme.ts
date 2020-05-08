@@ -36,9 +36,9 @@ export let cirrusColors = {
 };
 
 /*
- *  Fork of lightBaseTheme.js
+ * Fork of lightBaseTheme.js
  */
-export let cirrusTheme: ThemeOptions = {
+export let cirrusTheme: (dark: boolean) => ThemeOptions = (dark: boolean) => ({
   typography: {
     fontFamily: 'Roboto, sans-serif',
   },
@@ -46,11 +46,12 @@ export let cirrusTheme: ThemeOptions = {
     borderRadius: 2,
   },
   palette: {
+    type: dark ? 'dark' : 'light',
     primary: {
       main: cirrusColors.cirrusPrimary,
       dark: cirrusColors.cirrusPrimary,
-      light: cirrusColors.cirrusWhite,
-      contrastText: cirrusColors.cirrusWhite,
+      light: !dark ? cirrusColors.cirrusWhite : cirrusColors.cirrusDark,
+      contrastText: dark ? cirrusColors.cirrusWhite : cirrusColors.cirrusDark,
     },
     secondary: {
       main: cirrusColors.cirrusSecondary,
@@ -74,4 +75,4 @@ export let cirrusTheme: ThemeOptions = {
       },
     },
   },
-};
+});

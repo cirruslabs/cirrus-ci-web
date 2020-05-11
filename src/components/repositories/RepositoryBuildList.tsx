@@ -70,7 +70,7 @@ class RepositoryBuildList extends React.Component<Props, State> {
     location: PropTypes.object,
   };
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       selectedBuildId: null,

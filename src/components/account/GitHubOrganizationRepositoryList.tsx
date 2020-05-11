@@ -47,9 +47,7 @@ let GitHubOrganizationRepositoryList = (props: Props) => {
     <div>
       <Paper elevation={1}>
         <Toolbar className="justify-content-between">
-          <Typography variant="h6" color="inherit">
-            {props.organization}'s Repositories
-          </Typography>
+          <Typography variant="h6">{props.organization}'s Repositories</Typography>
           {organizationSettings}
         </Toolbar>
       </Paper>

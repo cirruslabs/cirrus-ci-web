@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -8,14 +7,10 @@ import RepositorySettings from './RepositorySettings';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { withStyles, WithStyles } from '@material-ui/core';
-import { cirrusColors } from '../../cirrusTheme';
 import { RepositorySettingsPage_repository } from './__generated__/RepositorySettingsPage_repository.graphql';
 import RepositoryCronSettings from './RepositoryCronSettings';
 
 const styles = {
-  title: {
-    backgroundColor: cirrusColors.cirrusGrey,
-  },
   settingGap: {
     paddingTop: 16,
   },
@@ -26,10 +21,6 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 class RepositorySettingsPage extends React.Component<Props> {
-  static contextTypes = {
-    router: PropTypes.object,
-  };
-
   render() {
     let { classes } = this.props;
 
@@ -37,10 +28,8 @@ class RepositorySettingsPage extends React.Component<Props> {
     return (
       <div>
         <Paper elevation={1}>
-          <Toolbar className={classes.title}>
-            <Typography variant="h6" color="inherit">
-              {repository.owner + '/' + repository.name + ' repository settings'}
-            </Typography>
+          <Toolbar>
+            <Typography variant="h6">{repository.owner + '/' + repository.name + ' repository settings'}</Typography>
           </Toolbar>
         </Paper>
         <div className={classes.settingGap} />

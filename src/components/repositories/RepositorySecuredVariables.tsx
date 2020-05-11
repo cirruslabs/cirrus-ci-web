@@ -32,7 +32,7 @@ interface State {
 }
 
 class RepositorySecuredVariables extends React.Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = { inputValue: '' };
     this.handleChange = this.handleChange.bind(this);

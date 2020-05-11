@@ -18,6 +18,7 @@ import { graphql } from 'babel-plugin-relay/macro';
 import * as queryString from 'query-string';
 import { TaskCommandList_task } from './__generated__/TaskCommandList_task.graphql';
 import { ItemOfArray } from '../../utils/utility-types';
+import { cirrusColors } from '../../cirrusTheme';
 
 const styles = {
   details: {
@@ -35,8 +36,8 @@ class TaskCommandList extends React.Component<Props> {
   };
 
   render() {
-    let task = this.props.task;
-    let commands = task.commands;
+    const { task } = this.props;
+    const commands = task.commands;
 
     let commandComponents = [];
     let lastTimestamp = task.executingTimestamp;
@@ -49,9 +50,9 @@ class TaskCommandList extends React.Component<Props> {
   }
 
   commandItem(command: ItemOfArray<TaskCommandList_task['commands']>, commandStartTimestamp: number) {
-    let { classes } = this.props;
+    const { classes } = this.props;
     const selectedCommandName = queryString.parse(this.props.location.search).command;
-    let styles = {
+    const styles = {
       header: {
         backgroundColor: commandStatusColor(command.status),
       },
@@ -67,7 +68,9 @@ class TaskCommandList extends React.Component<Props> {
       >
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} style={styles.header}>
           <div>
-            <Typography variant="body1">{command.name}</Typography>
+            <Typography variant="body1" style={{ color: cirrusColors.cirrusDark }}>
+              {command.name}
+            </Typography>
             <Typography variant="caption">
               {finished ? (
                 formatDuration(command.durationInSeconds)

@@ -38,7 +38,7 @@ interface State {
 class RepositorySettings extends React.Component<Props, State> {
   initialSettings;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = props.repository.settings;
     this.initialSettings = props.repository.settings;

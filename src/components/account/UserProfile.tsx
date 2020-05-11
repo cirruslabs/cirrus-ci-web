@@ -148,10 +148,8 @@ class UserProfile extends React.Component<Props> {
           <title>Settings - Cirrus CI</title>
         </Head>
         <Paper elevation={1}>
-          <Toolbar className={classes.title}>
-            <Typography variant="h6" color="inherit">
-              Settings for {user.githubUserName}
-            </Typography>
+          <Toolbar>
+            <Typography variant="h6">Settings for {user.githubUserName}</Typography>
           </Toolbar>
         </Paper>
         <div className={classes.gap} />

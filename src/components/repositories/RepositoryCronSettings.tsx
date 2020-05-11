@@ -10,7 +10,6 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
-import classNames from 'classnames';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Chip from '@material-ui/core/Chip';
@@ -128,10 +127,10 @@ class RepositoryCronSettings extends React.Component<Props, State> {
             <TableBody>
               {this.state.settings.map(settings => (
                 <TableRow hover={true} key={settings.name}>
-                  <TableCell className={classNames(classes.cell)}>
+                  <TableCell className={classes.cell}>
                     <Chip key={settings.name} className={classes.chip} label={settings.name} />
                   </TableCell>
-                  <TableCell className={classNames(classes.cell)}>
+                  <TableCell className={classes.cell}>
                     <Chip
                       key={settings.branch}
                       className={classes.chip}
@@ -143,7 +142,7 @@ class RepositoryCronSettings extends React.Component<Props, State> {
                       label={settings.branch}
                     />
                   </TableCell>
-                  <TableCell className={classNames(classes.cell)}>
+                  <TableCell className={classes.cell}>
                     <Chip
                       key={settings.expression}
                       className={classes.chip}
@@ -183,7 +182,7 @@ class RepositoryCronSettings extends React.Component<Props, State> {
                 </TableRow>
               ))}
               <TableRow hover={false}>
-                <TableCell className={classNames(classes.cell)}>
+                <TableCell className={classes.cell}>
                   <TextField
                     required
                     id="name-lbl"
@@ -193,7 +192,7 @@ class RepositoryCronSettings extends React.Component<Props, State> {
                     onChange={this.changeField('name')}
                   />
                 </TableCell>
-                <TableCell className={classNames(classes.cell)}>
+                <TableCell className={classes.cell}>
                   <TextField
                     required
                     id="name-lbl"
@@ -203,7 +202,7 @@ class RepositoryCronSettings extends React.Component<Props, State> {
                     onChange={this.changeField('branch')}
                   />
                 </TableCell>
-                <TableCell className={classNames(classes.cell)}>
+                <TableCell className={classes.cell}>
                   <TextField
                     required
                     id="expression-lbl"

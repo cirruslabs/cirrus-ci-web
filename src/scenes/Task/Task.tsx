@@ -9,10 +9,16 @@ import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
 import NotFound from '../NotFound';
 import { TaskQuery } from './__generated__/TaskQuery.graphql';
 
-export default props => (
+interface RealProps {
+  match: {
+    params: any;
+  };
+}
+
+export default (realProps: RealProps) => (
   <QueryRenderer<TaskQuery>
     environment={environment}
-    variables={props.match.params}
+    variables={realProps.match.params}
     query={graphql`
       query TaskQuery($taskId: ID!) {
         task(id: $taskId) {

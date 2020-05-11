@@ -138,7 +138,7 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
     router: PropTypes.object,
   };
 
-  constructor(props) {
+  constructor(props: WithStyles<typeof styles>) {
     super(props);
     this.state = {
       openDrawer: localStorage.getItem('cirrusOpenDrawer') === 'true',

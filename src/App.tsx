@@ -7,13 +7,12 @@ import { createMuiTheme, useMediaQuery } from '@material-ui/core';
 import CirrusFavicon from './components/common/CirrusFavicon';
 
 export default () => {
-  const dark: boolean = useMediaQuery('(prefers-color-scheme: dark)');
-  //  || true; // todo
+  const dark: boolean = useMediaQuery('(prefers-color-scheme: dark)') || true; // todo
 
   return (
     <ThemeProvider theme={createMuiTheme(cirrusTheme(dark))}>
       <CirrusFavicon />
-      <Routes isDarkTheme={dark} />
+      <Routes />
     </ThemeProvider>
   );
 };

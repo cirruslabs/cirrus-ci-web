@@ -101,7 +101,6 @@ export const styles = theme =>
       alignItems: 'center',
       justifyContent: 'flex-end',
       padding: '0',
-      backgroundColor: cirrusColors.cirrusGrey,
       ...theme.mixins.toolbar,
     },
     drawerPaper: {
@@ -134,16 +133,12 @@ export const styles = theme =>
     },
   });
 
-interface Props extends WithStyles<typeof styles> {
-  isDarkTheme: boolean;
-}
-
-class Routes extends React.Component<Props, { openDrawer: boolean }> {
+class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: boolean }> {
   static contextTypes = {
     router: PropTypes.object,
   };
 
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
     this.state = {
       openDrawer: localStorage.getItem('cirrusOpenDrawer') === 'true',
@@ -182,9 +177,7 @@ class Routes extends React.Component<Props, { openDrawer: boolean }> {
           }}
         >
           <div className={classes.drawerHeader}>
-            <Typography variant="h6" color="inherit">
-              Active Repositories
-            </Typography>
+            <Typography variant="h6">Active Repositories</Typography>
             <IconButton onClick={this.handleDrawerClose}>
               <ChevronLeftIcon />
             </IconButton>

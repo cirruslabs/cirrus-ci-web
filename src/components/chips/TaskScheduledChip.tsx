@@ -3,7 +3,7 @@ import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import Icon from '@material-ui/core/Icon';
-import Tooltip from '@material-ui/core/Tooltip';
+import Tooltip from '../common/CirrusTooltip';
 import { taskStatusColor } from '../../utils/colors';
 import { taskStatusIconName } from '../../utils/status';
 import { formatDuration } from '../../utils/time';

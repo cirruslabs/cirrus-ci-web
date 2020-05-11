@@ -6,7 +6,7 @@ import Memory from '@material-ui/icons/Memory';
 import { cirrusColors } from '../../cirrusTheme';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { Tooltip } from '@material-ui/core';
+import Tooltip from '../common/CirrusTooltip';
 
 function TaskResourcesChip(props) {
   let { task, className } = props;

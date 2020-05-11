@@ -8,7 +8,7 @@ import { taskStatusIconName, taskStatusMessage } from '../../utils/status';
 import { cirrusColors } from '../../cirrusTheme';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { Tooltip } from '@material-ui/core';
+import Tooltip from '../common/CirrusTooltip';
 
 function TaskStatusChip(props) {
   let { task, className } = props;

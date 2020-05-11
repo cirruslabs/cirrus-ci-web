@@ -3,7 +3,7 @@ import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import Star from '@material-ui/icons/Star';
-import Tooltip from '@material-ui/core/Tooltip';
+import Tooltip from '../common/CirrusTooltip';
 
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';

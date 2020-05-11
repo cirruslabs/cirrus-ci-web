@@ -7,12 +7,13 @@ import CirrusLinearProgress from '../common/CirrusLinearProgress';
 import { subscribeTaskCommandLogs } from '../../rtu/ConnectionManager';
 import CirrusCircularProgress from '../common/CirrusCircularProgress';
 import { isTaskCommandFinalStatus } from '../../utils/status';
-import { createStyles, Tooltip, WithStyles, withStyles } from '@material-ui/core';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core';
 import GetApp from '@material-ui/icons/GetApp';
 import Fab from '@material-ui/core/Fab';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { TaskCommandLogsTailQuery } from './__generated__/TaskCommandLogsTailQuery.graphql';
 import { TaskCommandStatus } from './__generated__/TaskCommandList_task.graphql';
+import Tooltip from '../common/CirrusTooltip';
 
 function logURL(taskId: string, command) {
   return 'https://api.cirrus-ci.com/v1/task/' + taskId + '/logs/' + command.name + '.log';

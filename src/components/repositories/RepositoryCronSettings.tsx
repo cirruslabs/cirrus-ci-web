@@ -4,7 +4,7 @@ import { graphql } from 'babel-plugin-relay/macro';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
-import { createStyles, IconButton, TextField, Tooltip, WithStyles, withStyles } from '@material-ui/core';
+import { createStyles, IconButton, TextField, WithStyles, withStyles } from '@material-ui/core';
 import { RepositoryCronSettings_repository } from './__generated__/RepositoryCronSettings_repository.graphql';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -24,6 +24,7 @@ import NextCronInvocationTimeChip from '../chips/NextCronInvocationTimeChip';
 import { RepositoryCronSettingsSaveMutationResponse } from './__generated__/RepositoryCronSettingsSaveMutation.graphql';
 import { RepositoryCronSettingsRemoveMutationResponse } from './__generated__/RepositoryCronSettingsRemoveMutation.graphql';
 import { navigateBuild } from '../../utils/navigate';
+import Tooltip from '../common/CirrusTooltip';
 
 const saveCronSettingsMutation = graphql`
   mutation RepositoryCronSettingsSaveMutation($input: RepositorySaveCronSettingsInput!) {

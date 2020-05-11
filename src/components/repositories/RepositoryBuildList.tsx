@@ -17,7 +17,7 @@ import BuildBranchNameChip from '../chips/BuildBranchNameChip';
 import BuildChangeChip from '../chips/BuildChangeChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import { navigateBuild } from '../../utils/navigate';
-import { createStyles, Tooltip, withStyles, WithStyles } from '@material-ui/core';
+import { createStyles, withStyles, WithStyles } from '@material-ui/core';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import classNames from 'classnames';
 import CreateBuildDialog from '../builds/CreateBuildDialog';
@@ -28,6 +28,7 @@ import { Helmet as Head } from 'react-helmet';
 import Settings from '@material-ui/icons/Settings';
 import AddCircle from '@material-ui/icons/AddCircle';
 import Timeline from '@material-ui/icons/Timeline';
+import Tooltip from '../common/CirrusTooltip';
 
 let styles = createStyles({
   gap: {

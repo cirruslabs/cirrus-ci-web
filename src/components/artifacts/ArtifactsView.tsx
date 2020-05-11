@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
-import { createStyles, List, Tooltip, withStyles, WithStyles } from '@material-ui/core';
+import { createStyles, List, withStyles, WithStyles } from '@material-ui/core';
+import Tooltip from '../common/CirrusTooltip';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';

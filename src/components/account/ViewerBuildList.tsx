@@ -70,7 +70,7 @@ class ViewerBuildList extends React.Component<Props> {
           <title>Recent Builds - Cirrus CI</title>
         </Head>
         <Toolbar
-          styles={{ backgroundColor: this.props.isDarkTheme ? cirrusColors.cirrusWhite : cirrusColors.cirrusGrey }}
+          style={{ backgroundColor: this.props.isDarkTheme ? cirrusColors.cirrusWhite : cirrusColors.cirrusGrey }}
         >
           <Typography variant="h6" color="inherit">
             Recent Builds

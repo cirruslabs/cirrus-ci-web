@@ -4,7 +4,6 @@ import { TaskStatus } from '../components/chips/__generated__/TaskStatusChip_tas
 import { graphql } from 'babel-plugin-relay/macro';
 import { TaskCommandStatus } from './__generated__/colors_TaskCommand.graphql';
 import { NotificationLevel } from './__generated__/colors_Notification.graphql';
-import cookie from 'universal-cookie';
 
 export function buildStatusColor(status: BuildStatus) {
   switch (status) {
@@ -102,23 +101,5 @@ export function notificationColor(level: NotificationLevel) {
       return cirrusColors.failure;
     default:
       return cirrusColors.warning;
-  }
-}
-
-export function isDarkTheme(queryResult: boolean) {
-  const universalCookie = new cookie();
-  const val = universalCookie.get('CIRRUS_DARK');
-
-  return val || queryResult;
-}
-
-export function toggleDarkTheme() {
-  const universalCookie = new cookie();
-  const val = universalCookie.get('CIRRUS_DARK');
-
-  if (val === false || !val) {
-    universalCookie.set('CIRRUS_DARK', true);
-  } else {
-    universalCookie.set('CIRRUS_DARK', false);
   }
 }

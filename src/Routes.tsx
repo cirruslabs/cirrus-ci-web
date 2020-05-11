@@ -134,12 +134,16 @@ export const styles = theme =>
     },
   });
 
-class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: boolean }> {
+interface Props extends WithStyles<typeof styles> {
+  isDarkTheme: boolean;
+}
+
+class Routes extends React.Component<Props, { openDrawer: boolean }> {
   static contextTypes = {
     router: PropTypes.object,
   };
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       openDrawer: localStorage.getItem('cirrusOpenDrawer') === 'true',

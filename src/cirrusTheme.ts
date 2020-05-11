@@ -51,7 +51,7 @@ export let cirrusTheme: (dark: boolean) => ThemeOptions = (dark: boolean) => ({
       main: cirrusColors.cirrusPrimary,
       dark: cirrusColors.cirrusPrimary,
       light: !dark ? cirrusColors.cirrusWhite : cirrusColors.cirrusDark,
-      contrastText: dark ? cirrusColors.cirrusWhite : cirrusColors.cirrusDark,
+      contrastText: cirrusColors.cirrusWhite,
     },
     secondary: {
       main: cirrusColors.cirrusSecondary,

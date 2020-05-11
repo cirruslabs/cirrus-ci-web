@@ -8,11 +8,12 @@ import CirrusFavicon from './components/common/CirrusFavicon';
 
 export default () => {
   const dark: boolean = useMediaQuery('(prefers-color-scheme: dark)');
+  //  || true; // todo
 
   return (
     <ThemeProvider theme={createMuiTheme(cirrusTheme(dark))}>
       <CirrusFavicon />
-      <Routes />
+      <Routes isDarkTheme={dark} />
     </ThemeProvider>
   );
 };

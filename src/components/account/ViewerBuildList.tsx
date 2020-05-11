@@ -25,9 +25,6 @@ import { ViewerBuildList_viewer } from './__generated__/ViewerBuildList_viewer.g
 import { Helmet as Head } from 'react-helmet';
 
 let styles = {
-  title: {
-    backgroundColor: cirrusColors.cirrusGrey,
-  },
   chip: {
     margin: 4,
   },
@@ -43,6 +40,7 @@ let styles = {
 
 interface Props extends WithStyles<typeof styles>, RouteComponentProps {
   viewer: ViewerBuildList_viewer;
+  isDarkTheme: boolean;
 }
 
 class ViewerBuildList extends React.Component<Props> {
@@ -71,7 +69,9 @@ class ViewerBuildList extends React.Component<Props> {
         <Head>
           <title>Recent Builds - Cirrus CI</title>
         </Head>
-        <Toolbar className={classes.title}>
+        <Toolbar
+          styles={{ backgroundColor: this.props.isDarkTheme ? cirrusColors.cirrusWhite : cirrusColors.cirrusGrey }}
+        >
           <Typography variant="h6" color="inherit">
             Recent Builds
           </Typography>

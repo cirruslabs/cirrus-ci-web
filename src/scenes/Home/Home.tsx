@@ -9,7 +9,7 @@ import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
 import WelcomePage from './WelcomePage';
 import { HomeViewerQuery } from './__generated__/HomeViewerQuery.graphql';
 
-export default props => (
+export default (literalProps: { isDarkTheme: boolean }) => (
   <QueryRenderer<HomeViewerQuery>
     environment={environment}
     query={graphql`
@@ -20,12 +20,12 @@ export default props => (
       }
     `}
     variables={{}}
-    render={({ error, props }) => {
+    render={({ props }) => {
       if (!props) {
         return <CirrusLinearProgress />;
       }
       if (props.viewer) {
-        return <ViewerBuildList viewer={props.viewer} />;
+        return <ViewerBuildList viewer={props.viewer} isDarkTheme={literalProps.isDarkTheme} />;
       } else {
         return <WelcomePage />;
       }

@@ -60,7 +60,7 @@ export let cirrusTheme: (dark: boolean) => ThemeOptions = (dark: boolean) => ({
       contrastText: cirrusColors.cirrusWhite,
     },
     action: {
-      hover: cirrusColors.cirrusLightGrey,
+      hover: dark ? cirrusColors.cirrusLightDark : cirrusColors.cirrusLightGrey,
     },
   },
   overrides: {

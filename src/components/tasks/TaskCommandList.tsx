@@ -71,7 +71,7 @@ class TaskCommandList extends React.Component<Props> {
             <Typography variant="body1" style={{ color: cirrusColors.cirrusDark }}>
               {command.name}
             </Typography>
-            <Typography variant="caption">
+            <Typography variant="caption" style={{ color: cirrusColors.cirrusDark }}>
               {finished ? (
                 formatDuration(command.durationInSeconds)
               ) : isTaskCommandExecuting(command.status) ? (

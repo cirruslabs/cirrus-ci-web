@@ -52,7 +52,7 @@ interface State {
 class Logs extends React.Component<Props, State> {
   unlisten: UnregisterCallback;
 
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
     window.onhashchange = this.updateLinesSelection;
     window.onpopstate = this.updateLinesSelection;

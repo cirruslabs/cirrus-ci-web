@@ -170,6 +170,18 @@ enum DecryptEnvironmentVariablesFor {
   EVERYONE
 }
 
+type ExecutionChart {
+  startTimestamp: Int!
+  maxValue: Float!
+  minValue: Float!
+  points: [ExecutionChartPoint]!
+}
+
+type ExecutionChartPoint {
+  value: Float!
+  secondsFromStart: Int!
+}
+
 type ExecutionEvent {
   timestamp: Int!
   message: String!
@@ -178,6 +190,8 @@ type ExecutionEvent {
 type ExecutionInfo {
   labels: [String]
   events: [ExecutionEvent]
+  cpuChart: ExecutionChart
+  memoryChart: ExecutionChart
 }
 
 input GenerateNewAccessTokenInput {

@@ -38,7 +38,7 @@ import { TaskDetails_task } from './__generated__/TaskDetails_task.graphql';
 import { TaskDetailsReRunMutationResponse } from './__generated__/TaskDetailsReRunMutation.graphql';
 import TaskResourcesChip from '../chips/TaskResourcesChip';
 import { Helmet as Head } from 'react-helmet';
-import ExecutionInfo from '../common/ExecutionInfo';
+import ExecutionInfo from '../common/TaskExecutionInfo';
 import Refresh from '@material-ui/icons/Refresh';
 import PlayCircleFilled from '@material-ui/icons/PlayCircleFilled';
 import Cancel from '@material-ui/icons/Cancel';
@@ -144,11 +144,10 @@ interface Props extends WithStyles<typeof styles>, RouteComponentProps {
 }
 
 class TaskDetails extends React.Component<Props> {
-  subscription: Disposable;
-
   static contextTypes = {
     router: PropTypes.object,
   };
+  subscription: Disposable;
 
   componentDidMount() {
     if (isTaskFinalStatus(this.props.task.status)) {
@@ -292,7 +291,7 @@ class TaskDetails extends React.Component<Props> {
                 return <Chip key={label} className={classes.chip} label={shorten(label)} />;
               })}
             </div>
-            {task.executionInfo ? <ExecutionInfo info={task.executionInfo} /> : null}
+            <ExecutionInfo task={task} />
           </CardContent>
           <CardActions className="d-flex flex-wrap justify-content-end">
             <Button
@@ -426,9 +425,7 @@ export default createFragmentContainer(withStyles(styles)(withRouter(TaskDetails
         id
         ...TaskListRow_task
       }
-      executionInfo {
-        ...ExecutionInfo_info
-      }
+      ...TaskExecutionInfo_task
     }
   `,
 });

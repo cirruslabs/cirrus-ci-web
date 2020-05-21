@@ -48,6 +48,7 @@ class TaskExecutionInfo extends React.Component<Props> {
   renderCPUChart() {
     let { task } = this.props;
     let info = task.executionInfo;
+
     if (!info.cpuChart) return null;
     if (info.cpuChart.points.length < 2) return null;
     let chartPoints = Array(info.cpuChart.points.length);
@@ -61,7 +62,7 @@ class TaskExecutionInfo extends React.Component<Props> {
     return (
       <div className="col">
         <Typography variant="h6" align="center" className="align-middle">
-          CPU Usage Chart
+          CPU Usage
         </Typography>
         <ResponsiveContainer height={200} width="100%">
           <AreaChart data={chartPoints}>
@@ -83,8 +84,10 @@ class TaskExecutionInfo extends React.Component<Props> {
   renderMemoryChart() {
     let { task } = this.props;
     let info = task.executionInfo;
+
     if (!info.memoryChart) return null;
     if (info.memoryChart.points.length < 2) return null;
+
     let chartPoints = Array(info.memoryChart.points.length);
     let memoryUnit = task.instanceResources.memory > 1024 ? 'Gb' : 'Mb';
     info.memoryChart.points.forEach((point, index) => {
@@ -105,7 +108,7 @@ class TaskExecutionInfo extends React.Component<Props> {
     return (
       <div className="col">
         <Typography variant="h6" align="center" className="align-middle">
-          Memory Usage Chart ({memoryUnit})
+          Memory Usage ({memoryUnit})
         </Typography>
         <ResponsiveContainer height={200} width="100%">
           <AreaChart data={chartPoints}>

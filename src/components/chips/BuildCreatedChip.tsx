@@ -52,7 +52,6 @@ class BuildCreatedChip extends React.Component<Props> {
 export default createFragmentContainer(BuildCreatedChip, {
   build: graphql`
     fragment BuildCreatedChip_build on Build {
-      id
       buildCreatedTimestamp
     }
   `,

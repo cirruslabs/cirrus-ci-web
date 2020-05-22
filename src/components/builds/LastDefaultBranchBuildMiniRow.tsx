@@ -93,7 +93,6 @@ export default createFragmentContainer(withStyles(styles)(withRouter(LastDefault
   repository: graphql`
     fragment LastDefaultBranchBuildMiniRow_repository on Repository {
       id
-      owner
       name
       lastDefaultBranchBuild {
         id

@@ -23,6 +23,7 @@ import { BuildDetails_build } from './__generated__/BuildDetails_build.graphql';
 import { Helmet as Head } from 'react-helmet';
 import Refresh from '@material-ui/icons/Refresh';
 import Check from '@material-ui/icons/Check';
+import Cancel from '@material-ui/icons/Cancel';
 
 const buildApproveMutation = graphql`
   mutation BuildDetailsApproveBuildMutation($input: BuildApproveInput!) {
@@ -69,6 +70,17 @@ const taskBatchReRunMutation = graphql`
     batchReRun(input: $input) {
       newTasks {
         id
+      }
+    }
+  }
+`;
+
+const taskCancelMutation = graphql`
+  mutation BuildDetailsTaskCancelMutation($input: TaskAbortInput!) {
+    abortTask(input: $input) {
+      abortedTask {
+        id
+        status
       }
     }
   }
@@ -158,6 +170,12 @@ class BuildDetails extends React.Component<Props> {
       </Button>
     );
 
+    let cancelButton = !hasWritePermissions(build.viewerPermission) ? null : (
+      <Button variant="contained" onClick={() => this.cancelAllTasks(build)} startIcon={<Cancel />}>
+        Cancel All Tasks
+      </Button>
+    );
+
     return (
       <div>
         <CirrusFavicon color={faviconColor(build.status)} />
@@ -191,6 +209,7 @@ class BuildDetails extends React.Component<Props> {
             {reTriggerButton}
             {approveButton}
             {reRunAllTasksButton}
+            {cancelButton}
           </CardActions>
         </Card>
         {notificationsComponent}
@@ -214,6 +233,25 @@ class BuildDetails extends React.Component<Props> {
       mutation: buildApproveMutation,
       variables: variables,
       onError: err => console.error(err),
+    });
+  }
+
+  cancelAllTasks(build: BuildDetails_build) {
+    build.tasks.forEach(task => {
+      const variables = {
+        input: {
+          clientMutationId: 'abort-' + task.id,
+        },
+      };
+
+      commitMutation(environment, {
+        mutation: taskCancelMutation,
+        variables: variables,
+        onCompleted: () => {
+          this.forceUpdate();
+        },
+        onError: err => console.error(err),
+      });
     });
   }
 
@@ -256,6 +294,10 @@ export default createFragmentContainer(withStyles(styles)(withRouter(BuildDetail
       id
       branch
       status
+      viewerPermission
+      tasks {
+        id
+      }
       changeIdInRepo
       changeMessageTitle
       ...BuildCreatedChip_build

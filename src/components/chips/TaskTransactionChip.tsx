@@ -8,6 +8,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { cirrusColors } from '../../cirrusTheme';
+import { isTaskFinalStatus } from '../../utils/status';
 
 function TaskTransactionChip(props) {
   let { task } = props;
@@ -17,7 +18,9 @@ function TaskTransactionChip(props) {
     return <div />;
   }
 
-  let tip = 'Compute credit cost will be calculated at the end of the task.';
+  let tip = isTaskFinalStatus(task.status)
+    ? 'No compute credits were charged!'
+    : 'Compute credit cost will be calculated at the end of the task.';
   if (transaction) {
     tip = `${transaction.creditsAmount} compute credits were charged for this task.`;
   }
@@ -44,6 +47,7 @@ function TaskTransactionChip(props) {
 export default createFragmentContainer(TaskTransactionChip, {
   task: graphql`
     fragment TaskTransactionChip_task on Task {
+      status
       usedComputeCredits
       transaction {
         creditsAmount

@@ -6,9 +6,6 @@ import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
 import AccountInformation from '../../components/account/AccountInformation';
 import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
-import { cirrusColors } from '../../cirrusTheme';
-import Button from '@material-ui/core/Button';
-import GitHubIcon from '@material-ui/icons/GitHub';
 import { ViewerComponentQuery } from './__generated__/ViewerComponentQuery.graphql';
 
 export default () => {

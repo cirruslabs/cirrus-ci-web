@@ -143,11 +143,22 @@ interface Props extends WithStyles<typeof styles>, RouteComponentProps {
   task: TaskDetails_task;
 }
 
-class TaskDetails extends React.Component<Props> {
+interface State {
+  executionInfoOpen: boolean;
+}
+
+class TaskDetails extends React.Component<Props, State> {
   static contextTypes = {
     router: PropTypes.object,
   };
   subscription: Disposable;
+
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      executionInfoOpen: false,
+    };
+  }
 
   componentDidMount() {
     if (isTaskFinalStatus(this.props.task.status)) {
@@ -203,6 +214,16 @@ class TaskDetails extends React.Component<Props> {
           Re-Run
         </Button>
       );
+
+    let executionInfoToggleButton = this.state.executionInfoOpen ? (
+      <Button variant="contained" onClick={() => this.setState({ executionInfoOpen: false })}>
+        Hide Execution Info
+      </Button>
+    ) : (
+      <Button variant="contained" onClick={() => this.setState({ executionInfoOpen: true })}>
+        Show Execution Info
+      </Button>
+    );
 
     let taskIsTriggerable = task.status === 'PAUSED';
     let taskIsPreTriggerable = task.status === 'CREATED' && task.triggerType === 'MANUAL';
@@ -291,9 +312,10 @@ class TaskDetails extends React.Component<Props> {
                 return <Chip key={label} className={classes.chip} label={shorten(label)} />;
               })}
             </div>
-            <ExecutionInfo task={task} />
+            <ExecutionInfo task={task} isOpen={this.state.executionInfoOpen} />
           </CardContent>
           <CardActions className="d-flex flex-wrap justify-content-end">
+            {executionInfoToggleButton}
             <Button
               variant="contained"
               color="primary"

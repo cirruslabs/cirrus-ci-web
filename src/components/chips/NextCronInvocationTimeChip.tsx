@@ -5,10 +5,20 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { graphql } from 'babel-plugin-relay/macro';
 import React from 'react';
 import { createFragmentContainer } from 'react-relay';
-import { cirrusColors } from '../../cirrusTheme';
 import { NextCronInvocationTimeChip_settings } from './__generated__/NextCronInvocationTimeChip_settings.graphql';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core';
 
-interface Props {
+const styles = theme =>
+  createStyles({
+    avatar: {
+      backgroundColor: theme.palette.primary.main,
+    },
+    avatarIcon: {
+      color: theme.palette.primary.contrastText,
+    },
+  });
+
+interface Props extends WithStyles<typeof styles> {
   settings: NextCronInvocationTimeChip_settings;
   className?: string;
 }
@@ -26,8 +36,8 @@ class NextCronInvocationTimeChip extends React.Component<Props> {
           className={this.props.className}
           label={`Next invocation: ${new Date(nextInvocationTimestamp).toLocaleTimeString()}`}
           avatar={
-            <Avatar style={{ background: cirrusColors.cirrusPrimary }}>
-              <AccessTime style={{ color: cirrusColors.cirrusWhite }} />
+            <Avatar className={this.props.classes.avatar}>
+              <AccessTime className={this.props.classes.avatarIcon} />
             </Avatar>
           }
         />
@@ -36,7 +46,7 @@ class NextCronInvocationTimeChip extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(NextCronInvocationTimeChip, {
+export default createFragmentContainer(withStyles(styles)(NextCronInvocationTimeChip), {
   settings: graphql`
     fragment NextCronInvocationTimeChip_settings on RepositoryCronSettings {
       nextInvocationTimestamp

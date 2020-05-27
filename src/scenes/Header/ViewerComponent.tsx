@@ -27,19 +27,7 @@ export default () => {
         if (!props) {
           return <CirrusLinearProgress />;
         }
-        let viewer = props.viewer;
-        if (!viewer) {
-          return (
-            <Button
-              style={{ color: cirrusColors.cirrusWhite }}
-              startIcon={<GitHubIcon />}
-              href="https://api.cirrus-ci.com/redirect/auth/github"
-            >
-              Sign in
-            </Button>
-          );
-        }
-        return <AccountInformation viewer={viewer} />;
+        return <AccountInformation viewer={props.viewer} />;
       }}
     />
   );

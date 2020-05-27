@@ -11,10 +11,7 @@ let successColor = lightGreen['500'];
 let lightSuccessColor = lightGreen['300'];
 
 export let cirrusColors = {
-  cirrusDark: grey['900'],
-  cirrusLightDark: grey['700'],
   cirrusGrey: grey['300'],
-  cirrusLightGrey: grey['200'],
   cirrusWhite: grey['50'],
   progress: successColor,
   initialization: blue['500'],
@@ -47,17 +44,17 @@ export let cirrusTheme: ThemeOptions = {
     primary: {
       main: grey['900'],
       dark: grey['900'],
-      light: cirrusColors.cirrusWhite,
-      contrastText: cirrusColors.cirrusWhite,
+      light: grey['50'],
+      contrastText: grey['50'],
     },
     secondary: {
       main: grey['700'],
       dark: grey['700'],
-      light: cirrusColors.cirrusWhite,
-      contrastText: cirrusColors.cirrusWhite,
+      light: grey['50'],
+      contrastText: grey['50'],
     },
     action: {
-      hover: cirrusColors.cirrusLightGrey,
+      hover: grey['200'],
     },
   },
   overrides: {

@@ -26,7 +26,7 @@ import { Helmet as Head } from 'react-helmet';
 
 let styles = {
   title: {
-    backgroundColor: cirrusColors.cirrusGrey,
+    backgroundColor: cirrusColors.cirrusTitleBackground,
   },
   chip: {
     margin: 4,

@@ -7,7 +7,7 @@ import yellow from '@material-ui/core/colors/yellow';
 import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme';
 
 export let cirrusColors = {
-  cirrusGrey: grey['300'],
+  cirrusTitleBackground: grey['300'],
   progress: lightGreen['500'],
   initialization: blue['500'],
   lightInitialization: blue['300'],

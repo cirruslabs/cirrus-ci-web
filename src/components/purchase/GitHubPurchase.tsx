@@ -24,7 +24,7 @@ import { GitHubPurchase_info } from './__generated__/GitHubPurchase_info.graphql
 const styles = theme =>
   createStyles({
     title: {
-      backgroundColor: cirrusColors.cirrusGrey,
+      backgroundColor: cirrusColors.cirrusTitleBackground,
     },
     row: {
       display: 'flex',

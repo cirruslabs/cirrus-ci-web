@@ -20,7 +20,7 @@ import FolderOpen from '@material-ui/icons/FolderOpen';
 const styles = theme =>
   createStyles({
     title: {
-      backgroundColor: cirrusColors.cirrusGrey,
+      backgroundColor: cirrusColors.cirrusTitleBackground,
     },
   });
 

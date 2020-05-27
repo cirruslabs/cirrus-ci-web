@@ -3,34 +3,41 @@ import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import TimerIcon from '@material-ui/icons/Timer';
-
-import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { cirrusColors } from '../../cirrusTheme';
 import { formatDuration } from '../../utils/time';
-import { Tooltip } from '@material-ui/core';
+import { Tooltip, withTheme, WithTheme } from '@material-ui/core';
+import { TaskTimeoutChip_task } from './__generated__/TaskTimeoutChip_task.graphql';
+import { createFragmentContainer } from 'react-relay';
 
-function TaskTimeoutChip(props) {
-  let { task } = props;
-  let { timeoutInSeconds } = task;
-  let defaultTimeout = timeoutInSeconds === 3600; // 1 hour
-  if (defaultTimeout) return <div />;
-  return (
-    <Tooltip title="Custom Timeout">
-      <Chip
-        className={props.className}
-        label={formatDuration(timeoutInSeconds)}
-        avatar={
-          <Avatar style={{ backgroundColor: cirrusColors.success }}>
-            <TimerIcon style={{ color: cirrusColors.cirrusWhite }} />
-          </Avatar>
-        }
-      />
-    </Tooltip>
-  );
+interface Props extends WithTheme {
+  task: TaskTimeoutChip_task;
+  className?: string;
 }
 
-export default createFragmentContainer(TaskTimeoutChip, {
+class TaskTimeoutChip extends React.Component<Props> {
+  render() {
+    let { task } = this.props;
+    let { timeoutInSeconds } = task;
+    let defaultTimeout = timeoutInSeconds === 3600; // 1 hour
+    if (defaultTimeout) return <div />;
+    return (
+      <Tooltip title="Custom Timeout">
+        <Chip
+          className={this.props.className}
+          label={formatDuration(timeoutInSeconds)}
+          avatar={
+            <Avatar style={{ backgroundColor: cirrusColors.success }}>
+              <TimerIcon style={{ color: this.props.theme.palette.background.paper }} />
+            </Avatar>
+          }
+        />
+      </Tooltip>
+    );
+  }
+}
+
+export default createFragmentContainer(withTheme(TaskTimeoutChip), {
   task: graphql`
     fragment TaskTimeoutChip_task on Task {
       timeoutInSeconds

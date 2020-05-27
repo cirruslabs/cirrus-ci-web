@@ -11,8 +11,9 @@ import { cirrusColors } from '../../cirrusTheme';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { BuildCreatedChip_build } from './__generated__/BuildCreatedChip_build.graphql';
+import { WithTheme, withTheme } from '@material-ui/core';
 
-interface Props {
+interface Props extends WithTheme {
   build: BuildCreatedChip_build;
   className?: string;
 }
@@ -40,7 +41,7 @@ class BuildCreatedChip extends React.Component<Props> {
           label={`Created ${roundAndPresentDuration(durationInSeconds)} ago`}
           avatar={
             <Avatar style={{ backgroundColor: taskStatusColor('CREATED') }}>
-              <Icon style={{ color: cirrusColors.cirrusWhite }}>{taskStatusIconName('CREATED')}</Icon>
+              <Icon style={{ color: this.props.theme.palette.background.paper }}>{taskStatusIconName('CREATED')}</Icon>
             </Avatar>
           }
         />
@@ -49,7 +50,7 @@ class BuildCreatedChip extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(BuildCreatedChip, {
+export default createFragmentContainer(withTheme(BuildCreatedChip), {
   build: graphql`
     fragment BuildCreatedChip_build on Build {
       id

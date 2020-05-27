@@ -7,25 +7,34 @@ import CasinoIcon from '@material-ui/icons/Casino';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { cirrusColors } from '../../cirrusTheme';
+import { WithTheme, withTheme } from '@material-ui/core';
+import { TaskExperimentalChip_task } from './__generated__/TaskExperimentalChip_task.graphql';
 
-function TaskExperimentalChip(props) {
-  let { task } = props;
-  let { experimental } = task;
-  if (!experimental) return <div />;
-  return (
-    <Chip
-      className={props.className}
-      label="Experimental"
-      avatar={
-        <Avatar style={{ backgroundColor: cirrusColors.success }}>
-          <CasinoIcon style={{ color: cirrusColors.cirrusWhite }} />
-        </Avatar>
-      }
-    />
-  );
+interface Props extends WithTheme {
+  className?: string;
+  task: TaskExperimentalChip_task;
 }
 
-export default createFragmentContainer(TaskExperimentalChip, {
+class TaskExperimentalChip extends React.Component<Props> {
+  render() {
+    let { task } = this.props;
+    let { experimental } = task;
+    if (!experimental) return <div />;
+    return (
+      <Chip
+        className={this.props.className}
+        label="Experimental"
+        avatar={
+          <Avatar style={{ backgroundColor: cirrusColors.success }}>
+            <CasinoIcon style={{ color: this.props.theme.palette.background.paper }} />
+          </Avatar>
+        }
+      />
+    );
+  }
+}
+
+export default createFragmentContainer(withTheme(TaskExperimentalChip), {
   task: graphql`
     fragment TaskExperimentalChip_task on Task {
       experimental

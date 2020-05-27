@@ -3,7 +3,6 @@ import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import Memory from '@material-ui/icons/Memory';
-import { cirrusColors } from '../../cirrusTheme';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { createStyles, Tooltip, withStyles, WithStyles } from '@material-ui/core';
@@ -13,6 +12,9 @@ const styles = theme =>
   createStyles({
     avatar: {
       backgroundColor: theme.palette.secondary.main,
+    },
+    avatarIcon: {
+      backgroundColor: theme.palette.background.paper,
     },
   });
 
@@ -34,7 +36,7 @@ class TaskResourcesChip extends React.Component<Props> {
           label={`${cpuPart} / ${memoryPart}`}
           avatar={
             <Avatar className={this.props.classes.avatar}>
-              <Memory style={{ color: cirrusColors.cirrusWhite }} />
+              <Memory className={this.props.classes.avatarIcon} />
             </Avatar>
           }
         />

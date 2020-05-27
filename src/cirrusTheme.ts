@@ -8,7 +8,6 @@ import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme';
 
 export let cirrusColors = {
   cirrusGrey: grey['300'],
-  cirrusWhite: grey['50'],
   progress: lightGreen['500'],
   initialization: blue['500'],
   lightInitialization: blue['300'],

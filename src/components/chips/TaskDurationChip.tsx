@@ -4,12 +4,12 @@ import Icon from '@material-ui/core/Icon';
 import { graphql } from 'babel-plugin-relay/macro';
 import React from 'react';
 import { createFragmentContainer, Disposable, requestSubscription } from 'react-relay';
-import { cirrusColors } from '../../cirrusTheme';
 import environment from '../../createRelayEnvironment';
 import { taskStatusColor } from '../../utils/colors';
 import { isTaskFinalStatus, isTaskInProgressStatus, taskStatusIconName } from '../../utils/status';
 import { formatDuration } from '../../utils/time';
 import { TaskDurationChip_task } from './__generated__/TaskDurationChip_task.graphql';
+import { WithTheme, withTheme } from '@material-ui/core';
 
 const taskSubscription = graphql`
   subscription TaskDurationChipSubscription($taskID: ID!) {
@@ -19,7 +19,7 @@ const taskSubscription = graphql`
   }
 `;
 
-interface Props {
+interface Props extends WithTheme {
   task: TaskDurationChip_task;
   className?: string;
 }
@@ -67,7 +67,7 @@ class TaskDurationChip extends React.Component<Props> {
         label={formatDuration(durationInSeconds)}
         avatar={
           <Avatar style={{ background: taskStatusColor(task.status) }}>
-            <Icon style={{ color: cirrusColors.cirrusWhite }}>{taskStatusIconName(task.status)}</Icon>
+            <Icon style={{ color: this.props.theme.palette.background.paper }}>{taskStatusIconName(task.status)}</Icon>
           </Avatar>
         }
       />
@@ -75,7 +75,7 @@ class TaskDurationChip extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(TaskDurationChip, {
+export default createFragmentContainer(withTheme(TaskDurationChip), {
   task: graphql`
     fragment TaskDurationChip_task on Task {
       id

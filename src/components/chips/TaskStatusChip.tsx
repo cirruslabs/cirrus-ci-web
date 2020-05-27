@@ -5,33 +5,42 @@ import Chip from '@material-ui/core/Chip';
 import Icon from '@material-ui/core/Icon';
 import { taskStatusColor } from '../../utils/colors';
 import { taskStatusIconName, taskStatusMessage } from '../../utils/status';
-import { cirrusColors } from '../../cirrusTheme';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { Tooltip } from '@material-ui/core';
+import { Tooltip, WithTheme, withTheme } from '@material-ui/core';
+import { TaskStatusChip_task } from './__generated__/TaskStatusChip_task.graphql';
 
-function TaskStatusChip(props) {
-  let { task, className } = props;
-  let chip = (
-    <Chip
-      className={className}
-      label={taskStatusMessage(task)}
-      avatar={
-        <Avatar style={{ backgroundColor: taskStatusColor(task.status) }}>
-          <Icon style={{ color: cirrusColors.cirrusWhite }}>{taskStatusIconName(task.status)}</Icon>
-        </Avatar>
-      }
-    />
-  );
-  if (task.executingTimestamp && task.executingTimestamp > 0) {
-    return (
-      <Tooltip title={`Execution started at ${new Date(task.executingTimestamp).toLocaleTimeString()}`}>{chip}</Tooltip>
-    );
-  }
-  return chip;
+interface Props extends WithTheme {
+  task: TaskStatusChip_task;
+  className?: string;
 }
 
-export default createFragmentContainer(TaskStatusChip, {
+class TaskStatusChip extends React.Component<Props> {
+  render() {
+    let { task, className } = this.props;
+    let chip = (
+      <Chip
+        className={className}
+        label={taskStatusMessage(task)}
+        avatar={
+          <Avatar style={{ backgroundColor: taskStatusColor(task.status) }}>
+            <Icon style={{ color: this.props.theme.palette.background.paper }}>{taskStatusIconName(task.status)}</Icon>
+          </Avatar>
+        }
+      />
+    );
+    if (task.executingTimestamp && task.executingTimestamp > 0) {
+      return (
+        <Tooltip title={`Execution started at ${new Date(task.executingTimestamp).toLocaleTimeString()}`}>
+          {chip}
+        </Tooltip>
+      );
+    }
+    return chip;
+  }
+}
+
+export default createFragmentContainer(withTheme(TaskStatusChip), {
   task: graphql`
     fragment TaskStatusChip_task on Task {
       status

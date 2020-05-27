@@ -6,19 +6,15 @@ import red from '@material-ui/core/colors/red';
 import yellow from '@material-ui/core/colors/yellow';
 import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme';
 
-let darkSuccessColor = lightGreen['700'];
-let successColor = lightGreen['500'];
-let lightSuccessColor = lightGreen['300'];
-
 export let cirrusColors = {
   cirrusGrey: grey['300'],
   cirrusWhite: grey['50'],
-  progress: successColor,
+  progress: lightGreen['500'],
   initialization: blue['500'],
   lightInitialization: blue['300'],
-  success: successColor,
-  lightSuccess: lightSuccessColor,
-  darkSuccess: darkSuccessColor,
+  success: lightGreen['500'],
+  lightSuccess: lightGreen['300'],
+  darkSuccess: lightGreen['700'],
   warning: orange['500'],
   lightWarning: orange['300'],
   failure: red['500'],

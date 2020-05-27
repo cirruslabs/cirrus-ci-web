@@ -11,8 +11,6 @@ let successColor = lightGreen['500'];
 let lightSuccessColor = lightGreen['300'];
 
 export let cirrusColors = {
-  cirrusPrimary: grey['900'],
-  cirrusSecondary: grey['700'],
   cirrusDark: grey['900'],
   cirrusLightDark: grey['700'],
   cirrusGrey: grey['300'],
@@ -47,14 +45,14 @@ export let cirrusTheme: ThemeOptions = {
   },
   palette: {
     primary: {
-      main: cirrusColors.cirrusPrimary,
-      dark: cirrusColors.cirrusPrimary,
+      main: grey['900'],
+      dark: grey['900'],
       light: cirrusColors.cirrusWhite,
       contrastText: cirrusColors.cirrusWhite,
     },
     secondary: {
-      main: cirrusColors.cirrusSecondary,
-      dark: cirrusColors.cirrusSecondary,
+      main: grey['700'],
+      dark: grey['700'],
       light: cirrusColors.cirrusWhite,
       contrastText: cirrusColors.cirrusWhite,
     },

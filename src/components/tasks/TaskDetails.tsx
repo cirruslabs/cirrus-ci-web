@@ -26,7 +26,6 @@ import RepositoryNameChip from '../chips/RepositoryNameChip';
 import TaskCreatedChip from '../chips/TaskCreatedChip';
 import TaskNameChip from '../chips/TaskNameChip';
 import TaskOptionalChip from '../chips/TaskOptionalChip';
-import TaskScheduledChip from '../chips/TaskScheduledChip';
 import TaskStatusChip from '../chips/TaskStatusChip';
 import TaskTransactionChip from '../chips/TaskTransactionChip';
 import CirrusFavicon from '../common/CirrusFavicon';
@@ -46,6 +45,7 @@ import ArrowBack from '@material-ui/icons/ArrowBack';
 import TaskExperimentalChip from '../chips/TaskExperimentalChip';
 import TaskStatefulChip from '../chips/TaskStatefulChip';
 import TaskTimeoutChip from '../chips/TaskTimeoutChip';
+import Badge from '@material-ui/core/Badge';
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
@@ -222,6 +222,7 @@ class TaskDetails extends React.Component<Props, State> {
     ) : (
       <Button variant="contained" onClick={() => this.setState({ executionInfoOpen: true })}>
         Show Execution Info
+        <Badge badgeContent={'New!'} color="secondary" style={{ padding: '10px' }}></Badge>
       </Button>
     );
 
@@ -285,7 +286,6 @@ class TaskDetails extends React.Component<Props, State> {
             </div>
             <div className={classes.wrapper}>
               <TaskCreatedChip className={classes.chip} task={task} />
-              <TaskScheduledChip className={classes.chip} task={task} />
               <TaskStatusChip className={classes.chip} task={task} />
             </div>
             <TaskCommandsProgress className={classes.progress} task={task} />
@@ -409,7 +409,6 @@ export default createFragmentContainer(withStyles(styles)(withRouter(TaskDetails
       automaticReRun
       ...TaskNameChip_task
       ...TaskCreatedChip_task
-      ...TaskScheduledChip_task
       ...TaskStatusChip_task
       ...TaskCommandsProgress_task
       ...TaskCommandList_task

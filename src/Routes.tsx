@@ -63,6 +63,10 @@ export const styles = theme =>
     menuButton: {
       margin: theme.spacing(1.0),
     },
+    linkButton: {
+      color: theme.palette.primary.contrastText,
+      marginRight: 8,
+    },
     leftIcon: {
       marginRight: theme.spacing(1.0),
     },
@@ -101,7 +105,7 @@ export const styles = theme =>
       alignItems: 'center',
       justifyContent: 'flex-end',
       padding: '0',
-      backgroundColor: cirrusColors.cirrusGrey,
+      backgroundColor: cirrusColors.cirrusTitleBackground,
       ...theme.mixins.toolbar,
     },
     drawerPaper: {
@@ -221,7 +225,7 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                 Cirrus CI
               </Typography>
               <Button
-                style={{ color: cirrusColors.cirrusWhite, marginRight: 8 }}
+                className={classes.linkButton}
                 href="https://github.com/cirruslabs/cirrus-ci-web"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -230,7 +234,7 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                 <span className="d-none d-md-block">Source</span>
               </Button>
               <Button
-                style={{ color: cirrusColors.cirrusWhite, marginRight: 8 }}
+                className={classes.linkButton}
                 href="https://cirrus-ci.org/"
                 target="_blank"
                 rel="noopener noreferrer"

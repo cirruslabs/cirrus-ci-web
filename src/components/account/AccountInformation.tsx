@@ -14,8 +14,18 @@ import PropTypes from 'prop-types';
 import { AccountInformation_viewer } from './__generated__/AccountInformation_viewer.graphql';
 import Settings from '@material-ui/icons/Settings';
 import DirectionsRun from '@material-ui/icons/DirectionsRun';
+import Button from '@material-ui/core/Button';
+import GitHubIcon from '@material-ui/icons/GitHub';
+import { createStyles, withStyles, WithStyles } from '@material-ui/core';
 
-interface Props extends RouteComponentProps {
+const styles = theme =>
+  createStyles({
+    authButton: {
+      color: theme.palette.primary.contrastText,
+    },
+  });
+
+interface Props extends RouteComponentProps, WithStyles<typeof styles> {
   viewer: AccountInformation_viewer;
 }
 
@@ -46,6 +56,20 @@ class AccountInformation extends React.Component<Props, State> {
   render() {
     const { anchorEl } = this.state;
 
+    let { viewer, classes } = this.props;
+
+    if (!viewer) {
+      return (
+        <Button
+          className={classes.authButton}
+          startIcon={<GitHubIcon />}
+          href="https://api.cirrus-ci.com/redirect/auth/github"
+        >
+          Sign in
+        </Button>
+      );
+    }
+
     return (
       <div>
         <IconButton
@@ -54,7 +78,7 @@ class AccountInformation extends React.Component<Props, State> {
           aria-haspopup="true"
           onClick={this.handleMenuOpen}
         >
-          <Avatar style={{ cursor: 'pointer' }} src={this.props.viewer.avatarURL} />
+          <Avatar style={{ cursor: 'pointer' }} src={viewer.avatarURL} />
         </IconButton>
         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={this.handleMenuClose}>
           <MenuItem onClick={event => navigate(this.context.router, event, '/settings/profile/')}>
@@ -75,7 +99,7 @@ class AccountInformation extends React.Component<Props, State> {
   }
 }
 
-export default createFragmentContainer(withRouter(AccountInformation), {
+export default createFragmentContainer(withRouter(withStyles(styles)(AccountInformation)), {
   viewer: graphql`
     fragment AccountInformation_viewer on User {
       id

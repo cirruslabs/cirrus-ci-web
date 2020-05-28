@@ -14,7 +14,7 @@ import RepositoryCronSettings from './RepositoryCronSettings';
 
 const styles = {
   title: {
-    backgroundColor: cirrusColors.cirrusGrey,
+    backgroundColor: cirrusColors.cirrusTitleBackground,
   },
   settingGap: {
     paddingTop: 16,

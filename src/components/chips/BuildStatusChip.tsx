@@ -5,12 +5,12 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { graphql } from 'babel-plugin-relay/macro';
 import React from 'react';
 import { createFragmentContainer, Disposable, requestSubscription } from 'react-relay';
-import { cirrusColors } from '../../cirrusTheme';
 import environment from '../../createRelayEnvironment';
 import { buildStatusColor } from '../../utils/colors';
 import { buildStatusIconName, buildStatusMessage, isBuildFinalStatus } from '../../utils/status';
 import { formatDuration } from '../../utils/time';
 import { BuildStatusChip_build } from './__generated__/BuildStatusChip_build.graphql';
+import { WithTheme, withTheme } from '@material-ui/core';
 
 const buildSubscription = graphql`
   subscription BuildStatusChipSubscription($buildID: ID!) {
@@ -20,7 +20,7 @@ const buildSubscription = graphql`
   }
 `;
 
-interface Props {
+interface Props extends WithTheme {
   build: BuildStatusChip_build;
   className?: string;
   mini?: boolean;
@@ -57,7 +57,9 @@ class BuildStatusChip extends React.Component<Props> {
       return (
         <Tooltip title={message}>
           <Avatar style={{ background: buildStatusColor(build.status) }} className={className}>
-            <Icon style={{ color: cirrusColors.cirrusWhite }}>{buildStatusIconName(build.status)}</Icon>
+            <Icon style={{ color: this.props.theme.palette.background.paper }}>
+              {buildStatusIconName(build.status)}
+            </Icon>
           </Avatar>
         </Tooltip>
       );
@@ -75,7 +77,9 @@ class BuildStatusChip extends React.Component<Props> {
           label={message}
           avatar={
             <Avatar style={{ background: buildStatusColor(build.status) }}>
-              <Icon style={{ color: cirrusColors.cirrusWhite }}>{buildStatusIconName(build.status)}</Icon>
+              <Icon style={{ color: this.props.theme.palette.background.paper }}>
+                {buildStatusIconName(build.status)}
+              </Icon>
             </Avatar>
           }
         />
@@ -84,7 +88,7 @@ class BuildStatusChip extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(BuildStatusChip, {
+export default createFragmentContainer(withTheme(BuildStatusChip), {
   build: graphql`
     fragment BuildStatusChip_build on Build {
       id

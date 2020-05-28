@@ -5,13 +5,13 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { graphql } from 'babel-plugin-relay/macro';
 import React from 'react';
 import { createFragmentContainer } from 'react-relay';
-import { cirrusColors } from '../../cirrusTheme';
 import { taskStatusColor } from '../../utils/colors';
 import { taskStatusIconName } from '../../utils/status';
 import { roundAndPresentDuration } from '../../utils/time';
 import { TaskCreatedChip_task } from './__generated__/TaskCreatedChip_task.graphql';
+import { WithTheme, withTheme } from '@material-ui/core';
 
-interface Props {
+interface Props extends WithTheme {
   task: TaskCreatedChip_task;
   className?: string;
 }
@@ -39,7 +39,7 @@ class TaskCreatedChip extends React.Component<Props> {
           label={`Created ${roundAndPresentDuration(durationInSeconds)} ago`}
           avatar={
             <Avatar style={{ backgroundColor: taskStatusColor('CREATED') }}>
-              <Icon style={{ color: cirrusColors.cirrusWhite }}>{taskStatusIconName('CREATED')}</Icon>
+              <Icon style={{ color: this.props.theme.palette.background.paper }}>{taskStatusIconName('CREATED')}</Icon>
             </Avatar>
           }
         />
@@ -48,7 +48,7 @@ class TaskCreatedChip extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(TaskCreatedChip, {
+export default createFragmentContainer(withTheme(TaskCreatedChip), {
   task: graphql`
     fragment TaskCreatedChip_task on Task {
       creationTimestamp

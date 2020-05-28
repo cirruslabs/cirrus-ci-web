@@ -1,6 +1,6 @@
 import React from 'react';
-import { cirrusColors } from '../../cirrusTheme';
 import { Base64 } from 'js-base64';
+import { WithTheme, withTheme } from '@material-ui/core';
 
 function updateIcon(color) {
   let linkEl = document.getElementById('favicon') as HTMLLinkElement;
@@ -29,9 +29,8 @@ function drawIcon(color, cb) {
 }
 
 function iconSVG(color) {
-  color = color || cirrusColors.cirrusDark;
   return `
-<svg width="38px" height="37px" viewBox="0 0 38 37" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="38px" height="37px" viewBox="0 0 38 37" version="1.1" xmlns="http://www.w3.org/2000/svg" >
     <defs></defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
         <g id="cirrus-logo" transform="translate(3.000000, 3.000000)" stroke="${color}" stroke-width="4">
@@ -47,17 +46,20 @@ function iconSVG(color) {
 `;
 }
 
-interface Props {
+interface CirrusFaviconProps extends WithTheme {
   color?: string;
 }
 
-export default class CirrusFavicon extends React.Component<Props> {
+class CirrusFavicon extends React.Component<CirrusFaviconProps> {
   componentWillUnmount() {
-    updateIcon(null);
+    updateIcon(this.props.theme.palette.primary.main);
   }
 
   render() {
-    updateIcon(this.props.color);
+    let { color, theme } = this.props;
+    updateIcon(color || theme.palette.primary.main);
     return null;
   }
 }
+
+export default withTheme(CirrusFavicon);

@@ -4,15 +4,25 @@ import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import CallSplit from '@material-ui/icons/CallSplit';
-import { cirrusColors } from '../../cirrusTheme';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { navigate } from '../../utils/navigate';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { BuildBranchNameChip_build } from './__generated__/BuildBranchNameChip_build.graphql';
 import { shorten } from '../../utils/text';
+import { createStyles, withStyles, WithStyles } from '@material-ui/core';
 
-interface Props extends RouteComponentProps {
+const styles = theme =>
+  createStyles({
+    avatar: {
+      backgroundColor: theme.palette.primary.main,
+    },
+    avatarIcon: {
+      color: theme.palette.primary.contrastText,
+    },
+  });
+
+interface Props extends RouteComponentProps, WithStyles<typeof styles> {
   className?: string;
   build: BuildBranchNameChip_build;
 }
@@ -29,8 +39,8 @@ class BuildBranchNameChip extends React.Component<Props> {
         className={this.props.className}
         label={shorten(build.branch)}
         avatar={
-          <Avatar style={{ background: cirrusColors.cirrusPrimary }}>
-            <CallSplit style={{ color: cirrusColors.cirrusWhite }} />
+          <Avatar className={this.props.classes.avatar}>
+            <CallSplit className={this.props.classes.avatarIcon} />
           </Avatar>
         }
         onClick={e => this.handleBranchClick(e, build)}
@@ -51,7 +61,7 @@ class BuildBranchNameChip extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(withRouter(BuildBranchNameChip), {
+export default createFragmentContainer(withRouter(withStyles(styles)(BuildBranchNameChip)), {
   build: graphql`
     fragment BuildBranchNameChip_build on Build {
       id

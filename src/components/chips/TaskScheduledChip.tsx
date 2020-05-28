@@ -7,32 +7,42 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { taskStatusColor } from '../../utils/colors';
 import { taskStatusIconName } from '../../utils/status';
 import { formatDuration } from '../../utils/time';
-import { cirrusColors } from '../../cirrusTheme';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
+import { WithTheme, withTheme } from '@material-ui/core';
+import { TaskScheduledChip_task } from './__generated__/TaskScheduledChip_task.graphql';
 
-function TaskScheduledChip(props) {
-  let { task, className } = props;
-  let scheduledStatusDuration = task.statusDurations.find(it => it.status === 'SCHEDULED');
-  if (scheduledStatusDuration && task.status !== 'SCHEDULED') {
-    return (
-      <Tooltip title="Time it took to find available resources and start execution of this task.">
-        <Chip
-          className={className}
-          label={`Scheduled in ${formatDuration(scheduledStatusDuration.durationInSeconds)}`}
-          avatar={
-            <Avatar style={{ backgroundColor: taskStatusColor('SCHEDULED') }}>
-              <Icon style={{ color: cirrusColors.cirrusWhite }}>{taskStatusIconName('SCHEDULED')}</Icon>
-            </Avatar>
-          }
-        />
-      </Tooltip>
-    );
-  }
-  return <div />;
+interface Props extends WithTheme {
+  task: TaskScheduledChip_task;
+  className?: string;
 }
 
-export default createFragmentContainer(TaskScheduledChip, {
+class TaskScheduledChip extends React.Component<Props> {
+  render() {
+    let { task, className } = this.props;
+    let scheduledStatusDuration = task.statusDurations.find(it => it.status === 'SCHEDULED');
+    if (scheduledStatusDuration && task.status !== 'SCHEDULED') {
+      return (
+        <Tooltip title="Time it took to find available resources and start execution of this task.">
+          <Chip
+            className={className}
+            label={`Scheduled in ${formatDuration(scheduledStatusDuration.durationInSeconds)}`}
+            avatar={
+              <Avatar style={{ backgroundColor: taskStatusColor('SCHEDULED') }}>
+                <Icon style={{ color: this.props.theme.palette.background.paper }}>
+                  {taskStatusIconName('SCHEDULED')}
+                </Icon>
+              </Avatar>
+            }
+          />
+        </Tooltip>
+      );
+    }
+    return <div />;
+  }
+}
+
+export default createFragmentContainer(withTheme(TaskScheduledChip), {
   task: graphql`
     fragment TaskScheduledChip_task on Task {
       status

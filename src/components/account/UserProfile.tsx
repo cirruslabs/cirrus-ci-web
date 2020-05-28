@@ -29,7 +29,7 @@ import Settings from '@material-ui/icons/Settings';
 
 const styles = {
   title: {
-    backgroundColor: cirrusColors.cirrusGrey,
+    backgroundColor: cirrusColors.cirrusTitleBackground,
   },
   gap: {
     paddingTop: 16,

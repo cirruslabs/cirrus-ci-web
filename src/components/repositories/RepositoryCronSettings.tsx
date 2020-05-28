@@ -18,7 +18,6 @@ import BuildStatusChip from '../chips/BuildStatusChip';
 import { Add, Remove } from '@material-ui/icons';
 import environment from '../../createRelayEnvironment';
 import Avatar from '@material-ui/core/Avatar';
-import { cirrusColors } from '../../cirrusTheme';
 import Icon from '@material-ui/core/Icon';
 import NextCronInvocationTimeChip from '../chips/NextCronInvocationTimeChip';
 import { RepositoryCronSettingsSaveMutationResponse } from './__generated__/RepositoryCronSettingsSaveMutation.graphql';
@@ -76,6 +75,12 @@ const styles = theme =>
       marginTop: 4,
       marginBottom: 4,
       marginLeft: 4,
+    },
+    avatar: {
+      backgroundColor: theme.palette.primary.main,
+    },
+    avatarIcon: {
+      color: theme.palette.primary.contrastText,
     },
     cell: {
       padding: 0,
@@ -135,8 +140,8 @@ class RepositoryCronSettings extends React.Component<Props, State> {
                       key={settings.branch}
                       className={classes.chip}
                       avatar={
-                        <Avatar style={{ background: cirrusColors.cirrusPrimary }}>
-                          <Icon style={{ color: cirrusColors.cirrusWhite }}>call_split</Icon>
+                        <Avatar className={classes.avatar}>
+                          <Icon className={classes.avatarIcon}>call_split</Icon>
                         </Avatar>
                       }
                       label={settings.branch}
@@ -147,8 +152,8 @@ class RepositoryCronSettings extends React.Component<Props, State> {
                       key={settings.expression}
                       className={classes.chip}
                       avatar={
-                        <Avatar style={{ background: cirrusColors.cirrusPrimary }}>
-                          <Icon style={{ color: cirrusColors.cirrusWhite }}>alarm</Icon>
+                        <Avatar className={classes.avatar}>
+                          <Icon className={classes.avatarIcon}>alarm</Icon>
                         </Avatar>
                       }
                       label={settings.expression}

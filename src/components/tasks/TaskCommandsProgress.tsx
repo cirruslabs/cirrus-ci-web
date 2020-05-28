@@ -1,30 +1,22 @@
 import { isTaskFinalStatus } from '../../utils/status';
 import React from 'react';
 import { taskStatusColor } from '../../utils/colors';
-import { withStyles, WithStyles } from '@material-ui/core';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import classNames from 'classnames';
 import { formatDuration } from '../../utils/time';
-import { cirrusColors } from '../../cirrusTheme';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { TaskCommandsProgress_task } from './__generated__/TaskCommandsProgress_task.graphql';
 
-let styles = {
-  tooltipTitle: {
-    color: cirrusColors.cirrusWhite,
-  },
-};
-
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   task: TaskCommandsProgress_task;
   className?: string;
 }
 
 class TaskCommandsProgress extends React.Component<Props> {
   render() {
-    let { classes, task } = this.props;
+    let { task } = this.props;
     let totalDuration = task.statusDurations.reduce((sum, statusDuration) => sum + statusDuration.durationInSeconds, 0);
     if (!isTaskFinalStatus(task.status)) {
       totalDuration = (Date.now() - task.creationTimestamp) / 1000;
@@ -64,7 +56,7 @@ class TaskCommandsProgress extends React.Component<Props> {
     let tooltipTitle = (
       <div>
         {task.statusDurations.map(statusDuration => (
-          <Typography variant="caption" display="block" key={statusDuration.status} className={classes.tooltipTitle}>
+          <Typography variant="caption" display="block" key={statusDuration.status}>
             {formatDuration(statusDuration.durationInSeconds)}: {statusDuration.status}
           </Typography>
         ))}
@@ -79,7 +71,7 @@ class TaskCommandsProgress extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(withStyles(styles)(TaskCommandsProgress), {
+export default createFragmentContainer(TaskCommandsProgress, {
   task: graphql`
     fragment TaskCommandsProgress_task on Task {
       status

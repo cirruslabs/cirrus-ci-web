@@ -1,6 +1,5 @@
 import React from 'react';
 import AnsiUp from 'ansi_up';
-import { cirrusColors } from '../../cirrusTheme';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import { createStyles, WithStyles, withStyles } from '@material-ui/styles';
@@ -17,7 +16,7 @@ let styles = theme =>
       minHeight: '70px',
       height: '100%',
       maxWidth: '100%',
-      background: cirrusColors.cirrusDark,
+      background: theme.palette.primary.dark,
       padding: 8,
     },
     logLine: {
@@ -25,16 +24,16 @@ let styles = theme =>
       display: 'flex',
       flexWrap: 'wrap',
       margin: 0,
-      color: cirrusColors.cirrusWhite,
+      color: theme.palette.primary.contrastText,
       '&:hover': {
-        background: cirrusColors.cirrusLightDark,
+        background: theme.palette.secondary.dark,
       },
       '&:focus': {
         outline: 0,
       },
     },
     logLineHighlighted: {
-      background: cirrusColors.cirrusLightDark,
+      background: theme.palette.secondary.dark,
     },
   });
 

@@ -1,22 +1,88 @@
 {
   "name": "cirrus-ci-web",
+  "version": "0.1.0",
+  "private": true,
   "description": "The source that powers https://cirrus-ci.com",
+  "homepage": "https://cirrus-ci.com",
+  "bugs": {
+    "url": "https://github.com/cirruslabs/cirrus-ci-docs/issues"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/cirruslabs/cirrus-ci-web.git"
   },
-  "bugs": {
-    "url": "https://github.com/cirruslabs/cirrus-ci-docs/issues"
-  },
-  "homepage": "https://cirrus-ci.com",
-  "version": "0.1.0",
-  "private": true,
   "license": "MIT",
+  "scripts": {
+    "bootstrap": "npm run relay && npm run sync-schema",
+    "build": "node scripts/build.js",
+    "prettier": "prettier --write \"{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md,html}\"",
+    "prettier-check": "prettier --check  \"{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md,html}\"",
+    "relay": "relay-compiler --verbose --watchman false --src ./src --schema schema.graphql --language typescript",
+    "start": "node scripts/start.js",
+    "start-untyped": "TSC_COMPILE_ON_ERROR=\"true\" node scripts/start.js",
+    "sync-schema": "get-graphql-schema https://api.cirrus-ci.com/schema.json | sed -e 's/Long/Int/g' > schema.graphql",
+    "test": "node scripts/test.js --env=jsdom",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ],
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/**/*.d.ts"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "ts",
+      "tsx",
+      "mjs",
+      "json",
+      "jsx",
+      "node"
+    ],
+    "moduleNameMapper": {
+      "^.+\\.module\\.(css)$": "identity-obj-proxy"
+    },
+    "modulePaths": [],
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "setupFiles": [
+      "react-app-polyfill/jsdom"
+    ],
+    "setupFilesAfterEnv": [],
+    "testEnvironment": "jest-environment-jsdom-fourteen",
+    "testMatch": [
+      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
+      "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
+    ],
+    "transform": {
+      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
+      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
+      "^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+    },
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$",
+      "^.+\\.module\\.(css)$"
+    ]
+  },
   "dependencies": {
-    "@material-ui/core": "^4.9.14",
+    "@material-ui/core": "^4.10.0",
     "@material-ui/icons": "^4.9.1",
     "ansi_up": "^4.0.4",
     "babel-plugin-relay": "^9.1.0",
+    "babel-plugin-transform-imports": "^2.0.0",
     "classnames": "^2.2.6",
     "graphiql": "^0.17.5",
     "graphql": "^14.6.0",
@@ -37,6 +103,8 @@
     "recharts": "^1.8.5"
   },
   "devDependencies": {
+    "@babel/core": "7.10.2",
+    "@svgr/webpack": "^5.4.0",
     "@types/classnames": "^2.2.10",
     "@types/jest": "^25.2.3",
     "@types/node": "^13.13.8",
@@ -46,40 +114,60 @@
     "@types/react-relay": "^7.0.8",
     "@types/react-router-dom": "^5.1.5",
     "@types/relay-runtime": "^8.0.10",
+    "@typescript-eslint/eslint-plugin": "^3.0.2",
+    "@typescript-eslint/parser": "^3.0.2",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^26.0.1",
+    "babel-loader": "^8.1.0",
+    "babel-plugin-named-asset-import": "^0.3.6",
+    "babel-preset-react-app": "^9.1.2",
+    "camelcase": "^6.0.0",
+    "case-sensitive-paths-webpack-plugin": "^2.3.0",
+    "css-loader": "^3.5.3",
+    "dotenv": "^8.2.0",
+    "dotenv-expand": "^5.1.0",
+    "eslint": "^7.1.0",
+    "eslint-config-react-app": "^5.2.1",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "^4.0.4",
+    "file-loader": "^6.0.0",
+    "fs-extra": "^8.1.0",
     "get-graphql-schema": "^2.1.2",
+    "html-webpack-plugin": "^4.3.0",
     "husky": "^4.2.5",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "24.9.0",
+    "jest-environment-jsdom-fourteen": "^1.0.1",
+    "jest-resolve": "^26.0.1",
+    "mini-css-extract-plugin": "^0.9.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "pnp-webpack-plugin": "^1.6.4",
+    "postcss-flexbugs-fixes": "^4.2.1",
+    "postcss-loader": "^3.0.0",
+    "postcss-normalize": "^9.0.0",
+    "postcss-preset-env": "^6.7.0",
+    "postcss-safe-parser": "^4.0.2",
     "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1",
-    "react-scripts": "3.4.1",
+    "react-app-polyfill": "^1.0.6",
+    "react-dev-utils": "^10.2.1",
     "react-test-renderer": "^16.13.1",
     "relay-compiler": "^9.1.0",
     "relay-compiler-language-typescript": "^12.0.3",
-    "typescript": "^3.9.3"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "start-untyped": "TSC_COMPILE_ON_ERROR=\"true\" react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
-    "prettier": "prettier --write \"{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md,html}\"",
-    "prettier-check": "prettier --check  \"{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md,html}\"",
-    "relay": "relay-compiler --verbose --watchman false --src ./src --schema schema.graphql --language typescript",
-    "sync-schema": "get-graphql-schema https://api.cirrus-ci.com/schema.json | sed -e 's/Long/Int/g' > schema.graphql",
-    "bootstrap": "npm run relay && npm run sync-schema",
-    "eject": "react-scripts eject"
+    "resolve": "^1.17.0",
+    "style-loader": "^1.2.1",
+    "terser-webpack-plugin": "^3.0.2",
+    "ts-pnp": "^1.2.0",
+    "typescript": "^3.9.3",
+    "url-loader": "2.3.0",
+    "webpack": "^4.43.0",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-manifest-plugin": "^2.2.0"
   },
   "babelMacros": {
     "relay": {}
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not op_mini all"
-  ]
+  }
 }

@@ -302,6 +302,7 @@ type Mutation {
   rerun(input: TaskReRunInput!): TaskReRunPayload
   batchReRun(input: TasksReRunInput!): TasksReRunPayload
   abortTask(input: TaskAbortInput!): TaskAbortPayload
+  batchAbort(input: TaskBatchAbortInput!): TaskBatchAbortPayload
   retrigger(input: BuildReTriggerInput!): BuildReTriggerPayload
   saveSettings(input: RepositorySettingsInput!): RepositorySettingsPayload
   saveCronSettings(input: RepositorySaveCronSettingsInput!): RepositorySaveCronSettingsPayload
@@ -604,6 +605,16 @@ input TaskAbortInput {
 
 type TaskAbortPayload {
   abortedTask: Task!
+  clientMutationId: String
+}
+
+input TaskBatchAbortInput {
+  taskIds: [ID]
+  clientMutationId: String
+}
+
+type TaskBatchAbortPayload {
+  tasks: [Task]
   clientMutationId: String
 }
 

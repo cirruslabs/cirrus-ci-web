@@ -299,9 +299,11 @@ type Mutation {
   securedVariable(input: RepositorySecuredVariableInput!): RepositorySecuredVariablePayload
   securedOrganizationVariable(input: OrganizationSecuredVariableInput!): OrganizationSecuredVariablePayload
   createBuild(input: RepositoryCreateBuildInput!): RepositoryCreateBuildPayload
+  deleteRepository(input: RepositoryDeleteInput!): RepositoryDeletePayload
   rerun(input: TaskReRunInput!): TaskReRunPayload
   batchReRun(input: TasksReRunInput!): TasksReRunPayload
   abortTask(input: TaskAbortInput!): TaskAbortPayload
+  batchAbort(input: TaskBatchAbortInput!): TaskBatchAbortPayload
   retrigger(input: BuildReTriggerInput!): BuildReTriggerPayload
   saveSettings(input: RepositorySettingsInput!): RepositorySettingsPayload
   saveCronSettings(input: RepositorySaveCronSettingsInput!): RepositorySaveCronSettingsPayload
@@ -476,6 +478,16 @@ type RepositoryCronSettings {
   lastInvocationBuild: Build
 }
 
+input RepositoryDeleteInput {
+  repositoryId: ID!
+  clientMutationId: String
+}
+
+type RepositoryDeletePayload {
+  deleted: Boolean!
+  clientMutationId: String
+}
+
 input RepositoryRemoveCronSettingsInput {
   repositoryId: ID!
   name: String!
@@ -604,6 +616,16 @@ input TaskAbortInput {
 
 type TaskAbortPayload {
   abortedTask: Task!
+  clientMutationId: String
+}
+
+input TaskBatchAbortInput {
+  taskIds: [ID]
+  clientMutationId: String
+}
+
+type TaskBatchAbortPayload {
+  tasks: [Task]
   clientMutationId: String
 }
 

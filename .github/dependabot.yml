@@ -4,14 +4,14 @@ updates:
   - package-ecosystem: docker
     directory: "/"
     schedule:
-      interval: daily
+      interval: weekly
       time: '12:00'
       timezone: EST
-    open-pull-requests-limit: 99
+    open-pull-requests-limit: 2
   - package-ecosystem: npm
     directory: "/"
     schedule:
-      interval: daily
+      interval: weekly
       time: '12:00'
       timezone: EST
     open-pull-requests-limit: 99

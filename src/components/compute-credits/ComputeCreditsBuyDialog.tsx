@@ -135,9 +135,7 @@ export default class ComputeCreditsBuyDialog extends React.Component<Props, Stat
         this.setState(prevState => ({
           ...prevState,
           makingPayment: false,
-          error:
-            "Payment failed. Your browser doesn't support the Payment " +
-            "Request API, or you don't have an active payment method saved.",
+          error: "Payment failed. Seems you don't have a card saved in your browser?",
         }));
       }
     });

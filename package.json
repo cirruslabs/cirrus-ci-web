@@ -38,14 +38,14 @@
   },
   "devDependencies": {
     "@types/classnames": "^2.2.10",
-    "@types/jest": "^25.2.3",
-    "@types/node": "^13.13.8",
-    "@types/react": "^16.9.35",
+    "@types/jest": "^26.0.0",
+    "@types/node": "^14.0.13",
+    "@types/react": "^16.9.36",
     "@types/react-dom": "^16.9.8",
-    "@types/react-helmet": "^5.0.16",
+    "@types/react-helmet": "^6.0.0",
     "@types/react-relay": "^7.0.8",
     "@types/react-router-dom": "^5.1.5",
-    "@types/relay-runtime": "^8.0.10",
+    "@types/relay-runtime": "^8.0.13",
     "get-graphql-schema": "^2.1.2",
     "husky": "^4.2.5",
     "prettier": "^2.0.5",
@@ -54,7 +54,7 @@
     "react-test-renderer": "^16.13.1",
     "relay-compiler": "^9.1.0",
     "relay-compiler-language-typescript": "^12.0.3",
-    "typescript": "^3.9.3"
+    "typescript": "^3.9.5"
   },
   "scripts": {
     "start": "react-scripts start",

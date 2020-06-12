@@ -13,7 +13,7 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
-    "@material-ui/core": "^4.9.14",
+    "@material-ui/core": "^4.10.2",
     "@material-ui/icons": "^4.9.1",
     "ansi_up": "^4.0.4",
     "babel-plugin-relay": "^9.1.0",
@@ -24,11 +24,11 @@
     "js-base64": "^2.5.2",
     "pluralize": "^8.0.0",
     "prop-types": "^15.7.2",
-    "query-string": "^6.12.1",
+    "query-string": "^6.13.1",
     "react": "^16.13.1",
     "react-ace": "^8.1.0",
     "react-dom": "^16.13.1",
-    "react-helmet": "^6.0.0",
+    "react-helmet": "^6.1.0",
     "react-markdown": "^4.3.1",
     "react-relay": "^9.1.0",
     "react-router-dom": "^5.2.0",
@@ -39,13 +39,13 @@
   "devDependencies": {
     "@types/classnames": "^2.2.10",
     "@types/jest": "^25.2.3",
-    "@types/node": "^13.13.8",
-    "@types/react": "^16.9.35",
+    "@types/node": "^13.13.12",
+    "@types/react": "^16.9.36",
     "@types/react-dom": "^16.9.8",
     "@types/react-helmet": "^5.0.16",
     "@types/react-relay": "^7.0.8",
     "@types/react-router-dom": "^5.1.5",
-    "@types/relay-runtime": "^8.0.10",
+    "@types/relay-runtime": "^8.0.13",
     "get-graphql-schema": "^2.1.2",
     "husky": "^4.2.5",
     "prettier": "^2.0.5",
@@ -54,7 +54,7 @@
     "react-test-renderer": "^16.13.1",
     "relay-compiler": "^9.1.0",
     "relay-compiler-language-typescript": "^12.0.3",
-    "typescript": "^3.9.3"
+    "typescript": "^3.9.5"
   },
   "scripts": {
     "start": "react-scripts start",

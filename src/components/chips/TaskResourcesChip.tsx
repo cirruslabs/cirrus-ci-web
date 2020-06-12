@@ -14,7 +14,7 @@ const styles = theme =>
       backgroundColor: theme.palette.secondary.main,
     },
     avatarIcon: {
-      backgroundColor: theme.palette.background.paper,
+      color: theme.palette.background.paper,
     },
   });
 

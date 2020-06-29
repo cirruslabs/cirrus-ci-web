@@ -296,7 +296,6 @@ class TaskDetails extends React.Component<Props> {
           <CardActions className="d-flex flex-wrap justify-content-end">
             <Button
               variant="contained"
-              color="primary"
               onClick={e => navigateBuild(this.context.router, e, task.buildId)}
               startIcon={<ArrowBack />}
             >

@@ -14,7 +14,6 @@ import Typography from '@material-ui/core/Typography';
 import { graphql } from 'babel-plugin-relay/macro';
 import React from 'react';
 import { commitMutation, createFragmentContainer } from 'react-relay';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
 import environment from '../../createRelayEnvironment';
 import { BillingSettingsDialogMutationResponse } from './__generated__/BillingSettingsDialogMutation.graphql';
 import { BillingSettingsDialog_billingSettings } from './__generated__/BillingSettingsDialog_billingSettings.graphql';
@@ -43,7 +42,7 @@ const saveBillingSettingsMutation = graphql`
   }
 `;
 
-interface Props extends WithStyles<typeof styles>, RouteComponentProps {
+interface Props extends WithStyles<typeof styles> {
   billingSettings: BillingSettingsDialog_billingSettings;
   onClose(...args: any[]): void;
   open: boolean;
@@ -171,7 +170,7 @@ class BillingSettingsDialog extends React.Component<Props, State> {
   }
 }
 
-export default createFragmentContainer(withStyles(styles)(withRouter(BillingSettingsDialog)), {
+export default createFragmentContainer(withStyles(styles)(BillingSettingsDialog), {
   billingSettings: graphql`
     fragment BillingSettingsDialog_billingSettings on BillingSettings {
       accountId

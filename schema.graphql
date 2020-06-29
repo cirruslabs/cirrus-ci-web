@@ -607,6 +607,7 @@ type Task {
   triggerType: TaskTriggerType!
   instanceResources: InstanceResources
   executionInfo: ExecutionInfo
+  baseEnvironment: [String]
 }
 
 input TaskAbortInput {

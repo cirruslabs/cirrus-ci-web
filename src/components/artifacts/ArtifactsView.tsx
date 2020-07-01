@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import { createStyles, List, Tooltip, withStyles, WithStyles } from '@material-ui/core';
 import ListItem from '@material-ui/core/ListItem';
@@ -8,6 +9,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import { cirrusColors } from '../../cirrusTheme';
 import Paper from '@material-ui/core/Paper';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { navigate } from '../../utils/navigate';
 import { TaskArtifacts_task } from './__generated__/TaskArtifacts_task.graphql';
 import Folder from '@material-ui/icons/Folder';
 import InsertDriveFile from '@material-ui/icons/InsertDriveFile';
@@ -21,11 +24,15 @@ const styles = theme =>
     },
   });
 
-interface Props extends WithStyles<typeof styles> {
+interface Props extends RouteComponentProps, WithStyles<typeof styles> {
   task: TaskArtifacts_task;
 }
 
 class ArtifactsView extends React.Component<Props> {
+  static contextTypes = {
+    router: PropTypes.object,
+  };
+
   state = { selectedArtifactName: null, selectedPath: [] };
 
   _getSelectedArtifact() {
@@ -139,11 +146,9 @@ class ArtifactsView extends React.Component<Props> {
             </ListItemIcon>
             <ListItemText primary={artifact.name} />
             <Tooltip title="Download All Files (.zip)">
-              <a href={this.artifactArchiveURL(artifact.name)} target="_blank" rel="noopener noreferrer">
-                <IconButton>
-                  <GetApp />
-                </IconButton>
-              </a>
+              <IconButton onClick={e => navigate(this.context.router, e, this.artifactArchiveURL(artifact.name))}>
+                <GetApp />
+              </IconButton>
             </Tooltip>
           </ListItem>,
         );
@@ -172,14 +177,12 @@ class ArtifactsView extends React.Component<Props> {
       for (let info of scopedArtifactInfos) {
         if (info.isTopLevel) {
           items.push(
-            <a href={this.artifactURL(info.path)} target="_blank" rel="noopener noreferrer">
-              <ListItem key={info.path} button>
-                <ListItemIcon>
-                  <InsertDriveFile />
-                </ListItemIcon>
-                <ListItemText primary={info.path} />
-              </ListItem>
-            </a>,
+            <ListItem key={info.path} button onClick={() => window.open(this.artifactURL(info.path), '_blank')}>
+              <ListItemIcon>
+                <InsertDriveFile />
+              </ListItemIcon>
+              <ListItemText primary={info.path} />
+            </ListItem>,
           );
         }
       }
@@ -198,4 +201,4 @@ class ArtifactsView extends React.Component<Props> {
   }
 }
 
-export default withStyles(styles)(ArtifactsView);
+export default withStyles(styles)(withRouter(ArtifactsView));

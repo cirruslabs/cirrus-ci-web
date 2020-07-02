@@ -42,7 +42,7 @@
     "@types/node": "^14.0.14",
     "@types/react": "^16.9.41",
     "@types/react-dom": "^16.9.8",
-    "@types/react-helmet": "^5.0.16",
+    "@types/react-helmet": "^6.0.0",
     "@types/react-relay": "^7.0.8",
     "@types/react-router-dom": "^5.1.5",
     "@types/relay-runtime": "^9.1.5",

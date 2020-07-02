@@ -2,13 +2,17 @@ import React from 'react';
 
 import GraphiQL from 'graphiql';
 import 'graphiql/graphiql.css';
+import { Helmet as Head } from 'react-helmet';
 
-export default function () {
+export default () => {
   return (
     <div style={{ height: '100vh' }}>
+      <Head>
+        <title>API Explorer - Cirrus CI</title>
+      </Head>
       <GraphiQL
         schema={undefined}
-        query={`
+        query={`\
 query {
   viewer {
     id
@@ -31,4 +35,4 @@ query {
       />
     </div>
   );
-}
+};

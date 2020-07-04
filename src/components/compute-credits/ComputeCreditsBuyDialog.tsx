@@ -12,6 +12,7 @@ import { commitMutation } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
 import { UnspecifiedCallbackFunction } from '../../utils/utility-types';
+import { ComputeCreditsBuyDialogMutationResponse } from './__generated__/ComputeCreditsBuyDialogMutation.graphql';
 
 const computeCreditsBuyMutation = graphql`
   mutation ComputeCreditsBuyDialogMutation($input: BuyComputeCreditsInput!) {
@@ -99,13 +100,13 @@ export default class ComputeCreditsBuyDialog extends React.Component<Props, Stat
       commitMutation(environment, {
         mutation: computeCreditsBuyMutation,
         variables: variables,
-        onCompleted: (response: any) => {
-          if (response.error && response.error !== '') {
+        onCompleted: (response: ComputeCreditsBuyDialogMutationResponse) => {
+          if (response.buyComputeCredits.error && response.buyComputeCredits.error !== '') {
             complete('fail');
             this.setState(prevState => ({
               ...prevState,
               makingPayment: false,
-              error: 'Error ' + response.error,
+              error: 'Error ' + response.buyComputeCredits.error,
             }));
           } else {
             complete('success');

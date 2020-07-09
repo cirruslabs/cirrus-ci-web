@@ -5,7 +5,7 @@ task:
   use_compute_credits: $CIRRUS_BRANCH == 'master'
   node_modules_cache:
     folder: node_modules
-  populate_script: npm i
+  populate_script: npm i --unsafe-perm
   matrix:
     - name: Build
       build_script: npm run build

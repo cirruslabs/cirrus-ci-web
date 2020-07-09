@@ -7,7 +7,7 @@ import TaskCommandLogs from './TaskCommandLogs';
 import { formatDuration } from '../../utils/time';
 import { isTaskCommandExecuting, isTaskCommandFinalStatus, isTaskFinalStatus } from '../../utils/status';
 import DurationTicker from '../common/DurationTicker';
-import { withStyles, WithStyles } from '@material-ui/core';
+import { withStyles, WithStyles } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';

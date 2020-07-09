@@ -17,6 +17,7 @@
     "@material-ui/icons": "^4.9.1",
     "ansi_up": "^4.0.4",
     "babel-plugin-relay": "^9.1.0",
+    "babel-plugin-transform-imports": "^2.0.0",
     "classnames": "^2.2.6",
     "graphiql": "^1.0.3",
     "graphql": "^14.7.0",
@@ -46,6 +47,7 @@
     "@types/react-relay": "^7.0.8",
     "@types/react-router-dom": "^5.1.5",
     "@types/relay-runtime": "^9.1.5",
+    "concurrently": "^5.2.0",
     "get-graphql-schema": "^2.1.2",
     "husky": "^4.2.5",
     "prettier": "^2.0.5",
@@ -66,7 +68,7 @@
     "prettier-check": "prettier --check  \"{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md,html}\"",
     "relay": "relay-compiler --verbose --watchman false --src ./src --schema schema.graphql --language typescript",
     "sync-schema": "get-graphql-schema https://api.cirrus-ci.com/schema.json | sed -e 's/Long/Int/g' > schema.graphql",
-    "bootstrap": "npm run relay && npm run sync-schema"
+    "postinstall": "concurrently -n relay,sync-schema,patch-package \"npm:relay\" \"npm:sync-schema\" \"npx patch-package\""
   },
   "babelMacros": {
     "relay": {}

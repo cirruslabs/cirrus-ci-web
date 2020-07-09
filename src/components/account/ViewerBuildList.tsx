@@ -5,20 +5,15 @@ import { graphql } from 'babel-plugin-relay/macro';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
+import { Table, TableBody, TableCell, TableRow, Paper, Toolbar } from '@material-ui/core';
 
-import Paper from '@material-ui/core/Paper';
-import Toolbar from '@material-ui/core/Toolbar';
 import RepositoryNameChip from '../chips/RepositoryNameChip';
 import BuildBranchNameChip from '../chips/BuildBranchNameChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import BuildChangeChip from '../chips/BuildChangeChip';
 import { navigateBuild } from '../../utils/navigate';
 import Typography from '@material-ui/core/Typography';
-import { withStyles, WithStyles } from '@material-ui/core';
+import { withStyles, WithStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import { cirrusColors } from '../../cirrusTheme';
 import { ViewerBuildList_viewer } from './__generated__/ViewerBuildList_viewer.graphql';

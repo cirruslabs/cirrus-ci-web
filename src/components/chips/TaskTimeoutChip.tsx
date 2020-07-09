@@ -1,12 +1,11 @@
 import React from 'react';
 
-import Avatar from '@material-ui/core/Avatar';
-import Chip from '@material-ui/core/Chip';
+import { Avatar, Chip, Tooltip } from '@material-ui/core';
 import TimerIcon from '@material-ui/icons/Timer';
 import { graphql } from 'babel-plugin-relay/macro';
 import { cirrusColors } from '../../cirrusTheme';
 import { formatDuration } from '../../utils/time';
-import { Tooltip, withTheme, WithTheme } from '@material-ui/core';
+import { withTheme, WithTheme } from '@material-ui/core/styles';
 import { TaskTimeoutChip_task } from './__generated__/TaskTimeoutChip_task.graphql';
 import { createFragmentContainer } from 'react-relay';
 

@@ -7,7 +7,7 @@ import Chip from '@material-ui/core/Chip';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import PropTypes from 'prop-types';
-import { withStyles, WithStyles } from '@material-ui/core';
+import { withStyles, WithStyles } from '@material-ui/core/styles';
 import ReportIcon from '@material-ui/icons/Report';
 import SendIcon from '@material-ui/icons/Send';
 import classNames from 'classnames';

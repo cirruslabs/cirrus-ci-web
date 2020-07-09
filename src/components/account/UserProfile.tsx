@@ -3,29 +3,30 @@ import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import Paper from '@material-ui/core/Paper';
-import Tooltip from '@material-ui/core/Tooltip';
-import { WithStyles, withStyles } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import CardActions from '@material-ui/core/CardActions';
-import CardHeader from '@material-ui/core/CardHeader';
-import GitHubIcon from '@material-ui/icons/GitHub';
+import { WithStyles, withStyles } from '@material-ui/core/styles';
+import {
+  Paper,
+  Button,
+  Card,
+  CardContent,
+  Typography,
+  CardHeader,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+  Toolbar,
+  Tooltip,
+  CardActions,
+  IconButton,
+} from '@material-ui/core';
+import { GitHub, Settings } from '@material-ui/icons';
 import { cirrusColors } from '../../cirrusTheme';
-import Toolbar from '@material-ui/core/Toolbar';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
 import { navigate } from '../../utils/navigate';
-import IconButton from '@material-ui/core/IconButton';
 import UserApiSettings from '../settings/UserApiSettings';
 import UserComputeCredits from '../compute-credits/UserComputeCredits';
 import { UserProfile_user } from './__generated__/UserProfile_user.graphql';
 import { Helmet as Head } from 'react-helmet';
-import Settings from '@material-ui/icons/Settings';
 
 const styles = {
   title: {
@@ -61,7 +62,7 @@ class UserProfile extends React.Component<Props> {
     let actionButton = (
       <Button
         variant="contained"
-        startIcon={<GitHubIcon />}
+        startIcon={<GitHub />}
         href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTI=?account=${user.githubUserName}`}
       >
         Purchase Plan for Private Repositories
@@ -83,7 +84,7 @@ class UserProfile extends React.Component<Props> {
       actionButton = (
         <Button
           variant="contained"
-          startIcon={<GitHubIcon />}
+          startIcon={<GitHub />}
           href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTA=?account=${user.githubUserName}`}
         >
           Switch to Free Plan

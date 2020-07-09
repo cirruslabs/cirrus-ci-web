@@ -299,6 +299,7 @@ type Mutation {
   securedVariable(input: RepositorySecuredVariableInput!): RepositorySecuredVariablePayload
   securedOrganizationVariable(input: OrganizationSecuredVariableInput!): OrganizationSecuredVariablePayload
   createBuild(input: RepositoryCreateBuildInput!): RepositoryCreateBuildPayload
+  validate(input: ValidateConfigInput!): ValidateConfigPayload
   deleteRepository(input: RepositoryDeleteInput!): RepositoryDeletePayload
   rerun(input: TaskReRunInput!): TaskReRunPayload
   batchReRun(input: TasksReRunInput!): TasksReRunPayload
@@ -837,6 +838,17 @@ type UserTransactionsConnection {
   details about this specific page
   """
   pageInfo: PageInfo!
+}
+
+input ValidateConfigInput {
+  config: String
+  environmentVariables: [String]
+  clientMutationId: String
+}
+
+type ValidateConfigPayload {
+  errors: [String]
+  clientMutationId: String
 }
 
 """

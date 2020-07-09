@@ -1,21 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Typography from '@material-ui/core/Typography';
-import { createStyles, List, Tooltip, withStyles, WithStyles } from '@material-ui/core';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import IconButton from '@material-ui/core/IconButton';
-import Toolbar from '@material-ui/core/Toolbar';
+import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
+import {
+  Typography,
+  Tooltip,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  IconButton,
+  Toolbar,
+  Paper,
+  List,
+} from '@material-ui/core';
 import { cirrusColors } from '../../cirrusTheme';
-import Paper from '@material-ui/core/Paper';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { navigate } from '../../utils/navigate';
 import { TaskArtifacts_task } from './__generated__/TaskArtifacts_task.graphql';
-import Folder from '@material-ui/icons/Folder';
-import InsertDriveFile from '@material-ui/icons/InsertDriveFile';
-import GetApp from '@material-ui/icons/GetApp';
-import FolderOpen from '@material-ui/icons/FolderOpen';
+import { Folder, GetApp, FolderOpen, InsertDriveFile } from '@material-ui/icons';
 
 const styles = theme =>
   createStyles({

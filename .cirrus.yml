@@ -5,10 +5,7 @@ task:
   use_compute_credits: $CIRRUS_BRANCH == 'master'
   node_modules_cache:
     folder: node_modules
-    fingerprint_script: cat package-lock.json
-    reupload_on_changes: false
-    populate_script: npm ci
-  bootstrap_script: npm run bootstrap
+  populate_script: npm i
   matrix:
     - name: Build
       build_script: npm run build

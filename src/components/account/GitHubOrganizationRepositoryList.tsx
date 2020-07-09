@@ -1,16 +1,11 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import Paper from '@material-ui/core/Paper';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
 import LastDefaultBranchBuildRow from '../builds/LastDefaultBranchBuildRow';
-import { Tooltip, withStyles, WithStyles } from '@material-ui/core';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import { withStyles, WithStyles } from '@material-ui/core/styles';
+import { Toolbar, Typography, Tooltip, IconButton, Paper, Table, TableBody } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import IconButton from '@material-ui/core/IconButton';
-import Settings from '@material-ui/icons/Settings';
+import { Settings } from '@material-ui/icons';
 
 let styles = {
   gap: {

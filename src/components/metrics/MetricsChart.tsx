@@ -1,12 +1,12 @@
 import React from 'react';
 import { graphql } from 'babel-plugin-relay/macro';
 import PropTypes from 'prop-types';
-import { createStyles, Typography, WithStyles, withStyles } from '@material-ui/core';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { createFragmentContainer } from 'react-relay';
 import 'react-vis/dist/style.css';
 import { FlexibleWidthXYPlot, Hint, LineSeries, VerticalGridLines, XAxis, YAxis } from 'react-vis';
-import Chip from '@material-ui/core/Chip';
+import { Chip, Typography } from '@material-ui/core';
 import { formatDuration } from '../../utils/time';
 import { MetricsChart_chart } from './__generated__/MetricsChart_chart.graphql';
 

@@ -5,7 +5,7 @@ import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
 import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
 import ViewerTopActiveRepositories from '../../components/account/ViewerTopActiveRepositories';
-import Typography from '@material-ui/core/Typography';
+import { Typography } from '@material-ui/core';
 import { ViewerTopRepositoriesQuery } from './__generated__/ViewerTopRepositoriesQuery.graphql';
 
 interface Props {

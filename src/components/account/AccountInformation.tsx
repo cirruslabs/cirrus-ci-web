@@ -3,20 +3,14 @@ import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 
 import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import { IconButton, Menu, MenuItem, ListItemIcon, ListItemText, Button } from '@material-ui/core';
 import { navigate } from '../../utils/navigate';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { AccountInformation_viewer } from './__generated__/AccountInformation_viewer.graphql';
 import Settings from '@material-ui/icons/Settings';
-import DirectionsRun from '@material-ui/icons/DirectionsRun';
-import Button from '@material-ui/core/Button';
-import GitHubIcon from '@material-ui/icons/GitHub';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core';
+import { DirectionsRun, GitHub } from '@material-ui/icons';
+import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
 
 const styles = theme =>
   createStyles({
@@ -62,7 +56,7 @@ class AccountInformation extends React.Component<Props, State> {
       return (
         <Button
           className={classes.authButton}
-          startIcon={<GitHubIcon />}
+          startIcon={<GitHub />}
           href="https://api.cirrus-ci.com/redirect/auth/github"
         >
           Sign in

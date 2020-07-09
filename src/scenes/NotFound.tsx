@@ -1,6 +1,6 @@
 import React from 'react';
-import Icon from '@material-ui/core/Icon';
 import { Helmet as Head } from 'react-helmet';
+import { Icon } from '@material-ui/core';
 
 export default props => (
   <div

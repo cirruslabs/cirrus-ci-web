@@ -4,21 +4,9 @@ import ViewerComponent from './scenes/Header/ViewerComponent';
 import NotFound from './scenes/NotFound';
 import { navigate } from './utils/navigate';
 import { cirrusColors } from './cirrusTheme';
-import {
-  AppBar,
-  Button,
-  createStyles,
-  Drawer,
-  IconButton,
-  Toolbar,
-  Typography,
-  WithStyles,
-  withStyles,
-} from '@material-ui/core';
-import BookIcon from '@material-ui/icons/Book';
-import CodeIcon from '@material-ui/icons/Code';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import { AppBar, Button, Drawer, IconButton, Toolbar, Typography } from '@material-ui/core';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import { Book, Code, Menu, ChevronLeft } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ViewerTopRepositories from './scenes/Viewer/ViewerTopRepositories';
@@ -186,7 +174,7 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
               Active Repositories
             </Typography>
             <IconButton onClick={this.handleDrawerClose}>
-              <ChevronLeftIcon />
+              <ChevronLeft />
             </IconButton>
           </div>
           <ViewerTopRepositories className={classes.topRepositories} />
@@ -211,7 +199,7 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                 onClick={this.handleDrawerOpen}
                 className={classNames(classes.menuButton, openDrawer && classes.hide)}
               >
-                <MenuIcon />
+                <Menu />
               </IconButton>
               <Typography
                 variant="h6"
@@ -230,7 +218,7 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <CodeIcon className={classes.leftIcon} />
+                <Code className={classes.leftIcon} />
                 <span className="d-none d-md-block">Source</span>
               </Button>
               <Button
@@ -239,7 +227,7 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <BookIcon className={classes.leftIcon} />
+                <Book className={classes.leftIcon} />
                 <span className="d-none d-md-block">Documentation</span>
               </Button>
               <div className={classes.viewer}>

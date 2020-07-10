@@ -1,6 +1,6 @@
 import React from 'react';
 import { Base64 } from 'js-base64';
-import { WithTheme, withTheme } from '@material-ui/core';
+import { WithTheme, withTheme } from '@material-ui/core/styles';
 
 function updateIcon(color) {
   let linkEl = document.getElementById('favicon') as HTMLLinkElement;

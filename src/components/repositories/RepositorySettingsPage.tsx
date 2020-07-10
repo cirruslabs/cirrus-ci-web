@@ -7,7 +7,7 @@ import RepositorySecuredVariables from './RepositorySecuredVariables';
 import RepositorySettings from './RepositorySettings';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { withStyles, WithStyles } from '@material-ui/core';
+import { withStyles, WithStyles } from '@material-ui/core/styles';
 import { cirrusColors } from '../../cirrusTheme';
 import { RepositorySettingsPage_repository } from './__generated__/RepositorySettingsPage_repository.graphql';
 import RepositoryCronSettings from './RepositoryCronSettings';

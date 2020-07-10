@@ -8,7 +8,7 @@ import { createFragmentContainer } from 'react-relay';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { navigateBuild } from '../../utils/navigate';
 import { BuildChangeChip_build } from './__generated__/BuildChangeChip_build.graphql';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core';
+import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
 
 const styles = theme =>
   createStyles({

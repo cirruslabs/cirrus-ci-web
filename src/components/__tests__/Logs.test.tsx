@@ -3,7 +3,7 @@ import Logs from '../logs/Logs';
 import renderer from 'react-test-renderer';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/styles';
-import { createMuiTheme } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core/styles';
 import { cirrusTheme } from '../../cirrusTheme';
 
 it('renders correctly', () => {

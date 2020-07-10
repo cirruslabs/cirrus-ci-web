@@ -2,10 +2,11 @@ import React from 'react';
 
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
+import Tooltip from '@material-ui/core/Tooltip';
 import Memory from '@material-ui/icons/Memory';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { createStyles, Tooltip, withStyles, WithStyles } from '@material-ui/core';
+import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
 import { TaskResourcesChip_task } from './__generated__/TaskResourcesChip_task.graphql';
 
 const styles = theme =>

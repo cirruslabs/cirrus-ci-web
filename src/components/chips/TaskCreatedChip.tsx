@@ -9,7 +9,7 @@ import { taskStatusColor } from '../../utils/colors';
 import { taskStatusIconName } from '../../utils/status';
 import { roundAndPresentDuration } from '../../utils/time';
 import { TaskCreatedChip_task } from './__generated__/TaskCreatedChip_task.graphql';
-import { WithTheme, withTheme } from '@material-ui/core';
+import { WithTheme, withTheme } from '@material-ui/core/styles';
 
 interface Props extends WithTheme {
   task: TaskCreatedChip_task;

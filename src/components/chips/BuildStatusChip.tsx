@@ -10,7 +10,7 @@ import { buildStatusColor } from '../../utils/colors';
 import { buildStatusIconName, buildStatusMessage, isBuildFinalStatus } from '../../utils/status';
 import { formatDuration } from '../../utils/time';
 import { BuildStatusChip_build } from './__generated__/BuildStatusChip_build.graphql';
-import { WithTheme, withTheme } from '@material-ui/core';
+import { WithTheme, withTheme } from '@material-ui/core/styles';
 
 const buildSubscription = graphql`
   subscription BuildStatusChipSubscription($buildID: ID!) {

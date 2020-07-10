@@ -5,7 +5,7 @@ import Chip from '@material-ui/core/Chip';
 import Bookmark from '@material-ui/icons/Bookmark';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { createStyles, WithStyles, withStyles } from '@material-ui/core';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
 import { TaskNameChip_task } from './__generated__/TaskNameChip_task.graphql';
 
 const styles = theme =>

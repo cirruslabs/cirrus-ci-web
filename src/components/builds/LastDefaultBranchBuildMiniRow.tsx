@@ -4,7 +4,7 @@ import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core';
+import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { navigateBuild } from '../../utils/navigate';
 import RepositoryNameChip from '../chips/RepositoryNameChip';

@@ -7,7 +7,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { graphql } from 'babel-plugin-relay/macro';
 import { cirrusColors } from '../../cirrusTheme';
 import { isTaskFinalStatus } from '../../utils/status';
-import { withTheme, WithTheme } from '@material-ui/core';
+import { withTheme, WithTheme } from '@material-ui/core/styles';
 import { createFragmentContainer } from 'react-relay';
 import { TaskTransactionChip_task } from './__generated__/TaskTransactionChip_task.graphql';
 

@@ -4,17 +4,13 @@ import ViewerComponent from './scenes/Header/ViewerComponent';
 import NotFound from './scenes/NotFound';
 import { navigate } from './utils/navigate';
 import { cirrusColors } from './cirrusTheme';
-import {
-  AppBar,
-  Button,
-  createStyles,
-  Drawer,
-  IconButton,
-  Toolbar,
-  Typography,
-  WithStyles,
-  withStyles,
-} from '@material-ui/core';
+import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
+import Drawer from '@material-ui/core/Drawer';
+import IconButton from '@material-ui/core/IconButton';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
 import BookIcon from '@material-ui/icons/Book';
 import CodeIcon from '@material-ui/icons/Code';
 import MenuIcon from '@material-ui/icons/Menu';

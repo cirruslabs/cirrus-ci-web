@@ -5,7 +5,7 @@ import { graphql } from 'babel-plugin-relay/macro';
 
 import environment from '../../createRelayEnvironment';
 import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import UserProfile from '../../components/account/UserProfile';
 import { ViewerProfileQuery } from './__generated__/ViewerProfileQuery.graphql';
 

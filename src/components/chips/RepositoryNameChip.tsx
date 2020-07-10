@@ -8,7 +8,7 @@ import { navigate } from '../../utils/navigate';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { RepositoryNameChip_repository } from './__generated__/RepositoryNameChip_repository.graphql';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core';
+import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
 
 const styles = theme =>
   createStyles({

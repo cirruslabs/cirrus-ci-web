@@ -9,7 +9,7 @@
     "url": "https://github.com/cirruslabs/cirrus-ci-docs/issues"
   },
   "homepage": "https://cirrus-ci.com",
-  "version": "0.1.0",
+  "version": "1",
   "private": true,
   "license": "MIT",
   "dependencies": {
@@ -47,7 +47,6 @@
     "@types/react-relay": "^7.0.8",
     "@types/react-router-dom": "^5.1.5",
     "@types/relay-runtime": "^9.1.5",
-    "concurrently": "^5.2.0",
     "get-graphql-schema": "^2.1.2",
     "husky": "^4.2.5",
     "prettier": "^2.0.5",
@@ -68,7 +67,7 @@
     "prettier-check": "prettier --check  \"{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md,html}\"",
     "relay": "relay-compiler --verbose --watchman false --src ./src --schema schema.graphql --language typescript",
     "sync-schema": "get-graphql-schema https://api.cirrus-ci.com/schema.json | sed -e 's/Long/Int/g' > schema.graphql",
-    "postinstall": "concurrently -n relay,sync-schema,patch-package \"npm:relay\" \"npm:sync-schema\" \"npx patch-package\""
+    "bootstrap": "npx patch-package && npm run relay && npm run sync-schema"
   },
   "babelMacros": {
     "relay": {}

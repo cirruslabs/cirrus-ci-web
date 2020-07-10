@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-scripts/config/webpack.config.js b/node_modules/react-scripts/config/webpack.config.js
-index 25840d9..291c7a1 100644
+index 25840d9..3336e2c 100644
 --- a/node_modules/react-scripts/config/webpack.config.js
 +++ b/node_modules/react-scripts/config/webpack.config.js
 @@ -420,6 +420,19 @@ module.exports = function(webpackEnv) {
@@ -22,30 +22,15 @@ index 25840d9..291c7a1 100644
                  ],
                  // This is a feature of `babel-loader` for webpack (not Babel itself).
                  // It enables caching results in ./node_modules/.cache/babel-loader/
-@@ -624,6 +637,7 @@ module.exports = function(webpackEnv) {
-           filename: 'static/css/[name].[contenthash:8].css',
-           chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
-         }),
-+      /*
-       // Generate an asset manifest file with the following content:
-       // - "files" key: Mapping of all asset filenames to their corresponding
-       //   output file so that tools can pick it up without having to parse
-@@ -648,12 +662,14 @@ module.exports = function(webpackEnv) {
+@@ -648,6 +661,7 @@ module.exports = function(webpackEnv) {
            };
          },
        }),
-+      */
++      /*
        // Moment.js is an extremely popular library that bundles large locale files
        // by default due to how webpack interprets its code. This is a practical
        // solution that requires the user to opt into importing specific locales.
-       // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
-       // You can remove this if you don't use Moment.js:
-       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-+      /*
-       // Generate a service worker script that will precache, and keep up to date,
-       // the HTML & assets that are part of the webpack build.
-       isEnvProduction &&
-@@ -672,6 +688,7 @@ module.exports = function(webpackEnv) {
+@@ -672,6 +686,7 @@ module.exports = function(webpackEnv) {
              new RegExp('/[^/?]+\\.[^/]+$'),
            ],
          }),

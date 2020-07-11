@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
-import { createStyles, List, Tooltip, withStyles, WithStyles } from '@material-ui/core';
+import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
+import Tooltip from '@material-ui/core/Tooltip';
 import { cirrusColors } from '../../cirrusTheme';
 import Paper from '@material-ui/core/Paper';
 import { RouteComponentProps, withRouter } from 'react-router-dom';

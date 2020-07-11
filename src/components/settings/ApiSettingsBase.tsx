@@ -1,6 +1,6 @@
 import React from 'react';
 import { commitMutation } from 'react-relay';
-import { withStyles, createStyles, WithStyles } from '@material-ui/core';
+import { withStyles, createStyles, WithStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';

@@ -18,7 +18,7 @@ import BuildStatusChip from '../chips/BuildStatusChip';
 import BuildChangeChip from '../chips/BuildChangeChip';
 import { navigateBuild } from '../../utils/navigate';
 import Typography from '@material-ui/core/Typography';
-import { withStyles, WithStyles } from '@material-ui/core';
+import { withStyles, WithStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import { cirrusColors } from '../../cirrusTheme';
 import { ViewerBuildList_viewer } from './__generated__/ViewerBuildList_viewer.graphql';

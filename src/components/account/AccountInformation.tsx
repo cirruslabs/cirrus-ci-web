@@ -16,7 +16,7 @@ import Settings from '@material-ui/icons/Settings';
 import DirectionsRun from '@material-ui/icons/DirectionsRun';
 import Button from '@material-ui/core/Button';
 import GitHubIcon from '@material-ui/icons/GitHub';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core';
+import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
 
 const styles = theme =>
   createStyles({

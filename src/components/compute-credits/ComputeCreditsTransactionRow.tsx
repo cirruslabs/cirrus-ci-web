@@ -9,7 +9,7 @@ import TaskDurationChip from '../chips/TaskDurationChip';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import PropTypes from 'prop-types';
-import { withStyles, WithStyles } from '@material-ui/core';
+import { withStyles, WithStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import RepositoryNameChip from '../chips/RepositoryNameChip';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';

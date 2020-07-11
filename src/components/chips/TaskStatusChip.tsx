@@ -3,11 +3,12 @@ import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import Icon from '@material-ui/core/Icon';
+import Tooltip from '@material-ui/core/Tooltip';
 import { taskStatusColor } from '../../utils/colors';
 import { taskStatusIconName, taskStatusMessage } from '../../utils/status';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { Tooltip, WithTheme, withTheme } from '@material-ui/core';
+import { WithTheme, withTheme } from '@material-ui/core/styles';
 import { TaskStatusChip_task } from './__generated__/TaskStatusChip_task.graphql';
 
 interface Props extends WithTheme {

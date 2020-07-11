@@ -1,4 +1,3 @@
-import { withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button/Button';
 import Card from '@material-ui/core/Card/Card';
 import CardActions from '@material-ui/core/CardActions/CardActions';
@@ -10,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton/IconButton';
 import Typography from '@material-ui/core/Typography/Typography';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { createStyles, WithStyles } from '@material-ui/styles';
+import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';

@@ -10,7 +10,7 @@ import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { BuildBranchNameChip_build } from './__generated__/BuildBranchNameChip_build.graphql';
 import { shorten } from '../../utils/text';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core';
+import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
 
 const styles = theme =>
   createStyles({

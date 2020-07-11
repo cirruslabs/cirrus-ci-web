@@ -9,7 +9,7 @@ import { taskStatusColor } from '../../utils/colors';
 import { isTaskFinalStatus, isTaskInProgressStatus, taskStatusIconName } from '../../utils/status';
 import { formatDuration } from '../../utils/time';
 import { TaskDurationChip_task } from './__generated__/TaskDurationChip_task.graphql';
-import { WithTheme, withTheme } from '@material-ui/core';
+import { WithTheme, withTheme } from '@material-ui/core/styles';
 
 const taskSubscription = graphql`
   subscription TaskDurationChipSubscription($taskID: ID!) {

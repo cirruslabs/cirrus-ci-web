@@ -7,7 +7,7 @@ import CasinoIcon from '@material-ui/icons/Casino';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { cirrusColors } from '../../cirrusTheme';
-import { WithTheme, withTheme } from '@material-ui/core';
+import { WithTheme, withTheme } from '@material-ui/core/styles';
 import { TaskExperimentalChip_task } from './__generated__/TaskExperimentalChip_task.graphql';
 
 interface Props extends WithTheme {

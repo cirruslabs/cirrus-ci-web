@@ -14,8 +14,6 @@ export default createFragmentContainer(TaskArtifacts, {
       id
       artifacts {
         name
-        type
-        format
         files {
           path
           size

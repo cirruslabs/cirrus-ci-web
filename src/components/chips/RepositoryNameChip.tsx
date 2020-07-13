@@ -54,7 +54,6 @@ class RepositoryNameChip extends React.Component<Props> {
 export default createFragmentContainer(withStyles(styles)(RepositoryNameChip), {
   repository: graphql`
     fragment RepositoryNameChip_repository on Repository {
-      id
       owner
       name
     }

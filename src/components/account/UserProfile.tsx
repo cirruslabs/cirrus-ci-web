@@ -177,10 +177,8 @@ class UserProfile extends React.Component<Props> {
 export default createFragmentContainer(withStyles(styles)(withRouter(UserProfile)), {
   user: graphql`
     fragment UserProfile_user on User {
-      id
       githubUserName
       githubMarketplacePurchase {
-        accountId
         planId
         planName
         onFreeTrial
@@ -188,7 +186,6 @@ export default createFragmentContainer(withStyles(styles)(withRouter(UserProfile
       }
       organizations {
         name
-        role
       }
       ...UserApiSettings_user
       ...UserComputeCredits_user

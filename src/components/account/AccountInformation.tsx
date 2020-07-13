@@ -102,8 +102,6 @@ class AccountInformation extends React.Component<Props, State> {
 export default createFragmentContainer(withRouter(withStyles(styles)(AccountInformation)), {
   viewer: graphql`
     fragment AccountInformation_viewer on User {
-      id
-      githubUserName
       avatarURL
     }
   `,

@@ -18,8 +18,6 @@ export default props => (
     query={graphql`
       query RepositoryMetricsChartsQuery($repositoryId: ID!, $parameters: MetricsQueryParameters!) {
         repository(id: $repositoryId) {
-          owner
-          name
           metrics(parameters: $parameters) {
             ...MetricsChart_chart
           }

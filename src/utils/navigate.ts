@@ -5,7 +5,7 @@ export function navigate(router, event, url) {
     url = url.replace('http://localhost:3333/', '');
   }
 
-  if (event && (event.metaKey || event.ctrlKey || event.button === 1)) {
+  if (event && (event.metaKey || event.ctrlKey || event.button === 1 || event.button === 4)) {
     window.open(url, '_blank');
   } else if (router && !url.includes('://')) {
     router.history.push(url);

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
+import { withStyles, WithStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -19,12 +19,11 @@ import InsertDriveFile from '@material-ui/icons/InsertDriveFile';
 import GetApp from '@material-ui/icons/GetApp';
 import FolderOpen from '@material-ui/icons/FolderOpen';
 
-const styles = theme =>
-  createStyles({
-    title: {
-      backgroundColor: cirrusColors.cirrusTitleBackground,
-    },
-  });
+const styles = {
+  title: {
+    backgroundColor: cirrusColors.cirrusTitleBackground,
+  },
+};
 
 interface Props extends RouteComponentProps, WithStyles<typeof styles> {
   task: TaskArtifacts_task;

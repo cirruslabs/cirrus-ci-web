@@ -145,7 +145,7 @@ class BuildDetails extends React.Component<Props> {
 
     let failedTaskIds = build.latestGroupTasks.filter(task => task.status === 'FAILED').map(task => task.id);
     let reRunAllTasksButton =
-      failedTaskIds.length === 0 ? null : (
+      failedTaskIds.length === 0 || !hasWritePermissions(build.repository.viewerPermission) ? null : (
         <Button variant="contained" onClick={() => this.batchReRun(failedTaskIds)} startIcon={<Refresh />}>
           Re-Run Failed Tasks
         </Button>

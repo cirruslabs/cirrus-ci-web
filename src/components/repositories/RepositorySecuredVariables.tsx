@@ -46,7 +46,6 @@ class RepositorySecuredVariables extends React.Component<Props, State> {
     let securedComponent = null;
 
     if (this.state.securedVariableName) {
-      // todo: simplify coping
       let valueForYAMLFile = `ENCRYPTED[${this.state.securedVariableName}]`;
 
       securedComponent = (

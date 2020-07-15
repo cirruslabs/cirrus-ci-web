@@ -20,10 +20,14 @@ import { navigateBuild } from '../../utils/navigate';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, WithStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
+import { cirrusColors } from '../../cirrusTheme';
 import { ViewerBuildList_viewer } from './__generated__/ViewerBuildList_viewer.graphql';
 import { Helmet as Head } from 'react-helmet';
 
 let styles = {
+  title: {
+    backgroundColor: cirrusColors.cirrusTitleBackground,
+  },
   chip: {
     margin: 4,
   },
@@ -67,8 +71,8 @@ class ViewerBuildList extends React.Component<Props> {
         <Head>
           <title>Recent Builds - Cirrus CI</title>
         </Head>
-        <Toolbar>
-          <Typography variant="h5" color="inherit">
+        <Toolbar className={classes.title}>
+          <Typography variant="h6" color="inherit">
             Recent Builds
           </Typography>
         </Toolbar>

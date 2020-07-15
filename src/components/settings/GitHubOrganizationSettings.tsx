@@ -6,6 +6,7 @@ import { graphql } from 'babel-plugin-relay/macro';
 import Paper from '@material-ui/core/Paper';
 import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { cirrusColors } from '../../cirrusTheme';
 import Toolbar from '@material-ui/core/Toolbar';
 import OrganizationComputeCredits from '../compute-credits/OrganizationComputeCredits';
 import GitHubPurchase from '../purchase/GitHubPurchase';
@@ -16,6 +17,9 @@ import { GitHubOrganizationSettings_info } from './__generated__/GitHubOrganizat
 
 const styles = theme =>
   createStyles({
+    title: {
+      backgroundColor: cirrusColors.cirrusTitleBackground,
+    },
     settingGap: {
       paddingTop: 16,
     },
@@ -41,7 +45,7 @@ class GitHubOrganizationSettings extends React.Component<Props> {
     return (
       <div>
         <Paper elevation={1}>
-          <Toolbar>
+          <Toolbar className={classes.title}>
             <Typography variant="h6" color="inherit">
               Settings for {organization} organization
             </Typography>

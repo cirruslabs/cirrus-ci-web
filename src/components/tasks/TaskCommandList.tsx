@@ -9,14 +9,14 @@ import { isTaskCommandExecuting, isTaskCommandFinalStatus, isTaskFinalStatus } f
 import DurationTicker from '../common/DurationTicker';
 import { withStyles, WithStyles } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import * as queryString from 'query-string';
-import { TaskCommandList_task } from './__generated__/TaskCommandList_task.graphql';
+import { TaskCommandList_task, TaskCommandType } from './__generated__/TaskCommandList_task.graphql';
 import { ItemOfArray } from '../../utils/utility-types';
 
 const styles = {
@@ -58,16 +58,36 @@ class TaskCommandList extends React.Component<Props> {
     };
     let finished = command.durationInSeconds > 0 || isTaskCommandFinalStatus(command.status);
     let expandable = command.name === selectedCommandName || finished || !isTaskFinalStatus(this.props.task.status);
+
+    // the text at the top (name and type)
+    let topText: JSX.Element;
+
+    if (command.type === 'CLONE') {
+      topText = <Typography variant="body1">Clone</Typography>;
+    } else if ((['EXECUTE_SCRIPT', 'EXECUTE_BACKGROUND_SCRIPT'] as Array<TaskCommandType>).includes(command.type)) {
+      topText = <Typography variant="body1">Run {command.name}</Typography>;
+    } else if (command.type === 'CACHE') {
+      topText = <Typography variant="body1">Populate {command.name} cache</Typography>;
+    } else if (command.type === 'UPLOAD_CACHE') {
+      // the upload text is added on the backend
+      topText = <Typography variant="body1">{command.name}</Typography>;
+    } else if (command.type === null) {
+      // todo: remind Fedor to fix this on the backend
+      topText = <Typography variant="body1">Upload {command.name} artifacts</Typography>;
+    } else {
+      throw new Error(`no way to handle ${command.type}!`);
+    }
+
     return (
-      <ExpansionPanel
+      <Accordion
         key={command.name}
         TransitionProps={{ unmountOnExit: true, timeout: 400 }}
         disabled={!expandable}
         defaultExpanded={command.name === selectedCommandName || command.status === 'FAILURE'}
       >
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} style={styles.header}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} style={styles.header}>
           <div>
-            <Typography variant="body1">{command.name}</Typography>
+            {topText}
             <Typography variant="caption">
               {finished ? (
                 formatDuration(command.durationInSeconds)
@@ -78,11 +98,11 @@ class TaskCommandList extends React.Component<Props> {
               )}
             </Typography>
           </div>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails className={classes.details}>
+        </AccordionSummary>
+        <AccordionDetails className={classes.details}>
           <TaskCommandLogs taskId={this.props.task.id} command={command} />
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
+        </AccordionDetails>
+      </Accordion>
     );
   }
 }
@@ -95,6 +115,7 @@ export default createFragmentContainer(withStyles(styles)(withRouter(TaskCommand
       executingTimestamp
       commands {
         name
+        type
         status
         durationInSeconds
       }

@@ -60,20 +60,20 @@ class TaskCommandList extends React.Component<Props> {
     let expandable = command.name === selectedCommandName || finished || !isTaskFinalStatus(this.props.task.status);
 
     // the text at the top (name and type)
-    let topText: JSX.Element;
+    let topText: string;
 
     if (command.type === 'CLONE') {
-      topText = <Typography variant="body1">Clone</Typography>;
+      topText = 'Clone';
     } else if ((['EXECUTE_SCRIPT', 'EXECUTE_BACKGROUND_SCRIPT'] as Array<TaskCommandType>).includes(command.type)) {
-      topText = <Typography variant="body1">Run {command.name}</Typography>;
+      topText = 'Run ' + command.name;
     } else if (command.type === 'CACHE') {
-      topText = <Typography variant="body1">Populate {command.name} cache</Typography>;
+      topText = 'Populate ' + command.name + ' cache';
     } else if (command.type === 'UPLOAD_CACHE') {
       // the upload text is added on the backend
-      topText = <Typography variant="body1">{command.name}</Typography>;
+      topText = command.name;
     } else if (command.type === null) {
       // todo: remind Fedor to fix this on the backend
-      topText = <Typography variant="body1">Upload {command.name} artifacts</Typography>;
+      topText = `Upload ${command.name} artifacts`;
     } else {
       throw new Error(`no way to handle ${command.type}!`);
     }
@@ -87,7 +87,7 @@ class TaskCommandList extends React.Component<Props> {
       >
         <AccordionSummary expandIcon={<ExpandMoreIcon />} style={styles.header}>
           <div>
-            {topText}
+            <Typography variant="body1">{topText}</Typography>
             <Typography variant="caption">
               {finished ? (
                 formatDuration(command.durationInSeconds)

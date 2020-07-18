@@ -64,7 +64,7 @@ class TaskCommandList extends React.Component<Props> {
 
     if (command.type === 'CLONE') {
       topText = 'Clone';
-    } else if ((['EXECUTE_SCRIPT', 'EXECUTE_BACKGROUND_SCRIPT'] as Array<TaskCommandType>).includes(command.type)) {
+    } else if (['EXECUTE_SCRIPT', 'EXECUTE_BACKGROUND_SCRIPT'].includes(command.type)) {
       topText = 'Run ' + command.name;
     } else if (command.type === 'CACHE') {
       topText = 'Populate ' + command.name + ' cache';

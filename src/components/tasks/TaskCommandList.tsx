@@ -16,7 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import * as queryString from 'query-string';
-import { TaskCommandList_task, TaskCommandType } from './__generated__/TaskCommandList_task.graphql';
+import { TaskCommandList_task } from './__generated__/TaskCommandList_task.graphql';
 import { ItemOfArray } from '../../utils/utility-types';
 
 const styles = {

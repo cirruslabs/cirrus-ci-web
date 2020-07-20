@@ -98,11 +98,8 @@ export default createFragmentContainer(withStyles(styles)(withRouter(LastDefault
       lastDefaultBranchBuild {
         id
         branch
-        changeIdInRepo
         changeMessageTitle
-        durationInSeconds
         status
-        changeTimestamp
         ...BuildStatusChip_build
       }
       ...RepositoryNameChip_repository

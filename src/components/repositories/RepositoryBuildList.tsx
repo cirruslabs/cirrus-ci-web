@@ -164,6 +164,9 @@ class RepositoryBuildList extends React.Component<Props, State> {
               {repositorySettings}
             </div>
           </Toolbar>
+          <Table style={{ tableLayout: 'auto' }}>
+            <TableBody>{builds.map(build => this.buildItem(build))}</TableBody>
+          </Table>
         </Paper>
         {this.state.openCreateDialog && (
           <CreateBuildDialog
@@ -173,12 +176,6 @@ class RepositoryBuildList extends React.Component<Props, State> {
           />
         )}
         {buildsChart}
-        <div className={classes.gap} />
-        <Paper elevation={1}>
-          <Table style={{ tableLayout: 'auto' }}>
-            <TableBody>{builds.map(build => this.buildItem(build))}</TableBody>
-          </Table>
-        </Paper>
       </div>
     );
   }

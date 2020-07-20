@@ -41,7 +41,6 @@ export default createFragmentContainer(OrganizationApiSettings, {
   info: graphql`
     fragment OrganizationApiSettings_info on GitHubOrganizationInfo {
       id
-      role
       apiToken {
         maskedToken
       }

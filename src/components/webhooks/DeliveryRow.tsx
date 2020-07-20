@@ -89,13 +89,8 @@ export default createFragmentContainer(withStyles(styles)(withRouter(DeliveryRow
     fragment DeliveryRow_delivery on WebHookDelivery {
       id
       timestamp
-      payload {
-        event
-        action
-      }
       response {
         status
-        duration
       }
     }
   `,

@@ -661,6 +661,7 @@ enum TaskCommandType {
   UPLOAD_CACHE
   CLONE
   EXECUTE_BACKGROUND_SCRIPT
+  ARTIFACTS
 }
 
 input TaskReRunInput {

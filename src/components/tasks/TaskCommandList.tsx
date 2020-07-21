@@ -71,8 +71,7 @@ class TaskCommandList extends React.Component<Props> {
     } else if (command.type === 'UPLOAD_CACHE') {
       // the upload text is added on the backend
       topText = command.name;
-    } else if (command.type === null) {
-      // todo: remind Fedor to fix this on the backend
+    } else if (command.type === 'ARTIFACTS') {
       topText = `Upload ${command.name} artifacts`;
     } else {
       throw new Error(`no way to handle ${command.type}!`);

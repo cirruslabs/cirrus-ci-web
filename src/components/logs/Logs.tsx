@@ -85,7 +85,10 @@ class Logs extends React.Component<Props, State> {
         highLightedLineStart: parseInt(startLine.replace('L', ''), 10),
         highLightedLineEnd: parseInt(endLine.replace('L', ''), 10),
       }));
-      document.getElementById(startLine).focus();
+      let elementToFocus = document.getElementById(startLine);
+      if (elementToFocus) {
+        elementToFocus.focus();
+      }
     }
   }
 

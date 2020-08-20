@@ -40,7 +40,7 @@
     "@types/classnames": "^2.2.10",
     "@types/jest": "^26.0.10",
     "@types/node": "^14.6.0",
-    "@types/react": "^16.9.44",
+    "@types/react": "^16.9.46",
     "@types/react-dom": "^16.9.8",
     "@types/react-helmet": "^6.0.0",
     "@types/react-relay": "^7.0.8",

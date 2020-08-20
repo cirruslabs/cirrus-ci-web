@@ -74,7 +74,7 @@ class TaskCommandList extends React.Component<Props> {
     } else if (command.type === 'ARTIFACTS') {
       topText = `Upload ${command.name} artifacts`;
     } else {
-      throw new Error(`no way to handle ${command.type}!`);
+      topText = command.name;
     }
 
     return (

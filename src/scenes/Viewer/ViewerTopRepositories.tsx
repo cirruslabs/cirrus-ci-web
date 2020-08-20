@@ -24,7 +24,7 @@ export default (props: Props) => {
         }
       `}
       variables={{}}
-      render={({ props }) => {
+      render={({ error, props }) => {
         if (!props) {
           return <CirrusLinearProgress />;
         }

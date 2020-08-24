@@ -181,6 +181,7 @@ class TaskDetails extends React.Component<Props> {
     }
 
     let repoUrl = repository.cloneUrl.slice(0, -4);
+    let branchUrl = build.branch.startsWith('pull/') ? `${repoUrl}/${build.branch}` : `${repoUrl}/tree/${build.branch}`;
     let commitUrl = repoUrl + '/commit/' + build.changeIdInRepo;
 
     let notificationsComponent =
@@ -273,6 +274,10 @@ class TaskDetails extends React.Component<Props> {
               {build.changeMessageTitle} (commit{' '}
               <a href={commitUrl} target="_blank" rel="noopener noreferrer">
                 {build.changeIdInRepo.substr(0, 6)}
+              </a>{' '}
+              on branch{' '}
+              <a href={branchUrl} target="_blank" rel="noopener noreferrer">
+                {build.branch}
               </a>
               )
             </Typography>
@@ -406,6 +411,7 @@ export default createFragmentContainer(withStyles(styles)(withRouter(TaskDetails
         ...Notification_notification
       }
       build {
+        branch
         changeIdInRepo
         changeMessageTitle
         viewerPermission

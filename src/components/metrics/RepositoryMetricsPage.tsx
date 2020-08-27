@@ -17,6 +17,7 @@ import { RouteComponentProps } from 'react-router';
 import { RepositoryMetricsPage_repository } from './__generated__/RepositoryMetricsPage_repository.graphql';
 import { MetricsQueryParameters } from './__generated__/RepositoryMetricsChartsQuery.graphql';
 import { Helmet as Head } from 'react-helmet';
+import { getHealthValue, Status } from './HealthCalculator';
 
 const styles = theme =>
   createStyles({
@@ -61,6 +62,13 @@ class RepositoryMetricsPage extends React.Component<Props, State> {
   render() {
     let { classes } = this.props;
     let repository = this.props.repository;
+    let { passed, status } = getHealthValue(repository);
+
+    let statusString: string = 'not healthy';
+
+    if (status === Status.VERY_HEALTHY) statusString = 'very healthy';
+    else if (status === Status.HEALTHY) statusString = 'healthy';
+    else if (status === Status.PARTIALLY) statusString = 'partially healthy';
 
     return (
       <div>
@@ -71,9 +79,17 @@ class RepositoryMetricsPage extends React.Component<Props, State> {
         </Head>
         <Card>
           <CardContent>
-            <Typography gutterBottom variant="h5" component="h2" className={classes.title}>
+            <Typography gutterBottom variant="h4" component="h2" className={classes.title}>
               {repository.owner}/{repository.name}'s Metrics
             </Typography>
+            <Grid container justify="center">
+              <Typography variant="h6">Repository Health</Typography>
+            </Grid>
+            <Grid container justify="center">
+              <Typography>
+                This repository appears to be <em>{statusString}</em>. Of the last 50 builds, {passed} have passed.
+              </Typography>
+            </Grid>
             <Grid container direction="row" justify="center">
               <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="type-helper">Instance Type</InputLabel>
@@ -167,6 +183,13 @@ export default createFragmentContainer(withStyles(styles)(RepositoryMetricsPage)
       id
       owner
       name
+      builds(last: 50, branch: "master") {
+        edges {
+          node {
+            status
+          }
+        }
+      }
     }
   `,
 });

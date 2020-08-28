@@ -57,7 +57,7 @@ class TaskCommandList extends React.Component<Props> {
       },
     };
     let finished = command.durationInSeconds > 0 || isTaskCommandFinalStatus(command.status);
-    let expandable = command.name === selectedCommandName || finished || !isTaskFinalStatus(this.props.task.status);
+    let expandable = command.name === selectedCommandName || finished || isTaskFinalStatus(this.props.task.status);
 
     // the text at the top (name and type)
     let topText: string;

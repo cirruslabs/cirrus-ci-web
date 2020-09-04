@@ -28,7 +28,7 @@ export default createPaginationContainer(
   {
     info: graphql`
       fragment OrganizationComputeCredits_info on GitHubOrganizationInfo
-        @argumentDefinitions(count: { type: "Int", defaultValue: 50 }, cursor: { type: "String" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 50 }, cursor: { type: "String" }) {
         id
         name
         balanceInCredits

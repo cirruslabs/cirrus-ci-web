@@ -160,7 +160,7 @@ export default createPaginationContainer(
   {
     info: graphql`
       fragment WebHookSettings_info on GitHubOrganizationInfo
-        @argumentDefinitions(count: { type: "Int", defaultValue: 50 }, cursor: { type: "String" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 50 }, cursor: { type: "String" }) {
         id
         webhookSettings {
           webhookURL

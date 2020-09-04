@@ -40,8 +40,8 @@ const AsyncGitHubRepository = React.lazy(() => import('./scenes/Repository/GitHu
 
 const AsyncGitHubOrganization = React.lazy(() => import('./scenes/GitHub/GitHubOrganization'));
 
-const AsyncGitHubOrganizationSettingsRenderer = React.lazy(() =>
-  import('./scenes/GitHub/GitHubOrganizationSettingsRenderer'),
+const AsyncGitHubOrganizationSettingsRenderer = React.lazy(
+  () => import('./scenes/GitHub/GitHubOrganizationSettingsRenderer'),
 );
 
 const AsyncApiExplorerRenderer = React.lazy(() => import('./components/explorer/ApiExplorer'));

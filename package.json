@@ -18,7 +18,7 @@
     "ansi_up": "^4.0.4",
     "babel-plugin-relay": "^10.0.1",
     "classnames": "^2.2.6",
-    "graphiql": "^1.0.3",
+    "graphiql": "^1.0.4",
     "graphql": "^14.7.0",
     "graphql-relay": "^0.6.0",
     "js-base64": "^2.6.4",

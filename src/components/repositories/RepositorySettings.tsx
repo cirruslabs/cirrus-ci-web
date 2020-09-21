@@ -36,7 +36,7 @@ interface State {
 }
 
 class RepositorySettings extends React.Component<Props, State> {
-  initialSettings;
+  initialSettings: State;
 
   constructor(props) {
     super(props);
@@ -47,7 +47,7 @@ class RepositorySettings extends React.Component<Props, State> {
     this.onSave = this.onSave.bind(this);
   }
 
-  toggleNeedsApproval(event, isInputChecked) {
+  toggleNeedsApproval(event, isInputChecked: boolean) {
     this.setState(() => ({
       needsApproval: isInputChecked,
     }));
@@ -86,7 +86,7 @@ class RepositorySettings extends React.Component<Props, State> {
           </FormControl>
         </CardContent>
         <CardActions>
-          <Button variant="contained" color="primary" disabled={areSettingsTheSame} onClick={() => this.onSave()}>
+          <Button variant="contained" disabled={areSettingsTheSame} onClick={() => this.onSave()}>
             Save
           </Button>
         </CardActions>

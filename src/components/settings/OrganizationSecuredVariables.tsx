@@ -73,7 +73,6 @@ class OrganizationSecuredVariables extends React.Component<Props, State> {
         <CardActions>
           <Button
             variant="contained"
-            color="primary"
             disabled={this.state.inputValue === ''}
             onClick={() => this.encryptCurrentValue()}
           >

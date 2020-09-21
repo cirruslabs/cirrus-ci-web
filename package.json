@@ -48,7 +48,7 @@
     "@types/relay-runtime": "^10.0.3",
     "get-graphql-schema": "^2.1.2",
     "husky": "^4.2.5",
-    "prettier": "^2.1.1",
+    "prettier": "^2.1.2",
     "pretty-quick": "^2.0.2",
     "react-scripts": "3.4.1",
     "react-test-renderer": "^16.13.1",

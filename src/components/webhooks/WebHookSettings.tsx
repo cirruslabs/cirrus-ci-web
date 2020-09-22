@@ -101,7 +101,6 @@ class WebHookSettings extends React.Component<Props, State> {
         </CardContent>
         <CardActions disableSpacing>
           <Button
-            color="primary"
             variant="contained"
             disabled={this.state.inputValue === this.state.initialURL}
             onClick={() => this.saveWebHookURL()}

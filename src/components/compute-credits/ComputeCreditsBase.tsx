@@ -33,6 +33,9 @@ const styles = theme =>
     expandOpen: {
       transform: 'rotate(180deg)',
     },
+    buttonSpacing: {
+      marginRight: '8px',
+    },
     gap: {
       paddingTop: 16,
     },
@@ -135,7 +138,7 @@ class ComputeCreditsBase extends React.Component<Props, State> {
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
-          <Button variant="contained" onClick={this.handleOpenBuyCredits}>
+          <Button variant="contained" onClick={this.handleOpenBuyCredits} className={classes.buttonSpacing}>
             <AttachMoneyIcon />
             Add More Credits
           </Button>

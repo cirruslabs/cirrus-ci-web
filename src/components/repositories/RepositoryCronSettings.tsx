@@ -18,7 +18,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Chip from '@material-ui/core/Chip';
 import BuildStatusChip from '../chips/BuildStatusChip';
-import { Add, Remove } from '@material-ui/icons';
+import { Add, Delete } from '@material-ui/icons';
 import environment from '../../createRelayEnvironment';
 import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
@@ -182,7 +182,7 @@ class RepositoryCronSettings extends React.Component<Props, State> {
                           component="span"
                           onClick={() => this.removeCronSetting(settings.name)}
                         >
-                          <Remove />
+                          <Delete />
                         </IconButton>
                       </Tooltip>
                     </div>

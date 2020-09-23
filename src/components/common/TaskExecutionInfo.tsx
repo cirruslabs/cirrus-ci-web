@@ -56,7 +56,7 @@ class TaskExecutionInfo extends React.Component<Props> {
     info.cpuChart.points.forEach((point, index) => {
       chartPoints[index] = {
         'Requested CPUs': task.instanceResources.cpu,
-        'Used CPUs': point.value,
+        'Used CPUs': Math.min(point.value, task.instanceResources.cpu),
         TimestampLabel: formatDuration(point.secondsFromStart),
       };
     });
@@ -95,13 +95,13 @@ class TaskExecutionInfo extends React.Component<Props> {
       if (memoryUnit === 'Gb') {
         chartPoints[index] = {
           'Requested Memory': (task.instanceResources.memory / 1024.0).toFixed(2),
-          'Used Memory': (point.value / 1024.0).toFixed(2),
+          'Used Memory': Math.min(point.value / 1024.0, task.instanceResources.memory / 1024.0).toFixed(2),
           TimestampLabel: formatDuration(point.secondsFromStart),
         };
       } else {
         chartPoints[index] = {
           'Requested Memory': task.instanceResources.memory,
-          'Used Memory': point.value,
+          'Used Memory': Math.min(point.value, task.instanceResources.memory),
           TimestampLabel: formatDuration(point.secondsFromStart),
         };
       }

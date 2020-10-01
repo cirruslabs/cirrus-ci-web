@@ -21,7 +21,7 @@
     "graphiql": "^1.0.5",
     "graphql": "^15.3.0",
     "graphql-relay": "^0.6.0",
-    "js-base64": "^2.6.4",
+    "js-base64": "^3.5.2",
     "pluralize": "^8.0.0",
     "prop-types": "^15.7.2",
     "query-string": "^6.13.2",
@@ -43,7 +43,7 @@
     "@types/react": "^16.9.49",
     "@types/react-dom": "^16.9.8",
     "@types/react-helmet": "^6.1.0",
-    "@types/react-relay": "^7.0.11",
+    "@types/react-relay": "^7.0.12",
     "@types/react-router-dom": "^5.1.5",
     "@types/relay-runtime": "^10.0.4",
     "get-graphql-schema": "^2.1.2",
@@ -54,7 +54,7 @@
     "react-test-renderer": "^16.13.1",
     "relay-compiler": "^10.0.1",
     "relay-compiler-language-typescript": "^13.0.1",
-    "typescript": "^3.9.7"
+    "typescript": "^4.0.3"
   },
   "scripts": {
     "start": "react-scripts start",

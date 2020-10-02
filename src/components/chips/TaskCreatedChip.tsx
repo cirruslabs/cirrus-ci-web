@@ -16,37 +16,41 @@ interface Props extends WithTheme {
   className?: string;
 }
 
-class TaskCreatedChip extends React.Component<Props> {
-  render() {
-    let creationTimestamp = this.props.task.creationTimestamp;
-    let durationAgoInSeconds = (Date.now() - creationTimestamp) / 1000;
-    if (durationAgoInSeconds < 60) {
-      // force update in a second
-      setTimeout(() => this.forceUpdate(), 1000);
-    } else {
-      // force update in a minute
-      setTimeout(() => this.forceUpdate(), 60 * 1000);
-    }
-    let durationInSeconds = Math.floor(durationAgoInSeconds);
-    return (
-      <Tooltip
-        title={`Created at ${new Date(creationTimestamp).toLocaleTimeString()} on ${new Date(
-          creationTimestamp,
-        ).toDateString()}`}
-      >
-        <Chip
-          className={this.props.className}
-          label={`Created ${roundAndPresentDuration(durationInSeconds)} ago`}
-          avatar={
-            <Avatar style={{ backgroundColor: taskStatusColor('CREATED') }}>
-              <Icon style={{ color: this.props.theme.palette.background.paper }}>{taskStatusIconName('CREATED')}</Icon>
-            </Avatar>
-          }
-        />
-      </Tooltip>
-    );
+let TaskCreatedChip = (props: Props) => {
+  const creationTimestamp = props.task.creationTimestamp;
+  const durationAgoInSeconds = (Date.now() - creationTimestamp) / 1000;
+
+  const [, updateState] = React.useState();
+  const forceUpdate = React.useCallback(() => updateState({}), []);
+
+  if (durationAgoInSeconds < 60) {
+    // force update in a second
+    setTimeout(() => forceUpdate(), 1000);
+  } else {
+    // force update in a minute
+    setTimeout(() => forceUpdate(), 60 * 1000);
   }
-}
+
+  const durationInSeconds = Math.floor(durationAgoInSeconds);
+
+  return (
+    <Tooltip
+      title={`Created at ${new Date(creationTimestamp).toLocaleTimeString()} on ${new Date(
+        creationTimestamp,
+      ).toDateString()}`}
+    >
+      <Chip
+        className={props.className}
+        label={`Created ${roundAndPresentDuration(durationInSeconds)} ago`}
+        avatar={
+          <Avatar style={{ backgroundColor: taskStatusColor('CREATED') }}>
+            <Icon style={{ color: props.theme.palette.background.paper }}>{taskStatusIconName('CREATED')}</Icon>
+          </Avatar>
+        }
+      />
+    </Tooltip>
+  );
+};
 
 export default createFragmentContainer(withTheme(TaskCreatedChip), {
   task: graphql`

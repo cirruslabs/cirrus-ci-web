@@ -15,24 +15,24 @@ interface Props extends WithTheme {
   task: TaskExperimentalChip_task;
 }
 
-class TaskExperimentalChip extends React.Component<Props> {
-  render() {
-    let { task } = this.props;
-    let { experimental } = task;
-    if (!experimental) return <div />;
-    return (
-      <Chip
-        className={this.props.className}
-        label="Experimental"
-        avatar={
-          <Avatar style={{ backgroundColor: cirrusColors.success }}>
-            <CasinoIcon style={{ color: this.props.theme.palette.background.paper }} />
-          </Avatar>
-        }
-      />
-    );
-  }
-}
+let TaskExperimentalChip = (props: Props) => {
+  const { task } = props;
+  const { experimental } = task;
+
+  if (!experimental) return <div />;
+
+  return (
+    <Chip
+      className={props.className}
+      label="Experimental"
+      avatar={
+        <Avatar style={{ backgroundColor: cirrusColors.success }}>
+          <CasinoIcon style={{ color: props.theme.palette.background.paper }} />
+        </Avatar>
+      }
+    />
+  );
+};
 
 export default createFragmentContainer(withTheme(TaskExperimentalChip), {
   task: graphql`

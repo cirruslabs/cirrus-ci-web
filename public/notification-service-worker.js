@@ -19,6 +19,12 @@ self.addEventListener(
     };
     let title = '';
     switch (data.build.status) {
+      case 'COMPLETED':
+        title = `${data.repository.name} build succeeded!`;
+        notificationOptions.body = `"${data.build.branch}" branch build succeeded!\n${data.build.changeMessageTitle}`;
+        notificationOptions.icon = '/images/logo-success.png';
+        notificationOptions.data['link'] = `/build/${data.build.id}`;
+        break;
       case 'FAILED':
         notificationOptions.icon = '/images/logo-failure.png';
         if (data.task && data.task.name) {

@@ -180,6 +180,15 @@ enum DecryptEnvironmentVariablesFor {
   EVERYONE
 }
 
+input DeleteWebPushConfigurationInput {
+  endpoint: String!
+  clientMutationId: String
+}
+
+type DeleteWebPushConfigurationPayload {
+  clientMutationId: String
+}
+
 type ExecutionChart {
   startTimestamp: Int!
   maxValue: Float!
@@ -325,6 +334,8 @@ type Mutation {
   saveWebHookSettings(input: SaveWebHookSettingsInput!): SaveWebHookSettingsPayload
   saveBillingSettings(input: BillingSettingsInput!): BillingSettingsPayload
   generateNewAccessToken(input: GenerateNewAccessTokenInput!): GenerateNewAccessTokenPayload
+  saveWebPushConfiguration(input: SaveWebPushConfigurationInput!): SaveWebPushConfigurationPayload
+  deleteWebPushConfiguration(input: DeleteWebPushConfigurationInput!): DeleteWebPushConfigurationPayload
 }
 
 type Notification {
@@ -575,6 +586,17 @@ type SaveWebHookSettingsPayload {
   clientMutationId: String
 }
 
+input SaveWebPushConfigurationInput {
+  endpoint: String!
+  p256dhKey: String!
+  authKey: String!
+  clientMutationId: String
+}
+
+type SaveWebPushConfigurationPayload {
+  clientMutationId: String
+}
+
 type Subscription {
   task(id: ID!): Task
   build(id: ID!): Build
@@ -741,6 +763,7 @@ type User {
   id: ID!
   githubUserId: Int
   githubUserName: String!
+  category: UserCategoryType!
   avatarURL: String
   builds(
     """
@@ -789,6 +812,7 @@ type User {
     last: Int
   ): UserTransactionsConnection
   apiToken: ApiAccessToken
+  webPushServerKey: String!
 }
 
 """
@@ -819,6 +843,16 @@ type UserBuildsConnection {
   details about this specific page
   """
   pageInfo: PageInfo!
+}
+
+"""
+User type.
+"""
+enum UserCategoryType {
+  DEFAULT
+  BLOCKED
+  TRUSTED
+  ADMIN
 }
 
 """

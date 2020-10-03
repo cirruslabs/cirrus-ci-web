@@ -1,12 +1,115 @@
 import React from 'react';
 
-import { QueryRenderer } from 'react-relay';
+import { commitMutation, QueryRenderer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 
 import environment from '../../createRelayEnvironment';
 import AccountInformation from '../../components/account/AccountInformation';
 import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
 import { ViewerComponentQuery } from './__generated__/ViewerComponentQuery.graphql';
+
+const saveWebPushConfigurationMutation = graphql`
+  mutation ViewerComponentSaveWebPushConfigurationMutation($input: SaveWebPushConfigurationInput!) {
+    saveWebPushConfiguration(input: $input) {
+      clientMutationId
+    }
+  }
+`;
+
+const deleteWebPushConfigurationMutation = graphql`
+  mutation ViewerComponentDeleteWebPushConfigurationMutation($input: DeleteWebPushConfigurationInput!) {
+    deleteWebPushConfiguration(input: $input) {
+      clientMutationId
+    }
+  }
+`;
+
+function registerServiceWorkerIfNeeded(userId: string, webPushServerKey: string) {
+  if (!('serviceWorker' in navigator)) {
+    return;
+  }
+
+  if (!('PushManager' in window)) {
+    return;
+  }
+
+  askNotificationPermission().then(permissionResult => {
+    navigator.serviceWorker
+      .register('/notification-service-worker.js')
+      .catch(function (err) {
+        console.error('Unable to register service worker.', err);
+      })
+      .then(reg => {
+        if (!reg) return;
+        reg.pushManager.getSubscription().then(existingSubscription => {
+          if (existingSubscription && permissionResult !== 'granted') {
+            let jsonSub = existingSubscription.toJSON();
+            const variables = {
+              input: {
+                clientMutationId: 'subscribe-' + userId,
+                endpoint: jsonSub.endpoint,
+              },
+            };
+            commitMutation(environment, {
+              mutation: deleteWebPushConfigurationMutation,
+              variables: variables,
+              onError: err => console.error(err),
+            });
+            existingSubscription.unsubscribe();
+          }
+          if (!existingSubscription && permissionResult === 'granted') {
+            let serverKey = base64toUIntArray(webPushServerKey);
+            reg.pushManager
+              .subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: serverKey,
+              })
+              .then(sub => {
+                if (sub) {
+                  let jsonSub = sub.toJSON();
+                  const variables = {
+                    input: {
+                      clientMutationId: 'subscribe-' + userId,
+                      endpoint: jsonSub.endpoint,
+                      p256dhKey: jsonSub.keys['p256dh'],
+                      authKey: jsonSub.keys['auth'],
+                    },
+                  };
+                  commitMutation(environment, {
+                    mutation: saveWebPushConfigurationMutation,
+                    variables: variables,
+                    onError: err => console.error(err),
+                  });
+                }
+              });
+          }
+        });
+      });
+  });
+}
+
+function askNotificationPermission() {
+  return new Promise((resolve, reject) => {
+    const permissionResult = Notification.requestPermission(function (result) {
+      resolve(result);
+    });
+
+    if (permissionResult) {
+      permissionResult.then(resolve, reject);
+    }
+  });
+}
+
+function base64toUIntArray(text: string): Uint8Array {
+  const raw = window.atob(text);
+  const rawLength = raw.length;
+  const result = new Uint8Array(new ArrayBuffer(rawLength));
+
+  for (let i = 0; i < rawLength; i++) {
+    result[i] = raw.charCodeAt(i);
+  }
+  return result;
+}
 
 export default () => {
   return (
@@ -15,6 +118,9 @@ export default () => {
       query={graphql`
         query ViewerComponentQuery {
           viewer {
+            id
+            category
+            webPushServerKey
             ...AccountInformation_viewer
           }
         }
@@ -23,6 +129,9 @@ export default () => {
       render={({ error, props }) => {
         if (!props) {
           return <CirrusLinearProgress />;
+        }
+        if (props.viewer && props.viewer.webPushServerKey && props.viewer.category === 'ADMIN') {
+          registerServiceWorkerIfNeeded(props.viewer.id, props.viewer.webPushServerKey);
         }
         return <AccountInformation viewer={props.viewer} />;
       }}

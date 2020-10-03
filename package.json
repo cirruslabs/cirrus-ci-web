@@ -21,7 +21,7 @@
     "graphiql": "^1.0.5",
     "graphql": "^15.3.0",
     "graphql-relay": "^0.6.0",
-    "js-base64": "^2.6.4",
+    "js-base64": "^3.5.2",
     "pluralize": "^8.0.0",
     "prop-types": "^15.7.2",
     "query-string": "^6.13.4",

@@ -119,7 +119,6 @@ export default () => {
         query ViewerComponentQuery {
           viewer {
             id
-            category
             webPushServerKey
             ...AccountInformation_viewer
           }
@@ -130,7 +129,7 @@ export default () => {
         if (!props) {
           return <CirrusLinearProgress />;
         }
-        if (props.viewer && props.viewer.webPushServerKey && props.viewer.category === 'ADMIN') {
+        if (props.viewer && props.viewer.webPushServerKey) {
           registerServiceWorkerIfNeeded(props.viewer.id, props.viewer.webPushServerKey);
         }
         return <AccountInformation viewer={props.viewer} />;

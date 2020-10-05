@@ -41,7 +41,7 @@ let BuildCreatedChip = (props: Props) => {
       ).toDateString()}`}
     >
       <Chip
-        className={this.props.className}
+        className={props.className}
         label={`Created ${roundAndPresentDuration(durationInSeconds)} ago`}
         avatar={
           <Avatar style={{ backgroundColor: taskStatusColor('CREATED') }}>

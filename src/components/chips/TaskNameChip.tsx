@@ -23,25 +23,24 @@ interface Props extends WithStyles<typeof styles> {
   className?: string;
 }
 
-class TaskNameChip extends React.Component<Props> {
-  render() {
-    let { task, className } = this.props;
-    return (
-      <Chip
-        className={className}
-        label={task.name}
-        onClick={() => {
-          /* this empty handler helps Vimium (http://vimium.github.io/) to recognize that task names are clickable */
-        }}
-        avatar={
-          <Avatar className={this.props.classes.avatar}>
-            <Bookmark className={this.props.classes.avatarIcon} />
-          </Avatar>
-        }
-      />
-    );
-  }
-}
+let TaskNameChip = (props: Props) => {
+  const { task, className, classes } = props;
+
+  return (
+    <Chip
+      className={className}
+      label={task.name}
+      onClick={() => {
+        /* this empty handler helps Vimium (http://vimium.github.io/) to recognize that task names are clickable */
+      }}
+      avatar={
+        <Avatar className={classes.avatar}>
+          <Bookmark className={classes.avatarIcon} />
+        </Avatar>
+      }
+    />
+  );
+};
 
 export default createFragmentContainer(withStyles(styles)(TaskNameChip), {
   task: graphql`

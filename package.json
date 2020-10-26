@@ -50,7 +50,7 @@
     "husky": "^4.3.0",
     "prettier": "^2.1.2",
     "pretty-quick": "^2.0.2",
-    "react-scripts": "^3.4.3",
+    "react-scripts": "^4.0.0",
     "react-test-renderer": "^16.13.1",
     "relay-compiler": "^10.0.1",
     "relay-compiler-language-typescript": "^13.0.1",

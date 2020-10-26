@@ -45,7 +45,7 @@
     "@types/react-helmet": "^6.1.0",
     "@types/react-relay": "^7.0.12",
     "@types/react-router-dom": "^5.1.5",
-    "@types/relay-runtime": "^10.0.4",
+    "@types/relay-runtime": "^10.0.9",
     "get-graphql-schema": "^2.1.2",
     "husky": "^4.3.0",
     "prettier": "^2.1.2",

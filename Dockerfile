@@ -1,4 +1,4 @@
-FROM node:14 as builder
+FROM node:15 as builder
 
 WORKDIR /tmp/cirrus-ci-web
 ADD package.json package-lock.json /tmp/cirrus-ci-web/
@@ -10,7 +10,7 @@ ENV NODE_ENV=production
 ADD . /tmp/cirrus-ci-web/
 RUN npm run relay && npm run build && rm -rf build/service-worker.js
 
-FROM node:14-alpine
+FROM node:15
 
 WORKDIR /svc/cirrus-ci-web
 EXPOSE 8080

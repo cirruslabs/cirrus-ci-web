@@ -31,6 +31,9 @@ let styles = theme =>
       '&:focus': {
         outline: 0,
       },
+      '&:empty': {
+        height: theme.typography.fontSize,
+      },
     },
     logLineHighlighted: {
       background: theme.palette.secondary.dark,

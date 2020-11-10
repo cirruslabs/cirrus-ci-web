@@ -28,6 +28,9 @@ class TaskResourcesChip extends React.Component<Props> {
   render() {
     let { task, className } = this.props;
     let resources = task.instanceResources;
+    if (!resources) {
+      return null;
+    }
     let cpuPart = resources.cpu === 1.0 ? `1 CPU` : `${resources.cpu} CPUs`;
     let memoryPart = resources.memory === 1024 ? `1 GB` : `${resources.memory / 1024.0} GBs`;
     return (

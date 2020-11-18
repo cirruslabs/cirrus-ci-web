@@ -6,10 +6,10 @@ import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
 import AccountInformation from '../../components/account/AccountInformation';
 import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
-import { ViewerComponentQuery } from './__generated__/ViewerComponentQuery.graphql';
+import { ActiveRepositoriesDrawerQuery } from './__generated__/ActiveRepositoriesDrawerQuery.graphql';
 
 const saveWebPushConfigurationMutation = graphql`
-  mutation ViewerComponentSaveWebPushConfigurationMutation($input: SaveWebPushConfigurationInput!) {
+  mutation ActiveRepositoriesDrawerSaveWebPushConfigurationMutation($input: SaveWebPushConfigurationInput!) {
     saveWebPushConfiguration(input: $input) {
       clientMutationId
     }
@@ -17,7 +17,7 @@ const saveWebPushConfigurationMutation = graphql`
 `;
 
 const deleteWebPushConfigurationMutation = graphql`
-  mutation ViewerComponentDeleteWebPushConfigurationMutation($input: DeleteWebPushConfigurationInput!) {
+  mutation ActiveRepositoriesDrawerDeleteWebPushConfigurationMutation($input: DeleteWebPushConfigurationInput!) {
     deleteWebPushConfiguration(input: $input) {
       clientMutationId
     }
@@ -113,10 +113,10 @@ function base64toUIntArray(text: string): Uint8Array {
 
 export default () => {
   return (
-    <QueryRenderer<ViewerComponentQuery>
+    <QueryRenderer<ActiveRepositoriesDrawerQuery>
       environment={environment}
       query={graphql`
-        query ViewerComponentQuery {
+        query ActiveRepositoriesDrawerQuery {
           viewer {
             id
             webPushServerKey
@@ -125,7 +125,7 @@ export default () => {
         }
       `}
       variables={{}}
-      render={({ error, props }) => {
+      render={({ props }) => {
         if (!props) {
           return <CirrusLinearProgress />;
         }

@@ -317,6 +317,9 @@ input MetricsQueryParameters {
 type Mutation {
   securedVariable(input: RepositorySecuredVariableInput!): RepositorySecuredVariablePayload
   securedOrganizationVariable(input: OrganizationSecuredVariableInput!): OrganizationSecuredVariablePayload
+  updateSecuredOrganizationVariable(
+    input: UpdateOrganizationSecuredVariableInput!
+  ): UpdateOrganizationSecuredVariablePayload
   createBuild(input: RepositoryCreateBuildInput!): RepositoryCreateBuildPayload
   validate(input: ValidateConfigInput!): ValidateConfigPayload
   deleteRepository(input: RepositoryDeleteInput!): RepositoryDeletePayload
@@ -757,6 +760,18 @@ enum TaskTriggerType {
 type TimePoint {
   date: DayDate
   value: Float
+}
+
+input UpdateOrganizationSecuredVariableInput {
+  organizationId: ID!
+  name: String!
+  updatedValueToSecure: String!
+  clientMutationId: String
+}
+
+type UpdateOrganizationSecuredVariablePayload {
+  variableName: String!
+  clientMutationId: String
 }
 
 type User {

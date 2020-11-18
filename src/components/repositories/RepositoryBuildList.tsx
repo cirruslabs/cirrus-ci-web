@@ -38,7 +38,7 @@ let styles = createStyles({
     margin: 4,
   },
   cell: {
-    padding: 0,
+    padding: '5px',
     width: '100%',
     maxWidth: '600px',
   },
@@ -51,6 +51,9 @@ let styles = createStyles({
   wrapper: {
     display: 'flex',
     flexWrap: 'wrap',
+  },
+  row: {
+    padding: '3px',
   },
 });
 
@@ -192,7 +195,7 @@ class RepositoryBuildList extends React.Component<Props, State> {
         onClick={e => navigateBuild(this.context.router, e, build.id)}
         style={{ cursor: 'pointer' }}
       >
-        <TableCell style={{ padding: 0 }}>
+        <TableCell className={classes.row}>
           <div className="d-flex flex-column align-items-start">
             <BuildBranchNameChip build={build} className={classes.chip} />
             <BuildChangeChip build={build} className={classes.chip} />

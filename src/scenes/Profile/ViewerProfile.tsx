@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import UserProfile from '../../components/account/UserProfile';
 import { ViewerProfileQuery } from './__generated__/ViewerProfileQuery.graphql';
 
-export default props => {
+export default () => {
   return (
     <QueryRenderer<ViewerProfileQuery>
       environment={environment}
@@ -21,7 +21,7 @@ export default props => {
         }
       `}
       variables={{}}
-      render={({ error, props }) => {
+      render={({ props }) => {
         if (!props) {
           return <CirrusLinearProgress />;
         }

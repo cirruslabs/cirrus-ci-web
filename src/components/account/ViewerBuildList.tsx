@@ -28,12 +28,15 @@ let styles = {
     margin: 4,
   },
   cell: {
-    padding: 0,
+    padding: '5px',
     width: '100%',
     maxWidth: '600px',
   },
   emptyBuilds: {
     margin: 8,
+  },
+  padding: {
+    padding: '5px',
   },
 };
 
@@ -84,7 +87,7 @@ class ViewerBuildList extends React.Component<Props> {
         hover={true}
         style={{ cursor: 'pointer' }}
       >
-        <TableCell style={{ padding: 0 }}>
+        <TableCell className={classes.padding}>
           <div className="d-flex flex-column align-items-start">
             <RepositoryNameChip repository={build.repository} className={classes.chip} />
             <BuildBranchNameChip build={build} className={classes.chip} />

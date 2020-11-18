@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import ViewerComponent from './scenes/Header/ViewerComponent';
+import ActiveRepositoriesDrawer from './scenes/Header/ActiveRepositoriesDrawer';
 import NotFound from './scenes/NotFound';
 import { navigate } from './utils/navigate';
 import { cirrusColors } from './cirrusTheme';
@@ -17,10 +17,10 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import ViewerTopRepositories from './scenes/Viewer/ViewerTopRepositories';
+import ViewerTopRepositories from './scenes/Profile/ViewerTopRepositories';
 import CirrusLinearProgress from './components/common/CirrusLinearProgress';
 
-const AsyncViewerProfile = React.lazy(() => import('./scenes/Viewer/ViewerProfile'));
+const AsyncViewerProfile = React.lazy(() => import('./scenes/Profile/ViewerProfile'));
 
 const AsyncHome = React.lazy(() => import('./scenes/Home/Home'));
 
@@ -63,13 +63,10 @@ export const styles = theme =>
       color: theme.palette.primary.contrastText,
       marginRight: 8,
     },
-    leftIcon: {
-      marginRight: theme.spacing(1.0),
-    },
     titleShift: {
       marginLeft: 2 * theme.spacing(1.0),
     },
-    viewer: {
+    marginRight: {
       marginRight: theme.spacing(1.0),
     },
     appFrame: {
@@ -193,56 +190,58 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
     return (
       <BrowserRouter>
         <div className={classes.appFrame}>
-          <AppBar
-            position="static"
-            className={classNames(classes.appBar, {
-              [classes.shiftedFixedWidth]: openDrawer,
-              [classes.appBarShift]: openDrawer,
-            })}
-          >
-            <Toolbar disableGutters={true}>
-              <IconButton
-                color="inherit"
-                aria-label="open navigation"
-                onClick={this.handleDrawerOpen}
-                className={classNames(classes.menuButton, openDrawer && classes.hide)}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography
-                variant="h6"
-                className={classNames(classes.flex, {
-                  [classes.titleShift]: openDrawer,
-                })}
-                style={this.getNavbarTitleStyling()}
-                onClick={e => navigate(this.context.router, e, '/')}
-                color="inherit"
-              >
-                Cirrus CI
-              </Typography>
-              <Button
-                className={classes.linkButton}
-                href="https://github.com/cirruslabs/cirrus-ci-web"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <CodeIcon className={classes.leftIcon} />
-                <span className="d-none d-md-block">Source</span>
-              </Button>
-              <Button
-                className={classes.linkButton}
-                href="https://cirrus-ci.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <BookIcon className={classes.leftIcon} />
-                <span className="d-none d-md-block">Documentation</span>
-              </Button>
-              <div className={classes.viewer}>
-                <ViewerComponent />
-              </div>
-            </Toolbar>
-          </AppBar>
+          <nav>
+            <AppBar
+              position="static"
+              className={classNames(classes.appBar, {
+                [classes.shiftedFixedWidth]: openDrawer,
+                [classes.appBarShift]: openDrawer,
+              })}
+            >
+              <Toolbar disableGutters={true}>
+                <IconButton
+                  color="inherit"
+                  aria-label="open navigation"
+                  onClick={this.handleDrawerOpen}
+                  className={classNames(classes.menuButton, openDrawer && classes.hide)}
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Typography
+                  variant="h6"
+                  className={classNames(classes.flex, {
+                    [classes.titleShift]: openDrawer,
+                  })}
+                  style={this.getNavbarTitleStyling()}
+                  onClick={e => navigate(this.context.router, e, '/')}
+                  color="inherit"
+                >
+                  Cirrus CI
+                </Typography>
+                <Button
+                  className={classes.linkButton}
+                  href="https://github.com/cirruslabs/cirrus-ci-web"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <CodeIcon className={classes.marginRight} />
+                  <span className="d-none d-md-block">Source</span>
+                </Button>
+                <Button
+                  className={classes.linkButton}
+                  href="https://cirrus-ci.org/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <BookIcon className={classes.marginRight} />
+                  <span className="d-none d-md-block">Documentation</span>
+                </Button>
+                <div className={classes.marginRight}>
+                  <ActiveRepositoriesDrawer />
+                </div>
+              </Toolbar>
+            </AppBar>
+          </nav>
           {openDrawer ? drawer : null}
           <main
             className={classNames(classes.content, {

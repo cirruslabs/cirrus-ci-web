@@ -13,6 +13,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import environment from '../../createRelayEnvironment';
 import { faviconColor } from '../../utils/colors';
 import { hasWritePermissions } from '../../utils/permissions';
+import BuildBranchNameChip from '../chips/BuildBranchNameChip';
 import BuildCreatedChip from '../chips/BuildCreatedChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import RepositoryNameChip from '../chips/RepositoryNameChip';
@@ -168,6 +169,7 @@ class BuildDetails extends React.Component<Props> {
           <CardContent>
             <div className={classes.wrapper}>
               <RepositoryNameChip className={classes.chip} repository={build.repository} />
+              <BuildBranchNameChip className={classes.chip} build={build} />
               <BuildCreatedChip className={classes.chip} build={build} />
               <BuildStatusChip className={classes.chip} build={build} />
             </div>
@@ -258,6 +260,7 @@ export default createFragmentContainer(withStyles(styles)(withRouter(BuildDetail
       status
       changeIdInRepo
       changeMessageTitle
+      ...BuildBranchNameChip_build
       ...BuildCreatedChip_build
       ...BuildStatusChip_build
       notifications {

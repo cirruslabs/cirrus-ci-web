@@ -23,6 +23,7 @@ import { BuildDetails_build } from './__generated__/BuildDetails_build.graphql';
 import { Helmet as Head } from 'react-helmet';
 import Refresh from '@material-ui/icons/Refresh';
 import Check from '@material-ui/icons/Check';
+import BuildBranchNameChip from '../chips/BuildBranchNameChip';
 
 const buildApproveMutation = graphql`
   mutation BuildDetailsApproveBuildMutation($input: BuildApproveInput!) {
@@ -168,6 +169,9 @@ class BuildDetails extends React.Component<Props> {
           <CardContent>
             <div className={classes.wrapper}>
               <RepositoryNameChip className={classes.chip} repository={build.repository} />
+              <BuildBranchNameChip className={classes.chip} build={build} />
+            </div>
+            <div className={classes.wrapper}>
               <BuildCreatedChip className={classes.chip} build={build} />
               <BuildStatusChip className={classes.chip} build={build} />
             </div>
@@ -259,6 +263,7 @@ export default createFragmentContainer(withStyles(styles)(withRouter(BuildDetail
       changeIdInRepo
       changeMessageTitle
       ...BuildCreatedChip_build
+      ...BuildBranchNameChip_build
       ...BuildStatusChip_build
       notifications {
         ...Notification_notification

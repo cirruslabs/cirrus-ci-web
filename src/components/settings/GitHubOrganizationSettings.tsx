@@ -13,6 +13,7 @@ import GitHubPurchase from '../purchase/GitHubPurchase';
 import WebHookSettings from '../webhooks/WebHookSettings';
 import OrganizationApiSettings from './OrganizationApiSettings';
 import OrganizationSecuredVariables from './OrganizationSecuredVariables';
+import OrganizationPersistentWorkerPools from './OrganizationPersistentWorkerPools';
 import { GitHubOrganizationSettings_info } from './__generated__/GitHubOrganizationSettings_info.graphql';
 
 const styles = theme =>
@@ -69,6 +70,10 @@ class GitHubOrganizationSettings extends React.Component<Props> {
         </Paper>
         <div className={classes.settingGap} />
         <Paper elevation={1}>
+          <OrganizationPersistentWorkerPools info={info} />
+        </Paper>
+        <div className={classes.settingGap} />
+        <Paper elevation={1}>
           <WebHookSettings info={info} />
         </Paper>
         <div className={classes.settingGap} />
@@ -86,6 +91,7 @@ export default createFragmentContainer(withStyles(styles)(withRouter(GitHubOrgan
       ...OrganizationComputeCredits_info
       ...OrganizationApiSettings_info
       ...OrganizationSecuredVariables_info
+      ...OrganizationPersistentWorkerPools_info
       ...WebHookSettings_info
     }
   `,

@@ -60,6 +60,10 @@ const deletePoolMutation = graphql`
 `;
 
 class PersistentWorkerPoolsList extends React.Component<PoolsListProps, PoolsListState> {
+  static contextTypes = {
+    router: PropTypes.object,
+  };
+
   state = {openDialog: false};
 
   toggleDialog = () => {
@@ -92,7 +96,8 @@ class PersistentWorkerPoolsList extends React.Component<PoolsListProps, PoolsLis
         <CardContent>
           <List>
             {this.props.pools.map(pool =>
-              pool && <ListItem key={pool.id} button>
+              pool && <ListItem key={pool.id} button
+                                onClick={() => navigate(this.context.router, "", "/pool/" + pool.id)}>
                 <ListItemAvatar>
                   <Avatar>
                     {pool.enabledForPublic ? <LockOpenIcon/> : <LockCloseIcon/>}

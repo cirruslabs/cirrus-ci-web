@@ -1,16 +1,16 @@
-import React, { Suspense } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import React, {Suspense} from 'react';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import ActiveRepositoriesDrawer from './scenes/Header/ActiveRepositoriesDrawer';
 import NotFound from './scenes/NotFound';
-import { navigate } from './utils/navigate';
-import { cirrusColors } from './cirrusTheme';
+import {navigate} from './utils/navigate';
+import {cirrusColors} from './cirrusTheme';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import {createStyles, WithStyles, withStyles} from '@material-ui/core/styles';
 import BookIcon from '@material-ui/icons/Book';
 import CodeIcon from '@material-ui/icons/Code';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -43,6 +43,8 @@ const AsyncGitHubOrganization = React.lazy(() => import('./scenes/GitHub/GitHubO
 const AsyncGitHubOrganizationSettingsRenderer = React.lazy(
   () => import('./scenes/GitHub/GitHubOrganizationSettingsRenderer'),
 );
+
+const AsyncPoolById = React.lazy(() => import('./scenes/Workers/PoolById'));
 
 const AsyncApiExplorerRenderer = React.lazy(() => import('./components/explorer/ApiExplorer'));
 
@@ -146,24 +148,24 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
   }
 
   handleDrawerOpen() {
-    this.setState({ openDrawer: true });
+    this.setState({openDrawer: true});
     localStorage.setItem('cirrusOpenDrawer', 'true');
   }
 
   getNavbarTitleStyling() {
-    const shared = { cursor: 'pointer' };
+    const shared = {cursor: 'pointer'};
 
-    return this.state.openDrawer ? { marginLeft: '15px', ...shared } : shared;
+    return this.state.openDrawer ? {marginLeft: '15px', ...shared} : shared;
   }
 
   handleDrawerClose() {
-    this.setState({ openDrawer: false });
+    this.setState({openDrawer: false});
     localStorage.setItem('cirrusOpenDrawer', 'false');
   }
 
   render() {
-    let { classes } = this.props;
-    let { openDrawer } = this.state;
+    let {classes} = this.props;
+    let {openDrawer} = this.state;
 
     const drawer = (
       <nav>
@@ -179,10 +181,10 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
               Active Repositories
             </Typography>
             <IconButton onClick={this.handleDrawerClose}>
-              <ChevronLeftIcon />
+              <ChevronLeftIcon/>
             </IconButton>
           </div>
-          <ViewerTopRepositories className={classes.topRepositories} />
+          <ViewerTopRepositories className={classes.topRepositories}/>
         </Drawer>
       </nav>
     );
@@ -205,7 +207,7 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                   onClick={this.handleDrawerOpen}
                   className={classNames(classes.menuButton, openDrawer && classes.hide)}
                 >
-                  <MenuIcon />
+                  <MenuIcon/>
                 </IconButton>
                 <Typography
                   variant="h6"
@@ -224,7 +226,7 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <CodeIcon className={classes.marginRight} />
+                  <CodeIcon className={classes.marginRight}/>
                   <span className="d-none d-md-block">Source</span>
                 </Button>
                 <Button
@@ -233,11 +235,11 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <BookIcon className={classes.marginRight} />
+                  <BookIcon className={classes.marginRight}/>
                   <span className="d-none d-md-block">Documentation</span>
                 </Button>
                 <div className={classes.marginRight}>
-                  <ActiveRepositoriesDrawer />
+                  <ActiveRepositoriesDrawer/>
                 </div>
               </Toolbar>
             </AppBar>
@@ -249,18 +251,18 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
               [classes.contentShift]: openDrawer,
             })}
           >
-            <div className={classNames('invisible', classes.drawerHeader)} />
+            <div className={classNames('invisible', classes.drawerHeader)}/>
             <div
               className={classNames({
                 'fluid-container': openDrawer,
                 container: !openDrawer,
               })}
             >
-              <Suspense fallback={<CirrusLinearProgress />}>
+              <Suspense fallback={<CirrusLinearProgress/>}>
                 <Switch>
-                  <Route exact path="/" component={AsyncHome} props={this.props} />
-                  <Route exact path="/explorer" component={AsyncApiExplorerRenderer} props={this.props} />
-                  <Route exact path="/settings/profile" component={AsyncViewerProfile} props={this.props} />
+                  <Route exact path="/" component={AsyncHome} props={this.props}/>
+                  <Route exact path="/explorer" component={AsyncApiExplorerRenderer} props={this.props}/>
+                  <Route exact path="/settings/profile" component={AsyncViewerProfile} props={this.props}/>
                   <Route
                     exact
                     path="/settings/github/:organization"
@@ -273,9 +275,9 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                     component={AsyncRepositorySettings}
                     props={this.props}
                   />
-                  <Route exact path="/build/:buildId" component={AsyncBuildById} props={this.props} />
-                  <Route exact path="/build/:owner/:name/:SHA" component={AsyncBuildBySHA} props={this.props} />
-                  <Route exact path="/github/:owner" component={AsyncGitHubOrganization} props={this.props} />
+                  <Route exact path="/build/:buildId" component={AsyncBuildById} props={this.props}/>
+                  <Route exact path="/build/:owner/:name/:SHA" component={AsyncBuildBySHA} props={this.props}/>
+                  <Route exact path="/github/:owner" component={AsyncGitHubOrganization} props={this.props}/>
                   <Route
                     exact
                     path="/github/:owner/:name/:branch*"
@@ -294,9 +296,10 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                     component={AsyncRepositoryMetrics}
                     props={this.props}
                   />
-                  <Route exact path="/task/:taskId" component={AsyncTask} props={this.props} />
-                  <Route exact path="/:owner/:name/:branch*" component={AsyncGitHubRepository} props={this.props} />
-                  <Route component={NotFound} props={this.props} />
+                  <Route exact path="/task/:taskId" component={AsyncTask} props={this.props}/>
+                  <Route exact path="/pool/:poolId" component={AsyncPoolById} props={this.props}/>
+                  <Route exact path="/:owner/:name/:branch*" component={AsyncGitHubRepository} props={this.props}/>
+                  <Route component={NotFound} props={this.props}/>
                 </Switch>
               </Suspense>
             </div>

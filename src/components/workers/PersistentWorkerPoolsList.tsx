@@ -36,7 +36,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import {DeletePersistentWorkerPoolInput} from "./__generated__/PersistentWorkerPoolsListDeleteMutation.graphql";
 import PoolVisibilityIcon from "../icons/PoolVisibilityIcon";
 
-
 interface PoolsListState {
   openDialog: boolean;
 }
@@ -68,7 +67,7 @@ class PersistentWorkerPoolsList extends React.Component<PoolsListProps, PoolsLis
   toggleDialog = () => {
     this.setState(prevState => ({
       ...prevState,
-      openDialog: !prevState.openDialog,
+      openEditDialog: !prevState.openDialog,
     }));
   };
 
@@ -203,7 +202,7 @@ class CreateNewPersistentWorkerPoolDialog extends React.Component<DialogProps, D
   render() {
     return (
       <Dialog open={this.props.open}>
-        <DialogTitle>Create Persitent Worker Pool</DialogTitle>
+        <DialogTitle>Create Persistent Worker Pool</DialogTitle>
         <DialogContent>
           <FormControl fullWidth>
             <FormControlLabel

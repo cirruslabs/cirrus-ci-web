@@ -32,10 +32,9 @@ import {
   ListItemSecondaryAction,
   ListItemText
 } from "@material-ui/core";
-import LockOpenIcon from "@material-ui/icons/LockOpen";
-import LockCloseIcon from "@material-ui/icons/Lock";
 import DeleteIcon from '@material-ui/icons/Delete';
 import {DeletePersistentWorkerPoolInput} from "./__generated__/PersistentWorkerPoolsListDeleteMutation.graphql";
+import PoolVisibilityIcon from "../icons/PoolVisibilityIcon";
 
 
 interface PoolsListState {
@@ -100,7 +99,7 @@ class PersistentWorkerPoolsList extends React.Component<PoolsListProps, PoolsLis
                                 onClick={() => navigate(this.context.router, "", "/pool/" + pool.id)}>
                 <ListItemAvatar>
                   <Avatar>
-                    {pool.enabledForPublic ? <LockOpenIcon/> : <LockCloseIcon/>}
+                    <PoolVisibilityIcon enabledForPublic={pool.enabledForPublic}/>
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText primary={pool.name}/>

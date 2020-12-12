@@ -19,10 +19,9 @@ import {
   TableRow,
   Tooltip
 } from "@material-ui/core";
-import LockOpenIcon from "@material-ui/icons/LockOpen";
-import LockCloseIcon from "@material-ui/icons/Lock";
 import EditIcon from "@material-ui/icons/Edit";
 import KeyIcon from "@material-ui/icons/VpnKey";
+import PoolVisibilityIcon from "../icons/PoolVisibilityIcon";
 
 
 const styles = theme =>
@@ -63,7 +62,7 @@ class PoolDetails extends React.Component<Props> {
           <CardHeader
             avatar={
               <Avatar aria-label="recipe">
-                {pool.enabledForPublic ? <LockOpenIcon/> : <LockCloseIcon/>}
+                <PoolVisibilityIcon enabledForPublic={pool.enabledForPublic}/>
               </Avatar>
             }
             action={
@@ -73,9 +72,11 @@ class PoolDetails extends React.Component<Props> {
                     <KeyIcon/>
                   </IconButton>
                 </Tooltip>
-                <IconButton aria-label="edit">
-                  <EditIcon/>
-                </IconButton>
+                <Tooltip title="Edit">
+                  <IconButton aria-label="edit">
+                    <EditIcon/>
+                  </IconButton>
+                </Tooltip>
               </div>
             }
             title={`Pool ${pool.name}`}

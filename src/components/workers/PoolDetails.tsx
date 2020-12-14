@@ -20,15 +20,10 @@ import {
   Tooltip
 } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
-import KeyIcon from "@material-ui/icons/VpnKey";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import PoolVisibilityIcon from "../icons/PoolVisibilityIcon";
-import CardActions from "@material-ui/core/CardActions";
-import {
-  CreatePersistentWorkerPoolInput,
-  PersistentWorkerPoolsListCreateMutationResponse
-} from "./__generated__/PersistentWorkerPoolsListCreateMutation.graphql";
 import environment from "../../createRelayEnvironment";
-import {navigate} from "../../utils/navigate";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -41,6 +36,10 @@ import Input from "@material-ui/core/Input";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import {UpdatePersistentWorkerPoolInput} from "./__generated__/PoolDetailsUpdateMutation.graphql";
+import {
+  GetPersistentWorkerPoolRegistrationTokenInput,
+  PoolDetailsGetRegistrationTokenMutationResponse
+} from "./__generated__/PoolDetailsGetRegistrationTokenMutation.graphql";
 
 
 const styles = theme =>
@@ -66,14 +65,23 @@ interface PoolDetailsProps extends WithStyles<typeof styles>, RouteComponentProp
 
 interface PoolDetailsState {
   openEditDialog: boolean;
+  registrationToken?: string;
 }
+
+const getRegistrationTokenMutation = graphql`
+  mutation PoolDetailsGetRegistrationTokenMutation($input: GetPersistentWorkerPoolRegistrationTokenInput!) {
+    persistentWorkerPoolRegistrationToken(input: $input) {
+      token
+    }
+  }
+`;
 
 class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
   static contextTypes = {
     router: PropTypes.object,
   };
 
-  state = {openEditDialog: false};
+  state = {openEditDialog: false, registrationToken: null};
 
   toggleEditDialog = () => {
     this.setState(prevState => ({
@@ -82,9 +90,48 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
     }));
   };
 
-  render() {
-    let {pool, classes} = this.props;
+  retrieveRegistrationToken = () => {
+    const input: GetPersistentWorkerPoolRegistrationTokenInput = {
+      clientMutationId: 'get-worker-pool-token-' + this.props.pool.id,
+      poolId: this.props.pool.id,
+    };
+    commitMutation(environment, {
+      mutation: getRegistrationTokenMutation,
+      variables: {input: input},
+      onCompleted: (response: PoolDetailsGetRegistrationTokenMutationResponse) => {
+        this.setState(prevState => ({
+          ...prevState,
+          registrationToken: response.persistentWorkerPoolRegistrationToken.token,
+        }));
+      },
+      onError: err => console.log(err),
+    });
+  };
 
+  render() {
+    let {pool} = this.props;
+
+    let viewerCanSeeToken = pool.viewerPermission === "ADMIN" || pool.viewerPermission === "WRITE";
+    let showTokenButton = null;
+    if (viewerCanSeeToken && !this.state.registrationToken) {
+      showTokenButton = (
+        <Tooltip title="Show Registration Token">
+          <IconButton aria-label="show-token" onClick={this.retrieveRegistrationToken}>
+            <VisibilityIcon/>
+          </IconButton>
+        </Tooltip>
+      );
+    }
+    if (viewerCanSeeToken && this.state.registrationToken) {
+      showTokenButton = (
+        <Tooltip title="Hide Registration Token">
+          <IconButton aria-label="hide-token"
+                      onClick={() => this.setState({openEditDialog: false, registrationToken: null})}>
+            <VisibilityOffIcon/>
+          </IconButton>
+        </Tooltip>
+      );
+    }
     return (
       <div>
         <Head>
@@ -99,11 +146,7 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
             }
             action={
               <div>
-                <Tooltip title="Show Registration Token">
-                  <IconButton aria-label="show-token">
-                    <KeyIcon/>
-                  </IconButton>
-                </Tooltip>
+                {showTokenButton}
                 <Tooltip title="Edit">
                   <IconButton aria-label="edit" onClick={this.toggleEditDialog}>
                     <EditIcon/>
@@ -122,6 +165,9 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
             subheader={`Workers count: ${pool.workers.length}`}
           />
           <CardContent>
+            <Typography>
+              {this.state.registrationToken}
+            </Typography>
             <Table aria-label="workers table">
               <TableHead>
                 <TableRow>
@@ -275,6 +321,7 @@ export default createFragmentContainer(withStyles(styles)(withRouter(PoolDetails
       id
       name
       enabledForPublic
+      viewerPermission
       workers {
         name
         os

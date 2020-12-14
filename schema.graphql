@@ -411,6 +411,7 @@ type PersistentWorkerPool {
   name: String!
   enabledForPublic: Boolean!
   workers: [PersistentWorker]
+  viewerPermission: PermissionType
 }
 
 """Task platform."""

@@ -8,7 +8,7 @@ import {RouteComponentProps, withRouter} from 'react-router-dom';
 import {Helmet as Head} from 'react-helmet';
 import {PoolDetails_pool} from "./__generated__/PoolDetails_pool.graphql";
 import {
-  Avatar,
+  Avatar, CardActions,
   CardContent,
   CardHeader,
   IconButton,
@@ -40,6 +40,7 @@ import {
   GetPersistentWorkerPoolRegistrationTokenInput,
   PoolDetailsGetRegistrationTokenMutationResponse
 } from "./__generated__/PoolDetailsGetRegistrationTokenMutation.graphql";
+import CopyPasteField from "../common/CopyPasteField";
 
 
 const styles = theme =>
@@ -112,26 +113,6 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
     let {pool} = this.props;
 
     let viewerCanSeeToken = pool.viewerPermission === "ADMIN" || pool.viewerPermission === "WRITE";
-    let showTokenButton = null;
-    if (viewerCanSeeToken && !this.state.registrationToken) {
-      showTokenButton = (
-        <Tooltip title="Show Registration Token">
-          <IconButton aria-label="show-token" onClick={this.retrieveRegistrationToken}>
-            <VisibilityIcon/>
-          </IconButton>
-        </Tooltip>
-      );
-    }
-    if (viewerCanSeeToken && this.state.registrationToken) {
-      showTokenButton = (
-        <Tooltip title="Hide Registration Token">
-          <IconButton aria-label="hide-token"
-                      onClick={() => this.setState({openEditDialog: false, registrationToken: null})}>
-            <VisibilityOffIcon/>
-          </IconButton>
-        </Tooltip>
-      );
-    }
     return (
       <div>
         <Head>
@@ -146,7 +127,6 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
             }
             action={
               <div>
-                {showTokenButton}
                 <Tooltip title="Edit">
                   <IconButton aria-label="edit" onClick={this.toggleEditDialog}>
                     <EditIcon/>
@@ -166,8 +146,29 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
           />
           <CardContent>
             <Typography>
-              {this.state.registrationToken}
+              In order to add a persistent worker to the pool please install <a
+              href="https://github.com/cirruslabs/cirrus-cli/blob/master/PERSISTENT-WORKERS.md">Cirrus CLI</a> on a
+              machine that will become a persistent worker.
             </Typography>
+          </CardContent>
+          {
+            (viewerCanSeeToken && this.state.registrationToken) &&
+            <CardContent>
+              <InputLabel htmlFor="registration-token">Registration Token</InputLabel>
+              <CopyPasteField id="registration-token"
+                              value={this.state.registrationToken}
+                              fullWidth={true}/>
+            </CardContent>
+          }
+          <CardActions className="d-flex flex-wrap justify-content-end">
+            {
+              (viewerCanSeeToken && !this.state.registrationToken) &&
+              <Button variant="outlined" startIcon={<VisibilityIcon/>} onClick={this.retrieveRegistrationToken}>
+                Show Registration Token
+              </Button>
+            }
+          </CardActions>
+          <CardContent>
             <Table aria-label="workers table">
               <TableHead>
                 <TableRow>

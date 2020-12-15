@@ -49,7 +49,7 @@ class OrganizationSecuredVariables extends React.Component<Props, State> {
       let valueForYAMLFile = `ENCRYPTED[${this.state.securedVariableName}]`;
 
       securedComponent = (
-        <CopyPasteField name="securedVariable" multiline={true} fullWidth={true} value={valueForYAMLFile} />
+        <CopyPasteField name="securedVariable" fullWidth={true} value={valueForYAMLFile} />
       );
     }
 

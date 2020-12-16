@@ -92,7 +92,7 @@ class PersistentWorkerPoolsList extends React.Component<PoolsListProps, PoolsLis
   render() {
     return (
       <Card>
-        <CardHeader title="Persistent Worker Pools" />
+        <CardHeader title="Persistent Worker Pools (Beta)" />
         <CardContent>
           <List>
             {this.props.pools.map(

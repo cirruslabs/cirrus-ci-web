@@ -1,12 +1,12 @@
-import {createStyles, withStyles, WithStyles} from '@material-ui/core/styles';
+import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import {graphql} from 'babel-plugin-relay/macro';
+import { graphql } from 'babel-plugin-relay/macro';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {commitMutation, createFragmentContainer} from 'react-relay';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
-import {Helmet as Head} from 'react-helmet';
-import {PoolDetails_pool} from "./__generated__/PoolDetails_pool.graphql";
+import { commitMutation, createFragmentContainer } from 'react-relay';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Helmet as Head } from 'react-helmet';
+import { PoolDetails_pool } from './__generated__/PoolDetails_pool.graphql';
 import {
   Avatar,
   CardActions,
@@ -18,31 +18,30 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Tooltip
-} from "@material-ui/core";
-import EditIcon from "@material-ui/icons/Edit";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import PoolVisibilityIcon from "../icons/PoolVisibilityIcon";
-import environment from "../../createRelayEnvironment";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
-import Typography from "@material-ui/core/Typography";
-import InputLabel from "@material-ui/core/InputLabel";
-import Input from "@material-ui/core/Input";
-import DialogActions from "@material-ui/core/DialogActions";
-import Button from "@material-ui/core/Button";
-import {UpdatePersistentWorkerPoolInput} from "./__generated__/PoolDetailsUpdateMutation.graphql";
+  Tooltip,
+} from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import PoolVisibilityIcon from '../icons/PoolVisibilityIcon';
+import environment from '../../createRelayEnvironment';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+import Typography from '@material-ui/core/Typography';
+import InputLabel from '@material-ui/core/InputLabel';
+import Input from '@material-ui/core/Input';
+import DialogActions from '@material-ui/core/DialogActions';
+import Button from '@material-ui/core/Button';
+import { UpdatePersistentWorkerPoolInput } from './__generated__/PoolDetailsUpdateMutation.graphql';
 import {
   GetPersistentWorkerPoolRegistrationTokenInput,
-  PoolDetailsGetRegistrationTokenMutationResponse
-} from "./__generated__/PoolDetailsGetRegistrationTokenMutation.graphql";
-import CopyPasteField from "../common/CopyPasteField";
-import WorkerStatusChip from "./WorkerStatusChip";
-
+  PoolDetailsGetRegistrationTokenMutationResponse,
+} from './__generated__/PoolDetailsGetRegistrationTokenMutation.graphql';
+import CopyPasteField from '../common/CopyPasteField';
+import WorkerStatusChip from './WorkerStatusChip';
 
 const styles = theme =>
   createStyles({
@@ -83,7 +82,7 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
     router: PropTypes.object,
   };
 
-  state = {openEditDialog: false, registrationToken: null};
+  state = { openEditDialog: false, registrationToken: null };
 
   toggleEditDialog = () => {
     this.setState(prevState => ({
@@ -99,7 +98,7 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
     };
     commitMutation(environment, {
       mutation: getRegistrationTokenMutation,
-      variables: {input: input},
+      variables: { input: input },
       onCompleted: (response: PoolDetailsGetRegistrationTokenMutationResponse) => {
         this.setState(prevState => ({
           ...prevState,
@@ -111,9 +110,9 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
   };
 
   render() {
-    let {pool} = this.props;
+    let { pool } = this.props;
 
-    let viewerCanSeeToken = pool.viewerPermission === "ADMIN" || pool.viewerPermission === "WRITE";
+    let viewerCanSeeToken = pool.viewerPermission === 'ADMIN' || pool.viewerPermission === 'WRITE';
     return (
       <div>
         <Head>
@@ -123,14 +122,14 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
           <CardHeader
             avatar={
               <Avatar aria-label="recipe">
-                <PoolVisibilityIcon enabledForPublic={pool.enabledForPublic}/>
+                <PoolVisibilityIcon enabledForPublic={pool.enabledForPublic} />
               </Avatar>
             }
             action={
               <div>
                 <Tooltip title="Edit">
                   <IconButton aria-label="edit" onClick={this.toggleEditDialog}>
-                    <EditIcon/>
+                    <EditIcon />
                   </IconButton>
                 </Tooltip>
                 <EditPersistentWorkerPoolDialog
@@ -147,27 +146,23 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
           />
           <CardContent>
             <Typography>
-              In order to add a persistent worker to the pool please install <a
-              href="https://github.com/cirruslabs/cirrus-cli/blob/master/PERSISTENT-WORKERS.md">Cirrus CLI</a> on a
+              In order to add a persistent worker to the pool please install{' '}
+              <a href="https://github.com/cirruslabs/cirrus-cli/blob/master/PERSISTENT-WORKERS.md">Cirrus CLI</a> on a
               machine that will become a persistent worker.
             </Typography>
           </CardContent>
-          {
-            (viewerCanSeeToken && this.state.registrationToken) &&
+          {viewerCanSeeToken && this.state.registrationToken && (
             <CardContent>
               <InputLabel htmlFor="registration-token">Registration Token</InputLabel>
-              <CopyPasteField id="registration-token"
-                              value={this.state.registrationToken}
-                              fullWidth={true}/>
+              <CopyPasteField id="registration-token" value={this.state.registrationToken} fullWidth={true} />
             </CardContent>
-          }
+          )}
           <CardActions className="d-flex flex-wrap justify-content-end">
-            {
-              (viewerCanSeeToken && !this.state.registrationToken) &&
-              <Button variant="outlined" startIcon={<VisibilityIcon/>} onClick={this.retrieveRegistrationToken}>
+            {viewerCanSeeToken && !this.state.registrationToken && (
+              <Button variant="outlined" startIcon={<VisibilityIcon />} onClick={this.retrieveRegistrationToken}>
                 Show Registration Token
               </Button>
-            }
+            )}
           </CardActions>
           <CardContent>
             <Table aria-label="workers table">
@@ -181,17 +176,20 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {pool.workers.map((worker) => (
-                  worker && <TableRow key={worker.name}>
-                    <TableCell>
-                      <WorkerStatusChip worker={worker}/>
-                    </TableCell>
-                    <TableCell>{worker.version}</TableCell>
-                    <TableCell component="th">{worker.name}</TableCell>
-                    <TableCell>{worker.hostname}</TableCell>
-                    <TableCell>{worker.labels}</TableCell>
-                  </TableRow>
-                ))}
+                {pool.workers.map(
+                  worker =>
+                    worker && (
+                      <TableRow key={worker.name}>
+                        <TableCell>
+                          <WorkerStatusChip worker={worker} />
+                        </TableCell>
+                        <TableCell>{worker.version}</TableCell>
+                        <TableCell component="th">{worker.name}</TableCell>
+                        <TableCell>{worker.hostname}</TableCell>
+                        <TableCell>{worker.labels}</TableCell>
+                      </TableRow>
+                    ),
+                )}
               </TableBody>
             </Table>
           </CardContent>
@@ -266,11 +264,11 @@ class EditPersistentWorkerPoolDialog extends React.Component<DialogProps, Dialog
       clientMutationId: 'edit-persistent-worker-pool-' + this.props.poolId,
       poolId: this.props.poolId,
       name: this.state.name,
-      enabledForPublic: this.state.enabledForPublic
+      enabledForPublic: this.state.enabledForPublic,
     };
     commitMutation(environment, {
       mutation: updatePoolMutation,
-      variables: {input: input},
+      variables: { input: input },
       onCompleted: this.props.onClose,
       onError: err => console.log(err),
     });
@@ -283,30 +281,36 @@ class EditPersistentWorkerPoolDialog extends React.Component<DialogProps, Dialog
         <DialogContent>
           <FormControl fullWidth>
             <FormControlLabel
-              control={<Switch checked={this.state.enabledForPublic} onChange={this.checkField('enabledForPublic')}
-                               color="primary"/>}
+              control={
+                <Switch
+                  checked={this.state.enabledForPublic}
+                  onChange={this.checkField('enabledForPublic')}
+                  color="primary"
+                />
+              }
               label="Enabled for public"
             />
           </FormControl>
           <Typography variant="subtitle1">
             <p>
               Enabling worker pool for public will allow any public repository of the organization to schedule tasks on
-              this pool.
-              Please use with caution and think of security risks involved in this decision!
+              this pool. Please use with caution and think of security risks involved in this decision!
             </p>
           </Typography>
           <FormControl fullWidth>
             <InputLabel htmlFor="name">Name</InputLabel>
-            <Input
-              id="name"
-              onChange={this.changeField('name')}
-              value={this.state.name}
-            />
+            <Input id="name" onChange={this.changeField('name')} value={this.state.name} />
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.createPool} color="primary" variant="contained"
-                  disabled={this.state.name === this.props.name && this.state.enabledForPublic === this.props.enabledForPublic}>
+          <Button
+            onClick={this.createPool}
+            color="primary"
+            variant="contained"
+            disabled={
+              this.state.name === this.props.name && this.state.enabledForPublic === this.props.enabledForPublic
+            }
+          >
             Update
           </Button>
           <Button onClick={this.props.onClose} color="secondary" variant="contained">
@@ -317,7 +321,6 @@ class EditPersistentWorkerPoolDialog extends React.Component<DialogProps, Dialog
     );
   }
 }
-
 
 export default createFragmentContainer(withStyles(styles)(withRouter(PoolDetails)), {
   pool: graphql`

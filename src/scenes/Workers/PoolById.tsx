@@ -1,21 +1,20 @@
 import React from 'react';
 
-import {QueryRenderer} from 'react-relay';
-import {graphql} from 'babel-plugin-relay/macro';
+import { QueryRenderer } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
 
 import environment from '../../createRelayEnvironment';
 import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
 import NotFound from '../NotFound';
-import {RouteComponentProps} from 'react-router';
-import PoolDetails from "../../components/workers/PoolDetails";
-import {PoolByIdQuery} from "./__generated__/PoolByIdQuery.graphql";
+import { RouteComponentProps } from 'react-router';
+import PoolDetails from '../../components/workers/PoolDetails';
+import { PoolByIdQuery } from './__generated__/PoolByIdQuery.graphql';
 
 interface MatchParams {
   poolId: string;
 }
 
-interface Props extends RouteComponentProps<MatchParams> {
-}
+interface Props extends RouteComponentProps<MatchParams> {}
 
 export default (props: Props) => (
   <QueryRenderer<PoolByIdQuery>
@@ -28,14 +27,14 @@ export default (props: Props) => (
         }
       }
     `}
-    render={({error, props}) => {
+    render={({ error, props }) => {
       if (!props) {
-        return <CirrusLinearProgress/>;
+        return <CirrusLinearProgress />;
       }
       if (!props.persistentWorkerPool) {
-        return <NotFound message={error}/>;
+        return <NotFound message={error} />;
       }
-      return <PoolDetails pool={props.persistentWorkerPool}/>;
+      return <PoolDetails pool={props.persistentWorkerPool} />;
     }}
   />
 );

@@ -168,7 +168,7 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
             <Table aria-label="workers table">
               <TableHead>
                 <TableRow>
-                  <TableCell>Online</TableCell>
+                  <TableCell>Status</TableCell>
                   <TableCell>Version</TableCell>
                   <TableCell>Name</TableCell>
                   <TableCell>host</TableCell>

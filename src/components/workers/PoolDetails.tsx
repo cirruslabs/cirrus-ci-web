@@ -8,7 +8,8 @@ import {RouteComponentProps, withRouter} from 'react-router-dom';
 import {Helmet as Head} from 'react-helmet';
 import {PoolDetails_pool} from "./__generated__/PoolDetails_pool.graphql";
 import {
-  Avatar, CardActions,
+  Avatar,
+  CardActions,
   CardContent,
   CardHeader,
   IconButton,
@@ -21,7 +22,6 @@ import {
 } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import VisibilityIcon from "@material-ui/icons/Visibility";
-import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import PoolVisibilityIcon from "../icons/PoolVisibilityIcon";
 import environment from "../../createRelayEnvironment";
 import Dialog from "@material-ui/core/Dialog";
@@ -41,6 +41,7 @@ import {
   PoolDetailsGetRegistrationTokenMutationResponse
 } from "./__generated__/PoolDetailsGetRegistrationTokenMutation.graphql";
 import CopyPasteField from "../common/CopyPasteField";
+import WorkerStatusChip from "./WorkerStatusChip";
 
 
 const styles = theme =>
@@ -172,7 +173,7 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
             <Table aria-label="workers table">
               <TableHead>
                 <TableRow>
-                  <TableCell/>
+                  <TableCell>Online</TableCell>
                   <TableCell>Version</TableCell>
                   <TableCell>Name</TableCell>
                   <TableCell>host</TableCell>
@@ -182,7 +183,9 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
               <TableBody>
                 {pool.workers.map((worker) => (
                   worker && <TableRow key={worker.name}>
-                    <TableCell>{worker.os}/{worker.arch}</TableCell>
+                    <TableCell>
+                      <WorkerStatusChip worker={worker}/>
+                    </TableCell>
                     <TableCell>{worker.version}</TableCell>
                     <TableCell component="th">{worker.name}</TableCell>
                     <TableCell>{worker.hostname}</TableCell>
@@ -325,11 +328,10 @@ export default createFragmentContainer(withStyles(styles)(withRouter(PoolDetails
       viewerPermission
       workers {
         name
-        os
-        arch
         hostname
         version
         labels
+        ...WorkerStatusChip_worker
       }
     }
   `,

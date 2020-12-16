@@ -67,7 +67,7 @@ class PersistentWorkerPoolsList extends React.Component<PoolsListProps, PoolsLis
   toggleDialog = () => {
     this.setState(prevState => ({
       ...prevState,
-      openEditDialog: !prevState.openDialog,
+      openDialog: !prevState.openDialog,
     }));
   };
 

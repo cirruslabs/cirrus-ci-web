@@ -26,6 +26,7 @@ import UserComputeCredits from '../compute-credits/UserComputeCredits';
 import { UserProfile_user } from './__generated__/UserProfile_user.graphql';
 import { Helmet as Head } from 'react-helmet';
 import Settings from '@material-ui/icons/Settings';
+import UserPersistentWorkerPools from '../settings/UserPersistentWorkerPools';
 
 const styles = {
   title: {
@@ -168,6 +169,8 @@ class UserProfile extends React.Component<Props> {
         <div className={classes.gap} />
         <UserApiSettings user={this.props.user} />
         <div className={classes.gap} />
+        <UserPersistentWorkerPools user={this.props.user} />
+        <div className={classes.gap} />
         {organizationsComponent}
       </div>
     );
@@ -189,6 +192,7 @@ export default createFragmentContainer(withStyles(styles)(withRouter(UserProfile
       }
       ...UserApiSettings_user
       ...UserComputeCredits_user
+      ...UserPersistentWorkerPools_user
     }
   `,
 });

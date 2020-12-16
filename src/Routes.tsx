@@ -44,6 +44,8 @@ const AsyncGitHubOrganizationSettingsRenderer = React.lazy(
   () => import('./scenes/GitHub/GitHubOrganizationSettingsRenderer'),
 );
 
+const AsyncPoolById = React.lazy(() => import('./scenes/Workers/PoolById'));
+
 const AsyncApiExplorerRenderer = React.lazy(() => import('./components/explorer/ApiExplorer'));
 
 const drawerWidth = 360;
@@ -295,6 +297,7 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                     props={this.props}
                   />
                   <Route exact path="/task/:taskId" component={AsyncTask} props={this.props} />
+                  <Route exact path="/pool/:poolId" component={AsyncPoolById} props={this.props} />
                   <Route exact path="/:owner/:name/:branch*" component={AsyncGitHubRepository} props={this.props} />
                   <Route component={NotFound} props={this.props} />
                 </Switch>

@@ -28,7 +28,7 @@ class BillingSettingsButton extends React.Component<Props, State> {
   toggleDialog = () => {
     this.setState(prevState => ({
       ...prevState,
-      openDialog: !prevState.openDialog,
+      openEditDialog: !prevState.openDialog,
     }));
   };
 

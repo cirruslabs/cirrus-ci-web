@@ -5,19 +5,19 @@ task:
   use_compute_credits: $CIRRUS_BRANCH == 'master'
   node_modules_cache:
     folder: node_modules
-    fingerprint_script: cat package-lock.json
+    fingerprint_script: cat yarn.lock
     reupload_on_changes: false
-    populate_script: npm ci
-  bootstrap_script: npm run bootstrap
+    populate_script: yarn
+  bootstrap_script: yarn bootstrap
   matrix:
     - name: Build
-      build_script: npm run build
+      build_script: yarn build
     - name: Tests
-      test_script: npm run test
+      test_script: yarn test
     - name: Prettier
-      prettier_check_script: npm run prettier-check
+      prettier_check_script: yarn prettier-check
     - name: Type Check
-      typecheck_script: npm run typecheck
+      typecheck_script: yarn typecheck
   on_failure:
     npm_logs_artifacts:
       path: /root/.npm/_logs/**

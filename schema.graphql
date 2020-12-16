@@ -148,7 +148,13 @@ type BuyComputeCreditsPayload {
   clientMutationId: String
 }
 
+<<<<<<< HEAD
 """Repository Setting to choose where to look for the configuration file."""
+=======
+"""
+Repository Setting to choose where to look for the configuration file.
+"""
+>>>>>>> 2d5480b... Introduce artifact overview.
 enum ConfigResolutionStrategy {
   SAME_SHA
   MERGE_FOR_PRS
@@ -337,7 +343,13 @@ type Mutation {
   saveWebHookSettings(input: SaveWebHookSettingsInput!): SaveWebHookSettingsPayload
   saveBillingSettings(input: BillingSettingsInput!): BillingSettingsPayload
   generateNewAccessToken(input: GenerateNewAccessTokenInput!): GenerateNewAccessTokenPayload
+<<<<<<< HEAD
   persistentWorkerPoolRegistrationToken(input: GetPersistentWorkerPoolRegistrationTokenInput!): GetPersistentWorkerPoolRegistrationTokenPayload
+=======
+  persistentWorkerPoolRegistrationToken(
+    input: GetPersistentWorkerPoolRegistrationTokenInput!
+  ): GetPersistentWorkerPoolRegistrationTokenPayload
+>>>>>>> 2d5480b... Introduce artifact overview.
   createPersistentWorkerPool(input: CreatePersistentWorkerPoolInput!): CreatePersistentWorkerPoolPayload
   updatePersistentWorkerPool(input: UpdatePersistentWorkerPoolInput!): UpdatePersistentWorkerPoolPayload
   deletePersistentWorkerPool(input: DeletePersistentWorkerPoolInput!): DeletePersistentWorkerPoolPayload
@@ -414,7 +426,13 @@ type PersistentWorkerPool {
   viewerPermission: PermissionType
 }
 
+<<<<<<< HEAD
 """Task platform."""
+=======
+"""
+Task platform.
+"""
+>>>>>>> 2d5480b... Introduce artifact overview.
 enum PlatformType {
   LINUX
   DARWIN

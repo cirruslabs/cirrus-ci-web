@@ -8,15 +8,16 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Switch from '@material-ui/core/Switch';
-import {graphql} from 'babel-plugin-relay/macro';
+import { graphql } from 'babel-plugin-relay/macro';
 import React from 'react';
-import {commitMutation, createFragmentContainer} from 'react-relay';
+import { commitMutation, createFragmentContainer } from 'react-relay';
 import environment from '../../createRelayEnvironment';
-import {RepositorySettings_repository} from './__generated__/RepositorySettings_repository.graphql';
+import { RepositorySettings_repository } from './__generated__/RepositorySettings_repository.graphql';
 import {
-  ConfigResolutionStrategy, DecryptEnvironmentVariablesFor,
+  ConfigResolutionStrategy,
+  DecryptEnvironmentVariablesFor,
   RepositorySettingsInput,
-  RepositorySettingsMutationResponse
+  RepositorySettingsMutationResponse,
 } from './__generated__/RepositorySettingsMutation.graphql';
 import {
   IconButton,
@@ -26,10 +27,10 @@ import {
   List,
   ListItem,
   ListItemSecondaryAction,
-  ListItemText
-} from "@material-ui/core";
-import {AddCircle} from "@material-ui/icons";
-import DeleteIcon from "@material-ui/icons/Delete";
+  ListItemText,
+} from '@material-ui/core';
+import { AddCircle } from '@material-ui/icons';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const saveSettingsMutation = graphql`
   mutation RepositorySettingsMutation($input: RepositorySettingsInput!) {
@@ -52,7 +53,7 @@ interface State {
   needsApproval?: boolean;
   decryptEnvironmentVariables?: DecryptEnvironmentVariablesFor;
   configResolutionStrategy: ConfigResolutionStrategy;
-  additionalEnvironment: readonly string[]
+  additionalEnvironment: readonly string[];
   additionalEnvironmentToAdd?: string;
 }
 
@@ -63,7 +64,7 @@ class RepositorySettings extends React.Component<Props, State> {
     super(props);
     this.state = {
       ...props.repository.settings,
-      additionalEnvironmentToAdd: ""
+      additionalEnvironmentToAdd: '',
     };
     this.initialSettings = props.repository.settings;
     this.onSave = this.onSave.bind(this);
@@ -78,7 +79,6 @@ class RepositorySettings extends React.Component<Props, State> {
       }));
     };
   };
-
 
   changeField = (field: keyof State) => {
     return event => {
@@ -103,14 +103,14 @@ class RepositorySettings extends React.Component<Props, State> {
     this.setState(prevState => ({
       ...prevState,
       additionalEnvironment: (prevState.additionalEnvironment || []).concat(prevState.additionalEnvironmentToAdd),
-      additionalEnvironmentToAdd: ""
+      additionalEnvironmentToAdd: '',
     }));
   };
 
-  deleteEnv = (line) => {
+  deleteEnv = line => {
     this.setState(prevState => ({
       ...prevState,
-      additionalEnvironment: (prevState.additionalEnvironment || []).filter((value) => line !== value),
+      additionalEnvironment: (prevState.additionalEnvironment || []).filter(value => line !== value),
     }));
   };
 
@@ -123,52 +123,51 @@ class RepositorySettings extends React.Component<Props, State> {
     return (
       <Card>
         <CardContent>
-          <FormControl style={{width: '100%'}}>
+          <FormControl style={{ width: '100%' }}>
             <FormControlLabel
-              control={<Switch checked={this.state.needsApproval} onChange={this.toggleField('needsApproval')}/>}
+              control={<Switch checked={this.state.needsApproval} onChange={this.toggleField('needsApproval')} />}
               label="Require approval for builds from users without write permissions"
             />
           </FormControl>
-          <FormControl style={{width: '100%'}}>
+          <FormControl style={{ width: '100%' }}>
             <FormHelperText>Decrypt Secured Environment Variables for builds initialized by:</FormHelperText>
             <Select
               value={this.state.decryptEnvironmentVariables}
               onChange={this.changeField('decryptEnvironmentVariables')}
-              style={{width: '100%'}}
+              style={{ width: '100%' }}
             >
               <MenuItem value={'EVERYONE'}>Everyone</MenuItem>
               <MenuItem value={'USERS_WITH_WRITE_PERMISSIONS'}>Only users with write permissions</MenuItem>
             </Select>
           </FormControl>
-          <FormControl style={{width: '100%'}}>
+          <FormControl style={{ width: '100%' }}>
             <FormHelperText>Config resolution strategy:</FormHelperText>
             <Select
               value={this.state.configResolutionStrategy}
               onChange={this.changeField('configResolutionStrategy')}
-              style={{width: '100%'}}
+              style={{ width: '100%' }}
             >
               <MenuItem value={'SAME_SHA'}>Same SHA</MenuItem>
               <MenuItem value={'MERGE_FOR_PRS'}>Merge for PRs</MenuItem>
               <MenuItem value={'DEFAULT_BRANCH'}>Latest from default branch</MenuItem>
             </Select>
           </FormControl>
-          <FormControl style={{width: '100%'}}>
+          <FormControl style={{ width: '100%' }}>
             <FormHelperText>Environment variable overrides</FormHelperText>
             <List>
-              {this.state.additionalEnvironment.map((line) =>
+              {this.state.additionalEnvironment.map(line => (
                 <ListItem key={line}>
-                  <ListItemText primary={line}/>
+                  <ListItemText primary={line} />
                   <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete"
-                                onClick={() => this.deleteEnv(line)}>
-                      <DeleteIcon/>
+                    <IconButton edge="end" aria-label="delete" onClick={() => this.deleteEnv(line)}>
+                      <DeleteIcon />
                     </IconButton>
                   </ListItemSecondaryAction>
                 </ListItem>
-              )}
+              ))}
             </List>
           </FormControl>
-          <FormControl style={{width: '100%'}}>
+          <FormControl style={{ width: '100%' }}>
             <InputLabel htmlFor="override-env-var">New Environment Variable Override</InputLabel>
             <Input
               id="override-env-var"
@@ -176,10 +175,8 @@ class RepositorySettings extends React.Component<Props, State> {
               onChange={this.handleChange('additionalEnvironmentToAdd')}
               endAdornment={
                 <InputAdornment position="end">
-                  <IconButton
-                    aria-label="add new env variable override"
-                    onClick={this.addNewEnvVariable}>
-                    <AddCircle/>
+                  <IconButton aria-label="add new env variable override" onClick={this.addNewEnvVariable}>
+                    <AddCircle />
                   </IconButton>
                 </InputAdornment>
               }
@@ -207,7 +204,7 @@ class RepositorySettings extends React.Component<Props, State> {
 
     commitMutation(environment, {
       mutation: saveSettingsMutation,
-      variables: {input},
+      variables: { input },
       onCompleted: (response: RepositorySettingsMutationResponse) => {
         this.initialSettings = response.saveSettings.settings;
         this.forceUpdate();

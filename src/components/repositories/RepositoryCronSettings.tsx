@@ -106,7 +106,6 @@ class RepositoryCronSettings extends React.Component<Props, State> {
 
   constructor(props) {
     super(props);
-    console.log(props);
     this.state = {
       name: 'nightly',
       branch: props.repository.masterBranch,
@@ -203,7 +202,7 @@ class RepositoryCronSettings extends React.Component<Props, State> {
                 <TableCell className={classNames(classes.cell)}>
                   <TextField
                     required
-                    id="name-lbl"
+                    id="branch-lbl"
                     className={classes.cellContent}
                     label="Branch"
                     defaultValue={this.state.branch}

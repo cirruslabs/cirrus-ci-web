@@ -32,15 +32,15 @@ let RepositorySettingsPage = (props: Props) => {
       </Paper>
       <div className={classes.settingGap} />
       <Paper elevation={1}>
-        <RepositorySettings {...props} />
+        <RepositorySettings repository={repository} />
       </Paper>
       <div className={classes.settingGap} />
       <Paper elevation={1}>
-        <RepositorySecuredVariables {...props} />
+        <RepositorySecuredVariables repository={repository} />
       </Paper>
       <div className={classes.settingGap} />
       <Paper elevation={1}>
-        <RepositoryCronSettings {...props} />
+        <RepositoryCronSettings repository={repository} />
       </Paper>
     </div>
   );
@@ -51,8 +51,8 @@ export default createFragmentContainer(withStyles(styles)(RepositorySettingsPage
     fragment RepositorySettingsPage_repository on Repository {
       owner
       name
-      ...RepositorySecuredVariables_repository
       ...RepositorySettings_repository
+      ...RepositorySecuredVariables_repository
       ...RepositoryCronSettings_repository
     }
   `,

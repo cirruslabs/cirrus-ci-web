@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -6,18 +6,18 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import Typography from '@material-ui/core/Typography';
-import {commitMutation} from 'react-relay';
-import {graphql} from 'babel-plugin-relay/macro';
+import { commitMutation } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
-import {UnspecifiedCallbackFunction} from '../../utils/utility-types';
+import { UnspecifiedCallbackFunction } from '../../utils/utility-types';
 import {
   BuyComputeCreditsInput,
-  ComputeCreditsStripeDialogMutationResponse
+  ComputeCreditsStripeDialogMutationResponse,
 } from './__generated__/ComputeCreditsStripeDialogMutation.graphql';
-import {CardElement, Elements, useElements, useStripe} from "@stripe/react-stripe-js";
-import Button from "@material-ui/core/Button";
-import DialogActions from "@material-ui/core/DialogActions";
-import {StripeCardElementOptions, Token} from "@stripe/stripe-js";
+import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js';
+import Button from '@material-ui/core/Button';
+import DialogActions from '@material-ui/core/DialogActions';
+import { StripeCardElementOptions, Token } from '@stripe/stripe-js';
 
 const computeCreditsBuyMutation = graphql`
   mutation ComputeCreditsStripeDialogMutation($input: BuyComputeCreditsInput!) {
@@ -44,14 +44,14 @@ const CARD_ELEMENT_OPTIONS: StripeCardElementOptions = {
       fontSmoothing: 'antialiased',
       fontSize: '16px',
       '::placeholder': {
-        color: '#aab7c4'
-      }
+        color: '#aab7c4',
+      },
     },
     invalid: {
       color: '#fa755a',
-      iconColor: '#fa755a'
-    }
-  }
+      iconColor: '#fa755a',
+    },
+  },
 };
 
 interface Props {
@@ -61,13 +61,13 @@ interface Props {
 }
 
 function ComputeCreditsStripeDialog(props: Props) {
-  const {accountId, ...other} = props;
+  const { accountId, ...other } = props;
 
   const [credits, setCredits] = useState(100);
-  const handleAmountChange = (event) => {
+  const handleAmountChange = event => {
     setCredits(parseInt((event.target.value || '0').replace(/,/g, ''), 10));
-  }
-  const [receiptEmail, setReceiptEmail] = useState("");
+  };
+  const [receiptEmail, setReceiptEmail] = useState('');
 
   const [paymentInProgress, setPaymentInProgress] = useState(false);
 
@@ -75,16 +75,16 @@ function ComputeCreditsStripeDialog(props: Props) {
   const stripe = useStripe();
   const elements = useElements();
 
-  const handleChange = (event) => {
+  const handleChange = event => {
     if (event.error) {
       setError(event.error.message);
     } else {
       setError(null);
     }
-  }
+  };
 
   // Handle form submission.
-  const handleSubmit = async (event) => {
+  const handleSubmit = async event => {
     event.preventDefault();
     setPaymentInProgress(true);
     const card = elements.getElement(CardElement);
@@ -106,12 +106,12 @@ function ComputeCreditsStripeDialog(props: Props) {
       accountId: props.accountId.toString(10),
       amountOfCredits: credits.toString(10),
       paymentTokenId: token.id,
-      receiptEmail: receiptEmail
+      receiptEmail: receiptEmail,
     };
 
     commitMutation(environment, {
       mutation: computeCreditsBuyMutation,
-      variables: {input: input},
+      variables: { input: input },
       onCompleted: (response: ComputeCreditsStripeDialogMutationResponse) => {
         setPaymentInProgress(false);
         if (response.buyComputeCredits.error && response.buyComputeCredits.error !== '') {
@@ -126,7 +126,7 @@ function ComputeCreditsStripeDialog(props: Props) {
         setError(err);
       },
     });
-  }
+  };
 
   return (
     <Dialog {...other}>
@@ -136,7 +136,7 @@ function ComputeCreditsStripeDialog(props: Props) {
           <InputLabel htmlFor="credits-amount">Amount of Credits to Buy</InputLabel>
           <Input
             id="credits-amount"
-            value={credits.toLocaleString('en-US', {useGrouping: true})}
+            value={credits.toLocaleString('en-US', { useGrouping: true })}
             inputMode="decimal"
             onChange={handleAmountChange}
           />
@@ -145,13 +145,13 @@ function ComputeCreditsStripeDialog(props: Props) {
             <p>This amount of compute credits is equal to one of the following:</p>
             <ul>
               <li>
-                {(200 * credits).toLocaleString('en-US', {useGrouping: true})} minutes of 1 virtual CPU for Linux
+                {(200 * credits).toLocaleString('en-US', { useGrouping: true })} minutes of 1 virtual CPU for Linux
               </li>
               <li>
-                {(100 * credits).toLocaleString('en-US', {useGrouping: true})} minutes of 1 virtual CPU for Windows
+                {(100 * credits).toLocaleString('en-US', { useGrouping: true })} minutes of 1 virtual CPU for Windows
               </li>
               <li>
-                {Math.ceil((100 * credits) / 3).toLocaleString('en-US', {useGrouping: true})} minutes of 1 real CPU
+                {Math.ceil((100 * credits) / 3).toLocaleString('en-US', { useGrouping: true })} minutes of 1 real CPU
                 with hyper-threading enabled for macOS.
               </li>
             </ul>
@@ -171,31 +171,26 @@ function ComputeCreditsStripeDialog(props: Props) {
             id="receipt-email"
             value={receiptEmail}
             inputMode="email"
-            onChange={(event) => setReceiptEmail(event.target.value)}
+            onChange={event => setReceiptEmail(event.target.value)}
           />
         </FormControl>
         {error}
       </DialogContent>
       <DialogActions>
-        <Button
-          onClick={handleSubmit}
-          disabled={paymentInProgress}
-          color="primary"
-          variant="contained">
-          Buy {credits.toLocaleString('en-US', {useGrouping: true})} credits
+        <Button onClick={handleSubmit} disabled={paymentInProgress} color="primary" variant="contained">
+          Buy {credits.toLocaleString('en-US', { useGrouping: true })} credits
         </Button>
       </DialogActions>
     </Dialog>
   );
 }
 
-
 export default function (props: Props) {
   // Setup Stripe.js and the Elements provider
   const stripe = (window as any).Stripe('pk_live_85E3GON1qCUa1i4Kz9AU76Xo');
   return (
     <Elements stripe={stripe}>
-      <ComputeCreditsStripeDialog {...props}/>
+      <ComputeCreditsStripeDialog {...props} />
     </Elements>
   );
 }

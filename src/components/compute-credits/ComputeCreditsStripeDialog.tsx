@@ -69,6 +69,8 @@ function ComputeCreditsStripeDialog(props: Props) {
   }
   const [receiptEmail, setReceiptEmail] = useState("");
 
+  const [paymentInProgress, setPaymentInProgress] = useState(false);
+
   const [error, setError] = useState(null);
   const stripe = useStripe();
   const elements = useElements();
@@ -97,6 +99,7 @@ function ComputeCreditsStripeDialog(props: Props) {
   };
 
   const stripeTokenHandler = (token: Token) => {
+    setPaymentInProgress(true);
     const input: BuyComputeCreditsInput = {
       clientMutationId: 'buy-credits-' + props.accountId,
       accountId: props.accountId.toString(10),
@@ -109,6 +112,7 @@ function ComputeCreditsStripeDialog(props: Props) {
       mutation: computeCreditsBuyMutation,
       variables: {input: input},
       onCompleted: (response: ComputeCreditsStripeDialogMutationResponse) => {
+        setPaymentInProgress(false);
         if (response.buyComputeCredits.error && response.buyComputeCredits.error !== '') {
           setError(response.buyComputeCredits.error);
         } else {
@@ -117,6 +121,7 @@ function ComputeCreditsStripeDialog(props: Props) {
         }
       },
       onError: err => {
+        setPaymentInProgress(false);
         setError(err);
       },
     });
@@ -173,6 +178,7 @@ function ComputeCreditsStripeDialog(props: Props) {
       <DialogActions>
         <Button
           onClick={handleSubmit}
+          disabled={paymentInProgress}
           color="primary"
           variant="contained">
           Buy {credits.toLocaleString('en-US', {useGrouping: true})} credits

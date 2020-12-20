@@ -86,11 +86,13 @@ function ComputeCreditsStripeDialog(props: Props) {
   // Handle form submission.
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setPaymentInProgress(true);
     const card = elements.getElement(CardElement);
     const result = await stripe.createToken(card);
     if (result.error) {
       // Inform the user if there was an error.
       setError(result.error.message);
+      setPaymentInProgress(false);
     } else {
       setError(null);
       // Send the token to your server.
@@ -99,7 +101,6 @@ function ComputeCreditsStripeDialog(props: Props) {
   };
 
   const stripeTokenHandler = (token: Token) => {
-    setPaymentInProgress(true);
     const input: BuyComputeCreditsInput = {
       clientMutationId: 'buy-credits-' + props.accountId,
       accountId: props.accountId.toString(10),

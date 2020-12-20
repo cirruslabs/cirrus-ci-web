@@ -6,14 +6,18 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import Typography from '@material-ui/core/Typography';
-import DialogActions from '@material-ui/core/DialogActions';
-import {loadStripe} from '@stripe/stripe-js';
 import {commitMutation} from 'react-relay';
 import {graphql} from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
 import {UnspecifiedCallbackFunction} from '../../utils/utility-types';
-import {ComputeCreditsStripeDialogMutationResponse} from './__generated__/ComputeCreditsStripeDialogMutation.graphql';
+import {
+  BuyComputeCreditsInput,
+  ComputeCreditsStripeDialogMutationResponse
+} from './__generated__/ComputeCreditsStripeDialogMutation.graphql';
 import {CardElement, Elements, useElements, useStripe} from "@stripe/react-stripe-js";
+import Button from "@material-ui/core/Button";
+import DialogActions from "@material-ui/core/DialogActions";
+import {StripeCardElementOptions, Token} from "@stripe/stripe-js";
 
 const computeCreditsBuyMutation = graphql`
   mutation ComputeCreditsStripeDialogMutation($input: BuyComputeCreditsInput!) {
@@ -31,18 +35,32 @@ const computeCreditsBuyMutation = graphql`
   }
 `;
 
+const CARD_ELEMENT_OPTIONS: StripeCardElementOptions = {
+  style: {
+    base: {
+      color: '#32325d',
+      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+      fontSmoothing: 'antialiased',
+      fontSize: '16px',
+      '::placeholder': {
+        color: '#aab7c4'
+      }
+    },
+    invalid: {
+      color: '#fa755a',
+      iconColor: '#fa755a'
+    }
+  }
+};
+
 interface Props {
   accountId: number;
   onClose: UnspecifiedCallbackFunction;
   open: boolean;
 }
 
-export default function ComputeCreditsStripeDialog(props: Props) {
+function ComputeCreditsStripeDialog(props: Props) {
   const {accountId, ...other} = props;
-
-
-  // Setup Stripe.js and the Elements provider
-  const stripePromise = loadStripe('pk_live_85E3GON1qCUa1i4Kz9AU76Xo');
 
   const [credits, setCredits] = useState(100);
   const handleAmountChange = (event) => {
@@ -76,19 +94,17 @@ export default function ComputeCreditsStripeDialog(props: Props) {
     }
   };
 
-  const stripeTokenHandler = (token) => {
-    const variables = {
-      input: {
-        clientMutationId: 'buy-credits-' + props.accountId,
-        accountId: props.accountId,
-        amountOfCredits: this.state.amountOfCreditsToBuy,
-        paymentTokenId: token,
-      },
+  const stripeTokenHandler = (token: Token) => {
+    const input: BuyComputeCreditsInput = {
+      clientMutationId: 'buy-credits-' + props.accountId,
+      accountId: props.accountId.toString(10),
+      amountOfCredits: credits.toString(10),
+      paymentTokenId: token.id,
     };
 
     commitMutation(environment, {
       mutation: computeCreditsBuyMutation,
-      variables: variables,
+      variables: {input: input},
       onCompleted: (response: ComputeCreditsStripeDialogMutationResponse) => {
         if (response.buyComputeCredits.error && response.buyComputeCredits.error !== '') {
           setError(response.buyComputeCredits.error);
@@ -130,26 +146,36 @@ export default function ComputeCreditsStripeDialog(props: Props) {
               </li>
             </ul>
           </Typography>
+          <FormControl fullWidth>
+            <CardElement
+              id="card-element"
+              className="form-control"
+              options={CARD_ELEMENT_OPTIONS}
+              onChange={handleChange}
+            />
+          </FormControl>
           {error}
         </FormControl>
       </DialogContent>
       <DialogActions>
-        <Elements stripe={stripePromise}>
-          <form onSubmit={handleSubmit}>
-            <div className="form-row">
-              <label htmlFor="card-element">
-                Credit or debit card
-              </label>
-              <CardElement
-                id="card-element"
-                onChange={handleChange}
-              />
-              <div className="card-errors" role="alert">{error}</div>
-            </div>
-            <button type="submit">Buy {credits.toLocaleString(`en-US`, {useGrouping: true})} credits</button>
-          </form>
-        </Elements>
+        <Button
+          onClick={handleSubmit}
+          color="primary"
+          variant="contained">
+          Buy {credits.toLocaleString('en-US', {useGrouping: true})} credits
+        </Button>
       </DialogActions>
     </Dialog>
+  );
+}
+
+
+export default function (props: Props) {
+  // Setup Stripe.js and the Elements provider
+  const stripe = (window as any).Stripe('pk_live_85E3GON1qCUa1i4Kz9AU76Xo');
+  return (
+    <Elements stripe={stripe}>
+      <ComputeCreditsStripeDialog {...props}/>
+    </Elements>
   );
 }

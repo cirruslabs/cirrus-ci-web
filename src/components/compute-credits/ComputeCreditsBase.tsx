@@ -17,9 +17,9 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import BillingSettingsButton from './BillingSettingsButton';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import ComputeCreditsBuyDialog from './ComputeCreditsBuyDialog';
 import { ComputeCreditsBase_info } from './__generated__/ComputeCreditsBase_info.graphql';
 import { Helmet as Head } from 'react-helmet';
+import ComputeCreditsStripeDialog from './ComputeCreditsStripeDialog';
 
 const styles = theme =>
   createStyles({
@@ -157,7 +157,7 @@ class ComputeCreditsBase extends React.Component<Props, State> {
         <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
           <CardContent>{this.props.transactionsComponent}</CardContent>
         </Collapse>
-        <ComputeCreditsBuyDialog
+        <ComputeCreditsStripeDialog
           accountId={this.props.accountId}
           open={this.state.openBuyCredits}
           onClose={this.handleCloseBuyCredits}

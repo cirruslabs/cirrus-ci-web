@@ -36,6 +36,7 @@ const computeCreditsBuyMutation = graphql`
 `;
 
 const CARD_ELEMENT_OPTIONS: StripeCardElementOptions = {
+  hidePostalCode: true,
   style: {
     base: {
       color: '#32325d',
@@ -66,6 +67,7 @@ function ComputeCreditsStripeDialog(props: Props) {
   const handleAmountChange = (event) => {
     setCredits(parseInt((event.target.value || '0').replace(/,/g, ''), 10));
   }
+  const [receiptEmail, setReceiptEmail] = useState("");
 
   const [error, setError] = useState(null);
   const stripe = useStripe();
@@ -100,6 +102,7 @@ function ComputeCreditsStripeDialog(props: Props) {
       accountId: props.accountId.toString(10),
       amountOfCredits: credits.toString(10),
       paymentTokenId: token.id,
+      receiptEmail: receiptEmail
     };
 
     commitMutation(environment, {
@@ -128,6 +131,7 @@ function ComputeCreditsStripeDialog(props: Props) {
           <Input
             id="credits-amount"
             value={credits.toLocaleString('en-US', {useGrouping: true})}
+            inputMode="decimal"
             onChange={handleAmountChange}
           />
           <Typography variant="subtitle1">
@@ -146,16 +150,25 @@ function ComputeCreditsStripeDialog(props: Props) {
               </li>
             </ul>
           </Typography>
-          <FormControl fullWidth>
-            <CardElement
-              id="card-element"
-              className="form-control"
-              options={CARD_ELEMENT_OPTIONS}
-              onChange={handleChange}
-            />
-          </FormControl>
-          {error}
         </FormControl>
+        <FormControl fullWidth>
+          <CardElement
+            id="card-element"
+            className="form-control"
+            options={CARD_ELEMENT_OPTIONS}
+            onChange={handleChange}
+          />
+        </FormControl>
+        <FormControl fullWidth>
+          <InputLabel htmlFor="receipt-email">Receipt Email</InputLabel>
+          <Input
+            id="receipt-email"
+            value={receiptEmail}
+            inputMode="email"
+            onChange={(event) => setReceiptEmail(event.target.value)}
+          />
+        </FormControl>
+        {error}
       </DialogContent>
       <DialogActions>
         <Button

@@ -138,6 +138,7 @@ input BuyComputeCreditsInput {
   accountId: ID!
   amountOfCredits: String!
   paymentTokenId: String!
+  receiptEmail: String
   clientMutationId: String
 }
 

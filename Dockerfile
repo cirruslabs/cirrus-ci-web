@@ -1,14 +1,14 @@
 FROM node:14 as builder
 
 WORKDIR /tmp/cirrus-ci-web
-ADD package.json package-lock.json /tmp/cirrus-ci-web/
+ADD package.json yarn.lock /tmp/cirrus-ci-web/
 
-RUN npm ci
+RUN yarn
 
 ENV NODE_ENV=production
 
 ADD . /tmp/cirrus-ci-web/
-RUN npm run relay && npm run build && rm -rf build/service-worker.js
+RUN yarn bootstrap && yarn build && rm -rf build/service-worker.js
 
 FROM node:14-alpine
 

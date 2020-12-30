@@ -20,15 +20,14 @@ let TaskCreatedChip = (props: Props) => {
   const creationTimestamp = props.task.creationTimestamp;
   const durationAgoInSeconds = (Date.now() - creationTimestamp) / 1000;
 
-  const [, updateState] = React.useState();
-  const forceUpdate = React.useCallback(() => updateState({}), []);
+  const [, updateState] = React.useState(1);
 
   if (durationAgoInSeconds < 60) {
     // force update in a second
-    setTimeout(() => forceUpdate(), 1000);
+    setTimeout(() => updateState(Math.random()), 1000);
   } else {
     // force update in a minute
-    setTimeout(() => forceUpdate(), 60 * 1000);
+    setTimeout(() => updateState(Math.random()), 60 * 1000);
   }
 
   const durationInSeconds = Math.floor(durationAgoInSeconds);

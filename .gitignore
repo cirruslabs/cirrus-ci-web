@@ -21,11 +21,6 @@ __generated__
 package-lock.json
 .yarn-integrity
 .eslintcache
-.yarn/cache
-.pnp.js
-.yarn/unplugged
-.yarn/install-state.gz
-.yarn/build-state.yml
 
 npm-debug.log*
 yarn-debug.log*

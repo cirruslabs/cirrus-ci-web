@@ -71,7 +71,7 @@
     "prettier-check": "prettier --check  \"{src,public}/**/*.{js,jsx,ts,tsx,json,css,scss,md,html}\"",
     "relay": "relay-compiler --verbose --watchman false --src ./src --schema schema.graphql --language typescript",
     "sync-schema": "get-graphql-schema https://api.cirrus-ci.com/schema.json | sed -e 's/Long/Int/g' > schema.graphql",
-    "bootstrap": "npm run sync-schema && npm run relay"
+    "bootstrap": "yarn sync-schema && yarn relay"
   },
   "babelMacros": {
     "relay": {}

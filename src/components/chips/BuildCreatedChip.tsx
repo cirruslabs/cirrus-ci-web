@@ -18,18 +18,17 @@ interface Props extends WithTheme {
 }
 
 let BuildCreatedChip = (props: Props) => {
-  const [, updateState] = React.useState();
-  const forceUpdate = React.useCallback(() => updateState({}), []);
+  const [, updateState] = React.useState(1);
 
   const creationTimestamp = props.build.buildCreatedTimestamp;
   const durationAgoInSeconds = (Date.now() - creationTimestamp) / 1000;
 
   if (durationAgoInSeconds < 60) {
     // force update in a second
-    setTimeout(() => forceUpdate(), 1000);
+    setTimeout(() => updateState(Math.random()), 1000);
   } else {
     // force update in a minute
-    setTimeout(() => forceUpdate(), 60 * 1000);
+    setTimeout(() => updateState(Math.random()), 60 * 1000);
   }
 
   const durationInSeconds = Math.floor(durationAgoInSeconds);

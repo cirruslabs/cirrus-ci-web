@@ -87,7 +87,7 @@ class RepositoryMetricsPage extends React.Component<Props, State> {
                   </MenuItem>
                   <MenuItem value={'container'}>Linux Container</MenuItem>
                   <MenuItem value={'windows_container'}>Windows Container</MenuItem>
-                  <MenuItem value={'osx_instance'}>macOS VM</MenuItem>
+                  <MenuItem value={'macos_instance'}>macOS VM</MenuItem>
                   <MenuItem value={'pipe'}>Docker Pipe</MenuItem>
                   <MenuItem value={'freebsd_instance'}>FreeBSD Instance</MenuItem>
                   <MenuItem value={'gce_instance'}>GCE Instance</MenuItem>

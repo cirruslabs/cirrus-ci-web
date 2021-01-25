@@ -3,7 +3,7 @@ import Card from '@material-ui/core/Card';
 import { graphql } from 'babel-plugin-relay/macro';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { commitMutation, createFragmentContainer } from 'react-relay';
+import { commitMutation, createRefetchContainer, RelayRefetchProp } from 'react-relay';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Helmet as Head } from 'react-helmet';
 import { PoolDetails_pool } from './__generated__/PoolDetails_pool.graphql';
@@ -43,6 +43,10 @@ import {
 import CopyPasteField from '../common/CopyPasteField';
 import WorkerStatusChip from './WorkerStatusChip';
 import TaskStatusChipExtended from '../chips/TaskStatusChipExtended';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { DeletePersistentWorkerPoolInput } from './__generated__/PersistentWorkerPoolsListDeleteMutation.graphql';
+import { DeletePersistentWorkerInput } from './__generated__/PoolDetailsDeleteWorkerMutation.graphql';
+import { worker } from 'cluster';
 
 const styles = theme =>
   createStyles({
@@ -63,6 +67,7 @@ const styles = theme =>
 
 interface PoolDetailsProps extends WithStyles<typeof styles>, RouteComponentProps {
   pool: PoolDetails_pool;
+  relay: RelayRefetchProp;
 }
 
 interface PoolDetailsState {
@@ -78,12 +83,24 @@ const getRegistrationTokenMutation = graphql`
   }
 `;
 
+const deleteWorkerMutation = graphql`
+  mutation PoolDetailsDeleteWorkerMutation($input: DeletePersistentWorkerInput!) {
+    deletePersistentWorker(input: $input) {
+      clientMutationId
+    }
+  }
+`;
+
 class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
   static contextTypes = {
     router: PropTypes.object,
   };
 
   state = { openEditDialog: false, registrationToken: null };
+
+  _refetch = () => {
+    this.props.relay.refetch({ poolId: this.props.pool.id }, { force: true });
+  };
 
   toggleEditDialog = () => {
     this.setState(prevState => ({
@@ -105,6 +122,27 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
           ...prevState,
           registrationToken: response.persistentWorkerPoolRegistrationToken.token,
         }));
+      },
+      onError: err => console.log(err),
+    });
+  };
+
+  deleteWorker = workerName => {
+    let poolId = this.props.pool.id;
+    const input: DeletePersistentWorkerInput = {
+      clientMutationId: `delete-persistent-worker-${poolId}-${workerName}`,
+      poolId: poolId,
+      name: workerName,
+    };
+    commitMutation(environment, {
+      mutation: deleteWorkerMutation,
+      variables: { input: input },
+      onCompleted: (response, errors) => {
+        if (errors) {
+          console.log(errors);
+        } else {
+          this._refetch();
+        }
       },
       onError: err => console.log(err),
     });
@@ -175,6 +213,7 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
                   <TableCell>host</TableCell>
                   <TableCell>Labels</TableCell>
                   <TableCell>Running Tasks</TableCell>
+                  <TableCell></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -193,6 +232,11 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
                           {!worker.info
                             ? null
                             : worker.info.runningTasks.map(task => <TaskStatusChipExtended task={task} />)}
+                        </TableCell>
+                        <TableCell>
+                          <IconButton edge="end" aria-label="delete" onClick={() => this.deleteWorker(worker.name)}>
+                            <DeleteIcon />
+                          </IconButton>
                         </TableCell>
                       </TableRow>
                     ),
@@ -329,25 +373,35 @@ class EditPersistentWorkerPoolDialog extends React.Component<DialogProps, Dialog
   }
 }
 
-export default createFragmentContainer(withStyles(styles)(withRouter(PoolDetails)), {
-  pool: graphql`
-    fragment PoolDetails_pool on PersistentWorkerPool {
-      id
-      name
-      enabledForPublic
-      viewerPermission
-      workers {
+export default createRefetchContainer(
+  withStyles(styles)(withRouter(PoolDetails)),
+  {
+    pool: graphql`
+      fragment PoolDetails_pool on PersistentWorkerPool {
+        id
         name
-        hostname
-        version
-        labels
-        ...WorkerStatusChip_worker
-        info {
-          runningTasks {
-            ...TaskStatusChipExtended_task
+        enabledForPublic
+        viewerPermission
+        workers {
+          name
+          hostname
+          version
+          labels
+          ...WorkerStatusChip_worker
+          info {
+            runningTasks {
+              ...TaskStatusChipExtended_task
+            }
           }
         }
       }
+    `,
+  },
+  graphql`
+    query PoolDetailsRefetchQuery($poolId: ID!) {
+      persistentWorkerPool(poolId: $poolId) {
+        ...PoolDetails_pool
+      }
     }
   `,
-});
+);

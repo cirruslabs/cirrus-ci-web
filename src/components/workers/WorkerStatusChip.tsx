@@ -18,13 +18,18 @@ interface Props extends WithTheme {
 
 let WorkerStatusChip = (props: Props) => {
   const { worker } = props;
+  let info = worker.info;
 
-  const durationAgoInSeconds = (Date.now() - worker.info.heartbeatTimestamp) / 1000;
-  const offline = durationAgoInSeconds > 300; // 5 minutes no heartbeats
+  let offline = true;
+  let heartbeatTooltipMessage = "Haven't yet received a heartbeat from the agent";
 
-  let heartbeatTooltipMessage = `Last heartbeat was at ${new Date(
-    worker.info.heartbeatTimestamp,
-  ).toLocaleTimeString()} on ${new Date(worker.info.heartbeatTimestamp).toDateString()}`;
+  if (info) {
+    const durationAgoInSeconds = (Date.now() - info.heartbeatTimestamp) / 1000;
+    offline = durationAgoInSeconds > 300; // 5 minutes no heartbeats
+    heartbeatTooltipMessage = `Last heartbeat was at ${new Date(
+      info.heartbeatTimestamp,
+    ).toLocaleTimeString()} on ${new Date(info.heartbeatTimestamp).toDateString()}`;
+  }
   return (
     <Tooltip title={heartbeatTooltipMessage}>
       <Chip

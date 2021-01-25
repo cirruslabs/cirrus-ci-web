@@ -42,6 +42,7 @@ import {
 } from './__generated__/PoolDetailsGetRegistrationTokenMutation.graphql';
 import CopyPasteField from '../common/CopyPasteField';
 import WorkerStatusChip from './WorkerStatusChip';
+import TaskStatusChipExtended from '../chips/TaskStatusChipExtended';
 
 const styles = theme =>
   createStyles({
@@ -173,6 +174,7 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
                   <TableCell>Name</TableCell>
                   <TableCell>host</TableCell>
                   <TableCell>Labels</TableCell>
+                  <TableCell>Running Tasks</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -187,6 +189,11 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
                         <TableCell component="th">{worker.name}</TableCell>
                         <TableCell>{worker.hostname}</TableCell>
                         <TableCell>{worker.labels}</TableCell>
+                        <TableCell>
+                          {!worker.info
+                            ? null
+                            : worker.info.runningTasks.map(task => <TaskStatusChipExtended task={task} />)}
+                        </TableCell>
                       </TableRow>
                     ),
                 )}
@@ -335,6 +342,11 @@ export default createFragmentContainer(withStyles(styles)(withRouter(PoolDetails
         version
         labels
         ...WorkerStatusChip_worker
+        info {
+          runningTasks {
+            ...TaskStatusChipExtended_task
+          }
+        }
       }
     }
   `,

@@ -44,9 +44,7 @@ import CopyPasteField from '../common/CopyPasteField';
 import WorkerStatusChip from './WorkerStatusChip';
 import TaskStatusChipExtended from '../chips/TaskStatusChipExtended';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { DeletePersistentWorkerPoolInput } from './__generated__/PersistentWorkerPoolsListDeleteMutation.graphql';
 import { DeletePersistentWorkerInput } from './__generated__/PoolDetailsDeleteWorkerMutation.graphql';
-import { worker } from 'cluster';
 
 const styles = theme =>
   createStyles({
@@ -97,6 +95,16 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
   };
 
   state = { openEditDialog: false, registrationToken: null };
+
+  private refreshInterval: NodeJS.Timer;
+
+  componentDidMount() {
+    this.refreshInterval = setInterval(() => this._refetch(), 10_000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.refreshInterval);
+  }
 
   _refetch = () => {
     this.props.relay.refetch({ poolId: this.props.pool.id }, { force: true });

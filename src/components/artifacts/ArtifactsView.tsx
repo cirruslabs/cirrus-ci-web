@@ -18,6 +18,7 @@ import InsertDriveFile from '@material-ui/icons/InsertDriveFile';
 import GetApp from '@material-ui/icons/GetApp';
 import FolderOpen from '@material-ui/icons/FolderOpen';
 import { Button } from '@material-ui/core';
+import ViewList from '@material-ui/icons/ViewList';
 
 const styles = {
   title: {
@@ -211,7 +212,10 @@ class ArtifactsView extends React.Component<Props, State> {
             {this._currentPath() || 'Artifacts'}
           </Typography>
           {this._getSelectedArtifact() === null ? null : (
-            <Button onClick={() => this.setState({ isFolderView: !this.state.isFolderView })}>
+            <Button
+              startIcon={<ViewList />}
+              onClick={() => this.updateState({ isFolderView: !this.state.isFolderView })}
+            >
               {this.state.isFolderView ? 'Disable Folder View' : 'Enable Folder View'}
             </Button>
           )}

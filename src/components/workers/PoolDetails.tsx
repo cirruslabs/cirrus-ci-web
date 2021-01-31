@@ -12,6 +12,7 @@ import {
   CardActions,
   CardContent,
   CardHeader,
+  Chip,
   IconButton,
   Table,
   TableBody,
@@ -157,7 +158,7 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
   };
 
   render() {
-    let { pool } = this.props;
+    let { pool, classes } = this.props;
 
     let viewerCanSeeToken = pool.viewerPermission === 'ADMIN' || pool.viewerPermission === 'WRITE';
     return (
@@ -235,7 +236,13 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
                         <TableCell>{worker.version}</TableCell>
                         <TableCell component="th">{worker.name}</TableCell>
                         <TableCell>{worker.hostname}</TableCell>
-                        <TableCell>{worker.labels}</TableCell>
+                        <TableCell>
+                          <div className={classes.wrapper}>
+                            {worker.labels.map(label => (
+                              <Chip key={label} className={classes.chip} label={label} />
+                            ))}
+                          </div>
+                        </TableCell>
                         <TableCell>
                           {!worker.info
                             ? null

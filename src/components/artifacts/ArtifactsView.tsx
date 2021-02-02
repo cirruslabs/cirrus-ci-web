@@ -217,7 +217,9 @@ class ArtifactsView extends React.Component<Props, State> {
             <ToggleButtonGroup
               value={this.state.isFolderView}
               exclusive
-              onChange={(_event, val) => { this.updateState({ isFolderView: val }) }}
+              onChange={(_event, val) => {
+                this.updateState({ isFolderView: val });
+              }}
               aria-label="folder view"
             >
               <ToggleButton value={false} aria-label="overview">

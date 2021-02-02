@@ -17,8 +17,10 @@ import Folder from '@material-ui/icons/Folder';
 import InsertDriveFile from '@material-ui/icons/InsertDriveFile';
 import GetApp from '@material-ui/icons/GetApp';
 import FolderOpen from '@material-ui/icons/FolderOpen';
-import { Button } from '@material-ui/core';
 import ViewList from '@material-ui/icons/ViewList';
+import AccountTree from '@material-ui/icons/AccountTree';
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
 const styles = {
   title: {
@@ -212,12 +214,19 @@ class ArtifactsView extends React.Component<Props, State> {
             {this._currentPath() || 'Artifacts'}
           </Typography>
           {this._getSelectedArtifact() === null ? null : (
-            <Button
-              startIcon={<ViewList />}
-              onClick={() => this.updateState({ isFolderView: !this.state.isFolderView })}
+            <ToggleButtonGroup
+              value={this.state.isFolderView}
+              exclusive
+              onChange={(_event, val) => { this.updateState({ isFolderView: val }) }}
+              aria-label="folder view"
             >
-              {this.state.isFolderView ? 'Disable Folder View' : 'Enable Folder View'}
-            </Button>
+              <ToggleButton value={false} aria-label="overview">
+                <ViewList />
+              </ToggleButton>
+              <ToggleButton value={true} aria-label="tree view">
+                <AccountTree />
+              </ToggleButton>
+            </ToggleButtonGroup>
           )}
         </Toolbar>
         <List>{items}</List>

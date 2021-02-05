@@ -45,7 +45,11 @@ import CopyPasteField from '../common/CopyPasteField';
 import WorkerStatusChip from './WorkerStatusChip';
 import TaskStatusChipExtended from '../chips/TaskStatusChipExtended';
 import DeleteIcon from '@material-ui/icons/Delete';
+import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
+import PauseCircleOutlineIcon from '@material-ui/icons/PauseCircleOutline';
 import { DeletePersistentWorkerInput } from './__generated__/PoolDetailsDeleteWorkerMutation.graphql';
+import { UpdatePersistentWorkerInput } from './__generated__/PoolDetailsUpdateWorkerMutation.graphql';
+import { cirrusColors } from '../../cirrusTheme';
 
 const styles = theme =>
   createStyles({
@@ -61,6 +65,9 @@ const styles = theme =>
       paddingLeft: 0,
       display: 'flex',
       flexWrap: 'wrap',
+    },
+    enadleWorkerButton: {
+      color: cirrusColors.warning,
     },
   });
 
@@ -86,6 +93,18 @@ const deleteWorkerMutation = graphql`
   mutation PoolDetailsDeleteWorkerMutation($input: DeletePersistentWorkerInput!) {
     deletePersistentWorker(input: $input) {
       clientMutationId
+    }
+  }
+`;
+
+const updateWorkerMutation = graphql`
+  mutation PoolDetailsUpdateWorkerMutation($input: UpdatePersistentWorkerInput!) {
+    updatePersistentWorker(input: $input) {
+      clientMutationId
+      worker {
+        name
+        disabled
+      }
     }
   }
 `;
@@ -145,6 +164,28 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
     };
     commitMutation(environment, {
       mutation: deleteWorkerMutation,
+      variables: { input: input },
+      onCompleted: (response, errors) => {
+        if (errors) {
+          console.log(errors);
+        } else {
+          this._refetch();
+        }
+      },
+      onError: err => console.log(err),
+    });
+  };
+
+  updateWorker = (workerName, disabled) => {
+    let poolId = this.props.pool.id;
+    const input: UpdatePersistentWorkerInput = {
+      clientMutationId: `update-persistent-worker-${poolId}-${workerName}`,
+      poolId: poolId,
+      name: workerName,
+      disabled: disabled,
+    };
+    commitMutation(environment, {
+      mutation: updateWorkerMutation,
       variables: { input: input },
       onCompleted: (response, errors) => {
         if (errors) {
@@ -223,6 +264,7 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
                   <TableCell>Labels</TableCell>
                   <TableCell>Running Tasks</TableCell>
                   <TableCell></TableCell>
+                  <TableCell></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -247,6 +289,17 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
                           {!worker.info
                             ? null
                             : worker.info.runningTasks.map(task => <TaskStatusChipExtended task={task} />)}
+                        </TableCell>
+                        <TableCell>
+                          <Tooltip title={worker.disabled ? 'Enable task scheduling' : 'Disable task scheduling'}>
+                            <IconButton edge="start" onClick={() => this.updateWorker(worker.name, !worker.disabled)}>
+                              {worker.disabled ? (
+                                <PlayCircleOutlineIcon className={classes.enadleWorkerButton} />
+                              ) : (
+                                <PauseCircleOutlineIcon />
+                              )}
+                            </IconButton>
+                          </Tooltip>
                         </TableCell>
                         <TableCell>
                           <IconButton edge="end" aria-label="delete" onClick={() => this.deleteWorker(worker.name)}>
@@ -399,6 +452,7 @@ export default createRefetchContainer(
         viewerPermission
         workers {
           name
+          disabled
           hostname
           version
           labels

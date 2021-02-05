@@ -1,9 +1,9 @@
 ports:
-- port: 3333
+  - port: 3333
 
 # start up tasks
 tasks:
-- command: npm i && npm run bootstrap
+  - command: yarn bootstrap
 
 vscode:
   extensions:

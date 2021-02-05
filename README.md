@@ -7,8 +7,8 @@ to minimize the amount of business logic.
 
 ## Development Guide
 
-- Run `npm ci` to install all external dependencies.
-- Run `npm run bootstrap` to compile all GraphQL queries and mutations and to sync the schema.
+- Run `yarn` to install all external dependencies.
+- Run `yarn bootstrap` to compile all GraphQL queries and mutations and to sync the schema.
 
 After everything is prepared, run `npm start` to start a local server. All changes will be instantly ready to view in your browser.
 
@@ -33,7 +33,7 @@ works just fine for it).
 #### Disable Type Checking temporarily
 
 This app is written in TypeScript and whenever TypeScript finds a static type error it will display an "error overlay" in the browser which prevents you "seeing" the app even if it was compilable to JS.
-Sometimes during quick experimentation this can be annoying. 
+Sometimes during quick experimentation this can be annoying.
 Therefore you can disable typechecking temporarily by running the app with:
 
 ```bash

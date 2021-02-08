@@ -4,7 +4,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import Icon from '@material-ui/core/Icon';
 import Tooltip from '@material-ui/core/Tooltip';
-import { taskStatusColor } from '../../utils/colors';
+import { useTaskStatusColor } from '../../utils/colors';
 import { taskStatusIconName, taskStatusMessage } from '../../utils/status';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
@@ -24,7 +24,7 @@ class TaskStatusChip extends React.Component<Props> {
         className={className}
         label={taskStatusMessage(task)}
         avatar={
-          <Avatar style={{ backgroundColor: taskStatusColor(task.status) }}>
+          <Avatar style={{ backgroundColor: useTaskStatusColor(task.status) }}>
             <Icon style={{ color: this.props.theme.palette.background.paper }}>{taskStatusIconName(task.status)}</Icon>
           </Avatar>
         }

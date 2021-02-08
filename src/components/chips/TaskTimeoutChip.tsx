@@ -19,12 +19,12 @@ interface Props extends WithTheme {
 
 class TaskTimeoutChip extends React.Component<Props> {
   render() {
+    const cirrusColors = useRecoilValue(cirrusColorsState);
+
     let { task } = this.props;
     let { timeoutInSeconds } = task;
     let defaultTimeout = timeoutInSeconds === 3600; // 1 hour
     if (defaultTimeout) return <div />;
-
-    const cirrusColors = useRecoilValue(cirrusColorsState);
 
     return (
       <Tooltip title="Custom Timeout">

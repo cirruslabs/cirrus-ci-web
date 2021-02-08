@@ -73,7 +73,6 @@ export const cirrusColorsState = selector({
 });
 
 let cirrusColors = {
-  progress: lightGreen['500'],
   initialization: blue['500'],
   lightInitialization: blue['300'],
   success: lightGreen['500'],

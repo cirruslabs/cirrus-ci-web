@@ -11,7 +11,6 @@ import React from 'react';
 import { commitMutation, createFragmentContainer, Disposable, requestSubscription } from 'react-relay';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import environment from '../../createRelayEnvironment';
-import { faviconColor } from '../../utils/colors';
 import { hasWritePermissions } from '../../utils/permissions';
 import BuildCreatedChip from '../chips/BuildCreatedChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
@@ -161,7 +160,7 @@ class BuildDetails extends React.Component<Props> {
 
     return (
       <div>
-        <CirrusFavicon color={faviconColor(build.status)} />
+        <CirrusFavicon status={build.status} />
         <Head>
           <title>{build.changeMessageTitle} - Cirrus CI</title>
         </Head>

@@ -5,7 +5,7 @@ import { graphql } from 'babel-plugin-relay/macro';
 import React from 'react';
 import { createFragmentContainer, Disposable, requestSubscription } from 'react-relay';
 import environment from '../../createRelayEnvironment';
-import { taskStatusColor } from '../../utils/colors';
+import { useTaskStatusColor } from '../../utils/colors';
 import { isTaskFinalStatus, isTaskInProgressStatus, taskStatusIconName } from '../../utils/status';
 import { formatDuration } from '../../utils/time';
 import { TaskDurationChip_task } from './__generated__/TaskDurationChip_task.graphql';
@@ -66,7 +66,7 @@ class TaskDurationChip extends React.Component<Props> {
         className={className}
         label={formatDuration(durationInSeconds)}
         avatar={
-          <Avatar style={{ background: taskStatusColor(task.status) }}>
+          <Avatar style={{ background: useTaskStatusColor(task.status) }}>
             <Icon style={{ color: this.props.theme.palette.background.paper }}>{taskStatusIconName(task.status)}</Icon>
           </Avatar>
         }

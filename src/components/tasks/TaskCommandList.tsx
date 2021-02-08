@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { commandStatusColor } from '../../utils/colors';
+import { useCommandStatusColorMapping } from '../../utils/colors';
 import TaskCommandLogs from './TaskCommandLogs';
 import { formatDuration } from '../../utils/time';
 import { isTaskCommandExecuting, isTaskCommandFinalStatus } from '../../utils/status';
@@ -40,20 +40,25 @@ class TaskCommandList extends React.Component<Props> {
 
     let commandComponents = [];
     let lastTimestamp = task.executingTimestamp;
+    let colorMapping = useCommandStatusColorMapping();
     for (let i = 0; i < commands.length; ++i) {
       let command = commands[i];
-      commandComponents.push(this.commandItem(command, lastTimestamp));
+      commandComponents.push(this.commandItem(command, lastTimestamp, colorMapping[command.status]));
       lastTimestamp += command.durationInSeconds * 1000;
     }
     return <div>{commandComponents}</div>;
   }
 
-  commandItem(command: ItemOfArray<TaskCommandList_task['commands']>, commandStartTimestamp: number) {
+  commandItem(
+    command: ItemOfArray<TaskCommandList_task['commands']>,
+    commandStartTimestamp: number,
+    statusColor: string,
+  ) {
     let { classes } = this.props;
     const selectedCommandName = queryString.parse(this.props.location.search).command;
     let styles = {
       header: {
-        backgroundColor: commandStatusColor(command.status),
+        backgroundColor: statusColor,
       },
     };
     let finished = command.durationInSeconds > 0 || isTaskCommandFinalStatus(command.status);

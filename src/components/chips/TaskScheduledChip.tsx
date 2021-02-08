@@ -4,7 +4,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import Icon from '@material-ui/core/Icon';
 import Tooltip from '@material-ui/core/Tooltip';
-import { taskStatusColor } from '../../utils/colors';
+import { useTaskStatusColor } from '../../utils/colors';
 import { taskStatusIconName } from '../../utils/status';
 import { formatDuration } from '../../utils/time';
 import { createFragmentContainer } from 'react-relay';
@@ -28,7 +28,7 @@ class TaskScheduledChip extends React.Component<Props> {
             className={className}
             label={`Scheduled in ${formatDuration(scheduledStatusDuration.durationInSeconds)}`}
             avatar={
-              <Avatar style={{ backgroundColor: taskStatusColor('SCHEDULED') }}>
+              <Avatar style={{ backgroundColor: useTaskStatusColor('SCHEDULED') }}>
                 <Icon style={{ color: this.props.theme.palette.background.paper }}>
                   {taskStatusIconName('SCHEDULED')}
                 </Icon>

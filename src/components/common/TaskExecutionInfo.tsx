@@ -48,13 +48,13 @@ class TaskExecutionInfo extends React.Component<Props> {
   }
 
   renderCPUChart() {
-    let { task } = this.props;
-    let info = task.executionInfo;
+    const cirrusColors = useRecoilValue(cirrusColorsState);
 
+    let { task } = this.props;
+
+    let info = task.executionInfo;
     if (!info.cpuChart) return null;
     if (info.cpuChart.points.length < 2) return null;
-
-    const cirrusColors = useRecoilValue(cirrusColorsState);
 
     let chartPoints = Array(info.cpuChart.points.length);
     info.cpuChart.points.forEach((point, index) => {
@@ -87,13 +87,13 @@ class TaskExecutionInfo extends React.Component<Props> {
   }
 
   renderMemoryChart() {
-    let { task } = this.props;
-    let info = task.executionInfo;
+    const cirrusColors = useRecoilValue(cirrusColorsState);
 
+    let { task } = this.props;
+
+    let info = task.executionInfo;
     if (!info.memoryChart) return null;
     if (info.memoryChart.points.length < 2) return null;
-
-    const cirrusColors = useRecoilValue(cirrusColorsState);
 
     let chartPoints = Array(info.memoryChart.points.length);
     let memoryUnit = task.instanceResources.memory > 1024 ? 'Gb' : 'Mb';

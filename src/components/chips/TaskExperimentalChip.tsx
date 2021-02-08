@@ -17,12 +17,11 @@ interface Props extends WithTheme {
 }
 
 let TaskExperimentalChip = (props: Props) => {
+  const cirrusColors = useRecoilValue(cirrusColorsState);
   const { task } = props;
   const { experimental } = task;
 
   if (!experimental) return <div />;
-
-  const cirrusColors = useRecoilValue(cirrusColorsState);
 
   return (
     <Chip

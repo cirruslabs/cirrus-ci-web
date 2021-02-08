@@ -13,7 +13,6 @@ import React from 'react';
 import { commitMutation, createFragmentContainer, Disposable, requestSubscription } from 'react-relay';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import environment from '../../createRelayEnvironment';
-import { faviconColor } from '../../utils/colors';
 import { navigateBuild, navigateTask } from '../../utils/navigate';
 import { hasWritePermissions } from '../../utils/permissions';
 import { isTaskFinalStatus } from '../../utils/status';
@@ -253,7 +252,7 @@ class TaskDetails extends React.Component<Props> {
         <Head>
           <title>{task.name} - Cirrus CI</title>
         </Head>
-        <CirrusFavicon color={faviconColor(task.status)} />
+        <CirrusFavicon status={task.status} />
         <Card>
           <CardContent>
             <div className={classes.wrapper}>

@@ -18,11 +18,11 @@ interface Props extends WithTheme {
 
 class TaskOptionalChip extends React.Component<Props> {
   render() {
+    const cirrusColors = useRecoilValue(cirrusColorsState);
+
     let { task } = this.props;
     let { optional } = task;
     if (!optional) return <div />;
-
-    const cirrusColors = useRecoilValue(cirrusColorsState);
 
     return (
       <Chip

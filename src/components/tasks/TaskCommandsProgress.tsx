@@ -1,6 +1,6 @@
 import { isTaskFinalStatus } from '../../utils/status';
 import React from 'react';
-import { taskStatusColor } from '../../utils/colors';
+import { useTaskStatusColorMapping } from '../../utils/colors';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import classNames from 'classnames';
@@ -25,6 +25,8 @@ class TaskCommandsProgress extends React.Component<Props> {
 
     let bars = [];
 
+    let colorMapping = useTaskStatusColorMapping();
+
     let totalPercent = 0;
     for (let i = 0; i < task.statusDurations.length; ++i) {
       let statusDuration = task.statusDurations[i];
@@ -45,7 +47,7 @@ class TaskCommandsProgress extends React.Component<Props> {
           className="progress-bar"
           role="progressbar"
           key={statusDuration.status}
-          style={{ width: percent + '%', backgroundColor: taskStatusColor(colorStatus) }}
+          style={{ width: percent + '%', backgroundColor: colorMapping[colorStatus] }}
           aria-valuenow={percent}
           aria-valuemin={0}
           aria-valuemax={100}

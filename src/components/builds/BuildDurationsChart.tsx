@@ -1,12 +1,13 @@
 import React from 'react';
 import { Bar, BarChart, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { buildStatusColor } from '../../utils/colors';
+import { useBuildStatusColor } from '../../utils/colors';
 import { formatDuration } from '../../utils/time';
 import { navigateBuild } from '../../utils/navigate';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { NodeOfConnection, UnspecifiedCallbackFunction } from '../../utils/utility-types';
 import { RepositoryBuildList_repository } from '../repositories/__generated__/RepositoryBuildList_repository.graphql';
+import { withStyles } from '@material-ui/styles';
 
 const BuildDurationsChartTooltip = props => {
   let style = {
@@ -38,12 +39,12 @@ class BuildDurationsChart extends React.Component<Props> {
           width={width + 4}
           y={y - sign * 2}
           height={height + sign * 2}
-          fill={buildStatusColor(props.status)}
+          fill={useBuildStatusColor(props.status)}
           className="recharts-bar-rectangle"
         />
       );
     }
-    return <Rectangle {...props} fill={buildStatusColor(props.status)} className="recharts-bar-rectangle" />;
+    return <Rectangle {...props} fill={useBuildStatusColor(props.status)} className="recharts-bar-rectangle" />;
   }
 
   render() {
@@ -73,4 +74,4 @@ class BuildDurationsChart extends React.Component<Props> {
   }
 }
 
-export default withRouter(BuildDurationsChart);
+export default withStyles({})(withRouter(BuildDurationsChart));

@@ -6,7 +6,7 @@ import { graphql } from 'babel-plugin-relay/macro';
 import React from 'react';
 import { createFragmentContainer, Disposable, requestSubscription } from 'react-relay';
 import environment from '../../createRelayEnvironment';
-import { buildStatusColor } from '../../utils/colors';
+import { useBuildStatusColor } from '../../utils/colors';
 import { buildStatusIconName, buildStatusMessage, isBuildFinalStatus } from '../../utils/status';
 import { formatDuration } from '../../utils/time';
 import { BuildStatusChip_build } from './__generated__/BuildStatusChip_build.graphql';
@@ -56,7 +56,7 @@ class BuildStatusChip extends React.Component<Props> {
     if (mini) {
       return (
         <Tooltip title={message}>
-          <Avatar style={{ background: buildStatusColor(build.status) }} className={className}>
+          <Avatar style={{ background: useBuildStatusColor(build.status) }} className={className}>
             <Icon style={{ color: this.props.theme.palette.background.paper }}>
               {buildStatusIconName(build.status)}
             </Icon>
@@ -76,7 +76,7 @@ class BuildStatusChip extends React.Component<Props> {
           className={className}
           label={message}
           avatar={
-            <Avatar style={{ background: buildStatusColor(build.status) }}>
+            <Avatar style={{ background: useBuildStatusColor(build.status) }}>
               <Icon style={{ color: this.props.theme.palette.background.paper }}>
                 {buildStatusIconName(build.status)}
               </Icon>

@@ -4,7 +4,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import Tooltip from '@material-ui/core/Tooltip';
 import Icon from '@material-ui/core/Icon';
-import { taskStatusColor } from '../../utils/colors';
+import { useTaskStatusColor } from '../../utils/colors';
 import { taskStatusIconName } from '../../utils/status';
 import { roundAndPresentDuration } from '../../utils/time';
 import { createFragmentContainer } from 'react-relay';
@@ -43,7 +43,7 @@ let BuildCreatedChip = (props: Props) => {
         className={props.className}
         label={`Created ${roundAndPresentDuration(durationInSeconds)} ago`}
         avatar={
-          <Avatar style={{ backgroundColor: taskStatusColor('CREATED') }}>
+          <Avatar style={{ backgroundColor: useTaskStatusColor('CREATED') }}>
             <Icon style={{ color: props.theme.palette.background.paper }}>{taskStatusIconName('CREATED')}</Icon>
           </Avatar>
         }

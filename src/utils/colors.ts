@@ -1,71 +1,65 @@
-import { cirrusColorsState } from '../cirrusTheme';
 import { BuildStatus } from '../components/chips/__generated__/BuildStatusChip_build.graphql';
 import { TaskStatus } from '../components/chips/__generated__/TaskStatusChip_task.graphql';
 import { graphql } from 'babel-plugin-relay/macro';
 import { TaskCommandStatus } from './__generated__/colors_TaskCommand.graphql';
 import { NotificationLevel } from './__generated__/colors_Notification.graphql';
-import { useRecoilValue } from 'recoil';
+import { useTheme } from '@material-ui/core';
 
-export function buildStatusColor(status: BuildStatus) {
-  const cirrusColors = useRecoilValue(cirrusColorsState);
+export function useBuildStatusColor(status: BuildStatus) {
+  const palette = useTheme().palette;
   switch (status) {
     case 'CREATED':
-      return cirrusColors.initialization;
+      return palette.info.main;
     case 'EXECUTING':
-      return cirrusColors.executing;
+      return palette.warning.light;
     case 'COMPLETED':
-      return cirrusColors.success;
+      return palette.success.main;
     case 'FAILED':
-      return cirrusColors.failure;
+      return palette.error.main;
     case 'ABORTED':
-      return cirrusColors.lightFailure;
+      return palette.error.light;
     default:
-      return cirrusColors.warning;
+      return palette.warning.main;
   }
 }
 
-export function taskStatusColor(status: TaskStatus) {
-  const cirrusColors = useRecoilValue(cirrusColorsState);
-  switch (status) {
-    case 'CREATED':
-      return cirrusColors.lightInitialization;
-    case 'SCHEDULED':
-      return cirrusColors.initialization;
-    case 'EXECUTING':
-      return cirrusColors.executing;
-    case 'PAUSED':
-      return cirrusColors.paused;
-    case 'SKIPPED':
-      return cirrusColors.lightSuccess;
-    case 'COMPLETED':
-      return cirrusColors.success;
-    case 'ABORTED':
-      return cirrusColors.lightFailure;
-    case 'FAILED':
-      return cirrusColors.failure;
-    default:
-      return cirrusColors.undefined;
-  }
+export function useTaskStatusColor(status: TaskStatus) {
+  const palette = useTheme().palette;
+  return useTaskStatusColorMapping()[status] || palette.grey;
 }
 
-export function faviconColor(status: BuildStatus | TaskStatus) {
-  const cirrusColors = useRecoilValue(cirrusColorsState);
+export function useTaskStatusColorMapping() {
+  const palette = useTheme().palette;
+  return {
+    CREATED: palette.info.light,
+    SCHEDULED: palette.info.main,
+    EXECUTING: palette.warning.light,
+    PAUSED: palette.secondary.main,
+    SKIPPED: palette.success.light,
+    COMPLETED: palette.success.main,
+    ABORTED: palette.error.light,
+    FAILED: palette.error.main,
+  };
+}
+
+export function useFaviconColor(status: BuildStatus | TaskStatus | null) {
+  const palette = useTheme().palette;
   switch (status) {
     case 'COMPLETED':
-      return cirrusColors.darkSuccess;
+      return palette.success.main;
     case 'SKIPPED':
-      return cirrusColors.darkSuccess;
+      return palette.success.light;
     case 'ABORTED':
-      return cirrusColors.failure;
+      return palette.error.main;
     case 'FAILED':
-      return cirrusColors.failure;
+      return palette.error.main;
     case 'EXECUTING':
     case 'CREATED':
     case 'SCHEDULED':
     case 'PAUSED':
-      return cirrusColors.executing;
+      return palette.warning.light;
     default:
-      return cirrusColors.warning;
+      return palette.primary.main;
   }
 }
 
@@ -75,22 +69,20 @@ graphql`
   }
 `;
 
-export function commandStatusColor(status: TaskCommandStatus) {
-  const cirrusColors = useRecoilValue(cirrusColorsState);
-  switch (status) {
-    case 'SUCCESS':
-      return cirrusColors.lightSuccess;
-    case 'EXECUTING':
-      return cirrusColors.executing;
-    case 'FAILURE':
-      return cirrusColors.lightFailure;
-    case 'ABORTED':
-      return cirrusColors.aborted;
-    case 'SKIPPED':
-      return cirrusColors.skipped;
-    default:
-      return cirrusColors.undefined;
-  }
+export function useCommandStatusColor(status: TaskCommandStatus) {
+  const palette = useTheme().palette;
+  return useCommandStatusColorMapping()[status] || palette.grey;
+}
+
+export function useCommandStatusColorMapping() {
+  const palette = useTheme().palette;
+  return {
+    SUCCESS: palette.success.main,
+    EXECUTING: palette.warning.light,
+    FAILURE: palette.error.light,
+    ABORTED: palette.error.dark,
+    SKIPPED: palette.success.light,
+  };
 }
 
 graphql`
@@ -98,14 +90,15 @@ graphql`
     level
   }
 `;
-export function notificationColor(level: NotificationLevel) {
-  const cirrusColors = useRecoilValue(cirrusColorsState);
+
+export function useNotificationColor(level: NotificationLevel) {
+  const palette = useTheme().palette;
   switch (level) {
     case 'INFO':
-      return cirrusColors.success;
+      return palette.success.main;
     case 'ERROR':
-      return cirrusColors.failure;
+      return palette.error.main;
     default:
-      return cirrusColors.warning;
+      return palette.warning.main;
   }
 }

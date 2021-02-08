@@ -17,11 +17,11 @@ interface Props extends WithTheme {
 
 class TaskStatefulChip extends React.Component<Props> {
   render() {
+    const cirrusColors = useRecoilValue(cirrusColorsState);
+
     let { task } = this.props;
     let { stateful } = task;
     if (!stateful) return <div />;
-
-    const cirrusColors = useRecoilValue(cirrusColorsState);
 
     return (
       <Chip

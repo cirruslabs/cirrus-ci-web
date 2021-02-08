@@ -19,14 +19,14 @@ interface Props extends WithTheme {
 
 class TaskTransactionChip extends React.Component<Props> {
   render() {
-    let { task } = this.props;
-    let { transaction, usedComputeCredits } = task;
+    const cirrusColors = useRecoilValue(cirrusColorsState);
 
+    let { task } = this.props;
+
+    let { transaction, usedComputeCredits } = task;
     if (!usedComputeCredits) {
       return <div />;
     }
-
-    const cirrusColors = useRecoilValue(cirrusColorsState);
 
     let tip = isTaskFinalStatus(task.status)
       ? 'No compute credits were charged!'

@@ -5,7 +5,7 @@ import React from 'react';
 
 import Typography from '@material-ui/core/Typography';
 import { withStyles, WithStyles } from '@material-ui/core/styles';
-import { notificationColor } from '../../utils/colors';
+import { useNotificationColor } from '../../utils/colors';
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 import { navigate } from '../../utils/navigate';
@@ -31,7 +31,7 @@ class Notification extends React.Component<Props> {
   render() {
     let { notification, classes } = this.props;
     let headerStyle = {
-      backgroundColor: notificationColor(notification.level),
+      backgroundColor: useNotificationColor(notification.level),
     };
     let linkComponent = !notification.link ? null : (
       <IconButton onClick={e => navigate(this.context.router, e, notification.link)}>

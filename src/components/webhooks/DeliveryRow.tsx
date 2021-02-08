@@ -61,8 +61,9 @@ class DeliveryRow extends React.Component<Props, State> {
   };
 
   render() {
-    let { delivery, classes } = this.props;
     const cirrusColors = useRecoilValue(cirrusColorsState);
+
+    let { delivery, classes } = this.props;
 
     let success = 200 <= delivery.response.status && delivery.response.status < 300;
     let iconStyle = { color: success ? cirrusColors.success : cirrusColors.failure };

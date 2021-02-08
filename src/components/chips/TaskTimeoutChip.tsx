@@ -7,39 +7,36 @@ import TimerIcon from '@material-ui/icons/Timer';
 import { graphql } from 'babel-plugin-relay/macro';
 import { cirrusColorsState } from '../../cirrusTheme';
 import { formatDuration } from '../../utils/time';
-import { withTheme, WithTheme } from '@material-ui/core/styles';
+import { withTheme } from '@material-ui/core/styles';
 import { TaskTimeoutChip_task } from './__generated__/TaskTimeoutChip_task.graphql';
 import { createFragmentContainer } from 'react-relay';
 import { useRecoilValue } from 'recoil';
 
-interface Props extends WithTheme {
+interface Props {
   task: TaskTimeoutChip_task;
   className?: string;
 }
 
-class TaskTimeoutChip extends React.Component<Props> {
-  render() {
-    const cirrusColors = useRecoilValue(cirrusColorsState);
+function TaskTimeoutChip(props: Props) {
+  const cirrusColors = useRecoilValue(cirrusColorsState);
 
-    let { task } = this.props;
-    let { timeoutInSeconds } = task;
-    let defaultTimeout = timeoutInSeconds === 3600; // 1 hour
-    if (defaultTimeout) return <div />;
+  let { timeoutInSeconds } = props.task;
+  let defaultTimeout = timeoutInSeconds === 3600; // 1 hour
+  if (defaultTimeout) return <div />;
 
-    return (
-      <Tooltip title="Custom Timeout">
-        <Chip
-          className={this.props.className}
-          label={formatDuration(timeoutInSeconds)}
-          avatar={
-            <Avatar style={{ backgroundColor: cirrusColors.success }}>
-              <TimerIcon style={{ color: this.props.theme.palette.background.paper }} />
-            </Avatar>
-          }
-        />
-      </Tooltip>
-    );
-  }
+  return (
+    <Tooltip title="Custom Timeout">
+      <Chip
+        className={this.props.className}
+        label={formatDuration(timeoutInSeconds)}
+        avatar={
+          <Avatar style={{ backgroundColor: cirrusColors.success }}>
+            <TimerIcon style={{ color: this.props.theme.palette.background.paper }} />
+          </Avatar>
+        }
+      />
+    </Tooltip>
+  );
 }
 
 export default createFragmentContainer(withTheme(TaskTimeoutChip), {

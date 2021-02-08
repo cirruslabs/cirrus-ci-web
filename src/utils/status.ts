@@ -76,7 +76,7 @@ export function taskStatusIconName(status) {
     case 'PAUSED':
       return 'pause';
     default:
-      return 'error';
+      return 'error_outlined';
   }
 }
 
@@ -89,7 +89,7 @@ export function buildStatusIconName(status) {
     case 'COMPLETED':
       return 'done';
     default:
-      return 'error';
+      return 'error_outlined';
   }
 }
 

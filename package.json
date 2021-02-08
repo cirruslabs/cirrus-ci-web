@@ -40,7 +40,8 @@
     "react-router-dom": "^5.2.0",
     "react-stripe-elements": "^6.1.2",
     "react-vis": "^1.11.7",
-    "recharts": "^1.8.5"
+    "recharts": "^1.8.5",
+    "recoil": "^0.1.2"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.11",

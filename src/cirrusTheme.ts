@@ -5,6 +5,9 @@ import orange from '@material-ui/core/colors/orange';
 import red from '@material-ui/core/colors/red';
 import yellow from '@material-ui/core/colors/yellow';
 import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme';
+import { atom } from 'recoil';
+import { localStorageEffect } from './utils/recoil';
+import { useMediaQuery } from '@material-ui/core';
 
 export let cirrusColors = {
   cirrusTitleBackground: grey['300'],
@@ -25,17 +28,31 @@ export let cirrusColors = {
   aborted: orange['300'],
 };
 
-/*
- *  Fork of lightBaseTheme.js
- */
-export let cirrusTheme: ThemeOptions = {
+let cirrusBaseTheme: ThemeOptions = {
   typography: {
     fontFamily: 'Roboto, sans-serif',
   },
   shape: {
     borderRadius: 2,
   },
+  overrides: {
+    MuiChip: {
+      root: {
+        '& $avatar': {
+          marginLeft: 0,
+          marginRight: 0,
+          width: 32,
+          height: 32,
+        },
+      },
+    },
+  },
+};
+
+export let cirrusLightTheme: ThemeOptions = {
+  ...cirrusBaseTheme,
   palette: {
+    type: 'light',
     primary: {
       main: grey['900'],
       dark: grey['900'],
@@ -52,16 +69,29 @@ export let cirrusTheme: ThemeOptions = {
       hover: grey['200'],
     },
   },
-  overrides: {
-    MuiChip: {
-      root: {
-        '& $avatar': {
-          marginLeft: 0,
-          marginRight: 0,
-          width: 32,
-          height: 32,
-        },
-      },
+};
+
+export let cirrusDarkTheme: ThemeOptions = {
+  ...cirrusBaseTheme,
+  palette: {
+    type: 'dark',
+    primary: {
+      main: grey['900'],
+      dark: grey['900'],
+      light: grey['50'],
+      contrastText: grey['50'],
+    },
+    secondary: {
+      main: grey['700'],
+      dark: grey['700'],
+      light: grey['50'],
+      contrastText: grey['50'],
     },
   },
 };
+
+export const prefersDarkModeState = atom({
+  key: 'CurrentlyPreferredTheme',
+  default: false,
+  effects_UNSTABLE: [localStorageEffect('CurrentlyPreferredTheme')],
+});

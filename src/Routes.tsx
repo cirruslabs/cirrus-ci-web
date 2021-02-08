@@ -19,6 +19,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ViewerTopRepositories from './scenes/Profile/ViewerTopRepositories';
 import CirrusLinearProgress from './components/common/CirrusLinearProgress';
+import ThemeSwitchButton from './components/common/ThemeSwitchButton';
 
 const AsyncViewerProfile = React.lazy(() => import('./scenes/Profile/ViewerProfile'));
 
@@ -220,23 +221,24 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                 >
                   Cirrus CI
                 </Typography>
+                <ThemeSwitchButton />
                 <Button
                   className={classes.linkButton}
                   href="https://github.com/cirruslabs/cirrus-ci-web"
                   target="_blank"
                   rel="noopener noreferrer"
+                  startIcon={<CodeIcon />}
                 >
-                  <CodeIcon className={classes.marginRight} />
-                  <span className="d-none d-md-block">Source</span>
+                  Source
                 </Button>
                 <Button
                   className={classes.linkButton}
                   href="https://cirrus-ci.org/"
                   target="_blank"
                   rel="noopener noreferrer"
+                  startIcon={<BookIcon />}
                 >
-                  <BookIcon className={classes.marginRight} />
-                  <span className="d-none d-md-block">Documentation</span>
+                  Documentation
                 </Button>
                 <div className={classes.marginRight}>
                   <ActiveRepositoriesDrawer />

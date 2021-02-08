@@ -7,35 +7,32 @@ import Report from '@material-ui/icons/Report';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { cirrusColorsState } from '../../cirrusTheme';
-import { WithTheme, withTheme } from '@material-ui/core/styles';
+import { withTheme } from '@material-ui/core/styles';
 import { TaskOptionalChip_task } from './__generated__/TaskOptionalChip_task.graphql';
 import { useRecoilValue } from 'recoil';
 
-interface Props extends WithTheme {
+interface Props {
   task: TaskOptionalChip_task;
   className?: string;
 }
 
-class TaskOptionalChip extends React.Component<Props> {
-  render() {
-    const cirrusColors = useRecoilValue(cirrusColorsState);
+function TaskOptionalChip(props: Props) {
+  const cirrusColors = useRecoilValue(cirrusColorsState);
 
-    let { task } = this.props;
-    let { optional } = task;
-    if (!optional) return <div />;
+  let { optional } = props.task;
+  if (!optional) return <div />;
 
-    return (
-      <Chip
-        className={this.props.className}
-        label="Optional"
-        avatar={
-          <Avatar style={{ backgroundColor: cirrusColors.lightWarning }}>
-            <Report style={{ color: this.props.theme.palette.background.paper }} />
-          </Avatar>
-        }
-      />
-    );
-  }
+  return (
+    <Chip
+      className={props.className}
+      label="Optional"
+      avatar={
+        <Avatar style={{ backgroundColor: cirrusColors.lightWarning }}>
+          <Report style={{ color: this.props.theme.palette.background.paper }} />
+        </Avatar>
+      }
+    />
+  );
 }
 
 export default createFragmentContainer(withTheme(TaskOptionalChip), {

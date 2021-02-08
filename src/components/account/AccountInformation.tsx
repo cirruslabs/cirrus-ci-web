@@ -1,4 +1,4 @@
-import React, { SyntheticEvent } from 'react';
+import React from 'react';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 
@@ -9,8 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { navigate } from '../../utils/navigate';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import { AccountInformation_viewer } from './__generated__/AccountInformation_viewer.graphql';
 import Settings from '@material-ui/icons/Settings';
 import DirectionsRun from '@material-ui/icons/DirectionsRun';
@@ -25,81 +24,64 @@ const styles = theme =>
     },
   });
 
-interface Props extends RouteComponentProps, WithStyles<typeof styles> {
+interface Props extends WithStyles<typeof styles> {
   viewer: AccountInformation_viewer;
 }
 
-type State = {
-  anchorEl?: SyntheticEvent['currentTarget'];
-};
+function AccountInformation(props: Props) {
+  let history = useHistory();
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
-class AccountInformation extends React.Component<Props, State> {
-  static contextTypes = {
-    router: PropTypes.object,
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
   };
 
-  constructor(props: Props) {
-    super(props);
-    this.state = { anchorEl: null };
-    this.handleMenuOpen = this.handleMenuOpen.bind(this);
-    this.handleMenuClose = this.handleMenuClose.bind(this);
-  }
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-  handleMenuOpen(event: SyntheticEvent) {
-    this.setState({ anchorEl: event.currentTarget });
-  }
+  let { viewer, classes } = props;
 
-  handleMenuClose() {
-    this.setState({ anchorEl: null });
-  }
-
-  render() {
-    const { anchorEl } = this.state;
-
-    let { viewer, classes } = this.props;
-
-    if (!viewer) {
-      return (
-        <Button
-          className={classes.authButton}
-          startIcon={<GitHubIcon />}
-          href="https://api.cirrus-ci.com/redirect/auth/github"
-        >
-          Sign in
-        </Button>
-      );
-    }
-
+  if (!viewer) {
     return (
-      <div>
-        <IconButton
-          aria-label="menu"
-          aria-owns={anchorEl ? 'long-menu' : undefined}
-          aria-haspopup="true"
-          onClick={this.handleMenuOpen}
-        >
-          <Avatar style={{ cursor: 'pointer' }} src={viewer.avatarURL} />
-        </IconButton>
-        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={this.handleMenuClose}>
-          <MenuItem onClick={event => navigate(this.context.router.history, event, '/settings/profile/')}>
-            <ListItemIcon>
-              <Settings />
-            </ListItemIcon>
-            <ListItemText inset primary="Settings" />
-          </MenuItem>
-          <MenuItem onClick={event => navigate(null, event, 'https://api.cirrus-ci.com/redirect/logout/')}>
-            <ListItemIcon>
-              <DirectionsRun />
-            </ListItemIcon>
-            <ListItemText inset primary="Log Out" />
-          </MenuItem>
-        </Menu>
-      </div>
+      <Button
+        className={classes.authButton}
+        startIcon={<GitHubIcon />}
+        href="https://api.cirrus-ci.com/redirect/auth/github"
+      >
+        Sign in
+      </Button>
     );
   }
+  return (
+    <div>
+      <IconButton
+        aria-label="menu"
+        aria-owns={anchorEl ? 'long-menu' : undefined}
+        aria-haspopup="true"
+        onClick={handleClick}
+      >
+        <Avatar style={{ cursor: 'pointer' }} src={viewer.avatarURL} />
+      </IconButton>
+      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+        <MenuItem onClick={event => navigate(history, event, '/settings/profile/')}>
+          <ListItemIcon>
+            <Settings />
+          </ListItemIcon>
+          <ListItemText inset primary="Settings" />
+        </MenuItem>
+        <MenuItem onClick={event => navigate(history, event, 'https://api.cirrus-ci.com/redirect/logout/')}>
+          <ListItemIcon>
+            <DirectionsRun />
+          </ListItemIcon>
+          <ListItemText inset primary="Log Out" />
+        </MenuItem>
+      </Menu>
+    </div>
+  );
 }
 
-export default createFragmentContainer(withRouter(withStyles(styles)(AccountInformation)), {
+export default createFragmentContainer(withStyles(styles)(AccountInformation), {
   viewer: graphql`
     fragment AccountInformation_viewer on User {
       avatarURL

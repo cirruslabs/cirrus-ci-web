@@ -17,29 +17,25 @@ interface Props extends WithTheme {
   className?: string;
 }
 
-class TaskScheduledChip extends React.Component<Props> {
-  render() {
-    let { task, className } = this.props;
-    let scheduledStatusDuration = task.statusDurations.find(it => it.status === 'SCHEDULED');
-    if (scheduledStatusDuration && task.status !== 'SCHEDULED') {
-      return (
-        <Tooltip title="Time it took to find available resources and start execution of this task.">
-          <Chip
-            className={className}
-            label={`Scheduled in ${formatDuration(scheduledStatusDuration.durationInSeconds)}`}
-            avatar={
-              <Avatar style={{ backgroundColor: useTaskStatusColor('SCHEDULED') }}>
-                <Icon style={{ color: this.props.theme.palette.background.paper }}>
-                  {taskStatusIconName('SCHEDULED')}
-                </Icon>
-              </Avatar>
-            }
-          />
-        </Tooltip>
-      );
-    }
-    return <div />;
+function TaskScheduledChip(props: Props) {
+  let { task, className } = props;
+  let scheduledStatusDuration = task.statusDurations.find(it => it.status === 'SCHEDULED');
+  if (scheduledStatusDuration && task.status !== 'SCHEDULED') {
+    return (
+      <Tooltip title="Time it took to find available resources and start execution of this task.">
+        <Chip
+          className={className}
+          label={`Scheduled in ${formatDuration(scheduledStatusDuration.durationInSeconds)}`}
+          avatar={
+            <Avatar style={{ backgroundColor: useTaskStatusColor('SCHEDULED') }}>
+              <Icon style={{ color: props.theme.palette.background.paper }}>{taskStatusIconName('SCHEDULED')}</Icon>
+            </Avatar>
+          }
+        />
+      </Tooltip>
+    );
   }
+  return <div />;
 }
 
 export default createFragmentContainer(withTheme(TaskScheduledChip), {

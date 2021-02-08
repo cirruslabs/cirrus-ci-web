@@ -15,26 +15,24 @@ interface Props extends WithTheme {
   className?: string;
 }
 
-class TaskStatefulChip extends React.Component<Props> {
-  render() {
-    const cirrusColors = useRecoilValue(cirrusColorsState);
+function TaskStatefulChip(props: Props) {
+  const cirrusColors = useRecoilValue(cirrusColorsState);
 
-    let { task } = this.props;
-    let { stateful } = task;
-    if (!stateful) return <div />;
+  let { task } = props;
+  let { stateful } = task;
+  if (!stateful) return <div />;
 
-    return (
-      <Chip
-        className={this.props.className}
-        label="Stateful"
-        avatar={
-          <Avatar style={{ backgroundColor: cirrusColors.success }}>
-            <SecurityIcon style={{ color: this.props.theme.palette.background.paper }} />
-          </Avatar>
-        }
-      />
-    );
-  }
+  return (
+    <Chip
+      className={props.className}
+      label="Stateful"
+      avatar={
+        <Avatar style={{ backgroundColor: cirrusColors.success }}>
+          <SecurityIcon style={{ color: props.theme.palette.background.paper }} />
+        </Avatar>
+      }
+    />
+  );
 }
 
 export default createFragmentContainer(withTheme(TaskStatefulChip), {

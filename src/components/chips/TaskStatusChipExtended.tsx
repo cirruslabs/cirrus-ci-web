@@ -17,30 +17,26 @@ interface Props extends WithTheme {
   className?: string;
 }
 
-class TaskStatusChipExtended extends React.Component<Props> {
-  render() {
-    let { task, className } = this.props;
-    let chip = (
-      <Chip
-        className={className}
-        label={`${task.repository.owner}/${task.repository.name} "${task.name}"`}
-        onClick={e => navigateTask(this.context.router, e, task.id)}
-        avatar={
-          <Avatar style={{ backgroundColor: useTaskStatusColor(task.status) }}>
-            <Icon style={{ color: this.props.theme.palette.background.paper }}>{taskStatusIconName(task.status)}</Icon>
-          </Avatar>
-        }
-      />
+function TaskStatusChipExtended(props: Props, context) {
+  let { task, className } = props;
+  let chip = (
+    <Chip
+      className={className}
+      label={`${task.repository.owner}/${task.repository.name} "${task.name}"`}
+      onClick={e => navigateTask(context.router, e, task.id)}
+      avatar={
+        <Avatar style={{ backgroundColor: useTaskStatusColor(task.status) }}>
+          <Icon style={{ color: props.theme.palette.background.paper }}>{taskStatusIconName(task.status)}</Icon>
+        </Avatar>
+      }
+    />
+  );
+  if (task.executingTimestamp && task.executingTimestamp > 0) {
+    return (
+      <Tooltip title={`Execution started at ${new Date(task.executingTimestamp).toLocaleTimeString()}`}>{chip}</Tooltip>
     );
-    if (task.executingTimestamp && task.executingTimestamp > 0) {
-      return (
-        <Tooltip title={`Execution started at ${new Date(task.executingTimestamp).toLocaleTimeString()}`}>
-          {chip}
-        </Tooltip>
-      );
-    }
-    return chip;
   }
+  return chip;
 }
 
 export default createFragmentContainer(withTheme(TaskStatusChipExtended), {

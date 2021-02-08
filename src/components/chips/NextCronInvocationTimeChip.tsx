@@ -23,27 +23,25 @@ interface Props extends WithStyles<typeof styles> {
   className?: string;
 }
 
-class NextCronInvocationTimeChip extends React.Component<Props> {
-  render() {
-    let nextInvocationTimestamp = this.props.settings.nextInvocationTimestamp;
-    return (
-      <Tooltip
-        title={`Next invocation will be at ${new Date(nextInvocationTimestamp).toLocaleTimeString()} on ${new Date(
-          nextInvocationTimestamp,
-        ).toDateString()}`}
-      >
-        <Chip
-          className={this.props.className}
-          label={`Next invocation: ${new Date(nextInvocationTimestamp).toLocaleTimeString()}`}
-          avatar={
-            <Avatar className={this.props.classes.avatar}>
-              <AccessTime className={this.props.classes.avatarIcon} />
-            </Avatar>
-          }
-        />
-      </Tooltip>
-    );
-  }
+function NextCronInvocationTimeChip(props: Props) {
+  let nextInvocationTimestamp = props.settings.nextInvocationTimestamp;
+  return (
+    <Tooltip
+      title={`Next invocation will be at ${new Date(nextInvocationTimestamp).toLocaleTimeString()} on ${new Date(
+        nextInvocationTimestamp,
+      ).toDateString()}`}
+    >
+      <Chip
+        className={props.className}
+        label={`Next invocation: ${new Date(nextInvocationTimestamp).toLocaleTimeString()}`}
+        avatar={
+          <Avatar className={props.classes.avatar}>
+            <AccessTime className={props.classes.avatarIcon} />
+          </Avatar>
+        }
+      />
+    </Tooltip>
+  );
 }
 
 export default createFragmentContainer(withStyles(styles)(NextCronInvocationTimeChip), {

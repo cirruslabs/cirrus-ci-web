@@ -64,7 +64,7 @@ class BuildDurationsChart extends React.Component<Props> {
             dataKey="durationInSeconds"
             isAnimationActive={false}
             shape={props => BuildDurationsChart.renderBuildBar(props, selectedBuildId)}
-            onClick={(build, index, event) => navigateBuild(this.context.router, event, build.id)}
+            onClick={(build, index, event) => navigateBuild(this.context.router.history, event, build.id)}
             onMouseEnter={entry => onSelectBuildId(entry.id)}
             onMouseLeave={() => onSelectBuildId('0')}
           />

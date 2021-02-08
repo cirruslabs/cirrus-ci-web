@@ -34,7 +34,7 @@ class Notification extends React.Component<Props> {
       backgroundColor: useNotificationColor(notification.level),
     };
     let linkComponent = !notification.link ? null : (
-      <IconButton onClick={e => navigate(this.context.router, e, notification.link)}>
+      <IconButton onClick={e => navigate(this.context.router.history, e, notification.link)}>
         <Icon>launch</Icon>
       </IconButton>
     );

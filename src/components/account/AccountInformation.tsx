@@ -81,7 +81,7 @@ class AccountInformation extends React.Component<Props, State> {
           <Avatar style={{ cursor: 'pointer' }} src={viewer.avatarURL} />
         </IconButton>
         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={this.handleMenuClose}>
-          <MenuItem onClick={event => navigate(this.context.router, event, '/settings/profile/')}>
+          <MenuItem onClick={event => navigate(this.context.router.history, event, '/settings/profile/')}>
             <ListItemIcon>
               <Settings />
             </ListItemIcon>

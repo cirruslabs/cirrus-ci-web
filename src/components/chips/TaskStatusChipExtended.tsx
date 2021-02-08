@@ -8,25 +8,27 @@ import { useTaskStatusColor } from '../../utils/colors';
 import { taskStatusIconName } from '../../utils/status';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { WithTheme, withTheme } from '@material-ui/core/styles';
 import { TaskStatusChipExtended_task } from './__generated__/TaskStatusChipExtended_task.graphql';
 import { navigateTask } from '../../utils/navigate';
+import { useHistory } from 'react-router-dom';
+import { useTheme } from '@material-ui/core';
 
-interface Props extends WithTheme {
+interface Props {
   task: TaskStatusChipExtended_task;
   className?: string;
 }
 
-function TaskStatusChipExtended(props: Props, context) {
+function TaskStatusChipExtended(props: Props) {
   let { task, className } = props;
+  let history = useHistory();
   let chip = (
     <Chip
       className={className}
       label={`${task.repository.owner}/${task.repository.name} "${task.name}"`}
-      onClick={e => navigateTask(context.router, e, task.id)}
+      onClick={e => navigateTask(history, e, task.id)}
       avatar={
         <Avatar style={{ backgroundColor: useTaskStatusColor(task.status) }}>
-          <Icon style={{ color: props.theme.palette.background.paper }}>{taskStatusIconName(task.status)}</Icon>
+          <Icon style={{ color: useTheme().palette.background.paper }}>{taskStatusIconName(task.status)}</Icon>
         </Avatar>
       }
     />
@@ -39,7 +41,7 @@ function TaskStatusChipExtended(props: Props, context) {
   return chip;
 }
 
-export default createFragmentContainer(withTheme(TaskStatusChipExtended), {
+export default createFragmentContainer(TaskStatusChipExtended, {
   task: graphql`
     fragment TaskStatusChipExtended_task on Task {
       id

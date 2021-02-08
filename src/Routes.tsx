@@ -215,7 +215,7 @@ class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: bo
                     [classes.titleShift]: openDrawer,
                   })}
                   style={this.getNavbarTitleStyling()}
-                  onClick={e => navigate(this.context.router, e, '/')}
+                  onClick={e => navigate(this.context.router.history, e, '/')}
                   color="inherit"
                 >
                   Cirrus CI

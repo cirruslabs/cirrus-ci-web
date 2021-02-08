@@ -47,7 +47,7 @@ class RepositoryNameChip extends React.Component<Props> {
   }
 
   handleRepositoryClick(event, repository) {
-    navigate(this.context.router, event, '/github/' + repository.owner + '/' + repository.name);
+    navigate(this.context.router.history, event, '/github/' + repository.owner + '/' + repository.name);
   }
 }
 

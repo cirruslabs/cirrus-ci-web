@@ -147,7 +147,7 @@ class CreateBuildDialog extends React.Component<Props, State> {
       variables: variables,
       onCompleted: (response: CreateBuildDialogMutationResponse) => {
         console.log(response);
-        navigateBuild(this.context.router, null, response.createBuild.build.id);
+        navigateBuild(this.context.router.history, null, response.createBuild.build.id);
       },
       onError: err => console.error(err),
     });

@@ -44,7 +44,11 @@ class TaskListRow extends React.Component<Props> {
   render() {
     let { task, classes } = this.props;
     return (
-      <TableRow onClick={e => navigateTask(this.context.router, e, task.id)} hover={true} style={{ cursor: 'pointer' }}>
+      <TableRow
+        onClick={e => navigateTask(this.context.router.history, e, task.id)}
+        hover={true}
+        style={{ cursor: 'pointer' }}
+      >
         <TableCell className={classNames(classes.cell)}>
           <TaskNameChip task={task} className={classes.chip} />
           {this.props.showCreation ? <TaskCreatedChip task={task} className={classes.chip} /> : null}

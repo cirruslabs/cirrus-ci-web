@@ -118,7 +118,7 @@ class UserProfile extends React.Component<Props> {
               {organizations.map(organization => (
                 <TableRow
                   key={organization.name}
-                  onClick={e => navigate(this.context.router, e, '/github/' + organization.name)}
+                  onClick={e => navigate(this.context.router.history, e, '/github/' + organization.name)}
                   hover={true}
                   style={{ cursor: 'pointer' }}
                 >
@@ -128,7 +128,7 @@ class UserProfile extends React.Component<Props> {
                   <TableCell>
                     <Tooltip title="Organization settings">
                       <IconButton
-                        onClick={e => navigate(this.context.router, e, '/settings/github/' + organization.name)}
+                        onClick={e => navigate(this.context.router.history, e, '/settings/github/' + organization.name)}
                         className="pull-right"
                       >
                         <Settings />

@@ -164,7 +164,9 @@ class ArtifactsView extends React.Component<Props, State> {
             </ListItemIcon>
             <ListItemText primary={artifact.name} />
             <Tooltip title="Download All Files (.zip)">
-              <IconButton onClick={e => navigate(this.context.router, e, this.artifactArchiveURL(artifact.name))}>
+              <IconButton
+                onClick={e => navigate(this.context.router.history, e, this.artifactArchiveURL(artifact.name))}
+              >
                 <GetApp />
               </IconButton>
             </Tooltip>

@@ -299,7 +299,7 @@ class TaskDetails extends React.Component<Props> {
           <CardActions className="d-flex flex-wrap justify-content-end">
             <Button
               variant="contained"
-              onClick={e => navigateBuild(this.context.router, e, task.buildId)}
+              onClick={e => navigateBuild(this.context.router.history, e, task.buildId)}
               startIcon={<ArrowBack />}
             >
               View All Tasks
@@ -337,7 +337,7 @@ class TaskDetails extends React.Component<Props> {
       mutation: taskReRunMutation,
       variables: variables,
       onCompleted: (response: TaskDetailsReRunMutationResponse) => {
-        navigateTask(this.context.router, null, response.rerun.newTask.id);
+        navigateTask(this.context.router.history, null, response.rerun.newTask.id);
       },
       onError: err => console.error(err),
     });

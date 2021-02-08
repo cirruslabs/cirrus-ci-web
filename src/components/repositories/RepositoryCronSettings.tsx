@@ -163,7 +163,9 @@ class RepositoryCronSettings extends React.Component<Props, State> {
                   </TableCell>
                   <TableCell
                     className={classes.cell}
-                    onClick={event => navigateBuild(this.context.router, event, settings.lastInvocationBuild?.id)}
+                    onClick={event =>
+                      navigateBuild(this.context.router.history, event, settings.lastInvocationBuild?.id)
+                    }
                   >
                     <div className="d-flex">
                       <NextCronInvocationTimeChip settings={settings} className={classes.chip} />

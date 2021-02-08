@@ -10,6 +10,7 @@ import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { withTheme } from '@material-ui/core/styles';
 import { TaskStatusChip_task } from './__generated__/TaskStatusChip_task.graphql';
+import { useTheme } from '@material-ui/core';
 
 interface Props {
   task: TaskStatusChip_task;
@@ -24,7 +25,7 @@ function TaskStatusChip(props: Props) {
       label={taskStatusMessage(task)}
       avatar={
         <Avatar style={{ backgroundColor: useTaskStatusColor(task.status) }}>
-          <Icon style={{ color: this.props.theme.palette.background.paper }}>{taskStatusIconName(task.status)}</Icon>
+          <Icon style={{ color: useTheme().palette.background.paper }}>{taskStatusIconName(task.status)}</Icon>
         </Avatar>
       }
     />

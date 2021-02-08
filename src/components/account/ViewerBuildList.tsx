@@ -83,7 +83,7 @@ class ViewerBuildList extends React.Component<Props> {
     return (
       <TableRow
         key={build.id}
-        onClick={e => navigateBuild(this.context.router, e, build.id)}
+        onClick={e => navigateBuild(this.context.router.history, e, build.id)}
         hover={true}
         style={{ cursor: 'pointer' }}
       >

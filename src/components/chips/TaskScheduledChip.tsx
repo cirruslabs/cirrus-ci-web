@@ -19,6 +19,8 @@ interface Props extends WithTheme {
 
 function TaskScheduledChip(props: Props) {
   let { task, className } = props;
+  let scheduledColor = useTaskStatusColor('SCHEDULED');
+
   let scheduledStatusDuration = task.statusDurations.find(it => it.status === 'SCHEDULED');
   if (scheduledStatusDuration && task.status !== 'SCHEDULED') {
     return (
@@ -27,7 +29,7 @@ function TaskScheduledChip(props: Props) {
           className={className}
           label={`Scheduled in ${formatDuration(scheduledStatusDuration.durationInSeconds)}`}
           avatar={
-            <Avatar style={{ backgroundColor: useTaskStatusColor('SCHEDULED') }}>
+            <Avatar style={{ backgroundColor: scheduledColor }}>
               <Icon style={{ color: props.theme.palette.background.paper }}>{taskStatusIconName('SCHEDULED')}</Icon>
             </Avatar>
           }

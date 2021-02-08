@@ -56,7 +56,7 @@ class BuildBranchNameChip extends React.Component<Props> {
         '/github/' + build.repository.owner + '/' + build.repository.name + '/' + build.branch,
       );
     } else if (build.repositoryId) {
-      navigate(this.context.router, event, '/repository/' + build.repositoryId + '/' + build.branch);
+      navigate(this.context.router.history, event, '/repository/' + build.repositoryId + '/' + build.branch);
     }
   }
 }

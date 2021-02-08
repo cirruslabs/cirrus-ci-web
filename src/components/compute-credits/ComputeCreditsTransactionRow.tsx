@@ -42,7 +42,11 @@ class ComputeCreditsTransactionRow extends React.Component<Props> {
     let { transaction, classes } = this.props;
     let { task, repository } = transaction;
     return (
-      <TableRow onClick={e => navigateTask(this.context.router, e, task.id)} hover={true} style={{ cursor: 'pointer' }}>
+      <TableRow
+        onClick={e => navigateTask(this.context.router.history, e, task.id)}
+        hover={true}
+        style={{ cursor: 'pointer' }}
+      >
         <TableCell className={classNames(classes.cell)}>
           <TaskNameChip task={task} className={classes.chip} />
           <TaskCreatedChip task={task} className={classes.chip} />

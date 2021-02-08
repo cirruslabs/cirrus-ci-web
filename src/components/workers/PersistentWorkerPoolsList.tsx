@@ -98,7 +98,11 @@ class PersistentWorkerPoolsList extends React.Component<PoolsListProps, PoolsLis
             {this.props.pools.map(
               pool =>
                 pool && (
-                  <ListItem key={pool.id} button onClick={() => navigate(this.context.router, '', '/pool/' + pool.id)}>
+                  <ListItem
+                    key={pool.id}
+                    button
+                    onClick={() => navigate(this.context.router.history, '', '/pool/' + pool.id)}
+                  >
                     <ListItemAvatar>
                       <Avatar>
                         <PoolVisibilityIcon enabledForPublic={pool.enabledForPublic} />
@@ -196,7 +200,7 @@ class CreateNewPersistentWorkerPoolDialog extends React.Component<DialogProps, D
       mutation: createPoolMutation,
       variables: { input: input },
       onCompleted: (response: PersistentWorkerPoolsListCreateMutationResponse) => {
-        navigate(this.context.router, '', '/pool/' + response.createPersistentWorkerPool.pool.id);
+        navigate(this.context.router.history, '', '/pool/' + response.createPersistentWorkerPool.pool.id);
         this.props.onClose();
       },
       onError: err => console.log(err),

@@ -1,9 +1,7 @@
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
 import React from 'react';
 import { withStyles, WithStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
 import Chip from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip } from 'recharts';
@@ -20,38 +18,17 @@ let styles = {
   },
 };
 
-interface Props extends RouteComponentProps, WithStyles<typeof styles> {
+interface Props extends WithStyles<typeof styles> {
   task: TaskExecutionInfo_task;
 }
 
-class TaskExecutionInfo extends React.Component<Props> {
-  static contextTypes = {
-    router: PropTypes.object,
-  };
+function TaskExecutionInfo(props: Props) {
+  const cirrusColors = useRecoilValue(cirrusColorsState);
+  let { task, classes } = props;
 
-  render() {
-    let { task, classes } = this.props;
+  if (!task.executionInfo) return null;
 
-    if (!task.executionInfo) return null;
-
-    return (
-      <div>
-        {task.executionInfo.labels.map(label => {
-          return <Chip key={label} className={classes.chip} label={label} />;
-        })}
-        <div className="row">
-          {this.renderCPUChart()}
-          {this.renderMemoryChart()}
-        </div>
-      </div>
-    );
-  }
-
-  renderCPUChart() {
-    const cirrusColors = useRecoilValue(cirrusColorsState);
-
-    let { task } = this.props;
-
+  function renderCPUChart() {
     let info = task.executionInfo;
     if (!info.cpuChart) return null;
     if (info.cpuChart.points.length < 2) return null;
@@ -86,11 +63,7 @@ class TaskExecutionInfo extends React.Component<Props> {
     );
   }
 
-  renderMemoryChart() {
-    const cirrusColors = useRecoilValue(cirrusColorsState);
-
-    let { task } = this.props;
-
+  function renderMemoryChart() {
     let info = task.executionInfo;
     if (!info.memoryChart) return null;
     if (info.memoryChart.points.length < 2) return null;
@@ -133,9 +106,21 @@ class TaskExecutionInfo extends React.Component<Props> {
       </div>
     );
   }
+
+  return (
+    <div>
+      {task.executionInfo.labels.map(label => {
+        return <Chip key={label} className={classes.chip} label={label} />;
+      })}
+      <div className="row">
+        {renderCPUChart()}
+        {renderMemoryChart()}
+      </div>
+    </div>
+  );
 }
 
-export default createFragmentContainer(withStyles(styles)(withRouter(TaskExecutionInfo)), {
+export default createFragmentContainer(withStyles(styles)(TaskExecutionInfo), {
   task: graphql`
     fragment TaskExecutionInfo_task on Task {
       instanceResources {

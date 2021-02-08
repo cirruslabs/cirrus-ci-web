@@ -73,7 +73,7 @@ class LastDefaultBranchBuildRow extends React.Component<Props> {
     return (
       <TableRow
         key={repository.id}
-        onClick={e => navigateRepository(this.context.router, e, repository.owner, repository.name)}
+        onClick={e => navigateRepository(this.context.router.history, e, repository.owner, repository.name)}
         hover={true}
         style={{ cursor: 'pointer' }}
       >

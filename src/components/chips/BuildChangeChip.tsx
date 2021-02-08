@@ -40,7 +40,7 @@ class BuildChangeChip extends React.Component<Props> {
             <Input className={this.props.classes.avatarIcon} />
           </Avatar>
         }
-        onClick={e => navigateBuild(this.context.router, e, build.id)}
+        onClick={e => navigateBuild(this.context.router.history, e, build.id)}
         className={className}
       />
     );

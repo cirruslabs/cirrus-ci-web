@@ -192,7 +192,7 @@ class RepositoryBuildList extends React.Component<Props, State> {
         hover={true}
         selected={isSelectedBuild}
         onMouseOver={() => !isSelectedBuild && this.setState({ selectedBuildId: build.id })}
-        onClick={e => navigateBuild(this.context.router, e, build.id)}
+        onClick={e => navigateBuild(this.context.router.history, e, build.id)}
         style={{ cursor: 'pointer' }}
       >
         <TableCell className={classes.row}>

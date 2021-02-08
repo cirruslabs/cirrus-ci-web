@@ -77,7 +77,7 @@ export function useCommandStatusColor(status: TaskCommandStatus) {
 export function useCommandStatusColorMapping() {
   const palette = useTheme().palette;
   return {
-    SUCCESS: palette.success.main,
+    SUCCESS: palette.success.light,
     EXECUTING: palette.warning.light,
     FAILURE: palette.error.light,
     ABORTED: palette.error.dark,

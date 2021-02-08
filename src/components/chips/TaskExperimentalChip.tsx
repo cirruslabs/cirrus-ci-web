@@ -29,7 +29,7 @@ let TaskExperimentalChip = (props: Props) => {
       label="Experimental"
       avatar={
         <Avatar style={{ backgroundColor: cirrusColors.success }}>
-          <CasinoIcon style={{ color: props.theme.palette.background.paper }} />
+          <CasinoIcon style={{ color: props.theme.palette.primary.contrastText }} />
         </Avatar>
       }
     />

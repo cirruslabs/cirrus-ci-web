@@ -60,7 +60,7 @@ function TaskDurationChip(props: Props) {
       label={formatDuration(durationInSeconds)}
       avatar={
         <Avatar style={{ background: useTaskStatusColor(task.status) }}>
-          <Icon style={{ color: theme.palette.background.paper }}>{taskStatusIconName(task.status)}</Icon>
+          <Icon style={{ color: theme.palette.primary.contrastText }}>{taskStatusIconName(task.status)}</Icon>
         </Avatar>
       }
     />

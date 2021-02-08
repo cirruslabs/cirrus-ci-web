@@ -44,7 +44,7 @@ const styles = theme =>
       margin: 'auto',
       position: 'absolute',
       width: theme.spacing(50.0),
-      backgroundColor: theme.palette.background.paper,
+      backgroundColor: theme.palette.primary.contrastText,
       boxShadow: theme.shadows[5],
       padding: theme.spacing(4.0),
     },

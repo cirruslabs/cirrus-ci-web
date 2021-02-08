@@ -30,7 +30,7 @@ function TaskScheduledChip(props: Props) {
           label={`Scheduled in ${formatDuration(scheduledStatusDuration.durationInSeconds)}`}
           avatar={
             <Avatar style={{ backgroundColor: scheduledColor }}>
-              <Icon style={{ color: props.theme.palette.background.paper }}>{taskStatusIconName('SCHEDULED')}</Icon>
+              <Icon style={{ color: props.theme.palette.primary.contrastText }}>{taskStatusIconName('SCHEDULED')}</Icon>
             </Avatar>
           }
         />

@@ -46,7 +46,7 @@ function TaskTransactionChip(props: Props) {
         label="compute credits"
         avatar={
           <Avatar style={{ backgroundColor: cirrusColors.success }}>
-            <Star style={{ color: theme.palette.background.paper }} />
+            <Star style={{ color: theme.palette.primary.contrastText }} />
           </Avatar>
         }
       />

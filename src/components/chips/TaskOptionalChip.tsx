@@ -28,7 +28,7 @@ function TaskOptionalChip(props: Props) {
       label="Optional"
       avatar={
         <Avatar style={{ backgroundColor: cirrusColors.lightWarning }}>
-          <Report style={{ color: this.props.theme.palette.background.paper }} />
+          <Report style={{ color: this.props.theme.palette.primary.contrastText }} />
         </Avatar>
       }
     />

@@ -44,7 +44,7 @@ let BuildCreatedChip = (props: Props) => {
         label={`Created ${roundAndPresentDuration(durationInSeconds)} ago`}
         avatar={
           <Avatar style={{ backgroundColor: useTaskStatusColor('CREATED') }}>
-            <Icon style={{ color: props.theme.palette.background.paper }}>{taskStatusIconName('CREATED')}</Icon>
+            <Icon style={{ color: props.theme.palette.primary.contrastText }}>{taskStatusIconName('CREATED')}</Icon>
           </Avatar>
         }
       />

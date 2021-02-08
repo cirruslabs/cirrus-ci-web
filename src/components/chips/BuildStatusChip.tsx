@@ -52,7 +52,7 @@ function BuildStatusChip(props: Props) {
     return (
       <Tooltip title={message}>
         <Avatar style={{ background: buildStatusColor }} className={className}>
-          <Icon style={{ color: theme.palette.background.paper }}>{buildStatusIconName(build.status)}</Icon>
+          <Icon style={{ color: theme.palette.primary.contrastText }}>{buildStatusIconName(build.status)}</Icon>
         </Avatar>
       </Tooltip>
     );
@@ -70,7 +70,7 @@ function BuildStatusChip(props: Props) {
         label={message}
         avatar={
           <Avatar style={{ background: buildStatusColor }}>
-            <Icon style={{ color: theme.palette.background.paper }}>{buildStatusIconName(build.status)}</Icon>
+            <Icon style={{ color: theme.palette.primary.contrastText }}>{buildStatusIconName(build.status)}</Icon>
           </Avatar>
         }
       />

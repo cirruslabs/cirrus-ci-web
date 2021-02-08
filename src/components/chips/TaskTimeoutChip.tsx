@@ -31,7 +31,7 @@ function TaskTimeoutChip(props: Props) {
         label={formatDuration(timeoutInSeconds)}
         avatar={
           <Avatar style={{ backgroundColor: cirrusColors.success }}>
-            <TimerIcon style={{ color: this.props.theme.palette.background.paper }} />
+            <TimerIcon style={{ color: this.props.theme.palette.primary.contrastText }} />
           </Avatar>
         }
       />

@@ -21,6 +21,7 @@ interface Props {
 function TaskStatusChipExtended(props: Props) {
   let { task, className } = props;
   let history = useHistory();
+  let theme = useTheme();
   let chip = (
     <Chip
       className={className}
@@ -28,7 +29,7 @@ function TaskStatusChipExtended(props: Props) {
       onClick={e => navigateTask(history, e, task.id)}
       avatar={
         <Avatar style={{ backgroundColor: useTaskStatusColor(task.status) }}>
-          <Icon style={{ color: useTheme().palette.background.paper }}>{taskStatusIconName(task.status)}</Icon>
+          <Icon style={{ color: theme.palette.primary.contrastText }}>{taskStatusIconName(task.status)}</Icon>
         </Avatar>
       }
     />

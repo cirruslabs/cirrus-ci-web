@@ -28,7 +28,7 @@ function TaskStatefulChip(props: Props) {
       label="Stateful"
       avatar={
         <Avatar style={{ backgroundColor: cirrusColors.success }}>
-          <SecurityIcon style={{ color: props.theme.palette.background.paper }} />
+          <SecurityIcon style={{ color: props.theme.palette.primary.contrastText }} />
         </Avatar>
       }
     />

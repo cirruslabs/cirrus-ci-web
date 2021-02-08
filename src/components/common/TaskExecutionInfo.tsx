@@ -8,8 +8,9 @@ import Chip from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip } from 'recharts';
 import { TaskExecutionInfo_task } from './__generated__/TaskExecutionInfo_task.graphql';
-import { cirrusColors } from '../../cirrusTheme';
+import { cirrusColorsState } from '../../cirrusTheme';
 import { formatDuration } from '../../utils/time';
+import { useRecoilValue } from 'recoil';
 
 let styles = {
   chip: {
@@ -52,6 +53,9 @@ class TaskExecutionInfo extends React.Component<Props> {
 
     if (!info.cpuChart) return null;
     if (info.cpuChart.points.length < 2) return null;
+
+    const cirrusColors = useRecoilValue(cirrusColorsState);
+
     let chartPoints = Array(info.cpuChart.points.length);
     info.cpuChart.points.forEach((point, index) => {
       chartPoints[index] = {
@@ -88,6 +92,8 @@ class TaskExecutionInfo extends React.Component<Props> {
 
     if (!info.memoryChart) return null;
     if (info.memoryChart.points.length < 2) return null;
+
+    const cirrusColors = useRecoilValue(cirrusColorsState);
 
     let chartPoints = Array(info.memoryChart.points.length);
     let memoryUnit = task.instanceResources.memory > 1024 ? 'Gb' : 'Mb';

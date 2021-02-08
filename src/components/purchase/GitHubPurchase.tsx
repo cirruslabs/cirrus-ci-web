@@ -13,7 +13,6 @@ import CardHeader from '@material-ui/core/CardHeader';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import GroupIcon from '@material-ui/icons/Group';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
-import { cirrusColors } from '../../cirrusTheme';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';

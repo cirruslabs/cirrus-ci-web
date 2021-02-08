@@ -1,11 +1,13 @@
-import { cirrusColors } from '../cirrusTheme';
+import { cirrusColorsState } from '../cirrusTheme';
 import { BuildStatus } from '../components/chips/__generated__/BuildStatusChip_build.graphql';
 import { TaskStatus } from '../components/chips/__generated__/TaskStatusChip_task.graphql';
 import { graphql } from 'babel-plugin-relay/macro';
 import { TaskCommandStatus } from './__generated__/colors_TaskCommand.graphql';
 import { NotificationLevel } from './__generated__/colors_Notification.graphql';
+import { useRecoilValue } from 'recoil';
 
 export function buildStatusColor(status: BuildStatus) {
+  const cirrusColors = useRecoilValue(cirrusColorsState);
   switch (status) {
     case 'CREATED':
       return cirrusColors.initialization;
@@ -23,6 +25,7 @@ export function buildStatusColor(status: BuildStatus) {
 }
 
 export function taskStatusColor(status: TaskStatus) {
+  const cirrusColors = useRecoilValue(cirrusColorsState);
   switch (status) {
     case 'CREATED':
       return cirrusColors.lightInitialization;
@@ -46,6 +49,7 @@ export function taskStatusColor(status: TaskStatus) {
 }
 
 export function faviconColor(status: BuildStatus | TaskStatus) {
+  const cirrusColors = useRecoilValue(cirrusColorsState);
   switch (status) {
     case 'COMPLETED':
       return cirrusColors.darkSuccess;
@@ -72,6 +76,7 @@ graphql`
 `;
 
 export function commandStatusColor(status: TaskCommandStatus) {
+  const cirrusColors = useRecoilValue(cirrusColorsState);
   switch (status) {
     case 'SUCCESS':
       return cirrusColors.lightSuccess;
@@ -94,6 +99,7 @@ graphql`
   }
 `;
 export function notificationColor(level: NotificationLevel) {
+  const cirrusColors = useRecoilValue(cirrusColorsState);
   switch (level) {
     case 'INFO':
       return cirrusColors.success;

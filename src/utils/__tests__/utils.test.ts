@@ -1,9 +1,11 @@
-import { buildStatusColor, taskStatusColor, faviconColor } from '../colors';
+import { buildStatusColor, faviconColor, taskStatusColor } from '../colors';
 import { createLinkToRepository } from '../github';
-import { cirrusColors } from '../../cirrusTheme';
+import { cirrusColorsState } from '../../cirrusTheme';
 import { hasWritePermissions } from '../permissions';
+import { useRecoilValue } from 'recoil';
 
 describe('utils/colors tests', () => {
+  const cirrusColors = useRecoilValue(cirrusColorsState);
   it('gets the correct build status color', () => {
     expect(buildStatusColor('ABORTED')).toBe(cirrusColors.lightFailure);
   });

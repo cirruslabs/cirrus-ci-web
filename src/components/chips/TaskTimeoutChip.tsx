@@ -5,11 +5,12 @@ import Chip from '@material-ui/core/Chip';
 import Tooltip from '@material-ui/core/Tooltip';
 import TimerIcon from '@material-ui/icons/Timer';
 import { graphql } from 'babel-plugin-relay/macro';
-import { cirrusColors } from '../../cirrusTheme';
+import { cirrusColorsState } from '../../cirrusTheme';
 import { formatDuration } from '../../utils/time';
 import { withTheme, WithTheme } from '@material-ui/core/styles';
 import { TaskTimeoutChip_task } from './__generated__/TaskTimeoutChip_task.graphql';
 import { createFragmentContainer } from 'react-relay';
+import { useRecoilValue } from 'recoil';
 
 interface Props extends WithTheme {
   task: TaskTimeoutChip_task;
@@ -22,6 +23,9 @@ class TaskTimeoutChip extends React.Component<Props> {
     let { timeoutInSeconds } = task;
     let defaultTimeout = timeoutInSeconds === 3600; // 1 hour
     if (defaultTimeout) return <div />;
+
+    const cirrusColors = useRecoilValue(cirrusColorsState);
+
     return (
       <Tooltip title="Custom Timeout">
         <Chip

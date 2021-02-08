@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import ActiveRepositoriesDrawer from './scenes/Header/ActiveRepositoriesDrawer';
 import NotFound from './scenes/NotFound';
 import { navigate } from './utils/navigate';
-import { cirrusColors } from './cirrusTheme';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Drawer from '@material-ui/core/Drawer';

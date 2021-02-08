@@ -49,7 +49,6 @@ import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
 import PauseCircleOutlineIcon from '@material-ui/icons/PauseCircleOutline';
 import { DeletePersistentWorkerInput } from './__generated__/PoolDetailsDeleteWorkerMutation.graphql';
 import { UpdatePersistentWorkerInput } from './__generated__/PoolDetailsUpdateWorkerMutation.graphql';
-import { cirrusColors } from '../../cirrusTheme';
 
 const styles = theme =>
   createStyles({
@@ -66,8 +65,8 @@ const styles = theme =>
       display: 'flex',
       flexWrap: 'wrap',
     },
-    enadleWorkerButton: {
-      color: cirrusColors.warning,
+    enabledWorkerButton: {
+      color: theme.palette.warning.main,
     },
   });
 
@@ -294,7 +293,7 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
                           <Tooltip title={worker.disabled ? 'Enable task scheduling' : 'Disable task scheduling'}>
                             <IconButton edge="start" onClick={() => this.updateWorker(worker.name, !worker.disabled)}>
                               {worker.disabled ? (
-                                <PlayCircleOutlineIcon className={classes.enadleWorkerButton} />
+                                <PlayCircleOutlineIcon className={classes.enabledWorkerButton} />
                               ) : (
                                 <PauseCircleOutlineIcon />
                               )}

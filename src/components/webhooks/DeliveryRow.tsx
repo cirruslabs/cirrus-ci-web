@@ -11,9 +11,10 @@ import { withStyles, WithStyles } from '@material-ui/core/styles';
 import ReportIcon from '@material-ui/icons/Report';
 import SendIcon from '@material-ui/icons/Send';
 import classNames from 'classnames';
-import { cirrusColors } from '../../cirrusTheme';
+import { cirrusColorsState } from '../../cirrusTheme';
 import DeliveryInfoDialog from './DeliveryInfoDialog';
 import { DeliveryRow_delivery } from './__generated__/DeliveryRow_delivery.graphql';
+import { useRecoilValue } from 'recoil';
 
 const styles = {
   chip: {
@@ -61,6 +62,8 @@ class DeliveryRow extends React.Component<Props, State> {
 
   render() {
     let { delivery, classes } = this.props;
+    const cirrusColors = useRecoilValue(cirrusColorsState);
+
     let success = 200 <= delivery.response.status && delivery.response.status < 300;
     let iconStyle = { color: success ? cirrusColors.success : cirrusColors.failure };
     return (

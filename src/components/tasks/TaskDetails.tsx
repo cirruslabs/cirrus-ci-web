@@ -12,7 +12,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { commitMutation, createFragmentContainer, Disposable, requestSubscription } from 'react-relay';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { cirrusColors } from '../../cirrusTheme';
 import environment from '../../createRelayEnvironment';
 import { faviconColor } from '../../utils/colors';
 import { navigateBuild, navigateTask } from '../../utils/navigate';
@@ -132,10 +131,10 @@ const styles = theme =>
       marginTop: theme.spacing(1.0),
     },
     automaticReRun: {
-      backgroundColor: cirrusColors.lightWarning,
+      backgroundColor: theme.palette.warning.second,
     },
     transaction: {
-      backgroundColor: cirrusColors.lightSuccess,
+      backgroundColor: theme.palette.success.second,
     },
   });
 

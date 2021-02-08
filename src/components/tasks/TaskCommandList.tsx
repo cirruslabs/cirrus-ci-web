@@ -24,9 +24,6 @@ const styles = theme =>
     details: {
       padding: 0,
     },
-    headerText: {
-      color: theme.contrastText,
-    },
   });
 
 interface Props extends WithStyles<typeof styles> {
@@ -77,10 +74,8 @@ function TaskCommandList(props: Props) {
       >
         <AccordionSummary expandIcon={<ExpandMoreIcon />} style={styles.header}>
           <div>
-            <Typography variant="body1" className={props.classes.headerText}>
-              {topText}
-            </Typography>
-            <Typography variant="caption" className={props.classes.headerText}>
+            <Typography variant="body1">{topText}</Typography>
+            <Typography variant="caption">
               {finished ? (
                 formatDuration(command.durationInSeconds)
               ) : isTaskCommandExecuting(command.status) ? (

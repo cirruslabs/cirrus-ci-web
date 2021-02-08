@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, useHistory } from 'react-router-dom';
 import ActiveRepositoriesDrawer from './scenes/Header/ActiveRepositoriesDrawer';
 import NotFound from './scenes/NotFound';
 import { navigate } from './utils/navigate';
@@ -14,11 +14,12 @@ import BookIcon from '@material-ui/icons/Book';
 import CodeIcon from '@material-ui/icons/Code';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ViewerTopRepositories from './scenes/Profile/ViewerTopRepositories';
 import CirrusLinearProgress from './components/common/CirrusLinearProgress';
 import ThemeSwitchButton from './components/common/ThemeSwitchButton';
+import { atom, useRecoilState } from 'recoil';
+import { localStorageEffect } from './utils/recoil';
 
 const AsyncViewerProfile = React.lazy(() => import('./scenes/Profile/ViewerProfile'));
 
@@ -133,182 +134,149 @@ export const styles = theme =>
     },
   });
 
-class Routes extends React.Component<WithStyles<typeof styles>, { openDrawer: boolean }> {
-  static contextTypes = {
-    router: PropTypes.object,
-  };
+const cirrusOpenDrawerState = atom({
+  key: 'CirrusOpenDrawer',
+  default: false,
+  effects_UNSTABLE: [localStorageEffect('CirrusOpenDrawer')],
+});
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      openDrawer: localStorage.getItem('cirrusOpenDrawer') === 'true',
-    };
-    this.handleDrawerOpen = this.handleDrawerOpen.bind(this);
-    this.handleDrawerClose = this.handleDrawerClose.bind(this);
-  }
+function Routes(props: WithStyles<typeof styles>) {
+  let { classes } = props;
 
-  handleDrawerOpen() {
-    this.setState({ openDrawer: true });
-    localStorage.setItem('cirrusOpenDrawer', 'true');
-  }
+  let history = useHistory();
+  const [openDrawer, setOpenDrawer] = useRecoilState(cirrusOpenDrawerState);
 
-  getNavbarTitleStyling() {
+  function getNavbarTitleStyling() {
     const shared = { cursor: 'pointer' };
-
-    return this.state.openDrawer ? { marginLeft: '15px', ...shared } : shared;
+    return openDrawer ? { marginLeft: '15px', ...shared } : shared;
   }
 
-  handleDrawerClose() {
-    this.setState({ openDrawer: false });
-    localStorage.setItem('cirrusOpenDrawer', 'false');
-  }
+  const drawer = (
+    <nav>
+      <Drawer
+        variant="persistent"
+        open={openDrawer}
+        classes={{
+          paper: classes.drawerPaper,
+        }}
+      >
+        <div className={classes.drawerHeader}>
+          <Typography variant="h6" color="inherit">
+            Active Repositories
+          </Typography>
+          <IconButton onClick={() => setOpenDrawer(false)}>
+            <ChevronLeftIcon />
+          </IconButton>
+        </div>
+        <ViewerTopRepositories className={classes.topRepositories} />
+      </Drawer>
+    </nav>
+  );
 
-  render() {
-    let { classes } = this.props;
-    let { openDrawer } = this.state;
-
-    const drawer = (
-      <nav>
-        <Drawer
-          variant="persistent"
-          open={openDrawer}
-          classes={{
-            paper: classes.drawerPaper,
-          }}
-        >
-          <div className={classes.drawerHeader}>
-            <Typography variant="h6" color="inherit">
-              Active Repositories
-            </Typography>
-            <IconButton onClick={this.handleDrawerClose}>
-              <ChevronLeftIcon />
-            </IconButton>
-          </div>
-          <ViewerTopRepositories className={classes.topRepositories} />
-        </Drawer>
-      </nav>
-    );
-
-    return (
-      <BrowserRouter>
-        <div className={classes.appFrame}>
-          <nav>
-            <AppBar
-              position="static"
-              className={classNames(classes.appBar, {
-                [classes.shiftedFixedWidth]: openDrawer,
-                [classes.appBarShift]: openDrawer,
-              })}
-            >
-              <Toolbar disableGutters={true}>
-                <IconButton
-                  color="inherit"
-                  aria-label="open navigation"
-                  onClick={this.handleDrawerOpen}
-                  className={classNames(classes.menuButton, openDrawer && classes.hide)}
-                >
-                  <MenuIcon />
-                </IconButton>
-                <Typography
-                  variant="h6"
-                  className={classNames(classes.flex, {
-                    [classes.titleShift]: openDrawer,
-                  })}
-                  style={this.getNavbarTitleStyling()}
-                  onClick={e => navigate(this.context.router.history, e, '/')}
-                  color="inherit"
-                >
-                  Cirrus CI
-                </Typography>
-                <ThemeSwitchButton />
-                <Button
-                  className={classes.linkButton}
-                  href="https://github.com/cirruslabs/cirrus-ci-web"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  startIcon={<CodeIcon />}
-                >
-                  Source
-                </Button>
-                <Button
-                  className={classes.linkButton}
-                  href="https://cirrus-ci.org/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  startIcon={<BookIcon />}
-                >
-                  Documentation
-                </Button>
-                <div className={classes.marginRight}>
-                  <ActiveRepositoriesDrawer />
-                </div>
-              </Toolbar>
-            </AppBar>
-          </nav>
-          {openDrawer ? drawer : null}
-          <main
-            className={classNames(classes.content, {
+  return (
+    <BrowserRouter>
+      <div className={classes.appFrame}>
+        <nav>
+          <AppBar
+            position="static"
+            className={classNames(classes.appBar, {
               [classes.shiftedFixedWidth]: openDrawer,
-              [classes.contentShift]: openDrawer,
+              [classes.appBarShift]: openDrawer,
             })}
           >
-            <div className={classNames('invisible', classes.drawerHeader)} />
-            <div
-              className={classNames({
-                'fluid-container': openDrawer,
-                container: !openDrawer,
-              })}
-            >
-              <Suspense fallback={<CirrusLinearProgress />}>
-                <Switch>
-                  <Route exact path="/" component={AsyncHome} props={this.props} />
-                  <Route exact path="/explorer" component={AsyncApiExplorerRenderer} props={this.props} />
-                  <Route exact path="/settings/profile" component={AsyncViewerProfile} props={this.props} />
-                  <Route
-                    exact
-                    path="/settings/github/:organization"
-                    component={AsyncGitHubOrganizationSettingsRenderer}
-                    props={this.props}
-                  />
-                  <Route
-                    exact
-                    path="/settings/repository/:repositoryId"
-                    component={AsyncRepositorySettings}
-                    props={this.props}
-                  />
-                  <Route exact path="/build/:buildId" component={AsyncBuildById} props={this.props} />
-                  <Route exact path="/build/:owner/:name/:SHA" component={AsyncBuildBySHA} props={this.props} />
-                  <Route exact path="/github/:owner" component={AsyncGitHubOrganization} props={this.props} />
-                  <Route
-                    exact
-                    path="/github/:owner/:name/:branch*"
-                    component={AsyncGitHubRepository}
-                    props={this.props}
-                  />
-                  <Route
-                    exact
-                    path="/repository/:repositoryId/:branch*"
-                    component={AsyncRepository}
-                    props={this.props}
-                  />
-                  <Route
-                    exact
-                    path="/metrics/repository/:owner/:name"
-                    component={AsyncRepositoryMetrics}
-                    props={this.props}
-                  />
-                  <Route exact path="/task/:taskId" component={AsyncTask} props={this.props} />
-                  <Route exact path="/pool/:poolId" component={AsyncPoolById} props={this.props} />
-                  <Route exact path="/:owner/:name/:branch*" component={AsyncGitHubRepository} props={this.props} />
-                  <Route component={NotFound} props={this.props} />
-                </Switch>
-              </Suspense>
-            </div>
-          </main>
-        </div>
-      </BrowserRouter>
-    );
-  }
+            <Toolbar disableGutters={true}>
+              <IconButton
+                color="inherit"
+                aria-label="open navigation"
+                onClick={() => setOpenDrawer(true)}
+                className={classNames(classes.menuButton, openDrawer && classes.hide)}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography
+                variant="h6"
+                className={classNames(classes.flex, {
+                  [classes.titleShift]: openDrawer,
+                })}
+                style={getNavbarTitleStyling()}
+                onClick={e => navigate(history, e, '/')}
+                color="inherit"
+              >
+                Cirrus CI
+              </Typography>
+              <ThemeSwitchButton />
+              <Button
+                className={classes.linkButton}
+                href="https://github.com/cirruslabs/cirrus-ci-web"
+                target="_blank"
+                rel="noopener noreferrer"
+                startIcon={<CodeIcon />}
+              >
+                Source
+              </Button>
+              <Button
+                className={classes.linkButton}
+                href="https://cirrus-ci.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                startIcon={<BookIcon />}
+              >
+                Documentation
+              </Button>
+              <div className={classes.marginRight}>
+                <ActiveRepositoriesDrawer />
+              </div>
+            </Toolbar>
+          </AppBar>
+        </nav>
+        {openDrawer ? drawer : null}
+        <main
+          className={classNames(classes.content, {
+            [classes.shiftedFixedWidth]: openDrawer,
+            [classes.contentShift]: openDrawer,
+          })}
+        >
+          <div className={classNames('invisible', classes.drawerHeader)} />
+          <div
+            className={classNames({
+              'fluid-container': openDrawer,
+              container: !openDrawer,
+            })}
+          >
+            <Suspense fallback={<CirrusLinearProgress />}>
+              <Switch>
+                <Route exact path="/" component={AsyncHome} props={props} />
+                <Route exact path="/explorer" component={AsyncApiExplorerRenderer} props={props} />
+                <Route exact path="/settings/profile" component={AsyncViewerProfile} props={props} />
+                <Route
+                  exact
+                  path="/settings/github/:organization"
+                  component={AsyncGitHubOrganizationSettingsRenderer}
+                  props={props}
+                />
+                <Route
+                  exact
+                  path="/settings/repository/:repositoryId"
+                  component={AsyncRepositorySettings}
+                  props={props}
+                />
+                <Route exact path="/build/:buildId" component={AsyncBuildById} props={props} />
+                <Route exact path="/build/:owner/:name/:SHA" component={AsyncBuildBySHA} props={props} />
+                <Route exact path="/github/:owner" component={AsyncGitHubOrganization} props={props} />
+                <Route exact path="/github/:owner/:name/:branch*" component={AsyncGitHubRepository} props={props} />
+                <Route exact path="/repository/:repositoryId/:branch*" component={AsyncRepository} props={props} />
+                <Route exact path="/metrics/repository/:owner/:name" component={AsyncRepositoryMetrics} props={props} />
+                <Route exact path="/task/:taskId" component={AsyncTask} props={props} />
+                <Route exact path="/pool/:poolId" component={AsyncPoolById} props={props} />
+                <Route exact path="/:owner/:name/:branch*" component={AsyncGitHubRepository} props={props} />
+                <Route component={NotFound} props={props} />
+              </Switch>
+            </Suspense>
+          </div>
+        </main>
+      </div>
+    </BrowserRouter>
+  );
 }
 
 export default withStyles(styles)(Routes);

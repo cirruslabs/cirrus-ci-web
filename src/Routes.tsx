@@ -101,7 +101,7 @@ export const styles = theme =>
       alignItems: 'center',
       justifyContent: 'flex-end',
       padding: '0',
-      backgroundColor: cirrusColors.cirrusTitleBackground,
+      backgroundColor: theme.palette.action.disabledBackground,
       ...theme.mixins.toolbar,
     },
     drawerPaper: {

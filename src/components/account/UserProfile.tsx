@@ -5,7 +5,7 @@ import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import Paper from '@material-ui/core/Paper';
 import Tooltip from '@material-ui/core/Tooltip';
-import { WithStyles, withStyles } from '@material-ui/core/styles';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -13,7 +13,6 @@ import Typography from '@material-ui/core/Typography';
 import CardActions from '@material-ui/core/CardActions';
 import CardHeader from '@material-ui/core/CardHeader';
 import GitHubIcon from '@material-ui/icons/GitHub';
-import { cirrusColors } from '../../cirrusTheme';
 import Toolbar from '@material-ui/core/Toolbar';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -28,18 +27,19 @@ import { Helmet as Head } from 'react-helmet';
 import Settings from '@material-ui/icons/Settings';
 import UserPersistentWorkerPools from '../settings/UserPersistentWorkerPools';
 
-const styles = {
-  title: {
-    backgroundColor: cirrusColors.cirrusTitleBackground,
-  },
-  gap: {
-    paddingTop: 16,
-  },
-  row: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-};
+const styles = theme =>
+  createStyles({
+    title: {
+      backgroundColor: theme.palette.action.disabledBackground,
+    },
+    gap: {
+      paddingTop: 16,
+    },
+    row: {
+      display: 'flex',
+      alignItems: 'center',
+    },
+  });
 
 const PERSONAL_PRIVATE_REPOSITORIES_PLAN_ID = 992;
 

@@ -19,7 +19,7 @@ import { GitHubOrganizationSettings_info } from './__generated__/GitHubOrganizat
 const styles = theme =>
   createStyles({
     title: {
-      backgroundColor: cirrusColors.cirrusTitleBackground,
+      backgroundColor: theme.palette.action.disabledBackground,
     },
     settingGap: {
       paddingTop: 16,

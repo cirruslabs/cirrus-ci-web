@@ -110,7 +110,7 @@ const styles = theme =>
   createStyles({
     title: {
       padding: 8,
-      background: cirrusColors.cirrusTitleBackground,
+      background: theme.palette.action.disabledBackground,
     },
     gap: {
       paddingTop: 16,

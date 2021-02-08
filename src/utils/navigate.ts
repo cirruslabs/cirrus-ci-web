@@ -7,7 +7,7 @@ export function navigate(history, event, url) {
 
   if (event && (event.metaKey || event.ctrlKey || event.button === 1 || event.button === 4)) {
     window.open(url, '_blank');
-  } else if (!url.includes('://')) {
+  } else if (history && !url.includes('://')) {
     history.push(url);
   } else {
     window.open(url, '_self');

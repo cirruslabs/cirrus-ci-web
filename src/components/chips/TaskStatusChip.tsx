@@ -8,37 +8,33 @@ import { useTaskStatusColor } from '../../utils/colors';
 import { taskStatusIconName, taskStatusMessage } from '../../utils/status';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { WithTheme, withTheme } from '@material-ui/core/styles';
+import { withTheme } from '@material-ui/core/styles';
 import { TaskStatusChip_task } from './__generated__/TaskStatusChip_task.graphql';
 
-interface Props extends WithTheme {
+interface Props {
   task: TaskStatusChip_task;
   className?: string;
 }
 
-class TaskStatusChip extends React.Component<Props> {
-  render() {
-    let { task, className } = this.props;
-    let chip = (
-      <Chip
-        className={className}
-        label={taskStatusMessage(task)}
-        avatar={
-          <Avatar style={{ backgroundColor: useTaskStatusColor(task.status) }}>
-            <Icon style={{ color: this.props.theme.palette.background.paper }}>{taskStatusIconName(task.status)}</Icon>
-          </Avatar>
-        }
-      />
+function TaskStatusChip(props: Props) {
+  let { task, className } = props;
+  let chip = (
+    <Chip
+      className={className}
+      label={taskStatusMessage(task)}
+      avatar={
+        <Avatar style={{ backgroundColor: useTaskStatusColor(task.status) }}>
+          <Icon style={{ color: this.props.theme.palette.background.paper }}>{taskStatusIconName(task.status)}</Icon>
+        </Avatar>
+      }
+    />
+  );
+  if (task.executingTimestamp && task.executingTimestamp > 0) {
+    return (
+      <Tooltip title={`Execution started at ${new Date(task.executingTimestamp).toLocaleTimeString()}`}>{chip}</Tooltip>
     );
-    if (task.executingTimestamp && task.executingTimestamp > 0) {
-      return (
-        <Tooltip title={`Execution started at ${new Date(task.executingTimestamp).toLocaleTimeString()}`}>
-          {chip}
-        </Tooltip>
-      );
-    }
-    return chip;
   }
+  return chip;
 }
 
 export default createFragmentContainer(withTheme(TaskStatusChip), {

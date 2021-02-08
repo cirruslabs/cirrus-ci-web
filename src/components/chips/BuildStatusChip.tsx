@@ -3,14 +3,14 @@ import Chip from '@material-ui/core/Chip';
 import Icon from '@material-ui/core/Icon';
 import Tooltip from '@material-ui/core/Tooltip';
 import { graphql } from 'babel-plugin-relay/macro';
-import React from 'react';
-import { createFragmentContainer, Disposable, requestSubscription } from 'react-relay';
+import React, { useEffect } from 'react';
+import { createFragmentContainer, requestSubscription } from 'react-relay';
 import environment from '../../createRelayEnvironment';
 import { useBuildStatusColor } from '../../utils/colors';
 import { buildStatusIconName, buildStatusMessage, isBuildFinalStatus } from '../../utils/status';
 import { formatDuration } from '../../utils/time';
 import { BuildStatusChip_build } from './__generated__/BuildStatusChip_build.graphql';
-import { WithTheme, withTheme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core';
 
 const buildSubscription = graphql`
   subscription BuildStatusChipSubscription($buildID: ID!) {
@@ -20,75 +20,65 @@ const buildSubscription = graphql`
   }
 `;
 
-interface Props extends WithTheme {
+interface Props {
   build: BuildStatusChip_build;
   className?: string;
   mini?: boolean;
 }
 
-class BuildStatusChip extends React.Component<Props> {
-  subscription: Disposable;
+function BuildStatusChip(props: Props) {
+  let theme = useTheme();
 
-  componentDidMount() {
-    if (isBuildFinalStatus(this.props.build.status)) {
+  useEffect(() => {
+    if (isBuildFinalStatus(props.build.status)) {
       return;
     }
 
-    let variables = { buildID: this.props.build.id };
+    let variables = { buildID: props.build.id };
 
-    this.subscription = requestSubscription(environment, {
+    const subscription = requestSubscription(environment, {
       subscription: buildSubscription,
       variables: variables,
     });
-  }
+    return () => {
+      subscription.dispose();
+    };
+  }, []);
 
-  componentWillUnmount() {
-    this.closeSubscription();
-  }
-
-  closeSubscription() {
-    this.subscription && this.subscription.dispose && this.subscription.dispose();
-  }
-
-  render() {
-    let { build, mini, className } = this.props;
-    let message = buildStatusMessage(build.status, build.durationInSeconds);
-    if (mini) {
-      return (
-        <Tooltip title={message}>
-          <Avatar style={{ background: useBuildStatusColor(build.status) }} className={className}>
-            <Icon style={{ color: this.props.theme.palette.background.paper }}>
-              {buildStatusIconName(build.status)}
-            </Icon>
-          </Avatar>
-        </Tooltip>
-      );
-    }
+  let { build, mini, className } = props;
+  let message = buildStatusMessage(build.status, build.durationInSeconds);
+  let buildStatusColor = useBuildStatusColor(build.status);
+  if (mini) {
     return (
-      <Tooltip
-        title={
-          build.clockDurationInSeconds
-            ? `Clock duration: ${formatDuration(build.clockDurationInSeconds)}`
-            : 'Clock duration not calculated yet!'
-        }
-      >
-        <Chip
-          className={className}
-          label={message}
-          avatar={
-            <Avatar style={{ background: useBuildStatusColor(build.status) }}>
-              <Icon style={{ color: this.props.theme.palette.background.paper }}>
-                {buildStatusIconName(build.status)}
-              </Icon>
-            </Avatar>
-          }
-        />
+      <Tooltip title={message}>
+        <Avatar style={{ background: buildStatusColor }} className={className}>
+          <Icon style={{ color: theme.palette.background.paper }}>{buildStatusIconName(build.status)}</Icon>
+        </Avatar>
       </Tooltip>
     );
   }
+  return (
+    <Tooltip
+      title={
+        build.clockDurationInSeconds
+          ? `Clock duration: ${formatDuration(build.clockDurationInSeconds)}`
+          : 'Clock duration not calculated yet!'
+      }
+    >
+      <Chip
+        className={className}
+        label={message}
+        avatar={
+          <Avatar style={{ background: buildStatusColor }}>
+            <Icon style={{ color: theme.palette.background.paper }}>{buildStatusIconName(build.status)}</Icon>
+          </Avatar>
+        }
+      />
+    </Tooltip>
+  );
 }
 
-export default createFragmentContainer(withTheme(BuildStatusChip), {
+export default createFragmentContainer(BuildStatusChip, {
   build: graphql`
     fragment BuildStatusChip_build on Build {
       id

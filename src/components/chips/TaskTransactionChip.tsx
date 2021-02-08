@@ -11,6 +11,7 @@ import { withTheme } from '@material-ui/core/styles';
 import { createFragmentContainer } from 'react-relay';
 import { TaskTransactionChip_task } from './__generated__/TaskTransactionChip_task.graphql';
 import { useRecoilValue } from 'recoil';
+import { useTheme } from '@material-ui/core';
 
 interface Props {
   task: TaskTransactionChip_task;
@@ -18,6 +19,7 @@ interface Props {
 }
 
 function TaskTransactionChip(props: Props) {
+  let theme = useTheme();
   const cirrusColors = useRecoilValue(cirrusColorsState);
 
   let task = props.task;
@@ -40,11 +42,11 @@ function TaskTransactionChip(props: Props) {
   return (
     <Tooltip title={tip}>
       <Chip
-        className={this.props.className}
+        className={props.className}
         label="compute credits"
         avatar={
           <Avatar style={{ backgroundColor: cirrusColors.success }}>
-            <Star style={{ color: this.props.theme.palette.background.paper }} />
+            <Star style={{ color: theme.palette.background.paper }} />
           </Avatar>
         }
       />

@@ -5,7 +5,6 @@ import Chip from '@material-ui/core/Chip';
 import SecurityIcon from '@material-ui/icons/Security';
 import { graphql } from 'babel-plugin-relay/macro';
 import { cirrusColorsState } from '../../cirrusTheme';
-import { withTheme, WithTheme } from '@material-ui/core/styles';
 import { TaskStatefulChip_task } from './__generated__/TaskStatefulChip_task.graphql';
 import { createFragmentContainer } from 'react-relay';
 import { useRecoilValue } from 'recoil';

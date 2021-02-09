@@ -19,8 +19,6 @@ import { ItemOfArray } from '../../utils/utility-types';
 import { useLocation } from 'react-router-dom';
 import { createStyles } from '@material-ui/styles';
 import { useTheme } from '@material-ui/core';
-import { prefersDarkModeState } from '../../cirrusTheme';
-import { useRecoilState } from 'recoil';
 
 const styles = theme =>
   createStyles({

@@ -7,7 +7,6 @@ import Report from '@material-ui/icons/Report';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { cirrusColorsState } from '../../cirrusTheme';
-import { withTheme } from '@material-ui/core/styles';
 import { TaskOptionalChip_task } from './__generated__/TaskOptionalChip_task.graphql';
 import { useRecoilValue } from 'recoil';
 import { useTheme } from '@material-ui/core';

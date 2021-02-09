@@ -9,7 +9,6 @@ import { taskStatusIconName } from '../../utils/status';
 import { formatDuration } from '../../utils/time';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { WithTheme, withTheme } from '@material-ui/core/styles';
 import { TaskScheduledChip_task } from './__generated__/TaskScheduledChip_task.graphql';
 import { useTheme } from '@material-ui/core';
 

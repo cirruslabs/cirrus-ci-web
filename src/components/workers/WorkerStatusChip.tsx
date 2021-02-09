@@ -6,7 +6,6 @@ import Chip from '@material-ui/core/Chip';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { cirrusColorsState } from '../../cirrusTheme';
-import { WithTheme, withTheme } from '@material-ui/core/styles';
 import { WorkerStatusChip_worker } from './__generated__/WorkerStatusChip_worker.graphql';
 import { Tooltip, useTheme } from '@material-ui/core';
 import PlatformIcon from '../icons/PlatformIcon';

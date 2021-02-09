@@ -8,7 +8,6 @@ import { useTaskStatusColor } from '../../utils/colors';
 import { taskStatusIconName, taskStatusMessage } from '../../utils/status';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { withTheme } from '@material-ui/core/styles';
 import { TaskStatusChip_task } from './__generated__/TaskStatusChip_task.graphql';
 import { useTheme } from '@material-ui/core';
 

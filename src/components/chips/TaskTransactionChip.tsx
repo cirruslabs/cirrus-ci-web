@@ -7,7 +7,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { graphql } from 'babel-plugin-relay/macro';
 import { cirrusColorsState } from '../../cirrusTheme';
 import { isTaskFinalStatus } from '../../utils/status';
-import { withTheme } from '@material-ui/core/styles';
 import { createFragmentContainer } from 'react-relay';
 import { TaskTransactionChip_task } from './__generated__/TaskTransactionChip_task.graphql';
 import { useRecoilValue } from 'recoil';

@@ -10,6 +10,7 @@ import { cirrusColorsState } from '../../cirrusTheme';
 import { WithTheme } from '@material-ui/core/styles';
 import { TaskExperimentalChip_task } from './__generated__/TaskExperimentalChip_task.graphql';
 import { useRecoilValue } from 'recoil';
+import { useTheme } from '@material-ui/core';
 
 interface Props extends WithTheme {
   className?: string;
@@ -17,6 +18,7 @@ interface Props extends WithTheme {
 }
 
 let TaskExperimentalChip = (props: Props) => {
+  let theme = useTheme();
   const cirrusColors = useRecoilValue(cirrusColorsState);
   const { task } = props;
   const { experimental } = task;
@@ -29,7 +31,7 @@ let TaskExperimentalChip = (props: Props) => {
       label="Experimental"
       avatar={
         <Avatar style={{ backgroundColor: cirrusColors.success }}>
-          <CasinoIcon style={{ color: props.theme.palette.primary.contrastText }} />
+          <CasinoIcon style={{ color: theme.palette.primary.contrastText }} />
         </Avatar>
       }
     />

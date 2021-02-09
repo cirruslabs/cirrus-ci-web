@@ -8,7 +8,7 @@ import { graphql } from 'babel-plugin-relay/macro';
 import { cirrusColorsState } from '../../cirrusTheme';
 import { WithTheme, withTheme } from '@material-ui/core/styles';
 import { WorkerStatusChip_worker } from './__generated__/WorkerStatusChip_worker.graphql';
-import { Tooltip } from '@material-ui/core';
+import { Tooltip, useTheme } from '@material-ui/core';
 import PlatformIcon from '../icons/PlatformIcon';
 import { useRecoilValue } from 'recoil';
 
@@ -18,6 +18,7 @@ interface Props extends WithTheme {
 }
 
 let WorkerStatusChip = (props: Props) => {
+  let theme = useTheme();
   const cirrusColors = useRecoilValue(cirrusColorsState);
   const { worker } = props;
   let info = worker.info;
@@ -39,7 +40,7 @@ let WorkerStatusChip = (props: Props) => {
         label={worker.arch}
         avatar={
           <Avatar style={{ backgroundColor: offline ? cirrusColors.warning : cirrusColors.success }}>
-            <PlatformIcon platform={worker.os} style={{ color: props.theme.palette.primary.contrastText }} />
+            <PlatformIcon platform={worker.os} style={{ color: theme.palette.primary.contrastText }} />
           </Avatar>
         }
       />

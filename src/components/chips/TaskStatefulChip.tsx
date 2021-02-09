@@ -9,6 +9,7 @@ import { withTheme, WithTheme } from '@material-ui/core/styles';
 import { TaskStatefulChip_task } from './__generated__/TaskStatefulChip_task.graphql';
 import { createFragmentContainer } from 'react-relay';
 import { useRecoilValue } from 'recoil';
+import { useTheme } from '@material-ui/core';
 
 interface Props extends WithTheme {
   task: TaskStatefulChip_task;
@@ -16,6 +17,7 @@ interface Props extends WithTheme {
 }
 
 function TaskStatefulChip(props: Props) {
+  let theme = useTheme();
   const cirrusColors = useRecoilValue(cirrusColorsState);
 
   let { task } = props;
@@ -28,7 +30,7 @@ function TaskStatefulChip(props: Props) {
       label="Stateful"
       avatar={
         <Avatar style={{ backgroundColor: cirrusColors.success }}>
-          <SecurityIcon style={{ color: props.theme.palette.primary.contrastText }} />
+          <SecurityIcon style={{ color: theme.palette.primary.contrastText }} />
         </Avatar>
       }
     />

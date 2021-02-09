@@ -10,6 +10,7 @@ import { taskStatusIconName } from '../../utils/status';
 import { roundAndPresentDuration } from '../../utils/time';
 import { TaskCreatedChip_task } from './__generated__/TaskCreatedChip_task.graphql';
 import { WithTheme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core';
 
 interface Props extends WithTheme {
   task: TaskCreatedChip_task;
@@ -17,6 +18,7 @@ interface Props extends WithTheme {
 }
 
 let TaskCreatedChip = (props: Props) => {
+  let theme = useTheme();
   const creationTimestamp = props.task.creationTimestamp;
 
   const [durationAgoInSeconds, setDurationAgoInSeconds] = React.useState((Date.now() - creationTimestamp) / 1000);
@@ -44,7 +46,7 @@ let TaskCreatedChip = (props: Props) => {
         label={`Created ${roundAndPresentDuration(durationInSeconds)} ago`}
         avatar={
           <Avatar style={{ backgroundColor: useTaskStatusColor('CREATED') }}>
-            <Icon style={{ color: props.theme.palette.primary.contrastText }}>{taskStatusIconName('CREATED')}</Icon>
+            <Icon style={{ color: theme.palette.primary.contrastText }}>{taskStatusIconName('CREATED')}</Icon>
           </Avatar>
         }
       />

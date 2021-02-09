@@ -11,6 +11,7 @@ import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { WithTheme, withTheme } from '@material-ui/core/styles';
 import { TaskScheduledChip_task } from './__generated__/TaskScheduledChip_task.graphql';
+import { useTheme } from '@material-ui/core';
 
 interface Props extends WithTheme {
   task: TaskScheduledChip_task;
@@ -18,6 +19,7 @@ interface Props extends WithTheme {
 }
 
 function TaskScheduledChip(props: Props) {
+  let theme = useTheme();
   let { task, className } = props;
   let scheduledColor = useTaskStatusColor('SCHEDULED');
 
@@ -30,7 +32,7 @@ function TaskScheduledChip(props: Props) {
           label={`Scheduled in ${formatDuration(scheduledStatusDuration.durationInSeconds)}`}
           avatar={
             <Avatar style={{ backgroundColor: scheduledColor }}>
-              <Icon style={{ color: props.theme.palette.primary.contrastText }}>{taskStatusIconName('SCHEDULED')}</Icon>
+              <Icon style={{ color: theme.palette.primary.contrastText }}>{taskStatusIconName('SCHEDULED')}</Icon>
             </Avatar>
           }
         />

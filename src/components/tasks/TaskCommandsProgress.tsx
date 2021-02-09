@@ -27,7 +27,7 @@ function TaskCommandsProgress(props: Props) {
       }, 1000);
       return () => clearInterval(intervalId);
     }
-  }, [task.status]);
+  }, [task.status, task.creationTimestamp]);
 
   let bars = [];
 

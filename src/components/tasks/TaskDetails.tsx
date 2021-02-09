@@ -27,7 +27,6 @@ import TaskScheduledChip from '../chips/TaskScheduledChip';
 import TaskStatusChip from '../chips/TaskStatusChip';
 import TaskTransactionChip from '../chips/TaskTransactionChip';
 import CirrusFavicon from '../common/CirrusFavicon';
-import NotificationList from '../common/NotificationList';
 import TaskCommandList from './TaskCommandList';
 import TaskCommandsProgress from './TaskCommandsProgress';
 import TaskList from './TaskList';
@@ -43,6 +42,7 @@ import ArrowBack from '@material-ui/icons/ArrowBack';
 import TaskExperimentalChip from '../chips/TaskExperimentalChip';
 import TaskStatefulChip from '../chips/TaskStatefulChip';
 import TaskTimeoutChip from '../chips/TaskTimeoutChip';
+import Notification from '../common/Notification';
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
@@ -213,8 +213,10 @@ function TaskDetails(props: Props, context) {
 
   let notificationsComponent =
     !task.notifications || task.notifications.length === 0 ? null : (
-      <div className={classes.gap}>
-        <NotificationList notifications={task.notifications} />
+      <div className={classNames('container', classes.gap)}>
+        {task.notifications.map(notification => (
+          <Notification key={notification.message} notification={notification} />
+        ))}
       </div>
     );
 
@@ -382,6 +384,7 @@ export default createFragmentContainer(withStyles(styles)(withRouter(TaskDetails
         name
       }
       notifications {
+        message
         ...Notification_notification
       }
       build {

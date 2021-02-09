@@ -14,13 +14,14 @@ import BuildCreatedChip from '../chips/BuildCreatedChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import RepositoryNameChip from '../chips/RepositoryNameChip';
 import CirrusFavicon from '../common/CirrusFavicon';
-import NotificationList from '../common/NotificationList';
 import TaskList from '../tasks/TaskList';
 import { BuildDetails_build } from './__generated__/BuildDetails_build.graphql';
 import { Helmet as Head } from 'react-helmet';
 import Refresh from '@material-ui/icons/Refresh';
 import Check from '@material-ui/icons/Check';
 import BuildBranchNameChip from '../chips/BuildBranchNameChip';
+import Notification from '../common/Notification';
+import classNames from 'classnames';
 
 const buildApproveMutation = graphql`
   mutation BuildDetailsApproveBuildMutation($input: BuildApproveInput!) {
@@ -159,8 +160,10 @@ function BuildDetails(props: Props) {
   let commitUrl = repoUrl + '/commit/' + build.changeIdInRepo;
 
   let notificationsComponent = !build.notifications ? null : (
-    <div className={classes.gap}>
-      <NotificationList notifications={build.notifications} />
+    <div className={classNames('container', classes.gap)}>
+      {build.notifications.map(notification => (
+        <Notification key={notification.message} notification={notification} />
+      ))}
     </div>
   );
 
@@ -249,6 +252,7 @@ export default createFragmentContainer(withStyles(styles)(BuildDetails), {
       ...BuildBranchNameChip_build
       ...BuildStatusChip_build
       notifications {
+        message
         ...Notification_notification
       }
       latestGroupTasks {

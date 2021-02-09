@@ -39,7 +39,7 @@ interface RealTimeLogsProps extends WithStyles<typeof styles> {
 }
 
 function TaskCommandRealTimeLogs(props: RealTimeLogsProps) {
-  let [realTimeLogs, setRealTimeLogs] = useState(!isTaskCommandFinalStatus(props.command.status));
+  let realTimeLogs = !isTaskCommandFinalStatus(props.command.status);
   let [additionalLogs, setAdditionalLogs] = useState('\n');
 
   useEffect(() => {
@@ -51,7 +51,7 @@ function TaskCommandRealTimeLogs(props: RealTimeLogsProps) {
       }
     });
     return () => closable();
-  }, [realTimeLogs, props.taskId, props.command.name]);
+  }, [realTimeLogs, props.taskId, props.command.name, additionalLogs]);
 
   let { classes, taskId, command, initialLogLines } = props;
   let inProgress = !isTaskCommandFinalStatus(command.status);

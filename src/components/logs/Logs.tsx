@@ -52,28 +52,28 @@ function Logs(props: Props) {
   let [highLightedLineEnd, setHighLightedLineEnd] = useState(NaN);
 
   useEffect(() => {
+    function updateLinesSelection() {
+      let hash = window.location.hash;
+      if (hash && queryString.parse(location.search).command === props.commandName) {
+        let [startLine, endLine] = hash.replace('#', '').split('-');
+        if (!endLine) {
+          endLine = startLine;
+        }
+
+        setHighLightedLineStart(parseInt(startLine.replace('L', ''), 10));
+        setHighLightedLineEnd(parseInt(endLine.replace('L', ''), 10));
+        let elementToFocus = document.getElementById(startLine);
+        if (elementToFocus) {
+          elementToFocus.focus();
+        }
+      }
+    }
+
     updateLinesSelection();
     return history.listen(location => {
       updateLinesSelection();
     });
-  }, [history]);
-
-  function updateLinesSelection() {
-    let hash = window.location.hash;
-    if (hash && queryString.parse(location.search).command === props.commandName) {
-      let [startLine, endLine] = hash.replace('#', '').split('-');
-      if (!endLine) {
-        endLine = startLine;
-      }
-
-      setHighLightedLineStart(parseInt(startLine.replace('L', ''), 10));
-      setHighLightedLineEnd(parseInt(endLine.replace('L', ''), 10));
-      let elementToFocus = document.getElementById(startLine);
-      if (elementToFocus) {
-        elementToFocus.focus();
-      }
-    }
-  }
+  }, [history, location.search, props.commandName]);
 
   function selectLine(event, lineNumber) {
     let lineRange = `L${lineNumber}`;

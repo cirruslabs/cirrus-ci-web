@@ -27,7 +27,6 @@ interface Props {
 
 function RepositorySecuredVariables(props: Props) {
   let [inputValue, setInputValue] = useState('');
-  let [securedVariable, setSecuredVariable] = useState(undefined);
   let [securedVariableName, setSecuredVariableName] = useState(undefined);
 
   let securedComponent = null;
@@ -68,7 +67,7 @@ function RepositorySecuredVariables(props: Props) {
             name="securedVariableValue"
             placeholder="Enter value to create a secure variable for"
             value={inputValue}
-            disabled={securedVariable !== undefined}
+            disabled={securedVariableName !== undefined}
             onChange={event => setInputValue(event.target.value)}
             multiline={true}
             fullWidth={true}

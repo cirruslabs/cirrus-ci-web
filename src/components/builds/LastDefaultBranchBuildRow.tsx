@@ -5,7 +5,7 @@ import environment from '../../createRelayEnvironment';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import { withStyles, WithStyles } from '@material-ui/core/styles';
-import { useHistory, withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { navigateRepository } from '../../utils/navigate';
 import RepositoryNameChip from '../chips/RepositoryNameChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
@@ -50,7 +50,7 @@ function LastDefaultBranchBuildRow(props: Props) {
     return () => {
       subscription.dispose();
     };
-  }, []);
+  });
 
   let history = useHistory();
   let { classes, repository } = props;

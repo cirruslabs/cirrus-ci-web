@@ -41,7 +41,7 @@ function TaskDurationChip(props: Props) {
     return () => {
       subscription.dispose();
     };
-  }, []);
+  });
   let { task, className } = props;
   let durationInSeconds = task.durationInSeconds;
   if (!isTaskInProgressStatus(task.status) && !isTaskFinalStatus(task.status)) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { useHistory, withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 
 import Table from '@material-ui/core/Table';

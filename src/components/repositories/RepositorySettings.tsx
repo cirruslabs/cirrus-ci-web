@@ -52,16 +52,6 @@ function RepositorySettings(props: Props) {
   let [settings, setSettings] = useState(props.repository.settings);
   let [additionalEnvironmentToAdd, setAdditionalEnvironmentToAdd] = useState('');
 
-  let handleChange = field => {
-    return event => {
-      let value = event.target.value;
-      setSettings({
-        ...settings,
-        [field]: value,
-      });
-    };
-  };
-
   let changeField = field => {
     return event => {
       let value = event.target.value;

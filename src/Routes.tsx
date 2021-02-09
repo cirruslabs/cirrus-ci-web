@@ -20,6 +20,9 @@ import CirrusLinearProgress from './components/common/CirrusLinearProgress';
 import ThemeSwitchButton from './components/common/ThemeSwitchButton';
 import { atom, useRecoilState } from 'recoil';
 import { localStorageEffect } from './utils/recoil';
+import { Tooltip, useTheme } from '@material-ui/core';
+import MoonIcon from '@material-ui/icons/Brightness3';
+import GitHubIcon from '@material-ui/icons/GitHub';
 
 const AsyncViewerProfile = React.lazy(() => import('./scenes/Profile/ViewerProfile'));
 
@@ -143,6 +146,7 @@ const cirrusOpenDrawerState = atom({
 function Routes(props: WithStyles<typeof styles>) {
   let { classes } = props;
 
+  let theme = useTheme();
   let history = useHistory();
   const [openDrawer, setOpenDrawer] = useRecoilState(cirrusOpenDrawerState);
 
@@ -205,24 +209,26 @@ function Routes(props: WithStyles<typeof styles>) {
                 Cirrus CI
               </Typography>
               <ThemeSwitchButton />
-              <Button
-                className={classes.linkButton}
-                href="https://github.com/cirruslabs/cirrus-ci-web"
-                target="_blank"
-                rel="noopener noreferrer"
-                startIcon={<CodeIcon />}
-              >
-                Source
-              </Button>
-              <Button
-                className={classes.linkButton}
-                href="https://cirrus-ci.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-                startIcon={<BookIcon />}
-              >
-                Documentation
-              </Button>
+              <Tooltip title="Go to source core repository">
+                <IconButton
+                  className={classes.linkButton}
+                  href="https://github.com/cirruslabs/cirrus-ci-web"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <GitHubIcon style={{ color: theme.palette.primary.contrastText }} />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Go to documentation">
+                <IconButton
+                  className={classes.linkButton}
+                  href="https://cirrus-ci.org/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <BookIcon style={{ color: theme.palette.primary.contrastText }} />
+                </IconButton>
+              </Tooltip>
               <div className={classes.marginRight}>
                 <ActiveRepositoriesDrawer />
               </div>

@@ -53,7 +53,7 @@ function TaskDurationChip(props: Props) {
       setNow(Date.now());
     }, 1_000);
     return () => clearInterval(timeoutId);
-  }, [now]);
+  }, [now, props.task.status]);
 
   let { task, className } = props;
 

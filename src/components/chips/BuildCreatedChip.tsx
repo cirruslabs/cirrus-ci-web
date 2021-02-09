@@ -31,7 +31,7 @@ let BuildCreatedChip = (props: Props) => {
       durationAgoInSeconds < 60 ? 1_000 : 60_000,
     );
     return () => clearInterval(timeoutId);
-  }, [durationAgoInSeconds]);
+  }, [durationAgoInSeconds, creationTimestamp]);
   const durationInSeconds = Math.floor(durationAgoInSeconds);
 
   return (

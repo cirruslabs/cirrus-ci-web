@@ -11,7 +11,7 @@ import { createFragmentContainer } from 'react-relay';
 import { useRecoilValue } from 'recoil';
 import { useTheme } from '@material-ui/core';
 
-interface Props extends WithTheme {
+interface Props {
   task: TaskStatefulChip_task;
   className?: string;
 }

@@ -10,10 +10,9 @@ import { roundAndPresentDuration } from '../../utils/time';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { BuildCreatedChip_build } from './__generated__/BuildCreatedChip_build.graphql';
-import { WithTheme } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/core';
 
-interface Props extends WithTheme {
+interface Props {
   build: BuildCreatedChip_build;
   className?: string;
 }

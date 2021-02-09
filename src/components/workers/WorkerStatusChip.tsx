@@ -12,7 +12,7 @@ import { Tooltip, useTheme } from '@material-ui/core';
 import PlatformIcon from '../icons/PlatformIcon';
 import { useRecoilValue } from 'recoil';
 
-interface Props extends WithTheme {
+interface Props {
   className?: string;
   worker: WorkerStatusChip_worker;
 }

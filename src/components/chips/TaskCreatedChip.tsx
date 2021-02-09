@@ -9,10 +9,9 @@ import { useTaskStatusColor } from '../../utils/colors';
 import { taskStatusIconName } from '../../utils/status';
 import { roundAndPresentDuration } from '../../utils/time';
 import { TaskCreatedChip_task } from './__generated__/TaskCreatedChip_task.graphql';
-import { WithTheme } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/core';
 
-interface Props extends WithTheme {
+interface Props {
   task: TaskCreatedChip_task;
   className?: string;
 }

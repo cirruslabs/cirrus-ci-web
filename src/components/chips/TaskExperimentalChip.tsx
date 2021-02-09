@@ -12,7 +12,7 @@ import { TaskExperimentalChip_task } from './__generated__/TaskExperimentalChip_
 import { useRecoilValue } from 'recoil';
 import { useTheme } from '@material-ui/core';
 
-interface Props extends WithTheme {
+interface Props {
   className?: string;
   task: TaskExperimentalChip_task;
 }

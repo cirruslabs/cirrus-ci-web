@@ -13,7 +13,7 @@ import { WithTheme, withTheme } from '@material-ui/core/styles';
 import { TaskScheduledChip_task } from './__generated__/TaskScheduledChip_task.graphql';
 import { useTheme } from '@material-ui/core';
 
-interface Props extends WithTheme {
+interface Props {
   task: TaskScheduledChip_task;
   className?: string;
 }

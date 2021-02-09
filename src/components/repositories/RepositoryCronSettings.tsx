@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { commitMutation, createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import Card from '@material-ui/core/Card';
@@ -14,8 +14,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import classNames from 'classnames';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import Chip from '@material-ui/core/Chip';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import { Add, Delete } from '@material-ui/icons';
@@ -61,15 +60,8 @@ const removeCronSettingsMutation = graphql`
   }
 `;
 
-interface Props extends WithStyles<typeof styles>, RouteComponentProps {
+interface Props extends WithStyles<typeof styles> {
   repository: RepositoryCronSettings_repository;
-}
-
-interface State {
-  name: string;
-  branch: string;
-  expression: string;
-  settings: RepositoryCronSettings_repository['cronSettings'];
 }
 
 const styles = theme =>
@@ -99,157 +91,34 @@ const styles = theme =>
     },
   });
 
-class RepositoryCronSettings extends React.Component<Props, State> {
-  static contextTypes = {
-    router: PropTypes.object,
+function RepositoryCronSettings(props: Props) {
+  let history = useHistory();
+
+  let defaultSettings = {
+    name: 'nightly',
+    branch: props.repository.masterBranch,
+    expression: '0 0 0 * * ?',
   };
+  let [settings, setSettings] = useState(defaultSettings);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: 'nightly',
-      branch: props.repository.masterBranch,
-      expression: '0 0 0 * * ?',
-      settings: props.repository.cronSettings || [],
-    };
-  }
-
-  changeField = field => {
+  function changeField(field) {
     return event => {
       let value = event.target.value;
-      this.setState(prevState => ({
-        ...prevState,
+      setSettings({
+        ...settings,
         [field]: value,
-      }));
+      });
     };
-  };
-
-  render() {
-    let { classes } = this.props;
-    return (
-      <Card>
-        <CardHeader title="Cron Settings" />
-        <CardContent>
-          <Table style={{ tableLayout: 'auto' }}>
-            <TableBody>
-              {this.state.settings.map(settings => (
-                <TableRow hover={true} key={settings.name}>
-                  <TableCell className={classNames(classes.cell)}>
-                    <Chip key={settings.name} className={classes.chip} label={settings.name} />
-                  </TableCell>
-                  <TableCell className={classNames(classes.cell)}>
-                    <Chip
-                      key={settings.branch}
-                      className={classes.chip}
-                      avatar={
-                        <Avatar className={classes.avatar}>
-                          <Icon className={classes.avatarIcon}>call_split</Icon>
-                        </Avatar>
-                      }
-                      label={settings.branch}
-                    />
-                  </TableCell>
-                  <TableCell className={classNames(classes.cell)}>
-                    <Chip
-                      key={settings.expression}
-                      className={classes.chip}
-                      avatar={
-                        <Avatar className={classes.avatar}>
-                          <Icon className={classes.avatarIcon}>alarm</Icon>
-                        </Avatar>
-                      }
-                      label={settings.expression}
-                    />
-                  </TableCell>
-                  <TableCell
-                    className={classes.cell}
-                    onClick={event =>
-                      navigateBuild(this.context.router.history, event, settings.lastInvocationBuild?.id)
-                    }
-                  >
-                    <div className="d-flex">
-                      <NextCronInvocationTimeChip settings={settings} className={classes.chip} />
-                      {settings.lastInvocationBuild ? (
-                        <BuildStatusChip build={settings.lastInvocationBuild} className={classes.chip} />
-                      ) : null}
-                    </div>
-                  </TableCell>
-                  <TableCell className={classes.cell}>
-                    <div className="d-flex justify-content-end">
-                      <Tooltip title="Remove Cron Build">
-                        <IconButton
-                          aria-label="Remove Cron Build"
-                          component="span"
-                          onClick={() => this.removeCronSetting(settings.name)}
-                        >
-                          <Delete />
-                        </IconButton>
-                      </Tooltip>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-              <TableRow hover={false}>
-                <TableCell className={classNames(classes.cell)}>
-                  <TextField
-                    required
-                    id="name-lbl"
-                    className={classes.cellContent}
-                    label="Name"
-                    defaultValue={this.state.name}
-                    onChange={this.changeField('name')}
-                  />
-                </TableCell>
-                <TableCell className={classNames(classes.cell)}>
-                  <TextField
-                    required
-                    id="branch-lbl"
-                    className={classes.cellContent}
-                    label="Branch"
-                    defaultValue={this.state.branch}
-                    onChange={this.changeField('branch')}
-                  />
-                </TableCell>
-                <TableCell className={classNames(classes.cell)}>
-                  <TextField
-                    required
-                    id="expression-lbl"
-                    className={classes.cellContent}
-                    label="Expression"
-                    defaultValue={this.state.expression}
-                    onChange={this.changeField('expression')}
-                  />
-                </TableCell>
-                <TableCell className={classes.cell}>{/* empty since RepositoryCronRow has 4 colums */}</TableCell>
-                <TableCell className={classes.cell}>
-                  <div className="d-flex justify-content-end">
-                    <Tooltip title="Add New Cron Build" className={classes.roundButton}>
-                      <IconButton
-                        aria-label="Add New Cron Build"
-                        component="span"
-                        onClick={() => this.addNewCronSetting()}
-                      >
-                        <Add />
-                      </IconButton>
-                    </Tooltip>
-                  </div>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
-    );
   }
 
-  addNewCronSetting() {
+  function addNewCronSetting() {
     const variables = {
       input: {
-        clientMutationId: `cron-save-${this.props.repository.id}-${this.state.name}`,
-        repositoryId: parseInt(this.props.repository.id, 10),
-        name: this.state.name,
-        expression: this.state.expression,
-        branch: this.state.branch,
+        clientMutationId: `cron-save-${props.repository.id}-${settings.name}`,
+        repositoryId: parseInt(props.repository.id, 10),
+        name: settings.name,
+        expression: settings.expression,
+        branch: settings.branch,
       },
     };
 
@@ -257,23 +126,17 @@ class RepositoryCronSettings extends React.Component<Props, State> {
       mutation: saveCronSettingsMutation,
       variables: variables,
       onCompleted: (response: RepositoryCronSettingsSaveMutationResponse) => {
-        this.setState(prevState => {
-          let newState = {
-            ...prevState,
-            settings: response.saveCronSettings.settings,
-          };
-          return newState;
-        });
+        setSettings(defaultSettings);
       },
       onError: err => console.error(err),
     });
   }
 
-  removeCronSetting(name: string) {
+  function removeCronSetting(name: string) {
     const variables = {
       input: {
-        clientMutationId: `cron-remove-${this.props.repository.id}-${name}`,
-        repositoryId: parseInt(this.props.repository.id, 10),
+        clientMutationId: `cron-remove-${props.repository.id}-${name}`,
+        repositoryId: parseInt(props.repository.id, 10),
         name: name,
       },
     };
@@ -282,20 +145,124 @@ class RepositoryCronSettings extends React.Component<Props, State> {
       mutation: removeCronSettingsMutation,
       variables: variables,
       onCompleted: (response: RepositoryCronSettingsRemoveMutationResponse) => {
-        this.setState(prevState => {
-          let newState = {
-            ...prevState,
-            settings: response.removeCronSettings.settings,
-          };
-          return newState;
-        });
+        setSettings(defaultSettings);
       },
       onError: err => console.error(err),
     });
   }
+
+  let { classes } = props;
+  return (
+    <Card>
+      <CardHeader title="Cron Settings" />
+      <CardContent>
+        <Table style={{ tableLayout: 'auto' }}>
+          <TableBody>
+            {props.repository.cronSettings.map(settings => (
+              <TableRow hover={true} key={settings.name}>
+                <TableCell className={classNames(classes.cell)}>
+                  <Chip key={settings.name} className={classes.chip} label={settings.name} />
+                </TableCell>
+                <TableCell className={classNames(classes.cell)}>
+                  <Chip
+                    key={settings.branch}
+                    className={classes.chip}
+                    avatar={
+                      <Avatar className={classes.avatar}>
+                        <Icon className={classes.avatarIcon}>call_split</Icon>
+                      </Avatar>
+                    }
+                    label={settings.branch}
+                  />
+                </TableCell>
+                <TableCell className={classNames(classes.cell)}>
+                  <Chip
+                    key={settings.expression}
+                    className={classes.chip}
+                    avatar={
+                      <Avatar className={classes.avatar}>
+                        <Icon className={classes.avatarIcon}>alarm</Icon>
+                      </Avatar>
+                    }
+                    label={settings.expression}
+                  />
+                </TableCell>
+                <TableCell
+                  className={classes.cell}
+                  onClick={event => navigateBuild(history, event, settings.lastInvocationBuild?.id)}
+                >
+                  <div className="d-flex">
+                    <NextCronInvocationTimeChip settings={settings} className={classes.chip} />
+                    {settings.lastInvocationBuild ? (
+                      <BuildStatusChip build={settings.lastInvocationBuild} className={classes.chip} />
+                    ) : null}
+                  </div>
+                </TableCell>
+                <TableCell className={classes.cell}>
+                  <div className="d-flex justify-content-end">
+                    <Tooltip title="Remove Cron Build">
+                      <IconButton
+                        aria-label="Remove Cron Build"
+                        component="span"
+                        onClick={() => removeCronSetting(settings.name)}
+                      >
+                        <Delete />
+                      </IconButton>
+                    </Tooltip>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+            <TableRow hover={false}>
+              <TableCell className={classNames(classes.cell)}>
+                <TextField
+                  required
+                  id="name-lbl"
+                  className={classes.cellContent}
+                  label="Name"
+                  defaultValue={settings.name}
+                  onChange={changeField('name')}
+                />
+              </TableCell>
+              <TableCell className={classNames(classes.cell)}>
+                <TextField
+                  required
+                  id="branch-lbl"
+                  className={classes.cellContent}
+                  label="Branch"
+                  defaultValue={settings.branch}
+                  onChange={changeField('branch')}
+                />
+              </TableCell>
+              <TableCell className={classNames(classes.cell)}>
+                <TextField
+                  required
+                  id="expression-lbl"
+                  className={classes.cellContent}
+                  label="Expression"
+                  defaultValue={settings.expression}
+                  onChange={changeField('expression')}
+                />
+              </TableCell>
+              <TableCell className={classes.cell}>{/* empty since RepositoryCronRow has 4 colums */}</TableCell>
+              <TableCell className={classes.cell}>
+                <div className="d-flex justify-content-end">
+                  <Tooltip title="Add New Cron Build" className={classes.roundButton}>
+                    <IconButton aria-label="Add New Cron Build" component="span" onClick={() => addNewCronSetting()}>
+                      <Add />
+                    </IconButton>
+                  </Tooltip>
+                </div>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
+  );
 }
 
-export default createFragmentContainer(withStyles(styles)(withRouter(RepositoryCronSettings)), {
+export default createFragmentContainer(withStyles(styles)(RepositoryCronSettings), {
   repository: graphql`
     fragment RepositoryCronSettings_repository on Repository {
       id

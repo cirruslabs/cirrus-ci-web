@@ -9,10 +9,10 @@ export default function DurationTicker(props: Props) {
   const [currentTimestamp, setCurrentTimestamp] = useState(Date.now());
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
+    const intervalId = setInterval(() => {
       setCurrentTimestamp(Date.now());
     }, 1000);
-    return () => clearTimeout(timeoutId);
+    return () => clearTimeout(intervalId);
   });
 
   return <span>{formatDuration((currentTimestamp - props.startTimestamp) / 1000)}</span>;

@@ -11,8 +11,7 @@ import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import BillingSettingsButton from './BillingSettingsButton';
 import { createFragmentContainer } from 'react-relay';
@@ -63,108 +62,76 @@ interface Props extends WithStyles<typeof styles>, RouteComponentProps {
   accountId: number;
 }
 
-interface State {
-  expanded: boolean;
-}
+function ComputeCreditsBase(props: Props) {
+  let [expanded, setExpanded] = useState(false);
+  let [openBuyCredits, setOpenBuyCredits] = useState(false);
+  let { classes } = props;
 
-class ComputeCreditsBase extends React.Component<Props, State> {
-  static contextTypes = {
-    router: PropTypes.object,
-  };
-
-  state = { expanded: false, openBuyCredits: false };
-
-  handleExpandClick = () => {
-    this.setState(prevState => ({
-      ...prevState,
-      expanded: !prevState.expanded,
-    }));
-  };
-
-  handleOpenBuyCredits = () => {
-    this.setState(prevState => ({
-      ...prevState,
-      openBuyCredits: true,
-    }));
-  };
-
-  handleCloseBuyCredits = () => {
-    this.setState(prevState => ({
-      ...prevState,
-      openBuyCredits: false,
-    }));
-  };
-
-  render() {
-    let { classes } = this.props;
-
-    return (
-      <Card>
-        <CardHeader title="Compute Credits" />
-        <Head>
-          <script src="https://js.stripe.com/v3/" async></script>
-        </Head>
-        <CardContent>
-          <Typography variant="h6">
-            Your current compute credits balance:{' '}
-            <b className={classes.credits}>{this.props.balanceInCredits || '0.00'}</b>
-          </Typography>
-          <div className={classes.gap} />
-          <Typography variant="subtitle1">
-            <p>
-              Compute credits are used for buying <b>priority</b> CPU time on Community Clusters for your private or
-              public projects. It allows not to bother about configuring{' '}
-              <a href="https://cirrus-ci.org/guide/supported-computing-services/">Compute Services</a> and focus on the
-              product instead of infrastructure.
-            </p>
-            <p>
-              Read more about compute credits and how to use them in{' '}
-              <a href="https://cirrus-ci.org/pricing/#compute-credits">documentation</a>.
-            </p>
-            <p>
-              <b>TLDR:</b> 1 compute credit can be bought for 1 US dollar. Here is how much 1000 minutes will cost for
-              different platforms:
-            </p>
-            <ul>
-              <li>1000 minutes of 1 virtual CPU for Linux for 5 compute credits</li>
-              <li>1000 minutes of 1 virtual CPU for Windows for 10 compute credits</li>
-              <li>
-                1000 minutes of 1 CPU with hyper-threading enabled (comparable to 2 vCPUs) for macOS for 30 compute
-                credits
-              </li>
-            </ul>
-            <b>All tasks using compute credits are charged on per-second basis.</b> 2 CPU Linux task takes 30 seconds?
-            Pay <b>0.5</b> cents.
-          </Typography>
-        </CardContent>
-        <CardActions disableSpacing>
-          <Button variant="contained" onClick={this.handleOpenBuyCredits} className={classes.buttonSpacing}>
-            <AttachMoneyIcon />
-            Add More Credits
-          </Button>
-          <BillingSettingsButton info={this.props.info} />
-          <IconButton
-            className={classNames(classes.expand, {
-              [classes.expandOpen]: this.state.expanded,
-            })}
-            onClick={this.handleExpandClick}
-            aria-expanded={this.state.expanded}
-            aria-label="Show Transactions"
-          >
-            <ExpandMoreIcon />
-          </IconButton>
-        </CardActions>
-        <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-          <CardContent>{this.props.transactionsComponent}</CardContent>
-        </Collapse>
-        <ComputeCreditsStripeDialog
-          accountId={this.props.accountId}
-          open={this.state.openBuyCredits}
-          onClose={this.handleCloseBuyCredits}
-        />
-      </Card>
-    );
-  }
+  return (
+    <Card>
+      <CardHeader title="Compute Credits" />
+      <Head>
+        <script src="https://js.stripe.com/v3/" async></script>
+      </Head>
+      <CardContent>
+        <Typography variant="h6">
+          Your current compute credits balance: <b className={classes.credits}>{props.balanceInCredits || '0.00'}</b>
+        </Typography>
+        <div className={classes.gap} />
+        <Typography variant="subtitle1">
+          <p>
+            Compute credits are used for buying <b>priority</b> CPU time on Community Clusters for your private or
+            public projects. It allows not to bother about configuring{' '}
+            <a href="https://cirrus-ci.org/guide/supported-computing-services/">Compute Services</a> and focus on the
+            product instead of infrastructure.
+          </p>
+          <p>
+            Read more about compute credits and how to use them in{' '}
+            <a href="https://cirrus-ci.org/pricing/#compute-credits">documentation</a>.
+          </p>
+          <p>
+            <b>TLDR:</b> 1 compute credit can be bought for 1 US dollar. Here is how much 1000 minutes will cost for
+            different platforms:
+          </p>
+          <ul>
+            <li>1000 minutes of 1 virtual CPU for Linux for 5 compute credits</li>
+            <li>1000 minutes of 1 virtual CPU for Windows for 10 compute credits</li>
+            <li>
+              1000 minutes of 1 CPU with hyper-threading enabled (comparable to 2 vCPUs) for macOS for 30 compute
+              credits
+            </li>
+          </ul>
+          <b>All tasks using compute credits are charged on per-second basis.</b> 2 CPU Linux task takes 30 seconds? Pay{' '}
+          <b>0.5</b> cents.
+        </Typography>
+      </CardContent>
+      <CardActions disableSpacing>
+        <Button variant="contained" onClick={() => setOpenBuyCredits(true)} className={classes.buttonSpacing}>
+          <AttachMoneyIcon />
+          Add More Credits
+        </Button>
+        <BillingSettingsButton info={props.info} />
+        <IconButton
+          className={classNames(classes.expand, {
+            [classes.expandOpen]: expanded,
+          })}
+          onClick={() => setExpanded(!expanded)}
+          aria-expanded={expanded}
+          aria-label="Show Transactions"
+        >
+          <ExpandMoreIcon />
+        </IconButton>
+      </CardActions>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent>{props.transactionsComponent}</CardContent>
+      </Collapse>
+      <ComputeCreditsStripeDialog
+        accountId={props.accountId}
+        open={openBuyCredits}
+        onClose={() => setOpenBuyCredits(false)}
+      />
+    </Card>
+  );
 }
 
 export default createFragmentContainer(withStyles(styles)(withRouter(ComputeCreditsBase)), {

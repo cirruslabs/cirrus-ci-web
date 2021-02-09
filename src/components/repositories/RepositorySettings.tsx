@@ -9,13 +9,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Switch from '@material-ui/core/Switch';
 import { graphql } from 'babel-plugin-relay/macro';
-import React from 'react';
+import React, { useState } from 'react';
 import { commitMutation, createFragmentContainer } from 'react-relay';
 import environment from '../../createRelayEnvironment';
 import { RepositorySettings_repository } from './__generated__/RepositorySettings_repository.graphql';
 import {
-  ConfigResolutionStrategy,
-  DecryptEnvironmentVariablesFor,
   RepositorySettingsInput,
   RepositorySettingsMutationResponse,
 } from './__generated__/RepositorySettingsMutation.graphql';
@@ -49,169 +47,150 @@ interface Props {
   repository: RepositorySettings_repository;
 }
 
-interface State {
-  needsApproval?: boolean;
-  decryptEnvironmentVariables?: DecryptEnvironmentVariablesFor;
-  configResolutionStrategy: ConfigResolutionStrategy;
-  additionalEnvironment: readonly string[];
-  additionalEnvironmentToAdd?: string;
-}
+function RepositorySettings(props: Props) {
+  let [initialSettings, setInitialSettings] = useState(props.repository.settings);
+  let [settings, setSettings] = useState(props.repository.settings);
+  let [additionalEnvironmentToAdd, setAdditionalEnvironmentToAdd] = useState('');
 
-class RepositorySettings extends React.Component<Props, State> {
-  initialSettings: State;
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      ...props.repository.settings,
-      additionalEnvironmentToAdd: '',
-    };
-    this.initialSettings = props.repository.settings;
-    this.onSave = this.onSave.bind(this);
-  }
-
-  handleChange = (field: keyof State) => {
+  let handleChange = field => {
     return event => {
       let value = event.target.value;
-      this.setState(prevState => ({
-        ...prevState,
+      setSettings({
+        ...settings,
         [field]: value,
-      }));
+      });
     };
   };
 
-  changeField = (field: keyof State) => {
+  let changeField = field => {
     return event => {
       let value = event.target.value;
-      this.setState(prevState => ({
-        ...prevState,
+      setSettings({
+        ...settings,
         [field]: value,
-      }));
+      });
     };
   };
 
-  toggleField = (field: keyof State) => {
+  let toggleField = field => {
     return event => {
-      this.setState(prevState => ({
-        ...prevState,
-        [field]: !prevState[field],
-      }));
+      setSettings({
+        ...settings,
+        [field]: !settings[field],
+      });
     };
   };
 
-  addNewEnvVariable = () => {
-    this.setState(prevState => ({
-      ...prevState,
-      additionalEnvironment: (prevState.additionalEnvironment || []).concat(prevState.additionalEnvironmentToAdd),
-      additionalEnvironmentToAdd: '',
-    }));
+  let addNewEnvVariable = () => {
+    setAdditionalEnvironmentToAdd('');
+    setSettings({
+      ...settings,
+      additionalEnvironment: (settings.additionalEnvironment || []).concat(additionalEnvironmentToAdd),
+    });
   };
 
-  deleteEnv = line => {
-    this.setState(prevState => ({
-      ...prevState,
-      additionalEnvironment: (prevState.additionalEnvironment || []).filter(value => line !== value),
-    }));
+  let deleteEnv = line => {
+    setSettings({
+      ...settings,
+      additionalEnvironment: (settings.additionalEnvironment || []).filter(value => line !== value),
+    });
   };
 
-  render() {
-    let areSettingsTheSame =
-      this.state.needsApproval === this.initialSettings.needsApproval &&
-      this.state.configResolutionStrategy === this.initialSettings.configResolutionStrategy &&
-      JSON.stringify(this.state.additionalEnvironment) === JSON.stringify(this.initialSettings.additionalEnvironment) &&
-      this.state.decryptEnvironmentVariables === this.initialSettings.decryptEnvironmentVariables;
-    return (
-      <Card>
-        <CardContent>
-          <FormControl style={{ width: '100%' }}>
-            <FormControlLabel
-              control={<Switch checked={this.state.needsApproval} onChange={this.toggleField('needsApproval')} />}
-              label="Require approval for builds from users without write permissions"
-            />
-          </FormControl>
-          <FormControl style={{ width: '100%' }}>
-            <FormHelperText>Decrypt Secured Environment Variables for builds initialized by:</FormHelperText>
-            <Select
-              value={this.state.decryptEnvironmentVariables}
-              onChange={this.changeField('decryptEnvironmentVariables')}
-              style={{ width: '100%' }}
-            >
-              <MenuItem value={'EVERYONE'}>Everyone</MenuItem>
-              <MenuItem value={'USERS_WITH_WRITE_PERMISSIONS'}>Only users with write permissions</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl style={{ width: '100%' }}>
-            <FormHelperText>Config resolution strategy:</FormHelperText>
-            <Select
-              value={this.state.configResolutionStrategy}
-              onChange={this.changeField('configResolutionStrategy')}
-              style={{ width: '100%' }}
-            >
-              <MenuItem value={'SAME_SHA'}>Same SHA</MenuItem>
-              <MenuItem value={'MERGE_FOR_PRS'}>Merge for PRs</MenuItem>
-              <MenuItem value={'DEFAULT_BRANCH'}>Latest from default branch</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl style={{ width: '100%' }}>
-            <FormHelperText>Environment variable overrides</FormHelperText>
-            <List>
-              {this.state.additionalEnvironment.map(line => (
-                <ListItem key={line}>
-                  <ListItemText primary={line} />
-                  <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete" onClick={() => this.deleteEnv(line)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              ))}
-            </List>
-          </FormControl>
-          <FormControl style={{ width: '100%' }}>
-            <InputLabel htmlFor="override-env-var">New Environment Variable Override</InputLabel>
-            <Input
-              id="override-env-var"
-              value={this.state.additionalEnvironmentToAdd}
-              onChange={this.handleChange('additionalEnvironmentToAdd')}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton aria-label="add new env variable override" onClick={this.addNewEnvVariable}>
-                    <AddCircle />
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-        </CardContent>
-        <CardActions>
-          <Button variant="contained" disabled={areSettingsTheSame} onClick={() => this.onSave()}>
-            Save
-          </Button>
-        </CardActions>
-      </Card>
-    );
-  }
-
-  onSave() {
+  function onSave() {
     const input: RepositorySettingsInput = {
-      clientMutationId: 'save-settings-' + this.props.repository.id,
-      repositoryId: this.props.repository.id,
-      needsApproval: this.state.needsApproval,
-      decryptEnvironmentVariables: this.state.decryptEnvironmentVariables,
-      configResolutionStrategy: this.state.configResolutionStrategy,
-      additionalEnvironment: this.state.additionalEnvironment.concat(),
+      clientMutationId: 'save-settings-' + props.repository.id,
+      repositoryId: props.repository.id,
+      needsApproval: settings.needsApproval,
+      decryptEnvironmentVariables: settings.decryptEnvironmentVariables,
+      configResolutionStrategy: settings.configResolutionStrategy,
+      additionalEnvironment: settings.additionalEnvironment.concat(),
     };
 
     commitMutation(environment, {
       mutation: saveSettingsMutation,
       variables: { input },
       onCompleted: (response: RepositorySettingsMutationResponse) => {
-        this.initialSettings = response.saveSettings.settings;
-        this.forceUpdate();
+        setInitialSettings(response.saveSettings.settings);
       },
       onError: err => console.error(err),
     });
   }
+
+  let areSettingsTheSame =
+    settings.needsApproval === initialSettings.needsApproval &&
+    settings.configResolutionStrategy === initialSettings.configResolutionStrategy &&
+    JSON.stringify(settings.additionalEnvironment) === JSON.stringify(initialSettings.additionalEnvironment) &&
+    settings.decryptEnvironmentVariables === initialSettings.decryptEnvironmentVariables;
+  return (
+    <Card>
+      <CardContent>
+        <FormControl style={{ width: '100%' }}>
+          <FormControlLabel
+            control={<Switch checked={settings.needsApproval} onChange={toggleField('needsApproval')} />}
+            label="Require approval for builds from users without write permissions"
+          />
+        </FormControl>
+        <FormControl style={{ width: '100%' }}>
+          <FormHelperText>Decrypt Secured Environment Variables for builds initialized by:</FormHelperText>
+          <Select
+            value={settings.decryptEnvironmentVariables}
+            onChange={changeField('decryptEnvironmentVariables')}
+            style={{ width: '100%' }}
+          >
+            <MenuItem value={'EVERYONE'}>Everyone</MenuItem>
+            <MenuItem value={'USERS_WITH_WRITE_PERMISSIONS'}>Only users with write permissions</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl style={{ width: '100%' }}>
+          <FormHelperText>Config resolution strategy:</FormHelperText>
+          <Select
+            value={settings.configResolutionStrategy}
+            onChange={changeField('configResolutionStrategy')}
+            style={{ width: '100%' }}
+          >
+            <MenuItem value={'SAME_SHA'}>Same SHA</MenuItem>
+            <MenuItem value={'MERGE_FOR_PRS'}>Merge for PRs</MenuItem>
+            <MenuItem value={'DEFAULT_BRANCH'}>Latest from default branch</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl style={{ width: '100%' }}>
+          <FormHelperText>Environment variable overrides</FormHelperText>
+          <List>
+            {settings.additionalEnvironment.map(line => (
+              <ListItem key={line}>
+                <ListItemText primary={line} />
+                <ListItemSecondaryAction>
+                  <IconButton edge="end" aria-label="delete" onClick={() => deleteEnv(line)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            ))}
+          </List>
+        </FormControl>
+        <FormControl style={{ width: '100%' }}>
+          <InputLabel htmlFor="override-env-var">New Environment Variable Override</InputLabel>
+          <Input
+            id="override-env-var"
+            value={additionalEnvironmentToAdd}
+            onChange={event => setAdditionalEnvironmentToAdd(event.target.value)}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton aria-label="add new env variable override" onClick={addNewEnvVariable}>
+                  <AddCircle />
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>
+      </CardContent>
+      <CardActions>
+        <Button variant="contained" disabled={areSettingsTheSame} onClick={() => onSave()}>
+          Save
+        </Button>
+      </CardActions>
+    </Card>
+  );
 }
 
 export default createFragmentContainer(RepositorySettings, {

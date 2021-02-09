@@ -6,9 +6,8 @@ import Chip from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip } from 'recharts';
 import { TaskExecutionInfo_task } from './__generated__/TaskExecutionInfo_task.graphql';
-import { cirrusColorsState } from '../../cirrusTheme';
 import { formatDuration } from '../../utils/time';
-import { useRecoilValue } from 'recoil';
+import { useTheme } from '@material-ui/core';
 
 let styles = {
   chip: {
@@ -23,7 +22,7 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 function TaskExecutionInfo(props: Props) {
-  const cirrusColors = useRecoilValue(cirrusColorsState);
+  let theme = useTheme();
   let { task, classes } = props;
 
   if (!task.executionInfo) return null;
@@ -48,13 +47,13 @@ function TaskExecutionInfo(props: Props) {
         </Typography>
         <ResponsiveContainer height={200} width="100%">
           <AreaChart data={chartPoints}>
-            <CartesianGrid />
-            <Area type="monotone" dataKey="Requested CPUs" stroke={null} fill={cirrusColors.lightInitialization} />
+            <CartesianGrid stroke={theme.palette.getContrastText(theme.palette.info.dark)} />
+            <Area type="monotone" dataKey="Requested CPUs" stroke={null} fill={theme.palette.info.dark} />
             <Area
               type="monotone"
               dataKey="Used CPUs"
-              stroke={cirrusColors.darkSuccess}
-              fill={cirrusColors.lightSuccess}
+              stroke={theme.palette.success.dark}
+              fill={theme.palette.success.light}
             />
             <Tooltip labelFormatter={index => `Time: ${chartPoints[index].TimestampLabel}`} />
           </AreaChart>
@@ -92,13 +91,13 @@ function TaskExecutionInfo(props: Props) {
         </Typography>
         <ResponsiveContainer height={200} width="100%">
           <AreaChart data={chartPoints}>
-            <CartesianGrid />
-            <Area type="monotone" dataKey="Requested Memory" stroke={null} fill={cirrusColors.lightInitialization} />
+            <CartesianGrid stroke={theme.palette.getContrastText(theme.palette.info.dark)} />
+            <Area type="monotone" dataKey="Requested Memory" stroke={null} fill={theme.palette.info.dark} />
             <Area
               type="monotone"
               dataKey="Used Memory"
-              stroke={cirrusColors.darkSuccess}
-              fill={cirrusColors.lightSuccess}
+              stroke={theme.palette.success.dark}
+              fill={theme.palette.success.light}
             />
             <Tooltip labelFormatter={index => `Time: ${chartPoints[index].TimestampLabel}`} />
           </AreaChart>

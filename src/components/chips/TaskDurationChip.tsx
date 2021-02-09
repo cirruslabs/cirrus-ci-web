@@ -42,7 +42,21 @@ function TaskDurationChip(props: Props) {
       subscription.dispose();
     };
   });
+
+  const [now, setNow] = React.useState(Date.now());
+
+  useEffect(() => {
+    if (isTaskFinalStatus(props.task.status)) {
+      return;
+    }
+    const timeoutId = setInterval(() => {
+      setNow(Date.now());
+    }, 1_000);
+    return () => clearInterval(timeoutId);
+  }, [now]);
+
   let { task, className } = props;
+
   let durationInSeconds = task.durationInSeconds;
   if (!isTaskInProgressStatus(task.status) && !isTaskFinalStatus(task.status)) {
     durationInSeconds = 0;
@@ -51,9 +65,6 @@ function TaskDurationChip(props: Props) {
     durationInSeconds = (Date.now() - timestamp) / 1000;
   }
 
-  if (!isTaskFinalStatus(task.status)) {
-    setTimeout(() => this.forceUpdate(), 1000);
-  }
   return (
     <Chip
       className={className}

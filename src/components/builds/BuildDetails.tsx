@@ -27,8 +27,7 @@ const buildApproveMutation = graphql`
   mutation BuildDetailsApproveBuildMutation($input: BuildApproveInput!) {
     approve(input: $input) {
       build {
-        id
-        status
+        ...BuildDetails_build
       }
     }
   }
@@ -38,8 +37,7 @@ const buildReTriggerMutation = graphql`
   mutation BuildDetailsReTriggerMutation($input: BuildReTriggerInput!) {
     retrigger(input: $input) {
       build {
-        id
-        status
+        ...BuildDetails_build
       }
     }
   }
@@ -67,7 +65,9 @@ const taskBatchReRunMutation = graphql`
   mutation BuildDetailsReRunMutation($input: TasksReRunInput!) {
     batchReRun(input: $input) {
       newTasks {
-        id
+        build {
+          ...BuildDetails_build
+        }
       }
     }
   }
@@ -150,7 +150,6 @@ function BuildDetails(props: Props) {
     commitMutation(environment, {
       mutation: taskBatchReRunMutation,
       variables: variables,
-      onCompleted: () => this.forceUpdate(),
       onError: err => console.error(err),
     });
   }

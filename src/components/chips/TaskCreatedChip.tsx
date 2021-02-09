@@ -3,7 +3,7 @@ import Chip from '@material-ui/core/Chip';
 import Icon from '@material-ui/core/Icon';
 import Tooltip from '@material-ui/core/Tooltip';
 import { graphql } from 'babel-plugin-relay/macro';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createFragmentContainer } from 'react-relay';
 import { useTaskStatusColor } from '../../utils/colors';
 import { taskStatusIconName } from '../../utils/status';
@@ -18,17 +18,18 @@ interface Props extends WithTheme {
 
 let TaskCreatedChip = (props: Props) => {
   const creationTimestamp = props.task.creationTimestamp;
-  const durationAgoInSeconds = (Date.now() - creationTimestamp) / 1000;
 
-  const [, updateState] = React.useState(1);
+  const [durationAgoInSeconds, setDurationAgoInSeconds] = React.useState((Date.now() - creationTimestamp) / 1000);
 
-  if (durationAgoInSeconds < 60) {
-    // force update in a second
-    setTimeout(() => updateState(Math.random()), 1000);
-  } else {
-    // force update in a minute
-    setTimeout(() => updateState(Math.random()), 60 * 1000);
-  }
+  useEffect(() => {
+    const timeoutId = setInterval(
+      () => {
+        setDurationAgoInSeconds((Date.now() - creationTimestamp) / 1000);
+      },
+      durationAgoInSeconds < 60 ? 1_000 : 60_000,
+    );
+    return () => clearInterval(timeoutId);
+  }, [durationAgoInSeconds]);
 
   const durationInSeconds = Math.floor(durationAgoInSeconds);
 

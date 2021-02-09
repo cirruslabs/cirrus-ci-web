@@ -29,7 +29,7 @@ function UserApiSettings(props: Props) {
     <ApiSettingsBase
       generateNewTokenMutation={generateNewTokenMutation}
       getMutationVariables={getMutationVariables}
-      maskedToken={props.user.apiToken.maskedToken}
+      maskedToken={props.user.apiToken?.maskedToken}
     />
   );
 }

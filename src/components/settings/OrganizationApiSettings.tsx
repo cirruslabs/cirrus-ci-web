@@ -30,7 +30,7 @@ function OrganizationApiSettings(props: Props) {
     <ApiSettingsBase
       generateNewTokenMutation={generateNewTokenMutation}
       getMutationVariables={getMutationVariables}
-      maskedToken={props.info.apiToken.maskedToken}
+      maskedToken={props.info.apiToken?.maskedToken}
     />
   );
 }

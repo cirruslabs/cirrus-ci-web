@@ -100,6 +100,7 @@ function RepositoryCronSettings(props: Props) {
     expression: '0 0 0 * * ?',
   };
   let [settings, setSettings] = useState(defaultSettings);
+  let [cronSettingsList, setCronSettingsList] = useState(props.repository.cronSettings);
 
   function changeField(field) {
     return event => {
@@ -126,7 +127,7 @@ function RepositoryCronSettings(props: Props) {
       mutation: saveCronSettingsMutation,
       variables: variables,
       onCompleted: (response: RepositoryCronSettingsSaveMutationResponse) => {
-        setSettings(defaultSettings);
+        setCronSettingsList(response.saveCronSettings.settings);
       },
       onError: err => console.error(err),
     });
@@ -145,7 +146,7 @@ function RepositoryCronSettings(props: Props) {
       mutation: removeCronSettingsMutation,
       variables: variables,
       onCompleted: (response: RepositoryCronSettingsRemoveMutationResponse) => {
-        setSettings(defaultSettings);
+        setCronSettingsList(response.removeCronSettings.settings);
       },
       onError: err => console.error(err),
     });
@@ -158,7 +159,7 @@ function RepositoryCronSettings(props: Props) {
       <CardContent>
         <Table style={{ tableLayout: 'auto' }}>
           <TableBody>
-            {props.repository.cronSettings.map(settings => (
+            {cronSettingsList.map(settings => (
               <TableRow hover={true} key={settings.name}>
                 <TableCell className={classNames(classes.cell)}>
                   <Chip key={settings.name} className={classes.chip} label={settings.name} />

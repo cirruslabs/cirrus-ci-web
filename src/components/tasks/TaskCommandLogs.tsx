@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Logs from '../logs/Logs';
 import { QueryRenderer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
@@ -11,7 +11,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
 import GetApp from '@material-ui/icons/GetApp';
 import Fab from '@material-ui/core/Fab';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { TaskCommandLogsTailQuery } from './__generated__/TaskCommandLogsTailQuery.graphql';
 import { TaskCommandStatus } from './__generated__/TaskCommandList_task.graphql';
 
@@ -39,75 +38,48 @@ interface RealTimeLogsProps extends WithStyles<typeof styles> {
   initialLogLines: ReadonlyArray<string>;
 }
 
-interface RealTimeLogsState {
-  realTimeLogs: boolean;
-  additionalLogs: string;
-}
+function TaskCommandRealTimeLogs(props: RealTimeLogsProps) {
+  let [realTimeLogs, setRealTimeLogs] = useState(!isTaskCommandFinalStatus(props.command.status));
+  let [additionalLogs, setAdditionalLogs] = useState('\n');
 
-class TaskCommandRealTimeLogs extends React.Component<RealTimeLogsProps, RealTimeLogsState> {
-  subscriptionClosable?: ReturnType<typeof subscribeTaskCommandLogs>;
-
-  constructor(props: RealTimeLogsProps) {
-    super(props);
-    this.subscriptionClosable = null;
-    this.state = {
-      realTimeLogs: !isTaskCommandFinalStatus(props.command.status),
-      additionalLogs: '\n',
-    };
-  }
-
-  componentDidMount() {
-    if (!this.state.realTimeLogs) return;
-    this.subscriptionClosable = subscribeTaskCommandLogs(this.props.taskId, this.props.command.name, newLogs => {
+  useEffect(() => {
+    if (!realTimeLogs) return;
+    let closable = subscribeTaskCommandLogs(props.taskId, props.command.name, newLogs => {
       // can be an object on a websocket reconnect
       if (typeof newLogs === 'string' || newLogs instanceof String) {
-        this.setState(prevState => ({
-          ...prevState,
-          additionalLogs: prevState.additionalLogs + newLogs,
-        }));
+        setAdditionalLogs(additionalLogs + newLogs);
       }
     });
-  }
+    return () => closable();
+  }, [realTimeLogs, props.taskId, props.command.name]);
 
-  componentWillUnmount() {
-    if (this.subscriptionClosable) {
-      this.subscriptionClosable();
-    }
-  }
-
-  render() {
-    let { classes, taskId, command, initialLogLines } = this.props;
-    let inProgress = !isTaskCommandFinalStatus(command.status);
-    let downloadButton = (
-      <div className={classes.actionButtons}>
-        <Fab
-          variant="round"
-          className={classes.downloadButton}
-          href={logURL(taskId, command)}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Tooltip title="Download Full Logs">
-            <GetApp />
-          </Tooltip>
-        </Fab>
-      </div>
-    );
-    return (
-      <div style={{ width: '100%', height: '100%' }}>
-        {inProgress ? null : downloadButton}
-        <Logs
-          taskId={taskId}
-          commandName={command.name}
-          logs={initialLogLines.join('\n') + this.state.additionalLogs}
-        />
-        {inProgress ? <CirrusLinearProgress /> : null}
-      </div>
-    );
-  }
+  let { classes, taskId, command, initialLogLines } = props;
+  let inProgress = !isTaskCommandFinalStatus(command.status);
+  let downloadButton = (
+    <div className={classes.actionButtons}>
+      <Fab
+        variant="round"
+        className={classes.downloadButton}
+        href={logURL(taskId, command)}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Tooltip title="Download Full Logs">
+          <GetApp />
+        </Tooltip>
+      </Fab>
+    </div>
+  );
+  return (
+    <div style={{ width: '100%', height: '100%' }}>
+      {inProgress ? null : downloadButton}
+      <Logs taskId={taskId} commandName={command.name} logs={initialLogLines.join('\n') + additionalLogs} />
+      {inProgress ? <CirrusLinearProgress /> : null}
+    </div>
+  );
 }
 
-interface TaskCommandLogsProps extends RouteComponentProps, WithStyles<typeof styles> {
+interface TaskCommandLogsProps extends WithStyles<typeof styles> {
   taskId: string;
   command: {
     name: string;
@@ -115,34 +87,32 @@ interface TaskCommandLogsProps extends RouteComponentProps, WithStyles<typeof st
   };
 }
 
-class TaskCommandLogs extends React.Component<TaskCommandLogsProps> {
-  render() {
-    return (
-      <QueryRenderer<TaskCommandLogsTailQuery>
-        environment={environment}
-        variables={{ taskId: this.props.taskId, commandName: this.props.command.name }}
-        query={graphql`
-          query TaskCommandLogsTailQuery($taskId: ID!, $commandName: String!) {
-            task(id: $taskId) {
-              commandLogsTail(name: $commandName)
-            }
+function TaskCommandLogs(props: TaskCommandLogsProps) {
+  return (
+    <QueryRenderer<TaskCommandLogsTailQuery>
+      environment={environment}
+      variables={{ taskId: props.taskId, commandName: props.command.name }}
+      query={graphql`
+        query TaskCommandLogsTailQuery($taskId: ID!, $commandName: String!) {
+          task(id: $taskId) {
+            commandLogsTail(name: $commandName)
           }
-        `}
-        render={({ error, props }) => {
-          if (!props) {
-            return (
-              <div style={{ width: '100%', minHeight: 100 }}>
-                <div className="text-center">
-                  <CirrusCircularProgress />
-                </div>
+        }
+      `}
+      render={response => {
+        if (!response.props) {
+          return (
+            <div style={{ width: '100%', minHeight: 100 }}>
+              <div className="text-center">
+                <CirrusCircularProgress />
               </div>
-            );
-          }
-          return <TaskCommandRealTimeLogs initialLogLines={props.task.commandLogsTail || []} {...this.props} />;
-        }}
-      />
-    );
-  }
+            </div>
+          );
+        }
+        return <TaskCommandRealTimeLogs initialLogLines={response.props.task.commandLogsTail || []} {...props} />;
+      }}
+    />
+  );
 }
 
-export default withStyles(styles)(withRouter(TaskCommandLogs));
+export default withStyles(styles)(TaskCommandLogs);

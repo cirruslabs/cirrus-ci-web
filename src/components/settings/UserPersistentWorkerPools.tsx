@@ -8,11 +8,9 @@ interface Props {
   user: UserPersistentWorkerPools_user;
 }
 
-class UserPersistentWorkerPools extends React.Component<Props> {
-  render() {
-    let user = this.props.user;
-    return <PersistentWorkerPoolsList ownerId={user.githubUserId} pools={user.persistentWorkerPools || []} />;
-  }
+function UserPersistentWorkerPools(props: Props) {
+  let user = props.user;
+  return <PersistentWorkerPoolsList ownerId={user.githubUserId} pools={user.persistentWorkerPools || []} />;
 }
 
 export default createFragmentContainer(UserPersistentWorkerPools, {

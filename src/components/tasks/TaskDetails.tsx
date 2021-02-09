@@ -328,11 +328,7 @@ function TaskDetails(props: Props, context) {
           <ExecutionInfo task={task} />
         </CardContent>
         <CardActions className="d-flex flex-wrap justify-content-end">
-          <Button
-            variant="contained"
-            onClick={e => navigateBuild(context.router.history, e, task.buildId)}
-            startIcon={<ArrowBack />}
-          >
+          <Button variant="contained" onClick={e => navigateBuild(history, e, task.buildId)} startIcon={<ArrowBack />}>
             View All Tasks
           </Button>
           {abortButton}

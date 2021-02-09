@@ -18,6 +18,9 @@ import { TaskCommandList_task } from './__generated__/TaskCommandList_task.graph
 import { ItemOfArray } from '../../utils/utility-types';
 import { useLocation } from 'react-router-dom';
 import { createStyles } from '@material-ui/styles';
+import { useTheme } from '@material-ui/core';
+import { prefersDarkModeState } from '../../cirrusTheme';
+import { useRecoilState } from 'recoil';
 
 const styles = theme =>
   createStyles({
@@ -38,11 +41,13 @@ function TaskCommandList(props: Props) {
   let lastTimestamp = task.executingTimestamp;
   let colorMapping = useCommandStatusColorMapping();
   let location = useLocation();
+  let theme = useTheme();
 
   function commandItem(command: ItemOfArray<TaskCommandList_task['commands']>, commandStartTimestamp: number) {
     const selectedCommandName = queryString.parse(location.search).command;
     let styles = {
       header: {
+        color: theme.palette.getContrastText(colorMapping[command.status]),
         backgroundColor: colorMapping[command.status],
       },
     };

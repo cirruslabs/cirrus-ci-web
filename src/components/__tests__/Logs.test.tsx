@@ -1,10 +1,11 @@
 import React from 'react';
 import Logs from '../logs/Logs';
 import renderer from 'react-test-renderer';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
-import { cirrusTheme } from '../../cirrusTheme';
+import { cirrusLightTheme } from '../../cirrusTheme';
+import { RecoilRoot } from 'recoil';
 
 it('renders correctly', () => {
   const exampleLog = `\
@@ -15,15 +16,17 @@ I log things
 
   const tree = renderer
     .create(
-      <ThemeProvider theme={createMuiTheme(cirrusTheme)}>
-        <Router>
-          <Switch>
-            <Route exact path="/">
-              <Logs logs={exampleLog} />
-            </Route>
-          </Switch>
-        </Router>
-      </ThemeProvider>,
+      <RecoilRoot>
+        <ThemeProvider theme={createMuiTheme(cirrusLightTheme)}>
+          <Router>
+            <Switch>
+              <Route exact path="/">
+                <Logs logs={exampleLog} commandName="test" taskId="123" />
+              </Route>
+            </Switch>
+          </Router>
+        </ThemeProvider>
+      </RecoilRoot>,
     )
     .toJSON();
   expect(tree).toMatchSnapshot();

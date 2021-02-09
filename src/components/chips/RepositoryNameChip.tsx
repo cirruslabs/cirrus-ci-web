@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
@@ -9,6 +8,7 @@ import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { RepositoryNameChip_repository } from './__generated__/RepositoryNameChip_repository.graphql';
 import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 
 const styles = theme =>
   createStyles({
@@ -25,30 +25,26 @@ interface Props extends WithStyles<typeof styles> {
   repository: RepositoryNameChip_repository;
 }
 
-class RepositoryNameChip extends React.Component<Props> {
-  static contextTypes = {
-    router: PropTypes.object,
-  };
+function RepositoryNameChip(props: Props) {
+  let history = useHistory();
+  let repository = props.repository;
 
-  render() {
-    let repository = this.props.repository;
-    return (
-      <Chip
-        label={repository.owner + '/' + repository.name}
-        avatar={
-          <Avatar className={this.props.classes.avatar}>
-            <Storage className={this.props.classes.avatarIcon} />
-          </Avatar>
-        }
-        onClick={e => this.handleRepositoryClick(e, repository)}
-        className={this.props.className}
-      />
-    );
+  function handleRepositoryClick(event, repository) {
+    navigate(history, event, '/github/' + repository.owner + '/' + repository.name);
   }
 
-  handleRepositoryClick(event, repository) {
-    navigate(this.context.router.history, event, '/github/' + repository.owner + '/' + repository.name);
-  }
+  return (
+    <Chip
+      label={repository.owner + '/' + repository.name}
+      avatar={
+        <Avatar className={props.classes.avatar}>
+          <Storage className={props.classes.avatarIcon} />
+        </Avatar>
+      }
+      onClick={e => handleRepositoryClick(e, repository)}
+      className={props.className}
+    />
+  );
 }
 
 export default createFragmentContainer(withStyles(styles)(RepositoryNameChip), {

@@ -4,6 +4,8 @@ import { graphql } from 'babel-plugin-relay/macro';
 import { TaskCommandStatus } from './__generated__/colors_TaskCommand.graphql';
 import { NotificationLevel } from './__generated__/colors_Notification.graphql';
 import { useTheme } from '@material-ui/core';
+import { cirrusColorsState } from '../cirrusTheme';
+import { useRecoilValue } from 'recoil';
 
 export function useBuildStatusColor(status: BuildStatus) {
   const palette = useTheme().palette;
@@ -22,8 +24,8 @@ export function useBuildStatusColorMapping() {
 }
 
 export function useTaskStatusColor(status: TaskStatus) {
-  const palette = useTheme().palette;
-  return useTaskStatusColorMapping()[status] || palette.grey;
+  const cirrusColors = useRecoilValue(cirrusColorsState);
+  return useTaskStatusColorMapping()[status] || cirrusColors.undefined;
 }
 
 export function useTaskStatusColorMapping() {
@@ -68,18 +70,20 @@ graphql`
 `;
 
 export function useCommandStatusColor(status: TaskCommandStatus) {
-  const palette = useTheme().palette;
-  return useCommandStatusColorMapping()[status] || palette.grey;
+  const cirrusColors = useRecoilValue(cirrusColorsState);
+  return useCommandStatusColorMapping()[status] || cirrusColors.undefined;
 }
 
 export function useCommandStatusColorMapping() {
   const palette = useTheme().palette;
+  const cirrusColors = useRecoilValue(cirrusColorsState);
   return {
     SUCCESS: palette.success.light,
     EXECUTING: palette.warning.light,
     FAILURE: palette.error.light,
     ABORTED: palette.error.light,
     SKIPPED: palette.success.light,
+    UNDEFINED: cirrusColors.undefined,
   };
 }
 

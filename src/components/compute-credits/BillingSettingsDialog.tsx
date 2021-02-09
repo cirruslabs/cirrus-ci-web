@@ -75,10 +75,9 @@ function BillingSettingsDialog(props: Props) {
       mutation: saveBillingSettingsMutation,
       variables: variables,
       onCompleted: (response: BillingSettingsDialogMutationResponse) => {
-        this.setState(prevState => ({
-          ...prevState,
-          ...response.saveBillingSettings.settings,
-        }));
+        setEnabled(response.saveBillingSettings.settings.enabled);
+        setBillingEmailAddress(response.saveBillingSettings.settings.billingEmailAddress);
+        setInvoiceTemplate(response.saveBillingSettings.settings.invoiceTemplate);
         props.onClose();
       },
       onError: err => console.log(err),

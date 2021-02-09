@@ -10,6 +10,7 @@ import { cirrusColorsState } from '../../cirrusTheme';
 import { withTheme } from '@material-ui/core/styles';
 import { TaskOptionalChip_task } from './__generated__/TaskOptionalChip_task.graphql';
 import { useRecoilValue } from 'recoil';
+import { useTheme } from '@material-ui/core';
 
 interface Props {
   task: TaskOptionalChip_task;
@@ -17,6 +18,7 @@ interface Props {
 }
 
 function TaskOptionalChip(props: Props) {
+  let theme = useTheme();
   const cirrusColors = useRecoilValue(cirrusColorsState);
 
   let { optional } = props.task;
@@ -28,7 +30,7 @@ function TaskOptionalChip(props: Props) {
       label="Optional"
       avatar={
         <Avatar style={{ backgroundColor: cirrusColors.lightWarning }}>
-          <Report style={{ color: this.props.theme.palette.primary.contrastText }} />
+          <Report style={{ color: theme.palette.primary.contrastText }} />
         </Avatar>
       }
     />

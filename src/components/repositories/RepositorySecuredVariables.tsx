@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import environment from '../../createRelayEnvironment';
 import { commitMutation, createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
@@ -25,68 +25,25 @@ interface Props {
   repository: RepositorySecuredVariables_repository;
 }
 
-interface State {
-  inputValue: string;
-  securedVariable?: string;
-  securedVariableName?: string;
-}
+function RepositorySecuredVariables(props: Props) {
+  let [inputValue, setInputValue] = useState('');
+  let [securedVariable, setSecuredVariable] = useState(undefined);
+  let [securedVariableName, setSecuredVariableName] = useState(undefined);
 
-class RepositorySecuredVariables extends React.Component<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = { inputValue: '' };
-    this.handleChange = this.handleChange.bind(this);
+  let securedComponent = null;
+
+  if (securedVariableName) {
+    let valueForYAMLFile = `ENCRYPTED[${securedVariableName}]`;
+
+    securedComponent = <CopyPasteField name="securedVariable" fullWidth={true} value={valueForYAMLFile} />;
   }
 
-  handleChange(event) {
-    this.setState({ inputValue: event.target.value });
-  }
-
-  render() {
-    let securedComponent = null;
-
-    if (this.state.securedVariableName) {
-      let valueForYAMLFile = `ENCRYPTED[${this.state.securedVariableName}]`;
-
-      securedComponent = <CopyPasteField name="securedVariable" fullWidth={true} value={valueForYAMLFile} />;
-    }
-
-    return (
-      <Card>
-        <CardHeader title="Secured Variables" />
-        <CardContent>
-          <FormControl style={{ width: '100%' }}>
-            <TextField
-              name="securedVariableValue"
-              placeholder="Enter value to create a secure variable for"
-              value={this.state.inputValue}
-              disabled={this.state.securedVariable !== undefined}
-              onChange={this.handleChange}
-              multiline={true}
-              fullWidth={true}
-            />
-            {securedComponent}
-          </FormControl>
-        </CardContent>
-        <CardActions>
-          <Button
-            variant="contained"
-            disabled={this.state.inputValue === ''}
-            onClick={() => this.encryptCurrentValue()}
-          >
-            Encrypt
-          </Button>
-        </CardActions>
-      </Card>
-    );
-  }
-
-  encryptCurrentValue() {
-    let valueToSecure = this.state.inputValue;
+  function encryptCurrentValue() {
+    let valueToSecure = inputValue;
     const variables = {
       input: {
-        clientMutationId: this.props.repository.name, // todo: replace with a hash of valueToSecure
-        repositoryId: parseInt(this.props.repository.id, 10),
+        clientMutationId: props.repository.name, // todo: replace with a hash of valueToSecure
+        repositoryId: parseInt(props.repository.id, 10),
         valueToSecure: valueToSecure,
       },
     };
@@ -95,14 +52,37 @@ class RepositorySecuredVariables extends React.Component<Props, State> {
       mutation: securedVariableMutation,
       variables: variables,
       onCompleted: (response: RepositorySecuredVariablesMutationResponse) => {
-        this.setState({
-          inputValue: valueToSecure,
-          securedVariableName: response.securedVariable.variableName,
-        });
+        setInputValue(valueToSecure);
+        setSecuredVariableName(response.securedVariable.variableName);
       },
       onError: err => console.error(err),
     });
   }
+
+  return (
+    <Card>
+      <CardHeader title="Secured Variables" />
+      <CardContent>
+        <FormControl style={{ width: '100%' }}>
+          <TextField
+            name="securedVariableValue"
+            placeholder="Enter value to create a secure variable for"
+            value={inputValue}
+            disabled={securedVariable !== undefined}
+            onChange={event => setInputValue(event.target.value)}
+            multiline={true}
+            fullWidth={true}
+          />
+          {securedComponent}
+        </FormControl>
+      </CardContent>
+      <CardActions>
+        <Button variant="contained" disabled={inputValue === ''} onClick={() => encryptCurrentValue()}>
+          Encrypt
+        </Button>
+      </CardActions>
+    </Card>
+  );
 }
 
 export default createFragmentContainer(RepositorySecuredVariables, {

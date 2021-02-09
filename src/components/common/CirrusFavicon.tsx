@@ -57,7 +57,7 @@ export default (props: CirrusFaviconProps) => {
   let theme = useTheme();
   useEffect(() => {
     updateIcon(theme.palette.primary.main);
-  });
+  }, []);
   updateIcon(useFaviconColor(props.status));
   return null;
 };

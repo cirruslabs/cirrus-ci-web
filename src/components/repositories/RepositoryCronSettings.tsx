@@ -178,7 +178,6 @@ class RepositoryCronSettings extends React.Component<Props, State> {
                     <div className="d-flex justify-content-end">
                       <Tooltip title="Remove Cron Build">
                         <IconButton
-                          color="primary"
                           aria-label="Remove Cron Build"
                           component="span"
                           onClick={() => this.removeCronSetting(settings.name)}
@@ -226,7 +225,6 @@ class RepositoryCronSettings extends React.Component<Props, State> {
                   <div className="d-flex justify-content-end">
                     <Tooltip title="Add New Cron Build" className={classes.roundButton}>
                       <IconButton
-                        color="primary"
                         aria-label="Add New Cron Build"
                         component="span"
                         onClick={() => this.addNewCronSetting()}

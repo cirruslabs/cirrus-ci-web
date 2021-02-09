@@ -177,7 +177,7 @@ function ComputeCreditsStripeDialog(props: Props) {
         {error}
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleSubmit} disabled={paymentInProgress} color="primary" variant="contained">
+        <Button onClick={handleSubmit} disabled={paymentInProgress} variant="contained">
           Buy {credits.toLocaleString('en-US', { useGrouping: true })} credits
         </Button>
       </DialogActions>

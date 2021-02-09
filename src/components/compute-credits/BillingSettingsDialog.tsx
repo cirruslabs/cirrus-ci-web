@@ -123,7 +123,7 @@ class BillingSettingsDialog extends React.Component<Props, State> {
         <DialogContent>
           <FormControl fullWidth>
             <FormControlLabel
-              control={<Switch checked={this.state.enabled} onChange={this.checkField('enabled')} color="primary" />}
+              control={<Switch checked={this.state.enabled} onChange={this.checkField('enabled')} />}
               label="Auto Pay Enabled"
             />
           </FormControl>
@@ -158,7 +158,7 @@ class BillingSettingsDialog extends React.Component<Props, State> {
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.updateSettings} disabled={notChanged} color="primary" variant="contained">
+          <Button onClick={this.updateSettings} disabled={notChanged} variant="contained">
             Update
           </Button>
           <Button onClick={this.props.onClose} color="secondary" variant="contained">

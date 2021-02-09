@@ -22,7 +22,7 @@ export default class DeliveryInfoDialog extends React.Component<Props> {
         <DialogTitle>Delivery Info for {delivery.id}</DialogTitle>
         <DeliveryInfoDialogLazyContent deliveryId={delivery.id} />
         <DialogActions>
-          <Button onClick={this.props.onClose} color="primary" variant="contained" autoFocus>
+          <Button onClick={this.props.onClose} variant="contained" autoFocus>
             Close
           </Button>
         </DialogActions>

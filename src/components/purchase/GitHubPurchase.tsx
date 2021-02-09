@@ -137,7 +137,7 @@ class GitHubPurchase extends React.Component<Props> {
             <DialogContentText>{info.activeUserNames.join('\n')}</DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleCloseActiveUsersDialog} color="primary" variant="contained">
+            <Button onClick={this.handleCloseActiveUsersDialog} variant="contained">
               Close
             </Button>
           </DialogActions>

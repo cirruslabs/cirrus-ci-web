@@ -214,13 +214,7 @@ class CreateNewPersistentWorkerPoolDialog extends React.Component<DialogProps, D
         <DialogContent>
           <FormControl fullWidth>
             <FormControlLabel
-              control={
-                <Switch
-                  checked={this.state.enabledForPublic}
-                  onChange={this.checkField('enabledForPublic')}
-                  color="primary"
-                />
-              }
+              control={<Switch checked={this.state.enabledForPublic} onChange={this.checkField('enabledForPublic')} />}
               label="Enabled for public"
             />
           </FormControl>
@@ -236,7 +230,7 @@ class CreateNewPersistentWorkerPoolDialog extends React.Component<DialogProps, D
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.createPool} disabled={this.state.name === ''} color="primary" variant="contained">
+          <Button onClick={this.createPool} disabled={this.state.name === ''} variant="contained">
             Create
           </Button>
           <Button onClick={this.props.onClose} color="secondary" variant="contained">

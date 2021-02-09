@@ -8,10 +8,9 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { graphql } from 'babel-plugin-relay/macro';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { commitMutation, createFragmentContainer, Disposable, requestSubscription } from 'react-relay';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { commitMutation, createFragmentContainer, requestSubscription } from 'react-relay';
+import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
 import environment from '../../createRelayEnvironment';
 import { navigateBuild, navigateTask } from '../../utils/navigate';
 import { hasWritePermissions } from '../../utils/permissions';
@@ -141,191 +140,26 @@ interface Props extends WithStyles<typeof styles>, RouteComponentProps {
   task: TaskDetails_task;
 }
 
-class TaskDetails extends React.Component<Props> {
-  static contextTypes = {
-    router: PropTypes.object,
-  };
-  subscription: Disposable;
-
-  componentDidMount() {
-    if (isTaskFinalStatus(this.props.task.status)) {
+function TaskDetails(props: Props, context) {
+  let history = useHistory();
+  useEffect(() => {
+    if (isTaskFinalStatus(props.task.status)) {
       return;
     }
 
-    let variables = { taskID: this.props.task.id };
-
-    this.subscription = requestSubscription(environment, {
+    let variables = { taskID: props.task.id };
+    let subscription = requestSubscription(environment, {
       subscription: taskSubscription,
       variables: variables,
     });
-  }
+    return () => subscription.dispose();
+  });
 
-  componentWillUnmount() {
-    this.closeSubscription();
-  }
+  let { task, classes } = props;
+  let build = task.build;
+  let repository = task.repository;
 
-  closeSubscription() {
-    this.subscription && this.subscription.dispose && this.subscription.dispose();
-  }
-
-  render() {
-    let { task, classes } = this.props;
-    let build = task.build;
-    let repository = task.repository;
-
-    if (isTaskFinalStatus(task.status)) {
-      // no need to be subscribed anymore
-      this.closeSubscription();
-    }
-
-    let repoUrl = repository.cloneUrl.slice(0, -4);
-    let branchUrl = build.branch.startsWith('pull/') ? `${repoUrl}/${build.branch}` : `${repoUrl}/tree/${build.branch}`;
-    let commitUrl = repoUrl + '/commit/' + build.changeIdInRepo;
-
-    let notificationsComponent =
-      !task.notifications || task.notifications.length === 0 ? null : (
-        <div className={classes.gap}>
-          <NotificationList notifications={task.notifications} />
-        </div>
-      );
-
-    let artifactsComponent =
-      !task.artifacts || task.artifacts.length === 0 ? null : (
-        <div className={classes.gap}>
-          <TaskArtifacts task={task} />
-        </div>
-      );
-
-    let reRunButton =
-      !hasWritePermissions(build.viewerPermission) || !isTaskFinalStatus(task.status) ? null : (
-        <Button variant="contained" onClick={() => this.rerun(task.id)} startIcon={<Refresh />}>
-          Re-Run
-        </Button>
-      );
-
-    let taskIsTriggerable = task.status === 'PAUSED';
-    let taskIsPreTriggerable = task.status === 'CREATED' && task.triggerType === 'MANUAL';
-    let triggerButton =
-      !hasWritePermissions(build.viewerPermission) || !taskIsTriggerable ? null : (
-        <Button variant="contained" onClick={() => this.trigger(task.id)} startIcon={<PlayCircleFilled />}>
-          Trigger
-        </Button>
-      );
-    let preTriggerButton =
-      !hasWritePermissions(build.viewerPermission) || !taskIsPreTriggerable ? null : (
-        <Button variant="contained" onClick={() => this.trigger(task.id)} startIcon={<PlayCircleFilled />}>
-          Pre-Trigger
-        </Button>
-      );
-
-    let abortButton =
-      isTaskFinalStatus(task.status) || !hasWritePermissions(build.viewerPermission) ? null : (
-        <Button variant="contained" onClick={() => this.abort(task.id)} startIcon={<Cancel />}>
-          Cancel
-        </Button>
-      );
-    let allOtherRuns: JSX.Element | [] = [];
-    if (task.allOtherRuns && task.allOtherRuns.length > 0) {
-      allOtherRuns = (
-        <Paper>
-          <Typography className={classes.title} variant="caption" gutterBottom display="block" align="center">
-            All Other Runs
-          </Typography>
-          <TaskList tasks={task.allOtherRuns} showCreation={true} />
-        </Paper>
-      );
-    }
-    let dependencies: JSX.Element | [] = [];
-    if (task.dependencies && task.dependencies.length > 0) {
-      dependencies = (
-        <Paper>
-          <Typography className={classes.title} variant="caption" gutterBottom display="block" align="center">
-            Dependencies
-          </Typography>
-          <TaskList tasks={task.dependencies} />
-        </Paper>
-      );
-    }
-
-    return (
-      <div>
-        <Head>
-          <title>{task.name} - Cirrus CI</title>
-        </Head>
-        <CirrusFavicon status={task.status} />
-        <Card>
-          <CardContent>
-            <div className={classes.wrapper}>
-              <RepositoryNameChip className={classes.chip} repository={repository} />
-              <BuildBranchNameChip className={classes.chip} build={build} />
-              <BuildChangeChip className={classes.chip} build={build} />
-              <TaskNameChip className={classes.chip} task={task} />
-            </div>
-            <div className={classes.wrapper}>
-              <TaskCreatedChip className={classes.chip} task={task} />
-              <TaskScheduledChip className={classes.chip} task={task} />
-              <TaskStatusChip className={classes.chip} task={task} />
-            </div>
-            <TaskCommandsProgress className={classes.progress} task={task} />
-            <div className={classes.gap} />
-            <Typography variant="h6" gutterBottom>
-              {build.changeMessageTitle} (commit{' '}
-              <a href={commitUrl} target="_blank" rel="noopener noreferrer">
-                {build.changeIdInRepo.substr(0, 6)}
-              </a>{' '}
-              on branch{' '}
-              <a href={branchUrl} target="_blank" rel="noopener noreferrer">
-                {build.branch}
-              </a>
-              )
-            </Typography>
-            <div className={classes.gap} />
-            <div className={classNames('card-body', classes.wrapper)}>
-              {task.automaticReRun ? (
-                <Chip className={classNames(classes.chip, classes.automaticReRun)} label="Automatic Re-Run" />
-              ) : null}
-              <TaskTransactionChip className={classes.chip} task={task} />
-              <TaskOptionalChip className={classes.chip} task={task} />
-              <TaskExperimentalChip className={classes.chip} task={task} />
-              <TaskTimeoutChip className={classes.chip} task={task} />
-              <TaskStatefulChip className={classes.chip} task={task} />
-              <TaskResourcesChip className={classes.chip} task={task} />
-              {task.labels.map(label => {
-                return <Chip key={label} className={classes.chip} label={shorten(label)} />;
-              })}
-            </div>
-            <ExecutionInfo task={task} />
-          </CardContent>
-          <CardActions className="d-flex flex-wrap justify-content-end">
-            <Button
-              variant="contained"
-              onClick={e => navigateBuild(this.context.router.history, e, task.buildId)}
-              startIcon={<ArrowBack />}
-            >
-              View All Tasks
-            </Button>
-            {abortButton}
-            {reRunButton}
-            {triggerButton}
-            {preTriggerButton}
-          </CardActions>
-        </Card>
-        {notificationsComponent}
-        {artifactsComponent}
-        {dependencies ? <div className={classes.gap} /> : null}
-        {dependencies}
-        {allOtherRuns ? <div className={classes.gap} /> : null}
-        {allOtherRuns}
-        <div className={classes.gap} />
-        <Paper elevation={2}>
-          <TaskCommandList task={task} />
-        </Paper>
-        <div className={classes.gap} />
-      </div>
-    );
-  }
-
-  rerun(taskId: string) {
+  function rerun(taskId: string) {
     const variables = {
       input: {
         clientMutationId: 'rerun-' + taskId,
@@ -337,13 +171,13 @@ class TaskDetails extends React.Component<Props> {
       mutation: taskReRunMutation,
       variables: variables,
       onCompleted: (response: TaskDetailsReRunMutationResponse) => {
-        navigateTask(this.context.router.history, null, response.rerun.newTask.id);
+        navigateTask(history, null, response.rerun.newTask.id);
       },
       onError: err => console.error(err),
     });
   }
 
-  trigger(taskId) {
+  function trigger(taskId) {
     const variables = {
       input: {
         clientMutationId: 'trigger-' + taskId,
@@ -354,12 +188,11 @@ class TaskDetails extends React.Component<Props> {
     commitMutation(environment, {
       mutation: taskTriggerMutation,
       variables: variables,
-      onCompleted: () => this.forceUpdate(),
       onError: err => console.error(err),
     });
   }
 
-  abort(taskId) {
+  function abort(taskId) {
     const variables = {
       input: {
         clientMutationId: 'abort-' + taskId,
@@ -370,12 +203,155 @@ class TaskDetails extends React.Component<Props> {
     commitMutation(environment, {
       mutation: taskCancelMutation,
       variables: variables,
-      onCompleted: () => {
-        this.forceUpdate();
-      },
       onError: err => console.error(err),
     });
   }
+
+  let repoUrl = repository.cloneUrl.slice(0, -4);
+  let branchUrl = build.branch.startsWith('pull/') ? `${repoUrl}/${build.branch}` : `${repoUrl}/tree/${build.branch}`;
+  let commitUrl = repoUrl + '/commit/' + build.changeIdInRepo;
+
+  let notificationsComponent =
+    !task.notifications || task.notifications.length === 0 ? null : (
+      <div className={classes.gap}>
+        <NotificationList notifications={task.notifications} />
+      </div>
+    );
+
+  let artifactsComponent =
+    !task.artifacts || task.artifacts.length === 0 ? null : (
+      <div className={classes.gap}>
+        <TaskArtifacts task={task} />
+      </div>
+    );
+
+  let reRunButton =
+    !hasWritePermissions(build.viewerPermission) || !isTaskFinalStatus(task.status) ? null : (
+      <Button variant="contained" onClick={() => rerun(task.id)} startIcon={<Refresh />}>
+        Re-Run
+      </Button>
+    );
+
+  let taskIsTriggerable = task.status === 'PAUSED';
+  let taskIsPreTriggerable = task.status === 'CREATED' && task.triggerType === 'MANUAL';
+  let triggerButton =
+    !hasWritePermissions(build.viewerPermission) || !taskIsTriggerable ? null : (
+      <Button variant="contained" onClick={() => trigger(task.id)} startIcon={<PlayCircleFilled />}>
+        Trigger
+      </Button>
+    );
+  let preTriggerButton =
+    !hasWritePermissions(build.viewerPermission) || !taskIsPreTriggerable ? null : (
+      <Button variant="contained" onClick={() => trigger(task.id)} startIcon={<PlayCircleFilled />}>
+        Pre-Trigger
+      </Button>
+    );
+
+  let abortButton =
+    isTaskFinalStatus(task.status) || !hasWritePermissions(build.viewerPermission) ? null : (
+      <Button variant="contained" onClick={() => abort(task.id)} startIcon={<Cancel />}>
+        Cancel
+      </Button>
+    );
+  let allOtherRuns: JSX.Element | [] = [];
+  if (task.allOtherRuns && task.allOtherRuns.length > 0) {
+    allOtherRuns = (
+      <Paper>
+        <Typography className={classes.title} variant="caption" gutterBottom display="block" align="center">
+          All Other Runs
+        </Typography>
+        <TaskList tasks={task.allOtherRuns} showCreation={true} />
+      </Paper>
+    );
+  }
+  let dependencies: JSX.Element | [] = [];
+  if (task.dependencies && task.dependencies.length > 0) {
+    dependencies = (
+      <Paper>
+        <Typography className={classes.title} variant="caption" gutterBottom display="block" align="center">
+          Dependencies
+        </Typography>
+        <TaskList tasks={task.dependencies} />
+      </Paper>
+    );
+  }
+
+  return (
+    <div>
+      <Head>
+        <title>{task.name} - Cirrus CI</title>
+      </Head>
+      <CirrusFavicon status={task.status} />
+      <Card>
+        <CardContent>
+          <div className={classes.wrapper}>
+            <RepositoryNameChip className={classes.chip} repository={repository} />
+            <BuildBranchNameChip className={classes.chip} build={build} />
+            <BuildChangeChip className={classes.chip} build={build} />
+            <TaskNameChip className={classes.chip} task={task} />
+          </div>
+          <div className={classes.wrapper}>
+            <TaskCreatedChip className={classes.chip} task={task} />
+            <TaskScheduledChip className={classes.chip} task={task} />
+            <TaskStatusChip className={classes.chip} task={task} />
+          </div>
+          <TaskCommandsProgress className={classes.progress} task={task} />
+          <div className={classes.gap} />
+          <Typography variant="h6" gutterBottom>
+            {build.changeMessageTitle} (commit{' '}
+            <a href={commitUrl} target="_blank" rel="noopener noreferrer">
+              {build.changeIdInRepo.substr(0, 6)}
+            </a>{' '}
+            on branch{' '}
+            <a href={branchUrl} target="_blank" rel="noopener noreferrer">
+              {build.branch}
+            </a>
+            )
+          </Typography>
+          <div className={classes.gap} />
+          <div className={classNames('card-body', classes.wrapper)}>
+            {task.automaticReRun ? (
+              <Chip className={classNames(classes.chip, classes.automaticReRun)} label="Automatic Re-Run" />
+            ) : null}
+            <TaskTransactionChip className={classes.chip} task={task} />
+            <TaskOptionalChip className={classes.chip} task={task} />
+            <TaskExperimentalChip className={classes.chip} task={task} />
+            <TaskTimeoutChip className={classes.chip} task={task} />
+            <TaskStatefulChip className={classes.chip} task={task} />
+            <TaskResourcesChip className={classes.chip} task={task} />
+            {task.labels.map(label => {
+              return <Chip key={label} className={classes.chip} label={shorten(label)} />;
+            })}
+          </div>
+          <ExecutionInfo task={task} />
+        </CardContent>
+        <CardActions className="d-flex flex-wrap justify-content-end">
+          <Button
+            variant="contained"
+            onClick={e => navigateBuild(context.router.history, e, task.buildId)}
+            startIcon={<ArrowBack />}
+          >
+            View All Tasks
+          </Button>
+          {abortButton}
+          {reRunButton}
+          {triggerButton}
+          {preTriggerButton}
+        </CardActions>
+      </Card>
+      {notificationsComponent}
+      {artifactsComponent}
+      {dependencies ? <div className={classes.gap} /> : null}
+      {dependencies}
+      {allOtherRuns ? <div className={classes.gap} /> : null}
+      {allOtherRuns}
+      <div className={classes.gap} />
+      <Paper elevation={2}>
+        <TaskCommandList task={task} />
+      </Paper>
+      <div className={classes.gap} />
+    </div>
+  );
 }
 
 export default createFragmentContainer(withStyles(styles)(withRouter(TaskDetails)), {

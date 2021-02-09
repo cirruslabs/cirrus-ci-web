@@ -1,5 +1,5 @@
 import { isTaskFinalStatus } from '../../utils/status';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTaskStatusColorMapping } from '../../utils/colors';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
@@ -16,11 +16,18 @@ interface Props {
 
 function TaskCommandsProgress(props: Props) {
   let { task } = props;
-  let totalDuration = task.statusDurations.reduce((sum, statusDuration) => sum + statusDuration.durationInSeconds, 0);
-  if (!isTaskFinalStatus(task.status)) {
-    totalDuration = (Date.now() - task.creationTimestamp) / 1000;
-    setTimeout(() => this.forceUpdate(), 1000);
-  }
+  let [totalDuration, setTotalDuration] = useState(
+    task.statusDurations.reduce((sum, statusDuration) => sum + statusDuration.durationInSeconds, 0),
+  );
+
+  useEffect(() => {
+    if (!isTaskFinalStatus(task.status)) {
+      const intervalId = setInterval(() => {
+        setTotalDuration((Date.now() - task.creationTimestamp) / 1000);
+      }, 1000);
+      return () => clearInterval(intervalId);
+    }
+  }, [task.status]);
 
   let bars = [];
 

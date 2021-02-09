@@ -7,20 +7,18 @@ import { useTheme } from '@material-ui/core';
 
 export function useBuildStatusColor(status: BuildStatus) {
   const palette = useTheme().palette;
-  switch (status) {
-    case 'CREATED':
-      return palette.info.main;
-    case 'EXECUTING':
-      return palette.warning.light;
-    case 'COMPLETED':
-      return palette.success.main;
-    case 'FAILED':
-      return palette.error.main;
-    case 'ABORTED':
-      return palette.error.light;
-    default:
-      return palette.warning.main;
-  }
+  return useBuildStatusColorMapping()[status] || palette.warning.main;
+}
+
+export function useBuildStatusColorMapping() {
+  const palette = useTheme().palette;
+  return {
+    CREATED: palette.info.main,
+    EXECUTING: palette.warning.light,
+    COMPLETED: palette.success.main,
+    FAILED: palette.error.main,
+    ABORTED: palette.error.light,
+  };
 }
 
 export function useTaskStatusColor(status: TaskStatus) {

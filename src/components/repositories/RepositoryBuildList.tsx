@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -57,142 +56,85 @@ let styles = createStyles({
   },
 });
 
-interface Props extends RouteComponentProps, WithStyles<typeof styles> {
+interface Props extends WithStyles<typeof styles> {
   branch?: string;
   repository: RepositoryBuildList_repository;
 }
 
-interface State {
-  selectedBuildId?: string;
-  openCreateDialog: boolean;
-}
+function RepositoryBuildList(props: Props) {
+  let history = useHistory();
+  let [selectedBuildId, setSelectedBuildId] = useState(null);
+  let [openCreateDialog, setOpenCreateDialog] = useState(false);
+  let { repository, classes } = props;
+  let builds = repository.builds.edges.map(edge => edge.node, styles);
 
-class RepositoryBuildList extends React.Component<Props, State> {
-  static contextTypes = {
-    router: PropTypes.object,
-    location: PropTypes.object,
-  };
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedBuildId: null,
-      openCreateDialog: false,
-    };
-  }
-
-  render() {
-    let { repository, classes } = this.props;
-    let builds = repository.builds.edges.map(edge => edge.node, styles);
-
-    let repositorySettings = null;
-    let repositoryAction = null;
-    if (repository.viewerPermission === 'WRITE' || repository.viewerPermission === 'ADMIN') {
-      repositorySettings = (
-        <Tooltip title="Repository Settings">
-          <a href={'/settings/repository/' + repository.id}>
-            <IconButton>
-              <Settings />
-            </IconButton>
-          </a>
-        </Tooltip>
-      );
-      repositoryAction = (
-        <>
-          <div key="create-build-gap" className={classes.horizontalGap} />
-          <Tooltip title="Create Build">
-            <IconButton
-              key="create-build-button"
-              onClick={() => this.setState(prevState => ({ ...prevState, openCreateDialog: true }))}
-            >
-              <AddCircle />
-            </IconButton>
-          </Tooltip>
-        </>
-      );
-    }
-
-    let repositoryMetrics = (
-      <a href={'/metrics/repository/' + repository.owner + '/' + repository.name}>
-        <Tooltip title="Repository Metrics">
+  let repositorySettings = null;
+  let repositoryAction = null;
+  if (repository.viewerPermission === 'WRITE' || repository.viewerPermission === 'ADMIN') {
+    repositorySettings = (
+      <Tooltip title="Repository Settings">
+        <a href={'/settings/repository/' + repository.id}>
           <IconButton>
-            <Timeline />
-          </IconButton>
-        </Tooltip>
-      </a>
-    );
-
-    const repositoryLinkButton = (
-      <Tooltip title="Open on GitHub">
-        <a href={createLinkToRepository(repository, this.props.branch)} target="_blank" rel="noopener noreferrer">
-          <IconButton>
-            <GitHubIcon />
+            <Settings />
           </IconButton>
         </a>
       </Tooltip>
     );
-
-    let buildsChart = null;
-
-    if (this.props.branch && builds.length > 5) {
-      buildsChart = (
-        <Paper elevation={1} className={classes.buildsChart}>
-          <BuildDurationsChart
-            builds={builds.slice().reverse()}
-            selectedBuildId={this.state.selectedBuildId}
-            onSelectBuildId={buildId => this.setState({ selectedBuildId: buildId })}
-          />
-        </Paper>
-      );
-    }
-
-    return (
-      <div>
-        <Head>
-          <title>
-            {repository.owner}/{repository.name} - Cirrus CI
-          </title>
-        </Head>
-        <Paper elevation={1}>
-          <Toolbar className="justify-content-between">
-            <div className={classes.wrapper}>
-              <Typography className="align-self-center" variant="h6" color="inherit">
-                {repository.owner + '/' + repository.name}
-              </Typography>
-              {repositoryAction}
-            </div>
-            <div>
-              {repositoryMetrics}
-              {repositoryLinkButton}
-              {repositorySettings}
-            </div>
-          </Toolbar>
-          <Table style={{ tableLayout: 'auto' }}>
-            <TableBody>{builds.map(build => this.buildItem(build))}</TableBody>
-          </Table>
-        </Paper>
-        {this.state.openCreateDialog && (
-          <CreateBuildDialog
-            repository={repository}
-            open={this.state.openCreateDialog}
-            onClose={() => this.setState(prevState => ({ ...prevState, openCreateDialog: false }))}
-          />
-        )}
-        {buildsChart}
-      </div>
+    repositoryAction = (
+      <>
+        <div key="create-build-gap" className={classes.horizontalGap} />
+        <Tooltip title="Create Build">
+          <IconButton key="create-build-button" onClick={() => setOpenCreateDialog(true)}>
+            <AddCircle />
+          </IconButton>
+        </Tooltip>
+      </>
     );
   }
 
-  buildItem(build: NodeOfConnection<RepositoryBuildList_repository['builds']>) {
-    let { classes } = this.props;
-    let isSelectedBuild = this.state.selectedBuildId === build.id;
+  let repositoryMetrics = (
+    <a href={'/metrics/repository/' + repository.owner + '/' + repository.name}>
+      <Tooltip title="Repository Metrics">
+        <IconButton>
+          <Timeline />
+        </IconButton>
+      </Tooltip>
+    </a>
+  );
+
+  const repositoryLinkButton = (
+    <Tooltip title="Open on GitHub">
+      <a href={createLinkToRepository(repository, props.branch)} target="_blank" rel="noopener noreferrer">
+        <IconButton>
+          <GitHubIcon />
+        </IconButton>
+      </a>
+    </Tooltip>
+  );
+
+  let buildsChart = null;
+
+  if (props.branch && builds.length > 5) {
+    buildsChart = (
+      <Paper elevation={1} className={classes.buildsChart}>
+        <BuildDurationsChart
+          builds={builds.slice().reverse()}
+          selectedBuildId={selectedBuildId}
+          onSelectBuildId={buildId => setSelectedBuildId(buildId)}
+        />
+      </Paper>
+    );
+  }
+
+  function buildItem(build: NodeOfConnection<RepositoryBuildList_repository['builds']>) {
+    let isSelectedBuild = selectedBuildId === build.id;
     return (
       <TableRow
         key={build.id}
         hover={true}
         selected={isSelectedBuild}
-        onMouseOver={() => !isSelectedBuild && this.setState({ selectedBuildId: build.id })}
-        onClick={e => navigateBuild(this.context.router.history, e, build.id)}
+        onMouseOver={() => !isSelectedBuild && setSelectedBuildId(build.id)}
+        onClick={e => navigateBuild(history, e, build.id)}
         style={{ cursor: 'pointer' }}
       >
         <TableCell className={classes.row}>
@@ -215,9 +157,41 @@ class RepositoryBuildList extends React.Component<Props, State> {
       </TableRow>
     );
   }
+
+  return (
+    <div>
+      <Head>
+        <title>
+          {repository.owner}/{repository.name} - Cirrus CI
+        </title>
+      </Head>
+      <Paper elevation={1}>
+        <Toolbar className="justify-content-between">
+          <div className={classes.wrapper}>
+            <Typography className="align-self-center" variant="h6" color="inherit">
+              {repository.owner + '/' + repository.name}
+            </Typography>
+            {repositoryAction}
+          </div>
+          <div>
+            {repositoryMetrics}
+            {repositoryLinkButton}
+            {repositorySettings}
+          </div>
+        </Toolbar>
+        <Table style={{ tableLayout: 'auto' }}>
+          <TableBody>{builds.map(build => buildItem(build))}</TableBody>
+        </Table>
+      </Paper>
+      {openCreateDialog && (
+        <CreateBuildDialog repository={repository} open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} />
+      )}
+      {buildsChart}
+    </div>
+  );
 }
 
-export default createFragmentContainer(withStyles(styles)(withRouter(RepositoryBuildList)), {
+export default createFragmentContainer(withStyles(styles)(RepositoryBuildList), {
   repository: graphql`
     fragment RepositoryBuildList_repository on Repository @argumentDefinitions(branch: { type: "String" }) {
       id

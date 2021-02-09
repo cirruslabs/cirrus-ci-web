@@ -7,10 +7,10 @@ import TimerIcon from '@material-ui/icons/Timer';
 import { graphql } from 'babel-plugin-relay/macro';
 import { cirrusColorsState } from '../../cirrusTheme';
 import { formatDuration } from '../../utils/time';
-import { withTheme } from '@material-ui/core/styles';
 import { TaskTimeoutChip_task } from './__generated__/TaskTimeoutChip_task.graphql';
 import { createFragmentContainer } from 'react-relay';
 import { useRecoilValue } from 'recoil';
+import { useTheme } from '@material-ui/core';
 
 interface Props {
   task: TaskTimeoutChip_task;
@@ -19,6 +19,7 @@ interface Props {
 
 function TaskTimeoutChip(props: Props) {
   const cirrusColors = useRecoilValue(cirrusColorsState);
+  let theme = useTheme();
 
   let { timeoutInSeconds } = props.task;
   let defaultTimeout = timeoutInSeconds === 3600; // 1 hour
@@ -27,11 +28,11 @@ function TaskTimeoutChip(props: Props) {
   return (
     <Tooltip title="Custom Timeout">
       <Chip
-        className={this.props.className}
+        className={props.className}
         label={formatDuration(timeoutInSeconds)}
         avatar={
           <Avatar style={{ backgroundColor: cirrusColors.success }}>
-            <TimerIcon style={{ color: this.props.theme.palette.primary.contrastText }} />
+            <TimerIcon style={{ color: theme.palette.primary.contrastText }} />
           </Avatar>
         }
       />
@@ -39,7 +40,7 @@ function TaskTimeoutChip(props: Props) {
   );
 }
 
-export default createFragmentContainer(withTheme(TaskTimeoutChip), {
+export default createFragmentContainer(TaskTimeoutChip, {
   task: graphql`
     fragment TaskTimeoutChip_task on Task {
       timeoutInSeconds

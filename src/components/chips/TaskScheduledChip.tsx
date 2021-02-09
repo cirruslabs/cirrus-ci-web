@@ -40,7 +40,7 @@ function TaskScheduledChip(props: Props) {
   return <div />;
 }
 
-export default createFragmentContainer(withTheme(TaskScheduledChip), {
+export default createFragmentContainer(TaskScheduledChip, {
   task: graphql`
     fragment TaskScheduledChip_task on Task {
       status

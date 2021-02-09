@@ -35,7 +35,7 @@ function TaskStatefulChip(props: Props) {
   );
 }
 
-export default createFragmentContainer(withTheme(TaskStatefulChip), {
+export default createFragmentContainer(TaskStatefulChip, {
   task: graphql`
     fragment TaskStatefulChip_task on Task {
       stateful

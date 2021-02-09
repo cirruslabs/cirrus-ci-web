@@ -9,7 +9,7 @@ import { useTaskStatusColor } from '../../utils/colors';
 import { taskStatusIconName } from '../../utils/status';
 import { roundAndPresentDuration } from '../../utils/time';
 import { TaskCreatedChip_task } from './__generated__/TaskCreatedChip_task.graphql';
-import { WithTheme, withTheme } from '@material-ui/core/styles';
+import { WithTheme } from '@material-ui/core/styles';
 
 interface Props extends WithTheme {
   task: TaskCreatedChip_task;
@@ -52,7 +52,7 @@ let TaskCreatedChip = (props: Props) => {
   );
 };
 
-export default createFragmentContainer(withTheme(TaskCreatedChip), {
+export default createFragmentContainer(TaskCreatedChip, {
   task: graphql`
     fragment TaskCreatedChip_task on Task {
       creationTimestamp

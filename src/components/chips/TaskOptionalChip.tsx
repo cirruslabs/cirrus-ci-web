@@ -37,7 +37,7 @@ function TaskOptionalChip(props: Props) {
   );
 }
 
-export default createFragmentContainer(withTheme(TaskOptionalChip), {
+export default createFragmentContainer(TaskOptionalChip, {
   task: graphql`
     fragment TaskOptionalChip_task on Task {
       optional

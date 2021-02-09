@@ -7,7 +7,7 @@ import CasinoIcon from '@material-ui/icons/Casino';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { cirrusColorsState } from '../../cirrusTheme';
-import { WithTheme, withTheme } from '@material-ui/core/styles';
+import { WithTheme } from '@material-ui/core/styles';
 import { TaskExperimentalChip_task } from './__generated__/TaskExperimentalChip_task.graphql';
 import { useRecoilValue } from 'recoil';
 
@@ -36,7 +36,7 @@ let TaskExperimentalChip = (props: Props) => {
   );
 };
 
-export default createFragmentContainer(withTheme(TaskExperimentalChip), {
+export default createFragmentContainer(TaskExperimentalChip, {
   task: graphql`
     fragment TaskExperimentalChip_task on Task {
       experimental

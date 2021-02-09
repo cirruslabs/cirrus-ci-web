@@ -39,7 +39,7 @@ function TaskStatusChip(props: Props) {
   return chip;
 }
 
-export default createFragmentContainer(withTheme(TaskStatusChip), {
+export default createFragmentContainer(TaskStatusChip, {
   task: graphql`
     fragment TaskStatusChip_task on Task {
       status

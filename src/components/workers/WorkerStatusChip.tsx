@@ -47,7 +47,7 @@ let WorkerStatusChip = (props: Props) => {
   );
 };
 
-export default createFragmentContainer(withTheme(WorkerStatusChip), {
+export default createFragmentContainer(WorkerStatusChip, {
   worker: graphql`
     fragment WorkerStatusChip_worker on PersistentWorker {
       os

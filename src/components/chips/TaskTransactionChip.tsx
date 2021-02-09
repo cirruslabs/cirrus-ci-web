@@ -54,7 +54,7 @@ function TaskTransactionChip(props: Props) {
   );
 }
 
-export default createFragmentContainer(withTheme(TaskTransactionChip), {
+export default createFragmentContainer(TaskTransactionChip, {
   task: graphql`
     fragment TaskTransactionChip_task on Task {
       status

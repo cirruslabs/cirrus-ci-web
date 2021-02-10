@@ -4,10 +4,12 @@ import React from 'react';
 import { withStyles, WithStyles } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
-import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip } from 'recharts';
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, YAxis } from 'recharts';
 import { TaskExecutionInfo_task } from './__generated__/TaskExecutionInfo_task.graphql';
 import { formatDuration } from '../../utils/time';
 import { useTheme } from '@material-ui/core';
+import { useRecoilState } from 'recoil';
+import { prefersDarkModeState } from '../../cirrusTheme';
 
 let styles = {
   chip: {
@@ -23,6 +25,7 @@ interface Props extends WithStyles<typeof styles> {
 
 function TaskExecutionInfo(props: Props) {
   let theme = useTheme();
+  const [prefersDarkMode] = useRecoilState(prefersDarkModeState);
   let { task, classes } = props;
 
   if (!task.executionInfo) return null;
@@ -47,15 +50,18 @@ function TaskExecutionInfo(props: Props) {
         </Typography>
         <ResponsiveContainer height={200} width="100%">
           <AreaChart data={chartPoints}>
-            <CartesianGrid stroke={theme.palette.getContrastText(theme.palette.info.dark)} />
-            <Area type="monotone" dataKey="Requested CPUs" stroke={null} fill={theme.palette.info.dark} />
+            <YAxis type="number" domain={[0, task.instanceResources.cpu]} hide />
+            <CartesianGrid stroke={null} fill={prefersDarkMode ? theme.palette.info.dark : theme.palette.info.light} />
             <Area
               type="monotone"
               dataKey="Used CPUs"
               stroke={theme.palette.success.dark}
-              fill={theme.palette.success.light}
+              fill={prefersDarkMode ? theme.palette.success.main : theme.palette.success.light}
             />
-            <Tooltip labelFormatter={index => `Time: ${chartPoints[index].TimestampLabel}`} />
+            <Tooltip
+              labelFormatter={index => `Time: ${chartPoints[index].TimestampLabel}`}
+              contentStyle={{ backgroundColor: theme.palette.background.paper }}
+            />
           </AreaChart>
         </ResponsiveContainer>
       </div>
@@ -91,15 +97,22 @@ function TaskExecutionInfo(props: Props) {
         </Typography>
         <ResponsiveContainer height={200} width="100%">
           <AreaChart data={chartPoints}>
-            <CartesianGrid stroke={theme.palette.getContrastText(theme.palette.info.dark)} />
-            <Area type="monotone" dataKey="Requested Memory" stroke={null} fill={theme.palette.info.dark} />
+            <YAxis
+              type="number"
+              domain={[0, memoryUnit === 'Gb' ? task.instanceResources.memory / 1024 : task.instanceResources.memory]}
+              hide
+            />
+            <CartesianGrid stroke={null} fill={prefersDarkMode ? theme.palette.info.dark : theme.palette.info.light} />
             <Area
               type="monotone"
               dataKey="Used Memory"
               stroke={theme.palette.success.dark}
-              fill={theme.palette.success.light}
+              fill={prefersDarkMode ? theme.palette.success.main : theme.palette.success.light}
             />
-            <Tooltip labelFormatter={index => `Time: ${chartPoints[index].TimestampLabel}`} />
+            <Tooltip
+              labelFormatter={index => `Time: ${chartPoints[index].TimestampLabel}`}
+              contentStyle={{ backgroundColor: theme.palette.background.paper }}
+            />
           </AreaChart>
         </ResponsiveContainer>
       </div>

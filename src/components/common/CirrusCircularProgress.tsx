@@ -1,9 +1,8 @@
 import React from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { cirrusColorsState } from '../../cirrusTheme';
-import { useRecoilValue } from 'recoil';
+import { useTheme } from '@material-ui/core';
 
 export default () => {
-  const cirrusColors = useRecoilValue(cirrusColorsState);
-  return <CircularProgress style={{ color: cirrusColors.success }} />;
+  let theme = useTheme();
+  return <CircularProgress style={{ color: theme.palette.info.main }} />;
 };

@@ -38,7 +38,7 @@ let WorkerStatusChip = (props: Props) => {
         className={props.className}
         label={worker.arch}
         avatar={
-          <Avatar style={{ backgroundColor: offline ? cirrusColors.warning : cirrusColors.success }}>
+          <Avatar style={{ backgroundColor: offline ? theme.palette.warning.main : theme.palette.info.main }}>
             <PlatformIcon platform={worker.os} style={{ color: theme.palette.primary.contrastText }} />
           </Avatar>
         }

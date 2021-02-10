@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
@@ -35,6 +35,7 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import { DeletePersistentWorkerPoolInput } from './__generated__/PersistentWorkerPoolsListDeleteMutation.graphql';
 import PoolVisibilityIcon from '../icons/PoolVisibilityIcon';
+import { useHistory } from 'react-router-dom';
 
 interface PoolsListState {
   openDialog: boolean;
@@ -57,21 +58,11 @@ const deletePoolMutation = graphql`
   }
 `;
 
-class PersistentWorkerPoolsList extends React.Component<PoolsListProps, PoolsListState> {
-  static contextTypes = {
-    router: PropTypes.object,
-  };
+function PersistentWorkerPoolsList(props: PoolsListProps) {
+  let history = useHistory();
+  let [openDialog, setOpenDialog] = useState(false);
 
-  state = { openDialog: false };
-
-  toggleDialog = () => {
-    this.setState(prevState => ({
-      ...prevState,
-      openDialog: !prevState.openDialog,
-    }));
-  };
-
-  deletePool = poolId => {
+  let deletePool = poolId => {
     const input: DeletePersistentWorkerPoolInput = {
       clientMutationId: 'delete-persistent-worker-pool-' + poolId,
       poolId: poolId,
@@ -88,46 +79,43 @@ class PersistentWorkerPoolsList extends React.Component<PoolsListProps, PoolsLis
       onError: err => console.log(err),
     });
   };
-
-  render() {
-    return (
-      <Card>
-        <CardHeader title="Persistent Worker Pools (Beta)" />
-        <CardContent>
-          <List>
-            {this.props.pools.map(
-              pool =>
-                pool && (
-                  <ListItem key={pool.id} button onClick={() => navigate(this.context.router, '', '/pool/' + pool.id)}>
-                    <ListItemAvatar>
-                      <Avatar>
-                        <PoolVisibilityIcon enabledForPublic={pool.enabledForPublic} />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary={pool.name} />
-                    <ListItemSecondaryAction>
-                      <IconButton edge="end" aria-label="delete" onClick={() => this.deletePool(pool.id)}>
-                        <DeleteIcon />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                ),
-            )}
-          </List>
-        </CardContent>
-        <CardActions>
-          <CreateNewPersistentWorkerPoolDialog
-            ownerId={this.props.ownerId}
-            open={this.state.openDialog}
-            onClose={this.toggleDialog}
-          />
-          <Button variant="contained" onClick={this.toggleDialog}>
-            Create New
-          </Button>
-        </CardActions>
-      </Card>
-    );
-  }
+  return (
+    <Card>
+      <CardHeader title="Persistent Worker Pools (Beta)" />
+      <CardContent>
+        <List>
+          {props.pools.map(
+            pool =>
+              pool && (
+                <ListItem key={pool.id} button onClick={() => navigate(history, '', '/pool/' + pool.id)}>
+                  <ListItemAvatar>
+                    <Avatar>
+                      <PoolVisibilityIcon enabledForPublic={pool.enabledForPublic} />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary={pool.name} />
+                  <ListItemSecondaryAction>
+                    <IconButton edge="end" aria-label="delete" onClick={() => deletePool(pool.id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              ),
+          )}
+        </List>
+      </CardContent>
+      <CardActions>
+        <CreateNewPersistentWorkerPoolDialog
+          ownerId={props.ownerId}
+          open={openDialog}
+          onClose={() => setOpenDialog(!openDialog)}
+        />
+        <Button variant="contained" onClick={() => setOpenDialog(!openDialog)}>
+          Create New
+        </Button>
+      </CardActions>
+    </Card>
+  );
 }
 
 interface DialogProps {
@@ -152,96 +140,66 @@ const createPoolMutation = graphql`
   }
 `;
 
-class CreateNewPersistentWorkerPoolDialog extends React.Component<DialogProps, DialogState> {
-  static contextTypes = {
-    router: PropTypes.object,
-  };
+function CreateNewPersistentWorkerPoolDialog(props: DialogProps) {
+  let history = useHistory();
+  let [name, setName] = useState('');
+  let [enabledForPublic, setEnabledForPublic] = useState(true);
 
-  constructor(props: DialogProps) {
-    super(props);
-    this.state = {
-      name: '',
-      enabledForPublic: true,
-    };
-  }
-
-  changeField = field => {
-    return event => {
-      let value = event.target.value;
-      this.setState(prevState => ({
-        ...prevState,
-        [field]: value,
-      }));
-    };
-  };
-
-  checkField = field => {
-    return event => {
-      let value = event.target.checked;
-      this.setState(prevState => ({
-        ...prevState,
-        [field]: value,
-      }));
-    };
-  };
-
-  createPool = () => {
+  function createPool() {
     const input: CreatePersistentWorkerPoolInput = {
-      clientMutationId: 'create-persistent-worker-pool-' + this.props.ownerId,
-      ownerId: this.props.ownerId,
-      name: this.state.name,
-      enabledForPublic: this.state.enabledForPublic,
+      clientMutationId: 'create-persistent-worker-pool-' + props.ownerId,
+      ownerId: props.ownerId,
+      name: name,
+      enabledForPublic: enabledForPublic,
     };
     commitMutation(environment, {
       mutation: createPoolMutation,
       variables: { input: input },
       onCompleted: (response: PersistentWorkerPoolsListCreateMutationResponse) => {
-        navigate(this.context.router, '', '/pool/' + response.createPersistentWorkerPool.pool.id);
-        this.props.onClose();
+        navigate(history, '', '/pool/' + response.createPersistentWorkerPool.pool.id);
+        props.onClose();
       },
       onError: err => console.log(err),
     });
-  };
-
-  render() {
-    return (
-      <Dialog open={this.props.open}>
-        <DialogTitle>Create Persistent Worker Pool</DialogTitle>
-        <DialogContent>
-          <FormControl fullWidth>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={this.state.enabledForPublic}
-                  onChange={this.checkField('enabledForPublic')}
-                  color="primary"
-                />
-              }
-              label="Enabled for public"
-            />
-          </FormControl>
-          <Typography variant="subtitle1">
-            <p>
-              Enabling worker pool for public will allow any public repository of the organization to schedule tasks on
-              this pool. Please use with caution and think of security risks involved in this decision!
-            </p>
-          </Typography>
-          <FormControl fullWidth>
-            <InputLabel htmlFor="name">Name</InputLabel>
-            <Input id="name" onChange={this.changeField('name')} />
-          </FormControl>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={this.createPool} disabled={this.state.name === ''} color="primary" variant="contained">
-            Create
-          </Button>
-          <Button onClick={this.props.onClose} color="secondary" variant="contained">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
-    );
   }
+
+  return (
+    <Dialog open={props.open}>
+      <DialogTitle>Create Persistent Worker Pool</DialogTitle>
+      <DialogContent>
+        <FormControl fullWidth>
+          <FormControlLabel
+            control={
+              <Switch checked={enabledForPublic} onChange={event => setEnabledForPublic(event.target.checked)} />
+            }
+            label="Enabled for public"
+          />
+        </FormControl>
+        <Typography variant="subtitle1">
+          <p>
+            Enabling worker pool for public will allow any public repository of the organization to schedule tasks on
+            this pool. Please use with caution and think of security risks involved in this decision!
+          </p>
+        </Typography>
+        <FormControl fullWidth>
+          <InputLabel htmlFor="name">Name</InputLabel>
+          <Input id="name" onChange={event => setName(event.target.value)} />
+        </FormControl>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={createPool} disabled={name === ''} variant="contained">
+          Create
+        </Button>
+        <Button onClick={props.onClose} color="secondary" variant="contained">
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
 }
+
+CreateNewPersistentWorkerPoolDialog.contextTypes = {
+  router: PropTypes.object,
+};
 
 export default PersistentWorkerPoolsList;

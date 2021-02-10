@@ -5,18 +5,20 @@ import Chip from '@material-ui/core/Chip';
 
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { cirrusColors } from '../../cirrusTheme';
-import { WithTheme, withTheme } from '@material-ui/core/styles';
+import { cirrusColorsState } from '../../cirrusTheme';
 import { WorkerStatusChip_worker } from './__generated__/WorkerStatusChip_worker.graphql';
-import { Tooltip } from '@material-ui/core';
+import { Tooltip, useTheme } from '@material-ui/core';
 import PlatformIcon from '../icons/PlatformIcon';
+import { useRecoilValue } from 'recoil';
 
-interface Props extends WithTheme {
+interface Props {
   className?: string;
   worker: WorkerStatusChip_worker;
 }
 
 let WorkerStatusChip = (props: Props) => {
+  let theme = useTheme();
+  const cirrusColors = useRecoilValue(cirrusColorsState);
   const { worker } = props;
   let info = worker.info;
 
@@ -37,7 +39,7 @@ let WorkerStatusChip = (props: Props) => {
         label={worker.arch}
         avatar={
           <Avatar style={{ backgroundColor: offline ? cirrusColors.warning : cirrusColors.success }}>
-            <PlatformIcon platform={worker.os} style={{ color: props.theme.palette.background.paper }} />
+            <PlatformIcon platform={worker.os} style={{ color: theme.palette.primary.contrastText }} />
           </Avatar>
         }
       />
@@ -45,7 +47,7 @@ let WorkerStatusChip = (props: Props) => {
   );
 };
 
-export default createFragmentContainer(withTheme(WorkerStatusChip), {
+export default createFragmentContainer(WorkerStatusChip, {
   worker: graphql`
     fragment WorkerStatusChip_worker on PersistentWorker {
       os

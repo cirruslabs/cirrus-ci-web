@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import environment from '../../createRelayEnvironment';
 import { commitMutation, createPaginationContainer, RelayPaginationProp } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
@@ -51,88 +51,18 @@ interface Props extends RouteComponentProps, WithStyles<typeof styles> {
   relay: RelayPaginationProp;
 }
 
-interface State {
-  expanded: boolean;
-  initialURL: string;
-  inputValue: string;
-}
+function WebHookSettings(props: Props) {
+  let [expanded, setExpanded] = useState(false);
+  let [initialURL, setInitialURL] = useState(props.info.webhookSettings.webhookURL || '');
+  let [inputValue, setInputValue] = useState(props.info.webhookSettings.webhookURL || '');
+  let { info, classes } = props;
 
-class WebHookSettings extends React.Component<Props, State> {
-  constructor(props) {
-    super(props);
-    let initialURL = props.info.webhookSettings.webhookURL || '';
-    this.state = {
-      expanded: false,
-      initialURL: initialURL,
-      inputValue: initialURL,
-    };
-  }
-
-  handleChange = event => {
-    let inputValue = event.target.value;
-    this.setState(prevState => ({
-      ...prevState,
-      inputValue: inputValue,
-    }));
-  };
-
-  handleExpandClick = () => {
-    this.setState(prevState => ({
-      ...prevState,
-      expanded: !prevState.expanded,
-    }));
-  };
-
-  render() {
-    let { info, classes } = this.props;
-    return (
-      <Card>
-        <CardHeader title="Webhook Settings" />
-        <CardContent>
-          <FormControl style={{ width: '100%' }}>
-            <TextField
-              name="webhookURL"
-              placeholder="Enter webhook URL"
-              value={this.state.inputValue}
-              onChange={this.handleChange}
-              fullWidth={true}
-            />
-          </FormControl>
-        </CardContent>
-        <CardActions disableSpacing>
-          <Button
-            variant="contained"
-            disabled={this.state.inputValue === this.state.initialURL}
-            onClick={() => this.saveWebHookURL()}
-          >
-            Save
-          </Button>
-          <IconButton
-            className={classNames(classes.expand, {
-              [classes.expandOpen]: this.state.expanded,
-            })}
-            onClick={this.handleExpandClick}
-            aria-expanded={this.state.expanded}
-            aria-label="Show Deliveries"
-          >
-            <ExpandMoreIcon />
-          </IconButton>
-        </CardActions>
-        <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-          <CardContent>
-            <DeliveriesList deliveries={info.webhookDeliveries} />
-          </CardContent>
-        </Collapse>
-      </Card>
-    );
-  }
-
-  saveWebHookURL() {
-    let webhookURL = this.state.inputValue;
+  function saveWebHookURL() {
+    let webhookURL = inputValue;
     const variables = {
       input: {
         clientMutationId: webhookURL,
-        accountId: this.props.info.id,
+        accountId: props.info.id,
         webhookURL: webhookURL,
       },
     };
@@ -143,15 +73,49 @@ class WebHookSettings extends React.Component<Props, State> {
       onCompleted: (response: WebHookSettingsMutationResponse) => {
         let settings = response.saveWebHookSettings.info;
         let savedWebhookURL = settings.webhookSettings.webhookURL;
-        this.setState(prevState => ({
-          ...prevState,
-          initialURL: savedWebhookURL,
-          inputValue: savedWebhookURL,
-        }));
+        setInitialURL(savedWebhookURL);
+        setInputValue(savedWebhookURL);
       },
       onError: err => console.error(err),
     });
   }
+
+  return (
+    <Card>
+      <CardHeader title="Webhook Settings" />
+      <CardContent>
+        <FormControl style={{ width: '100%' }}>
+          <TextField
+            name="webhookURL"
+            placeholder="Enter webhook URL"
+            value={inputValue}
+            onChange={event => setInputValue(event.target.value)}
+            fullWidth={true}
+          />
+        </FormControl>
+      </CardContent>
+      <CardActions disableSpacing>
+        <Button variant="contained" disabled={inputValue === initialURL} onClick={saveWebHookURL}>
+          Save
+        </Button>
+        <IconButton
+          className={classNames(classes.expand, {
+            [classes.expandOpen]: expanded,
+          })}
+          onClick={() => setExpanded(!expanded)}
+          aria-expanded={expanded}
+          aria-label="Show Deliveries"
+        >
+          <ExpandMoreIcon />
+        </IconButton>
+      </CardActions>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent>
+          <DeliveriesList deliveries={info.webhookDeliveries} />
+        </CardContent>
+      </Collapse>
+    </Card>
+  );
 }
 
 export default createPaginationContainer(

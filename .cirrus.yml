@@ -1,5 +1,5 @@
 container:
-  image: node:14
+  image: node:15
   memory: 6G
 
 task:

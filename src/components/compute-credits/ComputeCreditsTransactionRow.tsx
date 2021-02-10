@@ -1,5 +1,5 @@
 import React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
@@ -8,7 +8,6 @@ import TaskNameChip from '../chips/TaskNameChip';
 import TaskDurationChip from '../chips/TaskDurationChip';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import PropTypes from 'prop-types';
 import { withStyles, WithStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import RepositoryNameChip from '../chips/RepositoryNameChip';
@@ -29,43 +28,38 @@ const styles = {
   },
 };
 
-interface Props extends WithStyles<typeof styles>, RouteComponentProps {
+interface Props extends WithStyles<typeof styles> {
   transaction: ComputeCreditsTransactionRow_transaction;
 }
 
-class ComputeCreditsTransactionRow extends React.Component<Props> {
-  static contextTypes = {
-    router: PropTypes.object,
-  };
-
-  render() {
-    let { transaction, classes } = this.props;
-    let { task, repository } = transaction;
-    return (
-      <TableRow onClick={e => navigateTask(this.context.router, e, task.id)} hover={true} style={{ cursor: 'pointer' }}>
-        <TableCell className={classNames(classes.cell)}>
-          <TaskNameChip task={task} className={classes.chip} />
-          <TaskCreatedChip task={task} className={classes.chip} />
-        </TableCell>
-        <TableCell className={classes.cell}>
-          <RepositoryNameChip repository={repository} className={classes.chip} />
-        </TableCell>
-        <TableCell className={classes.cell}>
-          <TaskDurationChip task={task} className={classes.chip} />
-        </TableCell>
-        <TableCell className={classes.cell}>
-          <Chip
-            label={transaction.creditsAmount}
-            avatar={<AttachMoneyIcon />}
-            className={classNames(classes.chip, 'pull-right')}
-          />
-        </TableCell>
-      </TableRow>
-    );
-  }
+function ComputeCreditsTransactionRow(props: Props) {
+  let history = useHistory();
+  let { transaction, classes } = props;
+  let { task, repository } = transaction;
+  return (
+    <TableRow onClick={e => navigateTask(history, e, task.id)} hover={true} style={{ cursor: 'pointer' }}>
+      <TableCell className={classNames(classes.cell)}>
+        <TaskNameChip task={task} className={classes.chip} />
+        <TaskCreatedChip task={task} className={classes.chip} />
+      </TableCell>
+      <TableCell className={classes.cell}>
+        <RepositoryNameChip repository={repository} className={classes.chip} />
+      </TableCell>
+      <TableCell className={classes.cell}>
+        <TaskDurationChip task={task} className={classes.chip} />
+      </TableCell>
+      <TableCell className={classes.cell}>
+        <Chip
+          label={transaction.creditsAmount}
+          avatar={<AttachMoneyIcon />}
+          className={classNames(classes.chip, 'pull-right')}
+        />
+      </TableCell>
+    </TableRow>
+  );
 }
 
-export default createFragmentContainer(withStyles(styles)(withRouter(ComputeCreditsTransactionRow)), {
+export default createFragmentContainer(withStyles(styles)(ComputeCreditsTransactionRow), {
   transaction: graphql`
     fragment ComputeCreditsTransactionRow_transaction on AccountTransaction {
       timestamp

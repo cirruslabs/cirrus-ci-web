@@ -15,7 +15,7 @@ const styles = theme =>
       backgroundColor: theme.palette.secondary.main,
     },
     avatarIcon: {
-      color: theme.palette.background.paper,
+      color: theme.palette.primary.contrastText,
     },
   });
 
@@ -24,29 +24,27 @@ interface Props extends WithStyles<typeof styles> {
   className?: string;
 }
 
-class TaskResourcesChip extends React.Component<Props> {
-  render() {
-    let { task, className } = this.props;
-    let resources = task.instanceResources;
-    if (!resources) {
-      return null;
-    }
-    let cpuPart = resources.cpu === 1.0 ? `1 CPU` : `${resources.cpu} CPUs`;
-    let memoryPart = resources.memory === 1024 ? `1 GB` : `${resources.memory / 1024.0} GBs`;
-    return (
-      <Tooltip title="Task Resources">
-        <Chip
-          className={className}
-          label={`${cpuPart} / ${memoryPart}`}
-          avatar={
-            <Avatar className={this.props.classes.avatar}>
-              <Memory className={this.props.classes.avatarIcon} />
-            </Avatar>
-          }
-        />
-      </Tooltip>
-    );
+function TaskResourcesChip(props: Props) {
+  let { task, className } = props;
+  let resources = task.instanceResources;
+  if (!resources) {
+    return null;
   }
+  let cpuPart = resources.cpu === 1.0 ? `1 CPU` : `${resources.cpu} CPUs`;
+  let memoryPart = resources.memory === 1024 ? `1 GB` : `${resources.memory / 1024.0} GBs`;
+  return (
+    <Tooltip title="Task Resources">
+      <Chip
+        className={className}
+        label={`${cpuPart} / ${memoryPart}`}
+        avatar={
+          <Avatar className={props.classes.avatar}>
+            <Memory className={props.classes.avatarIcon} />
+          </Avatar>
+        }
+      />
+    </Tooltip>
+  );
 }
 
 export default createFragmentContainer(withStyles(styles)(TaskResourcesChip), {

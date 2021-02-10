@@ -12,7 +12,7 @@ import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
 import Switch from '@material-ui/core/Switch';
 import Typography from '@material-ui/core/Typography';
 import { graphql } from 'babel-plugin-relay/macro';
-import React from 'react';
+import React, { useState } from 'react';
 import { commitMutation, createFragmentContainer } from 'react-relay';
 import environment from '../../createRelayEnvironment';
 import { BillingSettingsDialogMutationResponse } from './__generated__/BillingSettingsDialogMutation.graphql';
@@ -44,130 +44,95 @@ const saveBillingSettingsMutation = graphql`
 
 interface Props extends WithStyles<typeof styles> {
   billingSettings: BillingSettingsDialog_billingSettings;
+
   onClose(...args: any[]): void;
+
   open: boolean;
 }
 
-interface State {
-  enabled: boolean;
-  billingEmailAddress: string;
-  invoiceTemplate: string;
-}
+function BillingSettingsDialog(props: Props) {
+  const { billingSettings, classes, ...other } = props;
+  let [enabled, setEnabled] = useState(billingSettings.enabled);
+  let [billingEmailAddress, setBillingEmailAddress] = useState(billingSettings.billingEmailAddress);
+  let [invoiceTemplate, setInvoiceTemplate] = useState(billingSettings.invoiceTemplate);
 
-class BillingSettingsDialog extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    let billingSettings = props.billingSettings;
-    this.state = {
-      enabled: billingSettings.enabled,
-      billingEmailAddress: billingSettings.billingEmailAddress,
-      invoiceTemplate: billingSettings.invoiceTemplate,
-    };
-  }
+  let notChanged =
+    billingSettings.enabled === enabled &&
+    billingSettings.billingEmailAddress === billingEmailAddress &&
+    billingSettings.invoiceTemplate === invoiceTemplate;
 
-  changeField = field => {
-    return event => {
-      let value = event.target.value;
-      this.setState(prevState => ({
-        ...prevState,
-        [field]: value,
-      }));
-    };
-  };
-
-  checkField = field => {
-    return event => {
-      let value = event.target.checked;
-      this.setState(prevState => ({
-        ...prevState,
-        [field]: value,
-      }));
-    };
-  };
-
-  updateSettings = () => {
+  function updateSettings() {
     const variables = {
       input: {
-        clientMutationId: 'save-billing-settings-' + this.props.billingSettings.accountId,
-        accountId: this.props.billingSettings.accountId,
-        enabled: this.state.enabled,
-        billingEmailAddress: this.state.billingEmailAddress,
-        invoiceTemplate: this.state.invoiceTemplate,
+        clientMutationId: 'save-billing-settings-' + props.billingSettings.accountId,
+        accountId: props.billingSettings.accountId,
+        enabled: enabled,
+        billingEmailAddress: billingEmailAddress,
+        invoiceTemplate: invoiceTemplate,
       },
     };
     commitMutation(environment, {
       mutation: saveBillingSettingsMutation,
       variables: variables,
       onCompleted: (response: BillingSettingsDialogMutationResponse) => {
-        this.setState(prevState => ({
-          ...prevState,
-          ...response.saveBillingSettings.settings,
-        }));
-        this.props.onClose();
+        setEnabled(response.saveBillingSettings.settings.enabled);
+        setBillingEmailAddress(response.saveBillingSettings.settings.billingEmailAddress);
+        setInvoiceTemplate(response.saveBillingSettings.settings.invoiceTemplate);
+        props.onClose();
       },
       onError: err => console.log(err),
     });
-  };
-
-  render() {
-    const { billingSettings, classes, ...other } = this.props;
-
-    let notChanged =
-      billingSettings.enabled === this.state.enabled &&
-      billingSettings.billingEmailAddress === this.state.billingEmailAddress &&
-      billingSettings.invoiceTemplate === this.state.invoiceTemplate;
-
-    return (
-      <Dialog {...other}>
-        <DialogTitle>Compute Credits Auto Pay</DialogTitle>
-        <DialogContent>
-          <FormControl fullWidth>
-            <FormControlLabel
-              control={<Switch checked={this.state.enabled} onChange={this.checkField('enabled')} color="primary" />}
-              label="Auto Pay Enabled"
-            />
-          </FormControl>
-          <Typography variant="subtitle1">
-            <p>
-              By enabling Auto Pay your repositories will be able to use compute credits in advance. You'll be billed in
-              the end of each month for the amount of compute credits that your repositories used that month.
-            </p>
-            <p>
-              Your current limit is set to maximum{' '}
-              <b className={classes.limit}>{billingSettings.billingCreditsLimit}</b> compute credits that your
-              repositories can use each month. To increase the limit please{' '}
-              <a href="mailto:support@cirruslabs.org">email support</a>.
-            </p>
-          </Typography>
-          <FormControl fullWidth>
-            <InputLabel htmlFor="billingEmailAddress">Billing email address</InputLabel>
-            <Input
-              id="billingEmailAddress"
-              value={this.state.billingEmailAddress}
-              error={this.state.enabled && this.state.billingEmailAddress === ''}
-              onChange={this.changeField('billingEmailAddress')}
-            />
-          </FormControl>
-          <FormControl fullWidth>
-            <InputLabel htmlFor="invoiceTemplate">Invoice Template e.g. P.O Number</InputLabel>
-            <Input
-              id="invoiceTemplate"
-              value={this.state.invoiceTemplate}
-              onChange={this.changeField('invoiceTemplate')}
-            />
-          </FormControl>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={this.updateSettings} disabled={notChanged} color="primary" variant="contained">
-            Update
-          </Button>
-          <Button onClick={this.props.onClose} color="secondary" variant="contained">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
-    );
   }
+
+  return (
+    <Dialog {...other}>
+      <DialogTitle>Compute Credits Auto Pay</DialogTitle>
+      <DialogContent>
+        <FormControl fullWidth>
+          <FormControlLabel
+            control={<Switch checked={enabled} onChange={event => setEnabled(event.target.checked)} />}
+            label="Auto Pay Enabled"
+          />
+        </FormControl>
+        <Typography variant="subtitle1">
+          <p>
+            By enabling Auto Pay your repositories will be able to use compute credits in advance. You'll be billed in
+            the end of each month for the amount of compute credits that your repositories used that month.
+          </p>
+          <p>
+            Your current limit is set to maximum <b className={classes.limit}>{billingSettings.billingCreditsLimit}</b>{' '}
+            compute credits that your repositories can use each month. To increase the limit please{' '}
+            <a href="mailto:support@cirruslabs.org">email support</a>.
+          </p>
+        </Typography>
+        <FormControl fullWidth>
+          <InputLabel htmlFor="billingEmailAddress">Billing email address</InputLabel>
+          <Input
+            id="billingEmailAddress"
+            value={billingEmailAddress}
+            error={enabled && billingEmailAddress === ''}
+            onChange={event => setBillingEmailAddress(event.target.value)}
+          />
+        </FormControl>
+        <FormControl fullWidth>
+          <InputLabel htmlFor="invoiceTemplate">Invoice Template e.g. P.O Number</InputLabel>
+          <Input
+            id="invoiceTemplate"
+            value={invoiceTemplate}
+            onChange={event => setInvoiceTemplate(event.target.value)}
+          />
+        </FormControl>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={updateSettings} disabled={notChanged} variant="contained">
+          Update
+        </Button>
+        <Button onClick={props.onClose} color="secondary" variant="contained">
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
 }
 
 export default createFragmentContainer(withStyles(styles)(BillingSettingsDialog), {

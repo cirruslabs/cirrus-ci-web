@@ -1,8 +1,6 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { commandStatusColor } from '../../utils/colors';
+import { useCommandStatusColorMapping } from '../../utils/colors';
 import TaskCommandLogs from './TaskCommandLogs';
 import { formatDuration } from '../../utils/time';
 import { isTaskCommandExecuting, isTaskCommandFinalStatus } from '../../utils/status';
@@ -18,42 +16,37 @@ import { graphql } from 'babel-plugin-relay/macro';
 import * as queryString from 'query-string';
 import { TaskCommandList_task } from './__generated__/TaskCommandList_task.graphql';
 import { ItemOfArray } from '../../utils/utility-types';
+import { useLocation } from 'react-router-dom';
+import { createStyles } from '@material-ui/styles';
+import { useTheme } from '@material-ui/core';
 
-const styles = {
-  details: {
-    padding: 0,
-  },
-};
+const styles = theme =>
+  createStyles({
+    details: {
+      padding: 0,
+    },
+  });
 
-interface Props extends RouteComponentProps, WithStyles<typeof styles> {
+interface Props extends WithStyles<typeof styles> {
   task: TaskCommandList_task;
 }
 
-class TaskCommandList extends React.Component<Props> {
-  static contextTypes = {
-    router: PropTypes.object,
-  };
+function TaskCommandList(props: Props) {
+  let task = props.task;
+  let commands = task.commands;
 
-  render() {
-    let task = this.props.task;
-    let commands = task.commands;
+  let commandComponents = [];
+  let lastTimestamp = task.executingTimestamp;
+  let colorMapping = useCommandStatusColorMapping();
+  let location = useLocation();
+  let theme = useTheme();
 
-    let commandComponents = [];
-    let lastTimestamp = task.executingTimestamp;
-    for (let i = 0; i < commands.length; ++i) {
-      let command = commands[i];
-      commandComponents.push(this.commandItem(command, lastTimestamp));
-      lastTimestamp += command.durationInSeconds * 1000;
-    }
-    return <div>{commandComponents}</div>;
-  }
-
-  commandItem(command: ItemOfArray<TaskCommandList_task['commands']>, commandStartTimestamp: number) {
-    let { classes } = this.props;
-    const selectedCommandName = queryString.parse(this.props.location.search).command;
+  function commandItem(command: ItemOfArray<TaskCommandList_task['commands']>, commandStartTimestamp: number) {
+    const selectedCommandName = queryString.parse(location.search).command;
     let styles = {
       header: {
-        backgroundColor: commandStatusColor(command.status),
+        color: theme.palette.getContrastText(colorMapping[command.status]),
+        backgroundColor: colorMapping[command.status],
       },
     };
     let finished = command.durationInSeconds > 0 || isTaskCommandFinalStatus(command.status);
@@ -82,7 +75,7 @@ class TaskCommandList extends React.Component<Props> {
         TransitionProps={{ unmountOnExit: true, timeout: 400 }}
         defaultExpanded={command.name === selectedCommandName || command.status === 'FAILURE'}
       >
-        <AccordionSummary expandIcon={<ExpandMoreIcon />} style={styles.header}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon style={styles.header} />} style={styles.header}>
           <div>
             <Typography variant="body1">{topText}</Typography>
             <Typography variant="caption">
@@ -96,15 +89,22 @@ class TaskCommandList extends React.Component<Props> {
             </Typography>
           </div>
         </AccordionSummary>
-        <AccordionDetails className={classes.details}>
-          <TaskCommandLogs taskId={this.props.task.id} command={command} />
+        <AccordionDetails className={props.classes.details}>
+          <TaskCommandLogs taskId={props.task.id} command={command} />
         </AccordionDetails>
       </Accordion>
     );
   }
+
+  for (let i = 0; i < commands.length; ++i) {
+    let command = commands[i];
+    commandComponents.push(commandItem(command, lastTimestamp));
+    lastTimestamp += command.durationInSeconds * 1000;
+  }
+  return <div>{commandComponents}</div>;
 }
 
-export default createFragmentContainer(withStyles(styles)(withRouter(TaskCommandList)), {
+export default createFragmentContainer(withStyles(styles)(TaskCommandList), {
   task: graphql`
     fragment TaskCommandList_task on Task {
       id

@@ -8,11 +8,9 @@ interface Props {
   info: OrganizationPersistentWorkerPools_info;
 }
 
-class OrganizationPersistentWorkerPools extends React.Component<Props> {
-  render() {
-    let info = this.props.info;
-    return <PersistentWorkerPoolsList ownerId={parseInt(info.id)} pools={info.persistentWorkerPools || []} />;
-  }
+function OrganizationPersistentWorkerPools(props: Props) {
+  let info = props.info;
+  return <PersistentWorkerPoolsList ownerId={parseInt(info.id)} pools={info.persistentWorkerPools || []} />;
 }
 
 export default createFragmentContainer(OrganizationPersistentWorkerPools, {

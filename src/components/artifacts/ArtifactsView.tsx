@@ -1,5 +1,4 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, WithStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -10,7 +9,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Paper from '@material-ui/core/Paper';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { navigate } from '../../utils/navigate';
 import { TaskArtifacts_task } from './__generated__/TaskArtifacts_task.graphql';
 import Folder from '@material-ui/icons/Folder';
@@ -21,6 +19,7 @@ import ViewList from '@material-ui/icons/ViewList';
 import AccountTree from '@material-ui/icons/AccountTree';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import { useHistory } from 'react-router-dom';
 
 const styles = {
   title: {
@@ -29,14 +28,8 @@ const styles = {
   },
 };
 
-interface Props extends RouteComponentProps, WithStyles<typeof styles> {
+interface Props extends WithStyles<typeof styles> {
   task: TaskArtifacts_task;
-}
-
-interface State {
-  selectedArtifactName?: string;
-  selectedPath?: string[];
-  isFolderView?: boolean;
 }
 
 interface SingleArtifactItemInfo {
@@ -46,39 +39,49 @@ interface SingleArtifactItemInfo {
   isTopLevel: boolean;
 }
 
-class ArtifactsView extends React.Component<Props, State> {
-  static contextTypes = {
-    router: PropTypes.object,
+function ArtifactsView(props: Props) {
+  let history = useHistory();
+  let [selectedArtifactName, setSelectedArtifactName] = useState(null);
+  let [selectedPath, setSelectedPath] = useState([]);
+  let [isFolderView, setFolderView] = useState(true);
+
+  let artifactURL = (name: string) => {
+    let allURLParts = ['https://api.cirrus-ci.com/v1/artifact/task', props.task.id, selectedArtifactName].concat(
+      selectedPath,
+    );
+    allURLParts.push(name);
+    return allURLParts.filter(it => it !== null).join('/');
   };
 
-  state: State = { selectedArtifactName: null, selectedPath: [], isFolderView: true };
+  let artifactArchiveURL = (name: string) =>
+    ['https://api.cirrus-ci.com/v1/artifact/task', props.task.id, `${name}.zip`].join('/');
 
-  _getSelectedArtifact() {
-    for (let artifact of this.props.task.artifacts || []) {
-      if (artifact.name && artifact.name === this.state.selectedArtifactName) {
+  function getSelectedArtifact() {
+    for (let artifact of props.task.artifacts || []) {
+      if (artifact.name && artifact.name === selectedArtifactName) {
         return artifact;
       }
     }
     return null;
   }
 
-  _currentPath(): string {
-    if (!this.state.selectedArtifactName) {
+  function currentPath(): string {
+    if (!selectedArtifactName) {
       return null;
     }
-    if (this.state.selectedPath.length === 0) {
-      return this.state.selectedArtifactName;
+    if (selectedPath.length === 0) {
+      return selectedArtifactName;
     }
-    return this.state.selectedArtifactName + '/' + this.state.selectedPath.join('/');
+    return selectedArtifactName + '/' + selectedPath.join('/');
   }
 
-  _getScopedArtifactInfos(): SingleArtifactItemInfo[] {
-    let currentArtifact = this._getSelectedArtifact();
+  function getScopedArtifactInfos(): SingleArtifactItemInfo[] {
+    let currentArtifact = getSelectedArtifact();
     if (!currentArtifact) {
       return [];
     }
 
-    let selectedPrefix = this.state.selectedPath.length === 0 ? '' : this.state.selectedPath.join('/') + '/';
+    let selectedPrefix = selectedPath.length === 0 ? '' : selectedPath.join('/') + '/';
     let results = [];
 
     let files = currentArtifact.files;
@@ -98,143 +101,105 @@ class ArtifactsView extends React.Component<Props, State> {
     return results;
   }
 
-  updateState = (partialState: State) => {
-    this.setState(prevState => ({
-      ...prevState,
-      ...partialState,
-    }));
-  };
+  let { task, classes } = props;
+  let { artifacts } = task;
 
-  artifactURL = (name: string) => {
-    let allURLParts = [
-      'https://api.cirrus-ci.com/v1/artifact/task',
-      this.props.task.id,
-      this.state.selectedArtifactName,
-    ].concat(this.state.selectedPath);
-    allURLParts.push(name);
-    return allURLParts.filter(it => it !== null).join('/');
-  };
+  let items = [];
 
-  artifactArchiveURL = (name: string) =>
-    ['https://api.cirrus-ci.com/v1/artifact/task', this.props.task.id, `${name}.zip`].join('/');
+  // ... if needed
+  if (selectedPath.length > 0 && isFolderView) {
+    items.push(
+      <ListItem key="..." button onClick={() => setSelectedPath(selectedPath.slice(0, selectedPath.length - 1))}>
+        <ListItemIcon>
+          <Folder />
+        </ListItemIcon>
+        <ListItemText primary="..." />
+      </ListItem>,
+    );
+  } else if (selectedArtifactName && isFolderView) {
+    items.push(
+      <ListItem key="..." button onClick={() => setSelectedArtifactName(null)}>
+        <ListItemIcon>
+          <Folder />
+        </ListItemIcon>
+        <ListItemText primary="..." />
+      </ListItem>,
+    );
+  }
 
-  render() {
-    let { task, classes } = this.props;
-    let { artifacts } = task;
-
-    let items = [];
-
-    // ... if needed
-    if (this.state.selectedPath.length > 0 && this.state.isFolderView) {
+  if (!selectedArtifactName) {
+    for (let artifact of artifacts) {
       items.push(
-        <ListItem
-          key="..."
-          button
-          onClick={() =>
-            this.updateState({ selectedPath: this.state.selectedPath.slice(0, this.state.selectedPath.length - 1) })
-          }
-        >
+        <ListItem key={artifact.name} button onClick={() => setSelectedArtifactName(artifact.name)}>
           <ListItemIcon>
-            <Folder />
+            <FolderOpen />
           </ListItemIcon>
-          <ListItemText primary="..." />
-        </ListItem>,
-      );
-    } else if (this.state.selectedArtifactName && this.state.isFolderView) {
-      items.push(
-        <ListItem key="..." button onClick={() => this.updateState({ selectedArtifactName: null })}>
-          <ListItemIcon>
-            <Folder />
-          </ListItemIcon>
-          <ListItemText primary="..." />
+          <ListItemText primary={artifact.name} />
+          <Tooltip title="Download All Files (.zip)">
+            <IconButton onClick={e => navigate(history, e, artifactArchiveURL(artifact.name))}>
+              <GetApp />
+            </IconButton>
+          </Tooltip>
         </ListItem>,
       );
     }
+  } else {
+    let folders: string[] = [];
+    let scopedArtifactInfos = getScopedArtifactInfos();
 
-    if (!this.state.selectedArtifactName) {
-      for (let artifact of artifacts) {
+    for (let info of scopedArtifactInfos) {
+      if (!info.isTopLevel && !folders.includes(info.folder) && isFolderView) {
+        folders.push(info.folder);
         items.push(
-          <ListItem
-            key={artifact.name}
-            button
-            onClick={() => this.updateState({ selectedArtifactName: artifact.name })}
-          >
+          <ListItem key={info.folder} button onClick={() => setSelectedPath(selectedPath.concat([info.folder]))}>
             <ListItemIcon>
-              <FolderOpen />
+              <Folder />
             </ListItemIcon>
-            <ListItemText primary={artifact.name} />
-            <Tooltip title="Download All Files (.zip)">
-              <IconButton onClick={e => navigate(this.context.router, e, this.artifactArchiveURL(artifact.name))}>
-                <GetApp />
-              </IconButton>
-            </Tooltip>
+            <ListItemText primary={info.folder} />
           </ListItem>,
         );
       }
-    } else {
-      let folders: string[] = [];
-      let scopedArtifactInfos = this._getScopedArtifactInfos();
-
-      for (let info of scopedArtifactInfos) {
-        if (!info.isTopLevel && !folders.includes(info.folder) && this.state.isFolderView) {
-          folders.push(info.folder);
-          items.push(
-            <ListItem
-              key={info.folder}
-              button
-              onClick={() => this.updateState({ selectedPath: this.state.selectedPath.concat([info.folder]) })}
-            >
-              <ListItemIcon>
-                <Folder />
-              </ListItemIcon>
-              <ListItemText primary={info.folder} />
-            </ListItem>,
-          );
-        }
-      }
-
-      for (let info of scopedArtifactInfos) {
-        if (info.isTopLevel || !this.state.isFolderView) {
-          items.push(
-            <ListItem key={info.path} button onClick={() => window.open(this.artifactURL(info.path), '_blank')}>
-              <ListItemIcon>
-                <InsertDriveFile />
-              </ListItemIcon>
-              <ListItemText primary={info.path} />
-            </ListItem>,
-          );
-        }
-      }
     }
 
-    return (
-      <Paper elevation={1}>
-        <Toolbar className={classes.title}>
-          <Typography variant="h6" color="inherit" className={classes.title}>
-            {this._currentPath() || 'Artifacts'}
-          </Typography>
-          {this._getSelectedArtifact() === null ? null : (
-            <ToggleButtonGroup
-              value={this.state.isFolderView}
-              exclusive
-              onChange={(_event, val) => {
-                this.updateState({ isFolderView: val });
-              }}
-              aria-label="folder view"
-            >
-              <ToggleButton value={false} aria-label="overview">
-                <ViewList />
-              </ToggleButton>
-              <ToggleButton value={true} aria-label="tree view">
-                <AccountTree />
-              </ToggleButton>
-            </ToggleButtonGroup>
-          )}
-        </Toolbar>
-        <List>{items}</List>
-      </Paper>
-    );
+    for (let info of scopedArtifactInfos) {
+      if (info.isTopLevel || !isFolderView) {
+        items.push(
+          <ListItem key={info.path} button onClick={() => window.open(artifactURL(info.path), '_blank')}>
+            <ListItemIcon>
+              <InsertDriveFile />
+            </ListItemIcon>
+            <ListItemText primary={info.path} />
+          </ListItem>,
+        );
+      }
+    }
   }
+
+  return (
+    <Paper elevation={1}>
+      <Toolbar className={classes.title}>
+        <Typography variant="h6" color="inherit" className={classes.title}>
+          {currentPath() || 'Artifacts'}
+        </Typography>
+        {getSelectedArtifact() === null ? null : (
+          <ToggleButtonGroup
+            value={isFolderView}
+            exclusive
+            onChange={(_event, val) => setFolderView(val)}
+            aria-label="folder view"
+          >
+            <ToggleButton value={false} aria-label="overview">
+              <ViewList />
+            </ToggleButton>
+            <ToggleButton value={true} aria-label="tree view">
+              <AccountTree />
+            </ToggleButton>
+          </ToggleButtonGroup>
+        )}
+      </Toolbar>
+      <List>{items}</List>
+    </Paper>
+  );
 }
 
-export default withStyles(styles)(withRouter(ArtifactsView));
+export default withStyles(styles)(ArtifactsView);

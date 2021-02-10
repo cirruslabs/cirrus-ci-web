@@ -1,10 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import CallSplit from '@material-ui/icons/CallSplit';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { navigate } from '../../utils/navigate';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
@@ -22,51 +21,44 @@ const styles = theme =>
     },
   });
 
-interface Props extends RouteComponentProps, WithStyles<typeof styles> {
+interface Props extends WithStyles<typeof styles> {
   className?: string;
   build: BuildBranchNameChip_build;
 }
 
-class BuildBranchNameChip extends React.Component<Props> {
-  static contextTypes = {
-    router: PropTypes.object,
-  };
+function BuildBranchNameChip(props: Props) {
+  let history = useHistory();
+  let build = props.build;
 
-  render() {
-    let build = this.props.build;
-    return (
-      <Chip
-        className={this.props.className}
-        label={shorten(build.branch)}
-        avatar={
-          <Avatar className={this.props.classes.avatar}>
-            <CallSplit className={this.props.classes.avatarIcon} />
-          </Avatar>
-        }
-        onClick={e => this.handleBranchClick(e, build)}
-      />
-    );
-  }
-
-  handleBranchClick(event, build) {
+  function handleBranchClick(event) {
     if (build.repository) {
-      navigate(
-        this.context.router,
-        event,
-        '/github/' + build.repository.owner + '/' + build.repository.name + '/' + build.branch,
-      );
-    } else if (build.repositoryId) {
-      navigate(this.context.router, event, '/repository/' + build.repositoryId + '/' + build.branch);
+      navigate(history, event, '/github/' + build.repository.owner + '/' + build.repository.name + '/' + build.branch);
+    } else if (build.repository.id) {
+      navigate(history, event, '/repository/' + build.repository.id + '/' + build.branch);
     }
   }
+
+  return (
+    <Chip
+      className={props.className}
+      label={shorten(build.branch)}
+      avatar={
+        <Avatar className={props.classes.avatar}>
+          <CallSplit className={props.classes.avatarIcon} />
+        </Avatar>
+      }
+      onClick={e => handleBranchClick(e)}
+    />
+  );
 }
 
-export default createFragmentContainer(withRouter(withStyles(styles)(BuildBranchNameChip)), {
+export default createFragmentContainer(withStyles(styles)(BuildBranchNameChip), {
   build: graphql`
     fragment BuildBranchNameChip_build on Build {
       id
       branch
       repository {
+        id
         owner
         name
       }

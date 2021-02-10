@@ -6,16 +6,19 @@ import CasinoIcon from '@material-ui/icons/Casino';
 
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { cirrusColors } from '../../cirrusTheme';
-import { WithTheme, withTheme } from '@material-ui/core/styles';
+import { cirrusColorsState } from '../../cirrusTheme';
 import { TaskExperimentalChip_task } from './__generated__/TaskExperimentalChip_task.graphql';
+import { useRecoilValue } from 'recoil';
+import { useTheme } from '@material-ui/core';
 
-interface Props extends WithTheme {
+interface Props {
   className?: string;
   task: TaskExperimentalChip_task;
 }
 
 let TaskExperimentalChip = (props: Props) => {
+  let theme = useTheme();
+  const cirrusColors = useRecoilValue(cirrusColorsState);
   const { task } = props;
   const { experimental } = task;
 
@@ -27,14 +30,14 @@ let TaskExperimentalChip = (props: Props) => {
       label="Experimental"
       avatar={
         <Avatar style={{ backgroundColor: cirrusColors.success }}>
-          <CasinoIcon style={{ color: props.theme.palette.background.paper }} />
+          <CasinoIcon style={{ color: theme.palette.primary.contrastText }} />
         </Avatar>
       }
     />
   );
 };
 
-export default createFragmentContainer(withTheme(TaskExperimentalChip), {
+export default createFragmentContainer(TaskExperimentalChip, {
   task: graphql`
     fragment TaskExperimentalChip_task on Task {
       experimental

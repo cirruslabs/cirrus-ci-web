@@ -16,25 +16,23 @@ interface Props {
   info: OrganizationApiSettings_info;
 }
 
-class OrganizationApiSettings extends React.Component<Props> {
-  getMutationVariables() {
+function OrganizationApiSettings(props: Props) {
+  function getMutationVariables() {
     return {
       input: {
-        clientMutationId: `generate-api-token-${this.props.info.id}`,
-        accountId: this.props.info.id,
+        clientMutationId: `generate-api-token-${props.info.id}`,
+        accountId: props.info.id,
       },
     };
   }
 
-  render() {
-    return (
-      <ApiSettingsBase
-        generateNewTokenMutation={generateNewTokenMutation}
-        getMutationVariables={this.getMutationVariables.bind(this)}
-        apiToken={this.props.info.apiToken}
-      />
-    );
-  }
+  return (
+    <ApiSettingsBase
+      generateNewTokenMutation={generateNewTokenMutation}
+      getMutationVariables={getMutationVariables}
+      maskedToken={props.info.apiToken?.maskedToken}
+    />
+  );
 }
 
 export default createFragmentContainer(OrganizationApiSettings, {

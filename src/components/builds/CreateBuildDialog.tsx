@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import environment from '../../createRelayEnvironment';
 import { commitMutation, createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
@@ -9,9 +9,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
-import PropTypes from 'prop-types';
 import AceEditor from 'react-ace';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { navigateBuild } from '../../utils/navigate';
 
 import 'ace-builds/src-noconflict/mode-yaml';
@@ -29,114 +28,33 @@ const createBuildMutation = graphql`
   }
 `;
 
-interface Props extends RouteComponentProps {
+interface Props {
   onClose: Function;
   open: boolean;
   repository: CreateBuildDialog_repository;
 }
 
-interface State {
-  branch: string;
-  configOverride: string;
-  sha: string;
-}
+function CreateBuildDialog(props: Props) {
+  let history = useHistory();
+  let [branch, setBranch] = useState(props.repository.masterBranch);
+  let [configOverride, setConfigOverride] = useState('');
+  let [sha, setSHA] = useState('');
+  let { repository } = props;
 
-class CreateBuildDialog extends React.Component<Props, State> {
-  static contextTypes = {
-    router: PropTypes.object,
-    location: PropTypes.object,
-  };
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      configOverride: '',
-      branch: props.repository.masterBranch,
-      sha: '',
-    };
-  }
-
-  handleClose = () => {
-    if (this.props.onClose) {
-      this.props.onClose();
+  function handleClose() {
+    if (props.onClose) {
+      props.onClose();
     }
-  };
-
-  onConfigChange = newValue => {
-    this.setState(prevState => ({
-      ...prevState,
-      configOverride: newValue,
-    }));
-  };
-
-  changeField = field => {
-    return event => {
-      let value = event.target.value;
-      this.setState(prevState => ({
-        ...prevState,
-        [field]: value,
-      }));
-    };
-  };
-
-  render() {
-    let { repository } = this.props;
-    return (
-      <Dialog open={this.props.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">
-          Create new build for {repository.owner}/{repository.name}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText>Customize parameters for build. (Optional)</DialogContentText>
-          <TextField
-            margin="dense"
-            id="branch"
-            onChange={this.changeField('branch')}
-            value={this.state.branch}
-            label="Branch"
-            fullWidth
-          />
-          <TextField
-            margin="dense"
-            id="sha"
-            onChange={this.changeField('sha')}
-            value={this.state.sha}
-            label="Optional SHA"
-            fullWidth
-          />
-          <DialogContentText>Optionally, you can override build configuration:</DialogContentText>
-          <AceEditor
-            mode="yaml"
-            theme="github"
-            placeholder="Add a custom configuration here to use custom instructions for this build."
-            onChange={this.onConfigChange}
-            value={this.state.configOverride}
-            name="CONFIG_OVERRIDE"
-            editorProps={{ $blockScrolling: true }}
-            highlightActiveLine={true}
-            showGutter={true}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={this.handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={this.sendMutation} color="primary">
-            Create
-          </Button>
-        </DialogActions>
-      </Dialog>
-    );
   }
 
-  sendMutation = () => {
+  function sendMutation() {
     const variables = {
       input: {
-        clientMutationId: this.props.repository.name,
-        repositoryId: parseInt(this.props.repository.id, 10),
-        branch: this.state.branch,
-        sha: this.state.sha,
-        configOverride: this.state.configOverride,
+        clientMutationId: props.repository.name,
+        repositoryId: parseInt(props.repository.id, 10),
+        branch: branch,
+        sha: sha,
+        configOverride: configOverride,
       },
     };
 
@@ -147,14 +65,57 @@ class CreateBuildDialog extends React.Component<Props, State> {
       variables: variables,
       onCompleted: (response: CreateBuildDialogMutationResponse) => {
         console.log(response);
-        navigateBuild(this.context.router, null, response.createBuild.build.id);
+        navigateBuild(history, null, response.createBuild.build.id);
       },
       onError: err => console.error(err),
     });
-  };
+  }
+
+  return (
+    <Dialog open={props.open} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <DialogTitle id="form-dialog-title">
+        Create new build for {repository.owner}/{repository.name}
+      </DialogTitle>
+      <DialogContent>
+        <DialogContentText>Customize parameters for build. (Optional)</DialogContentText>
+        <TextField
+          margin="dense"
+          id="branch"
+          onChange={event => setBranch(event.target.value)}
+          value={branch}
+          label="Branch"
+          fullWidth
+        />
+        <TextField
+          margin="dense"
+          id="sha"
+          onChange={event => setSHA(event.target.value)}
+          value={sha}
+          label="Optional SHA"
+          fullWidth
+        />
+        <DialogContentText>Optionally, you can override build configuration:</DialogContentText>
+        <AceEditor
+          mode="yaml"
+          theme="github"
+          placeholder="Add a custom configuration here to use custom instructions for this build."
+          onChange={newValue => setConfigOverride(newValue)}
+          value={configOverride}
+          name="CONFIG_OVERRIDE"
+          editorProps={{ $blockScrolling: true }}
+          highlightActiveLine={true}
+          showGutter={true}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>Cancel</Button>
+        <Button onClick={sendMutation}>Create</Button>
+      </DialogActions>
+    </Dialog>
+  );
 }
 
-export default createFragmentContainer(withRouter(CreateBuildDialog), {
+export default createFragmentContainer(CreateBuildDialog, {
   repository: graphql`
     fragment CreateBuildDialog_repository on Repository {
       id

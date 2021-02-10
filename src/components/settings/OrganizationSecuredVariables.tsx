@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import environment from '../../createRelayEnvironment';
 import { commitMutation, createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
@@ -25,69 +25,23 @@ interface Props {
   info: OrganizationSecuredVariables_info;
 }
 
-interface State {
-  securedVariableName?: string;
-  securedVariable?: string;
-  inputValue: string;
-}
+function OrganizationSecuredVariables(props: Props) {
+  let [securedVariableName, setSecuredVariableName] = useState(undefined);
+  let [inputValue, setInputValue] = useState('');
+  let securedComponent = null;
 
-class OrganizationSecuredVariables extends React.Component<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = { inputValue: '' };
-    this.handleChange = this.handleChange.bind(this);
+  if (securedVariableName) {
+    let valueForYAMLFile = `ENCRYPTED[${securedVariableName}]`;
+
+    securedComponent = <CopyPasteField name="securedVariable" fullWidth={true} value={valueForYAMLFile} />;
   }
 
-  handleChange(event) {
-    this.setState({ inputValue: event.target.value });
-  }
-
-  render() {
-    let securedComponent = null;
-
-    if (this.state.securedVariableName) {
-      let valueForYAMLFile = `ENCRYPTED[${this.state.securedVariableName}]`;
-
-      securedComponent = <CopyPasteField name="securedVariable" fullWidth={true} value={valueForYAMLFile} />;
-    }
-
-    return (
-      <Card>
-        <CardHeader title="Organization-Level Secured Variables" />
-        <CardContent>
-          <FormControl style={{ width: '100%' }}>
-            <TextField
-              name="securedVariableValue"
-              placeholder="Value to create a secure variable for"
-              value={this.state.inputValue}
-              disabled={this.state.securedVariable !== undefined}
-              onChange={this.handleChange}
-              multiline={true}
-              fullWidth={true}
-            />
-            {securedComponent}
-          </FormControl>
-        </CardContent>
-        <CardActions>
-          <Button
-            variant="contained"
-            disabled={this.state.inputValue === ''}
-            onClick={() => this.encryptCurrentValue()}
-          >
-            Encrypt
-          </Button>
-        </CardActions>
-      </Card>
-    );
-  }
-
-  encryptCurrentValue() {
-    let valueToSecure = this.state.inputValue;
+  function encryptCurrentValue() {
     const variables = {
       input: {
-        clientMutationId: this.props.info.name,
-        organizationId: parseInt(this.props.info.id, 10),
-        valueToSecure: valueToSecure,
+        clientMutationId: props.info.name,
+        organizationId: parseInt(props.info.id, 10),
+        valueToSecure: inputValue,
       },
     };
 
@@ -95,14 +49,36 @@ class OrganizationSecuredVariables extends React.Component<Props, State> {
       mutation: securedVariableMutation,
       variables: variables,
       onCompleted: (response: OrganizationSecuredVariablesMutationResponse) => {
-        this.setState({
-          inputValue: valueToSecure,
-          securedVariableName: response.securedOrganizationVariable.variableName,
-        });
+        setSecuredVariableName(response.securedOrganizationVariable.variableName);
       },
       onError: err => console.error(err),
     });
   }
+
+  return (
+    <Card>
+      <CardHeader title="Organization-Level Secured Variables" />
+      <CardContent>
+        <FormControl style={{ width: '100%' }}>
+          <TextField
+            name="securedVariableValue"
+            placeholder="Value to create a secure variable for"
+            value={inputValue}
+            disabled={securedVariableName !== undefined}
+            onChange={event => setInputValue(event.target.value)}
+            multiline={true}
+            fullWidth={true}
+          />
+          {securedComponent}
+        </FormControl>
+      </CardContent>
+      <CardActions>
+        <Button variant="contained" disabled={inputValue === ''} onClick={() => encryptCurrentValue()}>
+          Encrypt
+        </Button>
+      </CardActions>
+    </Card>
+  );
 }
 
 export default createFragmentContainer(OrganizationSecuredVariables, {

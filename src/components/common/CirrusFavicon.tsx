@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Base64 } from 'js-base64';
-import { WithTheme, withTheme } from '@material-ui/core/styles';
+import { BuildStatus } from '../chips/__generated__/BuildStatusChip_build.graphql';
+import { TaskStatus } from '../chips/__generated__/TaskStatusChip_task.graphql';
+import { useFaviconColor } from '../../utils/colors';
+import { useTheme } from '@material-ui/core';
 
 function updateIcon(color) {
   let linkEl = document.getElementById('favicon') as HTMLLinkElement;
@@ -46,20 +49,15 @@ function iconSVG(color) {
 `;
 }
 
-interface CirrusFaviconProps extends WithTheme {
-  color?: string;
+interface CirrusFaviconProps {
+  status?: BuildStatus | TaskStatus;
 }
 
-class CirrusFavicon extends React.Component<CirrusFaviconProps> {
-  componentWillUnmount() {
-    updateIcon(this.props.theme.palette.primary.main);
-  }
-
-  render() {
-    let { color, theme } = this.props;
-    updateIcon(color || theme.palette.primary.main);
-    return null;
-  }
-}
-
-export default withTheme(CirrusFavicon);
+export default (props: CirrusFaviconProps) => {
+  let theme = useTheme();
+  useEffect(() => {
+    updateIcon(theme.palette.primary.main);
+  }, [theme.palette.primary.main]);
+  updateIcon(useFaviconColor(props.status));
+  return null;
+};

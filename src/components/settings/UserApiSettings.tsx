@@ -16,24 +16,22 @@ interface Props {
   user: UserApiSettings_user;
 }
 
-class UserApiSettings extends React.Component<Props> {
-  getMutationVariables() {
+function UserApiSettings(props: Props) {
+  function getMutationVariables() {
     return {
       input: {
-        clientMutationId: `generate-user-api-token-${this.props.user.id}`,
+        clientMutationId: `generate-user-api-token-${props.user.id}`,
       },
     };
   }
 
-  render() {
-    return (
-      <ApiSettingsBase
-        generateNewTokenMutation={generateNewTokenMutation}
-        getMutationVariables={this.getMutationVariables.bind(this)}
-        apiToken={this.props.user.apiToken}
-      />
-    );
-  }
+  return (
+    <ApiSettingsBase
+      generateNewTokenMutation={generateNewTokenMutation}
+      getMutationVariables={getMutationVariables}
+      maskedToken={props.user.apiToken?.maskedToken}
+    />
+  );
 }
 
 export default createFragmentContainer(UserApiSettings, {

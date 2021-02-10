@@ -1,10 +1,8 @@
 import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import { graphql } from 'babel-plugin-relay/macro';
-import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { commitMutation, createRefetchContainer, RelayRefetchProp } from 'react-relay';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Helmet as Head } from 'react-helmet';
 import { PoolDetails_pool } from './__generated__/PoolDetails_pool.graphql';
 import {
@@ -49,7 +47,6 @@ import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
 import PauseCircleOutlineIcon from '@material-ui/icons/PauseCircleOutline';
 import { DeletePersistentWorkerInput } from './__generated__/PoolDetailsDeleteWorkerMutation.graphql';
 import { UpdatePersistentWorkerInput } from './__generated__/PoolDetailsUpdateWorkerMutation.graphql';
-import { cirrusColors } from '../../cirrusTheme';
 
 const styles = theme =>
   createStyles({
@@ -66,19 +63,14 @@ const styles = theme =>
       display: 'flex',
       flexWrap: 'wrap',
     },
-    enadleWorkerButton: {
-      color: cirrusColors.warning,
+    enabledWorkerButton: {
+      color: theme.palette.warning.main,
     },
   });
 
-interface PoolDetailsProps extends WithStyles<typeof styles>, RouteComponentProps {
+interface PoolDetailsProps extends WithStyles<typeof styles> {
   pool: PoolDetails_pool;
   relay: RelayRefetchProp;
-}
-
-interface PoolDetailsState {
-  openEditDialog: boolean;
-  registrationToken?: string;
 }
 
 const getRegistrationTokenMutation = graphql`
@@ -109,54 +101,39 @@ const updateWorkerMutation = graphql`
   }
 `;
 
-class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
-  static contextTypes = {
-    router: PropTypes.object,
-  };
+function PoolDetails(props: PoolDetailsProps) {
+  let [openEditDialog, setOpenEditDialog] = useState(false);
+  let [registrationToken, setRegistrationToken] = useState(null);
+  let { pool, classes } = props;
 
-  state = { openEditDialog: false, registrationToken: null };
-
-  private refreshInterval: NodeJS.Timer;
-
-  componentDidMount() {
-    this.refreshInterval = setInterval(() => this._refetch(), 10_000);
+  function refetchData() {
+    props.relay.refetch({ poolId: props.pool.id }, { force: true });
   }
 
-  componentWillUnmount() {
-    clearInterval(this.refreshInterval);
-  }
+  useEffect(() => {
+    const timeoutId = setInterval(() => {
+      refetchData();
+    }, 10_000);
+    return () => clearInterval(timeoutId);
+  });
 
-  _refetch = () => {
-    this.props.relay.refetch({ poolId: this.props.pool.id }, { force: true });
-  };
-
-  toggleEditDialog = () => {
-    this.setState(prevState => ({
-      ...prevState,
-      openEditDialog: !prevState.openEditDialog,
-    }));
-  };
-
-  retrieveRegistrationToken = () => {
+  function retrieveRegistrationToken() {
     const input: GetPersistentWorkerPoolRegistrationTokenInput = {
-      clientMutationId: 'get-worker-pool-token-' + this.props.pool.id,
-      poolId: this.props.pool.id,
+      clientMutationId: 'get-worker-pool-token-' + props.pool.id,
+      poolId: props.pool.id,
     };
     commitMutation(environment, {
       mutation: getRegistrationTokenMutation,
       variables: { input: input },
       onCompleted: (response: PoolDetailsGetRegistrationTokenMutationResponse) => {
-        this.setState(prevState => ({
-          ...prevState,
-          registrationToken: response.persistentWorkerPoolRegistrationToken.token,
-        }));
+        setRegistrationToken(response.persistentWorkerPoolRegistrationToken.token);
       },
       onError: err => console.log(err),
     });
-  };
+  }
 
-  deleteWorker = workerName => {
-    let poolId = this.props.pool.id;
+  function deleteWorker(workerName) {
+    let poolId = props.pool.id;
     const input: DeletePersistentWorkerInput = {
       clientMutationId: `delete-persistent-worker-${poolId}-${workerName}`,
       poolId: poolId,
@@ -169,15 +146,15 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
         if (errors) {
           console.log(errors);
         } else {
-          this._refetch();
+          refetchData();
         }
       },
       onError: err => console.log(err),
     });
-  };
+  }
 
-  updateWorker = (workerName, disabled) => {
-    let poolId = this.props.pool.id;
+  function updateWorker(workerName, disabled) {
+    let poolId = props.pool.id;
     const input: UpdatePersistentWorkerInput = {
       clientMutationId: `update-persistent-worker-${poolId}-${workerName}`,
       poolId: poolId,
@@ -191,131 +168,127 @@ class PoolDetails extends React.Component<PoolDetailsProps, PoolDetailsState> {
         if (errors) {
           console.log(errors);
         } else {
-          this._refetch();
+          refetchData();
         }
       },
       onError: err => console.log(err),
     });
-  };
-
-  render() {
-    let { pool, classes } = this.props;
-
-    let viewerCanSeeToken = pool.viewerPermission === 'ADMIN' || pool.viewerPermission === 'WRITE';
-    return (
-      <div>
-        <Head>
-          <title>{pool.name} pool</title>
-        </Head>
-        <Card>
-          <CardHeader
-            avatar={
-              <Avatar aria-label="recipe">
-                <PoolVisibilityIcon enabledForPublic={pool.enabledForPublic} />
-              </Avatar>
-            }
-            action={
-              <div>
-                <Tooltip title="Edit">
-                  <IconButton aria-label="edit" onClick={this.toggleEditDialog}>
-                    <EditIcon />
-                  </IconButton>
-                </Tooltip>
-                <EditPersistentWorkerPoolDialog
-                  poolId={this.props.pool.id}
-                  name={this.props.pool.name}
-                  enabledForPublic={this.props.pool.enabledForPublic}
-                  open={this.state.openEditDialog}
-                  onClose={this.toggleEditDialog}
-                />
-              </div>
-            }
-            title={`Pool ${pool.name}`}
-            subheader={`Workers count: ${pool.workers.length}`}
-          />
-          <CardContent>
-            <Typography>
-              In order to add a persistent worker to the pool please install{' '}
-              <a href="https://github.com/cirruslabs/cirrus-cli/blob/master/PERSISTENT-WORKERS.md">Cirrus CLI</a> on a
-              machine that will become a persistent worker.
-            </Typography>
-          </CardContent>
-          {viewerCanSeeToken && this.state.registrationToken && (
-            <CardContent>
-              <InputLabel htmlFor="registration-token">Registration Token</InputLabel>
-              <CopyPasteField id="registration-token" value={this.state.registrationToken} fullWidth={true} />
-            </CardContent>
-          )}
-          <CardActions className="d-flex flex-wrap justify-content-end">
-            {viewerCanSeeToken && !this.state.registrationToken && (
-              <Button variant="outlined" startIcon={<VisibilityIcon />} onClick={this.retrieveRegistrationToken}>
-                Show Registration Token
-              </Button>
-            )}
-          </CardActions>
-          <CardContent>
-            <Table aria-label="workers table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Status</TableCell>
-                  <TableCell>Version</TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell>host</TableCell>
-                  <TableCell>Labels</TableCell>
-                  <TableCell>Running Tasks</TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {pool.workers.map(
-                  worker =>
-                    worker && (
-                      <TableRow key={worker.name}>
-                        <TableCell>
-                          <WorkerStatusChip worker={worker} />
-                        </TableCell>
-                        <TableCell>{worker.version}</TableCell>
-                        <TableCell component="th">{worker.name}</TableCell>
-                        <TableCell>{worker.hostname}</TableCell>
-                        <TableCell>
-                          <div className={classes.wrapper}>
-                            {worker.labels.map(label => (
-                              <Chip key={label} className={classes.chip} label={label} />
-                            ))}
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          {!worker.info
-                            ? null
-                            : worker.info.runningTasks.map(task => <TaskStatusChipExtended task={task} />)}
-                        </TableCell>
-                        <TableCell>
-                          <Tooltip title={worker.disabled ? 'Enable task scheduling' : 'Disable task scheduling'}>
-                            <IconButton edge="start" onClick={() => this.updateWorker(worker.name, !worker.disabled)}>
-                              {worker.disabled ? (
-                                <PlayCircleOutlineIcon className={classes.enadleWorkerButton} />
-                              ) : (
-                                <PauseCircleOutlineIcon />
-                              )}
-                            </IconButton>
-                          </Tooltip>
-                        </TableCell>
-                        <TableCell>
-                          <IconButton edge="end" aria-label="delete" onClick={() => this.deleteWorker(worker.name)}>
-                            <DeleteIcon />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                    ),
-                )}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-      </div>
-    );
   }
+
+  let viewerCanSeeToken = pool.viewerPermission === 'ADMIN' || pool.viewerPermission === 'WRITE';
+  return (
+    <div>
+      <Head>
+        <title>{pool.name} pool</title>
+      </Head>
+      <Card>
+        <CardHeader
+          avatar={
+            <Avatar aria-label="recipe">
+              <PoolVisibilityIcon enabledForPublic={pool.enabledForPublic} />
+            </Avatar>
+          }
+          action={
+            <div>
+              <Tooltip title="Edit">
+                <IconButton aria-label="edit" onClick={() => setOpenEditDialog(!openEditDialog)}>
+                  <EditIcon />
+                </IconButton>
+              </Tooltip>
+              <EditPersistentWorkerPoolDialog
+                poolId={props.pool.id}
+                name={props.pool.name}
+                enabledForPublic={props.pool.enabledForPublic}
+                open={openEditDialog}
+                onClose={() => setOpenEditDialog(!openEditDialog)}
+              />
+            </div>
+          }
+          title={`Pool ${pool.name}`}
+          subheader={`Workers count: ${pool.workers.length}`}
+        />
+        <CardContent>
+          <Typography>
+            In order to add a persistent worker to the pool please install{' '}
+            <a href="https://github.com/cirruslabs/cirrus-cli/blob/master/PERSISTENT-WORKERS.md">Cirrus CLI</a> on a
+            machine that will become a persistent worker.
+          </Typography>
+        </CardContent>
+        {viewerCanSeeToken && registrationToken && (
+          <CardContent>
+            <InputLabel htmlFor="registration-token">Registration Token</InputLabel>
+            <CopyPasteField id="registration-token" value={registrationToken} fullWidth={true} />
+          </CardContent>
+        )}
+        <CardActions className="d-flex flex-wrap justify-content-end">
+          {viewerCanSeeToken && !registrationToken && (
+            <Button variant="outlined" startIcon={<VisibilityIcon />} onClick={retrieveRegistrationToken}>
+              Show Registration Token
+            </Button>
+          )}
+        </CardActions>
+        <CardContent>
+          <Table aria-label="workers table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Status</TableCell>
+                <TableCell>Version</TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>host</TableCell>
+                <TableCell>Labels</TableCell>
+                <TableCell>Running Tasks</TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {pool.workers.map(
+                worker =>
+                  worker && (
+                    <TableRow key={worker.name}>
+                      <TableCell>
+                        <WorkerStatusChip worker={worker} />
+                      </TableCell>
+                      <TableCell>{worker.version}</TableCell>
+                      <TableCell component="th">{worker.name}</TableCell>
+                      <TableCell>{worker.hostname}</TableCell>
+                      <TableCell>
+                        <div className={classes.wrapper}>
+                          {worker.labels.map(label => (
+                            <Chip key={label} className={classes.chip} label={label} />
+                          ))}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        {!worker.info
+                          ? null
+                          : worker.info.runningTasks.map(task => <TaskStatusChipExtended task={task} />)}
+                      </TableCell>
+                      <TableCell>
+                        <Tooltip title={worker.disabled ? 'Enable task scheduling' : 'Disable task scheduling'}>
+                          <IconButton edge="start" onClick={() => updateWorker(worker.name, !worker.disabled)}>
+                            {worker.disabled ? (
+                              <PlayCircleOutlineIcon className={classes.enabledWorkerButton} />
+                            ) : (
+                              <PauseCircleOutlineIcon />
+                            )}
+                          </IconButton>
+                        </Tooltip>
+                      </TableCell>
+                      <TableCell>
+                        <IconButton edge="end" aria-label="delete" onClick={() => deleteWorker(worker.name)}>
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ),
+              )}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+    </div>
+  );
 }
 
 interface DialogProps {
@@ -345,104 +318,66 @@ const updatePoolMutation = graphql`
   }
 `;
 
-class EditPersistentWorkerPoolDialog extends React.Component<DialogProps, DialogState> {
-  static contextTypes = {
-    router: PropTypes.object,
-  };
+function EditPersistentWorkerPoolDialog(props: DialogProps) {
+  let [name, setName] = useState(props.name);
+  let [enabledForPublic, setEnabledForPublic] = useState(props.enabledForPublic);
 
-  constructor(props: DialogProps) {
-    super(props);
-    this.state = {
-      name: this.props.name,
-      enabledForPublic: this.props.enabledForPublic,
-    };
-  }
-
-  changeField = field => {
-    return event => {
-      let value = event.target.value;
-      this.setState(prevState => ({
-        ...prevState,
-        [field]: value,
-      }));
-    };
-  };
-
-  checkField = field => {
-    return event => {
-      let value = event.target.checked;
-      this.setState(prevState => ({
-        ...prevState,
-        [field]: value,
-      }));
-    };
-  };
-
-  createPool = () => {
+  function createPool() {
     const input: UpdatePersistentWorkerPoolInput = {
-      clientMutationId: 'edit-persistent-worker-pool-' + this.props.poolId,
-      poolId: this.props.poolId,
-      name: this.state.name,
-      enabledForPublic: this.state.enabledForPublic,
+      clientMutationId: 'edit-persistent-worker-pool-' + props.poolId,
+      poolId: props.poolId,
+      name: name,
+      enabledForPublic: enabledForPublic,
     };
     commitMutation(environment, {
       mutation: updatePoolMutation,
       variables: { input: input },
-      onCompleted: this.props.onClose,
+      onCompleted: props.onClose,
       onError: err => console.log(err),
     });
-  };
-
-  render() {
-    return (
-      <Dialog open={this.props.open}>
-        <DialogTitle>Edit Persistent Worker Pool</DialogTitle>
-        <DialogContent>
-          <FormControl fullWidth>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={this.state.enabledForPublic}
-                  onChange={this.checkField('enabledForPublic')}
-                  color="primary"
-                />
-              }
-              label="Enabled for public"
-            />
-          </FormControl>
-          <Typography variant="subtitle1">
-            <p>
-              Enabling worker pool for public will allow any public repository of the organization to schedule tasks on
-              this pool. Please use with caution and think of security risks involved in this decision!
-            </p>
-          </Typography>
-          <FormControl fullWidth>
-            <InputLabel htmlFor="name">Name</InputLabel>
-            <Input id="name" onChange={this.changeField('name')} value={this.state.name} />
-          </FormControl>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={this.createPool}
-            color="primary"
-            variant="contained"
-            disabled={
-              this.state.name === this.props.name && this.state.enabledForPublic === this.props.enabledForPublic
-            }
-          >
-            Update
-          </Button>
-          <Button onClick={this.props.onClose} color="secondary" variant="contained">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
-    );
   }
+
+  return (
+    <Dialog open={props.open}>
+      <DialogTitle>Edit Persistent Worker Pool</DialogTitle>
+      <DialogContent>
+        <FormControl fullWidth>
+          <FormControlLabel
+            control={
+              <Switch checked={enabledForPublic} onChange={event => setEnabledForPublic(event.target.checked)} />
+            }
+            label="Enabled for public"
+          />
+        </FormControl>
+        <Typography variant="subtitle1">
+          <p>
+            Enabling worker pool for public will allow any public repository of the organization to schedule tasks on
+            this pool. Please use with caution and think of security risks involved in this decision!
+          </p>
+        </Typography>
+        <FormControl fullWidth>
+          <InputLabel htmlFor="name">Name</InputLabel>
+          <Input id="name" onChange={event => setName(event.target.value)} value={name} />
+        </FormControl>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          onClick={createPool}
+          variant="contained"
+          disabled={name === props.name && enabledForPublic === props.enabledForPublic}
+        >
+          Update
+        </Button>
+        <Button onClick={props.onClose} color="secondary" variant="contained">
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
 }
 
 export default createRefetchContainer(
-  withStyles(styles)(withRouter(PoolDetails)),
+  withStyles(styles)(PoolDetails),
   {
     pool: graphql`
       fragment PoolDetails_pool on PersistentWorkerPool {

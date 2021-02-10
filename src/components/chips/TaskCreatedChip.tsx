@@ -3,32 +3,34 @@ import Chip from '@material-ui/core/Chip';
 import Icon from '@material-ui/core/Icon';
 import Tooltip from '@material-ui/core/Tooltip';
 import { graphql } from 'babel-plugin-relay/macro';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createFragmentContainer } from 'react-relay';
-import { taskStatusColor } from '../../utils/colors';
+import { useTaskStatusColor } from '../../utils/colors';
 import { taskStatusIconName } from '../../utils/status';
 import { roundAndPresentDuration } from '../../utils/time';
 import { TaskCreatedChip_task } from './__generated__/TaskCreatedChip_task.graphql';
-import { WithTheme, withTheme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core';
 
-interface Props extends WithTheme {
+interface Props {
   task: TaskCreatedChip_task;
   className?: string;
 }
 
 let TaskCreatedChip = (props: Props) => {
+  let theme = useTheme();
   const creationTimestamp = props.task.creationTimestamp;
-  const durationAgoInSeconds = (Date.now() - creationTimestamp) / 1000;
 
-  const [, updateState] = React.useState(1);
+  const [durationAgoInSeconds, setDurationAgoInSeconds] = React.useState((Date.now() - creationTimestamp) / 1000);
 
-  if (durationAgoInSeconds < 60) {
-    // force update in a second
-    setTimeout(() => updateState(Math.random()), 1000);
-  } else {
-    // force update in a minute
-    setTimeout(() => updateState(Math.random()), 60 * 1000);
-  }
+  useEffect(() => {
+    const timeoutId = setInterval(
+      () => {
+        setDurationAgoInSeconds((Date.now() - creationTimestamp) / 1000);
+      },
+      durationAgoInSeconds < 60 ? 1_000 : 60_000,
+    );
+    return () => clearInterval(timeoutId);
+  }, [durationAgoInSeconds, creationTimestamp]);
 
   const durationInSeconds = Math.floor(durationAgoInSeconds);
 
@@ -42,8 +44,8 @@ let TaskCreatedChip = (props: Props) => {
         className={props.className}
         label={`Created ${roundAndPresentDuration(durationInSeconds)} ago`}
         avatar={
-          <Avatar style={{ backgroundColor: taskStatusColor('CREATED') }}>
-            <Icon style={{ color: props.theme.palette.background.paper }}>{taskStatusIconName('CREATED')}</Icon>
+          <Avatar style={{ backgroundColor: useTaskStatusColor('CREATED') }}>
+            <Icon style={{ color: theme.palette.primary.contrastText }}>{taskStatusIconName('CREATED')}</Icon>
           </Avatar>
         }
       />
@@ -51,7 +53,7 @@ let TaskCreatedChip = (props: Props) => {
   );
 };
 
-export default createFragmentContainer(withTheme(TaskCreatedChip), {
+export default createFragmentContainer(TaskCreatedChip, {
   task: graphql`
     fragment TaskCreatedChip_task on Task {
       creationTimestamp

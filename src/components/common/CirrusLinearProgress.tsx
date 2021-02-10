@@ -1,13 +1,14 @@
 import React from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { cirrusColors } from '../../cirrusTheme';
 import { withStyles } from '@material-ui/core/styles';
+import { createStyles } from '@material-ui/styles';
 
-const styles = {
-  progress: {
-    backgroundColor: cirrusColors.success,
-  },
-};
+const styles = theme =>
+  createStyles({
+    progress: {
+      backgroundColor: theme.palette.success.main,
+    },
+  });
 
 const CirrusLinearProgress = props => {
   return (

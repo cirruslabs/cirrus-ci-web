@@ -2,10 +2,10 @@
 
 exports[`renders correctly 1`] = `
 <div
-  className="withRouter(Logs)-logContainer-1"
+  className="Logs-logContainer-1"
 >
   <div
-    className="log-line withRouter(Logs)-logLine-2"
+    className="log-line Logs-logLine-2"
     dangerouslySetInnerHTML={
       Object {
         "__html": "hello world",
@@ -16,7 +16,7 @@ exports[`renders correctly 1`] = `
     tabIndex={0}
   />
   <div
-    className="log-line withRouter(Logs)-logLine-2"
+    className="log-line Logs-logLine-2"
     dangerouslySetInnerHTML={
       Object {
         "__html": "I am a log",
@@ -27,7 +27,7 @@ exports[`renders correctly 1`] = `
     tabIndex={0}
   />
   <div
-    className="log-line withRouter(Logs)-logLine-2"
+    className="log-line Logs-logLine-2"
     dangerouslySetInnerHTML={
       Object {
         "__html": "I log things",
@@ -38,7 +38,7 @@ exports[`renders correctly 1`] = `
     tabIndex={0}
   />
   <div
-    className="log-line withRouter(Logs)-logLine-2"
+    className="log-line Logs-logLine-2"
     dangerouslySetInnerHTML={
       Object {
         "__html": "",

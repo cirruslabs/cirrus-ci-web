@@ -1,36 +1,37 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import Tooltip from '@material-ui/core/Tooltip';
 import Icon from '@material-ui/core/Icon';
-import { taskStatusColor } from '../../utils/colors';
+import { useTaskStatusColor } from '../../utils/colors';
 import { taskStatusIconName } from '../../utils/status';
 import { roundAndPresentDuration } from '../../utils/time';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { BuildCreatedChip_build } from './__generated__/BuildCreatedChip_build.graphql';
-import { WithTheme, withTheme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core';
 
-interface Props extends WithTheme {
+interface Props {
   build: BuildCreatedChip_build;
   className?: string;
 }
 
 let BuildCreatedChip = (props: Props) => {
-  const [, updateState] = React.useState(1);
+  let theme = useTheme();
 
   const creationTimestamp = props.build.buildCreatedTimestamp;
-  const durationAgoInSeconds = (Date.now() - creationTimestamp) / 1000;
+  const [durationAgoInSeconds, setDurationAgoInSeconds] = React.useState((Date.now() - creationTimestamp) / 1000);
 
-  if (durationAgoInSeconds < 60) {
-    // force update in a second
-    setTimeout(() => updateState(Math.random()), 1000);
-  } else {
-    // force update in a minute
-    setTimeout(() => updateState(Math.random()), 60 * 1000);
-  }
-
+  useEffect(() => {
+    const timeoutId = setInterval(
+      () => {
+        setDurationAgoInSeconds((Date.now() - creationTimestamp) / 1000);
+      },
+      durationAgoInSeconds < 60 ? 1_000 : 60_000,
+    );
+    return () => clearInterval(timeoutId);
+  }, [durationAgoInSeconds, creationTimestamp]);
   const durationInSeconds = Math.floor(durationAgoInSeconds);
 
   return (
@@ -43,8 +44,8 @@ let BuildCreatedChip = (props: Props) => {
         className={props.className}
         label={`Created ${roundAndPresentDuration(durationInSeconds)} ago`}
         avatar={
-          <Avatar style={{ backgroundColor: taskStatusColor('CREATED') }}>
-            <Icon style={{ color: props.theme.palette.background.paper }}>{taskStatusIconName('CREATED')}</Icon>
+          <Avatar style={{ backgroundColor: useTaskStatusColor('CREATED') }}>
+            <Icon style={{ color: theme.palette.primary.contrastText }}>{taskStatusIconName('CREATED')}</Icon>
           </Avatar>
         }
       />
@@ -52,7 +53,7 @@ let BuildCreatedChip = (props: Props) => {
   );
 };
 
-export default createFragmentContainer(withTheme(BuildCreatedChip), {
+export default createFragmentContainer(BuildCreatedChip, {
   build: graphql`
     fragment BuildCreatedChip_build on Build {
       id

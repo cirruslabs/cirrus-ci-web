@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { createFragmentContainer } from 'react-relay';
@@ -6,7 +5,6 @@ import { graphql } from 'babel-plugin-relay/macro';
 import Paper from '@material-ui/core/Paper';
 import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { cirrusColors } from '../../cirrusTheme';
 import Toolbar from '@material-ui/core/Toolbar';
 import OrganizationComputeCredits from '../compute-credits/OrganizationComputeCredits';
 import GitHubPurchase from '../purchase/GitHubPurchase';
@@ -19,7 +17,7 @@ import { GitHubOrganizationSettings_info } from './__generated__/GitHubOrganizat
 const styles = theme =>
   createStyles({
     title: {
-      backgroundColor: cirrusColors.cirrusTitleBackground,
+      backgroundColor: theme.palette.action.disabledBackground,
     },
     settingGap: {
       paddingTop: 16,
@@ -31,55 +29,49 @@ interface Props extends WithStyles<typeof styles>, RouteComponentProps {
   organization: string;
 }
 
-class GitHubOrganizationSettings extends React.Component<Props> {
-  static contextTypes = {
-    router: PropTypes.object,
-  };
+function GitHubOrganizationSettings(props: Props) {
+  let { organization, info, classes } = props;
 
-  render() {
-    let { organization, info, classes } = this.props;
-
-    if (!info || info.role === 'none') {
-      return <Typography variant="subtitle1">You do not have administrator access on this organization!</Typography>;
-    }
-
-    return (
-      <div>
-        <Paper elevation={1}>
-          <Toolbar className={classes.title}>
-            <Typography variant="h6" color="inherit">
-              Settings for {organization} organization
-            </Typography>
-          </Toolbar>
-        </Paper>
-        <div className={classes.settingGap} />
-        <Paper elevation={1}>
-          <GitHubPurchase info={info} />
-        </Paper>
-        <div className={classes.settingGap} />
-        <Paper elevation={1}>
-          <OrganizationComputeCredits info={info} />
-        </Paper>
-        <div className={classes.settingGap} />
-        <Paper elevation={1}>
-          <OrganizationSecuredVariables info={info} />
-        </Paper>
-        <div className={classes.settingGap} />
-        <Paper elevation={1}>
-          <OrganizationApiSettings info={info} />
-        </Paper>
-        <div className={classes.settingGap} />
-        <Paper elevation={1}>
-          <OrganizationPersistentWorkerPools info={info} />
-        </Paper>
-        <div className={classes.settingGap} />
-        <Paper elevation={1}>
-          <WebHookSettings info={info} />
-        </Paper>
-        <div className={classes.settingGap} />
-      </div>
-    );
+  if (!info || info.role === 'none') {
+    return <Typography variant="subtitle1">You do not have administrator access on this organization!</Typography>;
   }
+
+  return (
+    <div>
+      <Paper elevation={1}>
+        <Toolbar className={classes.title}>
+          <Typography variant="h6" color="inherit">
+            Settings for {organization} organization
+          </Typography>
+        </Toolbar>
+      </Paper>
+      <div className={classes.settingGap} />
+      <Paper elevation={1}>
+        <GitHubPurchase info={info} />
+      </Paper>
+      <div className={classes.settingGap} />
+      <Paper elevation={1}>
+        <OrganizationComputeCredits info={info} />
+      </Paper>
+      <div className={classes.settingGap} />
+      <Paper elevation={1}>
+        <OrganizationSecuredVariables info={info} />
+      </Paper>
+      <div className={classes.settingGap} />
+      <Paper elevation={1}>
+        <OrganizationApiSettings info={info} />
+      </Paper>
+      <div className={classes.settingGap} />
+      <Paper elevation={1}>
+        <OrganizationPersistentWorkerPools info={info} />
+      </Paper>
+      <div className={classes.settingGap} />
+      <Paper elevation={1}>
+        <WebHookSettings info={info} />
+      </Paper>
+      <div className={classes.settingGap} />
+    </div>
+  );
 }
 
 export default createFragmentContainer(withStyles(styles)(withRouter(GitHubOrganizationSettings)), {

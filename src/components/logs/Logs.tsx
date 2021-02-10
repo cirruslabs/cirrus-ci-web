@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AnsiUp from 'ansi_up';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
 import { createStyles, WithStyles, withStyles } from '@material-ui/styles';
 import * as queryString from 'query-string';
-import { UnregisterCallback } from 'history';
 
 let ansiFormatter = new (AnsiUp as any)();
 ansiFormatter.use_classes = true;
@@ -40,90 +39,67 @@ let styles = theme =>
     },
   });
 
-interface Props extends RouteComponentProps, WithStyles<typeof styles> {
+interface Props extends WithStyles<typeof styles> {
   commandName: string;
   logs: string;
   taskId: string;
 }
 
-interface State {
-  highLightedLineStart: number;
-  highLightedLineEnd: number;
-}
+function Logs(props: Props) {
+  const history = useHistory();
+  let location = useLocation();
+  let [highLightedLineStart, setHighLightedLineStart] = useState(NaN);
+  let [highLightedLineEnd, setHighLightedLineEnd] = useState(NaN);
 
-class Logs extends React.Component<Props, State> {
-  unlisten: UnregisterCallback;
+  useEffect(() => {
+    function updateLinesSelection() {
+      let hash = window.location.hash;
+      if (hash && queryString.parse(location.search).command === props.commandName) {
+        let [startLine, endLine] = hash.replace('#', '').split('-');
+        if (!endLine) {
+          endLine = startLine;
+        }
 
-  constructor(props) {
-    super(props);
-    window.onhashchange = this.updateLinesSelection;
-    window.onpopstate = this.updateLinesSelection;
-    this.state = {
-      highLightedLineStart: NaN,
-      highLightedLineEnd: NaN,
-    };
-  }
-
-  componentDidMount() {
-    this.updateLinesSelection();
-    this.unlisten = this.props.history.listen((location, action) => {
-      this.updateLinesSelection();
-    });
-  }
-
-  componentWillUnmount() {
-    this.unlisten();
-  }
-
-  updateLinesSelection() {
-    let hash = window.location.hash;
-    if (hash && queryString.parse(this.props.location.search).command === this.props.commandName) {
-      let [startLine, endLine] = hash.replace('#', '').split('-');
-      if (!endLine) {
-        endLine = startLine;
-      }
-
-      this.setState(prevState => ({
-        ...prevState,
-        highLightedLineStart: parseInt(startLine.replace('L', ''), 10),
-        highLightedLineEnd: parseInt(endLine.replace('L', ''), 10),
-      }));
-      let elementToFocus = document.getElementById(startLine);
-      if (elementToFocus) {
-        elementToFocus.focus();
+        setHighLightedLineStart(parseInt(startLine.replace('L', ''), 10));
+        setHighLightedLineEnd(parseInt(endLine.replace('L', ''), 10));
+        let elementToFocus = document.getElementById(startLine);
+        if (elementToFocus) {
+          elementToFocus.focus();
+        }
       }
     }
-  }
 
-  render() {
-    let { classes } = this.props;
-    return (
-      <div className={classes.logContainer}>
-        {this.props.logs.split('\n').map((line, index) => (
-          <div
-            id={'L' + index}
-            tabIndex={0} // to make it focusable
-            key={index}
-            className={classNames('log-line', classes.logLine, {
-              [classes.logLineHighlighted]:
-                this.state.highLightedLineStart <= index && index <= this.state.highLightedLineEnd,
-            })}
-            onClick={e => this.selectLine(e, index)}
-            dangerouslySetInnerHTML={{ __html: ansiFormatter.ansi_to_html(line) }}
-          />
-        ))}
-      </div>
-    );
-  }
+    updateLinesSelection();
+    return history.listen(location => {
+      updateLinesSelection();
+    });
+  }, [history, location.search, props.commandName]);
 
-  selectLine(event, lineNumber) {
+  function selectLine(event, lineNumber) {
     let lineRange = `L${lineNumber}`;
     if (event.shiftKey) {
-      lineRange = `L${this.state.highLightedLineStart}-L${lineNumber}`;
+      lineRange = `L${highLightedLineStart}-L${lineNumber}`;
     }
-    this.props.history.push(`/task/${this.props.taskId}?command=${this.props.commandName}#${lineRange}`);
-    this.forceUpdate();
+    history.push(`/task/${props.taskId}?command=${props.commandName}#${lineRange}`);
   }
+
+  let { classes } = props;
+  return (
+    <div className={classes.logContainer}>
+      {props.logs.split('\n').map((line, index) => (
+        <div
+          id={'L' + index}
+          tabIndex={0} // to make it focusable
+          key={index}
+          className={classNames('log-line', classes.logLine, {
+            [classes.logLineHighlighted]: highLightedLineStart <= index && index <= highLightedLineEnd,
+          })}
+          onClick={e => selectLine(e, index)}
+          dangerouslySetInnerHTML={{ __html: ansiFormatter.ansi_to_html(line) }}
+        />
+      ))}
+    </div>
+  );
 }
 
-export default withStyles(styles)(withRouter(Logs));
+export default withStyles(styles)(Logs);

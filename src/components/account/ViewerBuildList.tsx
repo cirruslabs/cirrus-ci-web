@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 
 import Table from '@material-ui/core/Table';
@@ -40,50 +39,22 @@ let styles = {
   },
 };
 
-interface Props extends WithStyles<typeof styles>, RouteComponentProps {
+interface Props extends WithStyles<typeof styles> {
   viewer: ViewerBuildList_viewer;
 }
 
-class ViewerBuildList extends React.Component<Props> {
-  static contextTypes = {
-    router: PropTypes.object,
-  };
+function ViewerBuildList(props: Props) {
+  let { classes } = props;
+  let builds = props.viewer.builds;
 
-  render() {
-    let { classes } = this.props;
-    let builds = this.props.viewer.builds;
+  let history = useHistory();
 
-    let buildsComponent = (
-      <Table style={{ tableLayout: 'auto' }}>
-        <TableBody>{builds && builds.edges.map(edge => this.buildItem(edge.node))}</TableBody>
-      </Table>
-    );
-    if (!builds || builds.edges.length === 0) {
-      buildsComponent = (
-        <div className={classes.emptyBuilds}>
-          <ReactMarkdown source="No recent builds! Please check the [documentation](https://cirrus-ci.org/) on how to start with Cirrus CI." />
-        </div>
-      );
-    }
-    return (
-      <Paper elevation={1}>
-        <Head>
-          <title>Recent Builds - Cirrus CI</title>
-        </Head>
-        <Toolbar>
-          <Typography variant="h6">Recent Builds</Typography>
-        </Toolbar>
-        {buildsComponent}
-      </Paper>
-    );
-  }
-
-  buildItem(build) {
-    let { classes } = this.props;
+  function buildItem(build) {
+    let { classes } = props;
     return (
       <TableRow
         key={build.id}
-        onClick={e => navigateBuild(this.context.router, e, build.id)}
+        onClick={e => navigateBuild(history, e, build.id)}
         hover={true}
         style={{ cursor: 'pointer' }}
       >
@@ -108,9 +79,33 @@ class ViewerBuildList extends React.Component<Props> {
       </TableRow>
     );
   }
+
+  let buildsComponent = (
+    <Table style={{ tableLayout: 'auto' }}>
+      <TableBody>{builds && builds.edges.map(edge => buildItem(edge.node))}</TableBody>
+    </Table>
+  );
+  if (!builds || builds.edges.length === 0) {
+    buildsComponent = (
+      <div className={classes.emptyBuilds}>
+        <ReactMarkdown source="No recent builds! Please check the [documentation](https://cirrus-ci.org/) on how to start with Cirrus CI." />
+      </div>
+    );
+  }
+  return (
+    <Paper elevation={1}>
+      <Head>
+        <title>Recent Builds - Cirrus CI</title>
+      </Head>
+      <Toolbar>
+        <Typography variant="h6">Recent Builds</Typography>
+      </Toolbar>
+      {buildsComponent}
+    </Paper>
+  );
 }
 
-export default createFragmentContainer(withStyles(styles)(withRouter(ViewerBuildList)), {
+export default createFragmentContainer(withStyles(styles)(ViewerBuildList), {
   viewer: graphql`
     fragment ViewerBuildList_viewer on User {
       builds(last: 50) {

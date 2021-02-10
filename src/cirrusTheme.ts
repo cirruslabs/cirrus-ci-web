@@ -5,18 +5,35 @@ import orange from '@material-ui/core/colors/orange';
 import red from '@material-ui/core/colors/red';
 import yellow from '@material-ui/core/colors/yellow';
 import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme';
+import { atom, selector } from 'recoil';
+import { localStorageEffect } from './utils/recoil';
+import { PaletteOptions } from '@material-ui/core/styles/createPalette';
 
-export let cirrusColors = {
-  cirrusTitleBackground: grey['300'],
-  progress: lightGreen['500'],
+export const prefersDarkModeState = atom({
+  key: 'CurrentlyPrefersDarkMode',
+  default: false,
+  effects_UNSTABLE: [localStorageEffect('CurrentlyPreferredTheme')],
+});
+
+export const cirrusColorsState = selector({
+  key: 'cirrusColorsState',
+  get: ({ get }) => {
+    const prefersDarkMode = get(prefersDarkModeState);
+    return prefersDarkMode ? cirrusColors : cirrusColors;
+  },
+});
+
+let cirrusColors = {
   initialization: blue['500'],
   lightInitialization: blue['300'],
   success: lightGreen['500'],
   lightSuccess: lightGreen['300'],
   darkSuccess: lightGreen['700'],
   warning: orange['500'],
+  darkWarning: orange['700'],
   lightWarning: orange['300'],
   failure: red['500'],
+  darkFailure: red['700'],
   lightFailure: red['300'],
   undefined: grey['400'],
   executing: yellow['700'],
@@ -25,17 +42,62 @@ export let cirrusColors = {
   aborted: orange['300'],
 };
 
-/*
- *  Fork of lightBaseTheme.js
- */
-export let cirrusTheme: ThemeOptions = {
+export const cirrusThemeOptions = selector({
+  key: 'cirrusThemeOptions',
+  get: ({ get }) => {
+    const prefersDarkMode = get(prefersDarkModeState);
+    const cirrusColors = get(cirrusColorsState);
+    let colorPaletteOptions: PaletteOptions = {
+      success: {
+        light: cirrusColors.lightSuccess,
+        main: cirrusColors.success,
+        dark: cirrusColors.darkSuccess,
+      },
+      error: {
+        light: cirrusColors.lightFailure,
+        main: cirrusColors.failure,
+        dark: cirrusColors.darkFailure,
+      },
+      warning: {
+        light: cirrusColors.lightWarning,
+        main: cirrusColors.warning,
+        dark: cirrusColors.darkWarning,
+      },
+    };
+    let themeOptions = prefersDarkMode ? cirrusDarkTheme : cirrusLightTheme;
+    themeOptions.palette = {
+      ...colorPaletteOptions,
+      ...themeOptions.palette,
+    };
+    return themeOptions;
+  },
+});
+
+let cirrusBaseTheme: ThemeOptions = {
   typography: {
     fontFamily: 'Roboto, sans-serif',
   },
   shape: {
     borderRadius: 2,
   },
+  overrides: {
+    MuiChip: {
+      root: {
+        '& $avatar': {
+          marginLeft: 0,
+          marginRight: 0,
+          width: 32,
+          height: 32,
+        },
+      },
+    },
+  },
+};
+
+export let cirrusLightTheme: ThemeOptions = {
+  ...cirrusBaseTheme,
   palette: {
+    type: 'light',
     primary: {
       main: grey['900'],
       dark: grey['900'],
@@ -52,16 +114,23 @@ export let cirrusTheme: ThemeOptions = {
       hover: grey['200'],
     },
   },
-  overrides: {
-    MuiChip: {
-      root: {
-        '& $avatar': {
-          marginLeft: 0,
-          marginRight: 0,
-          width: 32,
-          height: 32,
-        },
-      },
+};
+
+export let cirrusDarkTheme: ThemeOptions = {
+  ...cirrusBaseTheme,
+  palette: {
+    type: 'dark',
+    primary: {
+      main: grey['900'],
+      dark: grey['900'],
+      light: grey['50'],
+      contrastText: grey['50'],
+    },
+    secondary: {
+      main: grey['700'],
+      dark: grey['700'],
+      light: grey['50'],
+      contrastText: grey['50'],
     },
   },
 };

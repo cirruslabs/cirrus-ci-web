@@ -5,11 +5,9 @@ import Chip from '@material-ui/core/Chip';
 
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { cirrusColorsState } from '../../cirrusTheme';
 import { WorkerStatusChip_worker } from './__generated__/WorkerStatusChip_worker.graphql';
 import { Tooltip, useTheme } from '@material-ui/core';
 import PlatformIcon from '../icons/PlatformIcon';
-import { useRecoilValue } from 'recoil';
 
 interface Props {
   className?: string;
@@ -18,7 +16,6 @@ interface Props {
 
 let WorkerStatusChip = (props: Props) => {
   let theme = useTheme();
-  const cirrusColors = useRecoilValue(cirrusColorsState);
   const { worker } = props;
   let info = worker.info;
 

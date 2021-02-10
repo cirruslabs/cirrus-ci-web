@@ -1,18 +1,16 @@
 import React from 'react';
 
 import Routes from './Routes';
-import { cirrusDarkTheme, cirrusLightTheme, prefersDarkModeState } from './cirrusTheme';
+import { cirrusThemeOptions } from './cirrusTheme';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CirrusFavicon from './components/common/CirrusFavicon';
 import { CssBaseline } from '@material-ui/core';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 export default () => {
-  const [prefersDarkMode] = useRecoilState(prefersDarkModeState);
+  const themeOptions = useRecoilValue(cirrusThemeOptions);
 
-  const theme = React.useMemo(() => createMuiTheme(prefersDarkMode ? cirrusDarkTheme : cirrusLightTheme), [
-    prefersDarkMode,
-  ]);
+  const theme = React.useMemo(() => createMuiTheme(themeOptions), [themeOptions]);
 
   return (
     <ThemeProvider theme={theme}>

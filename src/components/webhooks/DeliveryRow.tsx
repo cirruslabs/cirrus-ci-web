@@ -10,10 +10,10 @@ import { withStyles, WithStyles } from '@material-ui/core/styles';
 import ReportIcon from '@material-ui/icons/Report';
 import SendIcon from '@material-ui/icons/Send';
 import classNames from 'classnames';
-import { cirrusColorsState } from '../../cirrusTheme';
 import DeliveryInfoDialog from './DeliveryInfoDialog';
 import { DeliveryRow_delivery } from './__generated__/DeliveryRow_delivery.graphql';
-import { useRecoilValue } from 'recoil';
+import Avatar from '@material-ui/core/Avatar';
+import { useTheme } from '@material-ui/core';
 
 const styles = {
   chip: {
@@ -33,18 +33,26 @@ interface Props extends WithStyles<typeof styles>, RouteComponentProps {
 
 function DeliveryRow(props: Props) {
   let [showDetails, setShowDetails] = useState(false);
-  const cirrusColors = useRecoilValue(cirrusColorsState);
+  let theme = useTheme();
 
   let { delivery, classes } = props;
 
   let success = 200 <= delivery.response.status && delivery.response.status < 300;
-  let iconStyle = { color: success ? cirrusColors.success : cirrusColors.failure };
+  let statusColor = success ? theme.palette.success.main : theme.palette.error.main;
   return (
     <TableRow hover={true} style={{ cursor: 'pointer' }}>
       <TableCell className={classes.cell} onClick={() => setShowDetails(true)}>
         <Chip
           label={delivery.id}
-          avatar={success ? <SendIcon style={iconStyle} /> : <ReportIcon style={iconStyle} />}
+          avatar={
+            <Avatar style={{ backgroundColor: statusColor }}>
+              {success ? (
+                <SendIcon style={{ color: theme.palette.primary.contrastText }} />
+              ) : (
+                <ReportIcon style={{ color: theme.palette.primary.contrastText }} />
+              )}
+            </Avatar>
+          }
           className={classes.chip}
         />
       </TableCell>

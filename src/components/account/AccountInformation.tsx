@@ -64,13 +64,23 @@ function AccountInformation(props: Props) {
         <Avatar style={{ cursor: 'pointer' }} src={viewer.avatarURL} />
       </IconButton>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-        <MenuItem onClick={event => navigate(history, event, '/settings/profile/')}>
+        <MenuItem
+          onClick={event => {
+            handleClose();
+            navigate(history, event, '/settings/profile/');
+          }}
+        >
           <ListItemIcon>
             <Settings />
           </ListItemIcon>
           <ListItemText inset primary="Settings" />
         </MenuItem>
-        <MenuItem onClick={event => navigate(history, event, 'https://api.cirrus-ci.com/redirect/logout/')}>
+        <MenuItem
+          onClick={event => {
+            handleClose();
+            navigate(history, event, 'https://api.cirrus-ci.com/redirect/logout/');
+          }}
+        >
           <ListItemIcon>
             <DirectionsRun />
           </ListItemIcon>

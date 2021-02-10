@@ -75,7 +75,7 @@ function TaskCommandList(props: Props) {
         TransitionProps={{ unmountOnExit: true, timeout: 400 }}
         defaultExpanded={command.name === selectedCommandName || command.status === 'FAILURE'}
       >
-        <AccordionSummary expandIcon={<ExpandMoreIcon />} style={styles.header}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon style={styles.header} />} style={styles.header}>
           <div>
             <Typography variant="body1">{topText}</Typography>
             <Typography variant="caption">

@@ -9,8 +9,7 @@ task:
     - name: Build
       build_script: yarn build
       container:
-        cpu: 4
-        memory: 12G
+        memory: 8G
     - name: Tests
       test_script: yarn test
     - name: Prettier

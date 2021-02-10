@@ -1,6 +1,5 @@
 container:
   image: node:15
-  memory: 6G
 
 task:
   use_compute_credits: $CIRRUS_BRANCH == 'master'

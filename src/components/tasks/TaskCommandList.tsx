@@ -18,7 +18,9 @@ import { TaskCommandList_task } from './__generated__/TaskCommandList_task.graph
 import { ItemOfArray } from '../../utils/utility-types';
 import { useLocation } from 'react-router-dom';
 import { createStyles } from '@material-ui/styles';
-import { useTheme } from '@material-ui/core';
+import { Box, useTheme } from '@material-ui/core';
+import { useRecoilValue } from 'recoil';
+import { prefersDarkModeState } from '../../cirrusTheme';
 
 const styles = theme =>
   createStyles({
@@ -40,15 +42,17 @@ function TaskCommandList(props: Props) {
   let colorMapping = useCommandStatusColorMapping();
   let location = useLocation();
   let theme = useTheme();
+  const prefersDarkMode = useRecoilValue(prefersDarkModeState);
 
   function commandItem(command: ItemOfArray<TaskCommandList_task['commands']>, commandStartTimestamp: number) {
     const selectedCommandName = queryString.parse(location.search).command;
-    let styles = {
-      header: {
-        color: theme.palette.getContrastText(colorMapping[command.status]),
-        backgroundColor: colorMapping[command.status],
-      },
-    };
+    let summaryStyle = prefersDarkMode
+      ? {}
+      : {
+          color: theme.palette.getContrastText(colorMapping[command.status]),
+          backgroundColor: colorMapping[command.status],
+        };
+
     let finished = command.durationInSeconds > 0 || isTaskCommandFinalStatus(command.status);
 
     // the text at the top (name and type)
@@ -70,29 +74,31 @@ function TaskCommandList(props: Props) {
     }
 
     return (
-      <Accordion
-        key={command.name}
-        TransitionProps={{ unmountOnExit: true, timeout: 400 }}
-        defaultExpanded={command.name === selectedCommandName || command.status === 'FAILURE'}
-      >
-        <AccordionSummary expandIcon={<ExpandMoreIcon style={styles.header} />} style={styles.header}>
-          <div>
-            <Typography variant="body1">{topText}</Typography>
-            <Typography variant="caption">
-              {finished ? (
-                formatDuration(command.durationInSeconds)
-              ) : isTaskCommandExecuting(command.status) ? (
-                <DurationTicker startTimestamp={commandStartTimestamp} />
-              ) : (
-                ''
-              )}
-            </Typography>
-          </div>
-        </AccordionSummary>
-        <AccordionDetails className={props.classes.details}>
-          <TaskCommandLogs taskId={props.task.id} command={command} />
-        </AccordionDetails>
-      </Accordion>
+      <Box borderLeft={theme.spacing(prefersDarkMode ? 1.0 : 0.0)} borderColor={colorMapping[command.status]}>
+        <Accordion
+          key={command.name}
+          TransitionProps={{ unmountOnExit: true, timeout: 400 }}
+          defaultExpanded={command.name === selectedCommandName || command.status === 'FAILURE'}
+        >
+          <AccordionSummary expandIcon={<ExpandMoreIcon />} style={summaryStyle}>
+            <div>
+              <Typography variant="body1">{topText}</Typography>
+              <Typography variant="caption">
+                {finished ? (
+                  formatDuration(command.durationInSeconds)
+                ) : isTaskCommandExecuting(command.status) ? (
+                  <DurationTicker startTimestamp={commandStartTimestamp} />
+                ) : (
+                  ''
+                )}
+              </Typography>
+            </div>
+          </AccordionSummary>
+          <AccordionDetails className={props.classes.details}>
+            <TaskCommandLogs taskId={props.task.id} command={command} />
+          </AccordionDetails>
+        </Accordion>
+      </Box>
     );
   }
 

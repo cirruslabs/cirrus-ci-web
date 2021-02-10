@@ -4,7 +4,7 @@ import { graphql } from 'babel-plugin-relay/macro';
 import { TaskCommandStatus } from './__generated__/colors_TaskCommand.graphql';
 import { NotificationLevel } from './__generated__/colors_Notification.graphql';
 import { useTheme } from '@material-ui/core';
-import { cirrusColorsState } from '../cirrusTheme';
+import { cirrusColorsState, prefersDarkModeState } from '../cirrusTheme';
 import { useRecoilValue } from 'recoil';
 
 export function useBuildStatusColor(status: BuildStatus) {
@@ -77,12 +77,13 @@ export function useCommandStatusColor(status: TaskCommandStatus) {
 export function useCommandStatusColorMapping() {
   const palette = useTheme().palette;
   const cirrusColors = useRecoilValue(cirrusColorsState);
+  const prefersDarkMode = useRecoilValue(prefersDarkModeState);
   return {
-    SUCCESS: palette.success.light,
-    EXECUTING: palette.warning.light,
-    FAILURE: palette.error.light,
-    ABORTED: palette.error.light,
-    SKIPPED: palette.success.light,
+    SUCCESS: prefersDarkMode ? palette.success.dark : palette.success.light,
+    EXECUTING: prefersDarkMode ? palette.warning.dark : palette.warning.light,
+    FAILURE: prefersDarkMode ? palette.error.dark : palette.error.light,
+    ABORTED: prefersDarkMode ? palette.error.dark : palette.error.light,
+    SKIPPED: prefersDarkMode ? palette.success.dark : palette.success.light,
     UNDEFINED: cirrusColors.undefined,
   };
 }
@@ -95,12 +96,13 @@ graphql`
 
 export function useNotificationColor(level: NotificationLevel) {
   const palette = useTheme().palette;
+  const prefersDarkMode = useRecoilValue(prefersDarkModeState);
   switch (level) {
     case 'INFO':
-      return palette.success.main;
+      return prefersDarkMode ? palette.success.dark : palette.success.main;
     case 'ERROR':
-      return palette.error.main;
+      return prefersDarkMode ? palette.error.dark : palette.error.main;
     default:
-      return palette.warning.main;
+      return prefersDarkMode ? palette.warning.dark : palette.warning.main;
   }
 }

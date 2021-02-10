@@ -6,7 +6,7 @@ exports[`renders correctly 1`] = `
   role="progressbar"
   style={
     Object {
-      "color": "#8bc34a",
+      "color": "#2196f3",
       "height": 40,
       "width": 40,
     }

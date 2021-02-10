@@ -8,6 +8,8 @@ task:
   matrix:
     - name: Build
       build_script: yarn build
+      container:
+        memory: 8G
     - name: Tests
       test_script: yarn test
     - name: Prettier

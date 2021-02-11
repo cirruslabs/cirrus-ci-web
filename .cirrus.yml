@@ -3,7 +3,10 @@ container:
 
 task:
   use_compute_credits: $CIRRUS_BRANCH == 'master'
-  install_script: yarn
+  node_modules_cache:
+    folder: node_modules
+    fingerprint_script: cat yarn.lock
+    populate_script: yarn
   bootstrap_script: yarn bootstrap
   matrix:
     - name: Build

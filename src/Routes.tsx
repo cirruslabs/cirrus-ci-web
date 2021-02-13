@@ -20,6 +20,7 @@ import { atom, useRecoilState } from 'recoil';
 import { localStorageEffect } from './utils/recoil';
 import { Tooltip, useTheme } from '@material-ui/core';
 import GitHubIcon from '@material-ui/icons/GitHub';
+import GCPStatus from './components/status/GCPStatus';
 
 const AsyncViewerProfile = React.lazy(() => import('./scenes/Profile/ViewerProfile'));
 
@@ -205,6 +206,7 @@ function Routes(props: WithStyles<typeof styles>) {
               >
                 Cirrus CI
               </Typography>
+              <GCPStatus />
               <ThemeSwitchButton />
               <Tooltip title="Go to source core repository">
                 <IconButton

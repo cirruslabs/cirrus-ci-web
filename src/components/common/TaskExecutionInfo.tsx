@@ -51,7 +51,7 @@ function TaskExecutionInfo(props: Props) {
         <ResponsiveContainer height={200} width="100%">
           <AreaChart data={chartPoints}>
             <YAxis type="number" domain={[0, task.instanceResources.cpu]} hide />
-            <CartesianGrid stroke={null} fill={theme.palette.info.light} />
+            <CartesianGrid stroke={null} fill={prefersDarkMode ? theme.palette.info.dark : theme.palette.info.light} />
             <Area
               type="monotone"
               dataKey="Used CPUs"
@@ -102,7 +102,7 @@ function TaskExecutionInfo(props: Props) {
               domain={[0, memoryUnit === 'Gb' ? task.instanceResources.memory / 1024 : task.instanceResources.memory]}
               hide
             />
-            <CartesianGrid stroke={null} fill={theme.palette.info.light} />
+            <CartesianGrid stroke={null} fill={prefersDarkMode ? theme.palette.info.dark : theme.palette.info.light} />
             <Area
               type="monotone"
               dataKey="Used Memory"

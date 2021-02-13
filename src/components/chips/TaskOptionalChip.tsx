@@ -6,9 +6,7 @@ import Report from '@material-ui/icons/Report';
 
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { cirrusColorsState } from '../../cirrusTheme';
 import { TaskOptionalChip_task } from './__generated__/TaskOptionalChip_task.graphql';
-import { useRecoilValue } from 'recoil';
 import { useTheme } from '@material-ui/core';
 
 interface Props {
@@ -18,7 +16,6 @@ interface Props {
 
 function TaskOptionalChip(props: Props) {
   let theme = useTheme();
-  const cirrusColors = useRecoilValue(cirrusColorsState);
 
   let { optional } = props.task;
   if (!optional) return <div />;
@@ -28,7 +25,7 @@ function TaskOptionalChip(props: Props) {
       className={props.className}
       label="Optional"
       avatar={
-        <Avatar style={{ backgroundColor: cirrusColors.lightWarning }}>
+        <Avatar style={{ backgroundColor: theme.palette.warning.light }}>
           <Report style={{ color: theme.palette.primary.contrastText }} />
         </Avatar>
       }

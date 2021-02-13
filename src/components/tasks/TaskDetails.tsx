@@ -397,10 +397,20 @@ export default createFragmentContainer(withStyles(styles)(withRouter(TaskDetails
       }
       allOtherRuns {
         id
+        localGroupId
+        requiredGroups
+        scheduledTimestamp
+        executingTimestamp
+        finalStatusTimestamp
         ...TaskListRow_task
       }
       dependencies {
         id
+        localGroupId
+        requiredGroups
+        scheduledTimestamp
+        executingTimestamp
+        finalStatusTimestamp
         ...TaskListRow_task
       }
       ...TaskExecutionInfo_task

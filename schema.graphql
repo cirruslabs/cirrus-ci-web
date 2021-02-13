@@ -753,6 +753,8 @@ type Task {
   buildId: ID!
   repositoryId: ID!
   name: String!
+  localGroupId: Int!
+  requiredGroups: [Int]
   status: TaskStatus
   notifications: [Notification]
   commands: [TaskCommand]

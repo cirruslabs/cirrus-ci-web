@@ -54,6 +54,8 @@ const buildSubscription = graphql`
       }
       latestGroupTasks {
         id
+        localGroupId
+        requiredGroups
         status
         ...TaskListRow_task
       }
@@ -256,6 +258,11 @@ export default createFragmentContainer(withStyles(styles)(BuildDetails), {
       }
       latestGroupTasks {
         id
+        localGroupId
+        requiredGroups
+        scheduledTimestamp
+        executingTimestamp
+        finalStatusTimestamp
         status
         ...TaskListRow_task
       }

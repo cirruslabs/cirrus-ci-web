@@ -52,7 +52,6 @@ function TaskListRow(props: Props) {
   let colorMapping = useTaskStatusColorMapping();
   let { task, classes, durationBeforeScheduling, overallDuration } = props;
   let progress = null;
-  console.log(task.status, durationBeforeScheduling, overallDuration);
   if (isTaskFinalStatus(task.status) && overallDuration && task.executingTimestamp) {
     let scheduledDuration = Math.max(0, task.executingTimestamp - task.scheduledTimestamp) / 1000;
     let executionDuration = Math.max(0, task.finalStatusTimestamp - task.executingTimestamp) / 1000;

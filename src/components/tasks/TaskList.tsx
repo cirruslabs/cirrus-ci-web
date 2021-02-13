@@ -43,8 +43,6 @@ function topologicalSort(
   let currentDurationBeforeScheduling = 0;
 
   while (true) {
-    console.log('currentDurationBeforeScheduling', currentDurationBeforeScheduling);
-
     let added = false;
 
     let newlySatisfiedGroups = {};
@@ -52,7 +50,6 @@ function topologicalSort(
     tasks.forEach(task => {
       if (!satisfiedGroups[task.localGroupId] && allGroupsSatisfied(task.requiredGroups)) {
         newlySatisfiedGroups[task.localGroupId] = true;
-        console.log('durationBeforeScheduling', currentDurationBeforeScheduling);
         result.push({
           task: task,
           durationBeforeScheduling: currentDurationBeforeScheduling,

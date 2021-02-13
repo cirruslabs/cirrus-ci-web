@@ -47,7 +47,8 @@ function topologicalSort(
 
     let newlySatisfiedGroups = {};
 
-    tasks.forEach(task => {
+    for (let i = 0; i < tasks.length; i++) {
+      let task = tasks[i];
       if (!satisfiedGroups[task.localGroupId] && allGroupsSatisfied(task.requiredGroups)) {
         newlySatisfiedGroups[task.localGroupId] = true;
         result.push({
@@ -56,7 +57,7 @@ function topologicalSort(
         });
         added = true;
       }
-    });
+    }
 
     Object.keys(newlySatisfiedGroups).forEach(key => (satisfiedGroups[key] = true));
 

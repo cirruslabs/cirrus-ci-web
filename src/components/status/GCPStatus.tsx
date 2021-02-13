@@ -1,11 +1,11 @@
 import { IconButton, Tooltip, useTheme } from '@material-ui/core';
 import CloudIcon from '@material-ui/icons/Cloud';
-import { atom, useRecoilValue } from 'recoil';
+import { selector, useRecoilValue } from 'recoil';
 import React from 'react';
 
-export const GCPHasOngoingIncident = atom({
+export const GCPHasOngoingIncident = selector({
   key: 'GCPHasOngoingIncident',
-  default: async () => {
+  get: async () => {
     const incidentsResponse = await fetch('https://status.cloud.google.com/incidents.json');
     const body = await incidentsResponse.json();
     if (body[0].end) {
@@ -20,7 +20,7 @@ export default () => {
   let theme = useTheme();
   let hasIncident = useRecoilValue(GCPHasOngoingIncident);
 
-  if (!hasIncident) return null;
+  if (!hasIncident) return <div />;
 
   return (
     <Tooltip title="Google Cloud has an ongoing incident that can affect normal operations">

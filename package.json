@@ -19,12 +19,12 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@stripe/react-stripe-js": "^1.1.2",
-    "@stripe/stripe-js": "^1.11.0",
-    "ansi_up": "^4.0.4",
+    "@stripe/stripe-js": "^1.12.1",
+    "ansi_up": "^5.0.0",
     "babel-plugin-relay": "^10.1.2",
     "classnames": "^2.2.6",
     "clipboard-copy": "^4.0.1",
-    "graphiql": "^1.2.1",
+    "graphiql": "^1.4.0",
     "graphql": "^15.4.0",
     "graphql-relay": "^0.6.0",
     "js-base64": "^3.6.0",
@@ -46,7 +46,7 @@
   "devDependencies": {
     "@types/classnames": "^2.2.11",
     "@types/jest": "^26.0.19",
-    "@types/node": "^14.14.16",
+    "@types/node": "^14.14.28",
     "@types/react": "^16.8.0",
     "@types/react-dom": "^16.8.0",
     "@types/react-helmet": "^6.1.0",
@@ -60,7 +60,7 @@
     "react-scripts": "^3.4.3",
     "react-test-renderer": "^17.0.1",
     "relay-compiler": "^10.1.2",
-    "relay-compiler-language-typescript": "^13.0.2",
+    "relay-compiler-language-typescript": "^13.0.6",
     "typescript": "^3.9.7"
   },
   "scripts": {

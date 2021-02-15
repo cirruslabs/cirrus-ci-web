@@ -21,6 +21,7 @@ const styles = theme =>
   createStyles({
     authButton: {
       color: theme.palette.primary.contrastText,
+      marginLeft: 10,
     },
   });
 

@@ -6,9 +6,14 @@ import React from 'react';
 export const GitHubStatusIndicatorState = selector({
   key: 'GitHubStatusIndicator',
   get: async () => {
-    const incidentsResponse = await fetch('https://kctbh9vrtdwd.statuspage.io/api/v2/status.json');
-    const body = await incidentsResponse.json();
-    return body.status.indicator;
+    try {
+      const incidentsResponse = await fetch('https://kctbh9vrtdwd.statuspage.io/api/v2/status.json');
+      const body = await incidentsResponse.json();
+      return body.status.indicator;
+    } catch (e) {
+      // statuspage being down or failed connection doesn't mean GitHub is down
+      return 'none';
+    }
   },
 });
 

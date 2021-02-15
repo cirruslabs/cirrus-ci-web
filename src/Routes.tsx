@@ -66,7 +66,7 @@ export const styles = theme =>
     },
     linkButton: {
       color: theme.palette.primary.contrastText,
-      marginRight: 8,
+      marginLeft: 8,
     },
     titleShift: {
       marginLeft: 2 * theme.spacing(1.0),
@@ -214,7 +214,7 @@ function Routes(props: WithStyles<typeof styles>) {
                 <GitHubStatus />
               </Suspense>
               <ThemeSwitchButton />
-              <Tooltip title="Go to source core repository">
+              <Tooltip title="Go to front-end source repository">
                 <IconButton
                   className={classes.linkButton}
                   href="https://github.com/cirruslabs/cirrus-ci-web"

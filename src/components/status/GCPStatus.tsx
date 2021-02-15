@@ -6,13 +6,14 @@ import React from 'react';
 export const GCPHasOngoingIncident = selector({
   key: 'GCPHasOngoingIncident',
   get: async () => {
-    const incidentsResponse = await fetch('https://status.cloud.google.com/incidents.json');
-    const body = await incidentsResponse.json();
-    if (body[0].end) {
-      // there is an incident which ended
+    try {
+      const incidentsResponse = await fetch('https://status.cloud.google.com/incidents.json');
+      const body = await incidentsResponse.json();
+      return !body[0].end;
+    } catch (e) {
+      // status page is offline or blocked, doesn't mean GCP is down
       return false;
     }
-    return true;
   },
 });
 

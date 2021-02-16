@@ -179,6 +179,7 @@ function RepositoryBuildList(props: Props) {
             {repositorySettings}
           </div>
         </Toolbar>
+        {buildsChart}
         <Table style={{ tableLayout: 'auto' }}>
           <TableBody>{builds.map(build => buildItem(build))}</TableBody>
         </Table>
@@ -186,7 +187,6 @@ function RepositoryBuildList(props: Props) {
       {openCreateDialog && (
         <CreateBuildDialog repository={repository} open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} />
       )}
-      {buildsChart}
     </div>
   );
 }

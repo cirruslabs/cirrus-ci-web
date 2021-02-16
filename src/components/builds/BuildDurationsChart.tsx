@@ -7,14 +7,7 @@ import { NodeOfConnection, UnspecifiedCallbackFunction } from '../../utils/utili
 import { RepositoryBuildList_repository } from '../repositories/__generated__/RepositoryBuildList_repository.graphql';
 import { withStyles } from '@material-ui/styles';
 import { useHistory } from 'react-router-dom';
-
-const BuildDurationsChartTooltip = props => {
-  let style = {
-    padding: 4,
-    backgroundColor: '#FFF',
-  };
-  return <p style={style}>{props.label}</p>;
-};
+import { Paper, Typography } from '@material-ui/core';
 
 interface Props {
   builds: NodeOfConnection<RepositoryBuildList_repository['builds']>[];
@@ -32,6 +25,17 @@ function BuildDurationsChart(props: Props) {
     ticks.push(nextTick);
   }
 
+  const BuildDurationsChartTooltip = ({ active, payload, label }) => {
+    if (!active) return null;
+    return (
+      <Paper>
+        <Typography style={{ margin: 4 }}>
+          {formatDuration(payload[0].value)} {label}
+        </Typography>
+      </Paper>
+    );
+  };
+
   function renderBuildBar(props, selectedBuildId) {
     if (props.id === selectedBuildId) {
       const { x, y, width, height, ...others } = props;
@@ -44,7 +48,7 @@ function BuildDurationsChart(props: Props) {
           y={y - sign * 2}
           height={height + sign * 2}
           fill={statusColorMapping[props.status]}
-          className="recharts-bar-rectangle"
+          classbaName="recharts-bar-rectangle"
         />
       );
     }
@@ -55,8 +59,8 @@ function BuildDurationsChart(props: Props) {
     <ResponsiveContainer height="100%" width="100%">
       <BarChart data={builds}>
         <YAxis dataKey="durationInSeconds" tickFormatter={formatDuration} ticks={ticks} />
-        <XAxis dataKey="changeMessageTitle" hide={true} />
-        <Tooltip content={<BuildDurationsChartTooltip />} />
+        <XAxis dataKey="changeMessageTitle" hide />
+        <Tooltip cursor={false} content={BuildDurationsChartTooltip} />
         <Bar
           dataKey="durationInSeconds"
           isAnimationActive={false}

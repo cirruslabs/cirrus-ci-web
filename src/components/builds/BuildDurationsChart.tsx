@@ -27,10 +27,12 @@ function BuildDurationsChart(props: Props) {
 
   const BuildDurationsChartTooltip = ({ active, payload, label }) => {
     if (!active) return null;
+    let payloadElement = payload[0];
+    if (!payloadElement) return null;
     return (
       <Paper>
         <Typography style={{ margin: 4 }}>
-          {formatDuration(payload[0].value)} {label}
+          {formatDuration(payloadElement.value)} {label}
         </Typography>
       </Paper>
     );

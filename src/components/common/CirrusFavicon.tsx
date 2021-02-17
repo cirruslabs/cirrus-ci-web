@@ -6,7 +6,6 @@ import { useFaviconColor } from '../../utils/colors';
 import { useTheme } from '@material-ui/core';
 
 function updateIcon(color) {
-  console.log('color', color);
   let linkEl = document.getElementById('favicon') as HTMLLinkElement;
   if (linkEl) {
     linkEl.type = 'image/x-icon';

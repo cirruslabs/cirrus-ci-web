@@ -6,6 +6,7 @@ import { useFaviconColor } from '../../utils/colors';
 import { useTheme } from '@material-ui/core';
 
 function updateIcon(color) {
+  console.log('color', color);
   let linkEl = document.getElementById('favicon') as HTMLLinkElement;
   if (linkEl) {
     linkEl.type = 'image/x-icon';
@@ -56,7 +57,9 @@ interface CirrusFaviconProps {
 export default (props: CirrusFaviconProps) => {
   let theme = useTheme();
   useEffect(() => {
-    updateIcon(theme.palette.primary.main);
+    return function cleanup() {
+      updateIcon(theme.palette.primary.main);
+    };
   }, [theme.palette.primary.main]);
   updateIcon(useFaviconColor(props.status));
   return null;

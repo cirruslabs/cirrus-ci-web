@@ -12,7 +12,7 @@ import { TaskResourcesChip_task } from './__generated__/TaskResourcesChip_task.g
 const styles = theme =>
   createStyles({
     avatar: {
-      backgroundColor: theme.palette.secondary.main,
+      backgroundColor: theme.palette.primary.main,
     },
     avatarIcon: {
       color: theme.palette.primary.contrastText,

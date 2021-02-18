@@ -78,6 +78,15 @@ function topologicalSort(
     }
   }
 
+  for (let i = 0; i < tasks.length; i++) {
+    let task = tasks[i];
+    if (!satisfiedGroups[task.localGroupId]) {
+      result.push({
+        task: task,
+      });
+    }
+  }
+
   for (let i = 0; i < result.length; i++) {
     result[i].overallDuration = currentDurationBeforeScheduling;
   }

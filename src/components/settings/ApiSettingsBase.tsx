@@ -75,7 +75,7 @@ function ApiSettingsBase(props: Props) {
         <CardContent>
           <Typography variant="subtitle1">
             Need an API token for scripts or testing? Generate an access token for the Cirrus CI API here. See the{' '}
-            <a href="https://cirrus-ci.org/faq/">documentation</a> for more details.
+            <a href="https://cirrus-ci.org/api/">documentation</a> for more details.
           </Typography>
           {existingTokenComponent}
           {newTokenComponent}

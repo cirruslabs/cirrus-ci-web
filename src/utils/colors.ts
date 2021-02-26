@@ -32,6 +32,7 @@ export function useTaskStatusColorMapping() {
   const palette = useTheme().palette;
   return {
     CREATED: palette.info.light,
+    TRIGGERED: palette.info.light,
     SCHEDULED: palette.info.main,
     EXECUTING: palette.warning.light,
     PAUSED: palette.secondary.main,

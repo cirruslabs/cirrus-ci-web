@@ -198,15 +198,14 @@ function Routes(props: WithStyles<typeof styles>) {
               </IconButton>
               <Typography
                 variant="h6"
-                className={classNames(classes.flex, {
-                  [classes.titleShift]: openDrawer,
-                })}
+                className={classNames({ [classes.titleShift]: openDrawer })}
                 style={getNavbarTitleStyling()}
                 onClick={e => navigate(history, e, '/')}
                 color="inherit"
               >
                 Cirrus CI
               </Typography>
+              <div className={classes.flex} />
               <Suspense fallback={<div />}>
                 <GCPStatus />
               </Suspense>

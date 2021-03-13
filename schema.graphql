@@ -116,6 +116,7 @@ type Build {
   latestGroupTasks: [Task]
   repository: Repository!
   viewerPermission: PermissionType!
+  source: String
 }
 
 input BuildApproveInput {

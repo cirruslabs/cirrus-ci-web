@@ -179,7 +179,9 @@ function BuildDetails(props: Props) {
     </Button>
   );
 
-  let failedTaskIds = build.latestGroupTasks.filter(task => task.status === 'FAILED').map(task => task.id);
+  let failedTaskIds = build.latestGroupTasks
+    .filter(task => task.status === 'FAILED' || (task.status === 'ABORTED' && task.requiredGroups.length === 0))
+    .map(task => task.id);
   let reRunAllTasksButton =
     failedTaskIds.length === 0 || !hasWritePermissions(build.repository.viewerPermission) ? null : (
       <Button variant="contained" onClick={() => batchReRun(failedTaskIds)} startIcon={<Refresh />}>

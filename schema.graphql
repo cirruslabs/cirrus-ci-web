@@ -111,6 +111,7 @@ type Build {
   buildCreatedTimestamp: Int!
   status: BuildStatus
   notifications: [Notification]
+  parsingResult: ParsingResult
   tasks: [Task]
   taskGroupsAmount: Int
   latestGroupTasks: [Task]
@@ -452,6 +453,27 @@ type PageInfo {
   When paginating forwards, the cursor to continue.
   """
   endCursor: String
+}
+
+type ParsingResult {
+  rawYamlConfig: String!
+  rawStarlarkConfig: String!
+  processedYamlConfig: String!
+  issues: [ParsingResultIssue]
+  outputLogs: [String]
+}
+
+type ParsingResultIssue {
+  level: ParsingResultIssueLevel!
+  message: String!
+  line: Int!
+  column: Int!
+}
+
+enum ParsingResultIssueLevel {
+  INFO
+  WARNING
+  ERROR
 }
 
 """

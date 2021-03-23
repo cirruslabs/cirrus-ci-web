@@ -21,7 +21,7 @@ I log things
           <Router>
             <Switch>
               <Route exact path="/">
-                <Logs logs={exampleLog} commandName="test" taskId="123" />
+                <Logs logs={exampleLog} logsName="test" />
               </Route>
             </Switch>
           </Router>

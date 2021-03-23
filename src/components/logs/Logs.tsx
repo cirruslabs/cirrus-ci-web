@@ -42,20 +42,17 @@ let styles = theme =>
 interface Props extends WithStyles<typeof styles> {
   commandName: string;
   logs: string;
-  taskId: string;
 }
 
 function Logs(props: Props) {
   const history = useHistory();
-  let location = useLocation();
   let [highLightedLineStart, setHighLightedLineStart] = useState(NaN);
   let [highLightedLineEnd, setHighLightedLineEnd] = useState(NaN);
 
   useEffect(() => {
     function updateLinesSelection() {
-      let hash = window.location.hash;
-      if (hash && queryString.parse(location.search).command === props.commandName) {
-        let [startLine, endLine] = hash.replace('#', '').split('-');
+      if (history.location && queryString.parse(history.location.search).command === props.commandName) {
+        let [startLine, endLine] = history.location.hash.replace('#', '').split('-');
         if (!endLine) {
           endLine = startLine;
         }
@@ -73,14 +70,17 @@ function Logs(props: Props) {
     return history.listen(location => {
       updateLinesSelection();
     });
-  }, [history, location.search, props.commandName]);
+  }, [history.location.search, history.location.hash, props.commandName]);
 
   function selectLine(event, lineNumber) {
     let lineRange = `L${lineNumber}`;
     if (event.shiftKey) {
       lineRange = `L${highLightedLineStart}-L${lineNumber}`;
     }
-    history.push(`/task/${props.taskId}?command=${props.commandName}#${lineRange}`);
+    history.push({
+      search: `?command=${props.commandName}`,
+      hash: `#${lineRange}`,
+    });
   }
 
   let { classes } = props;

@@ -73,7 +73,7 @@ function TaskCommandRealTimeLogs(props: RealTimeLogsProps) {
   return (
     <div style={{ width: '100%', height: '100%' }}>
       {inProgress ? null : downloadButton}
-      <Logs commandName={command.name} logs={initialLogLines.join('\n') + additionalLogs} />
+      <Logs logsName={command.name} logs={initialLogLines.join('\n') + additionalLogs} />
       {inProgress ? <CirrusLinearProgress /> : null}
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import AnsiUp from 'ansi_up';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import { createStyles, WithStyles, withStyles } from '@material-ui/styles';
 import * as queryString from 'query-string';
@@ -40,22 +40,20 @@ let styles = theme =>
   });
 
 interface Props extends WithStyles<typeof styles> {
-  commandName: string;
+  logsName: string;
   logs: string;
-  taskId: string;
 }
 
 function Logs(props: Props) {
   const history = useHistory();
-  let location = useLocation();
   let [highLightedLineStart, setHighLightedLineStart] = useState(NaN);
   let [highLightedLineEnd, setHighLightedLineEnd] = useState(NaN);
 
   useEffect(() => {
     function updateLinesSelection() {
-      let hash = window.location.hash;
-      if (hash && queryString.parse(location.search).command === props.commandName) {
-        let [startLine, endLine] = hash.replace('#', '').split('-');
+      let search = (history.location && queryString.parse(history.location.search)) || {};
+      if (search.logs === props.logsName || search.command === props.logsName) {
+        let [startLine, endLine] = history.location.hash.replace('#', '').split('-');
         if (!endLine) {
           endLine = startLine;
         }
@@ -73,14 +71,17 @@ function Logs(props: Props) {
     return history.listen(location => {
       updateLinesSelection();
     });
-  }, [history, location.search, props.commandName]);
+  }, [history, props.logsName]);
 
   function selectLine(event, lineNumber) {
     let lineRange = `L${lineNumber}`;
     if (event.shiftKey) {
       lineRange = `L${highLightedLineStart}-L${lineNumber}`;
     }
-    history.push(`/task/${props.taskId}?command=${props.commandName}#${lineRange}`);
+    history.push({
+      search: `?logs=${props.logsName}`,
+      hash: `#${lineRange}`,
+    });
   }
 
   let { classes } = props;

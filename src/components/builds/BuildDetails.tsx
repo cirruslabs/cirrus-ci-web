@@ -202,7 +202,7 @@ function BuildDetails(props: Props) {
   );
 
   let configurationWithIssues =
-    build.parsingResult.issues.length == 0 ? null : (
+    build.parsingResult.issues.length === 0 ? null : (
       <Accordion defaultExpanded={true}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography variant="h6">Failed to parse configuration!</Typography>

@@ -63,7 +63,7 @@ function ConfigurationWithIssues(props: Props) {
   function getIssuesForLine(lineNumber: number) {
     const issuesForLine = issueMap[lineNumber];
 
-    if (issuesForLine == undefined || issuesForLine.length == 0) return null;
+    if (issuesForLine === undefined || issuesForLine.length === 0) return null;
 
     const renderedIssues = issuesForLine.map(issue => {
       return (

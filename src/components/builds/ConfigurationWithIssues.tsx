@@ -12,6 +12,9 @@ const styles = (theme: Theme) =>
       borderSpacing: '0px',
     },
     lineNumber: {
+      // An attempt to be consistent in colors with chips[1] backgrounds used on the same builds page
+      //
+      // [1]: https://github.com/mui-org/material-ui/blob/bda3d8541b2f3bea14ed241ae8155239d524a24c/packages/material-ui/src/Chip/Chip.js#L14
       background: theme.palette.type === 'dark' ? theme.palette.grey[700] : theme.palette.grey[300],
       fontFamily: 'Monaco, monospace',
       paddingRight: '5px',

@@ -12,7 +12,7 @@ const styles = (theme: Theme) =>
       borderSpacing: '0px',
     },
     lineNumber: {
-      background: theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[700],
+      background: theme.palette.type === 'dark' ? theme.palette.grey[700] : theme.palette.grey[300],
       fontFamily: 'Monaco, monospace',
       paddingRight: '5px',
       width: '1%',

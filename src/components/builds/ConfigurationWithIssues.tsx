@@ -29,6 +29,7 @@ const styles = (theme: Theme) =>
     },
     issue: {
       fontSize: theme.typography.fontSize,
+      borderRadius: '0',
     },
   });
 
@@ -91,7 +92,7 @@ function ConfigurationWithIssues(props: Props) {
   ]);
 
   return (
-    <table className={classes.configurationTable}>
+    <table className={classes.configurationTable} cellPadding={0}>
       <tbody>{lines}</tbody>
     </table>
   );

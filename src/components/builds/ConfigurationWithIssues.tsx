@@ -41,13 +41,6 @@ const styles = (theme: Theme) =>
     },
   });
 
-interface Issue {
-  level: string;
-  message: string;
-  line: number;
-  column: number;
-}
-
 interface Props extends WithStyles<typeof styles> {
   build: ConfigurationWithIssues_build;
 }

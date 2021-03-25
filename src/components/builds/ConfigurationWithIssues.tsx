@@ -2,6 +2,14 @@ import React from 'react';
 import { createStyles, Theme } from '@material-ui/core';
 import { WithStyles, withStyles } from '@material-ui/core/styles';
 import { Alert } from '@material-ui/lab';
+import { createFragmentContainer } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
+import { ConfigurationWithIssues_build } from './__generated__/ConfigurationWithIssues_build.graphql';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Typography from '@material-ui/core/Typography';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -41,15 +49,18 @@ interface Issue {
 }
 
 interface Props extends WithStyles<typeof styles> {
-  configuration: string;
-  issues: ReadonlyArray<Issue>;
+  build: ConfigurationWithIssues_build;
 }
 
 function ConfigurationWithIssues(props: Props) {
-  let { configuration, issues, classes } = props;
+  let { build, classes } = props;
+
+  if (!build.parsingResult || build.parsingResult.issues.length === 0) {
+    return null;
+  }
 
   // Sort issues by (line, column) and store them in a map for faster access
-  var sortedIssues = issues.slice().sort(function (left, right) {
+  var sortedIssues = build.parsingResult.issues.slice().sort(function (left, right) {
     return left.line - right.line || left.column - right.column;
   });
 
@@ -81,7 +92,7 @@ function ConfigurationWithIssues(props: Props) {
     );
   }
 
-  const lines = configuration.split('\n').map((lineContent, zeroBasedLineNumber) => [
+  const lines = build.parsingResult.processedYamlConfig.split('\n').map((lineContent, zeroBasedLineNumber) => [
     <tr>
       <td className={classes.lineNumber}>{zeroBasedLineNumber + 1}</td>
       <td className={classes.lineContent}>
@@ -92,10 +103,31 @@ function ConfigurationWithIssues(props: Props) {
   ]);
 
   return (
-    <table className={classes.configurationTable} cellPadding={0}>
-      <tbody>{lines}</tbody>
-    </table>
+    <Accordion defaultExpanded={true}>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <Typography variant="h6">Failed to parse configuration!</Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        <table className={classes.configurationTable} cellPadding={0}>
+          <tbody>{lines}</tbody>
+        </table>
+      </AccordionDetails>
+    </Accordion>
   );
 }
 
-export default withStyles(styles)(ConfigurationWithIssues);
+export default createFragmentContainer(withStyles(styles)(ConfigurationWithIssues), {
+  build: graphql`
+    fragment ConfigurationWithIssues_build on Build {
+      parsingResult {
+        processedYamlConfig
+        issues {
+          level
+          message
+          line
+          column
+        }
+      }
+    }
+  `,
+});

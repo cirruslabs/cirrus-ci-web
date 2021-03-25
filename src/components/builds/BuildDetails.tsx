@@ -22,10 +22,6 @@ import Check from '@material-ui/icons/Check';
 import BuildBranchNameChip from '../chips/BuildBranchNameChip';
 import Notification from '../common/Notification';
 import classNames from 'classnames';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ConfigurationWithIssues from './ConfigurationWithIssues';
 
 const buildApproveMutation = graphql`
@@ -201,21 +197,6 @@ function BuildDetails(props: Props) {
     </Button>
   );
 
-  let configurationWithIssues =
-    !build.parsingResult || build.parsingResult.issues.length === 0 ? null : (
-      <Accordion defaultExpanded={true}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography variant="h6">Failed to parse configuration!</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <ConfigurationWithIssues
-            configuration={build.parsingResult.processedYamlConfig}
-            issues={build.parsingResult.issues}
-          />
-        </AccordionDetails>
-      </Accordion>
-    );
-
   return (
     <div>
       <CirrusFavicon status={build.status} />
@@ -254,7 +235,7 @@ function BuildDetails(props: Props) {
           {reRunAllTasksButton}
         </CardActions>
       </Card>
-      {configurationWithIssues}
+      <ConfigurationWithIssues build={build} />
       {notificationsComponent}
       <div className={classes.gap} />
       <Paper elevation={2}>
@@ -279,16 +260,7 @@ export default createFragmentContainer(withStyles(styles)(BuildDetails), {
         message
         ...Notification_notification
       }
-      parsingResult {
-        processedYamlConfig
-        issues {
-          level
-          message
-          line
-          column
-        }
-        outputLogs
-      }
+      ...ConfigurationWithIssues_build
       latestGroupTasks {
         id
         localGroupId

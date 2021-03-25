@@ -22,6 +22,7 @@ import Check from '@material-ui/icons/Check';
 import BuildBranchNameChip from '../chips/BuildBranchNameChip';
 import Notification from '../common/Notification';
 import classNames from 'classnames';
+import ConfigurationWithIssues from './ConfigurationWithIssues';
 
 const buildApproveMutation = graphql`
   mutation BuildDetailsApproveBuildMutation($input: BuildApproveInput!) {
@@ -234,6 +235,7 @@ function BuildDetails(props: Props) {
           {reRunAllTasksButton}
         </CardActions>
       </Card>
+      <ConfigurationWithIssues build={build} />
       {notificationsComponent}
       <div className={classes.gap} />
       <Paper elevation={2}>
@@ -258,6 +260,7 @@ export default createFragmentContainer(withStyles(styles)(BuildDetails), {
         message
         ...Notification_notification
       }
+      ...ConfigurationWithIssues_build
       latestGroupTasks {
         id
         localGroupId

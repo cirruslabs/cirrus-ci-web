@@ -17,14 +17,14 @@ const styles = (theme: Theme) =>
       // [1]: https://github.com/mui-org/material-ui/blob/bda3d8541b2f3bea14ed241ae8155239d524a24c/packages/material-ui/src/Chip/Chip.js#L14
       background: theme.palette.type === 'dark' ? theme.palette.grey[700] : theme.palette.grey[300],
       fontFamily: 'Monaco, monospace',
-      paddingRight: '5px',
+      paddingRight: theme.spacing(1),
       width: '1%',
-      minWidth: '40px',
+      minWidth: theme.spacing(5),
       textAlign: 'right',
     },
     lineContent: {
       fontFamily: 'Monaco, monospace',
-      paddingLeft: '5px',
+      paddingLeft: theme.spacing(1),
       whiteSpace: 'pre-wrap',
     },
     issue: {

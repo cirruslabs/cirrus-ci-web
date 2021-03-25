@@ -9,7 +9,7 @@ const styles = (theme: Theme) =>
       color: theme.palette.type === 'dark' ? theme.palette.primary.light : theme.palette.primary.dark,
       background: theme.palette.type === 'dark' ? theme.palette.primary.dark : theme.palette.primary.light,
       width: '100%',
-      borderSpacing: '0px',
+      borderSpacing: '0',
     },
     lineNumber: {
       // An attempt to be consistent in colors with chips[1] backgrounds used on the same builds page

@@ -88,7 +88,7 @@ function HookDetails(props: Props, context) {
     backgroundColor: useNotificationColor('ERROR'),
   };
   const potentialError =
-    hook.info.error == '' ? null : (
+    hook.info.error === '' ? null : (
       <div className={classNames('container', classes.gap)}>
         <div
           key={props.hook.info.error}
@@ -104,7 +104,7 @@ function HookDetails(props: Props, context) {
 
   return (
     <div>
-      <CirrusFavicon status={hook.info.error == ''} />
+      <CirrusFavicon status={hook.info.error === ''} />
       <Head>
         <title>{targetName} hook - Cirrus CI</title>
       </Head>

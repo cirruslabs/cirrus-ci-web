@@ -46,7 +46,7 @@ export function useTaskStatusColorMapping() {
 export function useHookStatusColor(hook) {
   const palette = useTheme().palette;
 
-  return hook.info.error == '' ? palette.success.main : palette.error.main;
+  return hook.info.error === '' ? palette.success.main : palette.error.main;
 }
 
 export function useFaviconColor(status: BuildStatus | TaskStatus | boolean | null) {

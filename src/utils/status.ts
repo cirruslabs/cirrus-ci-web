@@ -136,7 +136,7 @@ export function taskStatusMessage(task) {
 }
 
 export function hookIconName(hook) {
-  return hook.info.error == '' ? 'done' : 'error_outlined';
+  return hook.info.error === '' ? 'done' : 'error_outlined';
 }
 
 export function hookStatusMessage(hook) {
@@ -144,7 +144,7 @@ export function hookStatusMessage(hook) {
   const durationMillis = Math.round(hook.info.durationNanos / nanosecondsInMillisecond);
   const humanizedDuration = durationMillis < 1 ? '<1 ms.' : durationMillis + ' ms.';
 
-  const verb = hook.info.error == '' ? 'Finished' : 'Failed';
+  const verb = hook.info.error === '' ? 'Finished' : 'Failed';
 
   return verb + ' in ' + humanizedDuration;
 }

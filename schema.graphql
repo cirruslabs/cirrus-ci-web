@@ -118,6 +118,7 @@ type Build {
   repository: Repository!
   viewerPermission: PermissionType!
   source: String
+  hooks: [Hook]
 }
 
 input BuildApproveInput {
@@ -343,6 +344,27 @@ type GitHubOrganizationInfo {
   persistentWorkerPools: [PersistentWorkerPool]
 }
 
+type Hook {
+  id: ID!
+  repositoryId: ID!
+  repository: Repository!
+  buildId: ID
+  build: Build
+  taskId: ID
+  task: Task
+  timestamp: Int!
+  name: String!
+  info: HookExecutionInfo!
+}
+
+type HookExecutionInfo {
+  error: String!
+  arguments: String
+  result: String
+  outputLogs: [String]
+  durationNanos: Int!
+}
+
 type InstanceResources {
   cpu: Float!
   memory: Int!
@@ -376,7 +398,6 @@ type Mutation {
     input: UpdateOrganizationSecuredVariableInput!
   ): UpdateOrganizationSecuredVariablePayload
   createBuild(input: RepositoryCreateBuildInput!): RepositoryCreateBuildPayload
-  validate(input: ValidateConfigInput!): ValidateConfigPayload
   deleteRepository(input: RepositoryDeleteInput!): RepositoryDeletePayload
   rerun(input: TaskReRunInput!): TaskReRunPayload
   batchReRun(input: TasksReRunInput!): TasksReRunPayload
@@ -737,6 +758,7 @@ type Root {
   build(id: ID!): Build
   searchBuilds(repositoryOwner: String!, repositoryName: String!, SHA: String): [Build]
   task(id: ID!): Task
+  hook(id: ID!): Hook
   webhookDelivery(id: String!): WebHookDelivery
   persistentWorkerPool(poolId: ID): PersistentWorkerPool
   persistentWorker(poolId: ID, name: String): PersistentWorker
@@ -781,6 +803,7 @@ type Task {
   status: TaskStatus
   notifications: [Notification]
   commands: [TaskCommand]
+  firstFailedCommand: TaskCommand
   artifacts: [Artifacts]
   commandLogsTail(name: String!): [String]
   statusTimestamp: Int!
@@ -811,6 +834,7 @@ type Task {
   instanceResources: InstanceResources
   executionInfo: ExecutionInfo
   baseEnvironment: [String]
+  hooks: [Hook]
 }
 
 input TaskAbortInput {
@@ -838,6 +862,7 @@ type TaskCommand {
   type: TaskCommandType
   status: TaskCommandStatus
   durationInSeconds: Int
+  logsTail: [String]
 }
 
 """
@@ -1090,17 +1115,6 @@ type UserTransactionsConnection {
   details about this specific page
   """
   pageInfo: PageInfo!
-}
-
-input ValidateConfigInput {
-  config: String
-  environmentVariables: [String]
-  clientMutationId: String
-}
-
-type ValidateConfigPayload {
-  errors: [String]
-  clientMutationId: String
 }
 
 """

@@ -49,6 +49,8 @@ const AsyncGitHubOrganizationSettingsRenderer = React.lazy(
 
 const AsyncPoolById = React.lazy(() => import('./scenes/Workers/PoolById'));
 
+const AsyncHook = React.lazy(() => import('./scenes/Hook/Hook'));
+
 const AsyncApiExplorerRenderer = React.lazy(() => import('./components/explorer/ApiExplorer'));
 
 const drawerWidth = 360;
@@ -278,6 +280,7 @@ function Routes(props: WithStyles<typeof styles>) {
                 <Route exact path="/metrics/repository/:owner/:name" component={AsyncRepositoryMetrics} props={props} />
                 <Route exact path="/task/:taskId" component={AsyncTask} props={props} />
                 <Route exact path="/pool/:poolId" component={AsyncPoolById} props={props} />
+                <Route exact path="/hook/:hookId" component={AsyncHook} props={props} />
                 <Route exact path="/:owner/:name/:branch*" component={AsyncGitHubRepository} props={props} />
                 <Route component={NotFound} props={props} />
               </Switch>

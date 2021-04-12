@@ -7,6 +7,8 @@ import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
 import { TaskNameChip_task } from './__generated__/TaskNameChip_task.graphql';
+import { navigateTask } from '../../utils/navigate';
+import { useHistory } from 'react-router-dom';
 
 const styles = theme =>
   createStyles({
@@ -21,18 +23,22 @@ const styles = theme =>
 interface Props extends WithStyles<typeof styles> {
   task: TaskNameChip_task;
   className?: string;
+  withNavigation?: boolean;
 }
 
 let TaskNameChip = (props: Props) => {
   const { task, className, classes } = props;
+  let history = useHistory();
+
+  // We use the empty handler when we won't the navigation to happen, yet it helps e.g. Vimium (http://vimium.github.io/)
+  // to recognize that task names are clickable and thus improves accessibility.
+  var onClickFunc = props.withNavigation ? e => navigateTask(history, e, task.id) : () => {};
 
   return (
     <Chip
       className={className}
       label={task.name}
-      onClick={() => {
-        /* this empty handler helps Vimium (http://vimium.github.io/) to recognize that task names are clickable */
-      }}
+      onClick={onClickFunc}
       avatar={
         <Avatar className={classes.avatar}>
           <Bookmark className={classes.avatarIcon} />
@@ -45,6 +51,7 @@ let TaskNameChip = (props: Props) => {
 export default createFragmentContainer(withStyles(styles)(TaskNameChip), {
   task: graphql`
     fragment TaskNameChip_task on Task {
+      id
       name
     }
   `,

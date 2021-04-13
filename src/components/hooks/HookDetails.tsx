@@ -38,8 +38,6 @@ const styles = theme =>
       padding: theme.spacing(1),
       background: theme.palette.primary.dark,
       color: theme.palette.primary.contrastText,
-      fontSize: '12px',
-      fontFamily: 'Monaco, monospace',
     },
     potentialError: {
       padding: theme.spacing(1),
@@ -139,7 +137,7 @@ function HookDetails(props: Props, context) {
       <Card>
         <CardContent>
           <Typography variant="h6">Arguments</Typography>
-          <pre className={classes.io}>{prettyHookArguments}</pre>
+          <pre className={classNames(classes.io, 'log-line')}>{prettyHookArguments}</pre>
         </CardContent>
       </Card>
     </div>

@@ -153,7 +153,7 @@ function TaskDetails(props: Props, context) {
       variables: variables,
     });
     return () => subscription.dispose();
-  }, []);
+  }, [props.task.id, props.task.status]);
 
   let { task, classes } = props;
   let build = task.build;

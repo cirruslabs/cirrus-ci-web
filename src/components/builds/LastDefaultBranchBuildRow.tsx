@@ -50,7 +50,7 @@ function LastDefaultBranchBuildRow(props: Props) {
     return () => {
       subscription.dispose();
     };
-  }, []);
+  }, [props.repository.id]);
 
   let history = useHistory();
   let { classes, repository } = props;

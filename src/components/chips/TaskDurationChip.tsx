@@ -41,7 +41,7 @@ function TaskDurationChip(props: Props) {
     return () => {
       subscription.dispose();
     };
-  }, []);
+  }, [props.task.id, props.task.status]);
 
   const [now, setNow] = React.useState(Date.now());
 

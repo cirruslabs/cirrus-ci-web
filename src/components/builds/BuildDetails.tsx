@@ -108,7 +108,7 @@ function BuildDetails(props: Props) {
     return () => {
       subscription.dispose();
     };
-  }, []);
+  }, [props.build.id]);
   let { build, classes } = props;
 
   function approveBuild() {

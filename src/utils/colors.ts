@@ -43,7 +43,13 @@ export function useTaskStatusColorMapping() {
   };
 }
 
-export function useFaviconColor(status: BuildStatus | TaskStatus | null) {
+export function useHookStatusColor(hook) {
+  const palette = useTheme().palette;
+
+  return hook.info.error === '' ? palette.success.main : palette.error.main;
+}
+
+export function useFaviconColor(status: BuildStatus | TaskStatus | boolean | null) {
   const palette = useTheme().palette;
   switch (status) {
     case 'COMPLETED':
@@ -59,6 +65,10 @@ export function useFaviconColor(status: BuildStatus | TaskStatus | null) {
     case 'SCHEDULED':
     case 'PAUSED':
       return palette.warning.light;
+    case true:
+      return palette.success.main;
+    case false:
+      return palette.error.main;
     default:
       return palette.primary.main;
   }

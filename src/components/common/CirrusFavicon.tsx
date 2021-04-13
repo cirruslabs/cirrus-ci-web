@@ -50,7 +50,7 @@ function iconSVG(color) {
 }
 
 interface CirrusFaviconProps {
-  status?: BuildStatus | TaskStatus;
+  status?: BuildStatus | TaskStatus | boolean;
 }
 
 export default (props: CirrusFaviconProps) => {

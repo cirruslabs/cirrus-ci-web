@@ -54,8 +54,8 @@ function HookDetails(props: Props, context) {
   let { hook, classes } = props;
 
   // Parse and prettify hook I/O
-  let hookInput = JSON.parse(props.hook.info.arguments);
-  let prettyHookInput = JSON.stringify(hookInput, null, 2);
+  let hookArguments = JSON.parse(props.hook.info.arguments);
+  let prettyHookArguments = JSON.stringify(hookArguments, null, 2);
 
   // Extract hook-specific data
   let targetName;
@@ -64,11 +64,11 @@ function HookDetails(props: Props, context) {
   switch (hook.name) {
     case 'on_task':
       targetName = 'Task';
-      targetState = hookInput[0].payload.data.task.status;
+      targetState = hookArguments[0].payload.data.task.status;
       break;
     case 'on_build':
       targetName = 'Build';
-      targetState = hookInput[0].payload.data.build.status;
+      targetState = hookArguments[0].payload.data.build.status;
       break;
     default:
       targetName = 'Unknown';
@@ -138,8 +138,8 @@ function HookDetails(props: Props, context) {
       <div className={classes.gap} />
       <Card>
         <CardContent>
-          <Typography variant="h6">Input</Typography>
-          <pre className={classes.io}>{prettyHookInput}</pre>
+          <Typography variant="h6">Arguments</Typography>
+          <pre className={classes.io}>{prettyHookArguments}</pre>
         </CardContent>
       </Card>
     </div>

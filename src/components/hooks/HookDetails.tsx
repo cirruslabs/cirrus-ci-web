@@ -38,7 +38,7 @@ const styles = theme =>
       padding: theme.spacing(1),
       background: theme.palette.primary.dark,
       color: theme.palette.primary.contrastText,
-      fontSize: theme.typography.fontSize,
+      fontSize: '12px',
       fontFamily: 'Monaco, monospace',
     },
     potentialError: {

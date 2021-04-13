@@ -42,7 +42,7 @@ const styles = theme =>
       fontFamily: 'Monaco, monospace',
     },
     potentialError: {
-      padding: 8,
+      padding: theme.spacing(1),
     },
   });
 

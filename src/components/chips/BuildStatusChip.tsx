@@ -43,7 +43,7 @@ function BuildStatusChip(props: Props) {
     return () => {
       subscription.dispose();
     };
-  }, []);
+  }, [props.build.id, props.build.status]);
 
   let { build, mini, className } = props;
   let message = buildStatusMessage(build.status, build.durationInSeconds);

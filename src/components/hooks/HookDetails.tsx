@@ -57,9 +57,6 @@ function HookDetails(props: Props, context) {
   let hookInput = JSON.parse(props.hook.info.arguments);
   let prettyHookInput = JSON.stringify(hookInput, null, 2);
 
-  let hookOutput = JSON.parse(props.hook.info.result);
-  let prettyHookOutput = JSON.stringify(hookOutput, null, 2);
-
   // Extract hook-specific data
   let targetName;
   let targetState;

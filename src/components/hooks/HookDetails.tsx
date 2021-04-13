@@ -145,13 +145,6 @@ function HookDetails(props: Props, context) {
           <pre className={classes.io}>{prettyHookInput}</pre>
         </CardContent>
       </Card>
-      <div className={classes.gap} />
-      <Card>
-        <CardContent>
-          <Typography variant="h6">Output</Typography>
-          <pre className={classes.io}>{prettyHookOutput}</pre>
-        </CardContent>
-      </Card>
     </div>
   );
 }

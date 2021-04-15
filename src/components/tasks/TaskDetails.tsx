@@ -43,6 +43,7 @@ import TaskExperimentalChip from '../chips/TaskExperimentalChip';
 import TaskStatefulChip from '../chips/TaskStatefulChip';
 import TaskTimeoutChip from '../chips/TaskTimeoutChip';
 import Notification from '../common/Notification';
+import HookList from '../hooks/HookList';
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
@@ -348,6 +349,9 @@ function TaskDetails(props: Props, context) {
         <TaskCommandList task={task} />
       </Paper>
       <div className={classes.gap} />
+      <Paper elevation={2}>
+        <HookList hooks={task.hooks} />
+      </Paper>
     </div>
   );
 }
@@ -414,6 +418,9 @@ export default createFragmentContainer(withStyles(styles)(withRouter(TaskDetails
         ...TaskListRow_task
       }
       ...TaskExecutionInfo_task
+      hooks {
+        ...HookListRow_hook
+      }
     }
   `,
 });

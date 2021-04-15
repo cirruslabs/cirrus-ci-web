@@ -23,6 +23,7 @@ import BuildBranchNameChip from '../chips/BuildBranchNameChip';
 import Notification from '../common/Notification';
 import classNames from 'classnames';
 import ConfigurationWithIssues from './ConfigurationWithIssues';
+import HookList from '../hooks/HookList';
 
 const buildApproveMutation = graphql`
   mutation BuildDetailsApproveBuildMutation($input: BuildApproveInput!) {
@@ -241,6 +242,10 @@ function BuildDetails(props: Props) {
       <Paper elevation={2}>
         <TaskList tasks={build.latestGroupTasks} />
       </Paper>
+      <div className={classes.gap} />
+      <Paper elevation={2}>
+        <HookList hooks={build.hooks} />
+      </Paper>
     </div>
   );
 }
@@ -275,6 +280,9 @@ export default createFragmentContainer(withStyles(styles)(BuildDetails), {
         ...RepositoryNameChip_repository
         cloneUrl
         viewerPermission
+      }
+      hooks {
+        ...HookListRow_hook
       }
     }
   `,

@@ -15,12 +15,12 @@ import HookNameChip from '../chips/HookNameChip';
 const styles = theme =>
   createStyles({
     chip: {
-      marginTop: 4,
-      marginBottom: 4,
-      marginLeft: 4,
+      marginTop: theme.spacing(0.5),
+      marginBottom: theme.spacing(0.5),
+      marginLeft: theme.spacing(0.5),
     },
     lastChip: {
-      marginRight: 4,
+      marginRight: theme.spacing(0.5),
     },
     cell: {
       padding: 0,

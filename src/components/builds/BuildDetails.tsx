@@ -198,6 +198,13 @@ function BuildDetails(props: Props) {
     </Button>
   );
 
+  const hookList =
+    build.hooks.length == 0 ? null : (
+      <Paper elevation={2}>
+        <HookList hooks={build.hooks} />
+      </Paper>
+    );
+
   return (
     <div>
       <CirrusFavicon status={build.status} />
@@ -243,9 +250,7 @@ function BuildDetails(props: Props) {
         <TaskList tasks={build.latestGroupTasks} />
       </Paper>
       <div className={classes.gap} />
-      <Paper elevation={2}>
-        <HookList hooks={build.hooks} />
-      </Paper>
+      {hookList}
     </div>
   );
 }

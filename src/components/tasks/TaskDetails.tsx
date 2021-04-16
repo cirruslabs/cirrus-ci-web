@@ -280,7 +280,7 @@ function TaskDetails(props: Props, context) {
   }
 
   const hookList =
-    task.hooks.length == 0 ? null : (
+    task.hooks.length === 0 ? null : (
       <Paper elevation={2}>
         <HookList hooks={task.hooks} />
       </Paper>

@@ -199,7 +199,7 @@ function BuildDetails(props: Props) {
   );
 
   const hookList =
-    build.hooks.length == 0 ? null : (
+    build.hooks.length === 0 ? null : (
       <Paper elevation={2}>
         <HookList hooks={build.hooks} />
       </Paper>

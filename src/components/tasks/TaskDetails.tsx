@@ -45,7 +45,7 @@ import TaskTimeoutChip from '../chips/TaskTimeoutChip';
 import Notification from '../common/Notification';
 import HookList from '../hooks/HookList';
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
-import { AppBar, Tab, Tabs } from '@material-ui/core';
+import { AppBar, Tab } from '@material-ui/core';
 import { Dehaze, Functions } from '@material-ui/icons';
 
 const taskReRunMutation = graphql`
@@ -296,13 +296,15 @@ function TaskDetails(props: Props, context) {
       <AppBar position="static">
         <TabList onChange={handleChange}>
           <Tab icon={<Dehaze />} label={'Instructions (' + task.commands.length + ')'} value="1" />
-          {task.hooks.length != 0 && <Tab icon={<Functions />} label={'Hooks (' + task.hooks.length + ')'} value="2" />}
+          {task.hooks.length !== 0 && (
+            <Tab icon={<Functions />} label={'Hooks (' + task.hooks.length + ')'} value="2" />
+          )}
         </TabList>
       </AppBar>
       <TabPanel value="1" className={classes.tabPanel}>
         {onlyCommands}
       </TabPanel>
-      {task.hooks.length != 0 && (
+      {task.hooks.length !== 0 && (
         <TabPanel value="2" className={classes.tabPanel}>
           <HookList hooks={task.hooks} />
         </TabPanel>

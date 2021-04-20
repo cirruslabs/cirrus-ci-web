@@ -222,7 +222,7 @@ function BuildDetails(props: Props) {
         {onlyTasks}
       </TabPanel>
       <TabPanel value="2" className={classes.tabPanel}>
-        {build.hooks.length != 0 && <HookList hooks={build.hooks} />}
+        {build.hooks.length !== 0 && <HookList hooks={build.hooks} />}
       </TabPanel>
     </TabContext>
   );

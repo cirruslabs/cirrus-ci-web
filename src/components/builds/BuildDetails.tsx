@@ -23,6 +23,10 @@ import BuildBranchNameChip from '../chips/BuildBranchNameChip';
 import Notification from '../common/Notification';
 import classNames from 'classnames';
 import ConfigurationWithIssues from './ConfigurationWithIssues';
+import HookList from '../hooks/HookList';
+import { TabContext, TabList, TabPanel } from '@material-ui/lab';
+import { AppBar, Tab } from '@material-ui/core';
+import { Dehaze, Functions } from '@material-ui/icons';
 
 const buildApproveMutation = graphql`
   mutation BuildDetailsApproveBuildMutation($input: BuildApproveInput!) {
@@ -90,6 +94,9 @@ const styles = theme =>
       paddingLeft: 0,
       display: 'flex',
       flexWrap: 'wrap',
+    },
+    tabPanel: {
+      padding: 0,
     },
   });
 
@@ -197,6 +204,31 @@ function BuildDetails(props: Props) {
     </Button>
   );
 
+  const onlyTasks = <TaskList tasks={build.latestGroupTasks} />;
+
+  const [currentTab, setCurrentTab] = React.useState('1');
+  const handleChange = (event, newValue) => {
+    setCurrentTab(newValue);
+  };
+  const tabbedTasksAndHooks = (
+    <TabContext value={currentTab}>
+      <AppBar position="static">
+        <TabList onChange={handleChange}>
+          <Tab icon={<Dehaze />} label={'Tasks (' + build.latestGroupTasks.length + ')'} value="1" />
+          <Tab icon={<Functions />} label={'Hooks (' + build.hooks.length + ')'} value="2" />
+        </TabList>
+      </AppBar>
+      <TabPanel value="1" className={classes.tabPanel}>
+        {onlyTasks}
+      </TabPanel>
+      <TabPanel value="2" className={classes.tabPanel}>
+        {build.hooks.length !== 0 && <HookList hooks={build.hooks} />}
+      </TabPanel>
+    </TabContext>
+  );
+
+  const tasksAndMaybeHooks = build.hooks.length === 0 ? onlyTasks : tabbedTasksAndHooks;
+
   return (
     <div>
       <CirrusFavicon status={build.status} />
@@ -238,9 +270,7 @@ function BuildDetails(props: Props) {
       <ConfigurationWithIssues build={build} />
       {notificationsComponent}
       <div className={classes.gap} />
-      <Paper elevation={2}>
-        <TaskList tasks={build.latestGroupTasks} />
-      </Paper>
+      <Paper elevation={2}>{tasksAndMaybeHooks}</Paper>
     </div>
   );
 }
@@ -275,6 +305,9 @@ export default createFragmentContainer(withStyles(styles)(BuildDetails), {
         ...RepositoryNameChip_repository
         cloneUrl
         viewerPermission
+      }
+      hooks {
+        ...HookListRow_hook
       }
     }
   `,

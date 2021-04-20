@@ -28,3 +28,7 @@ export function navigateBuild(history, event, buildId) {
 export function navigateTask(history, event, taskId) {
   navigate(history, event, '/task/' + taskId);
 }
+
+export function navigateHook(history, event, hookId) {
+  navigate(history, event, '/hook/' + hookId);
+}

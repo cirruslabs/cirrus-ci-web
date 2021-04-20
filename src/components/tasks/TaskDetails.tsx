@@ -43,6 +43,10 @@ import TaskExperimentalChip from '../chips/TaskExperimentalChip';
 import TaskStatefulChip from '../chips/TaskStatefulChip';
 import TaskTimeoutChip from '../chips/TaskTimeoutChip';
 import Notification from '../common/Notification';
+import HookList from '../hooks/HookList';
+import { TabContext, TabList, TabPanel } from '@material-ui/lab';
+import { AppBar, Tab } from '@material-ui/core';
+import { Dehaze, Functions } from '@material-ui/icons';
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
@@ -133,6 +137,9 @@ const styles = theme =>
     },
     transaction: {
       backgroundColor: theme.palette.success.second,
+    },
+    tabPanel: {
+      padding: 0,
     },
   });
 
@@ -278,6 +285,35 @@ function TaskDetails(props: Props, context) {
     );
   }
 
+  const onlyCommands = <TaskCommandList task={task} />;
+
+  const [currentTab, setCurrentTab] = React.useState('1');
+  const handleChange = (event, newValue) => {
+    setCurrentTab(newValue);
+  };
+  const tabbedCommandsAndHooks = (
+    <TabContext value={currentTab}>
+      <AppBar position="static">
+        <TabList onChange={handleChange}>
+          <Tab icon={<Dehaze />} label={'Instructions (' + task.commands.length + ')'} value="1" />
+          {task.hooks.length !== 0 && (
+            <Tab icon={<Functions />} label={'Hooks (' + task.hooks.length + ')'} value="2" />
+          )}
+        </TabList>
+      </AppBar>
+      <TabPanel value="1" className={classes.tabPanel}>
+        {onlyCommands}
+      </TabPanel>
+      {task.hooks.length !== 0 && (
+        <TabPanel value="2" className={classes.tabPanel}>
+          <HookList hooks={task.hooks} />
+        </TabPanel>
+      )}
+    </TabContext>
+  );
+
+  const commandsAndMaybeHooks = task.hooks.length === 0 ? onlyCommands : tabbedCommandsAndHooks;
+
   return (
     <div>
       <Head>
@@ -344,10 +380,7 @@ function TaskDetails(props: Props, context) {
       {allOtherRuns ? <div className={classes.gap} /> : null}
       {allOtherRuns}
       <div className={classes.gap} />
-      <Paper elevation={2}>
-        <TaskCommandList task={task} />
-      </Paper>
-      <div className={classes.gap} />
+      <Paper elevation={2}>{commandsAndMaybeHooks}</Paper>
     </div>
   );
 }
@@ -365,6 +398,9 @@ export default createFragmentContainer(withStyles(styles)(withRouter(TaskDetails
       ...TaskCreatedChip_task
       ...TaskScheduledChip_task
       ...TaskStatusChip_task
+      commands {
+        name
+      }
       ...TaskCommandsProgress_task
       ...TaskCommandList_task
       ...TaskArtifacts_task
@@ -414,6 +450,9 @@ export default createFragmentContainer(withStyles(styles)(withRouter(TaskDetails
         ...TaskListRow_task
       }
       ...TaskExecutionInfo_task
+      hooks {
+        ...HookListRow_hook
+      }
     }
   `,
 });

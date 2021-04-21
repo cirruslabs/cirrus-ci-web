@@ -58,13 +58,8 @@ export function subscribeObjectUpdates(kind, id, handler) {
   } catch (e) {
     console.log('Failed to subscribe!', request, e);
   }
-
-  let topic =
-    kind === 'REPOSITORY_BUILD_CREATION'
-      ? (kind + '-' + id).toLowerCase().replace(/_/g, '-')
-      : (kind + '-update-' + id).toLowerCase().replace(/_/g, '-');
+  let topic = (kind + '-update-' + id).toLowerCase().replace(/_/g, '-');
   let topicHandlerDispose = handlersManager.addTopicHandler(topic, requestStr, handler);
-
   return () => {
     if (process.env.NODE_ENV === 'development') {
       console.log('Unsubscribing from', kind, id);

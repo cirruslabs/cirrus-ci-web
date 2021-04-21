@@ -15,6 +15,10 @@ let subscription: SubscribeFunction = (operation, variables, cacheConfig) => {
     return webSocketSubscriptions(operation, variables, [
       ['REPOSITORY_DEFAULT_BRANCH_BUILD', variables['repositoryID']],
     ]) as any;
+  } else if (variables['repositoryID']) {
+    return webSocketSubscriptions(operation, variables, [
+      ['REPOSITORY_BUILD_CREATION', variables['repositoryID']],
+    ]) as any;
   } else if (variables['taskID']) {
     return webSocketSubscriptions(operation, variables, [['TASK', variables['taskID']]]) as any;
   } else if (variables['buildID']) {

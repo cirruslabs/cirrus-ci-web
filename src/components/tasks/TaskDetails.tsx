@@ -338,7 +338,7 @@ function TaskDetails(props: Props, context) {
           <Typography variant="h6" gutterBottom>
             {build.changeMessageTitle} (commit{' '}
             <a href={commitUrl} target="_blank" rel="noopener noreferrer">
-              {build.changeIdInRepo.substr(0, 6)}
+              {build.changeIdInRepo.substr(0, 7)}
             </a>{' '}
             on branch{' '}
             <a href={branchUrl} target="_blank" rel="noopener noreferrer">

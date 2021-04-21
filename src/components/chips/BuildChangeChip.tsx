@@ -29,7 +29,7 @@ function BuildChangeChip(props: Props) {
   let history = useHistory();
   return (
     <Chip
-      label={build.changeIdInRepo.substr(0, 6)}
+      label={build.changeIdInRepo.substr(0, 7)}
       avatar={
         <Avatar className={props.classes.avatar}>
           <Input className={props.classes.avatarIcon} />

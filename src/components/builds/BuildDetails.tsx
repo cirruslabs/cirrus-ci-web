@@ -252,7 +252,7 @@ function BuildDetails(props: Props) {
           <Typography variant="subtitle1" gutterBottom>
             Commit{' '}
             <a href={commitUrl} target="_blank" rel="noopener noreferrer">
-              {build.changeIdInRepo.substr(0, 6)}
+              {build.changeIdInRepo.substr(0, 7)}
             </a>{' '}
             on branch{' '}
             <a href={branchUrl} target="_blank" rel="noopener noreferrer">

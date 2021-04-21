@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { createFragmentContainer } from 'react-relay';
+import React, { useEffect, useState } from 'react';
+import { createFragmentContainer, requestSubscription } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { useHistory } from 'react-router-dom';
 
@@ -28,6 +28,7 @@ import { Helmet as Head } from 'react-helmet';
 import Settings from '@material-ui/icons/Settings';
 import AddCircle from '@material-ui/icons/AddCircle';
 import Timeline from '@material-ui/icons/Timeline';
+import environment from '../../createRelayEnvironment';
 
 let styles = createStyles({
   gap: {
@@ -61,7 +62,27 @@ interface Props extends WithStyles<typeof styles> {
   repository: RepositoryBuildList_repository;
 }
 
+const repositorySubscription = graphql`
+  subscription RepositoryBuildListSubscription($repositoryID: ID!, $branch: String) {
+    repository(id: $repositoryID) {
+      ...RepositoryBuildList_repository @arguments(branch: $branch)
+    }
+  }
+`;
+
 function RepositoryBuildList(props: Props) {
+  useEffect(() => {
+    let variables = { repositoryID: props.repository.id, branch: props.branch };
+
+    const subscription = requestSubscription(environment, {
+      subscription: repositorySubscription,
+      variables: variables,
+    });
+    return () => {
+      subscription.dispose();
+    };
+  }, [props.repository.id, props.branch]);
+
   let history = useHistory();
   let [selectedBuildId, setSelectedBuildId] = useState(null);
   let [openCreateDialog, setOpenCreateDialog] = useState(false);

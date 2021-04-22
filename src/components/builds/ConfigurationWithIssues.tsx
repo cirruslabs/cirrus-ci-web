@@ -95,10 +95,13 @@ function ConfigurationWithIssues(props: Props) {
     getIssuesForLine(zeroBasedLineNumber + 1),
   ]);
 
+  const errorIssue = build.parsingResult.issues.find(it => it.level === 'ERROR');
+  const summaryText = errorIssue ? 'Failed to parse configuration' : 'Issues found while parsing configuration';
+
   return (
     <Accordion defaultExpanded={true}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography variant="h6">Failed to parse configuration!</Typography>
+        <Typography variant="h6">{summaryText}</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <table className={classes.configurationTable} cellPadding={0}>

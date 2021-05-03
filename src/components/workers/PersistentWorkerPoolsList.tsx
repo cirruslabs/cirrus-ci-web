@@ -81,7 +81,7 @@ function PersistentWorkerPoolsList(props: PoolsListProps) {
   };
   return (
     <Card>
-      <CardHeader title="Persistent Worker Pools (Beta)" />
+      <CardHeader title="Persistent Worker Pools" />
       <CardContent>
         <List>
           {props.pools.map(

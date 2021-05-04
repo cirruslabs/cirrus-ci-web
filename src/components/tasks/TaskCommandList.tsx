@@ -45,7 +45,8 @@ function TaskCommandList(props: Props) {
   const prefersDarkMode = useRecoilValue(prefersDarkModeState);
 
   function commandItem(command: ItemOfArray<TaskCommandList_task['commands']>, commandStartTimestamp: number) {
-    const selectedCommandName = queryString.parse(location.search).command;
+    let search = queryString.parse(location.search);
+    const selectedCommandName = search.command || search.logs;
     let summaryStyle = prefersDarkMode
       ? {}
       : {

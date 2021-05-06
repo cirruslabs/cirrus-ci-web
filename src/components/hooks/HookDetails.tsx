@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { commitMutation, createFragmentContainer } from 'react-relay';
 import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
@@ -20,7 +20,7 @@ import classNames from 'classnames';
 import { useNotificationColor } from '../../utils/colors';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
-import { navigateBuild, navigateHook } from '../../utils/navigate';
+import { navigateBuild, navigateHook, navigateTask } from '../../utils/navigate';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import { hasWritePermissions } from '../../utils/permissions';
 import Refresh from '@material-ui/icons/Refresh';
@@ -84,7 +84,7 @@ function HookDetails(props: Props, context) {
     case 'on_task':
       targetName = 'Task';
       targetState = hookArguments[0].payload.data.task.status;
-      navigateToAllHooks = e => navigateBuild(history, e, hook.task.id);
+      navigateToAllHooks = e => navigateTask(history, e, hook.task.id);
       break;
     case 'on_build':
       targetName = 'Build';

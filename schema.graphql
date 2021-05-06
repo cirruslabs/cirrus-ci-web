@@ -365,6 +365,16 @@ type HookExecutionInfo {
   durationNanos: Int!
 }
 
+input HooksReRunInput {
+  hookIds: [ID]
+  clientMutationId: String
+}
+
+type HooksReRunPayload {
+  newHooks: [Hook]
+  clientMutationId: String
+}
+
 type InstanceResources {
   cpu: Float!
   memory: Int!
@@ -423,6 +433,7 @@ type Mutation {
   deletePersistentWorkerPool(input: DeletePersistentWorkerPoolInput!): DeletePersistentWorkerPoolPayload
   saveWebPushConfiguration(input: SaveWebPushConfigurationInput!): SaveWebPushConfigurationPayload
   deleteWebPushConfiguration(input: DeleteWebPushConfigurationInput!): DeleteWebPushConfigurationPayload
+  rerunHooks(input: HooksReRunInput!): HooksReRunPayload
 }
 
 type Notification {
@@ -733,6 +744,7 @@ type RepositorySettings {
   decryptEnvironmentVariables: DecryptEnvironmentVariablesFor
   configResolutionStrategy: ConfigResolutionStrategy
   additionalEnvironment: [String]
+  cacheVersion: Int
 }
 
 input RepositorySettingsInput {
@@ -741,6 +753,7 @@ input RepositorySettingsInput {
   decryptEnvironmentVariables: DecryptEnvironmentVariablesFor
   configResolutionStrategy: ConfigResolutionStrategy
   additionalEnvironment: [String]
+  cacheVersion: Int
   clientMutationId: String
 }
 

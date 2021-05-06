@@ -18,6 +18,7 @@ import {
   RepositorySettingsMutationResponse,
 } from './__generated__/RepositorySettingsMutation.graphql';
 import {
+  Checkbox,
   IconButton,
   Input,
   InputAdornment,
@@ -38,6 +39,7 @@ const saveSettingsMutation = graphql`
         decryptEnvironmentVariables
         configResolutionStrategy
         additionalEnvironment
+        cacheVersion
       }
     }
   }
@@ -60,6 +62,15 @@ function RepositorySettings(props: Props) {
         [field]: value,
       });
     };
+  };
+
+  let setClearCaches = (event, checked) => {
+    const cacheVersion = checked ? initialSettings.cacheVersion + 1 : initialSettings.cacheVersion;
+
+    setSettings({
+      ...settings,
+      cacheVersion: cacheVersion,
+    });
   };
 
   let toggleField = field => {
@@ -94,6 +105,7 @@ function RepositorySettings(props: Props) {
       decryptEnvironmentVariables: settings.decryptEnvironmentVariables,
       configResolutionStrategy: settings.configResolutionStrategy,
       additionalEnvironment: settings.additionalEnvironment.concat(),
+      cacheVersion: settings.cacheVersion,
     };
 
     commitMutation(environment, {
@@ -110,7 +122,8 @@ function RepositorySettings(props: Props) {
     settings.needsApproval === initialSettings.needsApproval &&
     settings.configResolutionStrategy === initialSettings.configResolutionStrategy &&
     JSON.stringify(settings.additionalEnvironment) === JSON.stringify(initialSettings.additionalEnvironment) &&
-    settings.decryptEnvironmentVariables === initialSettings.decryptEnvironmentVariables;
+    settings.decryptEnvironmentVariables === initialSettings.decryptEnvironmentVariables &&
+    settings.cacheVersion === initialSettings.cacheVersion;
   return (
     <Card>
       <CardContent>
@@ -173,6 +186,14 @@ function RepositorySettings(props: Props) {
             }
           />
         </FormControl>
+        <FormControl style={{ width: '100%' }}>
+          <FormControlLabel
+            control={
+              <Checkbox checked={initialSettings.cacheVersion !== settings.cacheVersion} onChange={setClearCaches} />
+            }
+            label="Clear caches"
+          />
+        </FormControl>
       </CardContent>
       <CardActions>
         <Button variant="contained" disabled={areSettingsTheSame} onClick={() => onSave()}>
@@ -192,6 +213,7 @@ export default createFragmentContainer(RepositorySettings, {
         decryptEnvironmentVariables
         configResolutionStrategy
         additionalEnvironment
+        cacheVersion
       }
     }
   `,

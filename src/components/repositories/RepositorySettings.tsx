@@ -123,7 +123,7 @@ function RepositorySettings(props: Props) {
     settings.configResolutionStrategy === initialSettings.configResolutionStrategy &&
     JSON.stringify(settings.additionalEnvironment) === JSON.stringify(initialSettings.additionalEnvironment) &&
     settings.decryptEnvironmentVariables === initialSettings.decryptEnvironmentVariables &&
-    settings.cacheVersion == initialSettings.cacheVersion;
+    settings.cacheVersion === initialSettings.cacheVersion;
   return (
     <Card>
       <CardContent>
@@ -189,7 +189,7 @@ function RepositorySettings(props: Props) {
         <FormControl style={{ width: '100%' }}>
           <FormControlLabel
             control={
-              <Checkbox checked={initialSettings.cacheVersion != settings.cacheVersion} onChange={setClearCaches} />
+              <Checkbox checked={initialSettings.cacheVersion !== settings.cacheVersion} onChange={setClearCaches} />
             }
             label="Clear caches"
           />

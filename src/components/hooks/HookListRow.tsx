@@ -11,6 +11,7 @@ import classNames from 'classnames';
 import { HookListRow_hook } from './__generated__/HookListRow_hook.graphql';
 import HookStatusChip from '../chips/HookStatusChip';
 import HookNameChip from '../chips/HookNameChip';
+import HookCreatedChip from '../chips/HookCreatedChip';
 
 const styles = theme =>
   createStyles({
@@ -40,6 +41,7 @@ function HookListRow(props: Props) {
     <TableRow onClick={e => navigateHook(history, e, hook.id)} hover={true} style={{ cursor: 'pointer' }}>
       <TableCell className={classNames(classes.cell)}>
         <HookStatusChip className={classes.chip} hook={hook} />
+        <HookCreatedChip className={classes.chip} hook={hook} />
         <HookNameChip className={classNames(classes.chip, classes.lastChip)} hook={hook} />
       </TableCell>
     </TableRow>
@@ -50,7 +52,9 @@ export default createFragmentContainer(withStyles(styles)(HookListRow), {
   hook: graphql`
     fragment HookListRow_hook on Hook {
       id
+      timestamp
       ...HookStatusChip_hook
+      ...HookCreatedChip_hook
       ...HookNameChip_hook
     }
   `,

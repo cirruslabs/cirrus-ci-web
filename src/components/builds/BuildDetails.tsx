@@ -307,6 +307,7 @@ export default createFragmentContainer(withStyles(styles)(BuildDetails), {
         viewerPermission
       }
       hooks {
+        timestamp
         ...HookListRow_hook
       }
     }

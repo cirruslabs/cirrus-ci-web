@@ -472,6 +472,7 @@ export default createFragmentContainer(withStyles(styles)(withRouter(TaskDetails
       }
       ...TaskExecutionInfo_task
       hooks {
+        timestamp
         ...HookListRow_hook
       }
     }

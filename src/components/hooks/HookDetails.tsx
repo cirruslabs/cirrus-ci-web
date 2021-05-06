@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { commitMutation, createFragmentContainer } from 'react-relay';
 import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
@@ -84,12 +84,12 @@ function HookDetails(props: Props, context) {
     case 'on_task':
       targetName = 'Task';
       targetState = hookArguments[0].payload.data.task.status;
-      navigateToAllHooks = e => navigateTask(history, e, hook.task.id);
+      navigateToAllHooks = e => navigateTask(history, e, hook.task.id, true);
       break;
     case 'on_build':
       targetName = 'Build';
       targetState = hookArguments[0].payload.data.build.status;
-      navigateToAllHooks = e => navigateBuild(history, e, hook.build.id);
+      navigateToAllHooks = e => navigateBuild(history, e, hook.build.id, true);
       break;
     default:
       targetName = 'Unsupported';

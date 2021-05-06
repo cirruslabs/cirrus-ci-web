@@ -279,6 +279,7 @@ function Routes(props: WithStyles<typeof styles>) {
                 <Route exact path="/repository/:repositoryId/:branch*" component={AsyncRepository} props={props} />
                 <Route exact path="/metrics/repository/:owner/:name" component={AsyncRepositoryMetrics} props={props} />
                 <Route exact path="/task/:taskId" component={AsyncTask} props={props} />
+                <Route exact path="/task/:taskId/hooks" component={AsyncTask} props={props} />
                 <Route exact path="/pool/:poolId" component={AsyncPoolById} props={props} />
                 <Route exact path="/hook/:hookId" component={AsyncHook} props={props} />
                 <Route exact path="/:owner/:name/:branch*" component={AsyncGitHubRepository} props={props} />

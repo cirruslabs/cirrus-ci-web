@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { createFragmentContainer } from 'react-relay';
+import { commitMutation, createFragmentContainer } from 'react-relay';
 import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
 import { graphql } from 'babel-plugin-relay/macro';
 import { HookDetails_hook } from './__generated__/HookDetails_hook.graphql';
 import { Helmet as Head } from 'react-helmet';
@@ -18,6 +18,24 @@ import HookStatusChip from '../chips/HookStatusChip';
 import CirrusFavicon from '../common/CirrusFavicon';
 import classNames from 'classnames';
 import { useNotificationColor } from '../../utils/colors';
+import CardActions from '@material-ui/core/CardActions';
+import Button from '@material-ui/core/Button';
+import { navigateBuild, navigateHook, navigateTask } from '../../utils/navigate';
+import ArrowBack from '@material-ui/icons/ArrowBack';
+import { hasWritePermissions } from '../../utils/permissions';
+import Refresh from '@material-ui/icons/Refresh';
+import environment from '../../createRelayEnvironment';
+import { HookDetailsRerunMutationResponse } from './__generated__/HookDetailsRerunMutation.graphql';
+
+const hooksRerunMutation = graphql`
+  mutation HookDetailsRerunMutation($input: HooksReRunInput!) {
+    rerunHooks(input: $input) {
+      newHooks {
+        id
+      }
+    }
+  }
+`;
 
 const styles = theme =>
   createStyles({
@@ -51,6 +69,8 @@ interface Props extends WithStyles<typeof styles>, RouteComponentProps {
 function HookDetails(props: Props, context) {
   let { hook, classes } = props;
 
+  let history = useHistory();
+
   // Parse and prettify hook I/O
   let hookArguments = JSON.parse(props.hook.info.arguments);
   let prettyHookArguments = JSON.stringify(hookArguments, null, 2);
@@ -58,19 +78,23 @@ function HookDetails(props: Props, context) {
   // Extract hook-specific data
   let targetName;
   let targetState;
+  let navigateToAllHooks;
 
   switch (hook.name) {
     case 'on_task':
       targetName = 'Task';
       targetState = hookArguments[0].payload.data.task.status;
+      navigateToAllHooks = e => navigateTask(history, e, hook.task.id, true);
       break;
     case 'on_build':
       targetName = 'Build';
       targetState = hookArguments[0].payload.data.build.status;
+      navigateToAllHooks = e => navigateBuild(history, e, hook.build.id, true);
       break;
     default:
-      targetName = 'Unknown';
-      targetState = 'UNKNOWN';
+      targetName = 'Unsupported';
+      targetState = 'UNSUPPORTED';
+      navigateToAllHooks = () => alert('Unsupported hook ' + hook.name);
       break;
   }
 
@@ -96,6 +120,30 @@ function HookDetails(props: Props, context) {
         </div>
       </div>
     );
+
+  function rerunHook(hookId: string) {
+    const variables = {
+      input: {
+        clientMutationId: 'rerun-' + hookId,
+        hookIds: [hookId],
+      },
+    };
+
+    commitMutation(environment, {
+      mutation: hooksRerunMutation,
+      variables: variables,
+      onCompleted: (response: HookDetailsRerunMutationResponse) => {
+        navigateHook(history, null, response.rerunHooks.newHooks[0].id);
+      },
+      onError: err => console.error(err),
+    });
+  }
+
+  let rerunButton = !hasWritePermissions(hook.build.viewerPermission) ? null : (
+    <Button variant="contained" onClick={() => rerunHook(hook.id)} startIcon={<Refresh />}>
+      Re-Run
+    </Button>
+  );
 
   return (
     <div>
@@ -124,6 +172,12 @@ function HookDetails(props: Props, context) {
             <code>{targetState}</code> state.
           </p>
         </CardContent>
+        <CardActions className="d-flex flex-wrap justify-content-end">
+          <Button variant="contained" onClick={navigateToAllHooks} startIcon={<ArrowBack />}>
+            View All Hooks
+          </Button>
+          {rerunButton}
+        </CardActions>
       </Card>
       {potentialError}
       <div className={classes.gap} />
@@ -147,15 +201,19 @@ function HookDetails(props: Props, context) {
 export default createFragmentContainer(withStyles(styles)(withRouter(HookDetails)), {
   hook: graphql`
     fragment HookDetails_hook on Hook {
+      id
       repository {
         ...RepositoryNameChip_repository
       }
       build {
+        id
         changeMessageTitle
+        viewerPermission
         ...BuildBranchNameChip_build
         ...BuildChangeChip_build
       }
       task {
+        id
         name
         ...TaskNameChip_task
       }

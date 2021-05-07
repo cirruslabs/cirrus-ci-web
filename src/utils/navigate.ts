@@ -21,12 +21,16 @@ export function navigateRepository(history, event, owner, name) {
   navigate(history, event, '/github/' + owner + '/' + name);
 }
 
-export function navigateBuild(history, event, buildId) {
-  navigate(history, event, '/build/' + buildId);
+export function navigateBuild(history, event, buildId, hooks = false) {
+  const suffix = hooks ? '/hooks' : '';
+
+  navigate(history, event, '/build/' + buildId + suffix);
 }
 
-export function navigateTask(history, event, taskId) {
-  navigate(history, event, '/task/' + taskId);
+export function navigateTask(history, event, taskId, hooks = false) {
+  const suffix = hooks ? '/hooks' : '';
+
+  navigate(history, event, '/task/' + taskId + suffix);
 }
 
 export function navigateHook(history, event, hookId) {

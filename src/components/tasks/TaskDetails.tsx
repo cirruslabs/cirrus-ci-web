@@ -287,25 +287,46 @@ function TaskDetails(props: Props, context) {
 
   const onlyCommands = <TaskCommandList task={task} />;
 
-  const [currentTab, setCurrentTab] = React.useState('1');
+  const [currentTab, setCurrentTab] = React.useState('instructions');
   const handleChange = (event, newValue) => {
-    setCurrentTab(newValue);
+    if (newValue === 'hooks') {
+      history.push('/task/' + task.id + '/hooks');
+    } else {
+      history.push('/task/' + task.id);
+    }
   };
+
+  useEffect(() => {
+    function updateTabSelection() {
+      if (history.location.pathname.endsWith('/hooks')) {
+        setCurrentTab('hooks');
+      } else {
+        setCurrentTab('instructions');
+      }
+    }
+
+    updateTabSelection();
+
+    return history.listen(location => {
+      updateTabSelection();
+    });
+  });
+
   const tabbedCommandsAndHooks = (
     <TabContext value={currentTab}>
       <AppBar position="static">
         <TabList onChange={handleChange}>
-          <Tab icon={<Dehaze />} label={'Instructions (' + task.commands.length + ')'} value="1" />
+          <Tab icon={<Dehaze />} label={'Instructions (' + task.commands.length + ')'} value="instructions" />
           {task.hooks.length !== 0 && (
-            <Tab icon={<Functions />} label={'Hooks (' + task.hooks.length + ')'} value="2" />
+            <Tab icon={<Functions />} label={'Hooks (' + task.hooks.length + ')'} value="hooks" />
           )}
         </TabList>
       </AppBar>
-      <TabPanel value="1" className={classes.tabPanel}>
+      <TabPanel value="instructions" className={classes.tabPanel}>
         {onlyCommands}
       </TabPanel>
       {task.hooks.length !== 0 && (
-        <TabPanel value="2" className={classes.tabPanel}>
+        <TabPanel value="hooks" className={classes.tabPanel}>
           <HookList hooks={task.hooks} />
         </TabPanel>
       )}
@@ -451,6 +472,7 @@ export default createFragmentContainer(withStyles(styles)(withRouter(TaskDetails
       }
       ...TaskExecutionInfo_task
       hooks {
+        timestamp
         ...HookListRow_hook
       }
     }

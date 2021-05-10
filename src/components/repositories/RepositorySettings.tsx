@@ -172,7 +172,9 @@ function RepositorySettings(props: Props) {
           </List>
         </FormControl>
         <FormControl style={{ width: '100%' }}>
-          <InputLabel htmlFor="override-env-var">New Environment Variable Override</InputLabel>
+          <InputLabel htmlFor="override-env-var">
+            New Environment Variable Override (FOO=Bar or FOO=ENCRYPTED[...])
+          </InputLabel>
           <Input
             id="override-env-var"
             value={additionalEnvironmentToAdd}

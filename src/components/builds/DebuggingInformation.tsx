@@ -73,14 +73,14 @@ function DebuggingInformation(props: Props) {
 
   const starlarkInformation =
     build.parsingResult.rawStarlarkConfig === '' ? null : (
-      <div>
+      <>
         <div className={classes.gapped}>Starlark configuration</div>
         {generateTable(build.parsingResult.rawStarlarkConfig.split('\n'))}
         <div className={classes.gapped}>Starlark logs</div>
         {generateTable(build.parsingResult.outputLogs)}
         <div className={classes.gapped}>Final configuration</div>
         {generateTable(build.parsingResult.processedYamlConfig.split('\n'))}
-      </div>
+      </>
     );
 
   return (

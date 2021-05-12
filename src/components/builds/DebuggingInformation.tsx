@@ -71,18 +71,25 @@ function DebuggingInformation(props: Props) {
     );
   }
 
-  return (
-    <Card>
-      <CardContent>
-        <Typography variant="h6">Debugging Information</Typography>
-        <div className={classes.gapped}>YAML configuration</div>
-        {generateTable(build.parsingResult.rawYamlConfig.split('\n'))}
+  const starlarkInformation =
+    build.parsingResult.rawStarlarkConfig === '' ? null : (
+      <div>
         <div className={classes.gapped}>Starlark configuration</div>
         {generateTable(build.parsingResult.rawStarlarkConfig.split('\n'))}
         <div className={classes.gapped}>Starlark logs</div>
         {generateTable(build.parsingResult.outputLogs)}
         <div className={classes.gapped}>Final configuration</div>
         {generateTable(build.parsingResult.processedYamlConfig.split('\n'))}
+      </div>
+    );
+
+  return (
+    <Card>
+      <CardContent>
+        <Typography variant="h6">Debugging Information</Typography>
+        <div className={classes.gapped}>YAML configuration</div>
+        {generateTable(build.parsingResult.rawYamlConfig.split('\n'))}
+        {starlarkInformation}
       </CardContent>
     </Card>
   );

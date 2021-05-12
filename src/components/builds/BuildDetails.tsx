@@ -24,9 +24,11 @@ import Notification from '../common/Notification';
 import classNames from 'classnames';
 import ConfigurationWithIssues from './ConfigurationWithIssues';
 import HookList from '../hooks/HookList';
-import { TabContext, TabList, TabPanel } from '@material-ui/lab';
-import { AppBar, Tab } from '@material-ui/core';
-import { Dehaze, Functions } from '@material-ui/icons';
+import { TabContext, TabList, TabPanel, ToggleButton } from '@material-ui/lab';
+import { AppBar, Collapse, Tab } from '@material-ui/core';
+import { BugReport, Dehaze, Functions } from '@material-ui/icons';
+import Tooltip from '@material-ui/core/Tooltip';
+import DebuggingInformation from './DebuggingInformation';
 
 const buildApproveMutation = graphql`
   mutation BuildDetailsApproveBuildMutation($input: BuildApproveInput!) {
@@ -229,6 +231,11 @@ function BuildDetails(props: Props) {
 
   const tasksAndMaybeHooks = build.hooks.length === 0 ? onlyTasks : tabbedTasksAndHooks;
 
+  const [displayDebugInfo, setDisplayDebugInfo] = React.useState(false);
+  const toggleDisplayDebugInfo = () => {
+    setDisplayDebugInfo(!displayDebugInfo);
+  };
+
   return (
     <div>
       <CirrusFavicon status={build.status} />
@@ -237,13 +244,24 @@ function BuildDetails(props: Props) {
       </Head>
       <Card>
         <CardContent>
-          <div className={classes.wrapper}>
-            <RepositoryNameChip className={classes.chip} repository={build.repository} />
-            <BuildBranchNameChip className={classes.chip} build={build} />
-          </div>
-          <div className={classes.wrapper}>
-            <BuildCreatedChip className={classes.chip} build={build} />
-            <BuildStatusChip className={classes.chip} build={build} />
+          <div className="d-flex justify-content-between">
+            <div>
+              <div className={classes.wrapper}>
+                <RepositoryNameChip className={classes.chip} repository={build.repository} />
+                <BuildBranchNameChip className={classes.chip} build={build} />
+              </div>
+              <div className={classes.wrapper}>
+                <BuildCreatedChip className={classes.chip} build={build} />
+                <BuildStatusChip className={classes.chip} build={build} />
+              </div>
+            </div>
+            <div>
+              <Tooltip title="Debugging Information">
+                <ToggleButton onClick={toggleDisplayDebugInfo} selected={displayDebugInfo}>
+                  <BugReport />
+                </ToggleButton>
+              </Tooltip>
+            </div>
           </div>
           <div className={classes.gap} />
           <Typography variant="h6" gutterBottom>
@@ -269,6 +287,9 @@ function BuildDetails(props: Props) {
       </Card>
       <ConfigurationWithIssues build={build} />
       {notificationsComponent}
+      <Collapse in={displayDebugInfo}>
+        <DebuggingInformation build={build} />
+      </Collapse>
       <div className={classes.gap} />
       <Paper elevation={2}>{tasksAndMaybeHooks}</Paper>
     </div>
@@ -291,6 +312,7 @@ export default createFragmentContainer(withStyles(styles)(BuildDetails), {
         ...Notification_notification
       }
       ...ConfigurationWithIssues_build
+      ...DebuggingInformation_build
       latestGroupTasks {
         id
         localGroupId

@@ -145,6 +145,17 @@ function HookDetails(props: Props, context) {
     </Button>
   );
 
+  const executionLogs =
+    props.hook.info.outputLogs.length === 0 ? (
+      <div className="d-flex justify-content-center align-items-center">
+        <span>
+          There doesn't seem to be anything here. Try generating some logs with <code>print()</code>!
+        </span>
+      </div>
+    ) : (
+      <Logs logsName="output" logs={props.hook.info.outputLogs.join('\n')} />
+    );
+
   return (
     <div>
       <CirrusFavicon status={hook.info.error === ''} />
@@ -184,7 +195,7 @@ function HookDetails(props: Props, context) {
       <Card>
         <CardContent>
           <Typography variant="h6">Execution logs</Typography>
-          <Logs logsName="output" logs={props.hook.info.outputLogs.join('\n')} />
+          {executionLogs}
         </CardContent>
       </Card>
       <div className={classes.gap} />

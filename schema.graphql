@@ -498,6 +498,8 @@ type ParsingResult {
 type ParsingResultIssue {
   level: ParsingResultIssueLevel!
   message: String!
+  rawDetails: String!
+  path: String!
   line: Int!
   column: Int!
 }

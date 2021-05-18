@@ -53,9 +53,13 @@ function ConfigurationWithIssues(props: Props) {
   }
 
   // Sort issues by (line, column) and store them in a map for faster access
-  var sortedIssues = build.parsingResult.issues.slice().sort(function (left, right) {
-    return left.line - right.line || left.column - right.column;
-  });
+  var sortedIssues = build.parsingResult.issues
+    .filter(issue => {
+      return issue.path.endsWith('.cirrus.yml') || issue.path.endsWith('.cirrus.yaml');
+    })
+    .sort(function (left, right) {
+      return left.line - right.line || left.column - right.column;
+    });
 
   let issueMap = {};
 
@@ -120,6 +124,7 @@ export default createFragmentContainer(withStyles(styles)(ConfigurationWithIssue
         issues {
           level
           message
+          path
           line
           column
         }

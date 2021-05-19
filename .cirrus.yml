@@ -1,8 +1,8 @@
 container:
-  image: node:15
+  image: node:latest
+  memory: 8G
 
 task:
-  use_compute_credits: $CIRRUS_BRANCH == 'master'
   node_modules_cache:
     folder: node_modules
     fingerprint_script: cat yarn.lock
@@ -11,12 +11,10 @@ task:
   matrix:
     - name: Build
       build_script: yarn build
-      container:
-        memory: 8G
     - name: Tests
       test_script: yarn test
     - name: Prettier
-      prettier_check_script: yarn prettier-check
+      prettier-check_script: yarn prettier --check .
     - name: Type Check
       typecheck_script: yarn typecheck
 

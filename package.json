@@ -68,7 +68,7 @@
     "start-untyped": "TSC_COMPILE_ON_ERROR=\"true\" react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "typecheck": "tsc --pproject tsconfig.json --noEmit",
+    "typecheck": "tsc --project tsconfig.json --noEmit",
     "prettier": "prettier --write .",
     "relay": "relay-compiler --verbose --watchman false --src ./src --schema schema.graphql --language typescript",
     "sync-schema": "get-graphql-schema https://api.cirrus-ci.com/schema.json | sed -e 's/Long/Int/g' > schema.graphql && prettier --write schema.graphql",

@@ -1,6 +1,5 @@
 container:
   image: node:current
-  memory: 8G
 
 task:
   node_modules_cache:

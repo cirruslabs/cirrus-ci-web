@@ -1,4 +1,4 @@
-FROM node:latest as builder
+FROM node:current as builder
 
 WORKDIR /tmp/cirrus-ci-web
 ADD package.json yarn.lock /tmp/cirrus-ci-web/
@@ -10,7 +10,7 @@ ENV NODE_ENV=production
 ADD . /tmp/cirrus-ci-web/
 RUN yarn bootstrap && yarn build && rm -rf build/service-worker.js
 
-FROM node:latest-alpine
+FROM node:current-alpine
 
 WORKDIR /svc/cirrus-ci-web
 EXPOSE 8080

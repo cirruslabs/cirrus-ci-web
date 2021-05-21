@@ -17,7 +17,7 @@ task:
     - name: Prettier
       prettier-check_script: yarn prettier --check .
     - name: Type Check
-      typecheck_script: yarn typecheck
+      typecheck_script: tsc --project tsconfig.json --noEmit
 
 deploy_docker_builder:
   only_if: $CIRRUS_BRANCH == "master"

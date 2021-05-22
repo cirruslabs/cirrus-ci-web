@@ -70,6 +70,7 @@
     "test": "react-scripts test --env=jsdom",
     "typecheck": "tsc --project tsconfig.json --noEmit",
     "prettier": "prettier --write .",
+    "prettier-check": "prettier --check .",
     "relay": "relay-compiler --verbose --watchman false --src ./src --schema schema.graphql --language typescript",
     "sync-schema": "get-graphql-schema https://api.cirrus-ci.com/schema.json | sed -e 's/Long/Int/g' > schema.graphql && prettier --write schema.graphql",
     "bootstrap": "yarn sync-schema && yarn relay"

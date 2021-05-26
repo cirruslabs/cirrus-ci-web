@@ -165,12 +165,13 @@ function ComputeCreditsStripeDialog(props: Props) {
             onChange={handleChange}
           />
         </FormControl>
-        <FormControl fullWidth>
+        <FormControl fullWidth required={true}>
           <InputLabel htmlFor="receipt-email">Receipt Email</InputLabel>
           <Input
             id="receipt-email"
             value={receiptEmail}
             inputMode="email"
+            error={!/\S+@\S+\.\S+/.test(receiptEmail)}
             onChange={event => setReceiptEmail(event.target.value)}
           />
         </FormControl>

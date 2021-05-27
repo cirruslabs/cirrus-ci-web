@@ -2,4 +2,6 @@
 
 set -e
 
-docker build --cache-from cirrusci/web-front-end:latest --tag cirrusci/web-front-end:latest .
+docker buildx build --platform linux/amd64,linux/arm64 \
+  --cache-from cirrusci/web-front-end:latest \
+  --tag cirrusci/web-front-end:latest .

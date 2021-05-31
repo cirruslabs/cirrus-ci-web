@@ -170,6 +170,33 @@ type BuyComputeCreditsPayload {
   clientMutationId: String
 }
 
+type CacheRetrievalAttemptError {
+  key: String!
+  message: String!
+}
+
+type CacheRetrievalAttemptHit {
+  key: String!
+  sizeBytes: Int!
+  downloadedInNanos: Int!
+  extractedInNanos: Int!
+  valid: Boolean!
+}
+
+type CacheRetrievalAttemptMiss {
+  key: String!
+  sizeBytes: Int!
+  populatedInNanos: Int!
+  archivedInNanos: Int!
+  uploadedInNanos: Int!
+}
+
+type CacheRetrievalAttempts {
+  errors: [CacheRetrievalAttemptError]
+  hits: [CacheRetrievalAttemptHit]
+  misses: [CacheRetrievalAttemptMiss]
+}
+
 """
 Repository Setting to choose where to look for the configuration file.
 """
@@ -256,6 +283,7 @@ type ExecutionInfo {
   events: [ExecutionEvent]
   cpuChart: ExecutionChart
   memoryChart: ExecutionChart
+  cacheRetrievalAttempts: CacheRetrievalAttempts
 }
 
 input GenerateNewAccessTokenInput {
@@ -380,6 +408,16 @@ type InstanceResources {
   memory: Int!
 }
 
+input InvalidateCacheEntriesInput {
+  taskId: ID!
+  cacheKeys: [String]
+  clientMutationId: String
+}
+
+type InvalidateCacheEntriesPayload {
+  clientMutationId: String
+}
+
 """
 Int type
 """
@@ -434,6 +472,7 @@ type Mutation {
   saveWebPushConfiguration(input: SaveWebPushConfigurationInput!): SaveWebPushConfigurationPayload
   deleteWebPushConfiguration(input: DeleteWebPushConfigurationInput!): DeleteWebPushConfigurationPayload
   rerunHooks(input: HooksReRunInput!): HooksReRunPayload
+  invalidateCacheEntries(input: InvalidateCacheEntriesInput!): InvalidateCacheEntriesPayload
 }
 
 type Notification {

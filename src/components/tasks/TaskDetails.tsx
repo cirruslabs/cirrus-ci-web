@@ -45,8 +45,9 @@ import TaskTimeoutChip from '../chips/TaskTimeoutChip';
 import Notification from '../common/Notification';
 import HookList from '../hooks/HookList';
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
-import { AppBar, Tab } from '@material-ui/core';
-import { Dehaze, Functions } from '@material-ui/icons';
+import { AppBar, Tab, Tooltip } from '@material-ui/core';
+import { Dehaze, Functions, LayersClear } from '@material-ui/icons';
+import { TaskDetailsInvalidateCachesMutationResponse } from './__generated__/TaskDetailsInvalidateCachesMutation.graphql';
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
@@ -77,6 +78,14 @@ const taskCancelMutation = graphql`
         id
         status
       }
+    }
+  }
+`;
+
+const invalidateCachesMutation = graphql`
+  mutation TaskDetailsInvalidateCachesMutation($input: InvalidateCacheEntriesInput!) {
+    invalidateCacheEntries(input: $input) {
+      clientMutationId
     }
   }
 `;
@@ -262,6 +271,58 @@ function TaskDetails(props: Props, context) {
         Cancel
       </Button>
     );
+
+  const [disableInvalidateCachesButton, setDisableInvalidateCachesButton] = React.useState(false);
+
+  function validCacheKeys(task: TaskDetails_task) {
+    if (task.executionInfo === null || task.executionInfo.cacheRetrievalAttempts === null) return [];
+
+    return task.executionInfo.cacheRetrievalAttempts.hits
+      .filter(hit => {
+        return hit.valid;
+      })
+      .map(hit => {
+        return hit.key;
+      });
+  }
+
+  function invalidateCaches(task: TaskDetails_task) {
+    let cacheKeys = validCacheKeys(task);
+
+    if (cacheKeys.length === 0) return;
+
+    const variables = {
+      input: {
+        clientMutationId: 'invalidate-caches-' + task.id,
+        taskId: task.id,
+        cacheKeys: cacheKeys,
+      },
+    };
+
+    commitMutation(environment, {
+      mutation: invalidateCachesMutation,
+      variables: variables,
+      onCompleted: (response: TaskDetailsInvalidateCachesMutationResponse) => {
+        setDisableInvalidateCachesButton(true);
+      },
+      onError: err => console.error(err),
+    });
+  }
+
+  let invalidateCachesButton =
+    validCacheKeys(task).length === 0 || !hasWritePermissions(build.viewerPermission) ? null : (
+      <Tooltip title="Invalidate all cache entries referenced by this task">
+        <Button
+          variant="contained"
+          onClick={() => invalidateCaches(task)}
+          startIcon={<LayersClear />}
+          disabled={disableInvalidateCachesButton}
+        >
+          Clear Task Caches
+        </Button>
+      </Tooltip>
+    );
+
   let allOtherRuns: JSX.Element | [] = [];
   if (task.allOtherRuns && task.allOtherRuns.length > 0) {
     allOtherRuns = (
@@ -392,6 +453,7 @@ function TaskDetails(props: Props, context) {
           {reRunButton}
           {triggerButton}
           {preTriggerButton}
+          {invalidateCachesButton}
         </CardActions>
       </Card>
       {notificationsComponent}
@@ -474,6 +536,14 @@ export default createFragmentContainer(withStyles(styles)(withRouter(TaskDetails
       hooks {
         timestamp
         ...HookListRow_hook
+      }
+      executionInfo {
+        cacheRetrievalAttempts {
+          hits {
+            key
+            valid
+          }
+        }
       }
     }
   `,

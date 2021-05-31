@@ -193,7 +193,7 @@ function RepositorySettings(props: Props) {
             control={
               <Checkbox checked={initialSettings.cacheVersion !== settings.cacheVersion} onChange={setClearCaches} />
             }
-            label="Clear caches"
+            label="Clear all repository caches"
           />
         </FormControl>
       </CardContent>

@@ -293,7 +293,7 @@ function TaskDetails(props: Props, context) {
 
     const variables = {
       input: {
-        clientMutationId: 'rerun-' + task.id,
+        clientMutationId: 'invalidate-caches-' + task.id,
         taskId: task.id,
         cacheKeys: cacheKeys,
       },

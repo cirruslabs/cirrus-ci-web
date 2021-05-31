@@ -45,7 +45,7 @@ import TaskTimeoutChip from '../chips/TaskTimeoutChip';
 import Notification from '../common/Notification';
 import HookList from '../hooks/HookList';
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
-import { AppBar, Tab } from '@material-ui/core';
+import { AppBar, Tab, Tooltip } from '@material-ui/core';
 import { Dehaze, Functions, LayersClear } from '@material-ui/icons';
 import { TaskDetailsInvalidateCachesMutationResponse } from './__generated__/TaskDetailsInvalidateCachesMutation.graphql';
 
@@ -311,14 +311,16 @@ function TaskDetails(props: Props, context) {
 
   let invalidateCachesButton =
     validCacheKeys(task).length === 0 || !hasWritePermissions(build.viewerPermission) ? null : (
-      <Button
-        variant="contained"
-        onClick={() => invalidateCaches(task)}
-        startIcon={<LayersClear />}
-        disabled={disableInvalidateCachesButton}
-      >
-        Invalidate Caches
-      </Button>
+      <Tooltip title="Invalidate all cache entries referenced by this task">
+        <Button
+          variant="contained"
+          onClick={() => invalidateCaches(task)}
+          startIcon={<LayersClear />}
+          disabled={disableInvalidateCachesButton}
+        >
+          Clear Task Caches
+        </Button>
+      </Tooltip>
     );
 
   let allOtherRuns: JSX.Element | [] = [];

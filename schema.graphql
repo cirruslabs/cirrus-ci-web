@@ -889,6 +889,8 @@ type Task {
   executionInfo: ExecutionInfo
   baseEnvironment: [String]
   hooks: [Hook]
+  reranBy: UserBasicInfo
+  cancelledBy: UserBasicInfo
 }
 
 input TaskAbortInput {
@@ -1044,7 +1046,7 @@ type UpdatePersistentWorkerPoolPayload {
   clientMutationId: String
 }
 
-type User {
+type User implements UserBasicInfo {
   id: ID!
   githubUserId: Int
   githubUserName: String!
@@ -1099,6 +1101,13 @@ type User {
   apiToken: ApiAccessToken
   webPushServerKey: String!
   persistentWorkerPools: [PersistentWorkerPool]
+}
+
+interface UserBasicInfo {
+  id: ID!
+  githubUserId: Int
+  githubUserName: String
+  avatarURL: String
 }
 
 """

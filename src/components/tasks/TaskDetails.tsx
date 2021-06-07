@@ -48,6 +48,8 @@ import { TabContext, TabList, TabPanel } from '@material-ui/lab';
 import { AppBar, Tab, Tooltip } from '@material-ui/core';
 import { Dehaze, Functions, LayersClear } from '@material-ui/icons';
 import { TaskDetailsInvalidateCachesMutationResponse } from './__generated__/TaskDetailsInvalidateCachesMutation.graphql';
+import TaskRerunnerChip from '../chips/TaskRerunnerChip';
+import TaskCancellerChip from '../chips/TaskCancellerChip';
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
@@ -415,6 +417,10 @@ function TaskDetails(props: Props, context) {
             <TaskScheduledChip className={classes.chip} task={task} />
             <TaskStatusChip className={classes.chip} task={task} />
           </div>
+          <div className={classes.wrapper}>
+            <TaskRerunnerChip className={classes.chip} task={task} />
+            <TaskCancellerChip className={classes.chip} task={task} />
+          </div>
           <TaskCommandsProgress className={classes.progress} task={task} />
           <div className={classes.gap} />
           <Typography variant="h6" gutterBottom>
@@ -494,6 +500,8 @@ export default createFragmentContainer(withStyles(styles)(withRouter(TaskDetails
       ...TaskTimeoutChip_task
       ...TaskStatefulChip_task
       ...TaskOptionalChip_task
+      ...TaskRerunnerChip_task
+      ...TaskCancellerChip_task
       labels
       artifacts {
         name

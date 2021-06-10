@@ -6,8 +6,6 @@ task:
     folder: node_modules
     fingerprint_script: cat yarn.lock
     populate_script: yarn
-  env:
-    CIRRUS_AGENT_VERSION: 1.49.0
   bootstrap_script: yarn bootstrap
   matrix:
     - name: Build

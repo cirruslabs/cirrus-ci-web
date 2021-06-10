@@ -22,9 +22,7 @@ interface Props {
 
 // stable topological sort in O(n*k) where n is amount of tasks and k is amount of stages
 // plus populating data for visualization
-function topologicalSort(
-  tasks: ReadonlyArray<Task>,
-): ReadonlyArray<{
+function topologicalSort(tasks: ReadonlyArray<Task>): ReadonlyArray<{
   task: Task;
   durationBeforeScheduling: number;
   overallDuration: number;

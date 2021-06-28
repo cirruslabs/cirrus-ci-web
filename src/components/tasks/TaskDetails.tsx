@@ -398,6 +398,14 @@ function TaskDetails(props: Props, context) {
 
   const commandsAndMaybeHooks = task.hooks.length === 0 ? onlyCommands : tabbedCommandsAndHooks;
 
+  function desiredLabel(label: string) {
+    if (label.startsWith('canceller_') || label.startsWith('rerunner_')) {
+      return false;
+    }
+
+    return true;
+  }
+
   return (
     <div>
       <Head>
@@ -445,7 +453,7 @@ function TaskDetails(props: Props, context) {
             <TaskTimeoutChip className={classes.chip} task={task} />
             <TaskStatefulChip className={classes.chip} task={task} />
             <TaskResourcesChip className={classes.chip} task={task} />
-            {task.labels.map(label => {
+            {task.labels.filter(desiredLabel).map(label => {
               return <Chip key={label} className={classes.chip} label={shorten(label)} />;
             })}
           </div>

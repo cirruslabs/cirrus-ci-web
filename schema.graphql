@@ -320,32 +320,9 @@ type GitHubOrganizationInfo {
   id: ID!
   name: String!
   role: String!
-  purchase: GitHubMarketplacePurchase
   activeUsersAmount: Int!
   activeUserNames: [String]
   balanceInCredits: String!
-  transactions(
-    """
-    fetching only nodes before this node (exclusive)
-    """
-    before: String
-
-    """
-    fetching only nodes after this node (exclusive)
-    """
-    after: String
-
-    """
-    fetching only the first certain number of nodes
-    """
-    first: Int
-
-    """
-    fetching only the last certain number of nodes
-    """
-    last: Int
-  ): AccountTransactionsConnection
-  billingSettings: BillingSettings
   webhookSettings: WebHookSettings
   webhookDeliveries(
     """
@@ -370,6 +347,29 @@ type GitHubOrganizationInfo {
   ): WebhookDeliveriesConnection
   apiToken: ApiAccessToken
   persistentWorkerPools: [PersistentWorkerPool]
+  purchase: GitHubMarketplacePurchase
+  billingSettings: BillingSettings
+  transactions(
+    """
+    fetching only nodes before this node (exclusive)
+    """
+    before: String
+
+    """
+    fetching only nodes after this node (exclusive)
+    """
+    after: String
+
+    """
+    fetching only the first certain number of nodes
+    """
+    first: Int
+
+    """
+    fetching only the last certain number of nodes
+    """
+    last: Int
+  ): AccountTransactionsConnection
 }
 
 type Hook {
@@ -457,9 +457,7 @@ type Mutation {
   removeCronSettings(input: RepositoryRemoveCronSettingsInput!): RepositoryRemoveCronSettingsPayload
   approve(input: BuildApproveInput!): BuildApprovePayload
   trigger(input: TaskTriggerInput!): TaskTriggerPayload
-  buyComputeCredits(input: BuyComputeCreditsInput!): BuyComputeCreditsPayload
   saveWebHookSettings(input: SaveWebHookSettingsInput!): SaveWebHookSettingsPayload
-  saveBillingSettings(input: BillingSettingsInput!): BillingSettingsPayload
   generateNewAccessToken(input: GenerateNewAccessTokenInput!): GenerateNewAccessTokenPayload
   deletePersistentWorker(input: DeletePersistentWorkerInput!): DeletePersistentWorkerPayload
   updatePersistentWorker(input: UpdatePersistentWorkerInput!): UpdatePersistentWorkerPayload
@@ -473,6 +471,8 @@ type Mutation {
   deleteWebPushConfiguration(input: DeleteWebPushConfigurationInput!): DeleteWebPushConfigurationPayload
   rerunHooks(input: HooksReRunInput!): HooksReRunPayload
   invalidateCacheEntries(input: InvalidateCacheEntriesInput!): InvalidateCacheEntriesPayload
+  saveBillingSettings(input: BillingSettingsInput!): BillingSettingsPayload
+  buyComputeCredits(input: BuyComputeCreditsInput!): BuyComputeCreditsPayload
 }
 
 type Notification {
@@ -532,6 +532,7 @@ type ParsingResult {
   processedYamlConfig: String!
   issues: [ParsingResultIssue]
   outputLogs: [String]
+  environment: [String]
 }
 
 type ParsingResultIssue {
@@ -883,7 +884,6 @@ type Task {
   stateful: Boolean!
   useComputeCredits: Boolean!
   usedComputeCredits: Boolean!
-  transaction: AccountTransaction
   triggerType: TaskTriggerType!
   instanceResources: InstanceResources
   executionInfo: ExecutionInfo
@@ -891,6 +891,8 @@ type Task {
   hooks: [Hook]
   reranBy: UserBasicInfo
   cancelledBy: UserBasicInfo
+  terminalCredential: TerminalCredential
+  transaction: AccountTransaction
 }
 
 input TaskAbortInput {
@@ -945,10 +947,12 @@ enum TaskCommandType {
   CLONE
   EXECUTE_BACKGROUND_SCRIPT
   ARTIFACTS
+  WAIT_FOR_TERMINAL
 }
 
 input TaskReRunInput {
   taskId: ID!
+  attachTerminal: Boolean
   clientMutationId: String
 }
 
@@ -959,6 +963,7 @@ type TaskReRunPayload {
 
 input TasksReRunInput {
   taskIds: [ID]
+  attachTerminal: Boolean
   clientMutationId: String
 }
 
@@ -1003,6 +1008,11 @@ Task trigger type.
 enum TaskTriggerType {
   AUTOMATIC
   MANUAL
+}
+
+type TerminalCredential {
+  locator: String!
+  trustedSecret: String!
 }
 
 type TimePoint {
@@ -1073,10 +1083,13 @@ type User implements UserBasicInfo {
     """
     last: Int
   ): UserBuildsConnection
-  githubMarketplacePurchase: GitHubMarketplacePurchase
   topActiveRepositories: [Repository]
   organizations: [GitHubOrganizationInfo]
   balanceInCredits: String!
+  apiToken: ApiAccessToken
+  webPushServerKey: String!
+  persistentWorkerPools: [PersistentWorkerPool]
+  githubMarketplacePurchase: GitHubMarketplacePurchase
   transactions(
     """
     fetching only nodes before this node (exclusive)
@@ -1098,9 +1111,6 @@ type User implements UserBasicInfo {
     """
     last: Int
   ): UserTransactionsConnection
-  apiToken: ApiAccessToken
-  webPushServerKey: String!
-  persistentWorkerPools: [PersistentWorkerPool]
 }
 
 interface UserBasicInfo {

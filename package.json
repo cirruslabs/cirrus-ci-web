@@ -15,15 +15,18 @@
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/free-brands-svg-icons": "^5.15.1",
+    "@improbable-eng/grpc-web": "^0.14.0",
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@stripe/react-stripe-js": "^1.1.2",
     "@stripe/stripe-js": "^1.12.1",
+    "@types/google-protobuf": "^3.15.2",
     "ansi_up": "^5.0.0",
     "babel-plugin-relay": "^10.1.2",
     "classnames": "^2.2.6",
     "clipboard-copy": "^4.0.1",
+    "google-protobuf": "^3.17.3",
     "graphiql": "^1.4.0",
     "graphql": "^15.4.0",
     "graphql-relay": "^0.6.0",
@@ -41,7 +44,10 @@
     "react-stripe-elements": "^6.1.2",
     "react-vis": "^1.11.7",
     "recharts": "^1.8.5",
-    "recoil": "^0.1.2"
+    "recoil": "^0.1.2",
+    "ts-protoc-gen": "^0.15.0",
+    "xterm": "^4.12.0",
+    "xterm-addon-fit": "^0.5.0"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.11",

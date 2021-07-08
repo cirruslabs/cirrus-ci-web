@@ -21,7 +21,6 @@ import { withStyles, WithStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import { ViewerBuildList_viewer } from './__generated__/ViewerBuildList_viewer.graphql';
 import { Helmet as Head } from 'react-helmet';
-import RepositoryOwnerChip from '../chips/RepositoryOwnerChip';
 
 let styles = {
   chip: {
@@ -61,8 +60,7 @@ function ViewerBuildList(props: Props) {
       >
         <TableCell className={classes.padding}>
           <div className="d-flex flex-column align-items-start">
-            <RepositoryOwnerChip repository={build.repository} className={classes.chip} />
-            <RepositoryNameChip repository={build.repository} className={classes.chip} />
+            <RepositoryNameChip repository={build.repository} fullName={true} className={classes.chip} />
             <BuildBranchNameChip build={build} className={classes.chip} />
             <BuildChangeChip build={build} className={classes.chip} />
             <BuildStatusChip build={build} className={classNames('d-lg-none', classes.chip)} />
@@ -121,7 +119,6 @@ export default createFragmentContainer(withStyles(styles)(ViewerBuildList), {
             ...BuildChangeChip_build
             ...BuildStatusChip_build
             repository {
-              ...RepositoryOwnerChip_repository
               ...RepositoryNameChip_repository
             }
           }

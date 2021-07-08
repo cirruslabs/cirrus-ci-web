@@ -50,6 +50,7 @@ import { Dehaze, Functions, LayersClear } from '@material-ui/icons';
 import { TaskDetailsInvalidateCachesMutationResponse } from './__generated__/TaskDetailsInvalidateCachesMutation.graphql';
 import TaskRerunnerChip from '../chips/TaskRerunnerChip';
 import TaskCancellerChip from '../chips/TaskCancellerChip';
+import RepositoryOwnerChip from '../chips/RepositoryOwnerChip';
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
@@ -415,6 +416,7 @@ function TaskDetails(props: Props, context) {
       <Card>
         <CardContent>
           <div className={classes.wrapper}>
+            <RepositoryOwnerChip className={classes.chip} repository={repository} />
             <RepositoryNameChip className={classes.chip} repository={repository} />
             <BuildBranchNameChip className={classes.chip} build={build} />
             <BuildChangeChip className={classes.chip} build={build} />
@@ -528,6 +530,7 @@ export default createFragmentContainer(withStyles(styles)(withRouter(TaskDetails
       }
       repository {
         cloneUrl
+        ...RepositoryOwnerChip_repository
         ...RepositoryNameChip_repository
       }
       allOtherRuns {

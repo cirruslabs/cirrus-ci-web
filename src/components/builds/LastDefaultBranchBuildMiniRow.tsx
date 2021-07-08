@@ -64,7 +64,7 @@ function LastDefaultBranchBuildRow(props: Props) {
     >
       <TableCell style={{ padding: 0 }}>
         <div className="d-flex justify-content-between">
-          <RepositoryNameChip repository={repository} className={classes.chip} />
+          <RepositoryNameChip repository={repository} fullName={true} className={classes.chip} />
           <BuildStatusChip build={build} mini={true} className={classes.chip} />
         </div>
         <div className={classes.message}>

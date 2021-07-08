@@ -60,7 +60,7 @@ function ViewerBuildList(props: Props) {
       >
         <TableCell className={classes.padding}>
           <div className="d-flex flex-column align-items-start">
-            <RepositoryNameChip repository={build.repository} className={classes.chip} />
+            <RepositoryNameChip repository={build.repository} fullName={true} className={classes.chip} />
             <BuildBranchNameChip build={build} className={classes.chip} />
             <BuildChangeChip build={build} className={classes.chip} />
             <BuildStatusChip build={build} className={classNames('d-lg-none', classes.chip)} />

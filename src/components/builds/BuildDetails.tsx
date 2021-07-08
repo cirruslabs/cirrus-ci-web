@@ -29,6 +29,7 @@ import { AppBar, Collapse, Tab } from '@material-ui/core';
 import { BugReport, Dehaze, Functions } from '@material-ui/icons';
 import Tooltip from '@material-ui/core/Tooltip';
 import DebuggingInformation from './DebuggingInformation';
+import RepositoryOwnerChip from '../chips/RepositoryOwnerChip';
 
 const buildApproveMutation = graphql`
   mutation BuildDetailsApproveBuildMutation($input: BuildApproveInput!) {
@@ -247,6 +248,7 @@ function BuildDetails(props: Props) {
           <div className="d-flex justify-content-between">
             <div>
               <div className={classes.wrapper}>
+                <RepositoryOwnerChip className={classes.chip} repository={build.repository} />
                 <RepositoryNameChip className={classes.chip} repository={build.repository} />
                 <BuildBranchNameChip className={classes.chip} build={build} />
               </div>
@@ -324,6 +326,7 @@ export default createFragmentContainer(withStyles(styles)(BuildDetails), {
         ...TaskListRow_task
       }
       repository {
+        ...RepositoryOwnerChip_repository
         ...RepositoryNameChip_repository
         cloneUrl
         viewerPermission

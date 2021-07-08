@@ -26,6 +26,7 @@ import { hasWritePermissions } from '../../utils/permissions';
 import Refresh from '@material-ui/icons/Refresh';
 import environment from '../../createRelayEnvironment';
 import { HookDetailsRerunMutationResponse } from './__generated__/HookDetailsRerunMutation.graphql';
+import RepositoryOwnerChip from '../chips/RepositoryOwnerChip';
 
 const hooksRerunMutation = graphql`
   mutation HookDetailsRerunMutation($input: HooksReRunInput!) {
@@ -165,6 +166,7 @@ function HookDetails(props: Props, context) {
       <Card>
         <CardContent>
           <div className={classes.wrapper}>
+            <RepositoryOwnerChip className={classes.chip} repository={hook.repository} />
             <RepositoryNameChip className={classes.chip} repository={hook.repository} />
             <BuildBranchNameChip className={classes.chip} build={hook.build} />
             <BuildChangeChip className={classes.chip} build={hook.build} />
@@ -214,6 +216,7 @@ export default createFragmentContainer(withStyles(styles)(withRouter(HookDetails
     fragment HookDetails_hook on Hook {
       id
       repository {
+        ...RepositoryOwnerChip_repository
         ...RepositoryNameChip_repository
       }
       build {

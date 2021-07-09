@@ -39,7 +39,7 @@ function TaskExecutionInfo(props: Props) {
     info.cpuChart.points.forEach((point, index) => {
       chartPoints[index] = {
         'Requested CPUs': task.instanceResources.cpu,
-        'Used CPUs': Math.min(point.value, task.instanceResources.cpu),
+        'Used CPUs': point.value,
         TimestampLabel: formatDuration(point.secondsFromStart),
       };
     });

@@ -456,7 +456,11 @@ function TaskDetails(props: Props, context) {
             <TaskStatefulChip className={classes.chip} task={task} />
             <TaskResourcesChip className={classes.chip} task={task} />
             {task.labels.filter(desiredLabel).map(label => {
-              return <Chip key={label} className={classes.chip} label={shorten(label)} />;
+              return (
+                <Tooltip key={label} title={label}>
+                  <Chip className={classes.chip} label={shorten(label)} />
+                </Tooltip>
+              );
             })}
           </div>
           <ExecutionInfo task={task} />

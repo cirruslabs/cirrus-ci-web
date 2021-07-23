@@ -103,7 +103,7 @@ function ConfigurationWithIssues(props: Props) {
   const summaryText = errorIssue ? 'Failed to parse configuration' : 'Issues found while parsing configuration';
 
   return (
-    <Accordion defaultExpanded={true}>
+    <Accordion defaultExpanded={errorIssue != null}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant="h6">{summaryText}</Typography>
       </AccordionSummary>

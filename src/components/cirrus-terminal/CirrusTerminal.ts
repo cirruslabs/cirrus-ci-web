@@ -47,6 +47,7 @@ export class CirrusTerminal {
     this.terminalChannel.on('data', message => {
       if (this.state !== CirrusTerminalState.Connected) {
         this.state = CirrusTerminalState.Connecting;
+        return;
       }
 
       if (message.hasOutput()) {

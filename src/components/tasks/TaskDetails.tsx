@@ -44,13 +44,30 @@ import TaskStatefulChip from '../chips/TaskStatefulChip';
 import TaskTimeoutChip from '../chips/TaskTimeoutChip';
 import Notification from '../common/Notification';
 import HookList from '../hooks/HookList';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
-import { AppBar, Tab, Tooltip } from '@material-ui/core';
+import {
+  AppBar,
+  ButtonGroup,
+  ClickAwayListener,
+  Collapse,
+  Grow,
+  MenuItem,
+  MenuList,
+  Popper,
+  Tab,
+  Tooltip,
+} from '@material-ui/core';
 import { Dehaze, Functions, LayersClear } from '@material-ui/icons';
 import { TaskDetailsInvalidateCachesMutationResponse } from './__generated__/TaskDetailsInvalidateCachesMutation.graphql';
 import TaskRerunnerChip from '../chips/TaskRerunnerChip';
 import TaskCancellerChip from '../chips/TaskCancellerChip';
 import RepositoryOwnerChip from '../chips/RepositoryOwnerChip';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { CirrusTerminal } from '../cirrus-terminal/CirrusTerminal';
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
@@ -115,6 +132,10 @@ const taskSubscription = graphql`
       notifications {
         ...Notification_notification
       }
+      terminalCredential {
+        locator
+        trustedSecret
+      }
     }
   }
 `;
@@ -153,6 +174,13 @@ const styles = theme =>
     tabPanel: {
       padding: 0,
     },
+    terminal: {
+      width: '100%',
+      height: '550px',
+    },
+    rerunOptionPopup: {
+      zIndex: 1,
+    },
   });
 
 interface Props extends WithStyles<typeof styles>, RouteComponentProps {
@@ -177,24 +205,6 @@ function TaskDetails(props: Props, context) {
   let { task, classes } = props;
   let build = task.build;
   let repository = task.repository;
-
-  function rerun(taskId: string) {
-    const variables = {
-      input: {
-        clientMutationId: 'rerun-' + taskId,
-        taskId: taskId,
-      },
-    };
-
-    commitMutation(environment, {
-      mutation: taskReRunMutation,
-      variables: variables,
-      onCompleted: (response: TaskDetailsReRunMutationResponse) => {
-        navigateTask(history, null, response.rerun.newTask.id);
-      },
-      onError: err => console.error(err),
-    });
-  }
 
   function trigger(taskId) {
     const variables = {
@@ -246,11 +256,93 @@ function TaskDetails(props: Props, context) {
       </div>
     );
 
+  const anchorRef = React.useRef<HTMLDivElement>(null);
+
+  const [rerunOptionsShown, setRerunOptionsShown] = React.useState(false);
+  const toggleRerunOptions = () => {
+    setRerunOptionsShown(prevOpen => !prevOpen);
+  };
+
+  const closeRerunOptions = (event: React.MouseEvent<Document, MouseEvent>) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
+      return;
+    }
+
+    setRerunOptionsShown(false);
+  };
+
+  const rerunOptions = ['Re-Run', 'Re-Run with Terminal Access'];
+  const [selectedOptionIndex, setSelectedOptionIndex] = React.useState(0);
+
+  function chooseRerunOption(index: number) {
+    setSelectedOptionIndex(index);
+    setRerunOptionsShown(false);
+  }
+
+  function rerun(taskId: string) {
+    const variables = {
+      input: {
+        clientMutationId: 'rerun-' + taskId,
+        taskId: taskId,
+        attachTerminal: selectedOptionIndex === 1,
+      },
+    };
+
+    commitMutation(environment, {
+      mutation: taskReRunMutation,
+      variables: variables,
+      onCompleted: (response: TaskDetailsReRunMutationResponse) => {
+        navigateTask(history, null, response.rerun.newTask.id);
+      },
+      onError: err => console.error(err),
+    });
+  }
+
   let reRunButton =
     !hasWritePermissions(build.viewerPermission) || !isTaskFinalStatus(task.status) ? null : (
-      <Button variant="contained" onClick={() => rerun(task.id)} startIcon={<Refresh />}>
-        Re-Run
-      </Button>
+      <div>
+        <ButtonGroup variant="contained" ref={anchorRef}>
+          <Button onClick={() => rerun(task.id)} startIcon={<Refresh />}>
+            {rerunOptions[selectedOptionIndex]}
+          </Button>
+          <Button size="small" onClick={toggleRerunOptions}>
+            <ArrowDropDownIcon />
+          </Button>
+        </ButtonGroup>
+        <Popper
+          open={rerunOptionsShown}
+          anchorEl={anchorRef.current}
+          role={undefined}
+          transition
+          disablePortal
+          className={classes.rerunOptionPopup}
+        >
+          {({ TransitionProps, placement }) => (
+            <Grow
+              {...TransitionProps}
+              style={{
+                transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
+              }}
+            >
+              <Paper>
+                <ClickAwayListener onClickAway={closeRerunOptions}>
+                  <MenuList id="split-button-menu">
+                    {rerunOptions.map((option, index) => (
+                      <MenuItem
+                        key={option}
+                        selected={index === selectedOptionIndex}
+                        onClick={event => chooseRerunOption(index)}
+                      >
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </MenuList>
+                </ClickAwayListener>
+              </Paper>
+            </Grow>
+          )}
+        </Popper>
+      </div>
     );
 
   let taskIsTriggerable = task.status === 'PAUSED';
@@ -407,6 +499,22 @@ function TaskDetails(props: Props, context) {
     return true;
   }
 
+  useEffect(() => {
+    let ct = new CirrusTerminal(document.getElementById('terminal'));
+
+    if (props.task.terminalCredential != null) {
+      ct.connect(
+        'https://terminal.cirrus-ci.com',
+        props.task.terminalCredential.locator,
+        props.task.terminalCredential.trustedSecret,
+      );
+    }
+
+    return () => {
+      ct.dispose();
+    };
+  }, [props.task.terminalCredential]);
+
   return (
     <div>
       <Head>
@@ -477,6 +585,17 @@ function TaskDetails(props: Props, context) {
         </CardActions>
       </Card>
       {notificationsComponent}
+      <Collapse in={props.task.terminalCredential != null}>
+        <div className={classes.gap} />
+        <Accordion defaultExpanded={true}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography variant="h6">Terminal</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <div id="terminal" className={classes.terminal} />
+          </AccordionDetails>
+        </Accordion>
+      </Collapse>
       {artifactsComponent}
       {dependencies ? <div className={classes.gap} /> : null}
       {dependencies}
@@ -567,6 +686,10 @@ export default createFragmentContainer(withStyles(styles)(withRouter(TaskDetails
             valid
           }
         }
+      }
+      terminalCredential {
+        locator
+        trustedSecret
       }
     }
   `,

@@ -68,6 +68,7 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { CirrusTerminal } from '../cirrus-terminal/CirrusTerminal';
+import { HookType } from '../hooks/HookType';
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
@@ -441,8 +442,6 @@ function TaskDetails(props: Props, context) {
     );
   }
 
-  const onlyCommands = <TaskCommandList task={task} />;
-
   const [currentTab, setCurrentTab] = React.useState('instructions');
   const handleChange = (event, newValue) => {
     if (newValue === 'hooks') {
@@ -473,23 +472,17 @@ function TaskDetails(props: Props, context) {
       <AppBar position="static">
         <TabList onChange={handleChange}>
           <Tab icon={<Dehaze />} label={'Instructions (' + task.commands.length + ')'} value="instructions" />
-          {task.hooks.length !== 0 && (
-            <Tab icon={<Functions />} label={'Hooks (' + task.hooks.length + ')'} value="hooks" />
-          )}
+          <Tab icon={<Functions />} label={'Hooks (' + task.hooks.length + ')'} value="hooks" />
         </TabList>
       </AppBar>
       <TabPanel value="instructions" className={classes.tabPanel}>
-        {onlyCommands}
+        <TaskCommandList task={task} />
       </TabPanel>
-      {task.hooks.length !== 0 && (
-        <TabPanel value="hooks" className={classes.tabPanel}>
-          <HookList hooks={task.hooks} />
-        </TabPanel>
-      )}
+      <TabPanel value="hooks" className={classes.tabPanel}>
+        <HookList hooks={task.hooks} type={HookType.Task} />
+      </TabPanel>
     </TabContext>
   );
-
-  const commandsAndMaybeHooks = task.hooks.length === 0 ? onlyCommands : tabbedCommandsAndHooks;
 
   function desiredLabel(label: string) {
     if (label.startsWith('canceller_') || label.startsWith('rerunner_')) {
@@ -604,7 +597,7 @@ function TaskDetails(props: Props, context) {
       {allOtherRuns ? <div className={classes.gap} /> : null}
       {allOtherRuns}
       <div className={classes.gap} />
-      <Paper elevation={2}>{commandsAndMaybeHooks}</Paper>
+      <Paper elevation={2}>{tabbedCommandsAndHooks}</Paper>
     </div>
   );
 }

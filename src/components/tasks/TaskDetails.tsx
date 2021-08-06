@@ -68,6 +68,7 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { CirrusTerminal } from '../cirrus-terminal/CirrusTerminal';
+import { HookType } from '../hooks/HookType';
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
@@ -478,7 +479,7 @@ function TaskDetails(props: Props, context) {
         <TaskCommandList task={task} />
       </TabPanel>
       <TabPanel value="hooks" className={classes.tabPanel}>
-        <HookList hooks={task.hooks} />
+        <HookList hooks={task.hooks} type={HookType.Task} />
       </TabPanel>
     </TabContext>
   );

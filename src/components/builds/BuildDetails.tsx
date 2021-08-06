@@ -30,6 +30,7 @@ import { BugReport, Dehaze, Functions } from '@material-ui/icons';
 import Tooltip from '@material-ui/core/Tooltip';
 import DebuggingInformation from './DebuggingInformation';
 import RepositoryOwnerChip from '../chips/RepositoryOwnerChip';
+import { HookType } from '../hooks/HookType';
 
 const buildApproveMutation = graphql`
   mutation BuildDetailsApproveBuildMutation($input: BuildApproveInput!) {
@@ -223,7 +224,7 @@ function BuildDetails(props: Props) {
         <TaskList tasks={build.latestGroupTasks} />
       </TabPanel>
       <TabPanel value="2" className={classes.tabPanel}>
-        <HookList hooks={build.hooks} />
+        <HookList hooks={build.hooks} type={HookType.Build} />
       </TabPanel>
     </TabContext>
   );

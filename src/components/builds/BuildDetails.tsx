@@ -207,8 +207,6 @@ function BuildDetails(props: Props) {
     </Button>
   );
 
-  const onlyTasks = <TaskList tasks={build.latestGroupTasks} />;
-
   const [currentTab, setCurrentTab] = React.useState('1');
   const handleChange = (event, newValue) => {
     setCurrentTab(newValue);
@@ -222,15 +220,13 @@ function BuildDetails(props: Props) {
         </TabList>
       </AppBar>
       <TabPanel value="1" className={classes.tabPanel}>
-        {onlyTasks}
+        <TaskList tasks={build.latestGroupTasks} />
       </TabPanel>
       <TabPanel value="2" className={classes.tabPanel}>
-        {build.hooks.length !== 0 && <HookList hooks={build.hooks} />}
+        <HookList hooks={build.hooks} />
       </TabPanel>
     </TabContext>
   );
-
-  const tasksAndMaybeHooks = build.hooks.length === 0 ? onlyTasks : tabbedTasksAndHooks;
 
   const [displayDebugInfo, setDisplayDebugInfo] = React.useState(false);
   const toggleDisplayDebugInfo = () => {
@@ -293,7 +289,7 @@ function BuildDetails(props: Props) {
         <DebuggingInformation build={build} />
       </Collapse>
       <div className={classes.gap} />
-      <Paper elevation={2}>{tasksAndMaybeHooks}</Paper>
+      <Paper elevation={2}>{tabbedTasksAndHooks}</Paper>
     </div>
   );
 }

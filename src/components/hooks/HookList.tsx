@@ -3,21 +3,31 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import HookListRow from './HookListRow';
 import { FragmentRefs } from 'relay-runtime';
-import { Card, CardContent, Typography } from '@material-ui/core';
+import { Card, CardContent, createStyles, Theme, Typography } from '@material-ui/core';
 import { HookType } from './HookType';
+import { withStyles, WithStyles } from '@material-ui/core/styles';
+
+const styles = (theme: Theme) =>
+  createStyles({
+    pre: {
+      color: theme.palette.type === 'dark' ? theme.palette.primary.light : theme.palette.primary.dark,
+      background: theme.palette.type === 'dark' ? theme.palette.primary.dark : theme.palette.primary.light,
+      padding: theme.spacing(0.5),
+    },
+  });
 
 interface Hook {
   readonly timestamp: number;
   readonly ' $fragmentRefs': FragmentRefs<'HookListRow_hook'>;
 }
 
-interface Props {
+interface Props extends WithStyles<typeof styles> {
   hooks: ReadonlyArray<Hook>;
   type: HookType;
 }
 
-export default (props: Props) => {
-  let { hooks, type } = props;
+function HooksList(props: Props) {
+  let { hooks, type, classes } = props;
 
   if (hooks.length === 0) {
     const hookExampleTemplate = `load("cirrus", "env", "http")
@@ -51,7 +61,7 @@ def on_ENTITY_failed(ctx):
               </a>
               :
             </p>
-            <pre>
+            <pre className={classes.pre}>
               <code>{hookExample}</code>
             </pre>
             <p>
@@ -85,4 +95,6 @@ def on_ENTITY_failed(ctx):
       </TableBody>
     </Table>
   );
-};
+}
+
+export default withStyles(styles)(HooksList);

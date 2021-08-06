@@ -499,10 +499,12 @@ function TaskDetails(props: Props, context) {
     return true;
   }
 
+  const shouldRunTerminal = props.task.terminalCredential != null && !isTaskFinalStatus(props.task.status);
+
   useEffect(() => {
     let ct = new CirrusTerminal(document.getElementById('terminal'));
 
-    if (props.task.terminalCredential != null) {
+    if (shouldRunTerminal) {
       ct.connect(
         'https://terminal.cirrus-ci.com',
         props.task.terminalCredential.locator,
@@ -513,7 +515,7 @@ function TaskDetails(props: Props, context) {
     return () => {
       ct.dispose();
     };
-  }, [props.task.terminalCredential]);
+  }, [shouldRunTerminal]);
 
   return (
     <div>
@@ -585,7 +587,7 @@ function TaskDetails(props: Props, context) {
         </CardActions>
       </Card>
       {notificationsComponent}
-      <Collapse in={props.task.terminalCredential != null}>
+      <Collapse in={shouldRunTerminal}>
         <div className={classes.gap} />
         <Accordion defaultExpanded={true}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>

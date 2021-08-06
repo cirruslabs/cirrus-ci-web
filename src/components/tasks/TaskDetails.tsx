@@ -515,7 +515,7 @@ function TaskDetails(props: Props, context) {
     return () => {
       ct.dispose();
     };
-  }, [shouldRunTerminal]);
+  }, [shouldRunTerminal, props.task.terminalCredential.locator, props.task.terminalCredential.trustedSecret]);
 
   return (
     <div>

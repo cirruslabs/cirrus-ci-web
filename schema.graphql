@@ -822,6 +822,7 @@ type Root {
 input SaveWebHookSettingsInput {
   accountId: ID!
   webhookURL: String!
+  secretToken: String
   clientMutationId: String
 }
 
@@ -1243,4 +1244,5 @@ type WebHookDeliveryResponse {
 
 type WebHookSettings {
   webhookURL: String
+  maskedSecretToken: String!
 }

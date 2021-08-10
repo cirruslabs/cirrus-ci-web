@@ -56,17 +56,16 @@ interface Props extends RouteComponentProps, WithStyles<typeof styles> {
 
 function WebHookSettings(props: Props) {
   let [expanded, setExpanded] = useState(false);
-  let [initialWebhookURL, setInitialWebhookURL] = useState(props.info.webhookSettings.webhookURL || '');
-  let [actualWebhookURL, setActualWebhookURL] = useState(props.info.webhookSettings.webhookURL || '');
+  let [webhookURL, setWebhookURL] = useState(props.info.webhookSettings.webhookURL || '');
   let [secretToken, setSecretToken] = useState('');
   let { info, classes } = props;
 
   function saveWebhookSettings() {
     const variables = {
       input: {
-        clientMutationId: actualWebhookURL,
+        clientMutationId: webhookURL,
         accountId: props.info.id,
-        webhookURL: actualWebhookURL,
+        webhookURL: webhookURL,
       },
     };
 
@@ -79,12 +78,6 @@ function WebHookSettings(props: Props) {
     commitMutation(environment, {
       mutation: securedVariableMutation,
       variables: variables,
-      onCompleted: (response: WebHookSettingsMutationResponse) => {
-        let settings = response.saveWebHookSettings.info;
-        let savedWebhookURL = settings.webhookSettings.webhookURL;
-        setInitialWebhookURL(savedWebhookURL);
-        setActualWebhookURL(savedWebhookURL);
-      },
       onError: err => console.error(err),
     });
   }
@@ -137,6 +130,10 @@ function WebHookSettings(props: Props) {
     </FormControl>
   );
 
+  const webhookURLUnchanged =
+    props.info.webhookSettings != null && props.info.webhookSettings.webhookURL === webhookURL;
+  const secretTokenUnchanged = hasTokenSet || secretToken === '';
+
   return (
     <Card>
       <CardHeader title="Webhook Settings" />
@@ -152,8 +149,8 @@ function WebHookSettings(props: Props) {
           <TextField
             name="webhookURL"
             placeholder="Enter webhook URL"
-            value={actualWebhookURL}
-            onChange={event => setActualWebhookURL(event.target.value)}
+            value={webhookURL}
+            onChange={event => setWebhookURL(event.target.value)}
             fullWidth={true}
           />
         </FormControl>
@@ -162,7 +159,7 @@ function WebHookSettings(props: Props) {
       <CardActions disableSpacing>
         <Button
           variant="contained"
-          disabled={actualWebhookURL === initialWebhookURL && hasTokenSet && secretToken === ''}
+          disabled={webhookURLUnchanged && secretTokenUnchanged}
           onClick={saveWebhookSettings}
         >
           Save

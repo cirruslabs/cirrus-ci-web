@@ -17,7 +17,8 @@ import classNames from 'classnames';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DeliveriesList from './DeliveriesList';
 import { WebHookSettings_info } from './__generated__/WebHookSettings_info.graphql';
-import { WebHookSettingsMutationResponse } from './__generated__/WebHookSettingsMutation.graphql';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import sjcl from 'sjcl/sjcl.js';
 
 const securedVariableMutation = graphql`
   mutation WebHookSettingsMutation($input: SaveWebHookSettingsInput!) {
@@ -26,6 +27,7 @@ const securedVariableMutation = graphql`
       info {
         webhookSettings {
           webhookURL
+          maskedSecretToken
         }
       }
     }
@@ -53,12 +55,11 @@ interface Props extends RouteComponentProps, WithStyles<typeof styles> {
 
 function WebHookSettings(props: Props) {
   let [expanded, setExpanded] = useState(false);
-  let [initialURL, setInitialURL] = useState(props.info.webhookSettings.webhookURL || '');
-  let [inputValue, setInputValue] = useState(props.info.webhookSettings.webhookURL || '');
+  let [webhookURL, setWebhookURL] = useState(props.info.webhookSettings.webhookURL || '');
+  let [secretToken, setSecretToken] = useState('');
   let { info, classes } = props;
 
-  function saveWebHookURL() {
-    let webhookURL = inputValue;
+  function saveWebhookSettings() {
     const variables = {
       input: {
         clientMutationId: webhookURL,
@@ -67,35 +68,99 @@ function WebHookSettings(props: Props) {
       },
     };
 
+    if (secretToken !== '') {
+      const secretTokenDigest = sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(secretToken));
+      variables.input.clientMutationId += `-${secretTokenDigest}`;
+      variables.input['secretToken'] = secretToken;
+    }
+
     commitMutation(environment, {
       mutation: securedVariableMutation,
       variables: variables,
-      onCompleted: (response: WebHookSettingsMutationResponse) => {
-        let settings = response.saveWebHookSettings.info;
-        let savedWebhookURL = settings.webhookSettings.webhookURL;
-        setInitialURL(savedWebhookURL);
-        setInputValue(savedWebhookURL);
-      },
       onError: err => console.error(err),
     });
   }
+
+  function resetSecretToken() {
+    const variables = {
+      input: {
+        clientMutationId: `reset-${props.info.webhookSettings.maskedSecretToken}`,
+        accountId: props.info.id,
+        webhookURL: props.info.webhookSettings.webhookURL,
+        secretToken: '',
+      },
+    };
+
+    commitMutation(environment, {
+      mutation: securedVariableMutation,
+      variables: variables,
+      onError: err => console.error(err),
+    });
+  }
+
+  const hasTokenSet = props.info.webhookSettings != null && props.info.webhookSettings.maskedSecretToken !== '';
+  const secretTokenControl = hasTokenSet ? (
+    <FormControl style={{ width: '100%' }}>
+      <FormHelperText>
+        Currently the secret token is set to <code>{props.info.webhookSettings.maskedSecretToken}</code>, reset it first
+        to set a new one:
+      </FormHelperText>
+      <Button variant="contained" onClick={resetSecretToken}>
+        Reset Secret Token
+      </Button>
+    </FormControl>
+  ) : (
+    <FormControl style={{ width: '100%' }}>
+      <FormHelperText>
+        New secret token used to generate a signature for each request (learn how to validate the{' '}
+        <code>X-Cirrus-Signature</code> header{' '}
+        <a href="https://cirrus-ci.org/api/#securing-webhooks" target="_blank" rel="noopener noreferrer">
+          in the documentation
+        </a>
+        ):
+      </FormHelperText>
+      <TextField
+        name="secretToken"
+        placeholder="Enter secret token"
+        value={secretToken}
+        onChange={event => setSecretToken(event.target.value)}
+        fullWidth={true}
+      />
+    </FormControl>
+  );
+
+  const webhookURLUnchanged =
+    props.info.webhookSettings != null && props.info.webhookSettings.webhookURL === webhookURL;
+  const secretTokenUnchanged = hasTokenSet || secretToken === '';
 
   return (
     <Card>
       <CardHeader title="Webhook Settings" />
       <CardContent>
         <FormControl style={{ width: '100%' }}>
+          <FormHelperText>
+            A URL to send{' '}
+            <a href="https://cirrus-ci.org/api/#webhooks" target="_blank" rel="noopener noreferrer">
+              updates for builds and tasks
+            </a>{' '}
+            to:
+          </FormHelperText>
           <TextField
             name="webhookURL"
             placeholder="Enter webhook URL"
-            value={inputValue}
-            onChange={event => setInputValue(event.target.value)}
+            value={webhookURL}
+            onChange={event => setWebhookURL(event.target.value)}
             fullWidth={true}
           />
         </FormControl>
+        {secretTokenControl}
       </CardContent>
       <CardActions disableSpacing>
-        <Button variant="contained" disabled={inputValue === initialURL} onClick={saveWebHookURL}>
+        <Button
+          variant="contained"
+          disabled={webhookURLUnchanged && secretTokenUnchanged}
+          onClick={saveWebhookSettings}
+        >
           Save
         </Button>
         <IconButton
@@ -127,6 +192,7 @@ export default createPaginationContainer(
         id
         webhookSettings {
           webhookURL
+          maskedSecretToken
         }
         webhookDeliveries(last: $count, after: $cursor) @connection(key: "WebHookSettings_webhookDeliveries") {
           edges {

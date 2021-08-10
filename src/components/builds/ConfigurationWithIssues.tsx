@@ -129,21 +129,16 @@ function ConfigurationWithIssues(props: Props) {
     );
   }
 
-  const errorIssue = build.parsingResult.issues.find(it => it.level === 'ERROR');
-
-  const yamlIssueCache = cacheIssues(
-    build.parsingResult.issues.filter(
-      issue => issue.path.endsWith('.cirrus.yml') || issue.path.endsWith('.cirrus.yaml'),
-    ),
+  const yamlIssues = build.parsingResult.issues.filter(
+    issue => issue.path.endsWith('.cirrus.yml') || issue.path.endsWith('.cirrus.yaml'),
   );
+  const yamlIssueCache = cacheIssues(yamlIssues);
   const yamlTable = generateTable(build.parsingResult.processedYamlConfig, yamlIssueCache);
 
-  const starlarkIssueCache = cacheIssues(
-    build.parsingResult.issues.filter(issue => issue.path.endsWith('.cirrus.star')),
-  );
+  const starlarkIssues = build.parsingResult.issues.filter(issue => issue.path.endsWith('.cirrus.star'));
+  const starlarkIssueCache = cacheIssues(starlarkIssues);
   const starlarkTable = generateTable(build.parsingResult.rawStarlarkConfig, starlarkIssueCache);
 
-  let summaryText: string;
   let yamlTitle = (
     <Typography variant="subtitle1">
       <p>YAML configuration</p>
@@ -155,20 +150,37 @@ function ConfigurationWithIssues(props: Props) {
     </Typography>
   );
 
-  if (yamlIssueCache.size !== 0 && starlarkIssueCache.size !== 0) {
-    summaryText = 'Failed to parse both YAML and Starlark configurations';
-  } else if (yamlIssueCache.size !== 0) {
+  let summaryText: string;
+
+  const yamlHasErrors = yamlIssues.some(it => it.level === 'ERROR');
+  const yamlHasIssues = yamlIssues.some(it => it.level !== 'ERROR');
+  const starlarkHasErrors = starlarkIssues.some(it => it.level === 'ERROR');
+  const starlarkHasIssues = starlarkIssues.some(it => it.level !== 'ERROR');
+
+  if (yamlHasErrors && starlarkHasErrors) {
+    summaryText = 'Failed to parse YAML and Starlark configurations';
+  } else if (yamlHasIssues && starlarkHasIssues) {
+    summaryText = 'Found issues while parsing YAML and Starlark configurations';
+  } else if (yamlHasErrors) {
     summaryText = 'Failed to parse YAML configuration';
     yamlTitle = null;
     starlarkTitle = null;
-  } else if (starlarkIssueCache.size !== 0) {
+  } else if (starlarkHasErrors) {
     summaryText = 'Failed to evaluate Starlark configuration';
+    yamlTitle = null;
+    starlarkTitle = null;
+  } else if (yamlHasIssues) {
+    summaryText = 'Found issues while parsing YAML configuration';
+    yamlTitle = null;
+    starlarkTitle = null;
+  } else if (starlarkHasIssues) {
+    summaryText = 'Found issues while evaluating Starlark configuration';
     yamlTitle = null;
     starlarkTitle = null;
   }
 
   return (
-    <Accordion defaultExpanded={errorIssue != null}>
+    <Accordion defaultExpanded={yamlHasErrors || starlarkHasErrors}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant="h6">{summaryText}</Typography>
       </AccordionSummary>

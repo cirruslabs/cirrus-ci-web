@@ -17,7 +17,6 @@ import classNames from 'classnames';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DeliveriesList from './DeliveriesList';
 import { WebHookSettings_info } from './__generated__/WebHookSettings_info.graphql';
-import { WebHookSettingsMutationResponse } from './__generated__/WebHookSettingsMutation.graphql';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import sjcl from 'sjcl/sjcl.js';
 

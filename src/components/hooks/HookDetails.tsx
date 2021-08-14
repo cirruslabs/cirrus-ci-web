@@ -67,7 +67,7 @@ interface Props extends WithStyles<typeof styles>, RouteComponentProps {
   hook: HookDetails_hook;
 }
 
-function HookDetails(props: Props, context) {
+function HookDetails(props: Props) {
   let { hook, classes } = props;
 
   let history = useHistory();
@@ -221,14 +221,12 @@ export default createFragmentContainer(withStyles(styles)(withRouter(HookDetails
       }
       build {
         id
-        changeMessageTitle
         viewerPermission
         ...BuildBranchNameChip_build
         ...BuildChangeChip_build
       }
       task {
         id
-        name
         ...TaskNameChip_task
       }
       ...HookCreatedChip_hook

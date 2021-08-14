@@ -65,14 +65,14 @@ def on_ENTITY_failed(ctx):
               <code>{hookExample}</code>
             </pre>
             <p>
-              Simply add the <code>SLACK_WEBHOOK_URL</code> variable in the repository settings and create a{' '}
+              Just add the <code>SLACK_WEBHOOK_URL</code> variable in the repository settings and create a{' '}
               <code>.cirrus.star</code> with the snippet above in your repository's root directory.
             </p>
             <p>Now, every time the {hookTypeName} fails, the hook will run and the results will be displayed here!</p>
             <p>
-              Read more about hooks{' '}
+              Additional documentation about hooks can be found{' '}
               <a href="https://cirrus-ci.org/guide/programming-tasks/#hooks" target="_blank" rel="noopener noreferrer">
-                in the official documentation
+                here
               </a>
               .
             </p>

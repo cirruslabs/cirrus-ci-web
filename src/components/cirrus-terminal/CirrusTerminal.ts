@@ -55,7 +55,7 @@ export class CirrusTerminal {
         this.term.write(data);
       }
     });
-    this.terminalChannel.on('end', newStatus => {
+    this.terminalChannel.on('end', () => {
       this.state = CirrusTerminalState.Connecting;
     });
 

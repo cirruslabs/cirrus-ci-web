@@ -52,7 +52,6 @@ export default createFragmentContainer(withStyles(styles)(HookListRow), {
   hook: graphql`
     fragment HookListRow_hook on Hook {
       id
-      timestamp
       ...HookStatusChip_hook
       ...HookCreatedChip_hook
       ...HookNameChip_hook

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 
 import { commitMutation, createFragmentContainer } from 'react-relay';
 import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
@@ -77,26 +77,20 @@ function HookDetails(props: Props, context) {
   let prettyHookArguments = JSON.stringify(hookArguments, null, 2);
 
   // Extract hook-specific data
-  let targetName;
-  let targetState;
-  let navigateToAllHooks;
+  let targetName = 'Unsupported';
+  let targetState = 'UNSUPPORTED';
+  let navigateToAllHooks: MouseEventHandler = _ => alert('Unsupported hook ' + hook.name);
 
-  switch (hook.name) {
-    case 'on_task':
-      targetName = 'Task';
-      targetState = hookArguments[0].payload.data.task.status;
-      navigateToAllHooks = e => navigateTask(history, e, hook.task.id, true);
-      break;
-    case 'on_build':
-      targetName = 'Build';
-      targetState = hookArguments[0].payload.data.build.status;
-      navigateToAllHooks = e => navigateBuild(history, e, hook.build.id, true);
-      break;
-    default:
-      targetName = 'Unsupported';
-      targetState = 'UNSUPPORTED';
-      navigateToAllHooks = () => alert('Unsupported hook ' + hook.name);
-      break;
+  if (hook.name.startsWith('on_task')) {
+    targetName = 'Task';
+    targetState = hookArguments[0].payload.data.task.status;
+    navigateToAllHooks = e => navigateTask(history, e, hook.task.id, true);
+  }
+
+  if (hook.name.startsWith('on_build')) {
+    targetName = 'Build';
+    targetState = hookArguments[0].payload.data.build.status;
+    navigateToAllHooks = e => navigateBuild(history, e, hook.build.id, true);
   }
 
   // In case this is a task hook — display a chip that links to it

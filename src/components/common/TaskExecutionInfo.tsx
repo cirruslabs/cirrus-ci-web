@@ -36,9 +36,10 @@ function TaskExecutionInfo(props: Props) {
     if (info.cpuChart.points.length < 2) return null;
 
     let chartPoints = Array(info.cpuChart.points.length);
+    let requestedCPU = task.instanceResources ? task.instanceResources.cpu : info.cpuChart.maxValue;
     info.cpuChart.points.forEach((point, index) => {
       chartPoints[index] = {
-        'Requested CPUs': task.instanceResources.cpu,
+        'Requested CPUs': requestedCPU,
         'Used CPUs': point.value.toFixed(2),
         TimestampLabel: formatDuration(point.secondsFromStart),
       };
@@ -50,7 +51,7 @@ function TaskExecutionInfo(props: Props) {
         </Typography>
         <ResponsiveContainer height={200} width="100%">
           <AreaChart data={chartPoints}>
-            <YAxis type="number" domain={[0, task.instanceResources.cpu]} hide />
+            <YAxis type="number" domain={[0, requestedCPU]} hide />
             <CartesianGrid stroke={null} fill={prefersDarkMode ? theme.palette.info.dark : theme.palette.info.light} />
             <Area
               type="monotone"
@@ -74,18 +75,19 @@ function TaskExecutionInfo(props: Props) {
     if (info.memoryChart.points.length < 2) return null;
 
     let chartPoints = Array(info.memoryChart.points.length);
-    let memoryUnit = task.instanceResources.memory > 1024 ? 'Gb' : 'Mb';
+    let requestedMemory = task.instanceResources ? task.instanceResources.memory : info.memoryChart.maxValue;
+    let memoryUnit = requestedMemory > 1024 ? 'Gb' : 'Mb';
     info.memoryChart.points.forEach((point, index) => {
       if (memoryUnit === 'Gb') {
         chartPoints[index] = {
-          'Requested Memory': (task.instanceResources.memory / 1024.0).toFixed(2),
-          'Used Memory': Math.min(point.value / 1024.0, task.instanceResources.memory / 1024.0).toFixed(2),
+          'Requested Memory': (requestedMemory / 1024.0).toFixed(2),
+          'Used Memory': Math.min(point.value / 1024.0, requestedMemory / 1024.0).toFixed(2),
           TimestampLabel: formatDuration(point.secondsFromStart),
         };
       } else {
         chartPoints[index] = {
-          'Requested Memory': task.instanceResources.memory,
-          'Used Memory': Math.min(point.value, task.instanceResources.memory),
+          'Requested Memory': requestedMemory,
+          'Used Memory': Math.min(point.value, requestedMemory),
           TimestampLabel: formatDuration(point.secondsFromStart),
         };
       }
@@ -97,11 +99,7 @@ function TaskExecutionInfo(props: Props) {
         </Typography>
         <ResponsiveContainer height={200} width="100%">
           <AreaChart data={chartPoints}>
-            <YAxis
-              type="number"
-              domain={[0, memoryUnit === 'Gb' ? task.instanceResources.memory / 1024 : task.instanceResources.memory]}
-              hide
-            />
+            <YAxis type="number" domain={[0, memoryUnit === 'Gb' ? requestedMemory / 1024 : requestedMemory]} hide />
             <CartesianGrid stroke={null} fill={prefersDarkMode ? theme.palette.info.dark : theme.palette.info.light} />
             <Area
               type="monotone"
@@ -142,12 +140,14 @@ export default createFragmentContainer(withStyles(styles)(TaskExecutionInfo), {
       executionInfo {
         labels
         cpuChart {
+          maxValue
           points {
             value
             secondsFromStart
           }
         }
         memoryChart {
+          maxValue
           points {
             value
             secondsFromStart

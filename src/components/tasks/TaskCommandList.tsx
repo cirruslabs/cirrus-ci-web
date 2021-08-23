@@ -82,13 +82,16 @@ function TaskCommandList(props: Props) {
       >
         <Accordion
           TransitionProps={{ unmountOnExit: true, timeout: 400 }}
+          disabled={command.status === 'SKIPPED'}
           defaultExpanded={command.name === selectedCommandName || command.status === 'FAILURE'}
         >
           <AccordionSummary expandIcon={<ExpandMoreIcon />} style={summaryStyle}>
             <div>
               <Typography variant="body1">{topText}</Typography>
               <Typography variant="caption">
-                {finished ? (
+                {command.status === 'SKIPPED' ? (
+                  'skipped'
+                ) : finished ? (
                   formatDuration(command.durationInSeconds)
                 ) : isTaskCommandExecuting(command.status) ? (
                   <DurationTicker startTimestamp={commandStartTimestamp} />

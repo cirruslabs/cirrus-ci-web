@@ -201,6 +201,13 @@ function HookDetails(props: Props, context) {
           <pre className={classNames(classes.io, 'log-line')}>{prettyHookArguments}</pre>
         </CardContent>
       </Card>
+      <div className={classes.gap} />
+      <Card>
+        <CardContent>
+          <Typography variant="h6">Environment variables</Typography>
+          <pre className={classNames(classes.io, 'log-line')}>{props.hook.info.environment.join('\n')}</pre>
+        </CardContent>
+      </Card>
     </div>
   );
 }
@@ -233,6 +240,7 @@ export default createFragmentContainer(withStyles(styles)(withRouter(HookDetails
         arguments
         result
         outputLogs
+        environment
       }
     }
   `,

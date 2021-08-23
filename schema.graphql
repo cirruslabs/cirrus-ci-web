@@ -262,7 +262,6 @@ type DeleteWebPushConfigurationPayload {
 }
 
 type ExecutionChart {
-  startTimestamp: Int!
   maxValue: Float!
   minValue: Float!
   points: [ExecutionChartPoint]!
@@ -391,6 +390,7 @@ type HookExecutionInfo {
   result: String
   outputLogs: [String]
   durationNanos: Int!
+  environment: [String]
 }
 
 input HooksReRunInput {

@@ -67,7 +67,6 @@ function RepositorySecuredVariables(props: Props) {
             name="securedVariableValue"
             placeholder="Enter value to create a secure variable for"
             value={inputValue}
-            disabled={securedVariableName !== undefined}
             onChange={event => setInputValue(event.target.value)}
             multiline={true}
             fullWidth={true}

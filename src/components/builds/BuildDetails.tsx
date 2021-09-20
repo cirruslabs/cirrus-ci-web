@@ -183,7 +183,7 @@ function BuildDetails(props: Props) {
       const variables = {
         input: {
           clientMutationId: `batch-cancellation-${props.build.id}-${id}`,
-          taskIds: taskIds,
+          taskId: id,
         },
       };
 

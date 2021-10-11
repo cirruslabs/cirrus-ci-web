@@ -272,20 +272,12 @@ function TaskDetails(props: Props, context) {
     setRerunOptionsShown(false);
   };
 
-  const rerunOptions = ['Re-Run', 'Re-Run with Terminal Access'];
-  const [selectedOptionIndex, setSelectedOptionIndex] = React.useState(0);
-
-  function chooseRerunOption(index: number) {
-    setSelectedOptionIndex(index);
-    setRerunOptionsShown(false);
-  }
-
-  function rerun(taskId: string) {
+  function rerun(taskId: string, withTerminalAccess: boolean) {
     const variables = {
       input: {
         clientMutationId: 'rerun-' + taskId,
         taskId: taskId,
-        attachTerminal: selectedOptionIndex === 1,
+        attachTerminal: withTerminalAccess,
       },
     };
 
@@ -303,8 +295,8 @@ function TaskDetails(props: Props, context) {
     !hasWritePermissions(build.viewerPermission) || !isTaskFinalStatus(task.status) ? null : (
       <div>
         <ButtonGroup variant="contained" ref={anchorRef}>
-          <Button onClick={() => rerun(task.id)} startIcon={<Refresh />}>
-            {rerunOptions[selectedOptionIndex]}
+          <Button onClick={() => rerun(task.id, false)} startIcon={<Refresh />}>
+            Re-Run
           </Button>
           <Button size="small" onClick={toggleRerunOptions}>
             <ArrowDropDownIcon />
@@ -328,15 +320,7 @@ function TaskDetails(props: Props, context) {
               <Paper>
                 <ClickAwayListener onClickAway={closeRerunOptions}>
                   <MenuList id="split-button-menu">
-                    {rerunOptions.map((option, index) => (
-                      <MenuItem
-                        key={option}
-                        selected={index === selectedOptionIndex}
-                        onClick={event => chooseRerunOption(index)}
-                      >
-                        {option}
-                      </MenuItem>
-                    ))}
+                    <MenuItem onClick={() => rerun(task.id, true)}>Re-Run with Terminal Access</MenuItem>
                   </MenuList>
                 </ClickAwayListener>
               </Paper>

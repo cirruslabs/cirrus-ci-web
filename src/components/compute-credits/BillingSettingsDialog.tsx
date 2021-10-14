@@ -32,7 +32,7 @@ const saveBillingSettingsMutation = graphql`
   mutation BillingSettingsDialogMutation($input: BillingSettingsInput!) {
     saveBillingSettings(input: $input) {
       settings {
-        accountId
+        ownerUid
         enabled
         billingCreditsLimit
         billingEmailAddress
@@ -64,8 +64,8 @@ function BillingSettingsDialog(props: Props) {
   function updateSettings() {
     const variables = {
       input: {
-        clientMutationId: 'save-billing-settings-' + props.billingSettings.accountId,
-        accountId: props.billingSettings.accountId,
+        clientMutationId: 'save-billing-settings-' + props.billingSettings.ownerUid,
+        ownerUid: props.billingSettings.ownerUid,
         enabled: enabled,
         billingEmailAddress: billingEmailAddress,
         invoiceTemplate: invoiceTemplate,
@@ -138,7 +138,7 @@ function BillingSettingsDialog(props: Props) {
 export default createFragmentContainer(withStyles(styles)(BillingSettingsDialog), {
   billingSettings: graphql`
     fragment BillingSettingsDialog_billingSettings on BillingSettings {
-      accountId
+      ownerUid
       enabled
       billingCreditsLimit
       billingEmailAddress

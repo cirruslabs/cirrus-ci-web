@@ -14,7 +14,7 @@ interface Props {
 let UserComputeCredits = (props: Props) => {
   return (
     <ComputeCreditsBase
-      accountId={props.user.githubUserId}
+      ownerUid={props.user.githubUserId.toString(10)}
       balanceInCredits={props.user.balanceInCredits}
       transactionsComponent={
         <ComputeCreditsTransactionsList transactions={props.user.transactions.edges.map(edge => edge.node)} />

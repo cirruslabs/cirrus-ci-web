@@ -55,13 +55,14 @@ const CARD_ELEMENT_OPTIONS: StripeCardElementOptions = {
 };
 
 interface Props {
-  accountId: number;
+  platform?: string;
+  ownerUid: string;
   onClose: UnspecifiedCallbackFunction;
   open: boolean;
 }
 
 function ComputeCreditsStripeDialog(props: Props) {
-  const { accountId, ...other } = props;
+  const { ownerUid, ...other } = props;
 
   const [credits, setCredits] = useState(100);
   const handleAmountChange = event => {
@@ -102,8 +103,9 @@ function ComputeCreditsStripeDialog(props: Props) {
 
   const stripeTokenHandler = (token: Token) => {
     const input: BuyComputeCreditsInput = {
-      clientMutationId: 'buy-credits-' + props.accountId,
-      accountId: props.accountId.toString(10),
+      clientMutationId: 'buy-credits-' + props.ownerUid,
+      platform: props.platform || 'github',
+      ownerUid: props.ownerUid,
       amountOfCredits: credits.toString(10),
       paymentTokenId: token.id,
       receiptEmail: receiptEmail,

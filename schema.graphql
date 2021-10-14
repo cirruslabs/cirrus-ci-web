@@ -14,18 +14,6 @@ directive @specifiedBy(
   url: String!
 ) on SCALAR
 
-type AccountTransaction {
-  accountId: Int!
-  taskId: Int!
-  repositoryId: Int!
-  timestamp: Int!
-  microCreditsAmount: Int!
-  creditsAmount: String!
-  initialCreditsAmount: String
-  task: Task
-  repository: Repository
-}
-
 """
 An edge in a connection
 """
@@ -33,7 +21,7 @@ type AccountTransactionEdge {
   """
   The item at the end of the edge
   """
-  node: AccountTransaction
+  node: OwnerTransaction
 
   """
   cursor marks a unique position or index into the connection
@@ -74,7 +62,8 @@ type Artifacts {
 }
 
 type BillingSettings {
-  accountId: Int!
+  platform: String!
+  ownerUid: String!
   enabled: Boolean!
   billingCreditsLimit: Int!
   billingEmailAddress: String!
@@ -82,7 +71,8 @@ type BillingSettings {
 }
 
 input BillingSettingsInput {
-  accountId: ID!
+  platform: String!
+  ownerUid: ID!
   enabled: Boolean!
   billingEmailAddress: String!
   invoiceTemplate: String
@@ -156,7 +146,8 @@ enum BuildStatus {
 }
 
 input BuyComputeCreditsInput {
-  accountId: ID!
+  platform: String!
+  ownerUid: ID!
   amountOfCredits: String!
   paymentTokenId: String!
   receiptEmail: String
@@ -306,7 +297,8 @@ type GetPersistentWorkerPoolRegistrationTokenPayload {
 }
 
 type GitHubMarketplacePurchase {
-  accountId: Int!
+  platform: String!
+  ownerUid: String!
   login: String!
   planId: Int!
   planName: String!
@@ -501,6 +493,19 @@ type OrganizationSecuredVariablePayload {
   clientMutationId: String
 }
 
+type OwnerTransaction {
+  platform: String!
+  ownerUid: String!
+  taskId: Int!
+  repositoryId: Int!
+  timestamp: Int!
+  microCreditsAmount: Int!
+  creditsAmount: String!
+  initialCreditsAmount: String
+  task: Task
+  repository: Repository
+}
+
 """
 Information about pagination in a connection.
 """
@@ -650,6 +655,7 @@ type Repository {
   owner: String!
   name: String!
   cloneUrl: String!
+  defaultBranch: String!
   masterBranch: String!
   isPrivate: Boolean!
   builds(
@@ -893,7 +899,7 @@ type Task {
   reranBy: UserBasicInfo
   cancelledBy: UserBasicInfo
   terminalCredential: TerminalCredential
-  transaction: AccountTransaction
+  transaction: OwnerTransaction
 }
 
 input TaskAbortInput {
@@ -1168,7 +1174,7 @@ type UserTransactionEdge {
   """
   The item at the end of the edge
   """
-  node: AccountTransaction
+  node: OwnerTransaction
 
   """
   cursor marks a unique position or index into the connection

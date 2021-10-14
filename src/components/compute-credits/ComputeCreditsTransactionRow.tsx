@@ -61,7 +61,7 @@ function ComputeCreditsTransactionRow(props: Props) {
 
 export default createFragmentContainer(withStyles(styles)(ComputeCreditsTransactionRow), {
   transaction: graphql`
-    fragment ComputeCreditsTransactionRow_transaction on AccountTransaction {
+    fragment ComputeCreditsTransactionRow_transaction on OwnerTransaction {
       timestamp
       creditsAmount
       task {

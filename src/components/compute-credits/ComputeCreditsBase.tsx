@@ -59,7 +59,7 @@ interface Props extends WithStyles<typeof styles>, RouteComponentProps {
   transactionsComponent: JSX.Element;
   info?: ComputeCreditsBase_info;
   balanceInCredits?: string;
-  accountId: number;
+  ownerUid: string;
 }
 
 function ComputeCreditsBase(props: Props) {
@@ -126,7 +126,7 @@ function ComputeCreditsBase(props: Props) {
         <CardContent>{props.transactionsComponent}</CardContent>
       </Collapse>
       <ComputeCreditsStripeDialog
-        accountId={props.accountId}
+        ownerUid={props.ownerUid}
         open={openBuyCredits}
         onClose={() => setOpenBuyCredits(false)}
       />

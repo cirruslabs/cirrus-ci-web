@@ -13,7 +13,7 @@ interface Props {
 let OrganizationComputeCredits = (props: Props) => {
   return (
     <ComputeCreditsBase
-      accountId={parseInt(props.info.id, 10)}
+      ownerUid={props.info.id}
       balanceInCredits={props.info.balanceInCredits}
       info={props.info}
       transactionsComponent={

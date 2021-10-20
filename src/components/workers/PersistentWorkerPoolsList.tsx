@@ -42,7 +42,7 @@ interface PoolsListState {
 }
 
 interface PoolsListProps {
-  readonly ownerId: number;
+  readonly ownerUid: string;
   pools: ReadonlyArray<{
     readonly id: string;
     readonly name: string;
@@ -106,7 +106,7 @@ function PersistentWorkerPoolsList(props: PoolsListProps) {
       </CardContent>
       <CardActions>
         <CreateNewPersistentWorkerPoolDialog
-          ownerId={props.ownerId}
+          ownerUid={props.ownerUid}
           open={openDialog}
           onClose={() => setOpenDialog(!openDialog)}
         />
@@ -119,7 +119,7 @@ function PersistentWorkerPoolsList(props: PoolsListProps) {
 }
 
 interface DialogProps {
-  ownerId: number;
+  ownerUid: string;
   open: boolean;
 
   onClose(...args: any[]): void;
@@ -147,8 +147,8 @@ function CreateNewPersistentWorkerPoolDialog(props: DialogProps) {
 
   function createPool() {
     const input: CreatePersistentWorkerPoolInput = {
-      clientMutationId: 'create-persistent-worker-pool-' + props.ownerId,
-      ownerId: props.ownerId,
+      clientMutationId: 'create-persistent-worker-pool-' + props.ownerUid,
+      ownerUid: props.ownerUid,
       name: name,
       enabledForPublic: enabledForPublic,
     };

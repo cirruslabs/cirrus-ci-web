@@ -10,7 +10,7 @@ interface Props {
 
 function OrganizationPersistentWorkerPools(props: Props) {
   let info = props.info;
-  return <PersistentWorkerPoolsList ownerId={parseInt(info.id)} pools={info.persistentWorkerPools || []} />;
+  return <PersistentWorkerPoolsList ownerUid={info.id} pools={info.persistentWorkerPools || []} />;
 }
 
 export default createFragmentContainer(OrganizationPersistentWorkerPools, {

@@ -10,7 +10,9 @@ interface Props {
 
 function UserPersistentWorkerPools(props: Props) {
   let user = props.user;
-  return <PersistentWorkerPoolsList ownerId={user.githubUserId} pools={user.persistentWorkerPools || []} />;
+  return (
+    <PersistentWorkerPoolsList ownerUid={user.githubUserId.toString(10)} pools={user.persistentWorkerPools || []} />
+  );
 }
 
 export default createFragmentContainer(UserPersistentWorkerPools, {

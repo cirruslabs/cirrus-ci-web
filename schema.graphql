@@ -71,7 +71,7 @@ type BillingSettings {
 }
 
 input BillingSettingsInput {
-  platform: String!
+  platform: String
   ownerUid: ID!
   enabled: Boolean!
   billingEmailAddress: String!
@@ -198,7 +198,8 @@ enum ConfigResolutionStrategy {
 }
 
 input CreatePersistentWorkerPoolInput {
-  ownerId: Int!
+  platform: String
+  ownerUid: ID!
   name: String!
   enabledForPublic: Boolean!
   clientMutationId: String
@@ -826,7 +827,8 @@ type Root {
 }
 
 input SaveWebHookSettingsInput {
-  accountId: ID!
+  platform: String!
+  ownerUid: ID!
   webhookURL: String!
   secretToken: String
   clientMutationId: String
@@ -1214,7 +1216,8 @@ type WebhookDeliveriesConnection {
 
 type WebHookDelivery {
   id: String!
-  accountId: Int!
+  platform: String!
+  ownerUid: String!
   repositoryId: Int!
   timestamp: Int!
   payload: WebHookDeliveryPayload!

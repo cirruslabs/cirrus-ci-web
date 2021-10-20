@@ -100,7 +100,6 @@ export default createFragmentContainer(withStyles(styles)(LastDefaultBranchBuild
         id
         branch
         changeMessageTitle
-        status
         ...BuildChangeChip_build
         ...BuildStatusChip_build
       }

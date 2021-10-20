@@ -26,7 +26,7 @@ import ConfigurationWithIssues from './ConfigurationWithIssues';
 import HookList from '../hooks/HookList';
 import { TabContext, TabList, TabPanel, ToggleButton } from '@material-ui/lab';
 import { AppBar, Collapse, Tab } from '@material-ui/core';
-import { BugReport, Dehaze, Functions } from '@material-ui/icons';
+import { BugReport, Dehaze, Functions, Stop } from '@material-ui/icons';
 import Tooltip from '@material-ui/core/Tooltip';
 import DebuggingInformation from './DebuggingInformation';
 import RepositoryOwnerChip from '../chips/RepositoryOwnerChip';
@@ -84,7 +84,17 @@ const taskBatchReRunMutation = graphql`
   }
 `;
 
-const styles = theme =>
+const taskCancelMutation = graphql`
+  mutation BuildDetailsCancelMutation($input: TaskAbortInput!) {
+    abortTask(input: $input) {
+      abortedTask {
+        id
+      }
+    }
+  }
+`;
+
+const styles = () =>
   createStyles({
     gap: {
       paddingTop: 16,
@@ -120,7 +130,7 @@ function BuildDetails(props: Props) {
       subscription.dispose();
     };
   }, [props.build.id]);
-  let { build, classes } = props;
+  const { build, classes } = props;
 
   function approveBuild() {
     const variables = {
@@ -168,11 +178,28 @@ function BuildDetails(props: Props) {
     });
   }
 
-  let repoUrl = build.repository.cloneUrl.slice(0, -4);
-  let branchUrl = build.branch.startsWith('pull/') ? `${repoUrl}/${build.branch}` : `${repoUrl}/tree/${build.branch}`;
-  let commitUrl = repoUrl + '/commit/' + build.changeIdInRepo;
+  function batchCancellation(taskIds: string[]) {
+    taskIds.forEach(id => {
+      const variables = {
+        input: {
+          clientMutationId: `batch-cancellation-${props.build.id}-${id}`,
+          taskId: id,
+        },
+      };
 
-  let notificationsComponent = !build.notifications ? null : (
+      commitMutation(environment, {
+        mutation: taskCancelMutation,
+        variables: variables,
+        onError: err => console.error(err),
+      });
+    });
+  }
+
+  const repoUrl = build.repository.cloneUrl.slice(0, -4);
+  const branchUrl = build.branch.startsWith('pull/') ? `${repoUrl}/${build.branch}` : `${repoUrl}/tree/${build.branch}`;
+  const commitUrl = repoUrl + '/commit/' + build.changeIdInRepo;
+
+  const notificationsComponent = !build.notifications ? null : (
     <div className={classNames('container', classes.gap)}>
       {build.notifications.map(notification => (
         <Notification key={notification.message} notification={notification} />
@@ -180,29 +207,39 @@ function BuildDetails(props: Props) {
     </div>
   );
 
-  let canBeReTriggered =
+  const canBeReTriggered =
     (build.status === 'FAILED' || build.status === 'ERRORED') &&
     hasWritePermissions(build.repository.viewerPermission) &&
     build.latestGroupTasks &&
     build.latestGroupTasks.length === 0;
-  let reTriggerButton = !canBeReTriggered ? null : (
+  const reTriggerButton = !canBeReTriggered ? null : (
     <Button variant="contained" onClick={() => reTriggerBuild()} startIcon={<Refresh />}>
       Re-Trigger
     </Button>
   );
 
-  let failedTaskIds = build.latestGroupTasks
+  const hasWritePermission = hasWritePermissions(build.repository.viewerPermission);
+  const failedTaskIds = build.latestGroupTasks
     .filter(task => task.status === 'FAILED' || (task.status === 'ABORTED' && task.requiredGroups.length === 0))
     .map(task => task.id);
-  let reRunAllTasksButton =
-    failedTaskIds.length === 0 || !hasWritePermissions(build.repository.viewerPermission) ? null : (
+  const runningTaskIds = build.latestGroupTasks
+    .filter(task => ['SCHEDULED', 'CREATED', 'EXECUTING', 'TRIGGERED'].includes(task.status))
+    .map(task => task.id);
+  const reRunAllTasksButton =
+    failedTaskIds.length === 0 || !hasWritePermission ? null : (
       <Button variant="contained" onClick={() => batchReRun(failedTaskIds)} startIcon={<Refresh />}>
         Re-Run Failed Tasks
       </Button>
     );
+  const cancelAllTasksButton =
+    runningTaskIds.length === 0 || !hasWritePermission ? null : (
+      <Button variant="contained" onClick={() => batchCancellation(runningTaskIds)} startIcon={<Stop />}>
+        Cancel All Tasks
+      </Button>
+    );
 
-  let needsApproval = build.status === 'NEEDS_APPROVAL' && hasWritePermissions(build.repository.viewerPermission);
-  let approveButton = !needsApproval ? null : (
+  const needsApproval = build.status === 'NEEDS_APPROVAL' && hasWritePermission;
+  const approveButton = !needsApproval ? null : (
     <Button variant="contained" onClick={() => approveBuild()} startIcon={<Check />}>
       Approve
     </Button>
@@ -282,6 +319,7 @@ function BuildDetails(props: Props) {
           {reTriggerButton}
           {approveButton}
           {reRunAllTasksButton}
+          {cancelAllTasksButton}
         </CardActions>
       </Card>
       <ConfigurationWithIssues build={build} />

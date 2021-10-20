@@ -81,13 +81,9 @@ export default createFragmentContainer(withStyles(styles)(LastDefaultBranchBuild
   repository: graphql`
     fragment LastDefaultBranchBuildMiniRow_repository on Repository {
       id
-      owner
-      name
       lastDefaultBranchBuild {
         id
-        branch
         changeMessageTitle
-        status
         ...BuildStatusChip_build
       }
       ...RepositoryNameChip_repository

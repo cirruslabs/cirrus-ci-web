@@ -22,8 +22,14 @@ import environment from '../../createRelayEnvironment';
 import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
 import NextCronInvocationTimeChip from '../chips/NextCronInvocationTimeChip';
-import { RepositoryCronSettingsSaveMutationResponse } from './__generated__/RepositoryCronSettingsSaveMutation.graphql';
-import { RepositoryCronSettingsRemoveMutationResponse } from './__generated__/RepositoryCronSettingsRemoveMutation.graphql';
+import {
+  RepositoryCronSettingsSaveMutationResponse,
+  RepositoryCronSettingsSaveMutationVariables,
+} from './__generated__/RepositoryCronSettingsSaveMutation.graphql';
+import {
+  RepositoryCronSettingsRemoveMutationResponse,
+  RepositoryCronSettingsRemoveMutationVariables,
+} from './__generated__/RepositoryCronSettingsRemoveMutation.graphql';
 import { navigateBuild } from '../../utils/navigate';
 
 const saveCronSettingsMutation = graphql`
@@ -113,10 +119,10 @@ function RepositoryCronSettings(props: Props) {
   }
 
   function addNewCronSetting() {
-    const variables = {
+    const variables: RepositoryCronSettingsSaveMutationVariables = {
       input: {
         clientMutationId: `cron-save-${props.repository.id}-${settings.name}`,
-        repositoryId: parseInt(props.repository.id, 10),
+        repositoryId: props.repository.id,
         name: settings.name,
         expression: settings.expression,
         branch: settings.branch,
@@ -134,10 +140,10 @@ function RepositoryCronSettings(props: Props) {
   }
 
   function removeCronSetting(name: string) {
-    const variables = {
+    const variables: RepositoryCronSettingsRemoveMutationVariables = {
       input: {
         clientMutationId: `cron-remove-${props.repository.id}-${name}`,
-        repositoryId: parseInt(props.repository.id, 10),
+        repositoryId: props.repository.id,
         name: name,
       },
     };

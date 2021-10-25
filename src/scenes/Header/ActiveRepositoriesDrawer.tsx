@@ -7,6 +7,8 @@ import environment from '../../createRelayEnvironment';
 import AccountInformation from '../../components/account/AccountInformation';
 import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
 import { ActiveRepositoriesDrawerQuery } from './__generated__/ActiveRepositoriesDrawerQuery.graphql';
+import { ActiveRepositoriesDrawerDeleteWebPushConfigurationMutationVariables } from './__generated__/ActiveRepositoriesDrawerDeleteWebPushConfigurationMutation.graphql';
+import { ActiveRepositoriesDrawerSaveWebPushConfigurationMutationVariables } from './__generated__/ActiveRepositoriesDrawerSaveWebPushConfigurationMutation.graphql';
 
 const saveWebPushConfigurationMutation = graphql`
   mutation ActiveRepositoriesDrawerSaveWebPushConfigurationMutation($input: SaveWebPushConfigurationInput!) {
@@ -44,7 +46,7 @@ function registerServiceWorkerIfNeeded(userId: string, webPushServerKey: string)
         reg.pushManager.getSubscription().then(existingSubscription => {
           if (existingSubscription && permissionResult !== 'granted') {
             let jsonSub = existingSubscription.toJSON();
-            const variables = {
+            const variables: ActiveRepositoriesDrawerDeleteWebPushConfigurationMutationVariables = {
               input: {
                 clientMutationId: 'subscribe-' + userId,
                 endpoint: jsonSub.endpoint,
@@ -67,7 +69,7 @@ function registerServiceWorkerIfNeeded(userId: string, webPushServerKey: string)
               .then(sub => {
                 if (sub) {
                   let jsonSub = sub.toJSON();
-                  const variables = {
+                  const variables: ActiveRepositoriesDrawerSaveWebPushConfigurationMutationVariables = {
                     input: {
                       clientMutationId: 'subscribe-' + userId,
                       endpoint: jsonSub.endpoint,

@@ -19,6 +19,7 @@ import DeliveriesList from './DeliveriesList';
 import { WebHookSettings_info } from './__generated__/WebHookSettings_info.graphql';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import sjcl from 'sjcl/sjcl.js';
+import { WebHookSettingsMutationVariables } from './__generated__/WebHookSettingsMutation.graphql';
 
 const securedVariableMutation = graphql`
   mutation WebHookSettingsMutation($input: SaveWebHookSettingsInput!) {
@@ -60,10 +61,11 @@ function WebHookSettings(props: Props) {
   let { info, classes } = props;
 
   function saveWebhookSettings() {
-    const variables = {
+    const variables: WebHookSettingsMutationVariables = {
       input: {
         clientMutationId: webhookURL,
-        accountId: props.info.id,
+        platform: 'github',
+        ownerUid: props.info.id.toString(),
         webhookURL: webhookURL,
       },
     };

@@ -10,7 +10,10 @@ import CardHeader from '@material-ui/core/CardHeader';
 import FormControl from '@material-ui/core/FormControl';
 import CopyPasteField from '../common/CopyPasteField';
 import TextField from '@material-ui/core/TextField';
-import { OrganizationSecuredVariablesMutationResponse } from './__generated__/OrganizationSecuredVariablesMutation.graphql';
+import {
+  OrganizationSecuredVariablesMutationResponse,
+  OrganizationSecuredVariablesMutationVariables,
+} from './__generated__/OrganizationSecuredVariablesMutation.graphql';
 import { OrganizationSecuredVariables_info } from './__generated__/OrganizationSecuredVariables_info.graphql';
 
 const securedVariableMutation = graphql`
@@ -37,10 +40,10 @@ function OrganizationSecuredVariables(props: Props) {
   }
 
   function encryptCurrentValue() {
-    const variables = {
+    const variables: OrganizationSecuredVariablesMutationVariables = {
       input: {
         clientMutationId: props.info.name,
-        organizationId: parseInt(props.info.id, 10),
+        organizationId: props.info.id,
         valueToSecure: inputValue,
       },
     };

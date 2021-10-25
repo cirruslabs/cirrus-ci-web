@@ -25,7 +25,10 @@ import ArrowBack from '@material-ui/icons/ArrowBack';
 import { hasWritePermissions } from '../../utils/permissions';
 import Refresh from '@material-ui/icons/Refresh';
 import environment from '../../createRelayEnvironment';
-import { HookDetailsRerunMutationResponse } from './__generated__/HookDetailsRerunMutation.graphql';
+import {
+  HookDetailsRerunMutationResponse,
+  HookDetailsRerunMutationVariables,
+} from './__generated__/HookDetailsRerunMutation.graphql';
 import RepositoryOwnerChip from '../chips/RepositoryOwnerChip';
 
 const hooksRerunMutation = graphql`
@@ -117,7 +120,7 @@ function HookDetails(props: Props) {
     );
 
   function rerunHook(hookId: string) {
-    const variables = {
+    const variables: HookDetailsRerunMutationVariables = {
       input: {
         clientMutationId: 'rerun-' + hookId,
         hookIds: [hookId],

@@ -16,7 +16,10 @@ import { navigateBuild } from '../../utils/navigate';
 import 'ace-builds/src-noconflict/mode-yaml';
 import 'ace-builds/src-noconflict/theme-github';
 import { CreateBuildDialog_repository } from './__generated__/CreateBuildDialog_repository.graphql';
-import { CreateBuildDialogMutationResponse } from './__generated__/CreateBuildDialogMutation.graphql';
+import {
+  CreateBuildDialogMutationResponse,
+  CreateBuildDialogMutationVariables,
+} from './__generated__/CreateBuildDialogMutation.graphql';
 
 const createBuildMutation = graphql`
   mutation CreateBuildDialogMutation($input: RepositoryCreateBuildInput!) {
@@ -48,17 +51,15 @@ function CreateBuildDialog(props: Props) {
   }
 
   function sendMutation() {
-    const variables = {
+    const variables: CreateBuildDialogMutationVariables = {
       input: {
         clientMutationId: props.repository.name,
-        repositoryId: parseInt(props.repository.id, 10),
+        repositoryId: props.repository.id,
         branch: branch,
         sha: sha,
         configOverride: configOverride,
       },
     };
-
-    console.log(variables);
 
     commitMutation(environment, {
       mutation: createBuildMutation,

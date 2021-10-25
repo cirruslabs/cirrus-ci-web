@@ -32,7 +32,11 @@ interface Props extends WithStyles<typeof styles>, RouteComponentProps {
 function GitHubOrganizationSettings(props: Props) {
   let { organization, info, classes } = props;
 
-  if (!info || info.role === 'none') {
+  if (!info) {
+    return <Typography variant="subtitle1">Can't find information this organization!</Typography>;
+  }
+
+  if (info.role === 'none') {
     return <Typography variant="subtitle1">You do not have administrator access on this organization!</Typography>;
   }
 

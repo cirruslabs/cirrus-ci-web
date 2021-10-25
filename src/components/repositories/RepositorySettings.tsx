@@ -14,8 +14,8 @@ import { commitMutation, createFragmentContainer } from 'react-relay';
 import environment from '../../createRelayEnvironment';
 import { RepositorySettings_repository } from './__generated__/RepositorySettings_repository.graphql';
 import {
-  RepositorySettingsInput,
   RepositorySettingsMutationResponse,
+  RepositorySettingsMutationVariables,
 } from './__generated__/RepositorySettingsMutation.graphql';
 import {
   Checkbox,
@@ -98,19 +98,21 @@ function RepositorySettings(props: Props) {
   };
 
   function onSave() {
-    const input: RepositorySettingsInput = {
-      clientMutationId: 'save-settings-' + props.repository.id,
-      repositoryId: props.repository.id,
-      needsApproval: settings.needsApproval,
-      decryptEnvironmentVariables: settings.decryptEnvironmentVariables,
-      configResolutionStrategy: settings.configResolutionStrategy,
-      additionalEnvironment: settings.additionalEnvironment.concat(),
-      cacheVersion: settings.cacheVersion,
+    const variables: RepositorySettingsMutationVariables = {
+      input: {
+        clientMutationId: 'save-settings-' + props.repository.id,
+        repositoryId: props.repository.id,
+        needsApproval: settings.needsApproval,
+        decryptEnvironmentVariables: settings.decryptEnvironmentVariables,
+        configResolutionStrategy: settings.configResolutionStrategy,
+        additionalEnvironment: settings.additionalEnvironment.concat(),
+        cacheVersion: settings.cacheVersion,
+      },
     };
 
     commitMutation(environment, {
       mutation: saveSettingsMutation,
-      variables: { input },
+      variables: variables,
       onCompleted: (response: RepositorySettingsMutationResponse) => {
         setInitialSettings(response.saveSettings.settings);
       },

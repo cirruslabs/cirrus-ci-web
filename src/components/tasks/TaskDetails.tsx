@@ -31,7 +31,10 @@ import TaskCommandList from './TaskCommandList';
 import TaskCommandsProgress from './TaskCommandsProgress';
 import TaskList from './TaskList';
 import { TaskDetails_task } from './__generated__/TaskDetails_task.graphql';
-import { TaskDetailsReRunMutationResponse } from './__generated__/TaskDetailsReRunMutation.graphql';
+import {
+  TaskDetailsReRunMutationResponse,
+  TaskDetailsReRunMutationVariables,
+} from './__generated__/TaskDetailsReRunMutation.graphql';
 import TaskResourcesChip from '../chips/TaskResourcesChip';
 import { Helmet as Head } from 'react-helmet';
 import ExecutionInfo from '../common/TaskExecutionInfo';
@@ -59,7 +62,10 @@ import {
   Tooltip,
 } from '@material-ui/core';
 import { Dehaze, Functions, LayersClear } from '@material-ui/icons';
-import { TaskDetailsInvalidateCachesMutationResponse } from './__generated__/TaskDetailsInvalidateCachesMutation.graphql';
+import {
+  TaskDetailsInvalidateCachesMutationResponse,
+  TaskDetailsInvalidateCachesMutationVariables,
+} from './__generated__/TaskDetailsInvalidateCachesMutation.graphql';
 import TaskRerunnerChip from '../chips/TaskRerunnerChip';
 import TaskCancellerChip from '../chips/TaskCancellerChip';
 import RepositoryOwnerChip from '../chips/RepositoryOwnerChip';
@@ -69,6 +75,8 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { CirrusTerminal } from '../cirrus-terminal/CirrusTerminal';
 import { HookType } from '../hooks/HookType';
+import { TaskDetailsTriggerMutationVariables } from './__generated__/TaskDetailsTriggerMutation.graphql';
+import { TaskDetailsCancelMutationVariables } from './__generated__/TaskDetailsCancelMutation.graphql';
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
@@ -208,7 +216,7 @@ function TaskDetails(props: Props, context) {
   let repository = task.repository;
 
   function trigger(taskId) {
-    const variables = {
+    const variables: TaskDetailsTriggerMutationVariables = {
       input: {
         clientMutationId: 'trigger-' + taskId,
         taskId: taskId,
@@ -223,7 +231,7 @@ function TaskDetails(props: Props, context) {
   }
 
   function abort(taskId) {
-    const variables = {
+    const variables: TaskDetailsCancelMutationVariables = {
       input: {
         clientMutationId: 'abort-' + taskId,
         taskId: taskId,
@@ -273,7 +281,7 @@ function TaskDetails(props: Props, context) {
   };
 
   function rerun(taskId: string, withTerminalAccess: boolean) {
-    const variables = {
+    const variables: TaskDetailsReRunMutationVariables = {
       input: {
         clientMutationId: 'rerun-' + taskId,
         taskId: taskId,
@@ -371,7 +379,7 @@ function TaskDetails(props: Props, context) {
 
     if (cacheKeys.length === 0) return;
 
-    const variables = {
+    const variables: TaskDetailsInvalidateCachesMutationVariables = {
       input: {
         clientMutationId: 'invalidate-caches-' + task.id,
         taskId: task.id,

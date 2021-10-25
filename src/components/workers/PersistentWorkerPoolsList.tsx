@@ -18,8 +18,8 @@ import Input from '@material-ui/core/Input';
 import DialogActions from '@material-ui/core/DialogActions';
 import { graphql } from 'babel-plugin-relay/macro';
 import {
-  CreatePersistentWorkerPoolInput,
   PersistentWorkerPoolsListCreateMutationResponse,
+  PersistentWorkerPoolsListCreateMutationVariables,
 } from './__generated__/PersistentWorkerPoolsListCreateMutation.graphql';
 import { navigate } from '../../utils/navigate';
 import PropTypes from 'prop-types';
@@ -33,7 +33,7 @@ import {
   ListItemText,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { DeletePersistentWorkerPoolInput } from './__generated__/PersistentWorkerPoolsListDeleteMutation.graphql';
+import { PersistentWorkerPoolsListDeleteMutationVariables } from './__generated__/PersistentWorkerPoolsListDeleteMutation.graphql';
 import PoolVisibilityIcon from '../icons/PoolVisibilityIcon';
 import { useHistory } from 'react-router-dom';
 
@@ -63,13 +63,15 @@ function PersistentWorkerPoolsList(props: PoolsListProps) {
   let [openDialog, setOpenDialog] = useState(false);
 
   let deletePool = poolId => {
-    const input: DeletePersistentWorkerPoolInput = {
-      clientMutationId: 'delete-persistent-worker-pool-' + poolId,
-      poolId: poolId,
+    const variables: PersistentWorkerPoolsListDeleteMutationVariables = {
+      input: {
+        clientMutationId: 'delete-persistent-worker-pool-' + poolId,
+        poolId: poolId,
+      },
     };
     commitMutation(environment, {
       mutation: deletePoolMutation,
-      variables: { input: input },
+      variables: variables,
       configs: [
         {
           type: 'NODE_DELETE',
@@ -146,11 +148,13 @@ function CreateNewPersistentWorkerPoolDialog(props: DialogProps) {
   let [enabledForPublic, setEnabledForPublic] = useState(true);
 
   function createPool() {
-    const input: CreatePersistentWorkerPoolInput = {
-      clientMutationId: 'create-persistent-worker-pool-' + props.ownerUid,
-      ownerUid: props.ownerUid,
-      name: name,
-      enabledForPublic: enabledForPublic,
+    const input: PersistentWorkerPoolsListCreateMutationVariables = {
+      input: {
+        clientMutationId: 'create-persistent-worker-pool-' + props.ownerUid,
+        ownerUid: props.ownerUid,
+        name: name,
+        enabledForPublic: enabledForPublic,
+      },
     };
     commitMutation(environment, {
       mutation: createPoolMutation,

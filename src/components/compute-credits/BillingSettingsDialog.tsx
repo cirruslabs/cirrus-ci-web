@@ -15,7 +15,10 @@ import { graphql } from 'babel-plugin-relay/macro';
 import React, { useState } from 'react';
 import { commitMutation, createFragmentContainer } from 'react-relay';
 import environment from '../../createRelayEnvironment';
-import { BillingSettingsDialogMutationResponse } from './__generated__/BillingSettingsDialogMutation.graphql';
+import {
+  BillingSettingsDialogMutationResponse,
+  BillingSettingsDialogMutationVariables,
+} from './__generated__/BillingSettingsDialogMutation.graphql';
 import { BillingSettingsDialog_billingSettings } from './__generated__/BillingSettingsDialog_billingSettings.graphql';
 
 const styles = theme =>
@@ -62,7 +65,7 @@ function BillingSettingsDialog(props: Props) {
     billingSettings.invoiceTemplate === invoiceTemplate;
 
   function updateSettings() {
-    const variables = {
+    const variables: BillingSettingsDialogMutationVariables = {
       input: {
         clientMutationId: 'save-billing-settings-' + props.billingSettings.ownerUid,
         ownerUid: props.billingSettings.ownerUid,

@@ -11,8 +11,8 @@ import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
 import { UnspecifiedCallbackFunction } from '../../utils/utility-types';
 import {
-  BuyComputeCreditsInput,
   ComputeCreditsStripeDialogMutationResponse,
+  ComputeCreditsStripeDialogMutationVariables,
 } from './__generated__/ComputeCreditsStripeDialogMutation.graphql';
 import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js';
 import Button from '@material-ui/core/Button';
@@ -102,18 +102,20 @@ function ComputeCreditsStripeDialog(props: Props) {
   };
 
   const stripeTokenHandler = (token: Token) => {
-    const input: BuyComputeCreditsInput = {
-      clientMutationId: 'buy-credits-' + props.ownerUid,
-      platform: props.platform || 'github',
-      ownerUid: props.ownerUid,
-      amountOfCredits: credits.toString(10),
-      paymentTokenId: token.id,
-      receiptEmail: receiptEmail,
+    const variables: ComputeCreditsStripeDialogMutationVariables = {
+      input: {
+        clientMutationId: 'buy-credits-' + props.ownerUid,
+        platform: props.platform || 'github',
+        ownerUid: props.ownerUid,
+        amountOfCredits: credits.toString(10),
+        paymentTokenId: token.id,
+        receiptEmail: receiptEmail,
+      },
     };
 
     commitMutation(environment, {
       mutation: computeCreditsBuyMutation,
-      variables: { input: input },
+      variables: variables,
       onCompleted: (response: ComputeCreditsStripeDialogMutationResponse) => {
         setPaymentInProgress(false);
         if (response.buyComputeCredits.error && response.buyComputeCredits.error !== '') {

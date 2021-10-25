@@ -31,6 +31,10 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DebuggingInformation from './DebuggingInformation';
 import RepositoryOwnerChip from '../chips/RepositoryOwnerChip';
 import { HookType } from '../hooks/HookType';
+import { BuildDetailsApproveBuildMutationVariables } from './__generated__/BuildDetailsApproveBuildMutation.graphql';
+import { BuildDetailsReTriggerMutationVariables } from './__generated__/BuildDetailsReTriggerMutation.graphql';
+import { BuildDetailsReRunMutationVariables } from './__generated__/BuildDetailsReRunMutation.graphql';
+import { BuildDetailsCancelMutationVariables } from './__generated__/BuildDetailsCancelMutation.graphql';
 
 const buildApproveMutation = graphql`
   mutation BuildDetailsApproveBuildMutation($input: BuildApproveInput!) {
@@ -133,7 +137,7 @@ function BuildDetails(props: Props) {
   const { build, classes } = props;
 
   function approveBuild() {
-    const variables = {
+    const variables: BuildDetailsApproveBuildMutationVariables = {
       input: {
         clientMutationId: 'approve-build-' + build.id,
         buildId: build.id,
@@ -148,7 +152,7 @@ function BuildDetails(props: Props) {
   }
 
   function reTriggerBuild() {
-    const variables = {
+    const variables: BuildDetailsReTriggerMutationVariables = {
       input: {
         clientMutationId: 're-trigger-build-' + build.id,
         buildId: build.id,
@@ -163,12 +167,11 @@ function BuildDetails(props: Props) {
   }
 
   function batchReRun(taskIds) {
-    const variables = {
+    const variables: BuildDetailsReRunMutationVariables = {
       input: {
         clientMutationId: 'batch-rerun-' + props.build.id,
         taskIds: taskIds,
       },
-      buildId: props.build.id,
     };
 
     commitMutation(environment, {
@@ -180,7 +183,7 @@ function BuildDetails(props: Props) {
 
   function batchCancellation(taskIds: string[]) {
     taskIds.forEach(id => {
-      const variables = {
+      const variables: BuildDetailsCancelMutationVariables = {
         input: {
           clientMutationId: `batch-cancellation-${props.build.id}-${id}`,
           taskId: id,

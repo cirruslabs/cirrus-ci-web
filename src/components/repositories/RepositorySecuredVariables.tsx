@@ -11,7 +11,10 @@ import FormControl from '@material-ui/core/FormControl';
 import CopyPasteField from '../common/CopyPasteField';
 import TextField from '@material-ui/core/TextField';
 import { RepositorySecuredVariables_repository } from './__generated__/RepositorySecuredVariables_repository.graphql';
-import { RepositorySecuredVariablesMutationResponse } from './__generated__/RepositorySecuredVariablesMutation.graphql';
+import {
+  RepositorySecuredVariablesMutationResponse,
+  RepositorySecuredVariablesMutationVariables,
+} from './__generated__/RepositorySecuredVariablesMutation.graphql';
 
 const securedVariableMutation = graphql`
   mutation RepositorySecuredVariablesMutation($input: RepositorySecuredVariableInput!) {
@@ -39,10 +42,10 @@ function RepositorySecuredVariables(props: Props) {
 
   function encryptCurrentValue() {
     let valueToSecure = inputValue;
-    const variables = {
+    const variables: RepositorySecuredVariablesMutationVariables = {
       input: {
         clientMutationId: props.repository.name, // todo: replace with a hash of valueToSecure
-        repositoryId: parseInt(props.repository.id, 10),
+        repositoryId: props.repository.id,
         valueToSecure: valueToSecure,
       },
     };

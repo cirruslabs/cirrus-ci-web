@@ -89,6 +89,10 @@ function DebuggingInformation(props: Props) {
         <Typography variant="h6">Debugging Information</Typography>
         <div className={classes.gapped}>YAML configuration</div>
         {generateTable(build.parsingResult.rawYamlConfig.split('\n'))}
+        <div className={classes.gapped}>Environment Variables</div>
+        {generateTable(build.parsingResult.environment)}
+        <div className={classes.gapped}>Affected Files</div>
+        {generateTable(build.parsingResult.affectedFiles)}
         {starlarkInformation}
       </CardContent>
     </Card>
@@ -103,6 +107,8 @@ export default createFragmentContainer(withStyles(styles)(DebuggingInformation),
         rawStarlarkConfig
         processedYamlConfig
         outputLogs
+        environment
+        affectedFiles
       }
     }
   `,

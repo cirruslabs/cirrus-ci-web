@@ -537,6 +537,7 @@ type ParsingResult {
   rawStarlarkConfig: String!
   processedYamlConfig: String!
   issues: [ParsingResultIssue]
+  affectedFiles: [String]
   outputLogs: [String]
   environment: [String]
 }

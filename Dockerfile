@@ -6,6 +6,7 @@ ADD package.json yarn.lock /tmp/cirrus-ci-web/
 RUN yarn
 
 ENV NODE_ENV=production
+ENV NODE_OPTIONS=--openssl-legacy-provider
 
 ADD . /tmp/cirrus-ci-web/
 RUN yarn bootstrap && yarn build && rm -rf build/service-worker.js

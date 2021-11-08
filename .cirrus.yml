@@ -1,6 +1,10 @@
 container:
   image: node:current
 
+env:
+  # see https://github.com/nodejs/node/blob/master/doc/changelogs/CHANGELOG_V17.md#17.0.0
+  NODE_OPTIONS: --openssl-legacy-provider
+
 task:
   node_modules_cache:
     folder: node_modules

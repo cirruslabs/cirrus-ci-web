@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import Paper from '@material-ui/core/Paper';
@@ -17,7 +17,7 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
-import { navigate } from '../../utils/navigate';
+import { navigateHelper } from '../../utils/navigateHelper';
 import IconButton from '@material-ui/core/IconButton';
 import UserApiSettings from '../settings/UserApiSettings';
 import UserComputeCredits from '../compute-credits/UserComputeCredits';
@@ -47,7 +47,7 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 function UserProfile(props: Props) {
-  let history = useHistory();
+  let navigate = useNavigate();
 
   let { user, classes } = props;
   let githubMarketplaceComponent = (
@@ -114,7 +114,7 @@ function UserProfile(props: Props) {
             {organizations.map(organization => (
               <TableRow
                 key={organization.name}
-                onClick={e => navigate(history, e, '/github/' + organization.name)}
+                onClick={e => navigateHelper(navigate, e, '/github/' + organization.name)}
                 hover={true}
                 style={{ cursor: 'pointer' }}
               >
@@ -124,7 +124,7 @@ function UserProfile(props: Props) {
                 <TableCell>
                   <Tooltip title="Organization settings">
                     <IconButton
-                      onClick={e => navigate(history, e, '/settings/github/' + organization.name)}
+                      onClick={e => navigateHelper(navigate, e, '/settings/github/' + organization.name)}
                       className="pull-right"
                     >
                       <Settings />

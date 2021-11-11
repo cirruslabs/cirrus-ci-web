@@ -2,7 +2,6 @@ import React, { MouseEventHandler } from 'react';
 
 import { commitMutation, createFragmentContainer } from 'react-relay';
 import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
-import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
 import { graphql } from 'babel-plugin-relay/macro';
 import { HookDetails_hook } from './__generated__/HookDetails_hook.graphql';
 import { Helmet as Head } from 'react-helmet';
@@ -20,7 +19,7 @@ import classNames from 'classnames';
 import { useNotificationColor } from '../../utils/colors';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
-import { navigateBuild, navigateHook, navigateTask } from '../../utils/navigate';
+import { navigateBuildHelper, navigateHookHelper, navigateTaskHelper } from '../../utils/navigateHelper';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import { hasWritePermissions } from '../../utils/permissions';
 import Refresh from '@material-ui/icons/Refresh';
@@ -30,6 +29,7 @@ import {
   HookDetailsRerunMutationVariables,
 } from './__generated__/HookDetailsRerunMutation.graphql';
 import RepositoryOwnerChip from '../chips/RepositoryOwnerChip';
+import { useNavigate } from 'react-router-dom';
 
 const hooksRerunMutation = graphql`
   mutation HookDetailsRerunMutation($input: HooksReRunInput!) {
@@ -66,14 +66,14 @@ const styles = theme =>
     },
   });
 
-interface Props extends WithStyles<typeof styles>, RouteComponentProps {
+interface Props extends WithStyles<typeof styles> {
   hook: HookDetails_hook;
 }
 
 function HookDetails(props: Props) {
   let { hook, classes } = props;
 
-  let history = useHistory();
+  let navigate = useNavigate();
 
   // Parse and prettify hook I/O
   let hookArguments = JSON.parse(props.hook.info.arguments);
@@ -87,13 +87,13 @@ function HookDetails(props: Props) {
   if (hook.name.startsWith('on_task')) {
     targetName = 'Task';
     targetState = hookArguments[0].payload.data.task.status;
-    navigateToAllHooks = e => navigateTask(history, e, hook.task.id, true);
+    navigateToAllHooks = e => navigateTaskHelper(navigate, e, hook.task.id, true);
   }
 
   if (hook.name.startsWith('on_build')) {
     targetName = 'Build';
     targetState = hookArguments[0].payload.data.build.status;
-    navigateToAllHooks = e => navigateBuild(history, e, hook.build.id, true);
+    navigateToAllHooks = e => navigateBuildHelper(navigate, e, hook.build.id, true);
   }
 
   // In case this is a task hook — display a chip that links to it
@@ -131,7 +131,7 @@ function HookDetails(props: Props) {
       mutation: hooksRerunMutation,
       variables: variables,
       onCompleted: (response: HookDetailsRerunMutationResponse) => {
-        navigateHook(history, null, response.rerunHooks.newHooks[0].id);
+        navigateHookHelper(navigate, null, response.rerunHooks.newHooks[0].id);
       },
       onError: err => console.error(err),
     });
@@ -215,7 +215,7 @@ function HookDetails(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(withRouter(HookDetails)), {
+export default createFragmentContainer(withStyles(styles)(HookDetails), {
   hook: graphql`
     fragment HookDetails_hook on Hook {
       id

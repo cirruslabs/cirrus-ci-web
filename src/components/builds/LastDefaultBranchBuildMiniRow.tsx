@@ -5,12 +5,12 @@ import environment from '../../createRelayEnvironment';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
-import { navigateBuild } from '../../utils/navigate';
+import { navigateBuildHelper } from '../../utils/navigateHelper';
 import RepositoryNameChip from '../chips/RepositoryNameChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import Typography from '@material-ui/core/Typography';
 import { LastDefaultBranchBuildMiniRow_repository } from './__generated__/LastDefaultBranchBuildMiniRow_repository.graphql';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const buildSubscription = graphql`
   subscription LastDefaultBranchBuildMiniRowSubscription($repositoryID: ID!) {
@@ -48,7 +48,7 @@ function LastDefaultBranchBuildRow(props: Props) {
     };
   }, [props.repository.id]);
 
-  let history = useHistory();
+  let navigate = useNavigate();
 
   let { classes, repository } = props;
   let build = repository.lastDefaultBranchBuild;
@@ -58,7 +58,7 @@ function LastDefaultBranchBuildRow(props: Props) {
   return (
     <TableRow
       key={repository.id}
-      onClick={e => navigateBuild(history, e, build.id)}
+      onClick={e => navigateBuildHelper(navigate, e, build.id)}
       hover={true}
       style={{ cursor: 'pointer' }}
     >

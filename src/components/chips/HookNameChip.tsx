@@ -6,8 +6,8 @@ import Functions from '@material-ui/icons/Functions';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
-import { navigateHook } from '../../utils/navigate';
-import { useHistory } from 'react-router-dom';
+import { navigateHookHelper } from '../../utils/navigateHelper';
+import { useNavigate } from 'react-router-dom';
 import { HookNameChip_hook } from './__generated__/HookNameChip_hook.graphql';
 
 const styles = theme =>
@@ -27,13 +27,13 @@ interface Props extends WithStyles<typeof styles> {
 
 let HookNameChip = (props: Props) => {
   const { hook, className, classes } = props;
-  let history = useHistory();
+  let navigate = useNavigate();
 
   return (
     <Chip
       className={className}
       label={hook.name}
-      onClick={e => navigateHook(history, e, hook.id)}
+      onClick={e => navigateHookHelper(navigate, e, hook.id)}
       avatar={
         <Avatar className={classes.avatar}>
           <Functions className={classes.avatarIcon} />

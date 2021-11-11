@@ -9,8 +9,8 @@ import { taskStatusIconName } from '../../utils/status';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { TaskStatusChipExtended_task } from './__generated__/TaskStatusChipExtended_task.graphql';
-import { navigateTask } from '../../utils/navigate';
-import { useHistory } from 'react-router-dom';
+import { navigateTaskHelper } from '../../utils/navigateHelper';
+import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@material-ui/core';
 
 interface Props {
@@ -20,13 +20,13 @@ interface Props {
 
 function TaskStatusChipExtended(props: Props) {
   let { task, className } = props;
-  let history = useHistory();
+  let navigate = useNavigate();
   let theme = useTheme();
   let chip = (
     <Chip
       className={className}
       label={`${task.repository.owner}/${task.repository.name} "${task.name}"`}
-      onClick={e => navigateTask(history, e, task.id)}
+      onClick={e => navigateTaskHelper(navigate, e, task.id)}
       avatar={
         <Avatar style={{ backgroundColor: useTaskStatusColor(task.status) }}>
           <Icon style={{ color: theme.palette.primary.contrastText }}>{taskStatusIconName(task.status)}</Icon>

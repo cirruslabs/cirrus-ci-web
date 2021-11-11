@@ -9,26 +9,28 @@ import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
 import WelcomePage from './WelcomePage';
 import { HomeViewerQuery } from './__generated__/HomeViewerQuery.graphql';
 
-export default () => (
-  <QueryRenderer<HomeViewerQuery>
-    environment={environment}
-    query={graphql`
-      query HomeViewerQuery {
-        viewer {
-          ...ViewerBuildList_viewer
+export default () => {
+  return (
+    <QueryRenderer<HomeViewerQuery>
+      environment={environment}
+      query={graphql`
+        query HomeViewerQuery {
+          viewer {
+            ...ViewerBuildList_viewer
+          }
         }
-      }
-    `}
-    variables={{}}
-    render={({ error, props }) => {
-      if (!props) {
-        return <CirrusLinearProgress />;
-      }
-      if (props.viewer) {
-        return <ViewerBuildList viewer={props.viewer} />;
-      } else {
-        return <WelcomePage />;
-      }
-    }}
-  />
-);
+      `}
+      variables={{}}
+      render={({ error, props }) => {
+        if (!props) {
+          return <CirrusLinearProgress />;
+        }
+        if (props.viewer) {
+          return <ViewerBuildList viewer={props.viewer} />;
+        } else {
+          return <WelcomePage />;
+        }
+      }}
+    />
+  );
+};

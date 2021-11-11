@@ -6,17 +6,15 @@ import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
 import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
 import GitHubOrganizationRepositoryList from '../../components/account/GitHubOrganizationRepositoryList';
-import { RouteComponentProps } from 'react-router';
 import { GitHubOrganizationQuery } from './__generated__/GitHubOrganizationQuery.graphql';
+import { useParams } from 'react-router-dom';
 
-interface Props extends RouteComponentProps<{ owner: 'owner' }> {}
-
-export default (props: Props) => {
-  let organization = props.match.params.owner;
+export default () => {
+  let { owner } = useParams();
   return (
     <QueryRenderer<GitHubOrganizationQuery>
       environment={environment}
-      variables={props.match.params}
+      variables={{ owner }}
       query={graphql`
         query GitHubOrganizationQuery($owner: String!) {
           githubOrganizationInfo(organization: $owner) {
@@ -33,7 +31,7 @@ export default (props: Props) => {
         }
         return (
           <GitHubOrganizationRepositoryList
-            organization={organization}
+            organization={owner}
             organizationInfo={props.githubOrganizationInfo}
             repositories={props.githubRepositories}
           />

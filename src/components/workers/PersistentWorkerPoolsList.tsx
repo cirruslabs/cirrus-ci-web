@@ -21,7 +21,7 @@ import {
   PersistentWorkerPoolsListCreateMutationResponse,
   PersistentWorkerPoolsListCreateMutationVariables,
 } from './__generated__/PersistentWorkerPoolsListCreateMutation.graphql';
-import { navigate } from '../../utils/navigate';
+import { navigateHelper } from '../../utils/navigateHelper';
 import PropTypes from 'prop-types';
 import {
   Avatar,
@@ -35,7 +35,7 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import { PersistentWorkerPoolsListDeleteMutationVariables } from './__generated__/PersistentWorkerPoolsListDeleteMutation.graphql';
 import PoolVisibilityIcon from '../icons/PoolVisibilityIcon';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 interface PoolsListState {
   openDialog: boolean;
@@ -59,7 +59,7 @@ const deletePoolMutation = graphql`
 `;
 
 function PersistentWorkerPoolsList(props: PoolsListProps) {
-  let history = useHistory();
+  let navigate = useNavigate();
   let [openDialog, setOpenDialog] = useState(false);
 
   let deletePool = poolId => {
@@ -89,7 +89,7 @@ function PersistentWorkerPoolsList(props: PoolsListProps) {
           {props.pools.map(
             pool =>
               pool && (
-                <ListItem key={pool.id} button onClick={() => navigate(history, '', '/pool/' + pool.id)}>
+                <ListItem key={pool.id} button onClick={() => navigateHelper(navigate, '', '/pool/' + pool.id)}>
                   <ListItemAvatar>
                     <Avatar>
                       <PoolVisibilityIcon enabledForPublic={pool.enabledForPublic} />
@@ -143,7 +143,7 @@ const createPoolMutation = graphql`
 `;
 
 function CreateNewPersistentWorkerPoolDialog(props: DialogProps) {
-  let history = useHistory();
+  let navigate = useNavigate();
   let [name, setName] = useState('');
   let [enabledForPublic, setEnabledForPublic] = useState(true);
 
@@ -160,7 +160,7 @@ function CreateNewPersistentWorkerPoolDialog(props: DialogProps) {
       mutation: createPoolMutation,
       variables: { input: input },
       onCompleted: (response: PersistentWorkerPoolsListCreateMutationResponse) => {
-        navigate(history, '', '/pool/' + response.createPersistentWorkerPool.pool.id);
+        navigateHelper(navigate, '', '/pool/' + response.createPersistentWorkerPool.pool.id);
         props.onClose();
       },
       onError: err => console.log(err),

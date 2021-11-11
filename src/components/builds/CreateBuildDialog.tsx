@@ -10,8 +10,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import AceEditor from 'react-ace';
-import { useHistory } from 'react-router-dom';
-import { navigateBuild } from '../../utils/navigate';
+import { useNavigate } from 'react-router-dom';
+import { navigateBuildHelper } from '../../utils/navigateHelper';
 
 import 'ace-builds/src-noconflict/mode-yaml';
 import 'ace-builds/src-noconflict/theme-github';
@@ -38,7 +38,7 @@ interface Props {
 }
 
 function CreateBuildDialog(props: Props) {
-  let history = useHistory();
+  let navigate = useNavigate();
   let [branch, setBranch] = useState(props.repository.masterBranch);
   let [configOverride, setConfigOverride] = useState('');
   let [sha, setSHA] = useState('');
@@ -66,7 +66,7 @@ function CreateBuildDialog(props: Props) {
       variables: variables,
       onCompleted: (response: CreateBuildDialogMutationResponse) => {
         console.log(response);
-        navigateBuild(history, null, response.createBuild.build.id);
+        navigateBuildHelper(navigate, null, response.createBuild.build.id);
       },
       onError: err => console.error(err),
     });

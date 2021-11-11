@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
@@ -13,7 +13,7 @@ import classNames from 'classnames';
 import RepositoryNameChip from '../chips/RepositoryNameChip';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import TaskCreatedChip from '../chips/TaskCreatedChip';
-import { navigateTask } from '../../utils/navigate';
+import { navigateTaskHelper } from '../../utils/navigateHelper';
 import { ComputeCreditsTransactionRow_transaction } from './__generated__/ComputeCreditsTransactionRow_transaction.graphql';
 
 const styles = {
@@ -33,11 +33,11 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 function ComputeCreditsTransactionRow(props: Props) {
-  let history = useHistory();
+  let navigate = useNavigate();
   let { transaction, classes } = props;
   let { task, repository } = transaction;
   return (
-    <TableRow onClick={e => navigateTask(history, e, task.id)} hover={true} style={{ cursor: 'pointer' }}>
+    <TableRow onClick={e => navigateTaskHelper(navigate, e, task.id)} hover={true} style={{ cursor: 'pointer' }}>
       <TableCell className={classNames(classes.cell)}>
         <TaskNameChip task={task} className={classes.chip} />
         <TaskCreatedChip task={task} className={classes.chip} />

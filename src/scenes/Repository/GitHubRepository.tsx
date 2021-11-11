@@ -9,13 +9,15 @@ import RepositoryBuildList from '../../components/repositories/RepositoryBuildLi
 import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
 import NotFound from '../NotFound';
 import { GitHubRepositoryQuery } from './__generated__/GitHubRepositoryQuery.graphql';
+import { useParams } from 'react-router-dom';
 
-export default props => {
-  let branch = props.match.params.branch;
+export default () => {
+  let params = useParams();
+  let { owner, name, branch } = params;
   return (
     <QueryRenderer<GitHubRepositoryQuery>
       environment={environment}
-      variables={props.match.params}
+      variables={{ owner: owner, name: name, branch: branch }}
       query={graphql`
         query GitHubRepositoryQuery($owner: String!, $name: String!, $branch: String) {
           githubRepository(owner: $owner, name: $name) {

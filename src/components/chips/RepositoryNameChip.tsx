@@ -3,12 +3,12 @@ import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import Storage from '@material-ui/icons/Storage';
-import { navigate } from '../../utils/navigate';
+import { navigateHelper } from '../../utils/navigateHelper';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { RepositoryNameChip_repository } from './__generated__/RepositoryNameChip_repository.graphql';
 import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const styles = theme =>
   createStyles({
@@ -27,11 +27,11 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 function RepositoryNameChip(props: Props) {
-  let history = useHistory();
+  let navigate = useNavigate();
   let repository = props.repository;
 
   function handleRepositoryClick(event, repository) {
-    navigate(history, event, '/github/' + repository.owner + '/' + repository.name);
+    navigateHelper(navigate, event, '/github/' + repository.owner + '/' + repository.name);
   }
 
   return (

@@ -8,29 +8,30 @@ import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
 import NotFound from '../NotFound';
 import RepositoryMetricsPage from '../../components/metrics/RepositoryMetricsPage';
 import { RepositoryMetricsQuery } from './__generated__/RepositoryMetricsQuery.graphql';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { useParams } from 'react-router-dom';
 
-interface Props extends RouteComponentProps<{ owner: 'owner'; name: 'name' }> {}
-
-export default withRouter((parentProps: Props) => (
-  <QueryRenderer<RepositoryMetricsQuery>
-    environment={environment}
-    variables={parentProps.match.params}
-    query={graphql`
-      query RepositoryMetricsQuery($owner: String!, $name: String!) {
-        githubRepository(owner: $owner, name: $name) {
-          ...RepositoryMetricsPage_repository
+export default parentProps => {
+  let { owner, name } = useParams();
+  return (
+    <QueryRenderer<RepositoryMetricsQuery>
+      environment={environment}
+      variables={{ owner, name }}
+      query={graphql`
+        query RepositoryMetricsQuery($owner: String!, $name: String!) {
+          githubRepository(owner: $owner, name: $name) {
+            ...RepositoryMetricsPage_repository
+          }
         }
-      }
-    `}
-    render={({ error, props }) => {
-      if (!props) {
-        return <CirrusLinearProgress />;
-      }
-      if (!props.githubRepository) {
-        return <NotFound message={error} />;
-      }
-      return <RepositoryMetricsPage repository={props.githubRepository} {...parentProps} />;
-    }}
-  />
-));
+      `}
+      render={({ error, props }) => {
+        if (!props) {
+          return <CirrusLinearProgress />;
+        }
+        if (!props.githubRepository) {
+          return <NotFound message={error} />;
+        }
+        return <RepositoryMetricsPage repository={props.githubRepository} {...parentProps} />;
+      }}
+    />
+  );
+};

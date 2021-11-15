@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import AnsiUp from 'ansi_up';
-import { useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import { createStyles, WithStyles, withStyles } from '@material-ui/styles';
 import * as queryString from 'query-string';
@@ -45,40 +45,33 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 function Logs(props: Props) {
-  const history = useHistory();
-  let [highLightedLineStart, setHighLightedLineStart] = useState(NaN);
-  let [highLightedLineEnd, setHighLightedLineEnd] = useState(NaN);
+  const navigate = useNavigate();
+  const location = useLocation();
+  let highLightedLineStart = NaN;
+  let highLightedLineEnd = NaN;
 
-  useEffect(() => {
-    function updateLinesSelection() {
-      let search = (history.location && queryString.parse(history.location.search)) || {};
-      if (search.logs === props.logsName || search.command === props.logsName) {
-        let [startLine, endLine] = history.location.hash.replace('#', '').split('-');
-        if (!endLine) {
-          endLine = startLine;
-        }
+  let search = queryString.parse(location.search);
 
-        setHighLightedLineStart(parseInt(startLine.replace('L', ''), 10));
-        setHighLightedLineEnd(parseInt(endLine.replace('L', ''), 10));
-        let elementToFocus = document.getElementById(startLine);
-        if (elementToFocus) {
-          elementToFocus.focus();
-        }
-      }
+  if (search.logs === props.logsName || search.command === props.logsName) {
+    let [startLine, endLine] = location.hash.replace('#', '').split('-');
+    if (!endLine) {
+      endLine = startLine;
     }
 
-    updateLinesSelection();
-    return history.listen(location => {
-      updateLinesSelection();
-    });
-  }, [history, props.logsName]);
+    highLightedLineStart = parseInt(startLine.replace('L', ''), 10);
+    highLightedLineEnd = parseInt(endLine.replace('L', ''), 10);
+    let elementToFocus = document.getElementById(startLine);
+    if (elementToFocus) {
+      elementToFocus.focus();
+    }
+  }
 
   function selectLine(event, lineNumber) {
     let lineRange = `L${lineNumber}`;
     if (event.shiftKey) {
       lineRange = `L${highLightedLineStart}-L${lineNumber}`;
     }
-    history.push({
+    navigate({
       search: `?logs=${props.logsName}`,
       hash: `#${lineRange}`,
     });

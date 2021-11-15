@@ -4,8 +4,8 @@ import Input from '@material-ui/icons/Input';
 import { graphql } from 'babel-plugin-relay/macro';
 import React from 'react';
 import { createFragmentContainer } from 'react-relay';
-import { useHistory } from 'react-router-dom';
-import { navigateBuild } from '../../utils/navigate';
+import { useNavigate } from 'react-router-dom';
+import { navigateBuildHelper } from '../../utils/navigateHelper';
 import { BuildChangeChip_build } from './__generated__/BuildChangeChip_build.graphql';
 import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
 
@@ -26,7 +26,7 @@ interface Props extends WithStyles<typeof styles> {
 
 function BuildChangeChip(props: Props) {
   let { build, className } = props;
-  let history = useHistory();
+  let navigate = useNavigate();
   return (
     <Chip
       label={build.changeIdInRepo.substr(0, 7)}
@@ -35,7 +35,7 @@ function BuildChangeChip(props: Props) {
           <Input className={props.classes.avatarIcon} />
         </Avatar>
       }
-      onClick={e => navigateBuild(history, e, build.id)}
+      onClick={e => navigateBuildHelper(navigate, e, build.id)}
       className={className}
     />
   );

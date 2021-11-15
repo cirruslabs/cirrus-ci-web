@@ -5,8 +5,8 @@ import environment from '../../createRelayEnvironment';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import { withStyles, WithStyles } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
-import { navigateRepository } from '../../utils/navigate';
+import { useNavigate } from 'react-router-dom';
+import { navigateRepositoryHelper } from '../../utils/navigateHelper';
 import RepositoryNameChip from '../chips/RepositoryNameChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import classNames from 'classnames';
@@ -52,7 +52,7 @@ function LastDefaultBranchBuildRow(props: Props) {
     };
   }, [props.repository.id]);
 
-  let history = useHistory();
+  let navigate = useNavigate();
   let { classes, repository } = props;
   let build = repository.lastDefaultBranchBuild;
   if (!build) {
@@ -61,7 +61,7 @@ function LastDefaultBranchBuildRow(props: Props) {
   return (
     <TableRow
       key={repository.id}
-      onClick={e => navigateRepository(history, e, repository.owner, repository.name)}
+      onClick={e => navigateRepositoryHelper(navigate, e, repository.owner, repository.name)}
       hover={true}
       style={{ cursor: 'pointer' }}
     >

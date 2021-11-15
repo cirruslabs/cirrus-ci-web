@@ -2,11 +2,11 @@ import React from 'react';
 import { Bar, BarChart, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { useBuildStatusColorMapping } from '../../utils/colors';
 import { formatDuration } from '../../utils/time';
-import { navigateBuild } from '../../utils/navigate';
+import { navigateBuildHelper } from '../../utils/navigateHelper';
 import { NodeOfConnection, UnspecifiedCallbackFunction } from '../../utils/utility-types';
 import { RepositoryBuildList_repository } from '../repositories/__generated__/RepositoryBuildList_repository.graphql';
 import { withStyles } from '@material-ui/styles';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Paper, Typography } from '@material-ui/core';
 
 interface Props {
@@ -16,7 +16,7 @@ interface Props {
 }
 
 function BuildDurationsChart(props: Props) {
-  let history = useHistory();
+  let navigate = useNavigate();
   let statusColorMapping = useBuildStatusColorMapping();
   let { builds, selectedBuildId, onSelectBuildId } = props;
   let maxDuration = Math.max(...builds.map(build => build.durationInSeconds || 0));
@@ -67,7 +67,7 @@ function BuildDurationsChart(props: Props) {
           dataKey="durationInSeconds"
           isAnimationActive={false}
           shape={props => renderBuildBar(props, selectedBuildId)}
-          onClick={(build, index, event) => navigateBuild(history, event, build.id)}
+          onClick={(build, index, event) => navigateBuildHelper(navigate, event, build.id)}
           onMouseEnter={entry => onSelectBuildId(entry.id)}
           onMouseLeave={() => onSelectBuildId('0')}
         />

@@ -3,8 +3,8 @@ import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import CallSplit from '@material-ui/icons/CallSplit';
-import { useHistory } from 'react-router-dom';
-import { navigate } from '../../utils/navigate';
+import { useNavigate } from 'react-router-dom';
+import { navigateHelper } from '../../utils/navigateHelper';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { BuildBranchNameChip_build } from './__generated__/BuildBranchNameChip_build.graphql';
@@ -27,14 +27,18 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 function BuildBranchNameChip(props: Props) {
-  let history = useHistory();
+  let navigate = useNavigate();
   let build = props.build;
 
   function handleBranchClick(event) {
     if (build.repository) {
-      navigate(history, event, '/github/' + build.repository.owner + '/' + build.repository.name + '/' + build.branch);
+      navigateHelper(
+        navigate,
+        event,
+        '/github/' + build.repository.owner + '/' + build.repository.name + '/' + build.branch,
+      );
     } else if (build.repository.id) {
-      navigate(history, event, '/repository/' + build.repository.id + '/' + build.branch);
+      navigateHelper(navigate, event, '/repository/' + build.repository.id + '/' + build.branch);
     }
   }
 

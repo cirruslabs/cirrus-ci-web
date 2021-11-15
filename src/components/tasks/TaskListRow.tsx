@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
@@ -9,7 +9,7 @@ import TaskDurationChip from '../chips/TaskDurationChip';
 import { shorten } from '../../utils/text';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { navigateTask } from '../../utils/navigate';
+import { navigateTaskHelper } from '../../utils/navigateHelper';
 import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import TaskCreatedChip from '../chips/TaskCreatedChip';
@@ -48,7 +48,7 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 function TaskListRow(props: Props) {
-  let history = useHistory();
+  let navigate = useNavigate();
   let colorMapping = useTaskStatusColorMapping();
   let { task, classes, durationBeforeScheduling, overallDuration } = props;
   let progress = null;
@@ -103,7 +103,7 @@ function TaskListRow(props: Props) {
     );
   }
   return (
-    <TableRow onClick={e => navigateTask(history, e, task.id)} hover={true} style={{ cursor: 'pointer' }}>
+    <TableRow onClick={e => navigateTaskHelper(navigate, e, task.id)} hover={true} style={{ cursor: 'pointer' }}>
       <TableCell className={classNames(classes.cell)}>
         <TaskDurationChip task={task} className={classNames(classes.chip, classes.lastChip)} />
         <TaskNameChip task={task} className={classes.chip} />

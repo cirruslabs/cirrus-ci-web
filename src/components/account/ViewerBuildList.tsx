@@ -1,7 +1,7 @@
 import React from 'react';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 
 import Table from '@material-ui/core/Table';
@@ -15,7 +15,7 @@ import RepositoryNameChip from '../chips/RepositoryNameChip';
 import BuildBranchNameChip from '../chips/BuildBranchNameChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import BuildChangeChip from '../chips/BuildChangeChip';
-import { navigateBuild } from '../../utils/navigate';
+import { navigateBuildHelper } from '../../utils/navigateHelper';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, WithStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
@@ -47,14 +47,14 @@ function ViewerBuildList(props: Props) {
   let { classes } = props;
   let builds = props.viewer.builds;
 
-  let history = useHistory();
+  let navigate = useNavigate();
 
   function buildItem(build) {
     let { classes } = props;
     return (
       <TableRow
         key={build.id}
-        onClick={e => navigateBuild(history, e, build.id)}
+        onClick={e => navigateBuildHelper(navigate, e, build.id)}
         hover={true}
         style={{ cursor: 'pointer' }}
       >

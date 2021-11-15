@@ -10,9 +10,9 @@ import { graphql } from 'babel-plugin-relay/macro';
 import classNames from 'classnames';
 import React, { useEffect } from 'react';
 import { commitMutation, createFragmentContainer, requestSubscription } from 'react-relay';
-import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import environment from '../../createRelayEnvironment';
-import { navigateBuild, navigateTask } from '../../utils/navigate';
+import { navigateBuildHelper, navigateTaskHelper } from '../../utils/navigateHelper';
 import { hasWritePermissions } from '../../utils/permissions';
 import { isTaskFinalStatus } from '../../utils/status';
 import { shorten } from '../../utils/text';
@@ -192,12 +192,12 @@ const styles = theme =>
     },
   });
 
-interface Props extends WithStyles<typeof styles>, RouteComponentProps {
+interface Props extends WithStyles<typeof styles> {
   task: TaskDetails_task;
 }
 
-function TaskDetails(props: Props, context) {
-  let history = useHistory();
+function TaskDetails(props: Props) {
+  let navigate = useNavigate();
   useEffect(() => {
     if (isTaskFinalStatus(props.task.status)) {
       return;
@@ -293,7 +293,7 @@ function TaskDetails(props: Props, context) {
       mutation: taskReRunMutation,
       variables: variables,
       onCompleted: (response: TaskDetailsReRunMutationResponse) => {
-        navigateTask(history, null, response.rerun.newTask.id);
+        navigateTaskHelper(navigate, null, response.rerun.newTask.id);
       },
       onError: err => console.error(err),
     });
@@ -434,30 +434,15 @@ function TaskDetails(props: Props, context) {
     );
   }
 
-  const [currentTab, setCurrentTab] = React.useState('instructions');
+  let currentTab = useLocation().pathname.endsWith('/hooks') ? 'hooks' : 'instructions';
+
   const handleChange = (event, newValue) => {
     if (newValue === 'hooks') {
-      history.push('/task/' + task.id + '/hooks');
+      navigate('/task/' + task.id + '/hooks');
     } else {
-      history.push('/task/' + task.id);
+      navigate('/task/' + task.id);
     }
   };
-
-  useEffect(() => {
-    function updateTabSelection() {
-      if (history.location.pathname.endsWith('/hooks')) {
-        setCurrentTab('hooks');
-      } else {
-        setCurrentTab('instructions');
-      }
-    }
-
-    updateTabSelection();
-
-    return history.listen(location => {
-      updateTabSelection();
-    });
-  });
 
   const tabbedCommandsAndHooks = (
     <TabContext value={currentTab}>
@@ -561,7 +546,11 @@ function TaskDetails(props: Props, context) {
           <ExecutionInfo task={task} />
         </CardContent>
         <CardActions className="d-flex flex-wrap justify-content-end">
-          <Button variant="contained" onClick={e => navigateBuild(history, e, task.buildId)} startIcon={<ArrowBack />}>
+          <Button
+            variant="contained"
+            onClick={e => navigateBuildHelper(navigate, e, task.buildId)}
+            startIcon={<ArrowBack />}
+          >
             View All Tasks
           </Button>
           {abortButton}
@@ -594,7 +583,7 @@ function TaskDetails(props: Props, context) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(withRouter(TaskDetails)), {
+export default createFragmentContainer(withStyles(styles)(TaskDetails), {
   task: graphql`
     fragment TaskDetails_task on Task {
       id

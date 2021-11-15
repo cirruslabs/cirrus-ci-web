@@ -1,8 +1,6 @@
 import React, { Suspense } from 'react';
-import { BrowserRouter, Route, Switch, useHistory } from 'react-router-dom';
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import ActiveRepositoriesDrawer from './scenes/Header/ActiveRepositoriesDrawer';
-import NotFound from './scenes/NotFound';
-import { navigate } from './utils/navigate';
 import AppBar from '@material-ui/core/AppBar';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
@@ -144,11 +142,10 @@ const cirrusOpenDrawerState = atom({
   effects_UNSTABLE: [localStorageEffect('CirrusOpenDrawer')],
 });
 
-function Routes(props: WithStyles<typeof styles>) {
+function AllRoutes(props: WithStyles<typeof styles>) {
   let { classes } = props;
 
   let theme = useTheme();
-  let history = useHistory();
   const [openDrawer, setOpenDrawer] = useRecoilState(cirrusOpenDrawerState);
 
   function getNavbarTitleStyling() {
@@ -198,15 +195,16 @@ function Routes(props: WithStyles<typeof styles>) {
               >
                 <MenuIcon />
               </IconButton>
-              <Typography
-                variant="h6"
-                className={classNames({ [classes.titleShift]: openDrawer })}
-                style={getNavbarTitleStyling()}
-                onClick={e => navigate(history, e, '/')}
-                color="inherit"
-              >
-                Cirrus CI
-              </Typography>
+              <Link to={'/'} style={{ color: theme.palette.primary.contrastText, textDecoration: 'none' }}>
+                <Typography
+                  variant="h6"
+                  className={classNames({ [classes.titleShift]: openDrawer })}
+                  style={getNavbarTitleStyling()}
+                  color="inherit"
+                >
+                  Cirrus CI
+                </Typography>
+              </Link>
               <div className={classes.flex} />
               <Suspense fallback={<div />}>
                 <GCPStatus />
@@ -256,35 +254,25 @@ function Routes(props: WithStyles<typeof styles>) {
             })}
           >
             <Suspense fallback={<CirrusLinearProgress />}>
-              <Switch>
-                <Route exact path="/" component={AsyncHome} props={props} />
-                <Route exact path="/explorer" component={AsyncApiExplorerRenderer} props={props} />
-                <Route exact path="/settings/profile" component={AsyncViewerProfile} props={props} />
-                <Route
-                  exact
-                  path="/settings/github/:organization"
-                  component={AsyncGitHubOrganizationSettingsRenderer}
-                  props={props}
-                />
-                <Route
-                  exact
-                  path="/settings/repository/:repositoryId"
-                  component={AsyncRepositorySettings}
-                  props={props}
-                />
-                <Route exact path="/build/:buildId" component={AsyncBuildById} props={props} />
-                <Route exact path="/build/:owner/:name/:SHA" component={AsyncBuildBySHA} props={props} />
-                <Route exact path="/github/:owner" component={AsyncGitHubOrganization} props={props} />
-                <Route exact path="/github/:owner/:name/:branch*" component={AsyncGitHubRepository} props={props} />
-                <Route exact path="/repository/:repositoryId/:branch*" component={AsyncRepository} props={props} />
-                <Route exact path="/metrics/repository/:owner/:name" component={AsyncRepositoryMetrics} props={props} />
-                <Route exact path="/task/:taskId" component={AsyncTask} props={props} />
-                <Route exact path="/task/:taskId/hooks" component={AsyncTask} props={props} />
-                <Route exact path="/pool/:poolId" component={AsyncPoolById} props={props} />
-                <Route exact path="/hook/:hookId" component={AsyncHook} props={props} />
-                <Route exact path="/:owner/:name/:branch*" component={AsyncGitHubRepository} props={props} />
-                <Route component={NotFound} props={props} />
-              </Switch>
+              <Routes>
+                <Route path="/" element={<AsyncHome />} />
+                <Route path="explorer" element={<AsyncApiExplorerRenderer />} />
+                <Route path="settings/profile" element={<AsyncViewerProfile />} />
+                <Route path="settings/github/:organization" element={<AsyncGitHubOrganizationSettingsRenderer />} />
+                <Route path="settings/repository/:repositoryId" element={<AsyncRepositorySettings />} />
+                <Route path="build/:buildId" element={<AsyncBuildById />} />
+                <Route path="build/:owner/:name/:SHA" element={<AsyncBuildBySHA />} />
+                <Route path=":platform/:owner/:name/:branch" element={<AsyncGitHubRepository />} />
+                <Route path=":platform/:owner/:name" element={<AsyncGitHubRepository />} />
+                <Route path=":platform/:owner" element={<AsyncGitHubOrganization />} />
+                <Route path="repository/:repositoryId/:branch" element={<AsyncRepository />} />
+                <Route path="repository/:repositoryId" element={<AsyncRepository />} />
+                <Route path="metrics/repository/:owner/:name" element={<AsyncRepositoryMetrics />} />
+                <Route path="task/:taskId" element={<AsyncTask />} />
+                <Route path="task/:taskId/hooks" element={<AsyncTask />} />
+                <Route path="pool/:poolId" element={<AsyncPoolById />} />
+                <Route path="hook/:hookId" element={<AsyncHook />} />
+              </Routes>
             </Suspense>
           </div>
         </main>
@@ -293,4 +281,4 @@ function Routes(props: WithStyles<typeof styles>) {
   );
 }
 
-export default withStyles(styles)(Routes);
+export default withStyles(styles)(AllRoutes);

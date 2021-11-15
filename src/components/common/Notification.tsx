@@ -7,10 +7,10 @@ import { withStyles, WithStyles } from '@material-ui/core/styles';
 import { useNotificationColor } from '../../utils/colors';
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
-import { navigate } from '../../utils/navigate';
+import { navigateHelper } from '../../utils/navigateHelper';
 import classNames from 'classnames';
 import { Notification_notification } from './__generated__/Notification_notification.graphql';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 let styles = {
   notification: {
@@ -23,13 +23,13 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 function Notification(props: Props) {
-  let history = useHistory();
+  let navigate = useNavigate();
   let { notification, classes } = props;
   let headerStyle = {
     backgroundColor: useNotificationColor(notification.level),
   };
   let linkComponent = !notification.link ? null : (
-    <IconButton onClick={e => navigate(history, e, notification.link)}>
+    <IconButton onClick={e => navigateHelper(navigate, e, notification.link)}>
       <Icon>launch</Icon>
     </IconButton>
   );

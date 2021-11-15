@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
@@ -27,7 +26,7 @@ const styles = {
   },
 };
 
-interface Props extends WithStyles<typeof styles>, RouteComponentProps {
+interface Props extends WithStyles<typeof styles> {
   delivery: DeliveryRow_delivery;
 }
 
@@ -67,7 +66,7 @@ function DeliveryRow(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(withRouter(DeliveryRow)), {
+export default createFragmentContainer(withStyles(styles)(DeliveryRow), {
   delivery: graphql`
     fragment DeliveryRow_delivery on WebHookDelivery {
       id

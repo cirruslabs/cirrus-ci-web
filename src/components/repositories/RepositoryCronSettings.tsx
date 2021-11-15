@@ -14,7 +14,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import classNames from 'classnames';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Chip from '@material-ui/core/Chip';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import { Add, Delete } from '@material-ui/icons';
@@ -30,7 +30,7 @@ import {
   RepositoryCronSettingsRemoveMutationResponse,
   RepositoryCronSettingsRemoveMutationVariables,
 } from './__generated__/RepositoryCronSettingsRemoveMutation.graphql';
-import { navigateBuild } from '../../utils/navigate';
+import { navigateBuildHelper } from '../../utils/navigateHelper';
 
 const saveCronSettingsMutation = graphql`
   mutation RepositoryCronSettingsSaveMutation($input: RepositorySaveCronSettingsInput!) {
@@ -98,7 +98,7 @@ const styles = theme =>
   });
 
 function RepositoryCronSettings(props: Props) {
-  let history = useHistory();
+  let navigate = useNavigate();
 
   let defaultSettings = {
     name: 'nightly',
@@ -196,7 +196,7 @@ function RepositoryCronSettings(props: Props) {
                 </TableCell>
                 <TableCell
                   className={classes.cell}
-                  onClick={event => navigateBuild(history, event, settings.lastInvocationBuild?.id)}
+                  onClick={event => navigateBuildHelper(navigate, event, settings.lastInvocationBuild?.id)}
                 >
                   <div className="d-flex">
                     <NextCronInvocationTimeChip settings={settings} className={classes.chip} />

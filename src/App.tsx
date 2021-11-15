@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Routes from './Routes';
+import Routes from './AllRoutes';
 import { cirrusThemeOptions } from './cirrusTheme';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CirrusFavicon from './components/common/CirrusFavicon';

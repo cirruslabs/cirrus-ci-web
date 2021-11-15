@@ -12,7 +12,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import React, { useState } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
 import BillingSettingsButton from './BillingSettingsButton';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
@@ -55,7 +54,7 @@ const styles = theme =>
     },
   });
 
-interface Props extends WithStyles<typeof styles>, RouteComponentProps {
+interface Props extends WithStyles<typeof styles> {
   transactionsComponent: JSX.Element;
   info?: ComputeCreditsBase_info;
   balanceInCredits?: string;
@@ -134,7 +133,7 @@ function ComputeCreditsBase(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(withRouter(ComputeCreditsBase)), {
+export default createFragmentContainer(withStyles(styles)(ComputeCreditsBase), {
   info: graphql`
     fragment ComputeCreditsBase_info on GitHubOrganizationInfo {
       ...BillingSettingsButton_info

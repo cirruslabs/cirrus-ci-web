@@ -8,8 +8,8 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { navigate } from '../../utils/navigate';
-import { useHistory } from 'react-router-dom';
+import { navigateHelper } from '../../utils/navigateHelper';
+import { useNavigate } from 'react-router-dom';
 import { AccountInformation_viewer } from './__generated__/AccountInformation_viewer.graphql';
 import Settings from '@material-ui/icons/Settings';
 import DirectionsRun from '@material-ui/icons/DirectionsRun';
@@ -30,7 +30,7 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 function AccountInformation(props: Props) {
-  let history = useHistory();
+  let navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = event => {
@@ -68,7 +68,7 @@ function AccountInformation(props: Props) {
         <MenuItem
           onClick={event => {
             handleClose();
-            navigate(history, event, '/settings/profile/');
+            navigateHelper(navigate, event, '/settings/profile/');
           }}
         >
           <ListItemIcon>
@@ -79,7 +79,7 @@ function AccountInformation(props: Props) {
         <MenuItem
           onClick={event => {
             handleClose();
-            navigate(history, event, 'https://api.cirrus-ci.com/redirect/logout/');
+            navigateHelper(navigate, event, 'https://api.cirrus-ci.com/redirect/logout/');
           }}
         >
           <ListItemIcon>

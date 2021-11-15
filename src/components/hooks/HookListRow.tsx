@@ -1,11 +1,11 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { navigateHook } from '../../utils/navigate';
+import { navigateHookHelper } from '../../utils/navigateHelper';
 import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import { HookListRow_hook } from './__generated__/HookListRow_hook.graphql';
@@ -35,10 +35,10 @@ interface Props extends WithStyles<typeof styles> {
 
 function HookListRow(props: Props) {
   let { hook, classes } = props;
-  let history = useHistory();
+  let navigate = useNavigate();
 
   return (
-    <TableRow onClick={e => navigateHook(history, e, hook.id)} hover={true} style={{ cursor: 'pointer' }}>
+    <TableRow onClick={e => navigateHookHelper(navigate, e, hook.id)} hover={true} style={{ cursor: 'pointer' }}>
       <TableCell className={classNames(classes.cell)}>
         <HookStatusChip className={classes.chip} hook={hook} />
         <HookCreatedChip className={classes.chip} hook={hook} />

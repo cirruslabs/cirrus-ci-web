@@ -1,5 +1,4 @@
 import React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -19,7 +18,7 @@ let styles = {
   },
 };
 
-interface Props extends RouteComponentProps, WithStyles<typeof styles> {
+interface Props extends WithStyles<typeof styles> {
   organization: string;
   organizationInfo: any;
   repositories: any;
@@ -65,4 +64,4 @@ let GitHubOrganizationRepositoryList = (props: Props) => {
   );
 };
 
-export default withStyles(styles)(withRouter(GitHubOrganizationRepositoryList));
+export default withStyles(styles)(GitHubOrganizationRepositoryList);

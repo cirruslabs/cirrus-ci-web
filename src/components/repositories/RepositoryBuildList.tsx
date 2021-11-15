@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { createFragmentContainer, requestSubscription } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -16,7 +16,7 @@ import BuildDurationsChart from '../builds/BuildDurationsChart';
 import BuildBranchNameChip from '../chips/BuildBranchNameChip';
 import BuildChangeChip from '../chips/BuildChangeChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
-import { navigateBuild } from '../../utils/navigate';
+import { navigateBuildHelper } from '../../utils/navigateHelper';
 import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import classNames from 'classnames';
@@ -83,7 +83,7 @@ function RepositoryBuildList(props: Props) {
     };
   }, [props.repository.id, props.branch]);
 
-  let history = useHistory();
+  let navigate = useNavigate();
   let [selectedBuildId, setSelectedBuildId] = useState(null);
   let [openCreateDialog, setOpenCreateDialog] = useState(false);
   let { repository, classes } = props;
@@ -155,7 +155,7 @@ function RepositoryBuildList(props: Props) {
         hover={true}
         selected={isSelectedBuild}
         onMouseOver={() => !isSelectedBuild && setSelectedBuildId(build.id)}
-        onClick={e => navigateBuild(history, e, build.id)}
+        onClick={e => navigateBuildHelper(navigate, e, build.id)}
         style={{ cursor: 'pointer' }}
       >
         <TableCell className={classes.row}>

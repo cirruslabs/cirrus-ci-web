@@ -1,5 +1,4 @@
 import React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import Paper from '@material-ui/core/Paper';
@@ -24,7 +23,7 @@ const styles = theme =>
     },
   });
 
-interface Props extends WithStyles<typeof styles>, RouteComponentProps {
+interface Props extends WithStyles<typeof styles> {
   info: GitHubOrganizationSettings_info;
   organization: string;
 }
@@ -78,7 +77,7 @@ function GitHubOrganizationSettings(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(withRouter(GitHubOrganizationSettings)), {
+export default createFragmentContainer(withStyles(styles)(GitHubOrganizationSettings), {
   info: graphql`
     fragment GitHubOrganizationSettings_info on GitHubOrganizationInfo {
       name

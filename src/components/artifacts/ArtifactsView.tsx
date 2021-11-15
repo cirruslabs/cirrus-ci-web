@@ -9,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Paper from '@material-ui/core/Paper';
-import { navigate } from '../../utils/navigate';
+import { navigateHelper } from '../../utils/navigateHelper';
 import { TaskArtifacts_task } from './__generated__/TaskArtifacts_task.graphql';
 import Folder from '@material-ui/icons/Folder';
 import InsertDriveFile from '@material-ui/icons/InsertDriveFile';
@@ -19,7 +19,7 @@ import ViewList from '@material-ui/icons/ViewList';
 import AccountTree from '@material-ui/icons/AccountTree';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const styles = {
   title: {
@@ -40,7 +40,7 @@ interface SingleArtifactItemInfo {
 }
 
 function ArtifactsView(props: Props) {
-  let history = useHistory();
+  let navigate = useNavigate();
   let [selectedArtifactName, setSelectedArtifactName] = useState(null);
   let [selectedPath, setSelectedPath] = useState([]);
   let [isFolderView, setFolderView] = useState(true);
@@ -136,7 +136,7 @@ function ArtifactsView(props: Props) {
           </ListItemIcon>
           <ListItemText primary={artifact.name} />
           <Tooltip title="Download All Files (.zip)">
-            <IconButton onClick={e => navigate(history, e, artifactArchiveURL(artifact.name))}>
+            <IconButton onClick={e => navigateHelper(navigate, e, artifactArchiveURL(artifact.name))}>
               <GetApp />
             </IconButton>
           </Tooltip>

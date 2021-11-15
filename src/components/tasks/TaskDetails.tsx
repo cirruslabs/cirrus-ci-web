@@ -274,7 +274,7 @@ function TaskDetails(props: Props) {
     setRerunOptionsShown(prevOpen => !prevOpen);
   };
 
-  const closeRerunOptions = (event: React.MouseEvent<Document, MouseEvent>) => {
+  const closeRerunOptions = (event: MouseEvent | TouchEvent) => {
     if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
       return;
     }

@@ -299,7 +299,7 @@ function BuildDetails(props: Props) {
             </div>
             <div>
               <Tooltip title="Debugging Information">
-                <ToggleButton onClick={toggleDisplayDebugInfo} selected={displayDebugInfo}>
+                <ToggleButton value="bug" onClick={toggleDisplayDebugInfo} selected={displayDebugInfo}>
                   <BugReport />
                 </ToggleButton>
               </Tooltip>

@@ -1,15 +1,17 @@
-import Button from '@material-ui/core/Button/Button';
-import Card from '@material-ui/core/Card/Card';
-import CardActions from '@material-ui/core/CardActions/CardActions';
-import CardContent from '@material-ui/core/CardContent/CardContent';
-import CardHeader from '@material-ui/core/CardHeader/CardHeader';
-import Collapse from '@material-ui/core/Collapse/Collapse';
-import { orange } from '@material-ui/core/colors';
-import IconButton from '@material-ui/core/IconButton/IconButton';
-import Typography from '@material-ui/core/Typography/Typography';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
+import Button from '@mui/material/Button/Button';
+import Card from '@mui/material/Card/Card';
+import CardActions from '@mui/material/CardActions/CardActions';
+import CardContent from '@mui/material/CardContent/CardContent';
+import CardHeader from '@mui/material/CardHeader/CardHeader';
+import Collapse from '@mui/material/Collapse/Collapse';
+import { orange } from '@mui/material/colors';
+import IconButton from '@mui/material/IconButton/IconButton';
+import Typography from '@mui/material/Typography/Typography';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import BillingSettingsButton from './BillingSettingsButton';
@@ -117,6 +119,7 @@ function ComputeCreditsBase(props: Props) {
           onClick={() => setExpanded(!expanded)}
           aria-expanded={expanded}
           aria-label="Show Transactions"
+          size="large"
         >
           <ExpandMoreIcon />
         </IconButton>

@@ -4,10 +4,10 @@ import { QueryRenderer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
 import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import { ViewerTopRepositoriesQuery } from './__generated__/ViewerTopRepositoriesQuery.graphql';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
 import LastDefaultBranchBuildMiniRow from '../../components/builds/LastDefaultBranchBuildMiniRow';
 
 interface Props {

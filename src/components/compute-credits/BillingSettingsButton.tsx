@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import AlarmOffIcon from '@material-ui/icons/AlarmOff';
-import AlarmOnIcon from '@material-ui/icons/AlarmOn';
-import Button from '@material-ui/core/Button';
+import AlarmOffIcon from '@mui/icons-material/AlarmOff';
+import AlarmOnIcon from '@mui/icons-material/AlarmOn';
+import Button from '@mui/material/Button';
 import BillingSettingsDialog from './BillingSettingsDialog';
 import { BillingSettingsButton_info } from './__generated__/BillingSettingsButton_info.graphql';
 

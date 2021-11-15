@@ -1,5 +1,5 @@
 import React from 'react';
-import Icon from '@material-ui/core/Icon';
+import Icon from '@mui/material/Icon';
 import { Helmet as Head } from 'react-helmet';
 
 export default props => {

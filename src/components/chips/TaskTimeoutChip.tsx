@@ -1,14 +1,14 @@
 import React from 'react';
 
-import Avatar from '@material-ui/core/Avatar';
-import Chip from '@material-ui/core/Chip';
-import Tooltip from '@material-ui/core/Tooltip';
-import TimerIcon from '@material-ui/icons/Timer';
+import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip';
+import Tooltip from '@mui/material/Tooltip';
+import TimerIcon from '@mui/icons-material/Timer';
 import { graphql } from 'babel-plugin-relay/macro';
 import { formatDuration } from '../../utils/time';
 import { TaskTimeoutChip_task } from './__generated__/TaskTimeoutChip_task.graphql';
 import { createFragmentContainer } from 'react-relay';
-import { useTheme } from '@material-ui/core';
+import { useTheme } from '@mui/material';
 
 interface Props {
   task: TaskTimeoutChip_task;

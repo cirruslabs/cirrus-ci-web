@@ -1,13 +1,15 @@
-import Avatar from '@material-ui/core/Avatar';
-import Chip from '@material-ui/core/Chip';
-import Input from '@material-ui/icons/Input';
+import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip';
+import Input from '@mui/icons-material/Input';
 import { graphql } from 'babel-plugin-relay/macro';
 import React from 'react';
 import { createFragmentContainer } from 'react-relay';
 import { useNavigate } from 'react-router-dom';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
 import { BuildChangeChip_build } from './__generated__/BuildChangeChip_build.graphql';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
 
 const styles = theme =>
   createStyles({

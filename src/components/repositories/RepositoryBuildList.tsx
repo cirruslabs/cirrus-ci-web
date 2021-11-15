@@ -3,31 +3,33 @@ import { createFragmentContainer, requestSubscription } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { useNavigate } from 'react-router-dom';
 
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Tooltip from '@material-ui/core/Tooltip';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import IconButton from '@mui/material/IconButton';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Tooltip from '@mui/material/Tooltip';
 import BuildDurationsChart from '../builds/BuildDurationsChart';
 import BuildBranchNameChip from '../chips/BuildBranchNameChip';
 import BuildChangeChip from '../chips/BuildChangeChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
-import GitHubIcon from '@material-ui/icons/GitHub';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import classNames from 'classnames';
 import CreateBuildDialog from '../builds/CreateBuildDialog';
 import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildList_repository.graphql';
 import { NodeOfConnection } from '../../utils/utility-types';
 import { createLinkToRepository } from '../../utils/github';
 import { Helmet as Head } from 'react-helmet';
-import Settings from '@material-ui/icons/Settings';
-import AddCircle from '@material-ui/icons/AddCircle';
-import Timeline from '@material-ui/icons/Timeline';
+import Settings from '@mui/icons-material/Settings';
+import AddCircle from '@mui/icons-material/AddCircle';
+import Timeline from '@mui/icons-material/Timeline';
 import environment from '../../createRelayEnvironment';
 
 let styles = createStyles({
@@ -95,7 +97,7 @@ function RepositoryBuildList(props: Props) {
     repositorySettings = (
       <Tooltip title="Repository Settings">
         <a href={'/settings/repository/' + repository.id}>
-          <IconButton>
+          <IconButton size="large">
             <Settings />
           </IconButton>
         </a>
@@ -105,7 +107,7 @@ function RepositoryBuildList(props: Props) {
       <>
         <div key="create-build-gap" className={classes.horizontalGap} />
         <Tooltip title="Create Build">
-          <IconButton key="create-build-button" onClick={() => setOpenCreateDialog(true)}>
+          <IconButton key="create-build-button" onClick={() => setOpenCreateDialog(true)} size="large">
             <AddCircle />
           </IconButton>
         </Tooltip>
@@ -116,7 +118,7 @@ function RepositoryBuildList(props: Props) {
   let repositoryMetrics = (
     <a href={'/metrics/repository/' + repository.owner + '/' + repository.name}>
       <Tooltip title="Repository Metrics">
-        <IconButton>
+        <IconButton size="large">
           <Timeline />
         </IconButton>
       </Tooltip>
@@ -126,7 +128,7 @@ function RepositoryBuildList(props: Props) {
   const repositoryLinkButton = (
     <Tooltip title="Open on GitHub">
       <a href={createLinkToRepository(repository, props.branch)} target="_blank" rel="noopener noreferrer">
-        <IconButton>
+        <IconButton size="large">
           <GitHubIcon />
         </IconButton>
       </a>

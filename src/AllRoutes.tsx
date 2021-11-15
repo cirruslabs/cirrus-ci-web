@@ -1,23 +1,25 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import ActiveRepositoriesDrawer from './scenes/Header/ActiveRepositoriesDrawer';
-import AppBar from '@material-ui/core/AppBar';
-import Drawer from '@material-ui/core/Drawer';
-import IconButton from '@material-ui/core/IconButton';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
-import BookIcon from '@material-ui/icons/Book';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import AppBar from '@mui/material/AppBar';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import BookIcon from '@mui/icons-material/Book';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import classNames from 'classnames';
 import ViewerTopRepositories from './scenes/Profile/ViewerTopRepositories';
 import CirrusLinearProgress from './components/common/CirrusLinearProgress';
 import ThemeSwitchButton from './components/common/ThemeSwitchButton';
 import { atom, useRecoilState } from 'recoil';
 import { localStorageEffect } from './utils/recoil';
-import { Tooltip, useTheme } from '@material-ui/core';
-import GitHubIcon from '@material-ui/icons/GitHub';
+import { Tooltip, useTheme } from '@mui/material';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import GCPStatus from './components/status/GCPStatus';
 import GitHubStatus from './components/status/GitHubStatus';
 
@@ -166,7 +168,7 @@ function AllRoutes(props: WithStyles<typeof styles>) {
           <Typography variant="h6" color="inherit">
             Active Repositories
           </Typography>
-          <IconButton onClick={() => setOpenDrawer(false)}>
+          <IconButton onClick={() => setOpenDrawer(false)} size="large">
             <ChevronLeftIcon />
           </IconButton>
         </div>
@@ -192,6 +194,7 @@ function AllRoutes(props: WithStyles<typeof styles>) {
                 aria-label="open navigation"
                 onClick={() => setOpenDrawer(true)}
                 className={classNames(classes.menuButton, openDrawer && classes.hide)}
+                size="large"
               >
                 <MenuIcon />
               </IconButton>
@@ -219,6 +222,7 @@ function AllRoutes(props: WithStyles<typeof styles>) {
                   href="https://github.com/cirruslabs/cirrus-ci-web"
                   target="_blank"
                   rel="noopener noreferrer"
+                  size="large"
                 >
                   <GitHubIcon style={{ color: theme.palette.primary.contrastText }} />
                 </IconButton>
@@ -229,6 +233,7 @@ function AllRoutes(props: WithStyles<typeof styles>) {
                   href="https://cirrus-ci.org/"
                   target="_blank"
                   rel="noopener noreferrer"
+                  size="large"
                 >
                   <BookIcon style={{ color: theme.palette.primary.contrastText }} />
                 </IconButton>

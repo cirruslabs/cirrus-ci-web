@@ -1,26 +1,28 @@
 import React, { useState } from 'react';
 import { commitMutation, createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
-import IconButton from '@material-ui/core/IconButton';
-import TextField from '@material-ui/core/TextField';
-import Tooltip from '@material-ui/core/Tooltip';
-import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import IconButton from '@mui/material/IconButton';
+import TextField from '@mui/material/TextField';
+import Tooltip from '@mui/material/Tooltip';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
 import { RepositoryCronSettings_repository } from './__generated__/RepositoryCronSettings_repository.graphql';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
 import classNames from 'classnames';
 import { useNavigate } from 'react-router-dom';
-import Chip from '@material-ui/core/Chip';
+import Chip from '@mui/material/Chip';
 import BuildStatusChip from '../chips/BuildStatusChip';
-import { Add, Delete } from '@material-ui/icons';
+import { Add, Delete } from '@mui/icons-material';
 import environment from '../../createRelayEnvironment';
-import Avatar from '@material-ui/core/Avatar';
-import Icon from '@material-ui/core/Icon';
+import Avatar from '@mui/material/Avatar';
+import Icon from '@mui/material/Icon';
 import NextCronInvocationTimeChip from '../chips/NextCronInvocationTimeChip';
 import {
   RepositoryCronSettingsSaveMutationResponse,
@@ -212,6 +214,7 @@ function RepositoryCronSettings(props: Props) {
                         aria-label="Remove Cron Build"
                         component="span"
                         onClick={() => removeCronSetting(settings.name)}
+                        size="large"
                       >
                         <Delete />
                       </IconButton>
@@ -255,7 +258,12 @@ function RepositoryCronSettings(props: Props) {
               <TableCell className={classes.cell}>
                 <div className="d-flex justify-content-end">
                   <Tooltip title="Add New Cron Build" className={classes.roundButton}>
-                    <IconButton aria-label="Add New Cron Build" component="span" onClick={() => addNewCronSetting()}>
+                    <IconButton
+                      aria-label="Add New Cron Build"
+                      component="span"
+                      onClick={() => addNewCronSetting()}
+                      size="large"
+                    >
                       <Add />
                     </IconButton>
                   </Tooltip>

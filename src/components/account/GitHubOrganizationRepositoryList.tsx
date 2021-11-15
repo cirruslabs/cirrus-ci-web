@@ -1,16 +1,17 @@
 import React from 'react';
 
-import Paper from '@material-ui/core/Paper';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import Tooltip from '@material-ui/core/Tooltip';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import Tooltip from '@mui/material/Tooltip';
 import LastDefaultBranchBuildRow from '../builds/LastDefaultBranchBuildRow';
-import { withStyles, WithStyles } from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import { WithStyles } from '@mui/styles';
+import withStyles from '@mui/styles/withStyles';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
-import IconButton from '@material-ui/core/IconButton';
-import Settings from '@material-ui/icons/Settings';
+import IconButton from '@mui/material/IconButton';
+import Settings from '@mui/icons-material/Settings';
 
 let styles = {
   gap: {
@@ -34,7 +35,7 @@ let GitHubOrganizationRepositoryList = (props: Props) => {
     organizationSettings = (
       <Tooltip title="Organization Settings">
         <Link to={'/settings/github/' + organization}>
-          <IconButton>
+          <IconButton size="large">
             <Settings />
           </IconButton>
         </Link>

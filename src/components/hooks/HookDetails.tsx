@@ -1,28 +1,30 @@
 import React, { MouseEventHandler } from 'react';
 
 import { commitMutation, createFragmentContainer } from 'react-relay';
-import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
 import { graphql } from 'babel-plugin-relay/macro';
 import { HookDetails_hook } from './__generated__/HookDetails_hook.graphql';
 import { Helmet as Head } from 'react-helmet';
-import { Card, CardContent } from '@material-ui/core';
+import { Card, CardContent } from '@mui/material';
 import RepositoryNameChip from '../chips/RepositoryNameChip';
 import BuildBranchNameChip from '../chips/BuildBranchNameChip';
 import BuildChangeChip from '../chips/BuildChangeChip';
 import TaskNameChip from '../chips/TaskNameChip';
 import HookCreatedChip from '../chips/HookCreatedChip';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import Logs from '../logs/Logs';
 import HookStatusChip from '../chips/HookStatusChip';
 import CirrusFavicon from '../common/CirrusFavicon';
 import classNames from 'classnames';
 import { useNotificationColor } from '../../utils/colors';
-import CardActions from '@material-ui/core/CardActions';
-import Button from '@material-ui/core/Button';
+import CardActions from '@mui/material/CardActions';
+import Button from '@mui/material/Button';
 import { navigateBuildHelper, navigateHookHelper, navigateTaskHelper } from '../../utils/navigateHelper';
-import ArrowBack from '@material-ui/icons/ArrowBack';
+import ArrowBack from '@mui/icons-material/ArrowBack';
 import { hasWritePermissions } from '../../utils/permissions';
-import Refresh from '@material-ui/icons/Refresh';
+import Refresh from '@mui/icons-material/Refresh';
 import environment from '../../createRelayEnvironment';
 import {
   HookDetailsRerunMutationResponse,

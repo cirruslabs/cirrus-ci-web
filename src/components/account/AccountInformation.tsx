@@ -2,20 +2,22 @@ import React from 'react';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import { navigateHelper } from '../../utils/navigateHelper';
 import { useNavigate } from 'react-router-dom';
 import { AccountInformation_viewer } from './__generated__/AccountInformation_viewer.graphql';
-import Settings from '@material-ui/icons/Settings';
-import DirectionsRun from '@material-ui/icons/DirectionsRun';
-import Button from '@material-ui/core/Button';
-import GitHubIcon from '@material-ui/icons/GitHub';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
+import Settings from '@mui/icons-material/Settings';
+import DirectionsRun from '@mui/icons-material/DirectionsRun';
+import Button from '@mui/material/Button';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
 
 const styles = theme =>
   createStyles({
@@ -61,6 +63,7 @@ function AccountInformation(props: Props) {
         aria-owns={anchorEl ? 'long-menu' : undefined}
         aria-haspopup="true"
         onClick={handleClick}
+        size="large"
       >
         <Avatar style={{ cursor: 'pointer' }} src={viewer.avatarURL} />
       </IconButton>

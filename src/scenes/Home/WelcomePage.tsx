@@ -1,7 +1,8 @@
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
+import Paper from '@mui/material/Paper';
 import ReactMarkdown from 'react-markdown';
-import { createStyles, withStyles } from '@material-ui/core/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
 import { Helmet as Head } from 'react-helmet';
 
 const styles = theme =>

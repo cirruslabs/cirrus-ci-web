@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { graphql } from 'babel-plugin-relay/macro';
-import Typography from '@material-ui/core/Typography';
-import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import Typography from '@mui/material/Typography';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
 import { createFragmentContainer } from 'react-relay';
 import 'react-vis/dist/style.css';
 import { FlexibleWidthXYPlot, Hint, LineSeries, VerticalGridLines, XAxis, YAxis } from 'react-vis';
-import Chip from '@material-ui/core/Chip';
+import Chip from '@mui/material/Chip';
 import { formatDuration } from '../../utils/time';
 import { MetricsChart_chart } from './__generated__/MetricsChart_chart.graphql';
 

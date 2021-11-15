@@ -2,11 +2,12 @@ import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import React from 'react';
 
-import Typography from '@material-ui/core/Typography';
-import { withStyles, WithStyles } from '@material-ui/core/styles';
+import Typography from '@mui/material/Typography';
+import { WithStyles } from '@mui/styles';
+import withStyles from '@mui/styles/withStyles';
 import { useNotificationColor } from '../../utils/colors';
-import IconButton from '@material-ui/core/IconButton';
-import Icon from '@material-ui/core/Icon';
+import IconButton from '@mui/material/IconButton';
+import Icon from '@mui/material/Icon';
 import { navigateHelper } from '../../utils/navigateHelper';
 import classNames from 'classnames';
 import { Notification_notification } from './__generated__/Notification_notification.graphql';
@@ -29,7 +30,7 @@ function Notification(props: Props) {
     backgroundColor: useNotificationColor(notification.level),
   };
   let linkComponent = !notification.link ? null : (
-    <IconButton onClick={e => navigateHelper(navigate, e, notification.link)}>
+    <IconButton onClick={e => navigateHelper(navigate, e, notification.link)} size="large">
       <Icon>launch</Icon>
     </IconButton>
   );

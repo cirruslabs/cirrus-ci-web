@@ -1,21 +1,23 @@
 import React, { ReactNode } from 'react';
-import { createStyles, Theme } from '@material-ui/core';
-import { WithStyles, withStyles } from '@material-ui/core/styles';
-import { Alert } from '@material-ui/lab';
+import { Theme } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
+import { WithStyles } from '@mui/styles';
+import withStyles from '@mui/styles/withStyles';
+import { Alert } from '@mui/material';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { ConfigurationWithIssues_build } from './__generated__/ConfigurationWithIssues_build.graphql';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Typography from '@material-ui/core/Typography';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Typography from '@mui/material/Typography';
+import AccordionDetails from '@mui/material/AccordionDetails';
 
 const styles = (theme: Theme) =>
   createStyles({
     configurationTable: {
-      color: theme.palette.type === 'dark' ? theme.palette.primary.light : theme.palette.primary.dark,
-      background: theme.palette.type === 'dark' ? theme.palette.primary.dark : theme.palette.primary.light,
+      color: theme.palette.mode === 'dark' ? theme.palette.primary.light : theme.palette.primary.dark,
+      background: theme.palette.mode === 'dark' ? theme.palette.primary.dark : theme.palette.primary.light,
       width: '100%',
       borderSpacing: '0',
     },
@@ -23,7 +25,7 @@ const styles = (theme: Theme) =>
       // An attempt to be consistent in colors with chips[1] backgrounds used on the same builds page
       //
       // [1]: https://github.com/mui-org/material-ui/blob/bda3d8541b2f3bea14ed241ae8155239d524a24c/packages/material-ui/src/Chip/Chip.js#L14
-      background: theme.palette.type === 'dark' ? theme.palette.grey[700] : theme.palette.grey[300],
+      background: theme.palette.mode === 'dark' ? theme.palette.grey[700] : theme.palette.grey[300],
       fontFamily: 'Monaco, monospace',
       paddingRight: theme.spacing(1),
       width: '1%',

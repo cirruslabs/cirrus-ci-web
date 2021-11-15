@@ -1,22 +1,24 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import Chip from '@material-ui/core/Chip';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import Chip from '@mui/material/Chip';
 import TaskNameChip from '../chips/TaskNameChip';
 import TaskDurationChip from '../chips/TaskDurationChip';
 import { shorten } from '../../utils/text';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { navigateTaskHelper } from '../../utils/navigateHelper';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
 import classNames from 'classnames';
 import TaskCreatedChip from '../chips/TaskCreatedChip';
 import { TaskListRow_task } from './__generated__/TaskListRow_task.graphql';
 import { isTaskFinalStatus } from '../../utils/status';
 import { useTaskStatusColorMapping } from '../../utils/colors';
-import { Hidden, Paper, Tooltip } from '@material-ui/core';
+import { Hidden, Paper, Tooltip } from '@mui/material';
 import { formatDuration } from '../../utils/time';
 
 const styles = theme =>
@@ -110,14 +112,14 @@ function TaskListRow(props: Props) {
         {props.showCreation ? <TaskCreatedChip task={task} className={classes.chip} /> : null}
         <TaskDurationChip task={task} className={classNames(classes.chip, 'd-none', 'd-md-none')} />
       </TableCell>
-      <Hidden mdDown>
+      <Hidden lgDown>
         <TableCell className={classNames('d-none', 'd-lg-table-cell', classes.cell)}>
           {task.uniqueLabels.map(label => {
             return <Chip key={label} className={classes.chip} label={shorten(label)} />;
           })}
         </TableCell>
       </Hidden>
-      <Hidden smDown>
+      <Hidden mdDown>
         <TableCell className={classNames(classes.cell)}>{progress}</TableCell>
       </Hidden>
     </TableRow>

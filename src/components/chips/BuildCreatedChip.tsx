@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
 
-import Avatar from '@material-ui/core/Avatar';
-import Chip from '@material-ui/core/Chip';
-import Tooltip from '@material-ui/core/Tooltip';
-import Icon from '@material-ui/core/Icon';
+import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip';
+import Tooltip from '@mui/material/Tooltip';
+import Icon from '@mui/material/Icon';
 import { useTaskStatusColor } from '../../utils/colors';
 import { taskStatusIconName } from '../../utils/status';
 import { roundAndPresentDuration } from '../../utils/time';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { BuildCreatedChip_build } from './__generated__/BuildCreatedChip_build.graphql';
-import { useTheme } from '@material-ui/core';
+import { useTheme } from '@mui/material';
 
 interface Props {
   build: BuildCreatedChip_build;

@@ -1,10 +1,12 @@
 import React from 'react';
-import { CardContent, createStyles, Theme } from '@material-ui/core';
-import { WithStyles, withStyles } from '@material-ui/core/styles';
+import { CardContent, Theme } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
+import { WithStyles } from '@mui/styles';
+import withStyles from '@mui/styles/withStyles';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import Typography from '@material-ui/core/Typography';
-import Card from '@material-ui/core/Card';
+import Typography from '@mui/material/Typography';
+import Card from '@mui/material/Card';
 import { DebuggingInformation_build } from './__generated__/DebuggingInformation_build.graphql';
 
 const styles = (theme: Theme) =>
@@ -18,8 +20,8 @@ const styles = (theme: Theme) =>
       paddingBottom: theme.spacing(1),
     },
     configurationTable: {
-      color: theme.palette.type === 'dark' ? theme.palette.primary.light : theme.palette.primary.dark,
-      background: theme.palette.type === 'dark' ? theme.palette.primary.dark : theme.palette.primary.light,
+      color: theme.palette.mode === 'dark' ? theme.palette.primary.light : theme.palette.primary.dark,
+      background: theme.palette.mode === 'dark' ? theme.palette.primary.dark : theme.palette.primary.light,
       width: '100%',
       borderSpacing: '0',
     },
@@ -27,7 +29,7 @@ const styles = (theme: Theme) =>
       // An attempt to be consistent in colors with chips[1] backgrounds used on the same builds page
       //
       // [1]: https://github.com/mui-org/material-ui/blob/bda3d8541b2f3bea14ed241ae8155239d524a24c/packages/material-ui/src/Chip/Chip.js#L14
-      background: theme.palette.type === 'dark' ? theme.palette.grey[700] : theme.palette.grey[300],
+      background: theme.palette.mode === 'dark' ? theme.palette.grey[700] : theme.palette.grey[300],
       fontFamily: 'Monaco, monospace',
       paddingRight: theme.spacing(1),
       width: '1%',

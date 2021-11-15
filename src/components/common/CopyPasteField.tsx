@@ -1,8 +1,8 @@
 import React from 'react';
-import { IconButton, InputAdornment, OutlinedInput } from '@material-ui/core';
-import CopyIcon from '@material-ui/icons/FileCopy';
+import { IconButton, InputAdornment, OutlinedInput } from '@mui/material';
+import CopyIcon from '@mui/icons-material/FileCopy';
 import copy from 'clipboard-copy';
-import { OutlinedInputProps } from '@material-ui/core/OutlinedInput/OutlinedInput';
+import { OutlinedInputProps } from '@mui/material/OutlinedInput/OutlinedInput';
 
 function CopyPasteField(props: OutlinedInputProps) {
   return (
@@ -17,6 +17,7 @@ function CopyPasteField(props: OutlinedInputProps) {
               copy(props.value.toString());
             }}
             edge="end"
+            size="large"
           >
             <CopyIcon />
           </IconButton>

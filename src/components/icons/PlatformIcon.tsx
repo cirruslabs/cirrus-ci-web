@@ -1,7 +1,7 @@
 import React from 'react';
 import { faApple, faFreebsd, faLinux, faWindows } from '@fortawesome/free-brands-svg-icons';
 import FontAwesomeIcon from './FontAwesomeIcon';
-import { SvgIconProps } from '@material-ui/core';
+import { SvgIconProps } from '@mui/material';
 
 interface Props extends SvgIconProps {
   platform: string;

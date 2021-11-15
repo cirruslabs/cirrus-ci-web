@@ -1,10 +1,12 @@
 import React from 'react';
-import DialogContent from '@material-ui/core/DialogContent/DialogContent';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+import DialogContent from '@mui/material/DialogContent/DialogContent';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 import ReactMarkdown from 'react-markdown';
 import { DeliveryInfoDialogLazyContentQueryResponse } from './__generated__/DeliveryInfoDialogLazyContentQuery.graphql';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
 
 const styles = theme =>
   createStyles({

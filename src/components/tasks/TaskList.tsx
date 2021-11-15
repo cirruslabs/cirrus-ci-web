@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
 import TaskListRow from './TaskListRow';
 import { FragmentRefs } from 'relay-runtime';
 

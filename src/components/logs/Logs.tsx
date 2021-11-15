@@ -2,7 +2,7 @@ import React from 'react';
 import AnsiUp from 'ansi_up';
 import { useLocation, useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
-import { createStyles, WithStyles, withStyles } from '@material-ui/styles';
+import { createStyles, WithStyles, withStyles } from '@mui/styles';
 import * as queryString from 'query-string';
 
 let ansiFormatter = new (AnsiUp as any)();

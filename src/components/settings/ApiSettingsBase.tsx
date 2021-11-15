@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { commitMutation } from 'react-relay';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import CardActions from '@material-ui/core/CardActions';
-import CardHeader from '@material-ui/core/CardHeader';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import CardActions from '@mui/material/CardActions';
+import CardHeader from '@mui/material/CardHeader';
 import environment from '../../createRelayEnvironment';
-import TextField from '@material-ui/core/TextField';
+import TextField from '@mui/material/TextField';
 
 const styles = theme =>
   createStyles({

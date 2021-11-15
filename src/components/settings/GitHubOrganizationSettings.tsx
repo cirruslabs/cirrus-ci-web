@@ -1,10 +1,12 @@
 import React from 'react';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import Paper from '@material-ui/core/Paper';
-import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Toolbar from '@material-ui/core/Toolbar';
+import Paper from '@mui/material/Paper';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import Typography from '@mui/material/Typography';
+import Toolbar from '@mui/material/Toolbar';
 import OrganizationComputeCredits from '../compute-credits/OrganizationComputeCredits';
 import GitHubPurchase from '../purchase/GitHubPurchase';
 import WebHookSettings from '../webhooks/WebHookSettings';

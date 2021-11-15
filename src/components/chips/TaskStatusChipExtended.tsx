@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Avatar from '@material-ui/core/Avatar';
-import Chip from '@material-ui/core/Chip';
-import Icon from '@material-ui/core/Icon';
-import Tooltip from '@material-ui/core/Tooltip';
+import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip';
+import Icon from '@mui/material/Icon';
+import Tooltip from '@mui/material/Tooltip';
 import { useTaskStatusColor } from '../../utils/colors';
 import { taskStatusIconName } from '../../utils/status';
 import { createFragmentContainer } from 'react-relay';
@@ -11,7 +11,7 @@ import { graphql } from 'babel-plugin-relay/macro';
 import { TaskStatusChipExtended_task } from './__generated__/TaskStatusChipExtended_task.graphql';
 import { navigateTaskHelper } from '../../utils/navigateHelper';
 import { useNavigate } from 'react-router-dom';
-import { useTheme } from '@material-ui/core';
+import { useTheme } from '@mui/material';
 
 interface Props {
   task: TaskStatusChipExtended_task;

@@ -1,11 +1,13 @@
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Chip from '@material-ui/core/Chip';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Chip from '@mui/material/Chip';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
 import { graphql } from 'babel-plugin-relay/macro';
 import classNames from 'classnames';
 import React, { useEffect } from 'react';
@@ -38,17 +40,17 @@ import {
 import TaskResourcesChip from '../chips/TaskResourcesChip';
 import { Helmet as Head } from 'react-helmet';
 import ExecutionInfo from '../common/TaskExecutionInfo';
-import Refresh from '@material-ui/icons/Refresh';
-import PlayCircleFilled from '@material-ui/icons/PlayCircleFilled';
-import Cancel from '@material-ui/icons/Cancel';
-import ArrowBack from '@material-ui/icons/ArrowBack';
+import Refresh from '@mui/icons-material/Refresh';
+import PlayCircleFilled from '@mui/icons-material/PlayCircleFilled';
+import Cancel from '@mui/icons-material/Cancel';
+import ArrowBack from '@mui/icons-material/ArrowBack';
 import TaskExperimentalChip from '../chips/TaskExperimentalChip';
 import TaskStatefulChip from '../chips/TaskStatefulChip';
 import TaskTimeoutChip from '../chips/TaskTimeoutChip';
 import Notification from '../common/Notification';
 import HookList from '../hooks/HookList';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import { TabContext, TabList, TabPanel } from '@material-ui/lab';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
 import {
   AppBar,
   ButtonGroup,
@@ -60,8 +62,8 @@ import {
   Popper,
   Tab,
   Tooltip,
-} from '@material-ui/core';
-import { Dehaze, Functions, LayersClear } from '@material-ui/icons';
+} from '@mui/material';
+import { Dehaze, Functions, LayersClear } from '@mui/icons-material';
 import {
   TaskDetailsInvalidateCachesMutationResponse,
   TaskDetailsInvalidateCachesMutationVariables,
@@ -69,10 +71,10 @@ import {
 import TaskRerunnerChip from '../chips/TaskRerunnerChip';
 import TaskCancellerChip from '../chips/TaskCancellerChip';
 import RepositoryOwnerChip from '../chips/RepositoryOwnerChip';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { CirrusTerminal } from '../cirrus-terminal/CirrusTerminal';
 import { HookType } from '../hooks/HookType';
 import { TaskDetailsTriggerMutationVariables } from './__generated__/TaskDetailsTriggerMutation.graphql';

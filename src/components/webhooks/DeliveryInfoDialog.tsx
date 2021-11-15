@@ -1,9 +1,9 @@
 import React from 'react';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog';
 import DeliveryInfoDialogLazyContent from './DeliveryInfoDialogLazyContent';
-import DialogActions from '@material-ui/core/DialogActions/DialogActions';
-import Button from '@material-ui/core/Button/Button';
+import DialogActions from '@mui/material/DialogActions/DialogActions';
+import Button from '@mui/material/Button/Button';
 import { DeliveryRow_delivery } from './__generated__/DeliveryRow_delivery.graphql';
 import { UnspecifiedCallbackFunction } from '../../utils/utility-types';
 

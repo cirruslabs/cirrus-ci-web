@@ -1,17 +1,19 @@
 import { graphql } from 'babel-plugin-relay/macro';
 import React, { useState } from 'react';
 import { createFragmentContainer } from 'react-relay';
-import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
 import RepositoryMetricsCharts from './RepositoryMetricsCharts';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import Input from '@material-ui/core/Input';
-import MenuItem from '@material-ui/core/MenuItem';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import Input from '@mui/material/Input';
+import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
 import { RepositoryMetricsPage_repository } from './__generated__/RepositoryMetricsPage_repository.graphql';
 import { MetricsQueryParameters } from './__generated__/RepositoryMetricsChartsQuery.graphql';
 import { Helmet as Head } from 'react-helmet';
@@ -55,7 +57,7 @@ function RepositoryMetricsPage(props: Props) {
           <Typography gutterBottom variant="h5" component="h2" className={classes.title}>
             {repository.owner}/{repository.name}'s Metrics
           </Typography>
-          <Grid container direction="row" justify="center">
+          <Grid container direction="row" justifyContent="center">
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="type-helper">Instance Type</InputLabel>
               <Select

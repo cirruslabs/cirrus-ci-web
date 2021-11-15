@@ -1,17 +1,19 @@
 import React from 'react';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
 import HookListRow from './HookListRow';
 import { FragmentRefs } from 'relay-runtime';
-import { Card, CardContent, createStyles, Theme, Typography } from '@material-ui/core';
+import { Card, CardContent, Theme, Typography } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
 import { HookType } from './HookType';
-import { withStyles, WithStyles } from '@material-ui/core/styles';
+import { WithStyles } from '@mui/styles';
+import withStyles from '@mui/styles/withStyles';
 
 const styles = (theme: Theme) =>
   createStyles({
     pre: {
-      color: theme.palette.type === 'dark' ? theme.palette.primary.light : theme.palette.primary.dark,
-      background: theme.palette.type === 'dark' ? theme.palette.primary.dark : theme.palette.primary.light,
+      color: theme.palette.mode === 'dark' ? theme.palette.primary.light : theme.palette.primary.dark,
+      background: theme.palette.mode === 'dark' ? theme.palette.primary.dark : theme.palette.primary.light,
       padding: theme.spacing(0.5),
     },
   });

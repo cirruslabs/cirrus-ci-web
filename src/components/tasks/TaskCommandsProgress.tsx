@@ -1,8 +1,8 @@
 import { isTaskFinalStatus } from '../../utils/status';
 import React, { useEffect, useState } from 'react';
 import { useTaskStatusColorMapping } from '../../utils/colors';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 import classNames from 'classnames';
 import { formatDuration } from '../../utils/time';
 import { createFragmentContainer } from 'react-relay';

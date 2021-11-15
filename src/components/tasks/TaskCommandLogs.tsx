@@ -7,10 +7,12 @@ import CirrusLinearProgress from '../common/CirrusLinearProgress';
 import { subscribeTaskCommandLogs } from '../../rtu/ConnectionManager';
 import CirrusCircularProgress from '../common/CirrusCircularProgress';
 import { isTaskCommandFinalStatus } from '../../utils/status';
-import Tooltip from '@material-ui/core/Tooltip';
-import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
-import GetApp from '@material-ui/icons/GetApp';
-import Fab from '@material-ui/core/Fab';
+import Tooltip from '@mui/material/Tooltip';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import GetApp from '@mui/icons-material/GetApp';
+import Fab from '@mui/material/Fab';
 import { TaskCommandLogsTailQuery } from './__generated__/TaskCommandLogsTailQuery.graphql';
 import { TaskCommandStatus } from './__generated__/TaskCommandList_task.graphql';
 
@@ -58,7 +60,7 @@ function TaskCommandRealTimeLogs(props: RealTimeLogsProps) {
   let downloadButton = (
     <div className={classes.actionButtons}>
       <Fab
-        variant="round"
+        variant="circular"
         className={classes.downloadButton}
         href={logURL(taskId, command)}
         target="_blank"

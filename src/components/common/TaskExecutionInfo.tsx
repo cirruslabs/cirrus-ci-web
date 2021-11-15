@@ -1,13 +1,14 @@
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import React from 'react';
-import { withStyles, WithStyles } from '@material-ui/core/styles';
-import Chip from '@material-ui/core/Chip';
-import Typography from '@material-ui/core/Typography';
+import { WithStyles } from '@mui/styles';
+import withStyles from '@mui/styles/withStyles';
+import Chip from '@mui/material/Chip';
+import Typography from '@mui/material/Typography';
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, YAxis } from 'recharts';
 import { TaskExecutionInfo_task } from './__generated__/TaskExecutionInfo_task.graphql';
 import { formatDuration } from '../../utils/time';
-import { useTheme } from '@material-ui/core';
+import { useTheme } from '@mui/material';
 import { useRecoilState } from 'recoil';
 import { prefersDarkModeState } from '../../cirrusTheme';
 

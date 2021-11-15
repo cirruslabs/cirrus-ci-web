@@ -1,6 +1,6 @@
-import Avatar from '@material-ui/core/Avatar';
-import Chip from '@material-ui/core/Chip';
-import Icon from '@material-ui/core/Icon';
+import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip';
+import Icon from '@mui/material/Icon';
 import { graphql } from 'babel-plugin-relay/macro';
 import React, { useEffect } from 'react';
 import { createFragmentContainer, requestSubscription } from 'react-relay';
@@ -9,7 +9,7 @@ import { useTaskStatusColor } from '../../utils/colors';
 import { isTaskFinalStatus, isTaskInProgressStatus, taskStatusIconName } from '../../utils/status';
 import { formatDuration } from '../../utils/time';
 import { TaskDurationChip_task } from './__generated__/TaskDurationChip_task.graphql';
-import { useTheme } from '@material-ui/core';
+import { useTheme } from '@mui/material';
 
 const taskSubscription = graphql`
   subscription TaskDurationChipSubscription($taskID: ID!) {

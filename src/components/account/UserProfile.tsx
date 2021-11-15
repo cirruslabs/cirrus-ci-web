@@ -2,28 +2,30 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import Paper from '@material-ui/core/Paper';
-import Tooltip from '@material-ui/core/Tooltip';
-import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import CardActions from '@material-ui/core/CardActions';
-import CardHeader from '@material-ui/core/CardHeader';
-import GitHubIcon from '@material-ui/icons/GitHub';
-import Toolbar from '@material-ui/core/Toolbar';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
+import Paper from '@mui/material/Paper';
+import Tooltip from '@mui/material/Tooltip';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import CardActions from '@mui/material/CardActions';
+import CardHeader from '@mui/material/CardHeader';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import Toolbar from '@mui/material/Toolbar';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
 import { navigateHelper } from '../../utils/navigateHelper';
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@mui/material/IconButton';
 import UserApiSettings from '../settings/UserApiSettings';
 import UserComputeCredits from '../compute-credits/UserComputeCredits';
 import { UserProfile_user } from './__generated__/UserProfile_user.graphql';
 import { Helmet as Head } from 'react-helmet';
-import Settings from '@material-ui/icons/Settings';
+import Settings from '@mui/icons-material/Settings';
 import UserPersistentWorkerPools from '../settings/UserPersistentWorkerPools';
 
 const styles = theme =>
@@ -126,6 +128,7 @@ function UserProfile(props: Props) {
                     <IconButton
                       onClick={e => navigateHelper(navigate, e, '/settings/github/' + organization.name)}
                       className="pull-right"
+                      size="large"
                     >
                       <Settings />
                     </IconButton>

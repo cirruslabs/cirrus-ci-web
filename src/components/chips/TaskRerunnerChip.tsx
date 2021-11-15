@@ -1,12 +1,12 @@
 import React from 'react';
 
-import Avatar from '@material-ui/core/Avatar';
-import Chip from '@material-ui/core/Chip';
+import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip';
 
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { TaskRerunnerChip_task } from './__generated__/TaskRerunnerChip_task.graphql';
-import { Refresh } from '@material-ui/icons';
+import { Refresh } from '@mui/icons-material';
 
 interface Props {
   task: TaskRerunnerChip_task;

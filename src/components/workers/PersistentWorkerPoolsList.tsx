@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import Button from '@material-ui/core/Button';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import Button from '@mui/material/Button';
 import { commitMutation } from 'react-relay';
 import environment from '../../createRelayEnvironment';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
-import DialogActions from '@material-ui/core/DialogActions';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import InputLabel from '@mui/material/InputLabel';
+import Input from '@mui/material/Input';
+import DialogActions from '@mui/material/DialogActions';
 import { graphql } from 'babel-plugin-relay/macro';
 import {
   PersistentWorkerPoolsListCreateMutationResponse,
@@ -31,8 +31,8 @@ import {
   ListItemAvatar,
   ListItemSecondaryAction,
   ListItemText,
-} from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
+} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { PersistentWorkerPoolsListDeleteMutationVariables } from './__generated__/PersistentWorkerPoolsListDeleteMutation.graphql';
 import PoolVisibilityIcon from '../icons/PoolVisibilityIcon';
 import { useNavigate } from 'react-router-dom';
@@ -97,7 +97,7 @@ function PersistentWorkerPoolsList(props: PoolsListProps) {
                   </ListItemAvatar>
                   <ListItemText primary={pool.name} />
                   <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete" onClick={() => deletePool(pool.id)}>
+                    <IconButton edge="end" aria-label="delete" onClick={() => deletePool(pool.id)} size="large">
                       <DeleteIcon />
                     </IconButton>
                   </ListItemSecondaryAction>

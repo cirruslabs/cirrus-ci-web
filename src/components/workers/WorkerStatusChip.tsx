@@ -1,12 +1,12 @@
 import React from 'react';
 
-import Avatar from '@material-ui/core/Avatar';
-import Chip from '@material-ui/core/Chip';
+import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip';
 
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { WorkerStatusChip_worker } from './__generated__/WorkerStatusChip_worker.graphql';
-import { Tooltip, useTheme } from '@material-ui/core';
+import { Tooltip, useTheme } from '@mui/material';
 import PlatformIcon from '../icons/PlatformIcon';
 
 interface Props {

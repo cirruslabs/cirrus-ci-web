@@ -2,21 +2,28 @@ import React from 'react';
 
 import Routes from './AllRoutes';
 import { cirrusThemeOptions } from './cirrusTheme';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider, Theme, StyledEngineProvider, adaptV4Theme } from '@mui/material/styles';
 import CirrusFavicon from './components/common/CirrusFavicon';
-import { CssBaseline } from '@material-ui/core';
+import { CssBaseline } from '@mui/material';
 import { useRecoilValue } from 'recoil';
+
+declare module '@mui/styles/defaultTheme' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface DefaultTheme extends Theme {}
+}
 
 export default () => {
   const themeOptions = useRecoilValue(cirrusThemeOptions);
 
-  const theme = React.useMemo(() => createMuiTheme(themeOptions), [themeOptions]);
+  const theme = React.useMemo(() => createTheme(adaptV4Theme(themeOptions)), [themeOptions]);
 
   return (
-    <ThemeProvider theme={theme}>
-      <CirrusFavicon />
-      <CssBaseline />
-      <Routes />
-    </ThemeProvider>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <CirrusFavicon />
+        <CssBaseline />
+        <Routes />
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
 };

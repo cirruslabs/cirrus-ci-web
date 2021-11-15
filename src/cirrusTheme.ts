@@ -1,10 +1,8 @@
-import grey from '@material-ui/core/colors/grey';
-import lightGreen from '@material-ui/core/colors/lightGreen';
-import orange from '@material-ui/core/colors/orange';
-import red from '@material-ui/core/colors/red';
-import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme';
+import { DeprecatedThemeOptions } from '@mui/material/styles';
 import { atom, selector } from 'recoil';
 import { localStorageEffect } from './utils/recoil';
+
+import { grey, lightGreen, orange, red } from '@mui/material/colors';
 
 export const prefersDarkModeState = atom({
   key: 'CurrentlyPrefersDarkMode',
@@ -30,7 +28,7 @@ export const cirrusThemeOptions = selector({
   },
 });
 
-let cirrusBaseTheme: ThemeOptions = {
+let cirrusBaseTheme: DeprecatedThemeOptions = {
   typography: {
     fontFamily: 'Roboto, sans-serif',
   },
@@ -51,10 +49,10 @@ let cirrusBaseTheme: ThemeOptions = {
   },
 };
 
-export let cirrusLightTheme: ThemeOptions = {
+export let cirrusLightTheme: DeprecatedThemeOptions = {
   ...cirrusBaseTheme,
   palette: {
-    type: 'light',
+    mode: 'light',
     primary: {
       main: grey['900'],
       dark: grey['900'],
@@ -88,10 +86,10 @@ export let cirrusLightTheme: ThemeOptions = {
   },
 };
 
-export let cirrusDarkTheme: ThemeOptions = {
+export let cirrusDarkTheme: DeprecatedThemeOptions = {
   ...cirrusBaseTheme,
   palette: {
-    type: 'dark',
+    mode: 'dark',
     primary: {
       main: grey['900'],
       dark: grey['900'],

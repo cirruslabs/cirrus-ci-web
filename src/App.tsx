@@ -2,7 +2,7 @@ import React from 'react';
 
 import Routes from './AllRoutes';
 import { cirrusThemeOptions } from './cirrusTheme';
-import { createTheme, ThemeProvider, Theme, StyledEngineProvider, adaptV4Theme } from '@mui/material/styles';
+import { createTheme, ThemeProvider, Theme, StyledEngineProvider } from '@mui/material/styles';
 import CirrusFavicon from './components/common/CirrusFavicon';
 import { CssBaseline } from '@mui/material';
 import { useRecoilValue } from 'recoil';
@@ -15,7 +15,7 @@ declare module '@mui/styles/defaultTheme' {
 export default () => {
   const themeOptions = useRecoilValue(cirrusThemeOptions);
 
-  const theme = React.useMemo(() => createTheme(adaptV4Theme(themeOptions)), [themeOptions]);
+  const theme = React.useMemo(() => createTheme(themeOptions), [themeOptions]);
 
   return (
     <StyledEngineProvider injectFirst>

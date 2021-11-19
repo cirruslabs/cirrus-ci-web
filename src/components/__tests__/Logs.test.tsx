@@ -3,7 +3,7 @@ import Logs from '../logs/Logs';
 import renderer from 'react-test-renderer';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider, Theme, StyledEngineProvider } from '@mui/styles';
-import { createTheme, adaptV4Theme } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 import { cirrusLightTheme } from '../../cirrusTheme';
 import { RecoilRoot } from 'recoil';
 

@@ -52,7 +52,6 @@ import HookList from '../hooks/HookList';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import {
-  AppBar,
   ButtonGroup,
   ClickAwayListener,
   Collapse,
@@ -448,12 +447,10 @@ function TaskDetails(props: Props) {
 
   const tabbedCommandsAndHooks = (
     <TabContext value={currentTab}>
-      <AppBar enableColorOnDark position="static">
-        <TabList onChange={handleChange}>
-          <Tab icon={<Dehaze />} label={'Instructions (' + task.commands.length + ')'} value="instructions" />
-          <Tab icon={<Functions />} label={'Hooks (' + task.hooks.length + ')'} value="hooks" />
-        </TabList>
-      </AppBar>
+      <TabList onChange={handleChange}>
+        <Tab icon={<Dehaze />} label={'Instructions (' + task.commands.length + ')'} value="instructions" />
+        <Tab icon={<Functions />} label={'Hooks (' + task.hooks.length + ')'} value="hooks" />
+      </TabList>
       <TabPanel value="instructions" className={classes.tabPanel}>
         <TaskCommandList task={task} />
       </TabPanel>

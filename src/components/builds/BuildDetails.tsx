@@ -26,9 +26,8 @@ import Notification from '../common/Notification';
 import classNames from 'classnames';
 import ConfigurationWithIssues from './ConfigurationWithIssues';
 import HookList from '../hooks/HookList';
-import { ToggleButton } from '@mui/material';
+import { Collapse, Tab, ToggleButton } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { AppBar, Collapse, Tab } from '@mui/material';
 import { BugReport, Dehaze, Functions, Stop } from '@mui/icons-material';
 import Tooltip from '@mui/material/Tooltip';
 import DebuggingInformation from './DebuggingInformation';
@@ -257,12 +256,10 @@ function BuildDetails(props: Props) {
   };
   const tabbedTasksAndHooks = (
     <TabContext value={currentTab}>
-      <AppBar enableColorOnDark position="static">
-        <TabList onChange={handleChange}>
-          <Tab icon={<Dehaze />} label={'Tasks (' + build.latestGroupTasks.length + ')'} value="1" />
-          <Tab icon={<Functions />} label={'Hooks (' + build.hooks.length + ')'} value="2" />
-        </TabList>
-      </AppBar>
+      <TabList onChange={handleChange}>
+        <Tab icon={<Dehaze />} label={'Tasks (' + build.latestGroupTasks.length + ')'} value="1" />
+        <Tab icon={<Functions />} label={'Hooks (' + build.hooks.length + ')'} value="2" />
+      </TabList>
       <TabPanel value="1" className={classes.tabPanel}>
         <TaskList tasks={build.latestGroupTasks} />
       </TabPanel>

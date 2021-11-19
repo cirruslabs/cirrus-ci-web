@@ -26,7 +26,7 @@ import Notification from '../common/Notification';
 import classNames from 'classnames';
 import ConfigurationWithIssues from './ConfigurationWithIssues';
 import HookList from '../hooks/HookList';
-import { Collapse, Tab, ToggleButton } from '@mui/material';
+import { Box, Collapse, Tab, ToggleButton } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { BugReport, Dehaze, Functions, Stop } from '@mui/icons-material';
 import Tooltip from '@mui/material/Tooltip';
@@ -280,9 +280,9 @@ function BuildDetails(props: Props) {
       <Head>
         <title>{build.changeMessageTitle} - Cirrus CI</title>
       </Head>
-      <Card>
+      <Card elevation={24}>
         <CardContent>
-          <div className="d-flex justify-content-between">
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
             <div>
               <div className={classes.wrapper}>
                 <RepositoryOwnerChip className={classes.chip} repository={build.repository} />
@@ -301,7 +301,7 @@ function BuildDetails(props: Props) {
                 </ToggleButton>
               </Tooltip>
             </div>
-          </div>
+          </Box>
           <div className={classes.gap} />
           <Typography variant="h6" gutterBottom>
             {build.changeMessageTitle}

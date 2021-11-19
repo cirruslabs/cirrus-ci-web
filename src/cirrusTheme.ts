@@ -35,6 +35,18 @@ let cirrusBaseTheme: ThemeOptions = {
   shape: {
     borderRadius: 2,
   },
+  components: {
+    MuiChip: {
+      styleOverrides: {
+        avatar: {
+          marginLeft: 0,
+          marginRight: 0,
+          height: 32,
+          width: 32,
+        },
+      },
+    },
+  },
 };
 
 export let cirrusLightTheme: ThemeOptions = {

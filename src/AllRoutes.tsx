@@ -18,7 +18,7 @@ import CirrusLinearProgress from './components/common/CirrusLinearProgress';
 import ThemeSwitchButton from './components/common/ThemeSwitchButton';
 import { atom, useRecoilState } from 'recoil';
 import { localStorageEffect } from './utils/recoil';
-import { Tooltip, useTheme } from '@mui/material';
+import { Container, Tooltip, useTheme } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import GCPStatus from './components/status/GCPStatus';
 import GitHubStatus from './components/status/GitHubStatus';
@@ -118,10 +118,6 @@ export const styles = theme =>
     },
     content: {
       flexGrow: 1,
-      paddingTop: theme.spacing(1.0),
-      paddingBottom: theme.spacing(1.0),
-      paddingLeft: theme.spacing(1.0) * 3,
-      paddingRight: theme.spacing(1.0) * 3,
       transition: theme.transitions.create('margin', {
         easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.leavingScreen,
@@ -180,70 +176,69 @@ function AllRoutes(props: WithStyles<typeof styles>) {
   return (
     <BrowserRouter>
       <div className={classes.appFrame}>
-        <nav>
-          <AppBar
-            position="static"
-            className={classNames(classes.appBar, {
-              [classes.shiftedFixedWidth]: openDrawer,
-              [classes.appBarShift]: openDrawer,
-            })}
-          >
-            <Toolbar disableGutters={true}>
-              <IconButton
+        <AppBar
+          enableColorOnDark
+          position="static"
+          className={classNames(classes.appBar, {
+            [classes.shiftedFixedWidth]: openDrawer,
+            [classes.appBarShift]: openDrawer,
+          })}
+        >
+          <Toolbar disableGutters={true}>
+            <IconButton
+              color="inherit"
+              aria-label="open navigation"
+              onClick={() => setOpenDrawer(true)}
+              className={classNames(classes.menuButton, openDrawer && classes.hide)}
+              size="large"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Link to={'/'} style={{ color: theme.palette.primary.contrastText, textDecoration: 'none' }}>
+              <Typography
+                variant="h6"
+                className={classNames({ [classes.titleShift]: openDrawer })}
+                style={getNavbarTitleStyling()}
                 color="inherit"
-                aria-label="open navigation"
-                onClick={() => setOpenDrawer(true)}
-                className={classNames(classes.menuButton, openDrawer && classes.hide)}
+              >
+                Cirrus CI
+              </Typography>
+            </Link>
+            <div className={classes.flex} />
+            <Suspense fallback={<div />}>
+              <GCPStatus />
+            </Suspense>
+            <Suspense fallback={<div />}>
+              <GitHubStatus />
+            </Suspense>
+            <ThemeSwitchButton />
+            <Tooltip title="Go to front-end source repository">
+              <IconButton
+                className={classes.linkButton}
+                href="https://github.com/cirruslabs/cirrus-ci-web"
+                target="_blank"
+                rel="noopener noreferrer"
                 size="large"
               >
-                <MenuIcon />
+                <GitHubIcon style={{ color: theme.palette.primary.contrastText }} />
               </IconButton>
-              <Link to={'/'} style={{ color: theme.palette.primary.contrastText, textDecoration: 'none' }}>
-                <Typography
-                  variant="h6"
-                  className={classNames({ [classes.titleShift]: openDrawer })}
-                  style={getNavbarTitleStyling()}
-                  color="inherit"
-                >
-                  Cirrus CI
-                </Typography>
-              </Link>
-              <div className={classes.flex} />
-              <Suspense fallback={<div />}>
-                <GCPStatus />
-              </Suspense>
-              <Suspense fallback={<div />}>
-                <GitHubStatus />
-              </Suspense>
-              <ThemeSwitchButton />
-              <Tooltip title="Go to front-end source repository">
-                <IconButton
-                  className={classes.linkButton}
-                  href="https://github.com/cirruslabs/cirrus-ci-web"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  size="large"
-                >
-                  <GitHubIcon style={{ color: theme.palette.primary.contrastText }} />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Go to documentation">
-                <IconButton
-                  className={classes.linkButton}
-                  href="https://cirrus-ci.org/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  size="large"
-                >
-                  <BookIcon style={{ color: theme.palette.primary.contrastText }} />
-                </IconButton>
-              </Tooltip>
-              <div className={classes.marginRight}>
-                <ActiveRepositoriesDrawer />
-              </div>
-            </Toolbar>
-          </AppBar>
-        </nav>
+            </Tooltip>
+            <Tooltip title="Go to documentation">
+              <IconButton
+                className={classes.linkButton}
+                href="https://cirrus-ci.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                size="large"
+              >
+                <BookIcon style={{ color: theme.palette.primary.contrastText }} />
+              </IconButton>
+            </Tooltip>
+            <div className={classes.marginRight}>
+              <ActiveRepositoriesDrawer />
+            </div>
+          </Toolbar>
+        </AppBar>
         {openDrawer ? drawer : null}
         <main
           className={classNames(classes.content, {
@@ -252,12 +247,7 @@ function AllRoutes(props: WithStyles<typeof styles>) {
           })}
         >
           <div className={classNames('invisible', classes.drawerHeader)} />
-          <div
-            className={classNames({
-              'fluid-container': openDrawer,
-              container: !openDrawer,
-            })}
-          >
+          <Container maxWidth={openDrawer ? false : 'lg'} disableGutters={openDrawer}>
             <Suspense fallback={<CirrusLinearProgress />}>
               <Routes>
                 <Route path="/" element={<AsyncHome />} />
@@ -279,7 +269,7 @@ function AllRoutes(props: WithStyles<typeof styles>) {
                 <Route path="hook/:hookId" element={<AsyncHook />} />
               </Routes>
             </Suspense>
-          </div>
+          </Container>
         </main>
       </div>
     </BrowserRouter>

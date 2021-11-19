@@ -26,21 +26,21 @@ let RepositorySettingsPage = (props: Props) => {
 
   return (
     <div>
-      <Paper elevation={1}>
+      <Paper elevation={16}>
         <Toolbar>
           <Typography variant="h6">{'Settings for ' + repository.owner + '/' + repository.name}</Typography>
         </Toolbar>
       </Paper>
       <div className={classes.settingGap} />
-      <Paper elevation={1}>
+      <Paper elevation={16}>
         <RepositorySettings repository={repository} />
       </Paper>
       <div className={classes.settingGap} />
-      <Paper elevation={1}>
+      <Paper elevation={16}>
         <RepositorySecuredVariables repository={repository} />
       </Paper>
       <div className={classes.settingGap} />
-      <Paper elevation={1}>
+      <Paper elevation={16}>
         <RepositoryCronSettings repository={repository} />
       </Paper>
     </div>

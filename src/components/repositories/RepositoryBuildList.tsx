@@ -139,7 +139,7 @@ function RepositoryBuildList(props: Props) {
 
   if (props.branch && builds.length > 5) {
     buildsChart = (
-      <Paper elevation={1} className={classes.buildsChart}>
+      <Paper elevation={16} className={classes.buildsChart}>
         <BuildDurationsChart
           builds={builds.slice().reverse()}
           selectedBuildId={selectedBuildId}
@@ -188,7 +188,7 @@ function RepositoryBuildList(props: Props) {
           {repository.owner}/{repository.name} - Cirrus CI
         </title>
       </Head>
-      <Paper elevation={1}>
+      <Paper elevation={16}>
         <Toolbar className="justify-content-between">
           <div className={classes.wrapper}>
             <Typography className="align-self-center" variant="h6" color="inherit">

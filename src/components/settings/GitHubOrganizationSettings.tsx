@@ -43,7 +43,7 @@ function GitHubOrganizationSettings(props: Props) {
 
   return (
     <div>
-      <Paper elevation={1}>
+      <Paper elevation={16}>
         <Toolbar className={classes.title}>
           <Typography variant="h6" color="inherit">
             Settings for {organization} organization
@@ -51,27 +51,27 @@ function GitHubOrganizationSettings(props: Props) {
         </Toolbar>
       </Paper>
       <div className={classes.settingGap} />
-      <Paper elevation={1}>
+      <Paper elevation={16}>
         <GitHubPurchase info={info} />
       </Paper>
       <div className={classes.settingGap} />
-      <Paper elevation={1}>
+      <Paper elevation={16}>
         <OrganizationComputeCredits info={info} />
       </Paper>
       <div className={classes.settingGap} />
-      <Paper elevation={1}>
+      <Paper elevation={16}>
         <OrganizationSecuredVariables info={info} />
       </Paper>
       <div className={classes.settingGap} />
-      <Paper elevation={1}>
+      <Paper elevation={16}>
         <OrganizationApiSettings info={info} />
       </Paper>
       <div className={classes.settingGap} />
-      <Paper elevation={1}>
+      <Paper elevation={16}>
         <OrganizationPersistentWorkerPools info={info} />
       </Paper>
       <div className={classes.settingGap} />
-      <Paper elevation={1}>
+      <Paper elevation={16}>
         <WebHookSettings info={info} />
       </Paper>
       <div className={classes.settingGap} />

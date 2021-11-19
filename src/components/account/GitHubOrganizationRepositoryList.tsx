@@ -45,7 +45,7 @@ let GitHubOrganizationRepositoryList = (props: Props) => {
 
   return (
     <div>
-      <Paper elevation={1}>
+      <Paper elevation={16}>
         <Toolbar className="justify-content-between">
           <Typography variant="h6" color="inherit">
             {props.organization}'s Repositories
@@ -54,7 +54,7 @@ let GitHubOrganizationRepositoryList = (props: Props) => {
         </Toolbar>
       </Paper>
       <div className={classes.gap} />
-      <Paper elevation={1}>
+      <Paper elevation={16}>
         <Table style={{ tableLayout: 'auto' }}>
           <TableBody>
             {repositories && repositories.map(repo => <LastDefaultBranchBuildRow key={repo.__id} repository={repo} />)}

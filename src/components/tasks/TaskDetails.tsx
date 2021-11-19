@@ -448,7 +448,7 @@ function TaskDetails(props: Props) {
 
   const tabbedCommandsAndHooks = (
     <TabContext value={currentTab}>
-      <AppBar position="static">
+      <AppBar enableColorOnDark position="static">
         <TabList onChange={handleChange}>
           <Tab icon={<Dehaze />} label={'Instructions (' + task.commands.length + ')'} value="instructions" />
           <Tab icon={<Functions />} label={'Hooks (' + task.hooks.length + ')'} value="hooks" />
@@ -580,7 +580,7 @@ function TaskDetails(props: Props) {
       {allOtherRuns ? <div className={classes.gap} /> : null}
       {allOtherRuns}
       <div className={classes.gap} />
-      <Paper elevation={2}>{tabbedCommandsAndHooks}</Paper>
+      <Paper elevation={24}>{tabbedCommandsAndHooks}</Paper>
     </div>
   );
 }

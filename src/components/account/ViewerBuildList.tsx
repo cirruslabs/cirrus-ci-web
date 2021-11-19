@@ -94,7 +94,7 @@ function ViewerBuildList(props: Props) {
     );
   }
   return (
-    <Paper elevation={1}>
+    <Paper elevation={16}>
       <Head>
         <title>Recent Builds - Cirrus CI</title>
       </Head>

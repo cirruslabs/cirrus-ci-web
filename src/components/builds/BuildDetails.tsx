@@ -257,7 +257,7 @@ function BuildDetails(props: Props) {
   };
   const tabbedTasksAndHooks = (
     <TabContext value={currentTab}>
-      <AppBar position="static">
+      <AppBar enableColorOnDark position="static">
         <TabList onChange={handleChange}>
           <Tab icon={<Dehaze />} label={'Tasks (' + build.latestGroupTasks.length + ')'} value="1" />
           <Tab icon={<Functions />} label={'Hooks (' + build.hooks.length + ')'} value="2" />
@@ -334,7 +334,7 @@ function BuildDetails(props: Props) {
         <DebuggingInformation build={build} />
       </Collapse>
       <div className={classes.gap} />
-      <Paper elevation={2}>{tabbedTasksAndHooks}</Paper>
+      <Paper elevation={24}>{tabbedTasksAndHooks}</Paper>
     </div>
   );
 }

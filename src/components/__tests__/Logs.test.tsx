@@ -23,7 +23,7 @@ I log things
     .create(
       <RecoilRoot>
         <StyledEngineProvider injectFirst>
-          <ThemeProvider theme={createTheme(adaptV4Theme(cirrusLightTheme))}>
+          <ThemeProvider theme={createTheme(cirrusLightTheme)}>
             <BrowserRouter>
               <Routes>
                 <Route path="/" element={<Logs logs={exampleLog} logsName="test" />} />

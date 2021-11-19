@@ -1,4 +1,4 @@
-import { DeprecatedThemeOptions } from '@mui/material/styles';
+import { ThemeOptions } from '@mui/material/styles';
 import { atom, selector } from 'recoil';
 import { localStorageEffect } from './utils/recoil';
 
@@ -28,28 +28,16 @@ export const cirrusThemeOptions = selector({
   },
 });
 
-let cirrusBaseTheme: DeprecatedThemeOptions = {
+let cirrusBaseTheme: ThemeOptions = {
   typography: {
     fontFamily: 'Roboto, sans-serif',
   },
   shape: {
     borderRadius: 2,
   },
-  overrides: {
-    MuiChip: {
-      root: {
-        '& $avatar': {
-          marginLeft: 0,
-          marginRight: 0,
-          width: 32,
-          height: 32,
-        },
-      },
-    },
-  },
 };
 
-export let cirrusLightTheme: DeprecatedThemeOptions = {
+export let cirrusLightTheme: ThemeOptions = {
   ...cirrusBaseTheme,
   palette: {
     mode: 'light',
@@ -86,7 +74,7 @@ export let cirrusLightTheme: DeprecatedThemeOptions = {
   },
 };
 
-export let cirrusDarkTheme: DeprecatedThemeOptions = {
+export let cirrusDarkTheme: ThemeOptions = {
   ...cirrusBaseTheme,
   palette: {
     mode: 'dark',

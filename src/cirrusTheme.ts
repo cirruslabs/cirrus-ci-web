@@ -35,18 +35,6 @@ let cirrusBaseTheme: ThemeOptions = {
   shape: {
     borderRadius: 2,
   },
-  components: {
-    MuiChip: {
-      styleOverrides: {
-        avatar: {
-          marginLeft: 0,
-          marginRight: 0,
-          height: 32,
-          width: 32,
-        },
-      },
-    },
-  },
 };
 
 export let cirrusLightTheme: ThemeOptions = {
@@ -84,6 +72,18 @@ export let cirrusLightTheme: ThemeOptions = {
       dark: orange['700'],
     },
   },
+  components: {
+    MuiChip: {
+      styleOverrides: {
+        avatar: {
+          marginLeft: 0,
+          marginRight: 0,
+          height: 32,
+          width: 32,
+        },
+      },
+    },
+  },
 };
 
 export let cirrusDarkTheme: ThemeOptions = {
@@ -116,6 +116,27 @@ export let cirrusDarkTheme: ThemeOptions = {
       light: orange['400'],
       main: orange['600'],
       dark: orange['800'],
+    },
+  },
+  components: {
+    MuiChip: {
+      styleOverrides: {
+        avatar: {
+          marginLeft: 0,
+          marginRight: 0,
+          height: 32,
+          width: 32,
+        },
+      },
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          '&.Mui-selected': {
+            color: grey['50'],
+          },
+        },
+      },
     },
   },
 };

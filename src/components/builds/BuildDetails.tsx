@@ -26,7 +26,7 @@ import Notification from '../common/Notification';
 import classNames from 'classnames';
 import ConfigurationWithIssues from './ConfigurationWithIssues';
 import HookList from '../hooks/HookList';
-import { Box, Collapse, Tab, ToggleButton } from '@mui/material';
+import { Box, Collapse, Link, Tab, ToggleButton } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { BugReport, Dehaze, Functions, Stop } from '@mui/icons-material';
 import Tooltip from '@mui/material/Tooltip';
@@ -308,13 +308,13 @@ function BuildDetails(props: Props) {
           </Typography>
           <Typography variant="subtitle1" gutterBottom>
             Commit{' '}
-            <a href={commitUrl} target="_blank" rel="noopener noreferrer">
+            <Link href={commitUrl} color="inherit" target="_blank" rel="noopener noreferrer">
               {build.changeIdInRepo.substr(0, 7)}
-            </a>{' '}
+            </Link>{' '}
             on branch{' '}
-            <a href={branchUrl} target="_blank" rel="noopener noreferrer">
+            <Link href={branchUrl} color="inherit" target="_blank" rel="noopener noreferrer">
               {build.branch}
-            </a>
+            </Link>
             .
           </Typography>
         </CardContent>

@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, YAxis } from 'recharts';
 import { TaskExecutionInfo_task } from './__generated__/TaskExecutionInfo_task.graphql';
 import { formatDuration } from '../../utils/time';
-import { useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { useRecoilState } from 'recoil';
 import { prefersDarkModeState } from '../../cirrusTheme';
 
@@ -46,7 +46,7 @@ function TaskExecutionInfo(props: Props) {
       };
     });
     return (
-      <div className="col">
+      <Box sx={{ flexDirection: 'column', justifyContent: 'center', width: '100%' }}>
         <Typography variant="h6" align="center" className="align-middle">
           CPU Usage
         </Typography>
@@ -66,7 +66,7 @@ function TaskExecutionInfo(props: Props) {
             />
           </AreaChart>
         </ResponsiveContainer>
-      </div>
+      </Box>
     );
   }
 
@@ -94,7 +94,7 @@ function TaskExecutionInfo(props: Props) {
       }
     });
     return (
-      <div className="col">
+      <Box sx={{ flexDirection: 'column', justifyContent: 'center', width: '100%' }}>
         <Typography variant="h6" align="center" className="align-middle">
           Memory Usage ({memoryUnit})
         </Typography>
@@ -114,19 +114,19 @@ function TaskExecutionInfo(props: Props) {
             />
           </AreaChart>
         </ResponsiveContainer>
-      </div>
+      </Box>
     );
   }
 
   return (
-    <div>
+    <div style={{ width: '100%' }}>
       {task.executionInfo.labels.map(label => {
         return <Chip key={label} className={classes.chip} label={label} />;
       })}
-      <div className="row">
+      <Box sx={{ flexDirection: 'row', display: 'flex' }}>
         {renderCPUChart()}
         {renderMemoryChart()}
-      </div>
+      </Box>
     </div>
   );
 }

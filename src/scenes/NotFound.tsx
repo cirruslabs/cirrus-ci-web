@@ -1,11 +1,12 @@
 import React from 'react';
 import Icon from '@mui/material/Icon';
 import { Helmet as Head } from 'react-helmet';
+import { Box } from '@mui/material';
 
 export default props => {
   return (
-    <div
-      className="row justify-content-between align-items-center"
+    <Box
+      sx={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}
       style={{ width: '100%', height: '100%', fontSize: '32px' }}
     >
       <Head>
@@ -26,6 +27,6 @@ export default props => {
           </div>
         )}
       </div>
-    </div>
+    </Box>
   );
 };

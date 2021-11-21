@@ -1,32 +1,35 @@
 import React from 'react';
 import Icon from '@mui/material/Icon';
 import { Helmet as Head } from 'react-helmet';
-import { Box } from '@mui/material';
+import { Box, Link, Typography } from '@mui/material';
 
 export default props => {
   return (
-    <Box
-      sx={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}
-      style={{ width: '100%', height: '100%', fontSize: '32px' }}
-    >
+    <Box sx={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center' }}>
       <Head>
         <title>Page Not Found - Cirrus CI</title>
       </Head>
-      <div className="col text-center">
+      <Box
+        sx={{
+          flexDirection: 'column',
+          alignItems: 'center',
+          display: 'inline-flex',
+        }}
+      >
         <Icon style={{ fontSize: '96px' }} className="center-block">
           sentiment_very_dissatisfied
         </Icon>
         {props.messageComponent ? (
           props.messageComponent
         ) : (
-          <div>
-            <p>{props.message || 'Page not found! '}</p>
-            <a href="https://cirrus-ci.com" title="Homepage">
+          <>
+            <Typography variant="h2">{props.message || 'Page not found! '}</Typography>
+            <Link href="https://cirrus-ci.com" color="inherit" variant="h3" title="Homepage">
               Go home?
-            </a>
-          </div>
+            </Link>
+          </>
         )}
-      </div>
+      </Box>
     </Box>
   );
 };

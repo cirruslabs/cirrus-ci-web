@@ -18,7 +18,7 @@ import TaskCreatedChip from '../chips/TaskCreatedChip';
 import { TaskListRow_task } from './__generated__/TaskListRow_task.graphql';
 import { isTaskFinalStatus } from '../../utils/status';
 import { useTaskStatusColorMapping } from '../../utils/colors';
-import { Hidden, Paper, Tooltip } from '@mui/material';
+import { Box, Hidden, Paper, Tooltip } from '@mui/material';
 import { formatDuration } from '../../utils/time';
 
 const styles = theme =>
@@ -36,9 +36,14 @@ const styles = theme =>
       height: '100%',
     },
     progressBar: {
+      backgroundColor: 'transparent',
       width: '100%',
-      minHeight: '100%',
+      paddingRight: 4,
+      minHeight: theme.spacing(1.5),
       minWidth: 100,
+    },
+    progressBarElement: {
+      minHeight: theme.spacing(1.5),
     },
   });
 
@@ -63,44 +68,28 @@ function TaskListRow(props: Props) {
           executionDuration,
         )}.`}
       >
-        <Paper elevation={0} className={classNames(classes.progressBar, 'progress')}>
-          <div
-            className="progress-bar"
-            role="progressbar"
-            style={{
-              height: '100%',
-              width: Math.floor((100 * durationBeforeScheduling) / overallDuration) + '%',
-              backgroundColor: 'transparent',
-            }}
-            aria-valuenow={Math.floor((100 * durationBeforeScheduling) / overallDuration)}
-            aria-valuemin={0}
-            aria-valuemax={100}
-          />
-          <div
-            className="progress-bar"
-            role="progressbar"
-            style={{
-              height: '100%',
+        <Box
+          className={classes.progressBar}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <Box
+            className={classes.progressBarElement}
+            sx={{
               width: Math.floor((100 * scheduledDuration) / overallDuration) + '%',
               backgroundColor: colorMapping['SCHEDULED'],
             }}
-            aria-valuenow={Math.floor((100 * scheduledDuration) / overallDuration)}
-            aria-valuemin={0}
-            aria-valuemax={100}
           />
-          <div
-            className="progress-bar"
-            role="progressbar"
-            style={{
-              height: '100%',
+          <Box
+            className={classes.progressBarElement}
+            sx={{
               width: Math.max(1, Math.floor((100 * executionDuration) / overallDuration)) + '%',
               backgroundColor: colorMapping[task.status],
             }}
-            aria-valuenow={Math.floor((100 * executionDuration) / overallDuration)}
-            aria-valuemin={0}
-            aria-valuemax={100}
           />
-        </Paper>
+        </Box>
       </Tooltip>
     );
   }

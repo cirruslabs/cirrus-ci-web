@@ -511,6 +511,7 @@ function TaskDetails(props: Props) {
             <TaskRerunnerChip className={classes.chip} task={task} />
             <TaskCancellerChip className={classes.chip} task={task} />
           </div>
+          <div className={classes.gap} />
           <TaskCommandsProgress className={classes.progress} task={task} />
           <div className={classes.gap} />
           <Typography variant="h6" gutterBottom>

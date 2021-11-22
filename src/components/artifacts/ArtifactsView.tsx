@@ -168,7 +168,7 @@ function ArtifactsView(props: Props) {
             <ListItemIcon>
               <InsertDriveFile />
             </ListItemIcon>
-            <ListItemText primary={info.path} />
+            <ListItemText primary={info.path} secondary={info.size} />
           </ListItem>,
         );
       }

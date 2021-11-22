@@ -36,7 +36,6 @@ interface SingleArtifactItemInfo {
   path: string;
   folder: string;
   size: number;
-  human_size: string;
   isTopLevel: boolean;
 }
 
@@ -115,7 +114,6 @@ function ArtifactsView(props: Props) {
           path: subPath,
           folder: folderName,
           size: fileInfo.size,
-          human_size: bytesToHumanReadable(fileInfo.size),
           isTopLevel: subPath.indexOf('/') === -1,
         });
       }
@@ -191,7 +189,7 @@ function ArtifactsView(props: Props) {
             <ListItemIcon>
               <InsertDriveFile />
             </ListItemIcon>
-            <ListItemText primary={info.path} secondary={info.human_size} />
+            <ListItemText primary={info.path} secondary={bytesToHumanReadable(info.size)} />
           </ListItem>,
         );
       }

@@ -318,7 +318,7 @@ function BuildDetails(props: Props) {
             .
           </Typography>
         </CardContent>
-        <CardActions className="d-flex flex-wrap justify-content-end">
+        <CardActions sx={{ justifyContent: 'flex-end' }}>
           {reTriggerButton}
           {approveButton}
           {reRunAllTasksButton}

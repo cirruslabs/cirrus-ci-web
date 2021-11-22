@@ -75,6 +75,27 @@ function ArtifactsView(props: Props) {
     return selectedArtifactName + '/' + selectedPath.join('/');
   }
 
+  function bytesToHumanReadable(bytes: number): string {
+    if (bytes === 0) {
+      return '0 Bytes';
+    }
+
+    let divisor = 1024;
+    let suffixes = ['Bytes', 'KiB', 'MiB', 'GiB', 'TiB'];
+
+    let magnitude = Math.log(bytes) / Math.log(divisor);
+    magnitude |= 0;
+
+    if (magnitude >= suffixes.length) {
+      return "That's a big file!";
+    }
+
+    let size = bytes / Math.pow(divisor, magnitude);
+
+    let suffix = suffixes[magnitude];
+    return `${size.toFixed(2)} ${suffix}`;
+  }
+
   function getScopedArtifactInfos(): SingleArtifactItemInfo[] {
     let currentArtifact = getSelectedArtifact();
     if (!currentArtifact) {
@@ -168,7 +189,7 @@ function ArtifactsView(props: Props) {
             <ListItemIcon>
               <InsertDriveFile />
             </ListItemIcon>
-            <ListItemText primary={info.path} />
+            <ListItemText primary={info.path} secondary={bytesToHumanReadable(info.size)} />
           </ListItem>,
         );
       }

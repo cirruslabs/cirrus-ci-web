@@ -18,7 +18,7 @@ import TaskCreatedChip from '../chips/TaskCreatedChip';
 import { TaskListRow_task } from './__generated__/TaskListRow_task.graphql';
 import { isTaskFinalStatus } from '../../utils/status';
 import { useTaskStatusColorMapping } from '../../utils/colors';
-import { Box, Hidden, Paper, Tooltip } from '@mui/material';
+import { Box, Hidden, Tooltip } from '@mui/material';
 import { formatDuration } from '../../utils/time';
 
 const styles = theme =>
@@ -57,7 +57,7 @@ interface Props extends WithStyles<typeof styles> {
 function TaskListRow(props: Props) {
   let navigate = useNavigate();
   let colorMapping = useTaskStatusColorMapping();
-  let { task, classes, durationBeforeScheduling, overallDuration } = props;
+  let { task, classes, overallDuration } = props;
   let progress = null;
   if (isTaskFinalStatus(task.status) && overallDuration && task.executingTimestamp) {
     let scheduledDuration = Math.max(0, task.executingTimestamp - task.scheduledTimestamp) / 1000;

@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useTaskStatusColorMapping } from '../../utils/colors';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import classNames from 'classnames';
 import { formatDuration } from '../../utils/time';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';

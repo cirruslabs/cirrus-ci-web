@@ -56,6 +56,7 @@ import {
   ClickAwayListener,
   Collapse,
   Grow,
+  Link,
   MenuItem,
   MenuList,
   Popper,
@@ -302,7 +303,7 @@ function TaskDetails(props: Props) {
 
   let reRunButton =
     !hasWritePermissions(build.viewerPermission) || !isTaskFinalStatus(task.status) ? null : (
-      <div>
+      <>
         <ButtonGroup variant="contained" ref={anchorRef}>
           <Button onClick={() => rerun(task.id, false)} startIcon={<Refresh />}>
             Re-Run
@@ -326,7 +327,7 @@ function TaskDetails(props: Props) {
                 transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
               }}
             >
-              <Paper>
+              <Paper elevation={24}>
                 <ClickAwayListener onClickAway={closeRerunOptions}>
                   <MenuList id="split-button-menu">
                     <MenuItem onClick={() => rerun(task.id, true)}>Re-Run with Terminal Access</MenuItem>
@@ -336,7 +337,7 @@ function TaskDetails(props: Props) {
             </Grow>
           )}
         </Popper>
-      </div>
+      </>
     );
 
   let taskIsTriggerable = task.status === 'PAUSED';
@@ -415,7 +416,7 @@ function TaskDetails(props: Props) {
   let allOtherRuns: JSX.Element | [] = [];
   if (task.allOtherRuns && task.allOtherRuns.length > 0) {
     allOtherRuns = (
-      <Paper>
+      <Paper elevation={24}>
         <Typography className={classes.title} variant="caption" gutterBottom display="block" align="center">
           All Other Runs
         </Typography>
@@ -426,7 +427,7 @@ function TaskDetails(props: Props) {
   let dependencies: JSX.Element | [] = [];
   if (task.dependencies && task.dependencies.length > 0) {
     dependencies = (
-      <Paper>
+      <Paper elevation={24}>
         <Typography className={classes.title} variant="caption" gutterBottom display="block" align="center">
           Dependencies
         </Typography>
@@ -492,7 +493,7 @@ function TaskDetails(props: Props) {
         <title>{task.name} - Cirrus CI</title>
       </Head>
       <CirrusFavicon status={task.status} />
-      <Card>
+      <Card elevation={24}>
         <CardContent>
           <div className={classes.wrapper}>
             <RepositoryOwnerChip className={classes.chip} repository={repository} />
@@ -514,13 +515,13 @@ function TaskDetails(props: Props) {
           <div className={classes.gap} />
           <Typography variant="h6" gutterBottom>
             {build.changeMessageTitle} (commit{' '}
-            <a href={commitUrl} target="_blank" rel="noopener noreferrer">
+            <Link href={commitUrl} color="inherit" target="_blank" rel="noopener noreferrer">
               {build.changeIdInRepo.substr(0, 7)}
-            </a>{' '}
+            </Link>{' '}
             on branch{' '}
-            <a href={branchUrl} target="_blank" rel="noopener noreferrer">
+            <Link href={branchUrl} color="inherit" target="_blank" rel="noopener noreferrer">
               {build.branch}
-            </a>
+            </Link>
             )
           </Typography>
           <div className={classes.gap} />
@@ -544,7 +545,7 @@ function TaskDetails(props: Props) {
           </div>
           <ExecutionInfo task={task} />
         </CardContent>
-        <CardActions className="d-flex flex-wrap justify-content-end">
+        <CardActions sx={{ justifyContent: 'flex-end' }}>
           <Button
             variant="contained"
             onClick={e => navigateBuildHelper(navigate, e, task.buildId)}

@@ -77,11 +77,15 @@ function TaskCommandList(props: Props) {
     return (
       <Box
         key={command.name}
-        borderLeft={theme.spacing(prefersDarkMode ? 1.0 : 0.0)}
-        borderColor={colorMapping[command.status]}
+        sx={{
+          borderStyle: 'hidden hidden hidden solid',
+          borderWidth: theme.spacing(prefersDarkMode ? 1.0 : 0.0),
+          borderColor: colorMapping[command.status],
+        }}
       >
         <Accordion
           TransitionProps={{ unmountOnExit: true, timeout: 400 }}
+          style={{ backgroundColor: 'transparent' }}
           disabled={command.status === 'SKIPPED'}
           defaultExpanded={command.name === selectedCommandName || command.status === 'FAILURE'}
         >

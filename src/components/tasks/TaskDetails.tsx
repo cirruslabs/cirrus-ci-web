@@ -10,7 +10,7 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { graphql } from 'babel-plugin-relay/macro';
 import classNames from 'classnames';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { commitMutation, createFragmentContainer, requestSubscription } from 'react-relay';
 import { useLocation, useNavigate } from 'react-router-dom';
 import environment from '../../createRelayEnvironment';
@@ -56,6 +56,7 @@ import {
   ClickAwayListener,
   Collapse,
   Grow,
+  IconButton,
   Link,
   MenuItem,
   MenuList,
@@ -487,6 +488,26 @@ function TaskDetails(props: Props) {
     };
   }, [shouldRunTerminal, props.task.terminalCredential]);
 
+  let taskLabelsToShow = task.labels.filter(desiredLabel);
+  let MAX_TASK_LABELS_TO_SHOW = 5;
+  let [hideExtraLabels, setHideExtraLabels] = useState(taskLabelsToShow.length > MAX_TASK_LABELS_TO_SHOW);
+  let taskLabels = taskLabelsToShow.map(label => {
+    return (
+      <Tooltip key={label} title={label}>
+        <Chip className={classes.chip} label={shorten(label)} />
+      </Tooltip>
+    );
+  });
+  if (hideExtraLabels) {
+    taskLabels = taskLabels.slice(0, MAX_TASK_LABELS_TO_SHOW);
+    taskLabels.push(
+      <Tooltip key="show-more" title="Show all labels">
+        <IconButton onClick={() => setHideExtraLabels(false)}>
+          <ExpandMoreIcon sx={{ transform: 'rotate(-90deg)' }} />
+        </IconButton>
+      </Tooltip>,
+    );
+  }
   return (
     <div>
       <Head>
@@ -536,13 +557,7 @@ function TaskDetails(props: Props) {
             <TaskTimeoutChip className={classes.chip} task={task} />
             <TaskStatefulChip className={classes.chip} task={task} />
             <TaskResourcesChip className={classes.chip} task={task} />
-            {task.labels.filter(desiredLabel).map(label => {
-              return (
-                <Tooltip key={label} title={label}>
-                  <Chip className={classes.chip} label={shorten(label)} />
-                </Tooltip>
-              );
-            })}
+            {taskLabels}
           </div>
           <ExecutionInfo task={task} />
         </CardContent>

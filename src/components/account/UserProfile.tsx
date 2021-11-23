@@ -109,7 +109,7 @@ function UserProfile(props: Props) {
   let organizations = user.organizations || [];
   if (organizations.length > 0) {
     organizationsComponent = (
-      <Card>
+      <Card elevation={24}>
         <CardHeader title="Your GitHub Organizations" />
         <Table style={{ tableLayout: 'auto' }}>
           <TableBody>
@@ -155,7 +155,7 @@ function UserProfile(props: Props) {
         </Toolbar>
       </Paper>
       <div className={classes.gap} />
-      <Card>
+      <Card elevation={24}>
         <CardHeader title="GitHub Settings" />
         <CardContent>
           {githubMarketplaceComponent}

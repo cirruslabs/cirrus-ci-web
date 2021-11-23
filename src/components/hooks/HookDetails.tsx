@@ -162,7 +162,7 @@ function HookDetails(props: Props) {
       <Head>
         <title>{targetName} hook - Cirrus CI</title>
       </Head>
-      <Card>
+      <Card elevation={24}>
         <CardContent>
           <div className={classes.wrapper}>
             <RepositoryOwnerChip className={classes.chip} repository={hook.repository} />
@@ -193,21 +193,21 @@ function HookDetails(props: Props) {
       </Card>
       {potentialError}
       <div className={classes.gap} />
-      <Card>
+      <Card elevation={24}>
         <CardContent>
           <Typography variant="h6">Execution logs</Typography>
           {executionLogs}
         </CardContent>
       </Card>
       <div className={classes.gap} />
-      <Card>
+      <Card elevation={24}>
         <CardContent>
           <Typography variant="h6">Arguments</Typography>
           <pre className={classNames(classes.io, 'log-line')}>{prettyHookArguments}</pre>
         </CardContent>
       </Card>
       <div className={classes.gap} />
-      <Card>
+      <Card elevation={24}>
         <CardContent>
           <Typography variant="h6">Environment variables</Typography>
           <pre className={classNames(classes.io, 'log-line')}>{props.hook.info.environment.join('\n')}</pre>

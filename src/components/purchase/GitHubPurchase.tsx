@@ -107,7 +107,7 @@ function GitHubPurchase(props: Props) {
   }
   return (
     <div>
-      <Card>
+      <Card elevation={24}>
         <CardHeader title="GitHub Settings" />
         <CardContent>
           {githubMarketplaceComponent}

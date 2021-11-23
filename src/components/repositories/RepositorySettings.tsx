@@ -127,7 +127,7 @@ function RepositorySettings(props: Props) {
     settings.decryptEnvironmentVariables === initialSettings.decryptEnvironmentVariables &&
     settings.cacheVersion === initialSettings.cacheVersion;
   return (
-    <Card>
+    <Card elevation={24}>
       <CardContent>
         <FormControl style={{ width: '100%' }}>
           <FormControlLabel

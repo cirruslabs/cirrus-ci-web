@@ -52,7 +52,7 @@ function RepositoryMetricsPage(props: Props) {
           {repository.owner}/{repository.name}'s Metrics - Cirrus CI
         </title>
       </Head>
-      <Card>
+      <Card elevation={24}>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2" className={classes.title}>
             {repository.owner}/{repository.name}'s Metrics

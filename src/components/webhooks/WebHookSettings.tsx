@@ -137,7 +137,7 @@ function WebHookSettings(props: Props) {
   const secretTokenUnchanged = hasTokenSet || secretToken === '';
 
   return (
-    <Card>
+    <Card elevation={24}>
       <CardHeader title="Webhook Settings" />
       <CardContent>
         <FormControl style={{ width: '100%' }}>

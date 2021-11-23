@@ -82,7 +82,7 @@ function PersistentWorkerPoolsList(props: PoolsListProps) {
     });
   };
   return (
-    <Card>
+    <Card elevation={24}>
       <CardHeader title="Persistent Worker Pools" />
       <CardContent>
         <List>

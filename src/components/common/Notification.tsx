@@ -28,6 +28,9 @@ function Notification(props: Props) {
   let { notification, classes } = props;
   let headerStyle = {
     backgroundColor: useNotificationColor(notification.level),
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   };
   let linkComponent = !notification.link ? null : (
     <IconButton onClick={e => navigateHelper(navigate, e, notification.link)} size="large">
@@ -35,11 +38,7 @@ function Notification(props: Props) {
     </IconButton>
   );
   return (
-    <div
-      key={notification.message}
-      style={headerStyle}
-      className={classNames('row', 'justify-content-between', 'align-items-center')}
-    >
+    <div key={notification.message} style={headerStyle}>
       <Typography variant="subtitle1" className={classes.notification}>
         {notification.message}
       </Typography>

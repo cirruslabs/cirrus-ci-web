@@ -14,6 +14,7 @@ import {
   CardHeader,
   Chip,
   IconButton,
+  Link,
   Table,
   TableBody,
   TableCell,
@@ -179,11 +180,11 @@ function PoolDetails(props: PoolDetailsProps) {
 
   let viewerCanSeeToken = pool.viewerPermission === 'ADMIN' || pool.viewerPermission === 'WRITE';
   return (
-    <div>
+    <>
       <Head>
         <title>{pool.name} pool</title>
       </Head>
-      <Card>
+      <Card elevation={24}>
         <CardHeader
           avatar={
             <Avatar aria-label="recipe">
@@ -212,8 +213,10 @@ function PoolDetails(props: PoolDetailsProps) {
         <CardContent>
           <Typography>
             In order to add a persistent worker to the pool please install{' '}
-            <a href="https://github.com/cirruslabs/cirrus-cli/blob/master/PERSISTENT-WORKERS.md">Cirrus CLI</a> on a
-            machine that will become a persistent worker.
+            <Link color="inherit" href="https://github.com/cirruslabs/cirrus-cli/blob/master/PERSISTENT-WORKERS.md">
+              Cirrus CLI
+            </Link>{' '}
+            on a machine that will become a persistent worker.
           </Typography>
         </CardContent>
         {viewerCanSeeToken && registrationToken && (
@@ -222,9 +225,9 @@ function PoolDetails(props: PoolDetailsProps) {
             <CopyPasteField id="registration-token" value={registrationToken} fullWidth={true} />
           </CardContent>
         )}
-        <CardActions className="d-flex flex-wrap justify-content-end">
+        <CardActions sx={{ justifyContent: 'flex-end' }}>
           {viewerCanSeeToken && !registrationToken && (
-            <Button variant="outlined" startIcon={<VisibilityIcon />} onClick={retrieveRegistrationToken}>
+            <Button variant="contained" startIcon={<VisibilityIcon />} onClick={retrieveRegistrationToken}>
               Show Registration Token
             </Button>
           )}
@@ -298,7 +301,7 @@ function PoolDetails(props: PoolDetailsProps) {
           </Table>
         </CardContent>
       </Card>
-    </div>
+    </>
   );
 }
 

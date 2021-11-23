@@ -62,7 +62,7 @@ function RepositorySecuredVariables(props: Props) {
   }
 
   return (
-    <Card>
+    <Card elevation={24}>
       <CardHeader title="Secured Variables" />
       <CardContent>
         <FormControl style={{ width: '100%' }}>

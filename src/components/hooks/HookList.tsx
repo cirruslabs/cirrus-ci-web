@@ -51,7 +51,7 @@ def on_ENTITY_failed(ctx):
     const hookTypeName = HookType[type].toLowerCase();
 
     return (
-      <Card>
+      <Card elevation={24}>
         <CardContent>
           <Typography variant="body1">
             <p>Doesn't seem like you've defined any hooks.</p>

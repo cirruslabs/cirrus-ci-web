@@ -86,7 +86,7 @@ function DebuggingInformation(props: Props) {
     );
 
   return (
-    <Card>
+    <Card elevation={24}>
       <CardContent>
         <Typography variant="h6">Debugging Information</Typography>
         <div className={classes.gapped}>YAML configuration</div>

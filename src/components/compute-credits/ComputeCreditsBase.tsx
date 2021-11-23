@@ -69,7 +69,7 @@ function ComputeCreditsBase(props: Props) {
   let { classes } = props;
 
   return (
-    <Card>
+    <Card elevation={24}>
       <CardHeader title="Compute Credits" />
       <Head>
         <script src="https://js.stripe.com/v3/" async></script>

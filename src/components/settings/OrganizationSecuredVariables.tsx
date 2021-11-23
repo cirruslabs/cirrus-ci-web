@@ -59,7 +59,7 @@ function OrganizationSecuredVariables(props: Props) {
   }
 
   return (
-    <Card>
+    <Card elevation={24}>
       <CardHeader title="Organization-Level Secured Variables" />
       <CardContent>
         <FormControl style={{ width: '100%' }}>

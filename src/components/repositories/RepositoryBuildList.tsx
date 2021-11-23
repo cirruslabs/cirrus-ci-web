@@ -53,6 +53,7 @@ let styles = createStyles({
   wrapper: {
     display: 'flex',
     flexWrap: 'wrap',
+    alignItems: 'center',
   },
   row: {
     padding: '3px',
@@ -189,7 +190,7 @@ function RepositoryBuildList(props: Props) {
         </title>
       </Head>
       <Paper elevation={16}>
-        <Toolbar className="justify-content-between">
+        <Toolbar sx={{ justifyContent: 'space-between' }}>
           <div className={classes.wrapper}>
             <Typography className="align-self-center" variant="h6" color="inherit">
               {repository.owner + '/' + repository.name}

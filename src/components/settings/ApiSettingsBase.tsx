@@ -72,7 +72,7 @@ function ApiSettingsBase(props: Props) {
 
   return (
     <div>
-      <Card>
+      <Card elevation={24}>
         <CardHeader title="API Settings" />
         <CardContent>
           <Typography variant="subtitle1">

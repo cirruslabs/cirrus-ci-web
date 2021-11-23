@@ -162,7 +162,7 @@ function RepositoryCronSettings(props: Props) {
 
   let { classes } = props;
   return (
-    <Card>
+    <Card elevation={24}>
       <CardHeader title="Cron Settings" />
       <CardContent>
         <Table style={{ tableLayout: 'auto' }}>
@@ -203,23 +203,23 @@ function RepositoryCronSettings(props: Props) {
                   <div className="d-flex">
                     <NextCronInvocationTimeChip settings={settings} className={classes.chip} />
                     {settings.lastInvocationBuild ? (
-                      <BuildStatusChip build={settings.lastInvocationBuild} className={classes.chip} />
+                      <Tooltip title="Last invocation build">
+                        <BuildStatusChip build={settings.lastInvocationBuild} className={classes.chip} />
+                      </Tooltip>
                     ) : null}
                   </div>
                 </TableCell>
-                <TableCell className={classes.cell}>
-                  <div className="d-flex justify-content-end">
-                    <Tooltip title="Remove Cron Build">
-                      <IconButton
-                        aria-label="Remove Cron Build"
-                        component="span"
-                        onClick={() => removeCronSetting(settings.name)}
-                        size="large"
-                      >
-                        <Delete />
-                      </IconButton>
-                    </Tooltip>
-                  </div>
+                <TableCell className={classes.cell} sx={{ justifyContent: 'flex-end' }}>
+                  <Tooltip title="Remove Cron Build">
+                    <IconButton
+                      aria-label="Remove Cron Build"
+                      component="span"
+                      onClick={() => removeCronSetting(settings.name)}
+                      size="large"
+                    >
+                      <Delete />
+                    </IconButton>
+                  </Tooltip>
                 </TableCell>
               </TableRow>
             ))}
@@ -254,20 +254,19 @@ function RepositoryCronSettings(props: Props) {
                   onChange={changeField('expression')}
                 />
               </TableCell>
-              <TableCell className={classes.cell}>{/* empty since RepositoryCronRow has 4 colums */}</TableCell>
-              <TableCell className={classes.cell}>
-                <div className="d-flex justify-content-end">
-                  <Tooltip title="Add New Cron Build" className={classes.roundButton}>
-                    <IconButton
-                      aria-label="Add New Cron Build"
-                      component="span"
-                      onClick={() => addNewCronSetting()}
-                      size="large"
-                    >
-                      <Add />
-                    </IconButton>
-                  </Tooltip>
-                </div>
+              <TableCell className={classes.cell}>{/* empty since RepositoryCronRow has 4 columns */}</TableCell>
+              <TableCell className={classes.cell} sx={{ justifyContent: 'flex-end' }}>
+                <Tooltip title="Add New Cron Build">
+                  <IconButton
+                    aria-label="Add New Cron Build"
+                    component="span"
+                    onClick={() => addNewCronSetting()}
+                    size="large"
+                    className={classes.roundButton}
+                  >
+                    <Add />
+                  </IconButton>
+                </Tooltip>
               </TableCell>
             </TableRow>
           </TableBody>

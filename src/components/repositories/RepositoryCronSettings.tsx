@@ -33,6 +33,7 @@ import {
   RepositoryCronSettingsRemoveMutationVariables,
 } from './__generated__/RepositoryCronSettingsRemoveMutation.graphql';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
+import { CardActions } from '@mui/material';
 
 const saveCronSettingsMutation = graphql`
   mutation RepositoryCronSettingsSaveMutation($input: RepositorySaveCronSettingsInput!) {
@@ -87,11 +88,6 @@ const styles = theme =>
     },
     cell: {
       padding: 0,
-      height: '100%',
-    },
-    cellContent: {
-      margin: theme.spacing(1.0),
-      width: '100%',
       height: '100%',
     },
     roundButton: {
@@ -223,55 +219,37 @@ function RepositoryCronSettings(props: Props) {
                 </TableCell>
               </TableRow>
             ))}
-            <TableRow hover={false}>
-              <TableCell className={classNames(classes.cell)}>
-                <TextField
-                  required
-                  id="name-lbl"
-                  className={classes.cellContent}
-                  label="Name"
-                  defaultValue={settings.name}
-                  onChange={changeField('name')}
-                />
-              </TableCell>
-              <TableCell className={classNames(classes.cell)}>
-                <TextField
-                  required
-                  id="branch-lbl"
-                  className={classes.cellContent}
-                  label="Branch"
-                  defaultValue={settings.branch}
-                  onChange={changeField('branch')}
-                />
-              </TableCell>
-              <TableCell className={classNames(classes.cell)}>
-                <TextField
-                  required
-                  id="expression-lbl"
-                  className={classes.cellContent}
-                  label="Expression"
-                  defaultValue={settings.expression}
-                  onChange={changeField('expression')}
-                />
-              </TableCell>
-              <TableCell className={classes.cell}>{/* empty since RepositoryCronRow has 4 columns */}</TableCell>
-              <TableCell className={classes.cell} sx={{ justifyContent: 'flex-end' }}>
-                <Tooltip title="Add New Cron Build">
-                  <IconButton
-                    aria-label="Add New Cron Build"
-                    component="span"
-                    onClick={() => addNewCronSetting()}
-                    size="large"
-                    className={classes.roundButton}
-                  >
-                    <Add />
-                  </IconButton>
-                </Tooltip>
-              </TableCell>
-            </TableRow>
           </TableBody>
         </Table>
       </CardContent>
+      <CardActions sx={{ justifyContent: 'center' }}>
+        <TextField required id="name-lbl" label="Name" defaultValue={settings.name} onChange={changeField('name')} />
+        <TextField
+          required
+          id="branch-lbl"
+          label="Branch"
+          defaultValue={settings.branch}
+          onChange={changeField('branch')}
+        />
+        <TextField
+          required
+          id="expression-lbl"
+          label="Expression"
+          defaultValue={settings.expression}
+          onChange={changeField('expression')}
+        />
+        <Tooltip title="Add New Cron Build">
+          <IconButton
+            aria-label="Add New Cron Build"
+            component="span"
+            onClick={() => addNewCronSetting()}
+            size="large"
+            className={classes.roundButton}
+          >
+            <Add />
+          </IconButton>
+        </Tooltip>
+      </CardActions>
     </Card>
   );
 }

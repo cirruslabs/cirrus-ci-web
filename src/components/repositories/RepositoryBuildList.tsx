@@ -31,6 +31,7 @@ import Settings from '@mui/icons-material/Settings';
 import AddCircle from '@mui/icons-material/AddCircle';
 import Timeline from '@mui/icons-material/Timeline';
 import environment from '../../createRelayEnvironment';
+import { Link } from '@mui/material';
 
 let styles = createStyles({
   gap: {
@@ -97,11 +98,11 @@ function RepositoryBuildList(props: Props) {
   if (repository.viewerPermission === 'WRITE' || repository.viewerPermission === 'ADMIN') {
     repositorySettings = (
       <Tooltip title="Repository Settings">
-        <a href={'/settings/repository/' + repository.id}>
+        <Link href={'/settings/repository/' + repository.id}>
           <IconButton size="large">
             <Settings />
           </IconButton>
-        </a>
+        </Link>
       </Tooltip>
     );
     repositoryAction = (
@@ -117,22 +118,22 @@ function RepositoryBuildList(props: Props) {
   }
 
   let repositoryMetrics = (
-    <a href={'/metrics/repository/' + repository.owner + '/' + repository.name}>
+    <Link href={'/metrics/repository/' + repository.owner + '/' + repository.name}>
       <Tooltip title="Repository Metrics">
         <IconButton size="large">
           <Timeline />
         </IconButton>
       </Tooltip>
-    </a>
+    </Link>
   );
 
   const repositoryLinkButton = (
     <Tooltip title="Open on GitHub">
-      <a href={createLinkToRepository(repository, props.branch)} target="_blank" rel="noopener noreferrer">
+      <Link href={createLinkToRepository(repository, props.branch)} target="_blank" rel="noopener noreferrer">
         <IconButton size="large">
           <GitHubIcon />
         </IconButton>
-      </a>
+      </Link>
     </Tooltip>
   );
 

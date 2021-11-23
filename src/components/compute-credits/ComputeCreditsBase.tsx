@@ -20,6 +20,7 @@ import { graphql } from 'babel-plugin-relay/macro';
 import { ComputeCreditsBase_info } from './__generated__/ComputeCreditsBase_info.graphql';
 import { Helmet as Head } from 'react-helmet';
 import ComputeCreditsStripeDialog from './ComputeCreditsStripeDialog';
+import { Link } from '@mui/material';
 
 const styles = theme =>
   createStyles({
@@ -83,12 +84,17 @@ function ComputeCreditsBase(props: Props) {
           <p>
             Compute credits are used for buying <b>priority</b> CPU time on Community Clusters for your private or
             public projects. It allows not to bother about configuring{' '}
-            <a href="https://cirrus-ci.org/guide/supported-computing-services/">Compute Services</a> and focus on the
-            product instead of infrastructure.
+            <Link color="inherit" href="https://cirrus-ci.org/guide/supported-computing-services/">
+              Compute Services
+            </Link>{' '}
+            and focus on the product instead of infrastructure.
           </p>
           <p>
             Read more about compute credits and how to use them in{' '}
-            <a href="https://cirrus-ci.org/pricing/#compute-credits">documentation</a>.
+            <Link color="inherit" href="https://cirrus-ci.org/pricing/#compute-credits">
+              documentation
+            </Link>
+            .
           </p>
           <p>
             <b>TLDR:</b> 1 compute credit can be bought for 1 US dollar. Here is how much 1000 minutes will cost for

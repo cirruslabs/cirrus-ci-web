@@ -9,7 +9,6 @@ import { useNotificationColor } from '../../utils/colors';
 import IconButton from '@mui/material/IconButton';
 import Icon from '@mui/material/Icon';
 import { navigateHelper } from '../../utils/navigateHelper';
-import classNames from 'classnames';
 import { Notification_notification } from './__generated__/Notification_notification.graphql';
 import { useNavigate } from 'react-router-dom';
 

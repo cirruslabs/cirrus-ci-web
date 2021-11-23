@@ -22,6 +22,7 @@ import {
   BillingSettingsDialogMutationVariables,
 } from './__generated__/BillingSettingsDialogMutation.graphql';
 import { BillingSettingsDialog_billingSettings } from './__generated__/BillingSettingsDialog_billingSettings.graphql';
+import { Link } from '@mui/material';
 
 const styles = theme =>
   createStyles({
@@ -107,7 +108,10 @@ function BillingSettingsDialog(props: Props) {
           <p>
             Your current limit is set to maximum <b className={classes.limit}>{billingSettings.billingCreditsLimit}</b>{' '}
             compute credits that your repositories can use each month. To increase the limit please{' '}
-            <a href="mailto:support@cirruslabs.org">email support</a>.
+            <Link color="inherit" href="mailto:support@cirruslabs.org">
+              email support
+            </Link>
+            .
           </p>
         </Typography>
         <FormControl fullWidth>

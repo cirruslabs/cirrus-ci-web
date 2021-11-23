@@ -3,7 +3,7 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import HookListRow from './HookListRow';
 import { FragmentRefs } from 'relay-runtime';
-import { Card, CardContent, Theme, Typography } from '@mui/material';
+import { Card, CardContent, Link, Theme, Typography } from '@mui/material';
 import createStyles from '@mui/styles/createStyles';
 import { HookType } from './HookType';
 import { WithStyles } from '@mui/styles';
@@ -58,9 +58,14 @@ def on_ENTITY_failed(ctx):
             <p>
               Here's an example of how you can receive notifications about failed {hookTypeName}s to your Slack channel
               using{' '}
-              <a href="https://api.slack.com/messaging/webhooks" target="_blank" rel="noopener noreferrer">
+              <Link
+                color="inherit"
+                href="https://api.slack.com/messaging/webhooks"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Incoming Webhooks
-              </a>
+              </Link>
               :
             </p>
             <pre className={classes.pre}>
@@ -73,9 +78,14 @@ def on_ENTITY_failed(ctx):
             <p>Now, every time the {hookTypeName} fails, the hook will run and the results will be displayed here!</p>
             <p>
               Additional documentation about hooks can be found{' '}
-              <a href="https://cirrus-ci.org/guide/programming-tasks/#hooks" target="_blank" rel="noopener noreferrer">
+              <Link
+                color="inherit"
+                href="https://cirrus-ci.org/guide/programming-tasks/#hooks"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 here
-              </a>
+              </Link>
               .
             </p>
           </Typography>

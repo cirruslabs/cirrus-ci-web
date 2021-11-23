@@ -21,6 +21,7 @@ import { WebHookSettings_info } from './__generated__/WebHookSettings_info.graph
 import FormHelperText from '@mui/material/FormHelperText';
 import sjcl from 'sjcl/sjcl.js';
 import { WebHookSettingsMutationVariables } from './__generated__/WebHookSettingsMutation.graphql';
+import { Link } from '@mui/material';
 
 const securedVariableMutation = graphql`
   mutation WebHookSettingsMutation($input: SaveWebHookSettingsInput!) {
@@ -117,9 +118,14 @@ function WebHookSettings(props: Props) {
       <FormHelperText>
         New secret token used to generate a signature for each request (learn how to validate the{' '}
         <code>X-Cirrus-Signature</code> header{' '}
-        <a href="https://cirrus-ci.org/api/#securing-webhooks" target="_blank" rel="noopener noreferrer">
+        <Link
+          color="inherit"
+          href="https://cirrus-ci.org/api/#securing-webhooks"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           in the documentation
-        </a>
+        </Link>
         ):
       </FormHelperText>
       <TextField
@@ -143,9 +149,9 @@ function WebHookSettings(props: Props) {
         <FormControl style={{ width: '100%' }}>
           <FormHelperText>
             A URL to send{' '}
-            <a href="https://cirrus-ci.org/api/#webhooks" target="_blank" rel="noopener noreferrer">
+            <Link color="inherit" href="https://cirrus-ci.org/api/#webhooks" target="_blank" rel="noopener noreferrer">
               updates for builds and tasks
-            </a>{' '}
+            </Link>{' '}
             to:
           </FormHelperText>
           <TextField

@@ -11,6 +11,7 @@ import CardActions from '@mui/material/CardActions';
 import CardHeader from '@mui/material/CardHeader';
 import environment from '../../createRelayEnvironment';
 import TextField from '@mui/material/TextField';
+import { Link } from '@mui/material';
 
 const styles = theme =>
   createStyles({
@@ -77,7 +78,10 @@ function ApiSettingsBase(props: Props) {
         <CardContent>
           <Typography variant="subtitle1">
             Need an API token for scripts or testing? Generate an access token for the Cirrus CI API here. See the{' '}
-            <a href="https://cirrus-ci.org/api/">documentation</a> for more details.
+            <Link color="inherit" href="https://cirrus-ci.org/api/">
+              documentation
+            </Link>{' '}
+            for more details.
           </Typography>
           {existingTokenComponent}
           {newTokenComponent}

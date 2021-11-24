@@ -1,17 +1,15 @@
 import React from 'react';
 import Paper from '@mui/material/Paper';
 import ReactMarkdown from 'react-markdown';
-import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
 import { Helmet as Head } from 'react-helmet';
 
-const styles = theme =>
-  createStyles({
-    paper: {
-      padding: theme.spacing(1.0) * 3,
-      margin: theme.spacing(1.0),
-    },
-  });
+const styles = theme => ({
+  paper: {
+    padding: theme.spacing(3.0),
+    margin: theme.spacing(1.0),
+  },
+});
 
 let welcomePage = props => (
   <Paper className={props.classes.paper}>

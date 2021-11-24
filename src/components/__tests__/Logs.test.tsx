@@ -21,17 +21,13 @@ I log things
 
   const tree = renderer
     .create(
-      <RecoilRoot>
-        <StyledEngineProvider injectFirst>
-          <ThemeProvider theme={createTheme(cirrusLightTheme)}>
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Logs logs={exampleLog} logsName="test" />} />
-              </Routes>
-            </BrowserRouter>
-          </ThemeProvider>
-        </StyledEngineProvider>
-      </RecoilRoot>,
+      <ThemeProvider theme={createTheme(cirrusLightTheme)}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Logs logs={exampleLog} logsName="test" />} />
+          </Routes>
+        </BrowserRouter>
+      </ThemeProvider>,
     )
     .toJSON();
   expect(tree).toMatchSnapshot();

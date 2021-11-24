@@ -61,7 +61,7 @@ interface Props extends WithStyles<typeof styles> {
 function TaskListRow(props: Props) {
   let navigate = useNavigate();
   let colorMapping = useTaskStatusColorMapping();
-  let { task, classes, overallDuration } = props;
+  let { task, classes, durationBeforeScheduling, overallDuration } = props;
   let progress = null;
   if (isTaskFinalStatus(task.status) && overallDuration && task.executingTimestamp) {
     let scheduledDuration = Math.max(0, task.executingTimestamp - task.scheduledTimestamp) / 1000;
@@ -79,6 +79,13 @@ function TaskListRow(props: Props) {
             alignItems: 'center',
           }}
         >
+          <Box
+            className={classes.progressBarElement}
+            sx={{
+              width: Math.floor((100 * durationBeforeScheduling) / overallDuration) + '%',
+              backgroundColor: 'transparent',
+            }}
+          />
           <Box
             className={classes.progressBarElement}
             sx={{

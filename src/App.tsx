@@ -2,7 +2,7 @@ import React from 'react';
 
 import Routes from './AllRoutes';
 import { cirrusThemeOptions } from './cirrusTheme';
-import { createTheme, ThemeProvider, Theme, StyledEngineProvider } from '@mui/material/styles';
+import { createTheme, StyledEngineProvider, Theme, ThemeProvider } from '@mui/material/styles';
 import CirrusFavicon from './components/common/CirrusFavicon';
 import { CssBaseline } from '@mui/material';
 import { useRecoilValue } from 'recoil';

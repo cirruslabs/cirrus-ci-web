@@ -1,9 +1,8 @@
 import React, { ReactNode } from 'react';
-import { Theme } from '@mui/material';
+import { Alert, Theme } from '@mui/material';
 import createStyles from '@mui/styles/createStyles';
 import { WithStyles } from '@mui/styles';
 import withStyles from '@mui/styles/withStyles';
-import { Alert } from '@mui/material';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { ConfigurationWithIssues_build } from './__generated__/ConfigurationWithIssues_build.graphql';

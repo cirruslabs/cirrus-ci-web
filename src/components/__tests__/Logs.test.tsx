@@ -1,11 +1,11 @@
 import React from 'react';
 import Logs from '../logs/Logs';
 import renderer from 'react-test-renderer';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ThemeProvider, Theme, StyledEngineProvider } from '@mui/styles';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { ThemeProvider } from '@mui/styles';
 import { createTheme } from '@mui/material/styles';
 import { cirrusLightTheme } from '../../cirrusTheme';
-import { RecoilRoot } from 'recoil';
+import { Theme } from '@mui/material';
 
 declare module '@mui/styles/defaultTheme' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface

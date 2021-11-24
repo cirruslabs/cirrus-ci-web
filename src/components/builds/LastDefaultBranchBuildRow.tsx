@@ -67,15 +67,18 @@ function LastDefaultBranchBuildRow(props: Props) {
       style={{ cursor: 'pointer' }}
     >
       <TableCell className={classes.cell}>
-        <div className="d-flex flex-column align-items-start">
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
           <RepositoryNameChip repository={repository} className={classes.chip} />
           <BuildChangeChip build={repository.lastDefaultBranchBuild} className={classes.chip} />
         </div>
-        <div className={classNames('d-lg-none', classes.message)}>
-          <Typography variant="body1" color="inherit">
-            {build.changeMessageTitle}
-          </Typography>
-        </div>
+        <Typography
+          variant="body1"
+          color="inherit"
+          className={classes.message}
+          sx={{ display: { xs: 'block', sm: 'none' } }}
+        >
+          {build.changeMessageTitle}
+        </Typography>
       </TableCell>
       <TableCell className={classNames(classes.cell, classes.message)}>
         <div className="card-body">

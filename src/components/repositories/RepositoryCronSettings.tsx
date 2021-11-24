@@ -196,7 +196,7 @@ function RepositoryCronSettings(props: Props) {
                   className={classes.cell}
                   onClick={event => navigateBuildHelper(navigate, event, settings.lastInvocationBuild?.id)}
                 >
-                  <div className="d-flex">
+                  <div style={{ display: 'flex' }}>
                     <NextCronInvocationTimeChip settings={settings} className={classes.chip} />
                     {settings.lastInvocationBuild ? (
                       <Tooltip title="Last invocation build">

@@ -104,13 +104,16 @@ export const styles = theme =>
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'flex-end',
-      padding: '0',
+      paddingTop: '0',
       backgroundColor: theme.palette.action.disabledBackground,
       ...theme.mixins.toolbar,
     },
     drawerPaper: {
       position: 'relative',
       width: drawerWidth,
+    },
+    routesPadding: {
+      paddingTop: theme.spacing(1.0),
     },
     topRepositories: {
       width: drawerWidth,
@@ -247,7 +250,11 @@ function AllRoutes(props: WithStyles<typeof styles>) {
           })}
         >
           <div className={classNames('invisible', classes.drawerHeader)} />
-          <Container maxWidth={openDrawer ? false : 'lg'} disableGutters={openDrawer}>
+          <Container
+            className={openDrawer ? '' : classes.routesPadding}
+            maxWidth={openDrawer ? false : 'lg'}
+            disableGutters={openDrawer}
+          >
             <Suspense fallback={<CirrusLinearProgress />}>
               <Routes>
                 <Route path="/" element={<AsyncHome />} />

@@ -18,10 +18,8 @@ import BuildChangeChip from '../chips/BuildChangeChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
 import { WithStyles } from '@mui/styles';
-import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import classNames from 'classnames';
 import CreateBuildDialog from '../builds/CreateBuildDialog';
 import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildList_repository.graphql';
 import { NodeOfConnection } from '../../utils/utility-types';
@@ -31,9 +29,9 @@ import Settings from '@mui/icons-material/Settings';
 import AddCircle from '@mui/icons-material/AddCircle';
 import Timeline from '@mui/icons-material/Timeline';
 import environment from '../../createRelayEnvironment';
-import { Link } from '@mui/material';
+import { Box, Link } from '@mui/material';
 
-let styles = createStyles({
+const styles = theme => ({
   gap: {
     paddingTop: 16,
   },
@@ -41,7 +39,6 @@ let styles = createStyles({
     margin: 4,
   },
   cell: {
-    padding: '5px',
     width: '100%',
     maxWidth: '600px',
   },
@@ -53,11 +50,10 @@ let styles = createStyles({
   },
   wrapper: {
     display: 'flex',
-    flexWrap: 'wrap',
     alignItems: 'center',
   },
-  row: {
-    padding: '3px',
+  padding: {
+    margin: theme.spacing(0.5),
   },
 });
 
@@ -162,21 +158,29 @@ function RepositoryBuildList(props: Props) {
         onClick={e => navigateBuildHelper(navigate, e, build.id)}
         style={{ cursor: 'pointer' }}
       >
-        <TableCell className={classes.row}>
-          <div className="d-flex flex-column align-items-start">
+        <TableCell className={classes.padding}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
             <BuildBranchNameChip build={build} className={classes.chip} />
             <BuildChangeChip build={build} className={classes.chip} />
-            <BuildStatusChip build={build} className={classNames('d-lg-none', classes.chip)} />
+            <Box component="span" sx={{ display: { xs: 'block', sm: 'none' } }}>
+              <BuildStatusChip build={build} className={classes.chip} />
+            </Box>
           </div>
         </TableCell>
         <TableCell className={classes.cell}>
-          <div className="card-body">
+          <div>
             <Typography variant="body1" color="inherit">
               {build.changeMessageTitle}
             </Typography>
           </div>
         </TableCell>
-        <TableCell className={classNames('d-none', 'd-lg-table-cell', classes.cell)}>
+        <TableCell
+          className={classes.cell}
+          sx={{
+            display: { xs: 'none', sm: 'table-cell' },
+            alignItems: 'center',
+          }}
+        >
           <BuildStatusChip build={build} className={classes.chip} />
         </TableCell>
       </TableRow>

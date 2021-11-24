@@ -33,7 +33,11 @@ const styles = theme =>
     },
     cell: {
       padding: 0,
-      height: '100%',
+      width: '100%',
+    },
+    padding: {
+      padding: 0,
+      margin: theme.spacing(0.5),
     },
     progressBar: {
       backgroundColor: 'transparent',
@@ -95,22 +99,33 @@ function TaskListRow(props: Props) {
   }
   return (
     <TableRow onClick={e => navigateTaskHelper(navigate, e, task.id)} hover={true} style={{ cursor: 'pointer' }}>
-      <TableCell className={classNames(classes.cell)}>
-        <TaskDurationChip task={task} className={classNames(classes.chip, classes.lastChip)} />
-        <TaskNameChip task={task} className={classes.chip} />
-        {props.showCreation ? <TaskCreatedChip task={task} className={classes.chip} /> : null}
-        <TaskDurationChip task={task} className={classNames(classes.chip, 'd-none', 'd-md-none')} />
+      <TableCell className={classes.padding}>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+          <TaskDurationChip task={task} className={classNames(classes.chip, classes.lastChip)} />
+          <TaskNameChip task={task} className={classes.chip} />
+          {props.showCreation ? <TaskCreatedChip task={task} className={classes.chip} /> : null}
+        </div>
       </TableCell>
-      <Hidden lgDown>
-        <TableCell className={classNames('d-none', 'd-lg-table-cell', classes.cell)}>
-          {task.uniqueLabels.map(label => {
-            return <Chip key={label} className={classes.chip} label={shorten(label)} />;
-          })}
-        </TableCell>
-      </Hidden>
-      <Hidden mdDown>
-        <TableCell className={classNames(classes.cell)}>{progress}</TableCell>
-      </Hidden>
+      <TableCell
+        className={classes.cell}
+        sx={{
+          display: { xs: 'none', md: 'table-cell' },
+          alignItems: 'center',
+        }}
+      >
+        {task.uniqueLabels.map(label => {
+          return <Chip key={label} className={classes.chip} label={shorten(label)} />;
+        })}
+      </TableCell>
+      <TableCell
+        className={classes.cell}
+        sx={{
+          display: { xs: 'none', sm: 'table-cell' },
+          alignItems: 'center',
+        }}
+      >
+        {progress}
+      </TableCell>
     </TableRow>
   );
 }

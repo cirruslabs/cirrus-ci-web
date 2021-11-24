@@ -147,7 +147,7 @@ function HookDetails(props: Props) {
 
   const executionLogs =
     props.hook.info.outputLogs.length === 0 ? (
-      <div className="d-flex justify-content-center align-items-center">
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <span>
           There doesn't seem to be anything here. Try generating some logs with <code>print()</code>!
         </span>
@@ -184,7 +184,7 @@ function HookDetails(props: Props) {
             <code>{targetState}</code> state.
           </p>
         </CardContent>
-        <CardActions className="d-flex flex-wrap justify-content-end">
+        <CardActions style={{ justifyContent: 'end' }}>
           <Button variant="contained" onClick={navigateToAllHooks} startIcon={<ArrowBack />}>
             View All Hooks
           </Button>

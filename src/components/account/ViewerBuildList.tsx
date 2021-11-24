@@ -19,7 +19,6 @@ import { navigateBuildHelper } from '../../utils/navigateHelper';
 import Typography from '@mui/material/Typography';
 import { WithStyles } from '@mui/styles';
 import withStyles from '@mui/styles/withStyles';
-import classNames from 'classnames';
 import { ViewerBuildList_viewer } from './__generated__/ViewerBuildList_viewer.graphql';
 import { Helmet as Head } from 'react-helmet';
 import { Box } from '@mui/material';

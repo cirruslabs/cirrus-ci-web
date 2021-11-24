@@ -18,7 +18,7 @@ import TaskCreatedChip from '../chips/TaskCreatedChip';
 import { TaskListRow_task } from './__generated__/TaskListRow_task.graphql';
 import { isTaskFinalStatus } from '../../utils/status';
 import { useTaskStatusColorMapping } from '../../utils/colors';
-import { Box, Hidden, Tooltip } from '@mui/material';
+import { Box, Tooltip } from '@mui/material';
 import { formatDuration } from '../../utils/time';
 
 const styles = theme =>

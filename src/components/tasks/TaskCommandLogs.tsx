@@ -104,10 +104,8 @@ function TaskCommandLogs(props: TaskCommandLogsProps) {
       render={response => {
         if (!response.props) {
           return (
-            <div style={{ width: '100%', minHeight: 100 }}>
-              <div className="text-center">
-                <CirrusCircularProgress />
-              </div>
+            <div style={{ width: '100%', minHeight: 100, justifyContent: 'center' }}>
+              <CirrusCircularProgress />
             </div>
           );
         }

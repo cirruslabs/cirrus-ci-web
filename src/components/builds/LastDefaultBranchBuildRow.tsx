@@ -81,11 +81,9 @@ function LastDefaultBranchBuildRow(props: Props) {
         </Typography>
       </TableCell>
       <TableCell className={classNames(classes.cell, classes.message)}>
-        <div className="card-body">
-          <Typography variant="body1" color="inherit">
-            {build.changeMessageTitle}
-          </Typography>
-        </div>
+        <Typography variant="body1" color="inherit">
+          {build.changeMessageTitle}
+        </Typography>
       </TableCell>
       <TableCell className={classes.cell}>
         <BuildStatusChip build={build} className={classNames('pull-right', classes.chip)} />

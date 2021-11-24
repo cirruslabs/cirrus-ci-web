@@ -16,9 +16,7 @@ export default props => {
           display: 'inline-flex',
         }}
       >
-        <Icon style={{ fontSize: '96px' }} className="center-block">
-          sentiment_very_dissatisfied
-        </Icon>
+        <Icon style={{ fontSize: '96px' }}>sentiment_very_dissatisfied</Icon>
         {props.messageComponent ? (
           props.messageComponent
         ) : (

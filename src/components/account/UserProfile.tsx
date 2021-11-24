@@ -127,7 +127,6 @@ function UserProfile(props: Props) {
                   <Tooltip title="Organization settings">
                     <IconButton
                       onClick={e => navigateHelper(navigate, e, '/settings/github/' + organization.name)}
-                      className="pull-right"
                       size="large"
                     >
                       <Settings />

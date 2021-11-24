@@ -197,7 +197,7 @@ function RepositoryBuildList(props: Props) {
       <Paper elevation={16}>
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <div className={classes.wrapper}>
-            <Typography className="align-self-center" variant="h6" color="inherit">
+            <Typography variant="h6" color="inherit">
               {repository.owner + '/' + repository.name}
             </Typography>
             {repositoryAction}

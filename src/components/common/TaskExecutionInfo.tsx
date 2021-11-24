@@ -47,7 +47,7 @@ function TaskExecutionInfo(props: Props) {
     });
     return (
       <Box sx={{ flexDirection: 'column', justifyContent: 'center', width: '100%' }}>
-        <Typography variant="h6" align="center" className="align-middle">
+        <Typography variant="h6" align="center">
           CPU Usage
         </Typography>
         <ResponsiveContainer height={200} width="100%">
@@ -95,7 +95,7 @@ function TaskExecutionInfo(props: Props) {
     });
     return (
       <Box sx={{ flexDirection: 'column', justifyContent: 'center', width: '100%' }}>
-        <Typography variant="h6" align="center" className="align-middle">
+        <Typography variant="h6" align="center">
           Memory Usage ({memoryUnit})
         </Typography>
         <ResponsiveContainer height={200} width="100%">

@@ -1,10 +1,12 @@
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
 import { graphql } from 'babel-plugin-relay/macro';
 import React, { useEffect } from 'react';
 import { commitMutation, createFragmentContainer, requestSubscription } from 'react-relay';
@@ -17,17 +19,17 @@ import CirrusFavicon from '../common/CirrusFavicon';
 import TaskList from '../tasks/TaskList';
 import { BuildDetails_build } from './__generated__/BuildDetails_build.graphql';
 import { Helmet as Head } from 'react-helmet';
-import Refresh from '@material-ui/icons/Refresh';
-import Check from '@material-ui/icons/Check';
+import Refresh from '@mui/icons-material/Refresh';
+import Check from '@mui/icons-material/Check';
 import BuildBranchNameChip from '../chips/BuildBranchNameChip';
 import Notification from '../common/Notification';
 import classNames from 'classnames';
 import ConfigurationWithIssues from './ConfigurationWithIssues';
 import HookList from '../hooks/HookList';
-import { TabContext, TabList, TabPanel, ToggleButton } from '@material-ui/lab';
-import { AppBar, Collapse, Tab } from '@material-ui/core';
-import { BugReport, Dehaze, Functions, Stop } from '@material-ui/icons';
-import Tooltip from '@material-ui/core/Tooltip';
+import { Box, Collapse, Link, Tab, ToggleButton } from '@mui/material';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
+import { BugReport, Dehaze, Functions, Stop } from '@mui/icons-material';
+import Tooltip from '@mui/material/Tooltip';
 import DebuggingInformation from './DebuggingInformation';
 import RepositoryOwnerChip from '../chips/RepositoryOwnerChip';
 import { HookType } from '../hooks/HookType';
@@ -254,12 +256,10 @@ function BuildDetails(props: Props) {
   };
   const tabbedTasksAndHooks = (
     <TabContext value={currentTab}>
-      <AppBar position="static">
-        <TabList onChange={handleChange}>
-          <Tab icon={<Dehaze />} label={'Tasks (' + build.latestGroupTasks.length + ')'} value="1" />
-          <Tab icon={<Functions />} label={'Hooks (' + build.hooks.length + ')'} value="2" />
-        </TabList>
-      </AppBar>
+      <TabList onChange={handleChange}>
+        <Tab icon={<Dehaze />} label={'Tasks (' + build.latestGroupTasks.length + ')'} value="1" />
+        <Tab icon={<Functions />} label={'Hooks (' + build.hooks.length + ')'} value="2" />
+      </TabList>
       <TabPanel value="1" className={classes.tabPanel}>
         <TaskList tasks={build.latestGroupTasks} />
       </TabPanel>
@@ -280,9 +280,9 @@ function BuildDetails(props: Props) {
       <Head>
         <title>{build.changeMessageTitle} - Cirrus CI</title>
       </Head>
-      <Card>
+      <Card elevation={24}>
         <CardContent>
-          <div className="d-flex justify-content-between">
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
             <div>
               <div className={classes.wrapper}>
                 <RepositoryOwnerChip className={classes.chip} repository={build.repository} />
@@ -296,29 +296,29 @@ function BuildDetails(props: Props) {
             </div>
             <div>
               <Tooltip title="Debugging Information">
-                <ToggleButton onClick={toggleDisplayDebugInfo} selected={displayDebugInfo}>
+                <ToggleButton value="bug" onClick={toggleDisplayDebugInfo} selected={displayDebugInfo}>
                   <BugReport />
                 </ToggleButton>
               </Tooltip>
             </div>
-          </div>
+          </Box>
           <div className={classes.gap} />
           <Typography variant="h6" gutterBottom>
             {build.changeMessageTitle}
           </Typography>
           <Typography variant="subtitle1" gutterBottom>
             Commit{' '}
-            <a href={commitUrl} target="_blank" rel="noopener noreferrer">
+            <Link href={commitUrl} color="inherit" target="_blank" rel="noopener noreferrer">
               {build.changeIdInRepo.substr(0, 7)}
-            </a>{' '}
+            </Link>{' '}
             on branch{' '}
-            <a href={branchUrl} target="_blank" rel="noopener noreferrer">
+            <Link href={branchUrl} color="inherit" target="_blank" rel="noopener noreferrer">
               {build.branch}
-            </a>
+            </Link>
             .
           </Typography>
         </CardContent>
-        <CardActions className="d-flex flex-wrap justify-content-end">
+        <CardActions sx={{ justifyContent: 'flex-end' }}>
           {reTriggerButton}
           {approveButton}
           {reRunAllTasksButton}
@@ -331,7 +331,7 @@ function BuildDetails(props: Props) {
         <DebuggingInformation build={build} />
       </Collapse>
       <div className={classes.gap} />
-      <Paper elevation={2}>{tabbedTasksAndHooks}</Paper>
+      <Paper elevation={24}>{tabbedTasksAndHooks}</Paper>
     </div>
   );
 }

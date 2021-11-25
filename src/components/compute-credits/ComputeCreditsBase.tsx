@@ -1,15 +1,17 @@
-import Button from '@material-ui/core/Button/Button';
-import Card from '@material-ui/core/Card/Card';
-import CardActions from '@material-ui/core/CardActions/CardActions';
-import CardContent from '@material-ui/core/CardContent/CardContent';
-import CardHeader from '@material-ui/core/CardHeader/CardHeader';
-import Collapse from '@material-ui/core/Collapse/Collapse';
-import { orange } from '@material-ui/core/colors';
-import IconButton from '@material-ui/core/IconButton/IconButton';
-import Typography from '@material-ui/core/Typography/Typography';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
+import Button from '@mui/material/Button/Button';
+import Card from '@mui/material/Card/Card';
+import CardActions from '@mui/material/CardActions/CardActions';
+import CardContent from '@mui/material/CardContent/CardContent';
+import CardHeader from '@mui/material/CardHeader/CardHeader';
+import Collapse from '@mui/material/Collapse/Collapse';
+import { orange } from '@mui/material/colors';
+import IconButton from '@mui/material/IconButton/IconButton';
+import Typography from '@mui/material/Typography/Typography';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import BillingSettingsButton from './BillingSettingsButton';
@@ -18,6 +20,7 @@ import { graphql } from 'babel-plugin-relay/macro';
 import { ComputeCreditsBase_info } from './__generated__/ComputeCreditsBase_info.graphql';
 import { Helmet as Head } from 'react-helmet';
 import ComputeCreditsStripeDialog from './ComputeCreditsStripeDialog';
+import { Link } from '@mui/material';
 
 const styles = theme =>
   createStyles({
@@ -67,7 +70,7 @@ function ComputeCreditsBase(props: Props) {
   let { classes } = props;
 
   return (
-    <Card>
+    <Card elevation={24}>
       <CardHeader title="Compute Credits" />
       <Head>
         <script src="https://js.stripe.com/v3/" async></script>
@@ -81,12 +84,17 @@ function ComputeCreditsBase(props: Props) {
           <p>
             Compute credits are used for buying <b>priority</b> CPU time on Community Clusters for your private or
             public projects. It allows not to bother about configuring{' '}
-            <a href="https://cirrus-ci.org/guide/supported-computing-services/">Compute Services</a> and focus on the
-            product instead of infrastructure.
+            <Link color="inherit" href="https://cirrus-ci.org/guide/supported-computing-services/">
+              Compute Services
+            </Link>{' '}
+            and focus on the product instead of infrastructure.
           </p>
           <p>
             Read more about compute credits and how to use them in{' '}
-            <a href="https://cirrus-ci.org/pricing/#compute-credits">documentation</a>.
+            <Link color="inherit" href="https://cirrus-ci.org/pricing/#compute-credits">
+              documentation
+            </Link>
+            .
           </p>
           <p>
             <b>TLDR:</b> 1 compute credit can be bought for 1 US dollar. Here is how much 1000 minutes will cost for
@@ -117,6 +125,7 @@ function ComputeCreditsBase(props: Props) {
           onClick={() => setExpanded(!expanded)}
           aria-expanded={expanded}
           aria-label="Show Transactions"
+          size="large"
         >
           <ExpandMoreIcon />
         </IconButton>

@@ -1,5 +1,5 @@
-import { IconButton, Tooltip, useTheme } from '@material-ui/core';
-import CloudIcon from '@material-ui/icons/Cloud';
+import { IconButton, Tooltip, useTheme } from '@mui/material';
+import CloudIcon from '@mui/icons-material/Cloud';
 import { selector, useRecoilValue } from 'recoil';
 import React from 'react';
 
@@ -25,7 +25,7 @@ export default () => {
 
   return (
     <Tooltip title="Google Cloud has an ongoing incident that can affect normal operations">
-      <IconButton href="https://status.cloud.google.com/" target="_blank" rel="noopener noreferrer">
+      <IconButton href="https://status.cloud.google.com/" target="_blank" rel="noopener noreferrer" size="large">
         <CloudIcon style={{ color: theme.palette.error.dark }} />
       </IconButton>
     </Tooltip>

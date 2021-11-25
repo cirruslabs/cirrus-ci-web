@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import environment from '../../createRelayEnvironment';
 import { commitMutation, createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
-import FormControl from '@material-ui/core/FormControl';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import FormControl from '@mui/material/FormControl';
 import CopyPasteField from '../common/CopyPasteField';
-import TextField from '@material-ui/core/TextField';
+import TextField from '@mui/material/TextField';
 import { RepositorySecuredVariables_repository } from './__generated__/RepositorySecuredVariables_repository.graphql';
 import {
   RepositorySecuredVariablesMutationResponse,
@@ -62,7 +62,7 @@ function RepositorySecuredVariables(props: Props) {
   }
 
   return (
-    <Card>
+    <Card elevation={24}>
       <CardHeader title="Secured Variables" />
       <CardContent>
         <FormControl style={{ width: '100%' }}>

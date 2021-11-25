@@ -1,17 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders correctly 1`] = `
-<div
-  className="MuiLinearProgress-root MuiLinearProgress-colorPrimary MuiLinearProgress-indeterminate"
+<span
+  className="MuiLinearProgress-root MuiLinearProgress-colorPrimary MuiLinearProgress-indeterminate css-eglki6-MuiLinearProgress-root"
   role="progressbar"
 >
-  <div
-    className="MuiLinearProgress-bar MuiLinearProgress-barColorPrimary CirrusLinearProgress-progress-1 MuiLinearProgress-bar1Indeterminate"
+  <span
+    className="MuiLinearProgress-bar CirrusLinearProgress-progress-1 MuiLinearProgress-barColorPrimary MuiLinearProgress-bar1Indeterminate css-5ir5xx-MuiLinearProgress-bar1"
     style={Object {}}
   />
-  <div
-    className="MuiLinearProgress-bar MuiLinearProgress-bar2Indeterminate MuiLinearProgress-barColorPrimary CirrusLinearProgress-progress-1"
+  <span
+    className="MuiLinearProgress-bar CirrusLinearProgress-progress-1 MuiLinearProgress-barColorPrimary MuiLinearProgress-bar2Indeterminate css-1r8wrcl-MuiLinearProgress-bar2"
     style={Object {}}
   />
-</div>
+</span>
 `;

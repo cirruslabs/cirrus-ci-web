@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import Chip from '@material-ui/core/Chip';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import Chip from '@mui/material/Chip';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { withStyles, WithStyles } from '@material-ui/core/styles';
-import ReportIcon from '@material-ui/icons/Report';
-import SendIcon from '@material-ui/icons/Send';
+import { WithStyles } from '@mui/styles';
+import withStyles from '@mui/styles/withStyles';
+import ReportIcon from '@mui/icons-material/Report';
+import SendIcon from '@mui/icons-material/Send';
 import classNames from 'classnames';
 import DeliveryInfoDialog from './DeliveryInfoDialog';
 import { DeliveryRow_delivery } from './__generated__/DeliveryRow_delivery.graphql';
-import Avatar from '@material-ui/core/Avatar';
-import { useTheme } from '@material-ui/core';
+import Avatar from '@mui/material/Avatar';
+import { useTheme } from '@mui/material';
 
 const styles = {
   chip: {

@@ -9,6 +9,11 @@ body {
   font-size: 14px;
 }
 
+/* workaround for https://github.com/mui-org/material-ui/issues/29819 */
+.MuiCardActions-spacing > :not(:first-child) {
+  margin-left: 8px;
+}
+
 .card-text {
   white-space: normal;
 }

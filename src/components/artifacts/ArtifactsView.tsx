@@ -1,24 +1,25 @@
 import React, { useState } from 'react';
-import Typography from '@material-ui/core/Typography';
-import { withStyles, WithStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import IconButton from '@material-ui/core/IconButton';
-import Toolbar from '@material-ui/core/Toolbar';
-import Tooltip from '@material-ui/core/Tooltip';
-import Paper from '@material-ui/core/Paper';
+import Typography from '@mui/material/Typography';
+import { WithStyles } from '@mui/styles';
+import withStyles from '@mui/styles/withStyles';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import IconButton from '@mui/material/IconButton';
+import Toolbar from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
+import Paper from '@mui/material/Paper';
 import { navigateHelper } from '../../utils/navigateHelper';
 import { TaskArtifacts_task } from './__generated__/TaskArtifacts_task.graphql';
-import Folder from '@material-ui/icons/Folder';
-import InsertDriveFile from '@material-ui/icons/InsertDriveFile';
-import GetApp from '@material-ui/icons/GetApp';
-import FolderOpen from '@material-ui/icons/FolderOpen';
-import ViewList from '@material-ui/icons/ViewList';
-import AccountTree from '@material-ui/icons/AccountTree';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import Folder from '@mui/icons-material/Folder';
+import InsertDriveFile from '@mui/icons-material/InsertDriveFile';
+import GetApp from '@mui/icons-material/GetApp';
+import FolderOpen from '@mui/icons-material/FolderOpen';
+import ViewList from '@mui/icons-material/ViewList';
+import AccountTree from '@mui/icons-material/AccountTree';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { useNavigate } from 'react-router-dom';
 
 const styles = {
@@ -157,7 +158,7 @@ function ArtifactsView(props: Props) {
           </ListItemIcon>
           <ListItemText primary={artifact.name} />
           <Tooltip title="Download All Files (.zip)">
-            <IconButton onClick={e => navigateHelper(navigate, e, artifactArchiveURL(artifact.name))}>
+            <IconButton onClick={e => navigateHelper(navigate, e, artifactArchiveURL(artifact.name))} size="large">
               <GetApp />
             </IconButton>
           </Tooltip>
@@ -197,7 +198,7 @@ function ArtifactsView(props: Props) {
   }
 
   return (
-    <Paper elevation={1}>
+    <Paper elevation={16}>
       <Toolbar className={classes.title}>
         <Typography variant="h6" color="inherit" className={classes.title}>
           {currentPath() || 'Artifacts'}

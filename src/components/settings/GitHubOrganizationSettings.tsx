@@ -1,10 +1,12 @@
 import React from 'react';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import Paper from '@material-ui/core/Paper';
-import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Toolbar from '@material-ui/core/Toolbar';
+import Paper from '@mui/material/Paper';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import Typography from '@mui/material/Typography';
+import Toolbar from '@mui/material/Toolbar';
 import OrganizationComputeCredits from '../compute-credits/OrganizationComputeCredits';
 import GitHubPurchase from '../purchase/GitHubPurchase';
 import WebHookSettings from '../webhooks/WebHookSettings';
@@ -41,7 +43,7 @@ function GitHubOrganizationSettings(props: Props) {
 
   return (
     <div>
-      <Paper elevation={1}>
+      <Paper elevation={16}>
         <Toolbar className={classes.title}>
           <Typography variant="h6" color="inherit">
             Settings for {organization} organization
@@ -49,27 +51,27 @@ function GitHubOrganizationSettings(props: Props) {
         </Toolbar>
       </Paper>
       <div className={classes.settingGap} />
-      <Paper elevation={1}>
+      <Paper elevation={16}>
         <GitHubPurchase info={info} />
       </Paper>
       <div className={classes.settingGap} />
-      <Paper elevation={1}>
+      <Paper elevation={16}>
         <OrganizationComputeCredits info={info} />
       </Paper>
       <div className={classes.settingGap} />
-      <Paper elevation={1}>
+      <Paper elevation={16}>
         <OrganizationSecuredVariables info={info} />
       </Paper>
       <div className={classes.settingGap} />
-      <Paper elevation={1}>
+      <Paper elevation={16}>
         <OrganizationApiSettings info={info} />
       </Paper>
       <div className={classes.settingGap} />
-      <Paper elevation={1}>
+      <Paper elevation={16}>
         <OrganizationPersistentWorkerPools info={info} />
       </Paper>
       <div className={classes.settingGap} />
-      <Paper elevation={1}>
+      <Paper elevation={16}>
         <WebHookSettings info={info} />
       </Paper>
       <div className={classes.settingGap} />

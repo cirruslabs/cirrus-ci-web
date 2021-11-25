@@ -2,23 +2,26 @@ import React, { useState } from 'react';
 import environment from '../../createRelayEnvironment';
 import { commitMutation, createPaginationContainer, RelayPaginationProp } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
-import FormControl from '@material-ui/core/FormControl';
-import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
-import Collapse from '@material-ui/core/Collapse';
-import IconButton from '@material-ui/core/IconButton';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import FormControl from '@mui/material/FormControl';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
 import classNames from 'classnames';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeliveriesList from './DeliveriesList';
 import { WebHookSettings_info } from './__generated__/WebHookSettings_info.graphql';
-import FormHelperText from '@material-ui/core/FormHelperText';
+import FormHelperText from '@mui/material/FormHelperText';
 import sjcl from 'sjcl/sjcl.js';
 import { WebHookSettingsMutationVariables } from './__generated__/WebHookSettingsMutation.graphql';
+import { Link } from '@mui/material';
 
 const securedVariableMutation = graphql`
   mutation WebHookSettingsMutation($input: SaveWebHookSettingsInput!) {
@@ -115,9 +118,14 @@ function WebHookSettings(props: Props) {
       <FormHelperText>
         New secret token used to generate a signature for each request (learn how to validate the{' '}
         <code>X-Cirrus-Signature</code> header{' '}
-        <a href="https://cirrus-ci.org/api/#securing-webhooks" target="_blank" rel="noopener noreferrer">
+        <Link
+          color="inherit"
+          href="https://cirrus-ci.org/api/#securing-webhooks"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           in the documentation
-        </a>
+        </Link>
         ):
       </FormHelperText>
       <TextField
@@ -135,15 +143,15 @@ function WebHookSettings(props: Props) {
   const secretTokenUnchanged = hasTokenSet || secretToken === '';
 
   return (
-    <Card>
+    <Card elevation={24}>
       <CardHeader title="Webhook Settings" />
       <CardContent>
         <FormControl style={{ width: '100%' }}>
           <FormHelperText>
             A URL to send{' '}
-            <a href="https://cirrus-ci.org/api/#webhooks" target="_blank" rel="noopener noreferrer">
+            <Link color="inherit" href="https://cirrus-ci.org/api/#webhooks" target="_blank" rel="noopener noreferrer">
               updates for builds and tasks
-            </a>{' '}
+            </Link>{' '}
             to:
           </FormHelperText>
           <TextField
@@ -171,6 +179,7 @@ function WebHookSettings(props: Props) {
           onClick={() => setExpanded(!expanded)}
           aria-expanded={expanded}
           aria-label="Show Deliveries"
+          size="large"
         >
           <ExpandMoreIcon />
         </IconButton>

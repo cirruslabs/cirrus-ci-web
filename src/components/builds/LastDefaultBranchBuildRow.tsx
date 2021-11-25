@@ -2,16 +2,17 @@ import React, { useEffect } from 'react';
 import { createFragmentContainer, requestSubscription } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import { withStyles, WithStyles } from '@material-ui/core/styles';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import { WithStyles } from '@mui/styles';
+import withStyles from '@mui/styles/withStyles';
 import { useNavigate } from 'react-router-dom';
 import { navigateRepositoryHelper } from '../../utils/navigateHelper';
 import RepositoryNameChip from '../chips/RepositoryNameChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import classNames from 'classnames';
 import BuildChangeChip from '../chips/BuildChangeChip';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import { LastDefaultBranchBuildRow_repository } from './__generated__/LastDefaultBranchBuildRow_repository.graphql';
 
 const buildSubscription = graphql`
@@ -66,22 +67,23 @@ function LastDefaultBranchBuildRow(props: Props) {
       style={{ cursor: 'pointer' }}
     >
       <TableCell className={classes.cell}>
-        <div className="d-flex flex-column align-items-start">
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
           <RepositoryNameChip repository={repository} className={classes.chip} />
           <BuildChangeChip build={repository.lastDefaultBranchBuild} className={classes.chip} />
         </div>
-        <div className={classNames('d-lg-none', classes.message)}>
-          <Typography variant="body1" color="inherit">
-            {build.changeMessageTitle}
-          </Typography>
-        </div>
+        <Typography
+          variant="body1"
+          color="inherit"
+          className={classes.message}
+          sx={{ display: { xs: 'block', sm: 'none' } }}
+        >
+          {build.changeMessageTitle}
+        </Typography>
       </TableCell>
       <TableCell className={classNames(classes.cell, classes.message)}>
-        <div className="card-body">
-          <Typography variant="body1" color="inherit">
-            {build.changeMessageTitle}
-          </Typography>
-        </div>
+        <Typography variant="body1" color="inherit">
+          {build.changeMessageTitle}
+        </Typography>
       </TableCell>
       <TableCell className={classes.cell}>
         <BuildStatusChip build={build} className={classNames('pull-right', classes.chip)} />

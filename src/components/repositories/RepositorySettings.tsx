@@ -1,13 +1,13 @@
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import Switch from '@material-ui/core/Switch';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormHelperText from '@mui/material/FormHelperText';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import Switch from '@mui/material/Switch';
 import { graphql } from 'babel-plugin-relay/macro';
 import React, { useState } from 'react';
 import { commitMutation, createFragmentContainer } from 'react-relay';
@@ -27,9 +27,9 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-} from '@material-ui/core';
-import { AddCircle } from '@material-ui/icons';
-import DeleteIcon from '@material-ui/icons/Delete';
+} from '@mui/material';
+import { AddCircle } from '@mui/icons-material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const saveSettingsMutation = graphql`
   mutation RepositorySettingsMutation($input: RepositorySettingsInput!) {
@@ -127,7 +127,7 @@ function RepositorySettings(props: Props) {
     settings.decryptEnvironmentVariables === initialSettings.decryptEnvironmentVariables &&
     settings.cacheVersion === initialSettings.cacheVersion;
   return (
-    <Card>
+    <Card elevation={24}>
       <CardContent>
         <FormControl style={{ width: '100%' }}>
           <FormControlLabel
@@ -165,7 +165,7 @@ function RepositorySettings(props: Props) {
               <ListItem key={line}>
                 <ListItemText primary={line} />
                 <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete" onClick={() => deleteEnv(line)}>
+                  <IconButton edge="end" aria-label="delete" onClick={() => deleteEnv(line)} size="large">
                     <DeleteIcon />
                   </IconButton>
                 </ListItemSecondaryAction>
@@ -183,7 +183,7 @@ function RepositorySettings(props: Props) {
             onChange={event => setAdditionalEnvironmentToAdd(event.target.value)}
             endAdornment={
               <InputAdornment position="end">
-                <IconButton aria-label="add new env variable override" onClick={addNewEnvVariable}>
+                <IconButton aria-label="add new env variable override" onClick={addNewEnvVariable} size="large">
                   <AddCircle />
                 </IconButton>
               </InputAdornment>

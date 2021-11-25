@@ -4,40 +4,40 @@ import { graphql } from 'babel-plugin-relay/macro';
 import { useNavigate } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
 
-import Paper from '@material-ui/core/Paper';
-import Toolbar from '@material-ui/core/Toolbar';
+import Paper from '@mui/material/Paper';
+import Toolbar from '@mui/material/Toolbar';
 import RepositoryNameChip from '../chips/RepositoryNameChip';
 import BuildBranchNameChip from '../chips/BuildBranchNameChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import BuildChangeChip from '../chips/BuildChangeChip';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
-import Typography from '@material-ui/core/Typography';
-import { withStyles, WithStyles } from '@material-ui/core/styles';
-import classNames from 'classnames';
+import Typography from '@mui/material/Typography';
+import { WithStyles } from '@mui/styles';
+import withStyles from '@mui/styles/withStyles';
 import { ViewerBuildList_viewer } from './__generated__/ViewerBuildList_viewer.graphql';
 import { Helmet as Head } from 'react-helmet';
+import { Box } from '@mui/material';
 
-let styles = {
+const styles = theme => ({
   chip: {
-    margin: 4,
+    margin: theme.spacing(0.5),
   },
   cell: {
-    padding: '5px',
     width: '100%',
     maxWidth: '600px',
   },
   emptyBuilds: {
-    margin: 8,
+    margin: theme.spacing(1.0),
   },
   padding: {
-    padding: '5px',
+    margin: theme.spacing(0.5),
   },
-};
+});
 
 interface Props extends WithStyles<typeof styles> {
   viewer: ViewerBuildList_viewer;
@@ -59,11 +59,13 @@ function ViewerBuildList(props: Props) {
         style={{ cursor: 'pointer' }}
       >
         <TableCell className={classes.padding}>
-          <div className="d-flex flex-column align-items-start">
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
             <RepositoryNameChip repository={build.repository} fullName={true} className={classes.chip} />
             <BuildBranchNameChip build={build} className={classes.chip} />
             <BuildChangeChip build={build} className={classes.chip} />
-            <BuildStatusChip build={build} className={classNames('d-lg-none', classes.chip)} />
+            <Box component="span" sx={{ display: { xs: 'block', sm: 'none' } }}>
+              <BuildStatusChip build={build} className={classes.chip} />
+            </Box>
           </div>
         </TableCell>
         <TableCell className={classes.cell}>
@@ -73,7 +75,7 @@ function ViewerBuildList(props: Props) {
             </Typography>
           </div>
         </TableCell>
-        <TableCell className={classNames('d-none', 'd-lg-table-cell', classes.cell)}>
+        <TableCell className={classes.cell} sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
           <BuildStatusChip build={build} className={classes.chip} />
         </TableCell>
       </TableRow>
@@ -93,7 +95,7 @@ function ViewerBuildList(props: Props) {
     );
   }
   return (
-    <Paper elevation={1}>
+    <Paper elevation={16}>
       <Head>
         <title>Recent Builds - Cirrus CI</title>
       </Head>

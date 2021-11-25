@@ -3,7 +3,7 @@ import { TaskStatus } from '../components/chips/__generated__/TaskStatusChip_tas
 import { graphql } from 'babel-plugin-relay/macro';
 import { TaskCommandStatus } from './__generated__/colors_TaskCommand.graphql';
 import { NotificationLevel } from './__generated__/colors_Notification.graphql';
-import { useTheme } from '@material-ui/core';
+import { useTheme } from '@mui/material';
 import { cirrusColorsState, prefersDarkModeState } from '../cirrusTheme';
 import { useRecoilValue } from 'recoil';
 

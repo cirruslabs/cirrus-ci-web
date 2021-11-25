@@ -1,6 +1,6 @@
 import { subscribeObjectUpdates } from './rtu/ConnectionManager';
 
-import { Environment, Network, RecordSource, Store, Observable, SubscribeFunction } from 'relay-runtime';
+import { Environment, Network, Observable, RecordSource, Store, SubscribeFunction } from 'relay-runtime';
 
 /*
  * See RelayNetwork.js:43 for details how it used in Relay

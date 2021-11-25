@@ -1,11 +1,13 @@
 import React from 'react';
 
-import Avatar from '@material-ui/core/Avatar';
-import Chip from '@material-ui/core/Chip';
-import Functions from '@material-ui/icons/Functions';
+import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip';
+import Functions from '@mui/icons-material/Functions';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
 import { navigateHookHelper } from '../../utils/navigateHelper';
 import { useNavigate } from 'react-router-dom';
 import { HookNameChip_hook } from './__generated__/HookNameChip_hook.graphql';

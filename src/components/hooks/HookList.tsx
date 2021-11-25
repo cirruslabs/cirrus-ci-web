@@ -1,17 +1,19 @@
 import React from 'react';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
 import HookListRow from './HookListRow';
 import { FragmentRefs } from 'relay-runtime';
-import { Card, CardContent, createStyles, Theme, Typography } from '@material-ui/core';
+import { Card, CardContent, Link, Theme, Typography } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
 import { HookType } from './HookType';
-import { withStyles, WithStyles } from '@material-ui/core/styles';
+import { WithStyles } from '@mui/styles';
+import withStyles from '@mui/styles/withStyles';
 
 const styles = (theme: Theme) =>
   createStyles({
     pre: {
-      color: theme.palette.type === 'dark' ? theme.palette.primary.light : theme.palette.primary.dark,
-      background: theme.palette.type === 'dark' ? theme.palette.primary.dark : theme.palette.primary.light,
+      color: theme.palette.mode === 'dark' ? theme.palette.primary.light : theme.palette.primary.dark,
+      background: theme.palette.mode === 'dark' ? theme.palette.primary.dark : theme.palette.primary.light,
       padding: theme.spacing(0.5),
     },
   });
@@ -49,16 +51,21 @@ def on_ENTITY_failed(ctx):
     const hookTypeName = HookType[type].toLowerCase();
 
     return (
-      <Card>
+      <Card elevation={24}>
         <CardContent>
           <Typography variant="body1">
             <p>Doesn't seem like you've defined any hooks.</p>
             <p>
               Here's an example of how you can receive notifications about failed {hookTypeName}s to your Slack channel
               using{' '}
-              <a href="https://api.slack.com/messaging/webhooks" target="_blank" rel="noopener noreferrer">
+              <Link
+                color="inherit"
+                href="https://api.slack.com/messaging/webhooks"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Incoming Webhooks
-              </a>
+              </Link>
               :
             </p>
             <pre className={classes.pre}>
@@ -71,9 +78,14 @@ def on_ENTITY_failed(ctx):
             <p>Now, every time the {hookTypeName} fails, the hook will run and the results will be displayed here!</p>
             <p>
               Additional documentation about hooks can be found{' '}
-              <a href="https://cirrus-ci.org/guide/programming-tasks/#hooks" target="_blank" rel="noopener noreferrer">
+              <Link
+                color="inherit"
+                href="https://cirrus-ci.org/guide/programming-tasks/#hooks"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 here
-              </a>
+              </Link>
               .
             </p>
           </Typography>

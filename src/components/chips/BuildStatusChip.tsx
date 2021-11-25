@@ -1,7 +1,7 @@
-import Avatar from '@material-ui/core/Avatar';
-import Chip from '@material-ui/core/Chip';
-import Icon from '@material-ui/core/Icon';
-import Tooltip from '@material-ui/core/Tooltip';
+import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip';
+import Icon from '@mui/material/Icon';
+import Tooltip from '@mui/material/Tooltip';
 import { graphql } from 'babel-plugin-relay/macro';
 import React, { useEffect } from 'react';
 import { createFragmentContainer, requestSubscription } from 'react-relay';
@@ -10,7 +10,7 @@ import { useBuildStatusColor } from '../../utils/colors';
 import { buildStatusIconName, buildStatusMessage, isBuildFinalStatus } from '../../utils/status';
 import { formatDuration } from '../../utils/time';
 import { BuildStatusChip_build } from './__generated__/BuildStatusChip_build.graphql';
-import { useTheme } from '@material-ui/core';
+import { useTheme } from '@mui/material';
 
 const buildSubscription = graphql`
   subscription BuildStatusChipSubscription($buildID: ID!) {

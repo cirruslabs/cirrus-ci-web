@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
-import Typography from '@material-ui/core/Typography';
+import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Input from '@mui/material/Input';
+import Typography from '@mui/material/Typography';
 import { commitMutation } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
@@ -15,8 +15,8 @@ import {
   ComputeCreditsStripeDialogMutationVariables,
 } from './__generated__/ComputeCreditsStripeDialogMutation.graphql';
 import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js';
-import Button from '@material-ui/core/Button';
-import DialogActions from '@material-ui/core/DialogActions';
+import Button from '@mui/material/Button';
+import DialogActions from '@mui/material/DialogActions';
 import { StripeCardElementOptions, Token } from '@stripe/stripe-js';
 
 const computeCreditsBuyMutation = graphql`

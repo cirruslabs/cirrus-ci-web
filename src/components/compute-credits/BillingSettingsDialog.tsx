@@ -1,16 +1,18 @@
-import Button from '@material-ui/core/Button';
-import { orange } from '@material-ui/core/colors';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
-import Switch from '@material-ui/core/Switch';
-import Typography from '@material-ui/core/Typography';
+import Button from '@mui/material/Button';
+import { orange } from '@mui/material/colors';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Input from '@mui/material/Input';
+import InputLabel from '@mui/material/InputLabel';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import Switch from '@mui/material/Switch';
+import Typography from '@mui/material/Typography';
 import { graphql } from 'babel-plugin-relay/macro';
 import React, { useState } from 'react';
 import { commitMutation, createFragmentContainer } from 'react-relay';
@@ -20,6 +22,7 @@ import {
   BillingSettingsDialogMutationVariables,
 } from './__generated__/BillingSettingsDialogMutation.graphql';
 import { BillingSettingsDialog_billingSettings } from './__generated__/BillingSettingsDialog_billingSettings.graphql';
+import { Link } from '@mui/material';
 
 const styles = theme =>
   createStyles({
@@ -105,7 +108,10 @@ function BillingSettingsDialog(props: Props) {
           <p>
             Your current limit is set to maximum <b className={classes.limit}>{billingSettings.billingCreditsLimit}</b>{' '}
             compute credits that your repositories can use each month. To increase the limit please{' '}
-            <a href="mailto:support@cirruslabs.org">email support</a>.
+            <Link color="inherit" href="mailto:support@cirruslabs.org">
+              email support
+            </Link>
+            .
           </p>
         </Typography>
         <FormControl fullWidth>

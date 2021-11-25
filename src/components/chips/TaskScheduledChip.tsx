@@ -1,16 +1,16 @@
 import React from 'react';
 
-import Avatar from '@material-ui/core/Avatar';
-import Chip from '@material-ui/core/Chip';
-import Icon from '@material-ui/core/Icon';
-import Tooltip from '@material-ui/core/Tooltip';
+import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip';
+import Icon from '@mui/material/Icon';
+import Tooltip from '@mui/material/Tooltip';
 import { useTaskStatusColor } from '../../utils/colors';
 import { taskStatusIconName } from '../../utils/status';
 import { formatDuration } from '../../utils/time';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { TaskScheduledChip_task } from './__generated__/TaskScheduledChip_task.graphql';
-import { useTheme } from '@material-ui/core';
+import { useTheme } from '@mui/material';
 
 interface Props {
   task: TaskScheduledChip_task;

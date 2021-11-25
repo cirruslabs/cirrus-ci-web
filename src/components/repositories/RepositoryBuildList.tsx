@@ -3,34 +3,35 @@ import { createFragmentContainer, requestSubscription } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { useNavigate } from 'react-router-dom';
 
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Tooltip from '@material-ui/core/Tooltip';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import IconButton from '@mui/material/IconButton';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Tooltip from '@mui/material/Tooltip';
 import BuildDurationsChart from '../builds/BuildDurationsChart';
 import BuildBranchNameChip from '../chips/BuildBranchNameChip';
 import BuildChangeChip from '../chips/BuildChangeChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
-import GitHubIcon from '@material-ui/icons/GitHub';
-import classNames from 'classnames';
+import { WithStyles } from '@mui/styles';
+import withStyles from '@mui/styles/withStyles';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import CreateBuildDialog from '../builds/CreateBuildDialog';
 import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildList_repository.graphql';
 import { NodeOfConnection } from '../../utils/utility-types';
 import { createLinkToRepository } from '../../utils/github';
 import { Helmet as Head } from 'react-helmet';
-import Settings from '@material-ui/icons/Settings';
-import AddCircle from '@material-ui/icons/AddCircle';
-import Timeline from '@material-ui/icons/Timeline';
+import Settings from '@mui/icons-material/Settings';
+import AddCircle from '@mui/icons-material/AddCircle';
+import Timeline from '@mui/icons-material/Timeline';
 import environment from '../../createRelayEnvironment';
+import { Box, Link } from '@mui/material';
 
-let styles = createStyles({
+const styles = theme => ({
   gap: {
     paddingTop: 16,
   },
@@ -38,7 +39,6 @@ let styles = createStyles({
     margin: 4,
   },
   cell: {
-    padding: '5px',
     width: '100%',
     maxWidth: '600px',
   },
@@ -50,10 +50,10 @@ let styles = createStyles({
   },
   wrapper: {
     display: 'flex',
-    flexWrap: 'wrap',
+    alignItems: 'center',
   },
-  row: {
-    padding: '3px',
+  padding: {
+    margin: theme.spacing(0.5),
   },
 });
 
@@ -94,18 +94,18 @@ function RepositoryBuildList(props: Props) {
   if (repository.viewerPermission === 'WRITE' || repository.viewerPermission === 'ADMIN') {
     repositorySettings = (
       <Tooltip title="Repository Settings">
-        <a href={'/settings/repository/' + repository.id}>
-          <IconButton>
+        <Link href={'/settings/repository/' + repository.id}>
+          <IconButton size="large">
             <Settings />
           </IconButton>
-        </a>
+        </Link>
       </Tooltip>
     );
     repositoryAction = (
       <>
         <div key="create-build-gap" className={classes.horizontalGap} />
         <Tooltip title="Create Build">
-          <IconButton key="create-build-button" onClick={() => setOpenCreateDialog(true)}>
+          <IconButton key="create-build-button" onClick={() => setOpenCreateDialog(true)} size="large">
             <AddCircle />
           </IconButton>
         </Tooltip>
@@ -114,22 +114,22 @@ function RepositoryBuildList(props: Props) {
   }
 
   let repositoryMetrics = (
-    <a href={'/metrics/repository/' + repository.owner + '/' + repository.name}>
+    <Link href={'/metrics/repository/' + repository.owner + '/' + repository.name}>
       <Tooltip title="Repository Metrics">
-        <IconButton>
+        <IconButton size="large">
           <Timeline />
         </IconButton>
       </Tooltip>
-    </a>
+    </Link>
   );
 
   const repositoryLinkButton = (
     <Tooltip title="Open on GitHub">
-      <a href={createLinkToRepository(repository, props.branch)} target="_blank" rel="noopener noreferrer">
-        <IconButton>
+      <Link href={createLinkToRepository(repository, props.branch)} target="_blank" rel="noopener noreferrer">
+        <IconButton size="large">
           <GitHubIcon />
         </IconButton>
-      </a>
+      </Link>
     </Tooltip>
   );
 
@@ -137,7 +137,7 @@ function RepositoryBuildList(props: Props) {
 
   if (props.branch && builds.length > 5) {
     buildsChart = (
-      <Paper elevation={1} className={classes.buildsChart}>
+      <Paper elevation={16} className={classes.buildsChart}>
         <BuildDurationsChart
           builds={builds.slice().reverse()}
           selectedBuildId={selectedBuildId}
@@ -158,21 +158,29 @@ function RepositoryBuildList(props: Props) {
         onClick={e => navigateBuildHelper(navigate, e, build.id)}
         style={{ cursor: 'pointer' }}
       >
-        <TableCell className={classes.row}>
-          <div className="d-flex flex-column align-items-start">
+        <TableCell className={classes.padding}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
             <BuildBranchNameChip build={build} className={classes.chip} />
             <BuildChangeChip build={build} className={classes.chip} />
-            <BuildStatusChip build={build} className={classNames('d-lg-none', classes.chip)} />
+            <Box component="span" sx={{ display: { xs: 'block', sm: 'none' } }}>
+              <BuildStatusChip build={build} className={classes.chip} />
+            </Box>
           </div>
         </TableCell>
         <TableCell className={classes.cell}>
-          <div className="card-body">
+          <div>
             <Typography variant="body1" color="inherit">
               {build.changeMessageTitle}
             </Typography>
           </div>
         </TableCell>
-        <TableCell className={classNames('d-none', 'd-lg-table-cell', classes.cell)}>
+        <TableCell
+          className={classes.cell}
+          sx={{
+            display: { xs: 'none', sm: 'table-cell' },
+            alignItems: 'center',
+          }}
+        >
           <BuildStatusChip build={build} className={classes.chip} />
         </TableCell>
       </TableRow>
@@ -186,10 +194,10 @@ function RepositoryBuildList(props: Props) {
           {repository.owner}/{repository.name} - Cirrus CI
         </title>
       </Head>
-      <Paper elevation={1}>
-        <Toolbar className="justify-content-between">
+      <Paper elevation={16}>
+        <Toolbar sx={{ justifyContent: 'space-between' }}>
           <div className={classes.wrapper}>
-            <Typography className="align-self-center" variant="h6" color="inherit">
+            <Typography variant="h6" color="inherit">
               {repository.owner + '/' + repository.name}
             </Typography>
             {repositoryAction}

@@ -1,14 +1,16 @@
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Chip from '@material-ui/core/Chip';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Chip from '@mui/material/Chip';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
 import { graphql } from 'babel-plugin-relay/macro';
 import classNames from 'classnames';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { commitMutation, createFragmentContainer, requestSubscription } from 'react-relay';
 import { useLocation, useNavigate } from 'react-router-dom';
 import environment from '../../createRelayEnvironment';
@@ -38,30 +40,31 @@ import {
 import TaskResourcesChip from '../chips/TaskResourcesChip';
 import { Helmet as Head } from 'react-helmet';
 import ExecutionInfo from '../common/TaskExecutionInfo';
-import Refresh from '@material-ui/icons/Refresh';
-import PlayCircleFilled from '@material-ui/icons/PlayCircleFilled';
-import Cancel from '@material-ui/icons/Cancel';
-import ArrowBack from '@material-ui/icons/ArrowBack';
+import Refresh from '@mui/icons-material/Refresh';
+import PlayCircleFilled from '@mui/icons-material/PlayCircleFilled';
+import Cancel from '@mui/icons-material/Cancel';
+import ArrowBack from '@mui/icons-material/ArrowBack';
 import TaskExperimentalChip from '../chips/TaskExperimentalChip';
 import TaskStatefulChip from '../chips/TaskStatefulChip';
 import TaskTimeoutChip from '../chips/TaskTimeoutChip';
 import Notification from '../common/Notification';
 import HookList from '../hooks/HookList';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import { TabContext, TabList, TabPanel } from '@material-ui/lab';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
 import {
-  AppBar,
   ButtonGroup,
   ClickAwayListener,
   Collapse,
   Grow,
+  IconButton,
+  Link,
   MenuItem,
   MenuList,
   Popper,
   Tab,
   Tooltip,
-} from '@material-ui/core';
-import { Dehaze, Functions, LayersClear } from '@material-ui/icons';
+} from '@mui/material';
+import { Dehaze, Functions, LayersClear } from '@mui/icons-material';
 import {
   TaskDetailsInvalidateCachesMutationResponse,
   TaskDetailsInvalidateCachesMutationVariables,
@@ -69,10 +72,10 @@ import {
 import TaskRerunnerChip from '../chips/TaskRerunnerChip';
 import TaskCancellerChip from '../chips/TaskCancellerChip';
 import RepositoryOwnerChip from '../chips/RepositoryOwnerChip';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { CirrusTerminal } from '../cirrus-terminal/CirrusTerminal';
 import { HookType } from '../hooks/HookType';
 import { TaskDetailsTriggerMutationVariables } from './__generated__/TaskDetailsTriggerMutation.graphql';
@@ -272,7 +275,7 @@ function TaskDetails(props: Props) {
     setRerunOptionsShown(prevOpen => !prevOpen);
   };
 
-  const closeRerunOptions = (event: React.MouseEvent<Document, MouseEvent>) => {
+  const closeRerunOptions = (event: MouseEvent | TouchEvent) => {
     if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
       return;
     }
@@ -301,7 +304,7 @@ function TaskDetails(props: Props) {
 
   let reRunButton =
     !hasWritePermissions(build.viewerPermission) || !isTaskFinalStatus(task.status) ? null : (
-      <div>
+      <>
         <ButtonGroup variant="contained" ref={anchorRef}>
           <Button onClick={() => rerun(task.id, false)} startIcon={<Refresh />}>
             Re-Run
@@ -325,7 +328,7 @@ function TaskDetails(props: Props) {
                 transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
               }}
             >
-              <Paper>
+              <Paper elevation={24}>
                 <ClickAwayListener onClickAway={closeRerunOptions}>
                   <MenuList id="split-button-menu">
                     <MenuItem onClick={() => rerun(task.id, true)}>Re-Run with Terminal Access</MenuItem>
@@ -335,7 +338,7 @@ function TaskDetails(props: Props) {
             </Grow>
           )}
         </Popper>
-      </div>
+      </>
     );
 
   let taskIsTriggerable = task.status === 'PAUSED';
@@ -414,7 +417,7 @@ function TaskDetails(props: Props) {
   let allOtherRuns: JSX.Element | [] = [];
   if (task.allOtherRuns && task.allOtherRuns.length > 0) {
     allOtherRuns = (
-      <Paper>
+      <Paper elevation={24}>
         <Typography className={classes.title} variant="caption" gutterBottom display="block" align="center">
           All Other Runs
         </Typography>
@@ -425,7 +428,7 @@ function TaskDetails(props: Props) {
   let dependencies: JSX.Element | [] = [];
   if (task.dependencies && task.dependencies.length > 0) {
     dependencies = (
-      <Paper>
+      <Paper elevation={24}>
         <Typography className={classes.title} variant="caption" gutterBottom display="block" align="center">
           Dependencies
         </Typography>
@@ -446,12 +449,10 @@ function TaskDetails(props: Props) {
 
   const tabbedCommandsAndHooks = (
     <TabContext value={currentTab}>
-      <AppBar position="static">
-        <TabList onChange={handleChange}>
-          <Tab icon={<Dehaze />} label={'Instructions (' + task.commands.length + ')'} value="instructions" />
-          <Tab icon={<Functions />} label={'Hooks (' + task.hooks.length + ')'} value="hooks" />
-        </TabList>
-      </AppBar>
+      <TabList onChange={handleChange}>
+        <Tab icon={<Dehaze />} label={'Instructions (' + task.commands.length + ')'} value="instructions" />
+        <Tab icon={<Functions />} label={'Hooks (' + task.hooks.length + ')'} value="hooks" />
+      </TabList>
       <TabPanel value="instructions" className={classes.tabPanel}>
         <TaskCommandList task={task} />
       </TabPanel>
@@ -487,13 +488,33 @@ function TaskDetails(props: Props) {
     };
   }, [shouldRunTerminal, props.task.terminalCredential]);
 
+  let taskLabelsToShow = task.labels.filter(desiredLabel);
+  let MAX_TASK_LABELS_TO_SHOW = 5;
+  let [hideExtraLabels, setHideExtraLabels] = useState(taskLabelsToShow.length > MAX_TASK_LABELS_TO_SHOW);
+  let taskLabels = taskLabelsToShow.map(label => {
+    return (
+      <Tooltip key={label} title={label}>
+        <Chip className={classes.chip} label={shorten(label)} />
+      </Tooltip>
+    );
+  });
+  if (hideExtraLabels) {
+    taskLabels = taskLabels.slice(0, MAX_TASK_LABELS_TO_SHOW);
+    taskLabels.push(
+      <Tooltip key="show-more" title="Show all labels">
+        <IconButton onClick={() => setHideExtraLabels(false)}>
+          <ExpandMoreIcon sx={{ transform: 'rotate(-90deg)' }} />
+        </IconButton>
+      </Tooltip>,
+    );
+  }
   return (
     <div>
       <Head>
         <title>{task.name} - Cirrus CI</title>
       </Head>
       <CirrusFavicon status={task.status} />
-      <Card>
+      <Card elevation={24}>
         <CardContent>
           <div className={classes.wrapper}>
             <RepositoryOwnerChip className={classes.chip} repository={repository} />
@@ -511,17 +532,18 @@ function TaskDetails(props: Props) {
             <TaskRerunnerChip className={classes.chip} task={task} />
             <TaskCancellerChip className={classes.chip} task={task} />
           </div>
+          <div className={classes.gap} />
           <TaskCommandsProgress className={classes.progress} task={task} />
           <div className={classes.gap} />
           <Typography variant="h6" gutterBottom>
             {build.changeMessageTitle} (commit{' '}
-            <a href={commitUrl} target="_blank" rel="noopener noreferrer">
+            <Link href={commitUrl} color="inherit" target="_blank" rel="noopener noreferrer">
               {build.changeIdInRepo.substr(0, 7)}
-            </a>{' '}
+            </Link>{' '}
             on branch{' '}
-            <a href={branchUrl} target="_blank" rel="noopener noreferrer">
+            <Link href={branchUrl} color="inherit" target="_blank" rel="noopener noreferrer">
               {build.branch}
-            </a>
+            </Link>
             )
           </Typography>
           <div className={classes.gap} />
@@ -535,17 +557,11 @@ function TaskDetails(props: Props) {
             <TaskTimeoutChip className={classes.chip} task={task} />
             <TaskStatefulChip className={classes.chip} task={task} />
             <TaskResourcesChip className={classes.chip} task={task} />
-            {task.labels.filter(desiredLabel).map(label => {
-              return (
-                <Tooltip key={label} title={label}>
-                  <Chip className={classes.chip} label={shorten(label)} />
-                </Tooltip>
-              );
-            })}
+            {taskLabels}
           </div>
           <ExecutionInfo task={task} />
         </CardContent>
-        <CardActions className="d-flex flex-wrap justify-content-end">
+        <CardActions sx={{ justifyContent: 'flex-end' }}>
           <Button
             variant="contained"
             onClick={e => navigateBuildHelper(navigate, e, task.buildId)}
@@ -578,7 +594,7 @@ function TaskDetails(props: Props) {
       {allOtherRuns ? <div className={classes.gap} /> : null}
       {allOtherRuns}
       <div className={classes.gap} />
-      <Paper elevation={2}>{tabbedCommandsAndHooks}</Paper>
+      <Paper elevation={24}>{tabbedCommandsAndHooks}</Paper>
     </div>
   );
 }

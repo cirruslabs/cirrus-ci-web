@@ -5,9 +5,9 @@ import { formatDuration } from '../../utils/time';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
 import { NodeOfConnection, UnspecifiedCallbackFunction } from '../../utils/utility-types';
 import { RepositoryBuildList_repository } from '../repositories/__generated__/RepositoryBuildList_repository.graphql';
-import { withStyles } from '@material-ui/styles';
+import { withStyles } from '@mui/styles';
 import { useNavigate } from 'react-router-dom';
-import { Paper, Typography } from '@material-ui/core';
+import { Paper, Typography } from '@mui/material';
 
 interface Props {
   builds: NodeOfConnection<RepositoryBuildList_repository['builds']>[];

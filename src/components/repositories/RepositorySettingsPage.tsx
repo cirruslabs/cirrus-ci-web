@@ -1,12 +1,13 @@
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import Paper from '@mui/material/Paper';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import RepositorySecuredVariables from './RepositorySecuredVariables';
 import RepositorySettings from './RepositorySettings';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { withStyles, WithStyles } from '@material-ui/core/styles';
+import { WithStyles } from '@mui/styles';
+import withStyles from '@mui/styles/withStyles';
 import { RepositorySettingsPage_repository } from './__generated__/RepositorySettingsPage_repository.graphql';
 import RepositoryCronSettings from './RepositoryCronSettings';
 
@@ -25,21 +26,21 @@ let RepositorySettingsPage = (props: Props) => {
 
   return (
     <div>
-      <Paper elevation={1}>
+      <Paper elevation={16}>
         <Toolbar>
           <Typography variant="h6">{'Settings for ' + repository.owner + '/' + repository.name}</Typography>
         </Toolbar>
       </Paper>
       <div className={classes.settingGap} />
-      <Paper elevation={1}>
+      <Paper elevation={16}>
         <RepositorySettings repository={repository} />
       </Paper>
       <div className={classes.settingGap} />
-      <Paper elevation={1}>
+      <Paper elevation={16}>
         <RepositorySecuredVariables repository={repository} />
       </Paper>
       <div className={classes.settingGap} />
-      <Paper elevation={1}>
+      <Paper elevation={16}>
         <RepositoryCronSettings repository={repository} />
       </Paper>
     </div>

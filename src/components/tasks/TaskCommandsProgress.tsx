@@ -1,21 +1,36 @@
 import { isTaskFinalStatus } from '../../utils/status';
 import React, { useEffect, useState } from 'react';
 import { useTaskStatusColorMapping } from '../../utils/colors';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
-import classNames from 'classnames';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 import { formatDuration } from '../../utils/time';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { TaskCommandsProgress_task } from './__generated__/TaskCommandsProgress_task.graphql';
+import { Box } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import { WithStyles } from '@mui/styles';
 
-interface Props {
+const styles = theme =>
+  createStyles({
+    progressBar: {
+      backgroundColor: 'transparent',
+      width: '100%',
+      minWidth: 100,
+    },
+    progressBarElement: {
+      minHeight: theme.spacing(1.5),
+    },
+  });
+
+interface Props extends WithStyles<typeof styles> {
   task: TaskCommandsProgress_task;
   className?: string;
 }
 
 function TaskCommandsProgress(props: Props) {
-  let { task } = props;
+  let { task, classes } = props;
   let [totalDuration, setTotalDuration] = useState(
     task.statusDurations.reduce((sum, statusDuration) => sum + statusDuration.durationInSeconds, 0),
   );
@@ -49,14 +64,12 @@ function TaskCommandsProgress(props: Props) {
       colorStatus = task.status;
     }
     bars.push(
-      <div
-        className="progress-bar"
-        role="progressbar"
-        key={statusDuration.status}
-        style={{ width: percent + '%', backgroundColor: colorMapping[colorStatus] }}
-        aria-valuenow={percent}
-        aria-valuemin={0}
-        aria-valuemax={100}
+      <Box
+        className={classes.progressBarElement}
+        sx={{
+          width: percent + '%',
+          backgroundColor: colorMapping[colorStatus],
+        }}
       />,
     );
   }
@@ -73,12 +86,20 @@ function TaskCommandsProgress(props: Props) {
 
   return (
     <Tooltip placement="bottom" title={tooltipTitle}>
-      <div className={classNames(props.className, 'progress')}>{bars}</div>
+      <Box
+        className={classes.progressBar}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        {bars}
+      </Box>
     </Tooltip>
   );
 }
 
-export default createFragmentContainer(TaskCommandsProgress, {
+export default createFragmentContainer(withStyles(styles)(TaskCommandsProgress), {
   task: graphql`
     fragment TaskCommandsProgress_task on Task {
       status

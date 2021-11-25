@@ -1,16 +1,17 @@
 import React from 'react';
 
-import Paper from '@material-ui/core/Paper';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import Tooltip from '@material-ui/core/Tooltip';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import Tooltip from '@mui/material/Tooltip';
 import LastDefaultBranchBuildRow from '../builds/LastDefaultBranchBuildRow';
-import { withStyles, WithStyles } from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import { WithStyles } from '@mui/styles';
+import withStyles from '@mui/styles/withStyles';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
-import IconButton from '@material-ui/core/IconButton';
-import Settings from '@material-ui/icons/Settings';
+import IconButton from '@mui/material/IconButton';
+import Settings from '@mui/icons-material/Settings';
 
 let styles = {
   gap: {
@@ -34,7 +35,7 @@ let GitHubOrganizationRepositoryList = (props: Props) => {
     organizationSettings = (
       <Tooltip title="Organization Settings">
         <Link to={'/settings/github/' + organization}>
-          <IconButton>
+          <IconButton size="large">
             <Settings />
           </IconButton>
         </Link>
@@ -44,8 +45,8 @@ let GitHubOrganizationRepositoryList = (props: Props) => {
 
   return (
     <div>
-      <Paper elevation={1}>
-        <Toolbar className="justify-content-between">
+      <Paper elevation={16}>
+        <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Typography variant="h6" color="inherit">
             {props.organization}'s Repositories
           </Typography>
@@ -53,7 +54,7 @@ let GitHubOrganizationRepositoryList = (props: Props) => {
         </Toolbar>
       </Paper>
       <div className={classes.gap} />
-      <Paper elevation={1}>
+      <Paper elevation={16}>
         <Table style={{ tableLayout: 'auto' }}>
           <TableBody>
             {repositories && repositories.map(repo => <LastDefaultBranchBuildRow key={repo.__id} repository={repo} />)}

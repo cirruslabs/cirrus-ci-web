@@ -2,21 +2,14 @@
 
 exports[`renders correctly 1`] = `
 <div
-  className="row justify-content-between align-items-center"
-  style={
-    Object {
-      "fontSize": "32px",
-      "height": "100%",
-      "width": "100%",
-    }
-  }
+  className="MuiBox-root css-1aegtqj"
 >
   <div
-    className="col text-center"
+    className="MuiBox-root css-fhxkad"
   >
     <span
       aria-hidden={true}
-      className="material-icons MuiIcon-root center-block"
+      className="material-icons notranslate MuiIcon-root MuiIcon-fontSizeMedium css-kp9ftd-MuiIcon-root"
       style={
         Object {
           "fontSize": "96px",
@@ -25,17 +18,20 @@ exports[`renders correctly 1`] = `
     >
       sentiment_very_dissatisfied
     </span>
-    <div>
-      <p>
-        Page not found! 
-      </p>
-      <a
-        href="https://cirrus-ci.com"
-        title="Homepage"
-      >
-        Go home?
-      </a>
-    </div>
+    <h2
+      className="MuiTypography-root MuiTypography-h2 css-1sra7t5-MuiTypography-root"
+    >
+      Page not found! 
+    </h2>
+    <a
+      className="MuiTypography-root MuiTypography-h3 MuiLink-root MuiLink-underlineAlways css-77jlxd-MuiTypography-root-MuiLink-root"
+      href="https://cirrus-ci.com"
+      onBlur={[Function]}
+      onFocus={[Function]}
+      title="Homepage"
+    >
+      Go home?
+    </a>
   </div>
 </div>
 `;

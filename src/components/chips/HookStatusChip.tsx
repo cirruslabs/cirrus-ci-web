@@ -1,13 +1,13 @@
 import React from 'react';
 
-import Avatar from '@material-ui/core/Avatar';
-import Chip from '@material-ui/core/Chip';
-import Icon from '@material-ui/core/Icon';
+import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip';
+import Icon from '@mui/material/Icon';
 import { useHookStatusColor } from '../../utils/colors';
 import { hookIconName, hookStatusMessage } from '../../utils/status';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { useTheme } from '@material-ui/core';
+import { useTheme } from '@mui/material';
 import { HookStatusChip_hook } from './__generated__/HookStatusChip_hook.graphql';
 
 interface Props {

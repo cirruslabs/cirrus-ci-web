@@ -1,7 +1,7 @@
 import React from 'react';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import { withStyles } from '@material-ui/core/styles';
-import { createStyles } from '@material-ui/styles';
+import LinearProgress from '@mui/material/LinearProgress';
+import withStyles from '@mui/styles/withStyles';
+import { createStyles } from '@mui/styles';
 
 const styles = theme =>
   createStyles({

@@ -3,7 +3,7 @@ import { Base64 } from 'js-base64';
 import { BuildStatus } from '../chips/__generated__/BuildStatusChip_build.graphql';
 import { TaskStatus } from '../chips/__generated__/TaskStatusChip_task.graphql';
 import { useFaviconColor } from '../../utils/colors';
-import { useTheme } from '@material-ui/core';
+import { useTheme } from '@mui/material';
 
 function updateIcon(color) {
   let linkEl = document.getElementById('favicon') as HTMLLinkElement;

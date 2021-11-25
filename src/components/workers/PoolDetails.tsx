@@ -1,5 +1,7 @@
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import Card from '@mui/material/Card';
 import { graphql } from 'babel-plugin-relay/macro';
 import React, { useEffect, useState } from 'react';
 import { commitMutation, createRefetchContainer, RelayRefetchProp } from 'react-relay';
@@ -12,28 +14,29 @@ import {
   CardHeader,
   Chip,
   IconButton,
+  Link,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
   Tooltip,
-} from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import VisibilityIcon from '@material-ui/icons/Visibility';
+} from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import PoolVisibilityIcon from '../icons/PoolVisibilityIcon';
 import environment from '../../createRelayEnvironment';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import Typography from '@material-ui/core/Typography';
-import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
-import DialogActions from '@material-ui/core/DialogActions';
-import Button from '@material-ui/core/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import Typography from '@mui/material/Typography';
+import InputLabel from '@mui/material/InputLabel';
+import Input from '@mui/material/Input';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
 import { UpdatePersistentWorkerPoolInput } from './__generated__/PoolDetailsUpdateMutation.graphql';
 import {
   GetPersistentWorkerPoolRegistrationTokenInput,
@@ -42,9 +45,9 @@ import {
 import CopyPasteField from '../common/CopyPasteField';
 import WorkerStatusChip from './WorkerStatusChip';
 import TaskStatusChipExtended from '../chips/TaskStatusChipExtended';
-import DeleteIcon from '@material-ui/icons/Delete';
-import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
-import PauseCircleOutlineIcon from '@material-ui/icons/PauseCircleOutline';
+import DeleteIcon from '@mui/icons-material/Delete';
+import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
+import PauseCircleOutlineIcon from '@mui/icons-material/PauseCircleOutline';
 import { DeletePersistentWorkerInput } from './__generated__/PoolDetailsDeleteWorkerMutation.graphql';
 import { UpdatePersistentWorkerInput } from './__generated__/PoolDetailsUpdateWorkerMutation.graphql';
 
@@ -177,11 +180,11 @@ function PoolDetails(props: PoolDetailsProps) {
 
   let viewerCanSeeToken = pool.viewerPermission === 'ADMIN' || pool.viewerPermission === 'WRITE';
   return (
-    <div>
+    <>
       <Head>
         <title>{pool.name} pool</title>
       </Head>
-      <Card>
+      <Card elevation={24}>
         <CardHeader
           avatar={
             <Avatar aria-label="recipe">
@@ -191,7 +194,7 @@ function PoolDetails(props: PoolDetailsProps) {
           action={
             <div>
               <Tooltip title="Edit">
-                <IconButton aria-label="edit" onClick={() => setOpenEditDialog(!openEditDialog)}>
+                <IconButton aria-label="edit" onClick={() => setOpenEditDialog(!openEditDialog)} size="large">
                   <EditIcon />
                 </IconButton>
               </Tooltip>
@@ -210,8 +213,10 @@ function PoolDetails(props: PoolDetailsProps) {
         <CardContent>
           <Typography>
             In order to add a persistent worker to the pool please install{' '}
-            <a href="https://github.com/cirruslabs/cirrus-cli/blob/master/PERSISTENT-WORKERS.md">Cirrus CLI</a> on a
-            machine that will become a persistent worker.
+            <Link color="inherit" href="https://github.com/cirruslabs/cirrus-cli/blob/master/PERSISTENT-WORKERS.md">
+              Cirrus CLI
+            </Link>{' '}
+            on a machine that will become a persistent worker.
           </Typography>
         </CardContent>
         {viewerCanSeeToken && registrationToken && (
@@ -220,9 +225,9 @@ function PoolDetails(props: PoolDetailsProps) {
             <CopyPasteField id="registration-token" value={registrationToken} fullWidth={true} />
           </CardContent>
         )}
-        <CardActions className="d-flex flex-wrap justify-content-end">
+        <CardActions sx={{ justifyContent: 'flex-end' }}>
           {viewerCanSeeToken && !registrationToken && (
-            <Button variant="outlined" startIcon={<VisibilityIcon />} onClick={retrieveRegistrationToken}>
+            <Button variant="contained" startIcon={<VisibilityIcon />} onClick={retrieveRegistrationToken}>
               Show Registration Token
             </Button>
           )}
@@ -266,7 +271,11 @@ function PoolDetails(props: PoolDetailsProps) {
                       </TableCell>
                       <TableCell>
                         <Tooltip title={worker.disabled ? 'Enable task scheduling' : 'Disable task scheduling'}>
-                          <IconButton edge="start" onClick={() => updateWorker(worker.name, !worker.disabled)}>
+                          <IconButton
+                            edge="start"
+                            onClick={() => updateWorker(worker.name, !worker.disabled)}
+                            size="large"
+                          >
                             {worker.disabled ? (
                               <PlayCircleOutlineIcon className={classes.enabledWorkerButton} />
                             ) : (
@@ -276,7 +285,12 @@ function PoolDetails(props: PoolDetailsProps) {
                         </Tooltip>
                       </TableCell>
                       <TableCell>
-                        <IconButton edge="end" aria-label="delete" onClick={() => deleteWorker(worker.name)}>
+                        <IconButton
+                          edge="end"
+                          aria-label="delete"
+                          onClick={() => deleteWorker(worker.name)}
+                          size="large"
+                        >
                           <DeleteIcon />
                         </IconButton>
                       </TableCell>
@@ -287,7 +301,7 @@ function PoolDetails(props: PoolDetailsProps) {
           </Table>
         </CardContent>
       </Card>
-    </div>
+    </>
   );
 }
 

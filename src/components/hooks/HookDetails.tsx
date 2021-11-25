@@ -1,28 +1,30 @@
 import React, { MouseEventHandler } from 'react';
 
 import { commitMutation, createFragmentContainer } from 'react-relay';
-import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
 import { graphql } from 'babel-plugin-relay/macro';
 import { HookDetails_hook } from './__generated__/HookDetails_hook.graphql';
 import { Helmet as Head } from 'react-helmet';
-import { Card, CardContent } from '@material-ui/core';
+import { Card, CardContent } from '@mui/material';
 import RepositoryNameChip from '../chips/RepositoryNameChip';
 import BuildBranchNameChip from '../chips/BuildBranchNameChip';
 import BuildChangeChip from '../chips/BuildChangeChip';
 import TaskNameChip from '../chips/TaskNameChip';
 import HookCreatedChip from '../chips/HookCreatedChip';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import Logs from '../logs/Logs';
 import HookStatusChip from '../chips/HookStatusChip';
 import CirrusFavicon from '../common/CirrusFavicon';
 import classNames from 'classnames';
 import { useNotificationColor } from '../../utils/colors';
-import CardActions from '@material-ui/core/CardActions';
-import Button from '@material-ui/core/Button';
+import CardActions from '@mui/material/CardActions';
+import Button from '@mui/material/Button';
 import { navigateBuildHelper, navigateHookHelper, navigateTaskHelper } from '../../utils/navigateHelper';
-import ArrowBack from '@material-ui/icons/ArrowBack';
+import ArrowBack from '@mui/icons-material/ArrowBack';
 import { hasWritePermissions } from '../../utils/permissions';
-import Refresh from '@material-ui/icons/Refresh';
+import Refresh from '@mui/icons-material/Refresh';
 import environment from '../../createRelayEnvironment';
 import {
   HookDetailsRerunMutationResponse,
@@ -145,7 +147,7 @@ function HookDetails(props: Props) {
 
   const executionLogs =
     props.hook.info.outputLogs.length === 0 ? (
-      <div className="d-flex justify-content-center align-items-center">
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <span>
           There doesn't seem to be anything here. Try generating some logs with <code>print()</code>!
         </span>
@@ -160,7 +162,7 @@ function HookDetails(props: Props) {
       <Head>
         <title>{targetName} hook - Cirrus CI</title>
       </Head>
-      <Card>
+      <Card elevation={24}>
         <CardContent>
           <div className={classes.wrapper}>
             <RepositoryOwnerChip className={classes.chip} repository={hook.repository} />
@@ -182,7 +184,7 @@ function HookDetails(props: Props) {
             <code>{targetState}</code> state.
           </p>
         </CardContent>
-        <CardActions className="d-flex flex-wrap justify-content-end">
+        <CardActions style={{ justifyContent: 'end' }}>
           <Button variant="contained" onClick={navigateToAllHooks} startIcon={<ArrowBack />}>
             View All Hooks
           </Button>
@@ -191,21 +193,21 @@ function HookDetails(props: Props) {
       </Card>
       {potentialError}
       <div className={classes.gap} />
-      <Card>
+      <Card elevation={24}>
         <CardContent>
           <Typography variant="h6">Execution logs</Typography>
           {executionLogs}
         </CardContent>
       </Card>
       <div className={classes.gap} />
-      <Card>
+      <Card elevation={24}>
         <CardContent>
           <Typography variant="h6">Arguments</Typography>
           <pre className={classNames(classes.io, 'log-line')}>{prettyHookArguments}</pre>
         </CardContent>
       </Card>
       <div className={classes.gap} />
-      <Card>
+      <Card elevation={24}>
         <CardContent>
           <Typography variant="h6">Environment variables</Typography>
           <pre className={classNames(classes.io, 'log-line')}>{props.hook.info.environment.join('\n')}</pre>

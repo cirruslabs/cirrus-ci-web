@@ -1,13 +1,14 @@
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import React from 'react';
-import { withStyles, WithStyles } from '@material-ui/core/styles';
-import Chip from '@material-ui/core/Chip';
-import Typography from '@material-ui/core/Typography';
+import { WithStyles } from '@mui/styles';
+import withStyles from '@mui/styles/withStyles';
+import Chip from '@mui/material/Chip';
+import Typography from '@mui/material/Typography';
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, YAxis } from 'recharts';
 import { TaskExecutionInfo_task } from './__generated__/TaskExecutionInfo_task.graphql';
 import { formatDuration } from '../../utils/time';
-import { useTheme } from '@material-ui/core';
+import { Box, useTheme } from '@mui/material';
 import { useRecoilState } from 'recoil';
 import { prefersDarkModeState } from '../../cirrusTheme';
 
@@ -45,8 +46,8 @@ function TaskExecutionInfo(props: Props) {
       };
     });
     return (
-      <div className="col">
-        <Typography variant="h6" align="center" className="align-middle">
+      <Box sx={{ flexDirection: 'column', justifyContent: 'center', width: '100%' }}>
+        <Typography variant="h6" align="center">
           CPU Usage
         </Typography>
         <ResponsiveContainer height={200} width="100%">
@@ -65,7 +66,7 @@ function TaskExecutionInfo(props: Props) {
             />
           </AreaChart>
         </ResponsiveContainer>
-      </div>
+      </Box>
     );
   }
 
@@ -93,8 +94,8 @@ function TaskExecutionInfo(props: Props) {
       }
     });
     return (
-      <div className="col">
-        <Typography variant="h6" align="center" className="align-middle">
+      <Box sx={{ flexDirection: 'column', justifyContent: 'center', width: '100%' }}>
+        <Typography variant="h6" align="center">
           Memory Usage ({memoryUnit})
         </Typography>
         <ResponsiveContainer height={200} width="100%">
@@ -113,19 +114,19 @@ function TaskExecutionInfo(props: Props) {
             />
           </AreaChart>
         </ResponsiveContainer>
-      </div>
+      </Box>
     );
   }
 
   return (
-    <div>
+    <div style={{ width: '100%' }}>
       {task.executionInfo.labels.map(label => {
         return <Chip key={label} className={classes.chip} label={label} />;
       })}
-      <div className="row">
+      <Box sx={{ flexDirection: 'row', display: 'flex' }}>
         {renderCPUChart()}
         {renderMemoryChart()}
-      </div>
+      </Box>
     </div>
   );
 }

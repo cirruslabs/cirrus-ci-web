@@ -83,6 +83,13 @@ export let cirrusLightTheme: ThemeOptions = {
         },
       },
     },
+    MuiTableCell: {
+      styleOverrides: {
+        body: {
+          padding: 6, // it was changed from v4
+        },
+      },
+    },
   },
 };
 
@@ -126,6 +133,13 @@ export let cirrusDarkTheme: ThemeOptions = {
           marginRight: 0,
           height: 32,
           width: 32,
+        },
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        body: {
+          padding: 6, // it was changed from v4
         },
       },
     },

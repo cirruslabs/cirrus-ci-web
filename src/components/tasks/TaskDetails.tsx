@@ -58,13 +58,20 @@ import {
   Grow,
   IconButton,
   Link,
+  List,
+  ListItem,
   MenuItem,
   MenuList,
   Popper,
   Tab,
+  Table,
+  TableCell,
+  TableHead,
+  TableRow,
+  ToggleButton,
   Tooltip,
 } from '@mui/material';
-import { Dehaze, Functions, LayersClear } from '@mui/icons-material';
+import { BugReport, Dehaze, Event, Functions, LayersClear } from '@mui/icons-material';
 import {
   TaskDetailsInvalidateCachesMutationResponse,
   TaskDetailsInvalidateCachesMutationVariables,
@@ -80,6 +87,10 @@ import { CirrusTerminal } from '../cirrus-terminal/CirrusTerminal';
 import { HookType } from '../hooks/HookType';
 import { TaskDetailsTriggerMutationVariables } from './__generated__/TaskDetailsTriggerMutation.graphql';
 import { TaskDetailsCancelMutationVariables } from './__generated__/TaskDetailsCancelMutation.graphql';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import InsertDriveFile from '@mui/icons-material/InsertDriveFile';
+import ListItemText from '@mui/material/ListItemText';
+import * as queryString from 'query-string';
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
@@ -437,7 +448,8 @@ function TaskDetails(props: Props) {
     );
   }
 
-  let currentTab = useLocation().pathname.endsWith('/hooks') ? 'hooks' : 'instructions';
+  let location = useLocation();
+  let currentTab = location.pathname.endsWith('/hooks') ? 'hooks' : 'instructions';
 
   const handleChange = (event, newValue) => {
     if (newValue === 'hooks') {
@@ -447,6 +459,32 @@ function TaskDetails(props: Props) {
     }
   };
 
+  let search = queryString.parse(location.search);
+  const [displayDebugInfo, setDisplayDebugInfo] = React.useState(search.logs == 'cirrus-agent-logs');
+  const toggleDisplayDebugInfo = () => {
+    setDisplayDebugInfo(!displayDebugInfo);
+  };
+
+  let debugEvents = null;
+  if (displayDebugInfo && task.executionInfo.events.length > 0) {
+    debugEvents = (
+      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+        <TableHead title="Execution Events">
+          <TableCell>Time</TableCell>
+          <TableCell>Execution Event</TableCell>
+        </TableHead>
+        {task.executionInfo.events.map(event => {
+          return (
+            <TableRow key={event.message}>
+              <TableCell sx={{ whiteSpace: 'nowrap' }}>{new Date(event.timestamp).toLocaleTimeString()}</TableCell>
+              <TableCell>{event.message}</TableCell>
+            </TableRow>
+          );
+        })}
+      </Table>
+    );
+  }
+
   const tabbedCommandsAndHooks = (
     <TabContext value={currentTab}>
       <TabList onChange={handleChange}>
@@ -454,7 +492,7 @@ function TaskDetails(props: Props) {
         <Tab icon={<Functions />} label={'Hooks (' + task.hooks.length + ')'} value="hooks" />
       </TabList>
       <TabPanel value="instructions" className={classes.tabPanel}>
-        <TaskCommandList task={task} />
+        <TaskCommandList task={task} includeAgentLogs={displayDebugInfo} />
       </TabPanel>
       <TabPanel value="hooks" className={classes.tabPanel}>
         <HookList hooks={task.hooks} type={HookType.Task} />
@@ -463,11 +501,7 @@ function TaskDetails(props: Props) {
   );
 
   function desiredLabel(label: string) {
-    if (label.startsWith('canceller_') || label.startsWith('rerunner_')) {
-      return false;
-    }
-
-    return true;
+    return !(label.startsWith('canceller_') || label.startsWith('rerunner_'));
   }
 
   const shouldRunTerminal = props.task.terminalCredential != null && !isTaskFinalStatus(props.task.status);
@@ -517,12 +551,20 @@ function TaskDetails(props: Props) {
       <Card elevation={24}>
         <CardContent>
           <div className={classes.wrapper}>
-            <RepositoryOwnerChip className={classes.chip} repository={repository} />
-            <RepositoryNameChip className={classes.chip} repository={repository} />
-            <BuildBranchNameChip className={classes.chip} build={build} />
-            <BuildChangeChip className={classes.chip} build={build} />
-            <TaskNameChip className={classes.chip} task={task} />
+            <div className={classes.wrapper} style={{ flexGrow: 1 }}>
+              <RepositoryOwnerChip className={classes.chip} repository={repository} />
+              <RepositoryNameChip className={classes.chip} repository={repository} />
+              <BuildBranchNameChip className={classes.chip} build={build} />
+              <BuildChangeChip className={classes.chip} build={build} />
+              <TaskNameChip className={classes.chip} task={task} />
+            </div>
+            <Tooltip title="Debugging View">
+              <ToggleButton value="bug" onClick={toggleDisplayDebugInfo} selected={displayDebugInfo}>
+                <BugReport />
+              </ToggleButton>
+            </Tooltip>
           </div>
+
           <div className={classes.wrapper}>
             <TaskCreatedChip className={classes.chip} task={task} />
             <TaskScheduledChip className={classes.chip} task={task} />
@@ -560,6 +602,8 @@ function TaskDetails(props: Props) {
             {taskLabels}
           </div>
           <ExecutionInfo task={task} />
+          {debugEvents && <div className={classes.gap} />}
+          {debugEvents}
         </CardContent>
         <CardActions sx={{ justifyContent: 'flex-end' }}>
           <Button
@@ -672,6 +716,10 @@ export default createFragmentContainer(withStyles(styles)(TaskDetails), {
         ...HookListRow_hook
       }
       executionInfo {
+        events {
+          timestamp
+          message
+        }
         cacheRetrievalAttempts {
           hits {
             key

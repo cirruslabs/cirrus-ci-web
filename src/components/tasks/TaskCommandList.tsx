@@ -3,7 +3,7 @@ import React from 'react';
 import { useCommandStatusColorMapping } from '../../utils/colors';
 import TaskCommandLogs from './TaskCommandLogs';
 import { formatDuration } from '../../utils/time';
-import { isTaskCommandExecuting, isTaskCommandFinalStatus } from '../../utils/status';
+import { isTaskCommandExecuting, isTaskCommandFinalStatus, isTaskFinalStatus } from '../../utils/status';
 import DurationTicker from '../common/DurationTicker';
 import withStyles from '@mui/styles/withStyles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import * as queryString from 'query-string';
-import { TaskCommandList_task } from './__generated__/TaskCommandList_task.graphql';
+import { TaskCommandList_task, TaskCommandStatus } from './__generated__/TaskCommandList_task.graphql';
 import { ItemOfArray } from '../../utils/utility-types';
 import { useLocation } from 'react-router-dom';
 import { createStyles, WithStyles } from '@mui/styles';
@@ -31,6 +31,7 @@ const styles = theme =>
 
 interface Props extends WithStyles<typeof styles> {
   task: TaskCommandList_task;
+  includeAgentLogs: boolean;
 }
 
 function TaskCommandList(props: Props) {
@@ -111,6 +112,17 @@ function TaskCommandList(props: Props) {
         </Accordion>
       </Box>
     );
+  }
+
+  if (props.includeAgentLogs) {
+    let status: TaskCommandStatus = isTaskFinalStatus(task.status) ? 'SUCCESS' : 'UNDEFINED';
+    let agentLogsCommand = {
+      name: 'cirrus-agent-logs',
+      type: null,
+      status: status,
+      durationInSeconds: 0,
+    };
+    commandComponents.push(commandItem(agentLogsCommand, 0));
   }
 
   for (let i = 0; i < commands.length; ++i) {

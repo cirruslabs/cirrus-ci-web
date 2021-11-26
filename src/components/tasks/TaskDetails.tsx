@@ -85,9 +85,6 @@ import { CirrusTerminal } from '../cirrus-terminal/CirrusTerminal';
 import { HookType } from '../hooks/HookType';
 import { TaskDetailsTriggerMutationVariables } from './__generated__/TaskDetailsTriggerMutation.graphql';
 import { TaskDetailsCancelMutationVariables } from './__generated__/TaskDetailsCancelMutation.graphql';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import InsertDriveFile from '@mui/icons-material/InsertDriveFile';
-import ListItemText from '@mui/material/ListItemText';
 import * as queryString from 'query-string';
 
 const taskReRunMutation = graphql`

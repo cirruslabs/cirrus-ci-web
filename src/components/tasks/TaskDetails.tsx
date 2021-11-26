@@ -527,7 +527,7 @@ function TaskDetails(props: Props) {
               <BuildChangeChip className={classes.chip} build={build} />
               <TaskNameChip className={classes.chip} task={task} />
             </div>
-            <Tooltip title="Debugging View">
+            <Tooltip title="Debugging View" sx={{ display: isTaskFinalStatus(task.status) ? null : 'none' }}>
               <ToggleButton value="bug" onClick={toggleDisplayDebugInfo} selected={displayDebugInfo}>
                 <BugReport />
               </ToggleButton>

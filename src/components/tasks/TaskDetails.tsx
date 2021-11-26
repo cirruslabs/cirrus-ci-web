@@ -58,8 +58,6 @@ import {
   Grow,
   IconButton,
   Link,
-  List,
-  ListItem,
   MenuItem,
   MenuList,
   Popper,
@@ -71,7 +69,7 @@ import {
   ToggleButton,
   Tooltip,
 } from '@mui/material';
-import { BugReport, Dehaze, Event, Functions, LayersClear } from '@mui/icons-material';
+import { BugReport, Dehaze, Functions, LayersClear } from '@mui/icons-material';
 import {
   TaskDetailsInvalidateCachesMutationResponse,
   TaskDetailsInvalidateCachesMutationVariables,

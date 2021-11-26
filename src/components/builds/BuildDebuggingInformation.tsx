@@ -7,7 +7,7 @@ import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
-import { DebuggingInformation_build } from './__generated__/DebuggingInformation_build.graphql';
+import { BuildDebuggingInformation_build } from './__generated__/BuildDebuggingInformation_build.graphql';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -44,10 +44,10 @@ const styles = (theme: Theme) =>
   });
 
 interface Props extends WithStyles<typeof styles> {
-  build: DebuggingInformation_build;
+  build: BuildDebuggingInformation_build;
 }
 
-function DebuggingInformation(props: Props) {
+function BuildDebuggingInformation(props: Props) {
   let { build, classes } = props;
 
   if (!build.parsingResult) {
@@ -101,9 +101,9 @@ function DebuggingInformation(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(DebuggingInformation), {
+export default createFragmentContainer(withStyles(styles)(BuildDebuggingInformation), {
   build: graphql`
-    fragment DebuggingInformation_build on Build {
+    fragment BuildDebuggingInformation_build on Build {
       parsingResult {
         rawYamlConfig
         rawStarlarkConfig

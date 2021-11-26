@@ -463,11 +463,7 @@ function TaskDetails(props: Props) {
   );
 
   function desiredLabel(label: string) {
-    if (label.startsWith('canceller_') || label.startsWith('rerunner_')) {
-      return false;
-    }
-
-    return true;
+    return !(label.startsWith('canceller_') || label.startsWith('rerunner_'));
   }
 
   const shouldRunTerminal = props.task.terminalCredential != null && !isTaskFinalStatus(props.task.status);

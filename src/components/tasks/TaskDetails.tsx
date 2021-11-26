@@ -455,7 +455,7 @@ function TaskDetails(props: Props) {
   };
 
   let search = queryString.parse(location.search);
-  const [displayDebugInfo, setDisplayDebugInfo] = React.useState(search.logs == 'cirrus-agent-logs');
+  const [displayDebugInfo, setDisplayDebugInfo] = React.useState(search.logs === 'cirrus-agent-logs');
   const toggleDisplayDebugInfo = () => {
     setDisplayDebugInfo(!displayDebugInfo);
   };

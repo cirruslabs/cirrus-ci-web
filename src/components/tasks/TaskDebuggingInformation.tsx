@@ -35,10 +35,12 @@ function TaskDebuggingInformation(props: Props) {
           return null;
         }
         let task = response.props.task;
-        let events = task.executionInfo.events.map(event => {
-          let prettyTime = new Date(event.timestamp).toLocaleTimeString();
-          return `${prettyTime} ${event.message}`;
-        });
+        let events = !task.executionInfo
+          ? []
+          : task.executionInfo.events.map(event => {
+              let prettyTime = new Date(event.timestamp).toLocaleTimeString();
+              return `${prettyTime} ${event.message}`;
+            });
         return (
           <Card elevation={24}>
             <CardContent>

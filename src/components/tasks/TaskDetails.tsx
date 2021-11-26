@@ -10,7 +10,7 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { graphql } from 'babel-plugin-relay/macro';
 import classNames from 'classnames';
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { commitMutation, createFragmentContainer, requestSubscription } from 'react-relay';
 import { useLocation, useNavigate } from 'react-router-dom';
 import environment from '../../createRelayEnvironment';
@@ -50,7 +50,7 @@ import TaskTimeoutChip from '../chips/TaskTimeoutChip';
 import Notification from '../common/Notification';
 import HookList from '../hooks/HookList';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { TabContext, TabList, TabPanel } from '@mui/lab';
+import { TabContext, TabList, TabPanel, ToggleButton } from '@mui/lab';
 import {
   ButtonGroup,
   ClickAwayListener,
@@ -64,7 +64,7 @@ import {
   Tab,
   Tooltip,
 } from '@mui/material';
-import { Dehaze, Functions, LayersClear } from '@mui/icons-material';
+import { BugReport, Dehaze, Functions, LayersClear } from '@mui/icons-material';
 import {
   TaskDetailsInvalidateCachesMutationResponse,
   TaskDetailsInvalidateCachesMutationVariables,
@@ -80,6 +80,8 @@ import { CirrusTerminal } from '../cirrus-terminal/CirrusTerminal';
 import { HookType } from '../hooks/HookType';
 import { TaskDetailsTriggerMutationVariables } from './__generated__/TaskDetailsTriggerMutation.graphql';
 import { TaskDetailsCancelMutationVariables } from './__generated__/TaskDetailsCancelMutation.graphql';
+import TaskDebuggingInformation from './TaskDebuggingInformation';
+import CirrusLinearProgress from '../common/CirrusLinearProgress';
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
@@ -447,6 +449,11 @@ function TaskDetails(props: Props) {
     }
   };
 
+  const [displayDebugInfo, setDisplayDebugInfo] = React.useState(false);
+  const toggleDisplayDebugInfo = () => {
+    setDisplayDebugInfo(!displayDebugInfo);
+  };
+
   const tabbedCommandsAndHooks = (
     <TabContext value={currentTab}>
       <TabList onChange={handleChange}>
@@ -513,11 +520,18 @@ function TaskDetails(props: Props) {
       <Card elevation={24}>
         <CardContent>
           <div className={classes.wrapper}>
-            <RepositoryOwnerChip className={classes.chip} repository={repository} />
-            <RepositoryNameChip className={classes.chip} repository={repository} />
-            <BuildBranchNameChip className={classes.chip} build={build} />
-            <BuildChangeChip className={classes.chip} build={build} />
-            <TaskNameChip className={classes.chip} task={task} />
+            <div className={classes.wrapper} style={{ flexGrow: 1 }}>
+              <RepositoryOwnerChip className={classes.chip} repository={repository} />
+              <RepositoryNameChip className={classes.chip} repository={repository} />
+              <BuildBranchNameChip className={classes.chip} build={build} />
+              <BuildChangeChip className={classes.chip} build={build} />
+              <TaskNameChip className={classes.chip} task={task} />
+            </div>
+            <Tooltip title="Debugging View">
+              <ToggleButton value="bug" onClick={toggleDisplayDebugInfo} selected={displayDebugInfo}>
+                <BugReport />
+              </ToggleButton>
+            </Tooltip>
           </div>
           <div className={classes.wrapper}>
             <TaskCreatedChip className={classes.chip} task={task} />
@@ -573,6 +587,12 @@ function TaskDetails(props: Props) {
         </CardActions>
       </Card>
       {notificationsComponent}
+      <Collapse in={displayDebugInfo} unmountOnExit={true}>
+        <div className={classes.gap} />
+        <Suspense fallback={<CirrusLinearProgress />}>
+          <TaskDebuggingInformation taskId={task.id} />
+        </Suspense>
+      </Collapse>
       <Collapse in={shouldRunTerminal}>
         <div className={classes.gap} />
         <Accordion defaultExpanded={true}>

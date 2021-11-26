@@ -30,7 +30,7 @@ import { Box, Collapse, Link, Tab, ToggleButton } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { BugReport, Dehaze, Functions, Stop } from '@mui/icons-material';
 import Tooltip from '@mui/material/Tooltip';
-import DebuggingInformation from './DebuggingInformation';
+import DebuggingInformation from './BuildDebuggingInformation';
 import RepositoryOwnerChip from '../chips/RepositoryOwnerChip';
 import { HookType } from '../hooks/HookType';
 import { BuildDetailsApproveBuildMutationVariables } from './__generated__/BuildDetailsApproveBuildMutation.graphql';
@@ -352,7 +352,7 @@ export default createFragmentContainer(withStyles(styles)(BuildDetails), {
         ...Notification_notification
       }
       ...ConfigurationWithIssues_build
-      ...DebuggingInformation_build
+      ...BuildDebuggingInformation_build
       latestGroupTasks {
         id
         localGroupId

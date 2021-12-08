@@ -73,13 +73,13 @@ function handleTerminalLifecycle(notificationOptions, data) {
     case 'STARTED':
       title = `Cirrus Terminal has been attached`;
       notificationOptions.body = `Cirrus Terminal has been attached for task ${data.task.name}`;
-      notificationOptions.icon = '/images/logo-success.png';
+      notificationOptions.icon = '/images/logo-terminal-lifecycle.png';
       notificationOptions.data['link'] = `/task/${data.task.id}`;
       break;
     case 'EXPIRING':
       title = `Cirrus Terminal is about to terminate`;
       notificationOptions.body = `Cirrus Terminal is about to terminate for task ${data.task.name}`;
-      notificationOptions.icon = '/images/logo-success.png';
+      notificationOptions.icon = '/images/logo-terminal-lifecycle.png';
       notificationOptions.data['link'] = `/task/${data.task.id}`;
       break;
     default:

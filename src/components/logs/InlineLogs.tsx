@@ -44,6 +44,10 @@ interface Props extends WithStyles<typeof styles> {
 function InlineLogs(props: Props) {
   let { title, lines, classes } = props;
 
+  if (!lines) {
+    lines = [''];
+  }
+
   const tableRows = lines.map((lineContent, zeroBasedLineNumber) => [
     <tr>
       <td className={classes.lineNumber}>{zeroBasedLineNumber + 1}</td>

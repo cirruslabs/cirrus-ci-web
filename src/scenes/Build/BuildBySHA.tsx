@@ -11,7 +11,7 @@ import { BuildBySHAQuery } from './__generated__/BuildBySHAQuery.graphql';
 import * as queryString from 'query-string';
 import { useParams } from 'react-router-dom';
 
-export default () => {
+export default function BuildBySHA() {
   let { owner, name, SHA } = useParams();
   return (
     <QueryRenderer<BuildBySHAQuery>
@@ -42,4 +42,4 @@ export default () => {
       }}
     />
   );
-};
+}

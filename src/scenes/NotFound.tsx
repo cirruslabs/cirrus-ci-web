@@ -3,7 +3,7 @@ import Icon from '@mui/material/Icon';
 import { Helmet as Head } from 'react-helmet';
 import { Box, Link, Typography } from '@mui/material';
 
-export default props => {
+export default function NotFound(props): JSX.Element {
   return (
     <Box sx={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center' }}>
       <Head>
@@ -30,4 +30,4 @@ export default props => {
       </Box>
     </Box>
   );
-};
+}

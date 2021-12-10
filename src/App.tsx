@@ -12,7 +12,7 @@ declare module '@mui/styles/defaultTheme' {
   interface DefaultTheme extends Theme {}
 }
 
-export default () => {
+export default function App(): JSX.Element {
   const themeOptions = useRecoilValue(cirrusThemeOptions);
 
   const theme = React.useMemo(() => createTheme(themeOptions), [themeOptions]);
@@ -26,4 +26,4 @@ export default () => {
       </ThemeProvider>
     </StyledEngineProvider>
   );
-};
+}

@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import UserProfile from '../../components/account/UserProfile';
 import { ViewerProfileQuery } from './__generated__/ViewerProfileQuery.graphql';
 
-export default () => {
+export default function ViewerProfile(): JSX.Element {
   return (
     <QueryRenderer<ViewerProfileQuery>
       environment={environment}
@@ -32,4 +32,4 @@ export default () => {
       }}
     />
   );
-};
+}

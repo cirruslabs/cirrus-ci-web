@@ -11,7 +11,7 @@ import NotFound from '../NotFound';
 import { RepositoryQuery } from './__generated__/RepositoryQuery.graphql';
 import { useParams } from 'react-router-dom';
 
-export default () => {
+export default function Repository(): JSX.Element {
   let { repositoryId, branch } = useParams();
   return (
     <QueryRenderer<RepositoryQuery>
@@ -38,4 +38,4 @@ export default () => {
       }}
     />
   );
-};
+}

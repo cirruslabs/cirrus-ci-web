@@ -315,11 +315,6 @@ interface DialogProps {
   onClose(...args: any[]): void;
 }
 
-interface DialogState {
-  name: string;
-  enabledForPublic: boolean;
-}
-
 const updatePoolMutation = graphql`
   mutation PoolDetailsUpdateMutation($input: UpdatePersistentWorkerPoolInput!) {
     updatePersistentWorkerPool(input: $input) {

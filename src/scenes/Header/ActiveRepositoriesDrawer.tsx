@@ -113,7 +113,7 @@ function base64toUIntArray(text: string): Uint8Array {
   return result;
 }
 
-export default () => {
+export default function ActiveRepositoriesDrawer(): JSX.Element {
   return (
     <QueryRenderer<ActiveRepositoriesDrawerQuery>
       environment={environment}
@@ -138,4 +138,4 @@ export default () => {
       }}
     />
   );
-};
+}

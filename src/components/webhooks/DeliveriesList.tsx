@@ -10,7 +10,7 @@ interface Props {
   deliveries: WebHookSettings_info['webhookDeliveries'];
 }
 
-export default (props: Props) => {
+const DeliveriesList = (props: Props) => {
   const deliveries = props.deliveries ? getNodesFromConnection(props.deliveries) : [];
   return (
     <Table style={{ tableLayout: 'auto' }}>
@@ -22,3 +22,5 @@ export default (props: Props) => {
     </Table>
   );
 };
+
+export default DeliveriesList;

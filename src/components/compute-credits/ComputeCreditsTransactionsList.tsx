@@ -11,7 +11,7 @@ interface Props {
   }>;
 }
 
-export default (props: Props) => {
+const ComputeCreditsTransactionsList = (props: Props) => {
   let transactions = props.transactions || [];
   return (
     <Table style={{ tableLayout: 'auto' }}>
@@ -23,3 +23,5 @@ export default (props: Props) => {
     </Table>
   );
 };
+
+export default ComputeCreditsTransactionsList;

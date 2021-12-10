@@ -53,7 +53,7 @@ interface CirrusFaviconProps {
   status?: BuildStatus | TaskStatus | boolean;
 }
 
-export default (props: CirrusFaviconProps) => {
+export default function CirrusFavicon(props: CirrusFaviconProps): JSX.Element {
   let theme = useTheme();
   useEffect(() => {
     return function cleanup() {
@@ -62,4 +62,4 @@ export default (props: CirrusFaviconProps) => {
   }, [theme.palette.primary.main]);
   updateIcon(useFaviconColor(props.status));
   return null;
-};
+}

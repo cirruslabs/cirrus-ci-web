@@ -20,10 +20,10 @@ self.addEventListener(
 
     switch (data.type) {
       case 'BUILD_STATUS':
-        handleBuildStatus(notificationOptions, data);
+        handleBuildStatus(e, notificationOptions, data);
         break;
       case 'TERMINAL_LIFECYCLE':
-        handleTerminalLifecycle(notificationOptions, data);
+        handleTerminalLifecycle(e, notificationOptions, data);
         break;
       default:
         return;
@@ -31,7 +31,7 @@ self.addEventListener(
   },
 );
 
-function handleBuildStatus(notificationOptions, data) {
+function handleBuildStatus(e, notificationOptions, data) {
   let title = '';
 
   switch (data.build.status) {
@@ -66,7 +66,7 @@ function handleBuildStatus(notificationOptions, data) {
   e.waitUntil(self.registration.showNotification(title, notificationOptions));
 }
 
-function handleTerminalLifecycle(notificationOptions, data) {
+function handleTerminalLifecycle(e, notificationOptions, data) {
   let title = '';
 
   switch (data.terminalLifecycle.type) {

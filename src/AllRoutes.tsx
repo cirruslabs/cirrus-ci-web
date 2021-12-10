@@ -264,10 +264,10 @@ function AllRoutes(props: WithStyles<typeof styles>) {
                 <Route path="settings/repository/:repositoryId" element={<AsyncRepositorySettings />} />
                 <Route path="build/:buildId" element={<AsyncBuildById />} />
                 <Route path="build/:owner/:name/:SHA" element={<AsyncBuildBySHA />} />
-                <Route path=":platform/:owner/:name/:branch" element={<AsyncGitHubRepository />} />
+                <Route path=":platform/:owner/:name/*" element={<AsyncGitHubRepository />} />
                 <Route path=":platform/:owner/:name" element={<AsyncGitHubRepository />} />
                 <Route path=":platform/:owner" element={<AsyncGitHubOrganization />} />
-                <Route path="repository/:repositoryId/:branch" element={<AsyncRepository />} />
+                <Route path="repository/:repositoryId/*" element={<AsyncRepository />} />
                 <Route path="repository/:repositoryId" element={<AsyncRepository />} />
                 <Route path="metrics/repository/:owner/:name" element={<AsyncRepositoryMetrics />} />
                 <Route path="task/:taskId" element={<AsyncTask />} />

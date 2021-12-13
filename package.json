@@ -26,28 +26,28 @@
     "@stripe/stripe-js": "^1.12.1",
     "@types/google-protobuf": "^3.15.2",
     "ansi_up": "^5.0.0",
-    "babel-plugin-relay": "^10.1.2",
+    "babel-plugin-relay": "^12.0.0",
     "classnames": "^2.2.6",
     "clipboard-copy": "^4.0.1",
     "google-protobuf": "^3.17.3",
     "graphiql": "^1.4.0",
-    "graphql": "^15.4.0",
-    "graphql-relay": "^0.6.0",
-    "js-base64": "^3.6.0",
+    "graphql": "^15.8.0",
+    "graphql-relay": "^0.9.0",
+    "js-base64": "^3.7.2",
     "pluralize": "^8.0.0",
     "prop-types": "^15.7.2",
     "query-string": "^6.13.7",
-    "react": "^16.8.4",
-    "react-ace": "^9.2.1",
-    "react-dom": "^16.8.4",
+    "react": "^17.0.2",
+    "react-ace": "^9.5.0",
+    "react-dom": "^17.0.2",
     "react-helmet": "^6.1.0",
     "react-markdown": "^5.0.3",
-    "react-relay": "^10.1.2",
+    "react-relay": "^12.0.0",
     "react-router-dom": "^6.0.2",
     "react-stripe-elements": "^6.1.2",
     "react-vis": "^1.11.7",
     "recharts": "^1.8.5",
-    "recoil": "^0.1.2",
+    "recoil": "^0.5.2",
     "sjcl": "^1.0.8",
     "ts-protoc-gen": "^0.15.0",
     "xterm": "^4.12.0",
@@ -56,22 +56,22 @@
   "devDependencies": {
     "@types/classnames": "^2.2.11",
     "@types/jest": "^26.0.19",
-    "@types/node": "^14.14.28",
-    "@types/react": "^16.8.0",
-    "@types/react-dom": "^16.8.0",
+    "@types/node": "^16.11.12",
+    "@types/react": "^17.0.37",
+    "@types/react-dom": "^17.0.11",
     "@types/react-helmet": "^6.1.0",
-    "@types/react-relay": "^7.0.17",
+    "@types/react-relay": "^11.0.3",
     "@types/react-router-dom": "^5.1.6",
-    "@types/relay-runtime": "^10.1.6",
+    "@types/relay-runtime": "^12.0.1",
     "get-graphql-schema": "^2.1.2",
     "husky": "^4.3.6",
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0",
-    "react-scripts": "^3.4.3",
+    "react-scripts": "^4.0.3",
     "react-test-renderer": "^17.0.1",
-    "relay-compiler": "^10.1.2",
-    "relay-compiler-language-typescript": "^13.0.6",
-    "typescript": "^3.9.7"
+    "relay-compiler": "^12.0.0",
+    "relay-compiler-language-typescript": "^15.0.0",
+    "typescript": "^4.5.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -85,6 +85,12 @@
     "sync-schema": "get-graphql-schema https://api.cirrus-ci.com/schema.json | sed -e 's/Long/Int/g' > schema.graphql && prettier --write schema.graphql",
     "bootstrap": "yarn sync-schema && yarn relay"
   },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
   "babelMacros": {
     "relay": {}
   },
@@ -97,5 +103,6 @@
     ">0.2%",
     "not dead",
     "not op_mini all"
-  ]
+  ],
+  "packageManager": "yarn@3.1.1"
 }

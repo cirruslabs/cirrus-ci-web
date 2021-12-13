@@ -11,7 +11,7 @@ import NotFound from '../NotFound';
 import { GitHubRepositoryQuery } from './__generated__/GitHubRepositoryQuery.graphql';
 import { useParams } from 'react-router-dom';
 
-export default () => {
+export default function GitHubRepository(): JSX.Element {
   let params = useParams();
   let { owner, name, branch } = params;
   return (
@@ -39,4 +39,4 @@ export default () => {
       }}
     />
   );
-};
+}

@@ -14,7 +14,7 @@ interface Props {
   className?: string;
 }
 
-export default (props: Props) => {
+export default function ViewerTopRepositories(props: Props) {
   return (
     <QueryRenderer<ViewerTopRepositoriesQuery>
       environment={environment}
@@ -53,4 +53,4 @@ export default (props: Props) => {
       }}
     />
   );
-};
+}

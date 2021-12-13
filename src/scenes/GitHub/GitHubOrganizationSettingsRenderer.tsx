@@ -9,7 +9,7 @@ import GitHubOrganizationSettings from '../../components/settings/GitHubOrganiza
 import { GitHubOrganizationSettingsRendererQuery } from './__generated__/GitHubOrganizationSettingsRendererQuery.graphql';
 import { useParams } from 'react-router-dom';
 
-export default () => {
+export default function GitHubOrganizationSettingsRenderer(): JSX.Element {
   let { organization } = useParams();
   return (
     <QueryRenderer<GitHubOrganizationSettingsRendererQuery>
@@ -30,4 +30,4 @@ export default () => {
       }}
     />
   );
-};
+}

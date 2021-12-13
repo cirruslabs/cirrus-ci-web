@@ -190,7 +190,7 @@ function ComputeCreditsStripeDialog(props: Props) {
   );
 }
 
-export default function (props: Props) {
+export default function ComputeCreditsStripeDialogComponent(props: Props) {
   // Setup Stripe.js and the Elements provider
   const stripe = (window as any).Stripe('pk_live_85E3GON1qCUa1i4Kz9AU76Xo');
   return (

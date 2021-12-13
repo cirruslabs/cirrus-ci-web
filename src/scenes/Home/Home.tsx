@@ -9,7 +9,7 @@ import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
 import WelcomePage from './WelcomePage';
 import { HomeViewerQuery } from './__generated__/HomeViewerQuery.graphql';
 
-export default () => {
+export default function Home(): JSX.Element {
   return (
     <QueryRenderer<HomeViewerQuery>
       environment={environment}
@@ -33,4 +33,4 @@ export default () => {
       }}
     />
   );
-};
+}

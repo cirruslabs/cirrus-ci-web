@@ -10,7 +10,7 @@ import NotFound from '../NotFound';
 import { BuildByIdQuery } from './__generated__/BuildByIdQuery.graphql';
 import { useParams } from 'react-router-dom';
 
-export default () => {
+export default function BuildById(): JSX.Element {
   let { buildId } = useParams();
   return (
     <QueryRenderer<BuildByIdQuery>
@@ -34,4 +34,4 @@ export default () => {
       }}
     />
   );
-};
+}

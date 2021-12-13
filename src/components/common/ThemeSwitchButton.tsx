@@ -5,7 +5,7 @@ import SunIcon from '@mui/icons-material/BrightnessHigh';
 import MoonIcon from '@mui/icons-material/Brightness3';
 import { useRecoilState } from 'recoil';
 
-export default () => {
+const ThemeSwitchButton = () => {
   let theme = useTheme();
   const [prefersDarkMode, setPreferredMode] = useRecoilState(prefersDarkModeState);
 
@@ -26,3 +26,5 @@ export default () => {
     </Tooltip>
   );
 };
+
+export default ThemeSwitchButton;

@@ -10,7 +10,7 @@ import NotFound from '../NotFound';
 import { HookQuery } from './__generated__/HookQuery.graphql';
 import { useParams } from 'react-router-dom';
 
-export default () => {
+export default function Hook(): JSX.Element {
   let { hookId } = useParams();
   return (
     <QueryRenderer<HookQuery>
@@ -34,4 +34,4 @@ export default () => {
       }}
     />
   );
-};
+}

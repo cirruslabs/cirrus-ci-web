@@ -10,8 +10,8 @@ import RepositoryMetricsPage from '../../components/metrics/RepositoryMetricsPag
 import { RepositoryMetricsQuery } from './__generated__/RepositoryMetricsQuery.graphql';
 import { useParams } from 'react-router-dom';
 
-export default parentProps => {
-  let { owner, name } = useParams();
+export default function RepositoryMetrics(parentProps): JSX.Element {
+  const { owner, name } = useParams();
   return (
     <QueryRenderer<RepositoryMetricsQuery>
       environment={environment}
@@ -34,4 +34,4 @@ export default parentProps => {
       }}
     />
   );
-};
+}

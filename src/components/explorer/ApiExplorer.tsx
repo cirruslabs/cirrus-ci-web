@@ -4,7 +4,7 @@ import GraphiQL from 'graphiql';
 import 'graphiql/graphiql.css';
 import { Helmet as Head } from 'react-helmet';
 
-export default () => {
+const ApiExplorer = () => {
   return (
     <div style={{ height: '100vh' }}>
       <Head>
@@ -36,3 +36,5 @@ query {
     </div>
   );
 };
+
+export default ApiExplorer;

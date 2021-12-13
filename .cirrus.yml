@@ -7,9 +7,8 @@ env:
 
 task:
   node_modules_cache:
-    folder: node_modules
-    fingerprint_script: cat yarn.lock
-    populate_script: yarn
+    folder: .yarn/cache
+  install_script: yarn
   bootstrap_script: yarn bootstrap
   matrix:
     - name: Build

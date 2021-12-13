@@ -10,7 +10,7 @@ import NotFound from '../NotFound';
 import { TaskQuery } from './__generated__/TaskQuery.graphql';
 import { useParams } from 'react-router-dom';
 
-export default () => {
+export default function Task(): JSX.Element {
   let { taskId } = useParams();
   return (
     <QueryRenderer<TaskQuery>
@@ -34,4 +34,4 @@ export default () => {
       }}
     />
   );
-};
+}

@@ -7,8 +7,8 @@ interface Props {
   enabledForPublic: boolean;
 }
 
-export default (props: Props) =>
-  props.enabledForPublic ? (
+export default function PoolVisibilityIcon(props: Props) {
+  return props.enabledForPublic ? (
     <Tooltip title="Public Pool">
       <LockOpenIcon />
     </Tooltip>
@@ -17,3 +17,4 @@ export default (props: Props) =>
       <LockCloseIcon />
     </Tooltip>
   );
+}

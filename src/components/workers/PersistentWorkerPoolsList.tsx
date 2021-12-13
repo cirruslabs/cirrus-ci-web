@@ -37,10 +37,6 @@ import { PersistentWorkerPoolsListDeleteMutationVariables } from './__generated_
 import PoolVisibilityIcon from '../icons/PoolVisibilityIcon';
 import { useNavigate } from 'react-router-dom';
 
-interface PoolsListState {
-  openDialog: boolean;
-}
-
 interface PoolsListProps {
   readonly ownerUid: string;
   pools: ReadonlyArray<{
@@ -125,11 +121,6 @@ interface DialogProps {
   open: boolean;
 
   onClose(...args: any[]): void;
-}
-
-interface DialogState {
-  name: string;
-  enabledForPublic: boolean;
 }
 
 const createPoolMutation = graphql`

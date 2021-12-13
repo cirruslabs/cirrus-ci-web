@@ -17,7 +17,7 @@ export const GCPHasOngoingIncident = selector({
   },
 });
 
-export default () => {
+const GCPStatus = () => {
   let theme = useTheme();
   let hasIncident = useRecoilValue(GCPHasOngoingIncident);
 
@@ -31,3 +31,5 @@ export default () => {
     </Tooltip>
   );
 };
+
+export default GCPStatus;

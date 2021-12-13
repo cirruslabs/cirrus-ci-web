@@ -17,7 +17,7 @@ export const GitHubStatusIndicatorState = selector({
   },
 });
 
-export default () => {
+const GitHubStatus = () => {
   let theme = useTheme();
   let indicator = useRecoilValue(GitHubStatusIndicatorState);
 
@@ -31,3 +31,5 @@ export default () => {
     </Tooltip>
   );
 };
+
+export default GitHubStatus;

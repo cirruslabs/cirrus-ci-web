@@ -35,3 +35,13 @@ deploy_docker_builder:
     - docker --version
     - ./.ci/build_docker.sh
   push_script: ./.ci/push_docker.sh
+
+deploy_dry_run_docker_builder:
+  only_if: $CIRRUS_BRANCH != "master" || $CIRRUS_PR != ""
+  depends_on:
+    - Build
+    - Prettier
+    - Type Check
+  build_script:
+    - docker --version
+    - ./.ci/build_docker.sh

@@ -12,7 +12,9 @@ import { RepositoryQuery } from './__generated__/RepositoryQuery.graphql';
 import { useParams } from 'react-router-dom';
 
 export default function Repository(): JSX.Element {
-  let { repositoryId, branch } = useParams();
+  let params = useParams();
+  let { repositoryId } = params;
+  let branch = params['*'];
   return (
     <QueryRenderer<RepositoryQuery>
       environment={environment}

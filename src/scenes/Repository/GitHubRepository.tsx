@@ -13,7 +13,8 @@ import { useParams } from 'react-router-dom';
 
 export default function GitHubRepository(): JSX.Element {
   let params = useParams();
-  let { owner, name, branch } = params;
+  let { owner, name } = params;
+  let branch = params['*'];
   return (
     <QueryRenderer<GitHubRepositoryQuery>
       environment={environment}

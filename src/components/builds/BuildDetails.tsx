@@ -28,7 +28,7 @@ import ConfigurationWithIssues from './ConfigurationWithIssues';
 import HookList from '../hooks/HookList';
 import { Box, Collapse, Link, Tab, ToggleButton } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { BugReport, Dehaze, Functions, Stop } from '@mui/icons-material';
+import { BugReport, Cancel, Dehaze, Functions } from '@mui/icons-material';
 import Tooltip from '@mui/material/Tooltip';
 import DebuggingInformation from './BuildDebuggingInformation';
 import RepositoryOwnerChip from '../chips/RepositoryOwnerChip';
@@ -238,7 +238,7 @@ function BuildDetails(props: Props) {
     );
   const cancelAllTasksButton =
     runningTaskIds.length === 0 || !hasWritePermission ? null : (
-      <Button variant="contained" onClick={() => batchCancellation(runningTaskIds)} startIcon={<Stop />}>
+      <Button variant="contained" onClick={() => batchCancellation(runningTaskIds)} startIcon={<Cancel />}>
         Cancel All Tasks
       </Button>
     );

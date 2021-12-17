@@ -5,7 +5,7 @@ First, install [librsvg](https://en.wikipedia.org/wiki/Librsvg) (e.g. `brew inst
 Then, open the `logo.svg` in the text editor, change the `stroke="#FAFAFA"` paramter to the color desired and generate a new logo:
 
 ```
-rsvg-convert -h 192 logo.svg -o logo-something-new.png
+rsvg-convert logo.svg -o logo-something-new.png
 ```
 
 ## Current logotypes in use

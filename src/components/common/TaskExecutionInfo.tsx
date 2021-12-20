@@ -36,12 +36,11 @@ function TaskExecutionInfo(props: Props) {
     if (!info.cpuChart) return null;
     if (info.cpuChart.points.length < 2) return null;
 
-    let chartPoints = Array(info.cpuChart.points.length);
     let requestedCPU = task.instanceResources ? task.instanceResources.cpu : info.cpuChart.maxValue;
-    info.cpuChart.points.forEach((point, index) => {
-      chartPoints[index] = {
+    const chartPoints = info.cpuChart.points.map((point, index) => {
+      return {
         'Requested CPUs': requestedCPU,
-        'Used CPUs': point.value.toFixed(2),
+        'Used CPUs': point.value < 0 ? null : point.value.toFixed(2),
         TimestampLabel: formatDuration(point.secondsFromStart),
       };
     });
@@ -75,20 +74,23 @@ function TaskExecutionInfo(props: Props) {
     if (!info.memoryChart) return null;
     if (info.memoryChart.points.length < 2) return null;
 
-    let chartPoints = Array(info.memoryChart.points.length);
     let requestedMemory = task.instanceResources ? task.instanceResources.memory : info.memoryChart.maxValue;
     let memoryUnit = requestedMemory > 1024 ? 'Gb' : 'Mb';
-    info.memoryChart.points.forEach((point, index) => {
+    const chartPoints = info.memoryChart.points.map((point, index) => {
       if (memoryUnit === 'Gb') {
-        chartPoints[index] = {
+        const usedMemory = point.value < 0 ? null : Math.min(point.value / 1024.0, requestedMemory / 1024.0).toFixed(2);
+
+        return {
           'Requested Memory': (requestedMemory / 1024.0).toFixed(2),
-          'Used Memory': Math.min(point.value / 1024.0, requestedMemory / 1024.0).toFixed(2),
+          'Used Memory': usedMemory,
           TimestampLabel: formatDuration(point.secondsFromStart),
         };
       } else {
-        chartPoints[index] = {
+        const usedMemory = point.value < 0 ? null : Math.min(point.value, requestedMemory);
+
+        return {
           'Requested Memory': requestedMemory,
-          'Used Memory': Math.min(point.value, requestedMemory),
+          'Used Memory': usedMemory,
           TimestampLabel: formatDuration(point.secondsFromStart),
         };
       }

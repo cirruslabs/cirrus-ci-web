@@ -1,13 +1,10 @@
 import React from 'react';
 import createStyles from '@mui/styles/createStyles';
 import { withStyles, WithStyles } from '@mui/styles';
+import { Typography } from '@mui/material';
 
 const styles = theme =>
   createStyles({
-    gapped: {
-      paddingTop: theme.spacing(2),
-      paddingBottom: theme.spacing(1),
-    },
     scrollableLimiterContainer: {
       maxHeight: theme.spacing(80),
       overflow: 'auto',
@@ -59,7 +56,9 @@ function InlineLogs(props: Props) {
 
   return (
     <>
-      <div className={classes.gapped}>{title}</div>
+      <Typography variant="subtitle1" sx={{ pt: 2, pb: 1 }}>
+        {title}
+      </Typography>
       <div className={classes.scrollableLimiterContainer}>
         <table className={classes.configurationTable} cellPadding={0}>
           <tbody>{tableRows}</tbody>

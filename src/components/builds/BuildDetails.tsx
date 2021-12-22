@@ -23,10 +23,9 @@ import Refresh from '@mui/icons-material/Refresh';
 import Check from '@mui/icons-material/Check';
 import BuildBranchNameChip from '../chips/BuildBranchNameChip';
 import Notification from '../common/Notification';
-import classNames from 'classnames';
 import ConfigurationWithIssues from './ConfigurationWithIssues';
 import HookList from '../hooks/HookList';
-import { Box, Collapse, Link, Tab, ToggleButton } from '@mui/material';
+import { Box, Collapse, Link, List, Tab, ToggleButton } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { BugReport, Cancel, Dehaze, Functions } from '@mui/icons-material';
 import Tooltip from '@mui/material/Tooltip';
@@ -205,11 +204,11 @@ function BuildDetails(props: Props) {
   const commitUrl = repoUrl + '/commit/' + build.changeIdInRepo;
 
   const notificationsComponent = !build.notifications ? null : (
-    <div className={classNames('container', classes.gap)}>
+    <List>
       {build.notifications.map(notification => (
         <Notification key={notification.message} notification={notification} />
       ))}
-    </div>
+    </List>
   );
 
   const canBeReTriggered =

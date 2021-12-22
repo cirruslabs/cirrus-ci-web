@@ -58,6 +58,7 @@ import {
   Grow,
   IconButton,
   Link,
+  List,
   MenuItem,
   MenuList,
   Popper,
@@ -256,11 +257,11 @@ function TaskDetails(props: Props) {
 
   let notificationsComponent =
     !task.notifications || task.notifications.length === 0 ? null : (
-      <div className={classNames('container', classes.gap)}>
+      <List>
         {task.notifications.map(notification => (
           <Notification key={notification.message} notification={notification} />
         ))}
-      </div>
+      </List>
     );
 
   let artifactsComponent =

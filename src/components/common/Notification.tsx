@@ -1,52 +1,39 @@
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import React from 'react';
-
-import Typography from '@mui/material/Typography';
-import { WithStyles } from '@mui/styles';
-import withStyles from '@mui/styles/withStyles';
 import { useNotificationColor } from '../../utils/colors';
 import IconButton from '@mui/material/IconButton';
 import Icon from '@mui/material/Icon';
 import { navigateHelper } from '../../utils/navigateHelper';
 import { Notification_notification } from './__generated__/Notification_notification.graphql';
 import { useNavigate } from 'react-router-dom';
+import { ListItem, ListItemText } from '@mui/material';
 
-let styles = {
-  notification: {
-    padding: 8,
-  },
-};
-
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   notification: Notification_notification;
 }
 
 function Notification(props: Props) {
   let navigate = useNavigate();
-  let { notification, classes } = props;
-  let headerStyle = {
-    backgroundColor: useNotificationColor(notification.level),
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  };
-  let linkComponent = !notification.link ? null : (
-    <IconButton onClick={e => navigateHelper(navigate, e, notification.link)} size="large">
-      <Icon>launch</Icon>
-    </IconButton>
-  );
+  let { notification } = props;
   return (
-    <div key={notification.message} style={headerStyle}>
-      <Typography variant="subtitle1" className={classes.notification}>
-        {notification.message}
-      </Typography>
-      <div>{linkComponent}</div>
-    </div>
+    <ListItem
+      key={notification.message}
+      sx={{ bgcolor: useNotificationColor(notification.level) }}
+      secondaryAction={
+        !notification.link ? null : (
+          <IconButton edge="end" onClick={e => navigateHelper(navigate, e, notification.link)}>
+            <Icon>launch</Icon>
+          </IconButton>
+        )
+      }
+    >
+      <ListItemText primary={notification.message} />
+    </ListItem>
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(Notification), {
+export default createFragmentContainer(Notification, {
   notification: graphql`
     fragment Notification_notification on Notification {
       level

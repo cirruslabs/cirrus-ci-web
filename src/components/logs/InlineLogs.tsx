@@ -41,7 +41,7 @@ interface Props extends WithStyles<typeof styles> {
 function InlineLogs(props: Props) {
   let { title, lines, classes } = props;
 
-  if (!lines) {
+  if (!lines || lines.length === 0) {
     lines = [''];
   }
 

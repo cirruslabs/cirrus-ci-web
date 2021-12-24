@@ -52,6 +52,7 @@ import HookList from '../hooks/HookList';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { TabContext, TabList, TabPanel, ToggleButton } from '@mui/lab';
 import {
+  Badge,
   ButtonGroup,
   ClickAwayListener,
   Collapse,
@@ -512,6 +513,9 @@ function TaskDetails(props: Props) {
       </Tooltip>,
     );
   }
+
+  const hasNoAgentNotifications = props.task.executionInfo?.agentNotifications?.length === 0;
+
   return (
     <div>
       <Head>
@@ -529,9 +533,11 @@ function TaskDetails(props: Props) {
               <TaskNameChip className={classes.chip} task={task} />
             </div>
             <Tooltip title="Debugging View" sx={{ display: isTaskFinalStatus(task.status) ? null : 'none' }}>
-              <ToggleButton value="bug" onClick={toggleDisplayDebugInfo} selected={displayDebugInfo}>
-                <BugReport />
-              </ToggleButton>
+              <Badge variant="dot" color="warning" invisible={hasNoAgentNotifications}>
+                <ToggleButton value="bug" onClick={toggleDisplayDebugInfo} selected={displayDebugInfo}>
+                  <BugReport />
+                </ToggleButton>
+              </Badge>
             </Tooltip>
           </div>
           <div className={classes.wrapper}>
@@ -694,6 +700,9 @@ export default createFragmentContainer(withStyles(styles)(TaskDetails), {
             key
             valid
           }
+        }
+        agentNotifications {
+          message
         }
       }
       terminalCredential {

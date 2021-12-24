@@ -1,6 +1,7 @@
 import React from 'react';
 import createStyles from '@mui/styles/createStyles';
 import { withStyles, WithStyles } from '@mui/styles';
+import { Typography } from '@mui/material';
 
 const styles = theme =>
   createStyles({
@@ -44,7 +45,7 @@ interface Props extends WithStyles<typeof styles> {
 function InlineLogs(props: Props) {
   let { title, lines, classes } = props;
 
-  if (!lines) {
+  if (!lines || lines.length === 0) {
     lines = [''];
   }
 
@@ -59,7 +60,9 @@ function InlineLogs(props: Props) {
 
   return (
     <>
-      <div className={classes.gapped}>{title}</div>
+      <Typography variant="subtitle1" className={classes.gapped}>
+        {title}
+      </Typography>
       <div className={classes.scrollableLimiterContainer}>
         <table className={classes.configurationTable} cellPadding={0}>
           <tbody>{tableRows}</tbody>

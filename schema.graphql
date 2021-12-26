@@ -169,17 +169,17 @@ type CacheRetrievalAttemptError {
 type CacheRetrievalAttemptHit {
   key: String!
   sizeBytes: Int!
-  downloadedInNanos: Int!
-  extractedInNanos: Int!
+  downloadedInMilliseconds: Int!
+  extractedInMilliseconds: Int!
   valid: Boolean!
 }
 
 type CacheRetrievalAttemptMiss {
   key: String!
   sizeBytes: Int!
-  populatedInNanos: Int!
-  archivedInNanos: Int!
-  uploadedInNanos: Int!
+  populatedInMilliseconds: Int!
+  archivedInMilliseconds: Int!
+  uploadedInMilliseconds: Int!
 }
 
 type CacheRetrievalAttempts {

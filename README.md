@@ -25,7 +25,7 @@ docker run -p 8080:8080 cirrusci/web-front-end:latest
 ## Authentication from localhost
 
 In order to authenticate with `api.cirrus-ci.com` from locally running Cirrus CI Web, login on [cirrus-ci.com](https://cirrus-ci.com),
-and remove the `Same-Site` restrictions for `cirrusUserId` and `cirrusAuthToken` cookies (for `api.cirrus-ci.com`). ([EditThisCookie](http://www.editthiscookie.com/)
+and remove the `Same-Site` restrictions for `cirrusUserId` and `cirrusAuthToken` cookies (for `api.cirrus-ci.com`, on Firefox this means setting `Secure` to `false`). ([EditThisCookie](http://www.editthiscookie.com/)
 works just fine for it).
 
 ### Productivity Tips

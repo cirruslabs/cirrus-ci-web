@@ -1,33 +1,16 @@
 import { Link, Typography } from '@mui/material';
-import { BuildDetails_build } from '../builds/__generated__/BuildDetails_build.graphql';
-import { TaskDetails_task } from '../tasks/__generated__/TaskDetails_task.graphql';
 
 interface Props {
-  task?: TaskDetails_task;
-  build?: BuildDetails_build;
+  cloneUrl: string;
+  branch: string;
+  changeIdInRepo: string;
+  changeMessageTitle: string;
 }
 
 function CommitMessage(props: Props) {
-  const { task, build } = props;
+  const { cloneUrl, branch, changeIdInRepo, changeMessageTitle } = props;
 
-  let repository;
-  let branch;
-  let changeIdInRepo;
-  let changeMessageTitle;
-
-  if (task) {
-    repository = task.repository;
-    branch = task.build.branch;
-    changeIdInRepo = task.build.changeIdInRepo;
-    changeMessageTitle = task.build.changeMessageTitle;
-  } else if (build) {
-    repository = build.repository;
-    branch = build.branch;
-    changeIdInRepo = build.changeIdInRepo;
-    changeMessageTitle = build.changeMessageTitle;
-  }
-
-  const repoUrl = repository.cloneUrl.slice(0, -4);
+  const repoUrl = cloneUrl.slice(0, -4);
   const branchUrl = branch.startsWith('pull/') ? `${repoUrl}/${branch}` : `${repoUrl}/tree/${branch}`;
   const commitUrl = repoUrl + '/commit/' + changeIdInRepo;
 

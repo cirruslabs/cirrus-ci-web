@@ -548,7 +548,12 @@ function TaskDetails(props: Props) {
           <div className={classes.gap} />
           <TaskCommandsProgress className={classes.progress} task={task} />
           <div className={classes.gap} />
-          <CommitMessage task={task} />
+          <CommitMessage
+            cloneUrl={repository.cloneUrl}
+            branch={build.branch}
+            changeIdInRepo={build.changeIdInRepo}
+            changeMessageTitle={build.changeMessageTitle}
+          />
           <div className={classes.gap} />
           <div className={classNames('card-body', classes.wrapper)}>
             {task.automaticReRun ? (

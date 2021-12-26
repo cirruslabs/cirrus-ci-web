@@ -136,6 +136,7 @@ function BuildDetails(props: Props) {
     };
   }, [props.build.id]);
   const { build, classes } = props;
+  const repository = build.repository;
 
   function approveBuild() {
     const variables: BuildDetailsApproveBuildMutationVariables = {
@@ -298,7 +299,12 @@ function BuildDetails(props: Props) {
             </div>
           </Box>
           <div className={classes.gap} />
-          <CommitMessage build={build} />
+          <CommitMessage
+            cloneUrl={repository.cloneUrl}
+            branch={build.branch}
+            changeIdInRepo={build.changeIdInRepo}
+            changeMessageTitle={build.changeMessageTitle}
+          />
         </CardContent>
         <CardActions sx={{ justifyContent: 'flex-end' }}>
           {reTriggerButton}

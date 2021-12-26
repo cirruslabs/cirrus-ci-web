@@ -553,7 +553,10 @@ function TaskDetails(props: Props) {
           <TaskCommandsProgress className={classes.progress} task={task} />
           <div className={classes.gap} />
           <Typography variant="h6" gutterBottom>
-            {build.changeMessageTitle} (commit{' '}
+            {build.changeMessageTitle}
+          </Typography>
+          <Typography variant="subtitle1" gutterBottom>
+            Commit{' '}
             <Link href={commitUrl} color="inherit" target="_blank" rel="noopener noreferrer">
               {build.changeIdInRepo.substr(0, 7)}
             </Link>{' '}
@@ -561,7 +564,7 @@ function TaskDetails(props: Props) {
             <Link href={branchUrl} color="inherit" target="_blank" rel="noopener noreferrer">
               {build.branch}
             </Link>
-            )
+            .
           </Typography>
           <div className={classes.gap} />
           <div className={classNames('card-body', classes.wrapper)}>

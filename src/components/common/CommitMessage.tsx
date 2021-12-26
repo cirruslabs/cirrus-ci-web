@@ -15,20 +15,18 @@ function CommitMessage(props: Props) {
   const commitUrl = repoUrl + '/commit/' + changeIdInRepo;
 
   const bits = changeMessageTitle.split('`');
-  let renderedTitle: JSX.Element[] = [<>{bits[0]}</>];
+  let renderedTitle: JSX.Element[] = [];
 
-  if (bits.length > 1) {
-    let state = 0;
+  let state = 0;
 
-    for (let bit of bits.slice(1, bits.length)) {
-      if (state) {
-        renderedTitle.push(<>{bit}</>);
-      } else {
-        renderedTitle.push(<code>{bit}</code>);
-      }
-
-      state ^= 1;
+  for (let bit of bits) {
+    if (state) {
+      renderedTitle.push(<code>{bit}</code>);
+    } else {
+      renderedTitle.push(<>{bit}</>);
     }
+
+    state ^= 1;
   }
 
   return (

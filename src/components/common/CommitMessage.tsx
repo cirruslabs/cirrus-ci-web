@@ -14,10 +14,27 @@ function CommitMessage(props: Props) {
   const branchUrl = branch.startsWith('pull/') ? `${repoUrl}/${branch}` : `${repoUrl}/tree/${branch}`;
   const commitUrl = repoUrl + '/commit/' + changeIdInRepo;
 
+  const bits = changeMessageTitle.split('`');
+  let renderedTitle: JSX.Element[] = [<>{bits[0]}</>];
+
+  if (bits.length > 1) {
+    let state = 0;
+
+    for (let bit of bits.slice(1, bits.length)) {
+      if (state) {
+        renderedTitle.push(<>{bit}</>);
+      } else {
+        renderedTitle.push(<code>{bit}</code>);
+      }
+
+      state ^= 1;
+    }
+  }
+
   return (
     <>
       <Typography variant="h6" gutterBottom>
-        {changeMessageTitle}
+        {renderedTitle}
       </Typography>
       <Typography variant="subtitle1" gutterBottom>
         Commit{' '}

@@ -1,18 +1,11 @@
 import { Link, Typography } from '@mui/material';
 
-interface Props {
-  cloneUrl: string;
-  branch: string;
-  changeIdInRepo: string;
+interface CommitTitleProps {
   changeMessageTitle: string;
 }
 
-function CommitMessage(props: Props) {
-  const { cloneUrl, branch, changeIdInRepo, changeMessageTitle } = props;
-
-  const repoUrl = cloneUrl.slice(0, -4);
-  const branchUrl = branch.startsWith('pull/') ? `${repoUrl}/${branch}` : `${repoUrl}/tree/${branch}`;
-  const commitUrl = repoUrl + '/commit/' + changeIdInRepo;
+export function CommitTitle(props: CommitTitleProps) {
+  const { changeMessageTitle } = props;
 
   const bits = changeMessageTitle.split('`');
   let renderedTitle: JSX.Element[] = [];
@@ -37,10 +30,26 @@ function CommitMessage(props: Props) {
     }
   }
 
+  return <>{renderedTitle}</>;
+}
+
+interface CommitMessageProps extends CommitTitleProps {
+  cloneUrl: string;
+  branch: string;
+  changeIdInRepo: string;
+}
+
+export default function CommitMessage(props: CommitMessageProps) {
+  const { cloneUrl, branch, changeIdInRepo, changeMessageTitle } = props;
+
+  const repoUrl = cloneUrl.slice(0, -4);
+  const branchUrl = branch.startsWith('pull/') ? `${repoUrl}/${branch}` : `${repoUrl}/tree/${branch}`;
+  const commitUrl = repoUrl + '/commit/' + changeIdInRepo;
+
   return (
     <>
       <Typography variant="h6" gutterBottom>
-        {renderedTitle}
+        <CommitTitle changeMessageTitle={changeMessageTitle} />
       </Typography>
       <Typography variant="subtitle1" gutterBottom>
         Commit{' '}
@@ -56,5 +65,3 @@ function CommitMessage(props: Props) {
     </>
   );
 }
-
-export default CommitMessage;

@@ -22,6 +22,7 @@ import withStyles from '@mui/styles/withStyles';
 import { ViewerBuildList_viewer } from './__generated__/ViewerBuildList_viewer.graphql';
 import { Helmet as Head } from 'react-helmet';
 import { Box } from '@mui/material';
+import { CommitTitle } from '../common/CommitMessage';
 
 const styles = theme => ({
   chip: {
@@ -71,7 +72,7 @@ function ViewerBuildList(props: Props) {
         <TableCell className={classes.cell}>
           <div>
             <Typography variant="body1" color="inherit">
-              {build.changeMessageTitle}
+              <CommitTitle changeMessageTitle={build.changeMessageTitle} />
             </Typography>
           </div>
         </TableCell>

@@ -13,6 +13,7 @@ import BuildStatusChip from '../chips/BuildStatusChip';
 import Typography from '@mui/material/Typography';
 import { LastDefaultBranchBuildMiniRow_repository } from './__generated__/LastDefaultBranchBuildMiniRow_repository.graphql';
 import { useNavigate } from 'react-router-dom';
+import { CommitTitle } from '../common/CommitMessage';
 
 const buildSubscription = graphql`
   subscription LastDefaultBranchBuildMiniRowSubscription($repositoryID: ID!) {
@@ -71,7 +72,7 @@ function LastDefaultBranchBuildRow(props: Props) {
         </div>
         <div className={classes.message}>
           <Typography variant="body1" color="inherit">
-            {build.changeMessageTitle}
+            <CommitTitle changeMessageTitle={build.changeMessageTitle} />
           </Typography>
         </div>
       </TableCell>

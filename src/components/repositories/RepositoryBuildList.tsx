@@ -30,6 +30,7 @@ import AddCircle from '@mui/icons-material/AddCircle';
 import Timeline from '@mui/icons-material/Timeline';
 import environment from '../../createRelayEnvironment';
 import { Box, Link } from '@mui/material';
+import { CommitTitle } from '../common/CommitMessage';
 
 const styles = theme => ({
   gap: {
@@ -170,7 +171,7 @@ function RepositoryBuildList(props: Props) {
         <TableCell className={classes.cell}>
           <div>
             <Typography variant="body1" color="inherit">
-              {build.changeMessageTitle}
+              <CommitTitle changeMessageTitle={build.changeMessageTitle} />
             </Typography>
           </div>
         </TableCell>

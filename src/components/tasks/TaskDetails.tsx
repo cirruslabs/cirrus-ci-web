@@ -58,7 +58,6 @@ import {
   Collapse,
   Grow,
   IconButton,
-  Link,
   List,
   MenuItem,
   MenuList,
@@ -84,6 +83,7 @@ import { TaskDetailsTriggerMutationVariables } from './__generated__/TaskDetails
 import { TaskDetailsCancelMutationVariables } from './__generated__/TaskDetailsCancelMutation.graphql';
 import TaskDebuggingInformation from './TaskDebuggingInformation';
 import CirrusLinearProgress from '../common/CirrusLinearProgress';
+import CommitMessage from '../common/CommitMessage';
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
@@ -251,10 +251,6 @@ function TaskDetails(props: Props) {
       onError: err => console.error(err),
     });
   }
-
-  let repoUrl = repository.cloneUrl.slice(0, -4);
-  let branchUrl = build.branch.startsWith('pull/') ? `${repoUrl}/${build.branch}` : `${repoUrl}/tree/${build.branch}`;
-  let commitUrl = repoUrl + '/commit/' + build.changeIdInRepo;
 
   let notificationsComponent =
     !task.notifications || task.notifications.length === 0 ? null : (
@@ -552,20 +548,7 @@ function TaskDetails(props: Props) {
           <div className={classes.gap} />
           <TaskCommandsProgress className={classes.progress} task={task} />
           <div className={classes.gap} />
-          <Typography variant="h6" gutterBottom>
-            {build.changeMessageTitle}
-          </Typography>
-          <Typography variant="subtitle1" gutterBottom>
-            Commit{' '}
-            <Link href={commitUrl} color="inherit" target="_blank" rel="noopener noreferrer">
-              {build.changeIdInRepo.substr(0, 7)}
-            </Link>{' '}
-            on branch{' '}
-            <Link href={branchUrl} color="inherit" target="_blank" rel="noopener noreferrer">
-              {build.branch}
-            </Link>
-            .
-          </Typography>
+          <CommitMessage task={task} />
           <div className={classes.gap} />
           <div className={classNames('card-body', classes.wrapper)}>
             {task.automaticReRun ? (

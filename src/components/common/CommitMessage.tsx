@@ -17,16 +17,24 @@ function CommitMessage(props: Props) {
   const bits = changeMessageTitle.split('`');
   let renderedTitle: JSX.Element[] = [];
 
-  let state = 0;
+  if (bits.length % 2) {
+    let state = 0;
 
-  for (let bit of bits) {
-    if (state) {
-      renderedTitle.push(<code>{bit}</code>);
-    } else {
-      renderedTitle.push(<>{bit}</>);
+    for (let bit of bits) {
+      if (state) {
+        renderedTitle.push(<code>{bit}</code>);
+      } else {
+        renderedTitle.push(<>{bit}</>);
+      }
+
+      state ^= 1;
     }
+  } else {
+    renderedTitle.push(<>{bits[0]}</>);
 
-    state ^= 1;
+    for (let bit of bits.slice(1, bits.length)) {
+      renderedTitle.push(<>`{bit}</>);
+    }
   }
 
   return (

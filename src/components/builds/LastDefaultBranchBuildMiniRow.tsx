@@ -10,7 +10,6 @@ import withStyles from '@mui/styles/withStyles';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
 import RepositoryNameChip from '../chips/RepositoryNameChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
-import Typography from '@mui/material/Typography';
 import { LastDefaultBranchBuildMiniRow_repository } from './__generated__/LastDefaultBranchBuildMiniRow_repository.graphql';
 import { useNavigate } from 'react-router-dom';
 import { CommitTitle } from '../common/CommitMessage';
@@ -71,9 +70,13 @@ function LastDefaultBranchBuildRow(props: Props) {
           <BuildStatusChip build={build} mini={true} className={classes.chip} />
         </div>
         <div className={classes.message}>
-          <Typography variant="body1" color="inherit">
-            <CommitTitle changeMessageTitle={build.changeMessageTitle} />
-          </Typography>
+          <CommitTitle
+            changeMessageTitle={build.changeMessageTitle}
+            typographyProps={{
+              variant: 'body1',
+              color: 'inherit',
+            }}
+          />
         </div>
       </TableCell>
     </TableRow>

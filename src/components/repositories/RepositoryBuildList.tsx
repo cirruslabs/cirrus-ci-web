@@ -170,9 +170,13 @@ function RepositoryBuildList(props: Props) {
         </TableCell>
         <TableCell className={classes.cell}>
           <div>
-            <Typography variant="body1" color="inherit">
-              <CommitTitle changeMessageTitle={build.changeMessageTitle} />
-            </Typography>
+            <CommitTitle
+              changeMessageTitle={build.changeMessageTitle}
+              typographyProps={{
+                variant: 'body1',
+                color: 'inherit',
+              }}
+            />
           </div>
         </TableCell>
         <TableCell

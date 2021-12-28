@@ -1,36 +1,22 @@
-import { Link, Typography } from '@mui/material';
+import { Link, Typography, TypographyProps } from '@mui/material';
+import ReactMarkdown from 'react-markdown';
 
 interface CommitTitleProps {
   changeMessageTitle: string;
+  typographyProps?: TypographyProps;
 }
 
 export function CommitTitle(props: CommitTitleProps) {
-  const { changeMessageTitle } = props;
+  const { changeMessageTitle, typographyProps } = props;
 
-  const bits = changeMessageTitle.split('`');
-  let renderedTitle: JSX.Element[] = [];
-
-  if (bits.length % 2) {
-    let state = 0;
-
-    for (let bit of bits) {
-      if (state) {
-        renderedTitle.push(<code>{bit}</code>);
-      } else {
-        renderedTitle.push(<>{bit}</>);
-      }
-
-      state ^= 1;
-    }
-  } else {
-    renderedTitle.push(<>{bits[0]}</>);
-
-    for (let bit of bits.slice(1, bits.length)) {
-      renderedTitle.push(<>`{bit}</>);
-    }
-  }
-
-  return <>{renderedTitle}</>;
+  return (
+    <ReactMarkdown
+      source={changeMessageTitle}
+      renderers={{
+        paragraph: ({ children }) => <Typography {...typographyProps}>{children}</Typography>,
+      }}
+    />
+  );
 }
 
 interface CommitMessageProps extends CommitTitleProps {
@@ -48,9 +34,13 @@ export default function CommitMessage(props: CommitMessageProps) {
 
   return (
     <>
-      <Typography variant="h6" gutterBottom>
-        <CommitTitle changeMessageTitle={changeMessageTitle} />
-      </Typography>
+      <CommitTitle
+        changeMessageTitle={changeMessageTitle}
+        typographyProps={{
+          variant: 'h6',
+          gutterBottom: true,
+        }}
+      />
       <Typography variant="subtitle1" gutterBottom>
         Commit{' '}
         <Link href={commitUrl} color="inherit" target="_blank" rel="noopener noreferrer">

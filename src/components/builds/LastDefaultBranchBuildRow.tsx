@@ -12,8 +12,8 @@ import RepositoryNameChip from '../chips/RepositoryNameChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import classNames from 'classnames';
 import BuildChangeChip from '../chips/BuildChangeChip';
-import Typography from '@mui/material/Typography';
 import { LastDefaultBranchBuildRow_repository } from './__generated__/LastDefaultBranchBuildRow_repository.graphql';
+import { CommitTitle } from '../common/CommitMessage';
 
 const buildSubscription = graphql`
   subscription LastDefaultBranchBuildRowSubscription($repositoryID: ID!) {
@@ -71,19 +71,24 @@ function LastDefaultBranchBuildRow(props: Props) {
           <RepositoryNameChip repository={repository} className={classes.chip} />
           <BuildChangeChip build={repository.lastDefaultBranchBuild} className={classes.chip} />
         </div>
-        <Typography
-          variant="body1"
-          color="inherit"
-          className={classes.message}
-          sx={{ display: { xs: 'block', sm: 'none' } }}
-        >
-          {build.changeMessageTitle}
-        </Typography>
+        <CommitTitle
+          changeMessageTitle={build.changeMessageTitle}
+          typographyProps={{
+            variant: 'body1',
+            color: 'inherit',
+            className: classes.message,
+            sx: { display: { xs: 'block', sm: 'none' } },
+          }}
+        />
       </TableCell>
       <TableCell className={classNames(classes.cell, classes.message)}>
-        <Typography variant="body1" color="inherit">
-          {build.changeMessageTitle}
-        </Typography>
+        <CommitTitle
+          changeMessageTitle={build.changeMessageTitle}
+          typographyProps={{
+            variant: 'body1',
+            color: 'inherit',
+          }}
+        />
       </TableCell>
       <TableCell className={classes.cell}>
         <BuildStatusChip build={build} className={classNames('pull-right', classes.chip)} />

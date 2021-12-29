@@ -6,7 +6,6 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
 import { graphql } from 'babel-plugin-relay/macro';
 import React, { useEffect } from 'react';
 import { commitMutation, createFragmentContainer, requestSubscription } from 'react-relay';
@@ -25,7 +24,7 @@ import BuildBranchNameChip from '../chips/BuildBranchNameChip';
 import Notification from '../common/Notification';
 import ConfigurationWithIssues from './ConfigurationWithIssues';
 import HookList from '../hooks/HookList';
-import { Box, Collapse, Link, List, Tab, ToggleButton } from '@mui/material';
+import { Box, Collapse, List, Tab, ToggleButton } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { BugReport, Cancel, Dehaze, Functions } from '@mui/icons-material';
 import Tooltip from '@mui/material/Tooltip';
@@ -36,6 +35,7 @@ import { BuildDetailsApproveBuildMutationVariables } from './__generated__/Build
 import { BuildDetailsReTriggerMutationVariables } from './__generated__/BuildDetailsReTriggerMutation.graphql';
 import { BuildDetailsReRunMutationVariables } from './__generated__/BuildDetailsReRunMutation.graphql';
 import { BuildDetailsCancelMutationVariables } from './__generated__/BuildDetailsCancelMutation.graphql';
+import CommitMessage from '../common/CommitMessage';
 
 const buildApproveMutation = graphql`
   mutation BuildDetailsApproveBuildMutation($input: BuildApproveInput!) {
@@ -136,6 +136,7 @@ function BuildDetails(props: Props) {
     };
   }, [props.build.id]);
   const { build, classes } = props;
+  const repository = build.repository;
 
   function approveBuild() {
     const variables: BuildDetailsApproveBuildMutationVariables = {
@@ -198,10 +199,6 @@ function BuildDetails(props: Props) {
       });
     });
   }
-
-  const repoUrl = build.repository.cloneUrl.slice(0, -4);
-  const branchUrl = build.branch.startsWith('pull/') ? `${repoUrl}/${build.branch}` : `${repoUrl}/tree/${build.branch}`;
-  const commitUrl = repoUrl + '/commit/' + build.changeIdInRepo;
 
   const notificationsComponent = !build.notifications ? null : (
     <List>
@@ -302,20 +299,12 @@ function BuildDetails(props: Props) {
             </div>
           </Box>
           <div className={classes.gap} />
-          <Typography variant="h6" gutterBottom>
-            {build.changeMessageTitle}
-          </Typography>
-          <Typography variant="subtitle1" gutterBottom>
-            Commit{' '}
-            <Link href={commitUrl} color="inherit" target="_blank" rel="noopener noreferrer">
-              {build.changeIdInRepo.substr(0, 7)}
-            </Link>{' '}
-            on branch{' '}
-            <Link href={branchUrl} color="inherit" target="_blank" rel="noopener noreferrer">
-              {build.branch}
-            </Link>
-            .
-          </Typography>
+          <CommitMessage
+            cloneUrl={repository.cloneUrl}
+            branch={build.branch}
+            changeIdInRepo={build.changeIdInRepo}
+            changeMessageTitle={build.changeMessageTitle}
+          />
         </CardContent>
         <CardActions sx={{ justifyContent: 'flex-end' }}>
           {reTriggerButton}

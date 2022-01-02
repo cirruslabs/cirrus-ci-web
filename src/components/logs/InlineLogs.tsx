@@ -50,7 +50,7 @@ function InlineLogs(props: Props) {
   }
 
   const tableRows = lines.map((lineContent, zeroBasedLineNumber) => [
-    <tr>
+    <tr key={classes.lineNumber}>
       <td className={classes.lineNumber}>{zeroBasedLineNumber + 1}</td>
       <td className={classes.lineContent}>
         <span>{lineContent}</span>

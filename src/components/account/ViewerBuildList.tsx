@@ -2,7 +2,6 @@ import React from 'react';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { useNavigate } from 'react-router-dom';
-import ReactMarkdown from 'react-markdown';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -22,7 +21,7 @@ import withStyles from '@mui/styles/withStyles';
 import { ViewerBuildList_viewer } from './__generated__/ViewerBuildList_viewer.graphql';
 import { Helmet as Head } from 'react-helmet';
 import { Box } from '@mui/material';
-import { CommitTitle } from '../common/CommitMessage';
+import MarkdownTypography from '../common/MarkdownTypography';
 
 const styles = theme => ({
   chip: {
@@ -71,13 +70,7 @@ function ViewerBuildList(props: Props) {
         </TableCell>
         <TableCell className={classes.cell}>
           <div>
-            <CommitTitle
-              changeMessageTitle={build.changeMessageTitle}
-              typographyProps={{
-                variant: 'body1',
-                color: 'inherit',
-              }}
-            />
+            <MarkdownTypography text={build.changeMessageTitle} variant="body1" color="inherit" />
           </div>
         </TableCell>
         <TableCell className={classes.cell} sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
@@ -95,7 +88,11 @@ function ViewerBuildList(props: Props) {
   if (!builds || builds.edges.length === 0) {
     buildsComponent = (
       <div className={classes.emptyBuilds}>
-        <ReactMarkdown source="No recent builds! Please check the [documentation](https://cirrus-ci.org/) on how to start with Cirrus CI." />
+        <MarkdownTypography
+          text={
+            'No recent builds! Please check the [documentation](https://cirrus-ci.org/) on how to start with Cirrus CI.'
+          }
+        />
       </div>
     );
   }

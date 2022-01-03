@@ -1,25 +1,8 @@
-import { Link, Typography, TypographyProps } from '@mui/material';
-import ReactMarkdown from 'react-markdown';
+import { Link, Typography } from '@mui/material';
+import MarkdownTypography from './MarkdownTypography';
 
-interface CommitTitleProps {
+interface CommitMessageProps {
   changeMessageTitle: string;
-  typographyProps?: TypographyProps;
-}
-
-export function CommitTitle(props: CommitTitleProps) {
-  const { changeMessageTitle, typographyProps } = props;
-
-  return (
-    <ReactMarkdown
-      source={changeMessageTitle}
-      renderers={{
-        paragraph: ({ children }) => <Typography {...typographyProps}>{children}</Typography>,
-      }}
-    />
-  );
-}
-
-interface CommitMessageProps extends CommitTitleProps {
   cloneUrl: string;
   branch: string;
   changeIdInRepo: string;
@@ -34,13 +17,7 @@ export default function CommitMessage(props: CommitMessageProps) {
 
   return (
     <>
-      <CommitTitle
-        changeMessageTitle={changeMessageTitle}
-        typographyProps={{
-          variant: 'h6',
-          gutterBottom: true,
-        }}
-      />
+      <MarkdownTypography text={changeMessageTitle} variant="h6" gutterBottom={true} />
       <Typography variant="subtitle1" gutterBottom>
         Commit{' '}
         <Link href={commitUrl} color="inherit" target="_blank" rel="noopener noreferrer">

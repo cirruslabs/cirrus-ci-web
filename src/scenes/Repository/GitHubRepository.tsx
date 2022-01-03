@@ -4,12 +4,12 @@ import { QueryRenderer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 
 import environment from '../../createRelayEnvironment';
-import ReactMarkdown from 'react-markdown';
 import RepositoryBuildList from '../../components/repositories/RepositoryBuildList';
 import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
 import NotFound from '../NotFound';
 import { GitHubRepositoryQuery } from './__generated__/GitHubRepositoryQuery.graphql';
 import { useParams } from 'react-router-dom';
+import MarkdownTypography from '../../components/common/MarkdownTypography';
 
 export default function GitHubRepository(): JSX.Element {
   let params = useParams();
@@ -32,7 +32,11 @@ export default function GitHubRepository(): JSX.Element {
         }
         if (!props.githubRepository) {
           let notFoundMessage = (
-            <ReactMarkdown source="Repository not found! Please [install Cirrus CI](https://cirrus-ci.org/guide/quick-start/) or push a [`.cirrus.yml`](https://cirrus-ci.org/guide/writing-tasks/)!" />
+            <MarkdownTypography
+              text={
+                'Repository not found! Please [install Cirrus CI](https://cirrus-ci.org/guide/quick-start/) or push a [`.cirrus.yml`](https://cirrus-ci.org/guide/writing-tasks/)!'
+              }
+            />
           );
           return <NotFound messageComponent={notFoundMessage} />;
         }

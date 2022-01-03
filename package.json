@@ -48,6 +48,8 @@
     "react-vis": "^1.11.7",
     "recharts": "^1.8.5",
     "recoil": "^0.5.2",
+    "rehype-sanitize": "^5.0.1",
+    "remark-gfm": "^3.0.1",
     "sjcl": "^1.0.8",
     "ts-protoc-gen": "^0.15.0",
     "xterm": "^4.12.0",

@@ -10,9 +10,9 @@ const MarkdownTypography = (props: MarkdownTypographyProps) => {
 
   return (
     <ReactMarkdown
-      source={text}
-      renderers={{
-        paragraph: ({ children }) => <Typography {...otherProps}>{children}</Typography>,
+      children={text}
+      components={{
+        p: el => <Typography {...otherProps} children={el.children} />,
       }}
     />
   );

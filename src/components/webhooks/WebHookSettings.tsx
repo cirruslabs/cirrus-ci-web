@@ -20,7 +20,10 @@ import DeliveriesList from './DeliveriesList';
 import { WebHookSettings_info } from './__generated__/WebHookSettings_info.graphql';
 import FormHelperText from '@mui/material/FormHelperText';
 import sjcl from 'sjcl/sjcl.js';
-import { WebHookSettingsMutationVariables } from './__generated__/WebHookSettingsMutation.graphql';
+import {
+  SaveWebHookSettingsInput,
+  WebHookSettingsMutationVariables,
+} from './__generated__/WebHookSettingsMutation.graphql';
 import { Link } from '@mui/material';
 
 const securedVariableMutation = graphql`
@@ -66,8 +69,8 @@ function WebHookSettings(props: Props) {
     const variables: WebHookSettingsMutationVariables = {
       input: {
         clientMutationId: webhookURL,
-        platform: 'github',
-        ownerUid: props.info.id.toString(),
+        platform: props.info.platform,
+        ownerUid: props.info.uid,
         webhookURL: webhookURL,
       },
     };
@@ -86,18 +89,17 @@ function WebHookSettings(props: Props) {
   }
 
   function resetSecretToken() {
-    const variables = {
-      input: {
-        clientMutationId: `reset-${props.info.webhookSettings.maskedSecretToken}`,
-        accountId: props.info.id,
-        webhookURL: props.info.webhookSettings.webhookURL,
-        secretToken: '',
-      },
+    let input: SaveWebHookSettingsInput = {
+      clientMutationId: `reset-${props.info.webhookSettings.maskedSecretToken}`,
+      platform: props.info.platform,
+      ownerUid: props.info.uid,
+      webhookURL: props.info.webhookSettings.webhookURL,
+      secretToken: '',
     };
 
     commitMutation(environment, {
       mutation: securedVariableMutation,
-      variables: variables,
+      variables: { input },
       onError: err => console.error(err),
     });
   }
@@ -197,9 +199,10 @@ export default createPaginationContainer(
   withStyles(styles)(WebHookSettings) as typeof WebHookSettings,
   {
     info: graphql`
-      fragment WebHookSettings_info on GitHubOrganizationInfo
+      fragment WebHookSettings_info on OwnerInfo
       @argumentDefinitions(count: { type: "Int", defaultValue: 50 }, cursor: { type: "String" }) {
-        id
+        platform
+        uid
         webhookSettings {
           webhookURL
           maskedSecretToken
@@ -230,12 +233,13 @@ export default createPaginationContainer(
       return {
         count: count,
         cursor: cursor,
-        organization: props.info.name,
+        platform: props.info.platform,
+        uid: props.info.uid,
       };
     },
     query: graphql`
-      query WebHookSettingsQuery($count: Int!, $cursor: String, $organization: String!) {
-        githubOrganizationInfo(organization: $organization) {
+      query WebHookSettingsQuery($platform: String!, $uid: ID!, $count: Int!, $cursor: String) {
+        ownerInfo(platform: $platform, uid: $uid) {
           ...WebHookSettings_info @arguments(count: $count, cursor: $cursor)
         }
       }

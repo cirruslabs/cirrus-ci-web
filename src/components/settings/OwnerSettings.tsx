@@ -7,13 +7,12 @@ import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
 import Typography from '@mui/material/Typography';
 import Toolbar from '@mui/material/Toolbar';
-import OrganizationComputeCredits from '../compute-credits/OrganizationComputeCredits';
-import GitHubPurchase from '../purchase/GitHubPurchase';
+import OwnerComputeCredits from '../compute-credits/OwnerComputeCredits';
 import WebHookSettings from '../webhooks/WebHookSettings';
-import OrganizationApiSettings from './OrganizationApiSettings';
-import OrganizationSecuredVariables from './OrganizationSecuredVariables';
-import OrganizationPersistentWorkerPools from './OrganizationPersistentWorkerPools';
-import { GitHubOrganizationSettings_info } from './__generated__/GitHubOrganizationSettings_info.graphql';
+import OwnerApiSettings from './OwnerApiSettings';
+import OwnerSecuredVariables from './OwnerSecuredVariables';
+import OwnerPersistentWorkerPools from './OwnerPersistentWorkerPools';
+import { OwnerSettings_info } from './__generated__/OwnerSettings_info.graphql';
 
 const styles = theme =>
   createStyles({
@@ -26,18 +25,17 @@ const styles = theme =>
   });
 
 interface Props extends WithStyles<typeof styles> {
-  info: GitHubOrganizationSettings_info;
-  organization: string;
+  info: OwnerSettings_info;
 }
 
-function GitHubOrganizationSettings(props: Props) {
-  let { organization, info, classes } = props;
+function OwnerSettings(props: Props) {
+  let { info, classes } = props;
 
   if (!info) {
     return <Typography variant="subtitle1">Can't find information this organization!</Typography>;
   }
 
-  if (info.role === 'none') {
+  if (!info.viewerPermission || info.viewerPermission === 'NONE') {
     return <Typography variant="subtitle1">You do not have administrator access on this organization!</Typography>;
   }
 
@@ -46,29 +44,25 @@ function GitHubOrganizationSettings(props: Props) {
       <Paper elevation={16}>
         <Toolbar className={classes.title}>
           <Typography variant="h6" color="inherit">
-            Settings for {organization} organization
+            Settings for {info.name}
           </Typography>
         </Toolbar>
       </Paper>
       <div className={classes.settingGap} />
       <Paper elevation={16}>
-        <GitHubPurchase info={info} />
+        <OwnerComputeCredits info={info} />
       </Paper>
       <div className={classes.settingGap} />
       <Paper elevation={16}>
-        <OrganizationComputeCredits info={info} />
+        <OwnerSecuredVariables info={info} />
       </Paper>
       <div className={classes.settingGap} />
       <Paper elevation={16}>
-        <OrganizationSecuredVariables info={info} />
+        <OwnerApiSettings info={info} />
       </Paper>
       <div className={classes.settingGap} />
       <Paper elevation={16}>
-        <OrganizationApiSettings info={info} />
-      </Paper>
-      <div className={classes.settingGap} />
-      <Paper elevation={16}>
-        <OrganizationPersistentWorkerPools info={info} />
+        <OwnerPersistentWorkerPools info={info} />
       </Paper>
       <div className={classes.settingGap} />
       <Paper elevation={16}>
@@ -79,16 +73,17 @@ function GitHubOrganizationSettings(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(GitHubOrganizationSettings), {
+export default createFragmentContainer(withStyles(styles)(OwnerSettings), {
   info: graphql`
-    fragment GitHubOrganizationSettings_info on GitHubOrganizationInfo {
+    fragment OwnerSettings_info on OwnerInfo {
+      platform
+      uid
       name
-      role
-      ...GitHubPurchase_info
-      ...OrganizationComputeCredits_info
-      ...OrganizationApiSettings_info
-      ...OrganizationSecuredVariables_info
-      ...OrganizationPersistentWorkerPools_info
+      viewerPermission
+      ...OwnerComputeCredits_info
+      ...OwnerApiSettings_info
+      ...OwnerSecuredVariables_info
+      ...OwnerPersistentWorkerPools_info
       ...WebHookSettings_info
     }
   `,

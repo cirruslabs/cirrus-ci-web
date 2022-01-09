@@ -12,6 +12,9 @@ import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import Settings from '@mui/icons-material/Settings';
+import { createFragmentContainer } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
+import { OwnerRepositoryList_info } from './__generated__/OwnerRepositoryList_info.graphql';
 
 let styles = {
   gap: {
@@ -20,21 +23,18 @@ let styles = {
 };
 
 interface Props extends WithStyles<typeof styles> {
-  organization: string;
-  organizationInfo: any;
-  repositories: any;
+  info: OwnerRepositoryList_info;
 }
 
-let GitHubOrganizationRepositoryList = (props: Props) => {
-  let { classes, organization, organizationInfo } = props;
-  let repositories = props.repositories || [];
+let OwnerRepositoryList = (props: Props) => {
+  let { classes, info } = props;
 
   let organizationSettings = null;
 
-  if (organizationInfo && organizationInfo.role === 'admin') {
+  if (info && info.viewerPermission === 'ADMIN') {
     organizationSettings = (
-      <Tooltip title="Organization Settings">
-        <Link to={'/settings/github/' + organization}>
+      <Tooltip title="Owner Settings">
+        <Link to={`/settings/${info.platform}/${info.name}`}>
           <IconButton size="large">
             <Settings />
           </IconButton>
@@ -48,7 +48,7 @@ let GitHubOrganizationRepositoryList = (props: Props) => {
       <Paper elevation={16}>
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Typography variant="h6" color="inherit">
-            {props.organization}'s Repositories
+            {info.name}'s Repositories
           </Typography>
           {organizationSettings}
         </Toolbar>
@@ -57,7 +57,9 @@ let GitHubOrganizationRepositoryList = (props: Props) => {
       <Paper elevation={16}>
         <Table style={{ tableLayout: 'auto' }}>
           <TableBody>
-            {repositories && repositories.map(repo => <LastDefaultBranchBuildRow key={repo.__id} repository={repo} />)}
+            {info.repositories.edges.map(edge => (
+              <LastDefaultBranchBuildRow key={edge.node.id} repository={edge.node} />
+            ))}
           </TableBody>
         </Table>
       </Paper>
@@ -65,4 +67,21 @@ let GitHubOrganizationRepositoryList = (props: Props) => {
   );
 };
 
-export default withStyles(styles)(GitHubOrganizationRepositoryList);
+export default createFragmentContainer(withStyles(styles)(OwnerRepositoryList), {
+  info: graphql`
+    fragment OwnerRepositoryList_info on OwnerInfo {
+      platform
+      uid
+      name
+      viewerPermission
+      repositories(last: 50) {
+        edges {
+          node {
+            id
+            ...LastDefaultBranchBuildRow_repository
+          }
+        }
+      }
+    }
+  `,
+});

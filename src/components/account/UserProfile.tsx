@@ -15,18 +15,13 @@ import CardActions from '@mui/material/CardActions';
 import CardHeader from '@mui/material/CardHeader';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import Toolbar from '@mui/material/Toolbar';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
 import { navigateHelper } from '../../utils/navigateHelper';
 import IconButton from '@mui/material/IconButton';
-import UserApiSettings from '../settings/UserApiSettings';
-import UserComputeCredits from '../compute-credits/UserComputeCredits';
 import { UserProfile_user } from './__generated__/UserProfile_user.graphql';
 import { Helmet as Head } from 'react-helmet';
 import Settings from '@mui/icons-material/Settings';
-import UserPersistentWorkerPools from '../settings/UserPersistentWorkerPools';
+import OwnerPlatformIcon from '../icons/OwnerPlatformIcon';
+import { List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 
 const styles = theme =>
   createStyles({
@@ -105,41 +100,34 @@ function UserProfile(props: Props) {
     );
   }
 
-  let organizationsComponent = null;
-  let organizations = user.organizations || [];
-  if (organizations.length > 0) {
-    organizationsComponent = (
-      <Card elevation={24}>
-        <CardHeader title="Your GitHub Organizations" />
-        <Table style={{ tableLayout: 'auto' }}>
-          <TableBody>
-            {organizations.map(organization => (
-              <TableRow
-                key={organization.name}
-                onClick={e => navigateHelper(navigate, e, '/github/' + organization.name)}
-                hover={true}
-                style={{ cursor: 'pointer' }}
-              >
-                <TableCell style={{ width: '90%' }}>
-                  <Typography variant="h6">{organization.name}</Typography>
-                </TableCell>
-                <TableCell>
-                  <Tooltip title="Organization settings">
-                    <IconButton
-                      onClick={e => navigateHelper(navigate, e, '/settings/github/' + organization.name)}
-                      size="large"
-                    >
-                      <Settings />
-                    </IconButton>
-                  </Tooltip>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Card>
-    );
-  }
+  let organizationsComponent = (
+    <Card elevation={24}>
+      <CardHeader title="Additional Settings" />
+      <List>
+        {user.relatedOwners.map(owner => (
+          <ListItem
+            key={owner.platform + owner.uid}
+            onClick={e => navigateHelper(navigate, e, '/github/' + owner.name)}
+            secondaryAction={
+              <Tooltip title="Owner settings">
+                <IconButton
+                  onClick={e => navigateHelper(navigate, e, `/settings/${owner.platform}/${owner.name}`)}
+                  size="large"
+                >
+                  <Settings />
+                </IconButton>
+              </Tooltip>
+            }
+          >
+            <ListItemAvatar>
+              <OwnerPlatformIcon platform={owner.platform} />
+            </ListItemAvatar>
+            <ListItemText>{owner.name}</ListItemText>
+          </ListItem>
+        ))}
+      </List>
+    </Card>
+  );
 
   return (
     <div>
@@ -163,12 +151,6 @@ function UserProfile(props: Props) {
         <CardActions>{actionButton}</CardActions>
       </Card>
       <div className={classes.gap} />
-      <UserComputeCredits user={props.user} />
-      <div className={classes.gap} />
-      <UserApiSettings user={props.user} />
-      <div className={classes.gap} />
-      <UserPersistentWorkerPools user={props.user} />
-      <div className={classes.gap} />
       {organizationsComponent}
     </div>
   );
@@ -184,12 +166,11 @@ export default createFragmentContainer(withStyles(styles)(UserProfile), {
         onFreeTrial
         freeTrialDaysLeft
       }
-      organizations {
+      relatedOwners {
+        platform
         name
+        uid
       }
-      ...UserApiSettings_user
-      ...UserComputeCredits_user
-      ...UserPersistentWorkerPools_user
     }
   `,
 });

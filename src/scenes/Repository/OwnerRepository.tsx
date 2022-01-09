@@ -7,21 +7,21 @@ import environment from '../../createRelayEnvironment';
 import RepositoryBuildList from '../../components/repositories/RepositoryBuildList';
 import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
 import NotFound from '../NotFound';
-import { GitHubRepositoryQuery } from './__generated__/GitHubRepositoryQuery.graphql';
+import { OwnerRepositoryQuery } from './__generated__/OwnerRepositoryQuery.graphql';
 import { useParams } from 'react-router-dom';
 import MarkdownTypography from '../../components/common/MarkdownTypography';
 
-export default function GitHubRepository(): JSX.Element {
+export default function OwnerRepository(): JSX.Element {
   let params = useParams();
-  let { owner, name } = params;
+  let { platform, owner, name } = params;
   let branch = params['*'];
   return (
-    <QueryRenderer<GitHubRepositoryQuery>
+    <QueryRenderer<OwnerRepositoryQuery>
       environment={environment}
-      variables={{ owner: owner, name: name, branch: branch }}
+      variables={{ platform, owner, name, branch }}
       query={graphql`
-        query GitHubRepositoryQuery($owner: String!, $name: String!, $branch: String) {
-          githubRepository(owner: $owner, name: $name) {
+        query OwnerRepositoryQuery($platform: String!, $owner: String!, $name: String!, $branch: String) {
+          ownerRepository(platform: $platform, owner: $owner, name: $name) {
             ...RepositoryBuildList_repository @arguments(branch: $branch)
           }
         }
@@ -30,7 +30,7 @@ export default function GitHubRepository(): JSX.Element {
         if (!props) {
           return <CirrusLinearProgress />;
         }
-        if (!props.githubRepository) {
+        if (!props.ownerRepository) {
           let notFoundMessage = (
             <MarkdownTypography
               text={
@@ -40,7 +40,7 @@ export default function GitHubRepository(): JSX.Element {
           );
           return <NotFound messageComponent={notFoundMessage} />;
         }
-        return <RepositoryBuildList repository={props.githubRepository} branch={branch} />;
+        return <RepositoryBuildList repository={props.ownerRepository} branch={branch} />;
       }}
     />
   );

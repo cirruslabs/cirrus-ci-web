@@ -2,18 +2,18 @@ import { graphql } from 'babel-plugin-relay/macro';
 import React from 'react';
 import { createPaginationContainer, RelayPaginationProp } from 'react-relay';
 import ComputeCreditsBase from './ComputeCreditsBase';
-import { OrganizationComputeCredits_info } from './__generated__/OrganizationComputeCredits_info.graphql';
+import { OwnerComputeCredits_info } from './__generated__/OwnerComputeCredits_info.graphql';
 import ComputeCreditsTransactionsList from './ComputeCreditsTransactionsList';
 
 interface Props {
   relay: RelayPaginationProp;
-  info: OrganizationComputeCredits_info;
+  info: OwnerComputeCredits_info;
 }
 
-let OrganizationComputeCredits = (props: Props) => {
+let OwnerComputeCredits = (props: Props) => {
   return (
     <ComputeCreditsBase
-      ownerUid={props.info.id}
+      ownerUid={props.info.uid}
       balanceInCredits={props.info.balanceInCredits}
       info={props.info}
       transactionsComponent={
@@ -24,16 +24,16 @@ let OrganizationComputeCredits = (props: Props) => {
 };
 
 export default createPaginationContainer(
-  OrganizationComputeCredits,
+  OwnerComputeCredits,
   {
     info: graphql`
-      fragment OrganizationComputeCredits_info on GitHubOrganizationInfo
+      fragment OwnerComputeCredits_info on OwnerInfo
       @argumentDefinitions(count: { type: "Int", defaultValue: 50 }, cursor: { type: "String" }) {
-        id
+        uid
         name
         balanceInCredits
         ...ComputeCreditsBase_info
-        transactions(last: $count, after: $cursor) @connection(key: "OrganizationComputeCredits_transactions") {
+        transactions(last: $count, after: $cursor) @connection(key: "OwnerComputeCredits_transactions") {
           edges {
             node {
               taskId
@@ -60,13 +60,14 @@ export default createPaginationContainer(
       return {
         count: count,
         cursor: cursor,
-        organization: props.info.name,
+        platform: props.info.platform,
+        uid: props.info.uid,
       };
     },
     query: graphql`
-      query OrganizationComputeCreditsQuery($count: Int!, $cursor: String, $organization: String!) {
-        githubOrganizationInfo(organization: $organization) {
-          ...OrganizationComputeCredits_info @arguments(count: $count, cursor: $cursor)
+      query OwnerComputeCreditsQuery($platform: String!, $uid: ID!, $count: Int!, $cursor: String) {
+        ownerInfo(platform: $platform, uid: $uid) {
+          ...OwnerComputeCredits_info @arguments(count: $count, cursor: $cursor)
         }
       }
     `,

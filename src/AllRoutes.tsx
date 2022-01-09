@@ -39,13 +39,11 @@ const AsyncRepositoryMetrics = React.lazy(() => import('./scenes/RepositoryMetri
 
 const AsyncTask = React.lazy(() => import('./scenes/Task/Task'));
 
-const AsyncGitHubRepository = React.lazy(() => import('./scenes/Repository/GitHubRepository'));
+const AsyncOwnerRepository = React.lazy(() => import('./scenes/Repository/OwnerRepository'));
 
-const AsyncGitHubOrganization = React.lazy(() => import('./scenes/GitHub/GitHubOrganization'));
+const AsyncOwner = React.lazy(() => import('./scenes/Owner/Owner'));
 
-const AsyncGitHubOrganizationSettingsRenderer = React.lazy(
-  () => import('./scenes/GitHub/GitHubOrganizationSettingsRenderer'),
-);
+const AsyncOwnerSettingsRenderer = React.lazy(() => import('./scenes/Owner/OwnerSettingsRenderer'));
 
 const AsyncPoolById = React.lazy(() => import('./scenes/Workers/PoolById'));
 
@@ -260,13 +258,13 @@ function AllRoutes(props: WithStyles<typeof styles>) {
                 <Route path="/" element={<AsyncHome />} />
                 <Route path="explorer" element={<AsyncApiExplorerRenderer />} />
                 <Route path="settings/profile" element={<AsyncViewerProfile />} />
-                <Route path="settings/github/:organization" element={<AsyncGitHubOrganizationSettingsRenderer />} />
+                <Route path="settings/:platform/:name" element={<AsyncOwnerSettingsRenderer />} />
                 <Route path="settings/repository/:repositoryId" element={<AsyncRepositorySettings />} />
                 <Route path="build/:buildId" element={<AsyncBuildById />} />
                 <Route path="build/:owner/:name/:SHA" element={<AsyncBuildBySHA />} />
-                <Route path=":platform/:owner/:name/*" element={<AsyncGitHubRepository />} />
-                <Route path=":platform/:owner/:name" element={<AsyncGitHubRepository />} />
-                <Route path=":platform/:owner" element={<AsyncGitHubOrganization />} />
+                <Route path=":platform/:owner/:name/*" element={<AsyncOwnerRepository />} />
+                <Route path=":platform/:owner/:name" element={<AsyncOwnerRepository />} />
+                <Route path=":platform/:owner" element={<AsyncOwner />} />
                 <Route path="repository/:repositoryId/*" element={<AsyncRepository />} />
                 <Route path="repository/:repositoryId" element={<AsyncRepository />} />
                 <Route path="metrics/repository/:owner/:name" element={<AsyncRepositoryMetrics />} />

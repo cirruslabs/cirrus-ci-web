@@ -40,7 +40,7 @@ function BillingSettingsButton(props: Props) {
 
 export default createFragmentContainer(BillingSettingsButton, {
   info: graphql`
-    fragment BillingSettingsButton_info on GitHubOrganizationInfo {
+    fragment BillingSettingsButton_info on OwnerInfo {
       billingSettings {
         enabled
         ...BillingSettingsDialog_billingSettings

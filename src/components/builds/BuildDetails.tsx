@@ -276,7 +276,7 @@ function BuildDetails(props: Props) {
       <Head>
         <title>{build.changeMessageTitle} - Cirrus CI</title>
       </Head>
-      <Card elevation={24}>
+      <Card elevation={6}>
         <CardContent>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
             <div>
@@ -319,7 +319,7 @@ function BuildDetails(props: Props) {
         <DebuggingInformation build={build} />
       </Collapse>
       <div className={classes.gap} />
-      <Paper elevation={24}>{tabbedTasksAndHooks}</Paper>
+      <Paper elevation={6}>{tabbedTasksAndHooks}</Paper>
     </div>
   );
 }

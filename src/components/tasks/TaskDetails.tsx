@@ -328,7 +328,7 @@ function TaskDetails(props: Props) {
                 transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
               }}
             >
-              <Paper elevation={24}>
+              <Paper elevation={6}>
                 <ClickAwayListener onClickAway={closeRerunOptions}>
                   <MenuList id="split-button-menu">
                     <MenuItem onClick={() => rerun(task.id, true)}>Re-Run with Terminal Access</MenuItem>
@@ -417,7 +417,7 @@ function TaskDetails(props: Props) {
   let allOtherRuns: JSX.Element | [] = [];
   if (task.allOtherRuns && task.allOtherRuns.length > 0) {
     allOtherRuns = (
-      <Paper elevation={24}>
+      <Paper elevation={6}>
         <Typography className={classes.title} variant="caption" gutterBottom display="block" align="center">
           All Other Runs
         </Typography>
@@ -428,7 +428,7 @@ function TaskDetails(props: Props) {
   let dependencies: JSX.Element | [] = [];
   if (task.dependencies && task.dependencies.length > 0) {
     dependencies = (
-      <Paper elevation={24}>
+      <Paper elevation={6}>
         <Typography className={classes.title} variant="caption" gutterBottom display="block" align="center">
           Dependencies
         </Typography>
@@ -518,7 +518,7 @@ function TaskDetails(props: Props) {
         <title>{task.name} - Cirrus CI</title>
       </Head>
       <CirrusFavicon status={task.status} />
-      <Card elevation={24}>
+      <Card elevation={6}>
         <CardContent>
           <div className={classes.wrapper}>
             <div className={classes.wrapper} style={{ flexGrow: 1 }}>
@@ -608,7 +608,7 @@ function TaskDetails(props: Props) {
       {allOtherRuns ? <div className={classes.gap} /> : null}
       {allOtherRuns}
       <div className={classes.gap} />
-      <Paper elevation={24}>{tabbedCommandsAndHooks}</Paper>
+      <Paper elevation={6}>{tabbedCommandsAndHooks}</Paper>
     </div>
   );
 }

@@ -198,7 +198,7 @@ function ArtifactsView(props: Props) {
   }
 
   return (
-    <Paper elevation={16}>
+    <Paper elevation={6}>
       <Toolbar className={classes.title}>
         <Typography variant="h6" color="inherit" className={classes.title}>
           {currentPath() || 'Artifacts'}

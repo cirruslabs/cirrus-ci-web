@@ -65,11 +65,13 @@
     "@types/react-relay": "^11.0.3",
     "@types/react-router-dom": "^5.1.6",
     "@types/relay-runtime": "^12.0.1",
+    "esbuild": "^0.14.11",
+    "esbuild-loader": "^2.18.0",
     "get-graphql-schema": "^2.1.2",
     "husky": "^4.3.6",
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0",
-    "react-scripts": "^4.0.3",
+    "react-scripts": "^5.0.0",
     "react-test-renderer": "^17.0.1",
     "relay-compiler": "^12.0.0",
     "relay-compiler-language-typescript": "^15.0.0",
@@ -106,5 +108,8 @@
     "not dead",
     "not op_mini all"
   ],
-  "packageManager": "yarn@3.1.1"
+  "packageManager": "yarn@3.1.1",
+  "resolutions": {
+    "react-scripts": "patch:react-scripts@npm:5.0.0#.yarn/patches/react-scripts-npm-5.0.0-14ea4c40dd.patch"
+  }
 }

@@ -156,7 +156,7 @@ input BuyComputeCreditsInput {
 
 type BuyComputeCreditsPayload {
   error: String
-  info: GitHubOrganizationInfo
+  info: OwnerInfo
   user: User
   clientMutationId: String
 }
@@ -284,6 +284,17 @@ input GenerateNewAccessTokenInput {
 }
 
 type GenerateNewAccessTokenPayload {
+  token: String!
+  clientMutationId: String
+}
+
+input GenerateNewOwnerAccessTokenInput {
+  platform: ID
+  ownerUid: ID
+  clientMutationId: String
+}
+
+type GenerateNewOwnerAccessTokenPayload {
   token: String!
   clientMutationId: String
 }
@@ -436,9 +447,11 @@ input MetricsQueryParameters {
 type Mutation {
   securedVariable(input: RepositorySecuredVariableInput!): RepositorySecuredVariablePayload
   securedOrganizationVariable(input: OrganizationSecuredVariableInput!): OrganizationSecuredVariablePayload
+  securedOwnerVariable(input: OwnerSecuredVariableInput!): OwnerSecuredVariablePayload
   updateSecuredOrganizationVariable(
     input: UpdateOrganizationSecuredVariableInput!
   ): UpdateOrganizationSecuredVariablePayload
+  updateSecuredOwnerVariable(input: UpdateOwnerSecuredVariableInput!): UpdateOwnerSecuredVariablePayload
   createBuild(input: RepositoryCreateBuildInput!): RepositoryCreateBuildPayload
   deleteRepository(input: RepositoryDeleteInput!): RepositoryDeletePayload
   rerun(input: TaskReRunInput!): TaskReRunPayload
@@ -453,6 +466,7 @@ type Mutation {
   trigger(input: TaskTriggerInput!): TaskTriggerPayload
   saveWebHookSettings(input: SaveWebHookSettingsInput!): SaveWebHookSettingsPayload
   generateNewAccessToken(input: GenerateNewAccessTokenInput!): GenerateNewAccessTokenPayload
+  generateNewOwnerAccessToken(input: GenerateNewOwnerAccessTokenInput!): GenerateNewOwnerAccessTokenPayload
   deletePersistentWorker(input: DeletePersistentWorkerInput!): DeletePersistentWorkerPayload
   updatePersistentWorker(input: UpdatePersistentWorkerInput!): UpdatePersistentWorkerPayload
   persistentWorkerPoolRegistrationToken(
@@ -495,6 +509,135 @@ type OrganizationSecuredVariablePayload {
   clientMutationId: String
 }
 
+type OwnerInfo {
+  uid: ID!
+  platform: String!
+  name: String!
+  description: OwnerInfoDescription!
+  viewerPermission: PermissionType
+  apiToken: ApiAccessToken
+  persistentWorkerPools: [PersistentWorkerPool]
+  webhookSettings: WebHookSettings
+  webhookDeliveries(
+    """
+    fetching only nodes before this node (exclusive)
+    """
+    before: String
+
+    """
+    fetching only nodes after this node (exclusive)
+    """
+    after: String
+
+    """
+    fetching only the first certain number of nodes
+    """
+    first: Int
+
+    """
+    fetching only the last certain number of nodes
+    """
+    last: Int
+  ): OwnerWebhookDeliveriesConnection
+  repositories(
+    """
+    fetching only nodes before this node (exclusive)
+    """
+    before: String
+
+    """
+    fetching only nodes after this node (exclusive)
+    """
+    after: String
+
+    """
+    fetching only the first certain number of nodes
+    """
+    first: Int
+
+    """
+    fetching only the last certain number of nodes
+    """
+    last: Int
+  ): OwnerRepositoriesConnection
+  balanceInCredits: String!
+  billingSettings: BillingSettings
+  transactions(
+    """
+    fetching only nodes before this node (exclusive)
+    """
+    before: String
+
+    """
+    fetching only nodes after this node (exclusive)
+    """
+    after: String
+
+    """
+    fetching only the first certain number of nodes
+    """
+    first: Int
+
+    """
+    fetching only the last certain number of nodes
+    """
+    last: Int
+  ): OwnerTransactionsConnection
+}
+
+type OwnerInfoDescription {
+  message: String!
+  actions: [OwnerInfoDescriptionAction]
+}
+
+type OwnerInfoDescriptionAction {
+  title: String!
+  link: String!
+  icon: String
+}
+
+"""
+A connection to a list of items.
+"""
+type OwnerRepositoriesConnection {
+  """
+  a list of edges
+  """
+  edges: [OwnerRepositoryEdge]
+
+  """
+  details about this specific page
+  """
+  pageInfo: PageInfo!
+}
+
+"""
+An edge in a connection
+"""
+type OwnerRepositoryEdge {
+  """
+  The item at the end of the edge
+  """
+  node: Repository
+
+  """
+  cursor marks a unique position or index into the connection
+  """
+  cursor: String!
+}
+
+input OwnerSecuredVariableInput {
+  platform: String!
+  ownerUid: ID!
+  valueToSecure: String!
+  clientMutationId: String
+}
+
+type OwnerSecuredVariablePayload {
+  variableName: String!
+  clientMutationId: String
+}
+
 type OwnerTransaction {
   platform: String!
   ownerUid: String!
@@ -506,6 +649,66 @@ type OwnerTransaction {
   initialCreditsAmount: String
   task: Task
   repository: Repository
+}
+
+"""
+An edge in a connection
+"""
+type OwnerTransactionEdge {
+  """
+  The item at the end of the edge
+  """
+  node: OwnerTransaction
+
+  """
+  cursor marks a unique position or index into the connection
+  """
+  cursor: String!
+}
+
+"""
+A connection to a list of items.
+"""
+type OwnerTransactionsConnection {
+  """
+  a list of edges
+  """
+  edges: [OwnerTransactionEdge]
+
+  """
+  details about this specific page
+  """
+  pageInfo: PageInfo!
+}
+
+"""
+A connection to a list of items.
+"""
+type OwnerWebhookDeliveriesConnection {
+  """
+  a list of edges
+  """
+  edges: [OwnerWebHookDeliveryEdge]
+
+  """
+  details about this specific page
+  """
+  pageInfo: PageInfo!
+}
+
+"""
+An edge in a connection
+"""
+type OwnerWebHookDeliveryEdge {
+  """
+  The item at the end of the edge
+  """
+  node: WebHookDelivery
+
+  """
+  cursor marks a unique position or index into the connection
+  """
+  cursor: String!
 }
 
 """
@@ -819,6 +1022,7 @@ type Root {
   githubRepository(owner: String!, name: String!): Repository
   githubRepositories(owner: String!): [Repository]
   githubOrganizationInfo(organization: String!): GitHubOrganizationInfo
+  ownerRepository(platform: String!, owner: String!, name: String!): Repository
   build(id: ID!): Build
   searchBuilds(repositoryOwner: String!, repositoryName: String!, SHA: String): [Build]
   task(id: ID!): Task
@@ -826,6 +1030,8 @@ type Root {
   webhookDelivery(id: String!): WebHookDelivery
   persistentWorkerPool(poolId: ID): PersistentWorkerPool
   persistentWorker(poolId: ID, name: String): PersistentWorker
+  ownerInfo(platform: String, uid: ID): OwnerInfo
+  ownerInfoByName(platform: String, name: String): OwnerInfo
 }
 
 input SaveWebHookSettingsInput {
@@ -838,7 +1044,7 @@ input SaveWebHookSettingsInput {
 
 type SaveWebHookSettingsPayload {
   error: String
-  info: GitHubOrganizationInfo
+  info: OwnerInfo
   clientMutationId: String
 }
 
@@ -1043,6 +1249,19 @@ type UpdateOrganizationSecuredVariablePayload {
   clientMutationId: String
 }
 
+input UpdateOwnerSecuredVariableInput {
+  platform: String!
+  ownerUid: ID!
+  name: String!
+  updatedValueToSecure: String!
+  clientMutationId: String
+}
+
+type UpdateOwnerSecuredVariablePayload {
+  variableName: String!
+  clientMutationId: String
+}
+
 input UpdatePersistentWorkerInput {
   poolId: String!
   name: String!
@@ -1100,6 +1319,7 @@ type User implements UserBasicInfo {
   apiToken: ApiAccessToken
   webPushServerKey: String!
   persistentWorkerPools: [PersistentWorkerPool]
+  relatedOwners: [OwnerInfo]
   githubMarketplacePurchase: GitHubMarketplacePurchase
   transactions(
     """

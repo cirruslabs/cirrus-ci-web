@@ -1,0 +1,57 @@
+diff --git a/config/webpack.config.js b/config/webpack.config.js
+index 2b1b3bbd47d8fc659dc9a7a8e7011e783379624d..278d9a57d2c1cfa7c88c94ee3ca72447cc2f10cb 100644
+--- a/config/webpack.config.js
++++ b/config/webpack.config.js
+@@ -343,6 +343,10 @@ module.exports = function (webpackEnv) {
+           babelRuntimeRegenerator,
+         ]),
+       ],
++      fallback: {
++        crypto: require.resolve("crypto-browserify"),
++        stream: require.resolve("stream-browserify"),
++      },
+     },
+     module: {
+       strictExportPresence: true,
+@@ -466,38 +470,10 @@ module.exports = function (webpackEnv) {
+             {
+               test: /\.(js|mjs)$/,
+               exclude: /@babel(?:\/|\\{1,2})runtime/,
+-              loader: require.resolve('babel-loader'),
++              loader: require.resolve('esbuild-loader'),
+               options: {
+-                babelrc: false,
+-                configFile: false,
+-                compact: false,
+-                presets: [
+-                  [
+-                    require.resolve('babel-preset-react-app/dependencies'),
+-                    { helpers: true },
+-                  ],
+-                ],
+-                cacheDirectory: true,
+-                // See #6846 for context on why cacheCompression is disabled
+-                cacheCompression: false,
+-                // @remove-on-eject-begin
+-                cacheIdentifier: getCacheIdentifier(
+-                  isEnvProduction
+-                    ? 'production'
+-                    : isEnvDevelopment && 'development',
+-                  [
+-                    'babel-plugin-named-asset-import',
+-                    'babel-preset-react-app',
+-                    'react-dev-utils',
+-                    'react-scripts',
+-                  ]
+-                ),
+-                // @remove-on-eject-end
+-                // Babel sourcemaps are needed for debugging into node_modules
+-                // code.  Without the options below, debuggers like VSCode
+-                // show incorrect code and set breakpoints on the wrong lines.
+-                sourceMaps: shouldUseSourceMap,
+-                inputSourceMap: shouldUseSourceMap,
++                loader: 'jsx',
++                target: 'es2015',
+               },
+             },
+             // "postcss" loader applies autoprefixer to our CSS.

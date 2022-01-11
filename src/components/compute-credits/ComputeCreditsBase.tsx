@@ -144,7 +144,7 @@ function ComputeCreditsBase(props: Props) {
 
 export default createFragmentContainer(withStyles(styles)(ComputeCreditsBase), {
   info: graphql`
-    fragment ComputeCreditsBase_info on GitHubOrganizationInfo {
+    fragment ComputeCreditsBase_info on OwnerInfo {
       ...BillingSettingsButton_info
     }
   `,

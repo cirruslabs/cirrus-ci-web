@@ -11,24 +11,24 @@ import FormControl from '@mui/material/FormControl';
 import CopyPasteField from '../common/CopyPasteField';
 import TextField from '@mui/material/TextField';
 import {
-  OrganizationSecuredVariablesMutationResponse,
-  OrganizationSecuredVariablesMutationVariables,
-} from './__generated__/OrganizationSecuredVariablesMutation.graphql';
-import { OrganizationSecuredVariables_info } from './__generated__/OrganizationSecuredVariables_info.graphql';
+  OwnerSecuredVariablesMutationResponse,
+  OwnerSecuredVariablesMutationVariables,
+} from './__generated__/OwnerSecuredVariablesMutation.graphql';
+import { OwnerSecuredVariables_info } from './__generated__/OwnerSecuredVariables_info.graphql';
 
 const securedVariableMutation = graphql`
-  mutation OrganizationSecuredVariablesMutation($input: OrganizationSecuredVariableInput!) {
-    securedOrganizationVariable(input: $input) {
+  mutation OwnerSecuredVariablesMutation($input: OwnerSecuredVariableInput!) {
+    securedOwnerVariable(input: $input) {
       variableName
     }
   }
 `;
 
 interface Props {
-  info: OrganizationSecuredVariables_info;
+  info: OwnerSecuredVariables_info;
 }
 
-function OrganizationSecuredVariables(props: Props) {
+function OwnerSecuredVariables(props: Props) {
   let [securedVariableName, setSecuredVariableName] = useState(undefined);
   let [inputValue, setInputValue] = useState('');
   let securedComponent = null;
@@ -40,10 +40,11 @@ function OrganizationSecuredVariables(props: Props) {
   }
 
   function encryptCurrentValue() {
-    const variables: OrganizationSecuredVariablesMutationVariables = {
+    const variables: OwnerSecuredVariablesMutationVariables = {
       input: {
         clientMutationId: props.info.name,
-        organizationId: props.info.id,
+        platform: props.info.platform,
+        ownerUid: props.info.uid,
         valueToSecure: inputValue,
       },
     };
@@ -51,8 +52,8 @@ function OrganizationSecuredVariables(props: Props) {
     commitMutation(environment, {
       mutation: securedVariableMutation,
       variables: variables,
-      onCompleted: (response: OrganizationSecuredVariablesMutationResponse) => {
-        setSecuredVariableName(response.securedOrganizationVariable.variableName);
+      onCompleted: (response: OwnerSecuredVariablesMutationResponse) => {
+        setSecuredVariableName(response.securedOwnerVariable.variableName);
       },
       onError: err => console.error(err),
     });
@@ -60,7 +61,7 @@ function OrganizationSecuredVariables(props: Props) {
 
   return (
     <Card elevation={24}>
-      <CardHeader title="Organization-Level Secured Variables" />
+      <CardHeader title="Owner-Level Secured Variables" />
       <CardContent>
         <FormControl style={{ width: '100%' }}>
           <TextField
@@ -83,10 +84,11 @@ function OrganizationSecuredVariables(props: Props) {
   );
 }
 
-export default createFragmentContainer(OrganizationSecuredVariables, {
+export default createFragmentContainer(OwnerSecuredVariables, {
   info: graphql`
-    fragment OrganizationSecuredVariables_info on GitHubOrganizationInfo {
-      id
+    fragment OwnerSecuredVariables_info on OwnerInfo {
+      platform
+      uid
       name
     }
   `,

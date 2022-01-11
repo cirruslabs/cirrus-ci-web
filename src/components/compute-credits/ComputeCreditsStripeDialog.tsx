@@ -24,11 +24,8 @@ const computeCreditsBuyMutation = graphql`
     buyComputeCredits(input: $input) {
       error
       info {
-        id
+        uid
         balanceInCredits
-      }
-      user {
-        id
         balanceInCredits
       }
     }

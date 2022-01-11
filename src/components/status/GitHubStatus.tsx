@@ -11,7 +11,7 @@ export const GitHubStatusIndicatorState = selector({
       const body = await incidentsResponse.json();
       return body.status.indicator;
     } catch (e) {
-      // statuspage being down or failed connection doesn't mean GitHub is down
+      // statuspage being down or failed connection doesn't mean Owner is down
       return 'none';
     }
   },

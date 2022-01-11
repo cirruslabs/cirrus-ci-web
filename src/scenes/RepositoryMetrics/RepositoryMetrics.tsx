@@ -11,14 +11,14 @@ import { RepositoryMetricsQuery } from './__generated__/RepositoryMetricsQuery.g
 import { useParams } from 'react-router-dom';
 
 export default function RepositoryMetrics(parentProps): JSX.Element {
-  const { owner, name } = useParams();
+  const { platform, owner, name } = useParams();
   return (
     <QueryRenderer<RepositoryMetricsQuery>
       environment={environment}
-      variables={{ owner, name }}
+      variables={{ platform, owner, name }}
       query={graphql`
-        query RepositoryMetricsQuery($owner: String!, $name: String!) {
-          githubRepository(owner: $owner, name: $name) {
+        query RepositoryMetricsQuery($platform: String!, $owner: String!, $name: String!) {
+          ownerRepository(platform: $platform, owner: $owner, name: $name) {
             ...RepositoryMetricsPage_repository
           }
         }
@@ -27,10 +27,10 @@ export default function RepositoryMetrics(parentProps): JSX.Element {
         if (!props) {
           return <CirrusLinearProgress />;
         }
-        if (!props.githubRepository) {
+        if (!props.ownerRepository) {
           return <NotFound message={error} />;
         }
-        return <RepositoryMetricsPage repository={props.githubRepository} {...parentProps} />;
+        return <RepositoryMetricsPage repository={props.ownerRepository} {...parentProps} />;
       }}
     />
   );

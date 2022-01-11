@@ -13,6 +13,10 @@ import OwnerApiSettings from './OwnerApiSettings';
 import OwnerSecuredVariables from './OwnerSecuredVariables';
 import OwnerPersistentWorkerPools from './OwnerPersistentWorkerPools';
 import { OwnerSettings_info } from './__generated__/OwnerSettings_info.graphql';
+import MarkdownTypography from '../common/MarkdownTypography';
+import CardHeader from '@mui/material/CardHeader';
+import { Card, CardActions, CardContent } from '@mui/material';
+import Button from '@mui/material/Button';
 
 const styles = theme =>
   createStyles({
@@ -49,6 +53,20 @@ function OwnerSettings(props: Props) {
         </Toolbar>
       </Paper>
       <div className={classes.settingGap} />
+      <Card elevation={16}>
+        <CardHeader title="GitHub Settings" />
+        <CardContent>
+          <MarkdownTypography text={info.description.message} />
+        </CardContent>
+        <CardActions>
+          {info.description.actions.map(action => (
+            <Button variant="contained" href={action.link}>
+              {action.title}
+            </Button>
+          ))}
+        </CardActions>
+      </Card>
+      <div className={classes.settingGap} />
       <Paper elevation={16}>
         <OwnerComputeCredits info={info} />
       </Paper>
@@ -80,6 +98,13 @@ export default createFragmentContainer(withStyles(styles)(OwnerSettings), {
       uid
       name
       viewerPermission
+      description {
+        message
+        actions {
+          title
+          link
+        }
+      }
       ...OwnerComputeCredits_info
       ...OwnerApiSettings_info
       ...OwnerSecuredVariables_info

@@ -9,6 +9,18 @@ const MarkdownTypography = (props: MarkdownTypographyProps) => {
   const { text, ...otherProps } = props;
 
   return (
+    <>
+      {text.split('\n').map(line => {
+        return <MarkdownTypographyLine text={line} {...otherProps} />;
+      })}
+    </>
+  );
+};
+
+const MarkdownTypographyLine = (props: MarkdownTypographyProps) => {
+  const { text, ...otherProps } = props;
+
+  return (
     <ReactMarkdown
       children={text}
       components={{

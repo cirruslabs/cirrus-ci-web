@@ -513,6 +513,7 @@ type OwnerInfo {
   uid: ID!
   platform: String!
   name: String!
+  description: OwnerInfoDescription!
   viewerPermission: PermissionType
   apiToken: ApiAccessToken
   persistentWorkerPools: [PersistentWorkerPool]
@@ -582,6 +583,17 @@ type OwnerInfo {
     """
     last: Int
   ): OwnerTransactionsConnection
+}
+
+type OwnerInfoDescription {
+  message: String!
+  actions: [OwnerInfoDescriptionAction]
+}
+
+type OwnerInfoDescriptionAction {
+  title: String!
+  link: String!
+  icon: String
 }
 
 """

@@ -1,20 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import Paper from '@mui/material/Paper';
 import Tooltip from '@mui/material/Tooltip';
 import { WithStyles } from '@mui/styles';
 import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
-import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import CardActions from '@mui/material/CardActions';
 import CardHeader from '@mui/material/CardHeader';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import Toolbar from '@mui/material/Toolbar';
 import { navigateHelper } from '../../utils/navigateHelper';
 import IconButton from '@mui/material/IconButton';
 import { UserProfile_user } from './__generated__/UserProfile_user.graphql';
@@ -37,121 +30,56 @@ const styles = theme =>
     },
   });
 
-const PERSONAL_PRIVATE_REPOSITORIES_PLAN_ID = 992;
-
 interface Props extends WithStyles<typeof styles> {
   user: UserProfile_user;
 }
 
 function UserProfile(props: Props) {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   let { user, classes } = props;
-  let githubMarketplaceComponent = (
-    <div>
-      <Typography variant="subtitle1">No GitHub Marketplace plan has been configured!</Typography>
-    </div>
-  );
-  let actionButton = (
-    <Button
-      variant="contained"
-      startIcon={<GitHubIcon />}
-      href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTI=?account=${user.githubUserName}`}
-    >
-      Purchase Plan for Private Repositories
-    </Button>
-  );
-  if (user.githubMarketplacePurchase) {
-    githubMarketplaceComponent = (
-      <div className={classes.row}>
-        <Typography variant="subtitle1">
-          Purchased GitHub Plan: <b>{user.githubMarketplacePurchase.planName}</b>
-        </Typography>
-      </div>
-    );
-  }
-  if (
-    user.githubMarketplacePurchase &&
-    user.githubMarketplacePurchase.planId === PERSONAL_PRIVATE_REPOSITORIES_PLAN_ID
-  ) {
-    actionButton = (
-      <Button
-        variant="contained"
-        startIcon={<GitHubIcon />}
-        href={`https://github.com/marketplace/cirrus-ci/order/MDIyOk1hcmtldHBsYWNlTGlzdGluZ1BsYW45OTA=?account=${user.githubUserName}`}
-      >
-        Switch to Free Plan
-      </Button>
-    );
-  }
 
-  let trialComponent = null;
-  if (
-    user.githubMarketplacePurchase &&
-    user.githubMarketplacePurchase.onFreeTrial &&
-    user.githubMarketplacePurchase.freeTrialDaysLeft > 0
-  ) {
-    trialComponent = (
-      <div className={classes.row}>
-        <Typography variant="subtitle1">
-          Days of Free Trial left: <b>{user.githubMarketplacePurchase.freeTrialDaysLeft}</b>
-        </Typography>
-      </div>
-    );
-  }
-
-  let organizationsComponent = (
-    <Card elevation={24}>
-      <CardHeader title="Additional Settings" />
-      <List>
-        {user.relatedOwners.map(owner => (
-          <ListItem
-            key={owner.platform + owner.uid}
-            onClick={e => navigateHelper(navigate, e, '/github/' + owner.name)}
-            secondaryAction={
-              <Tooltip title="Owner settings">
-                <IconButton
-                  onClick={e => navigateHelper(navigate, e, `/settings/${owner.platform}/${owner.name}`)}
-                  size="large"
-                >
-                  <Settings />
-                </IconButton>
-              </Tooltip>
-            }
-          >
-            <ListItemAvatar>
-              <OwnerPlatformIcon platform={owner.platform} />
-            </ListItemAvatar>
-            <ListItemText>{owner.name}</ListItemText>
-          </ListItem>
-        ))}
-      </List>
-    </Card>
-  );
+  useEffect(() => {
+    // in case of only one owner (like only the user with no organizations)
+    // navigate to the owner's settings immediatly
+    if (user.relatedOwners.length === 1) {
+      let uniqueOwner = user.relatedOwners[0];
+      navigate(`/settings/${uniqueOwner.platform}/${uniqueOwner.name}`, { replace: true });
+    }
+  }, [navigate, user.relatedOwners]);
 
   return (
     <div>
       <Head>
         <title>Settings - Cirrus CI</title>
       </Head>
-      <Paper elevation={16}>
-        <Toolbar className={classes.title}>
-          <Typography variant="h6" color="inherit">
-            Settings for {user.githubUserName}
-          </Typography>
-        </Toolbar>
-      </Paper>
       <div className={classes.gap} />
       <Card elevation={24}>
-        <CardHeader title="GitHub Settings" />
-        <CardContent>
-          {githubMarketplaceComponent}
-          {trialComponent}
-        </CardContent>
-        <CardActions>{actionButton}</CardActions>
+        <CardHeader title="All Settings" />
+        <List>
+          {user.relatedOwners.map(owner => (
+            <ListItem
+              key={owner.platform + owner.uid}
+              onClick={e => navigateHelper(navigate, e, '/github/' + owner.name)}
+              secondaryAction={
+                <Tooltip title="Owner settings">
+                  <IconButton
+                    onClick={e => navigateHelper(navigate, e, `/settings/${owner.platform}/${owner.name}`)}
+                    size="large"
+                  >
+                    <Settings />
+                  </IconButton>
+                </Tooltip>
+              }
+            >
+              <ListItemAvatar>
+                <OwnerPlatformIcon platform={owner.platform} />
+              </ListItemAvatar>
+              <ListItemText>{owner.name}</ListItemText>
+            </ListItem>
+          ))}
+        </List>
       </Card>
-      <div className={classes.gap} />
-      {organizationsComponent}
     </div>
   );
 }
@@ -159,13 +87,6 @@ function UserProfile(props: Props) {
 export default createFragmentContainer(withStyles(styles)(UserProfile), {
   user: graphql`
     fragment UserProfile_user on User {
-      githubUserName
-      githubMarketplacePurchase {
-        planId
-        planName
-        onFreeTrial
-        freeTrialDaysLeft
-      }
       relatedOwners {
         platform
         name

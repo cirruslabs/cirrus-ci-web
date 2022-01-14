@@ -6,7 +6,6 @@ import Chip from '@mui/material/Chip';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { TaskRerunnerChip_task } from './__generated__/TaskRerunnerChip_task.graphql';
-import { Refresh } from '@mui/icons-material';
 
 interface Props {
   task: TaskRerunnerChip_task;
@@ -18,27 +17,14 @@ function TaskRerunnerChip(props: Props) {
 
   if (!reranBy) return <></>;
 
-  return (
-    <Chip
-      className={props.className}
-      label={'Re-ran by ' + reranBy.githubUserName}
-      avatar={
-        <Avatar>
-          <Refresh />
-        </Avatar>
-      }
-      onClick={() => {
-        window.open('https://github.com/' + reranBy.githubUserName);
-      }}
-    />
-  );
+  return <Chip className={props.className} label="Re-ran by a user" avatar={<Avatar src={reranBy.avatarURL} />} />;
 }
 
 export default createFragmentContainer(TaskRerunnerChip, {
   task: graphql`
     fragment TaskRerunnerChip_task on Task {
       reranBy {
-        githubUserName
+        avatarURL
       }
     }
   `,

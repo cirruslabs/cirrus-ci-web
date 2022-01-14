@@ -14,36 +14,6 @@ directive @specifiedBy(
   url: String!
 ) on SCALAR
 
-"""
-An edge in a connection
-"""
-type AccountTransactionEdge {
-  """
-  The item at the end of the edge
-  """
-  node: OwnerTransaction
-
-  """
-  cursor marks a unique position or index into the connection
-  """
-  cursor: String!
-}
-
-"""
-A connection to a list of items.
-"""
-type AccountTransactionsConnection {
-  """
-  a list of edges
-  """
-  edges: [AccountTransactionEdge]
-
-  """
-  details about this specific page
-  """
-  pageInfo: PageInfo!
-}
-
 type ApiAccessToken {
   maskedToken: String
   creationTimestamp: Int
@@ -307,73 +277,6 @@ input GetPersistentWorkerPoolRegistrationTokenInput {
 type GetPersistentWorkerPoolRegistrationTokenPayload {
   token: String!
   clientMutationId: String
-}
-
-type GitHubMarketplacePurchase {
-  platform: String!
-  ownerUid: String!
-  login: String!
-  planId: Int!
-  planName: String!
-  unitCount: Int!
-  onFreeTrial: Boolean!
-  freeTrialDaysLeft: Int!
-}
-
-type GitHubOrganizationInfo {
-  id: ID!
-  name: String!
-  role: String!
-  activeUsersAmount: Int!
-  activeUserNames: [String]
-  balanceInCredits: String!
-  webhookSettings: WebHookSettings
-  webhookDeliveries(
-    """
-    fetching only nodes before this node (exclusive)
-    """
-    before: String
-
-    """
-    fetching only nodes after this node (exclusive)
-    """
-    after: String
-
-    """
-    fetching only the first certain number of nodes
-    """
-    first: Int
-
-    """
-    fetching only the last certain number of nodes
-    """
-    last: Int
-  ): WebhookDeliveriesConnection
-  apiToken: ApiAccessToken
-  persistentWorkerPools: [PersistentWorkerPool]
-  purchase: GitHubMarketplacePurchase
-  billingSettings: BillingSettings
-  transactions(
-    """
-    fetching only nodes before this node (exclusive)
-    """
-    before: String
-
-    """
-    fetching only nodes after this node (exclusive)
-    """
-    after: String
-
-    """
-    fetching only the first certain number of nodes
-    """
-    first: Int
-
-    """
-    fetching only the last certain number of nodes
-    """
-    last: Int
-  ): AccountTransactionsConnection
 }
 
 type Hook {
@@ -1019,9 +922,6 @@ type RepositorySettingsPayload {
 type Root {
   viewer: User
   repository(id: ID!): Repository
-  githubRepository(owner: String!, name: String!): Repository
-  githubRepositories(owner: String!): [Repository]
-  githubOrganizationInfo(organization: String!): GitHubOrganizationInfo
   ownerRepository(platform: String!, owner: String!, name: String!): Repository
   build(id: ID!): Build
   searchBuilds(repositoryOwner: String!, repositoryName: String!, SHA: String): [Build]
@@ -1288,8 +1188,6 @@ type UpdatePersistentWorkerPoolPayload {
 
 type User implements UserBasicInfo {
   id: ID!
-  githubUserId: Int
-  githubUserName: String!
   category: UserCategoryType!
   avatarURL: String
   builds(
@@ -1314,13 +1212,11 @@ type User implements UserBasicInfo {
     last: Int
   ): UserBuildsConnection
   topActiveRepositories: [Repository]
-  organizations: [GitHubOrganizationInfo]
   balanceInCredits: String!
   apiToken: ApiAccessToken
   webPushServerKey: String!
   persistentWorkerPools: [PersistentWorkerPool]
   relatedOwners: [OwnerInfo]
-  githubMarketplacePurchase: GitHubMarketplacePurchase
   transactions(
     """
     fetching only nodes before this node (exclusive)
@@ -1346,8 +1242,6 @@ type User implements UserBasicInfo {
 
 interface UserBasicInfo {
   id: ID!
-  githubUserId: Int
-  githubUserName: String
   avatarURL: String
 }
 
@@ -1421,21 +1315,6 @@ type UserTransactionsConnection {
   pageInfo: PageInfo!
 }
 
-"""
-A connection to a list of items.
-"""
-type WebhookDeliveriesConnection {
-  """
-  a list of edges
-  """
-  edges: [WebHookDeliveryEdge]
-
-  """
-  details about this specific page
-  """
-  pageInfo: PageInfo!
-}
-
 type WebHookDelivery {
   id: String!
   platform: String!
@@ -1444,21 +1323,6 @@ type WebHookDelivery {
   timestamp: Int!
   payload: WebHookDeliveryPayload!
   response: WebHookDeliveryResponse!
-}
-
-"""
-An edge in a connection
-"""
-type WebHookDeliveryEdge {
-  """
-  The item at the end of the edge
-  """
-  node: WebHookDelivery
-
-  """
-  cursor marks a unique position or index into the connection
-  """
-  cursor: String!
 }
 
 type WebHookDeliveryPayload {

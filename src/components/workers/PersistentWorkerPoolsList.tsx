@@ -18,8 +18,8 @@ import Input from '@mui/material/Input';
 import DialogActions from '@mui/material/DialogActions';
 import { graphql } from 'babel-plugin-relay/macro';
 import {
+  CreatePersistentWorkerPoolInput,
   PersistentWorkerPoolsListCreateMutationResponse,
-  PersistentWorkerPoolsListCreateMutationVariables,
 } from './__generated__/PersistentWorkerPoolsListCreateMutation.graphql';
 import { navigateHelper } from '../../utils/navigateHelper';
 import PropTypes from 'prop-types';
@@ -139,13 +139,11 @@ function CreateNewPersistentWorkerPoolDialog(props: DialogProps) {
   let [enabledForPublic, setEnabledForPublic] = useState(true);
 
   function createPool() {
-    const input: PersistentWorkerPoolsListCreateMutationVariables = {
-      input: {
-        clientMutationId: 'create-persistent-worker-pool-' + props.ownerUid,
-        ownerUid: props.ownerUid,
-        name: name,
-        enabledForPublic: enabledForPublic,
-      },
+    const input: CreatePersistentWorkerPoolInput = {
+      clientMutationId: 'create-persistent-worker-pool-' + props.ownerUid,
+      ownerUid: props.ownerUid,
+      name: name,
+      enabledForPublic: enabledForPublic,
     };
     commitMutation(environment, {
       mutation: createPoolMutation,

@@ -12,6 +12,8 @@ import { shorten } from '../../utils/text';
 import { WithStyles } from '@mui/styles';
 import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
+import { Commit } from '@mui/icons-material';
+import { Tooltip } from '@mui/material';
 
 const styles = theme =>
   createStyles({
@@ -44,6 +46,23 @@ function BuildBranchNameChip(props: Props) {
     }
   }
 
+  if (build.tag) {
+    return (
+      <Tooltip title={`${build.tag} tag`}>
+        <Chip
+          className={props.className}
+          label={shorten(build.branch)}
+          avatar={
+            <Avatar className={props.classes.avatar}>
+              <Commit className={props.classes.avatarIcon} />
+            </Avatar>
+          }
+          onClick={e => handleBranchClick(e)}
+        />
+      </Tooltip>
+    );
+  }
+
   return (
     <Chip
       className={props.className}
@@ -63,6 +82,7 @@ export default createFragmentContainer(withStyles(styles)(BuildBranchNameChip), 
     fragment BuildBranchNameChip_build on Build {
       id
       branch
+      tag
       repository {
         id
         owner

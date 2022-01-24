@@ -58,13 +58,13 @@ type Build {
   id: ID!
   repositoryId: ID!
   branch: String!
+  tag: String
   changeIdInRepo: String!
   changeMessageTitle: String
   changeMessage: String
   durationInSeconds: Int
   clockDurationInSeconds: Int
   pullRequest: Int
-  checkSuiteId: Int
   isSenderUserCollaborator: Boolean
   senderUserPermissions: String
   changeTimestamp: Int!

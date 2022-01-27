@@ -40,13 +40,16 @@ function TaskDebuggingInformation(props: Props) {
           return null;
         }
         let task = response.props.task;
-        let events = task.executionInfo?.events.map(event => {
-          let prettyTime = new Date(event.timestamp).toLocaleTimeString();
-          return `${prettyTime} ${event.message}`;
-        });
+        let events =
+          task.executionInfo?.events?.map(event => {
+            let prettyTime = new Date(event.timestamp).toLocaleTimeString();
+            return `${prettyTime} ${event.message}`;
+          }) || [];
 
         const agentNotificationsComponent =
-          !task.executionInfo.agentNotifications || task.executionInfo.agentNotifications.length === 0 ? null : (
+          !task.executionInfo ||
+          !task.executionInfo.agentNotifications ||
+          task.executionInfo.agentNotifications.length === 0 ? null : (
             <>
               <Typography variant="subtitle1" sx={{ pt: 2 }}>
                 Agent notifications

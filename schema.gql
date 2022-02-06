@@ -248,16 +248,6 @@ type ExecutionInfo {
   agentNotifications: [Notification]
 }
 
-input GenerateNewAccessTokenInput {
-  accountId: ID
-  clientMutationId: String
-}
-
-type GenerateNewAccessTokenPayload {
-  token: String!
-  clientMutationId: String
-}
-
 input GenerateNewOwnerAccessTokenInput {
   platform: ID
   ownerUid: ID
@@ -368,7 +358,6 @@ type Mutation {
   approve(input: BuildApproveInput!): BuildApprovePayload
   trigger(input: TaskTriggerInput!): TaskTriggerPayload
   saveWebHookSettings(input: SaveWebHookSettingsInput!): SaveWebHookSettingsPayload
-  generateNewAccessToken(input: GenerateNewAccessTokenInput!): GenerateNewAccessTokenPayload
   generateNewOwnerAccessToken(input: GenerateNewOwnerAccessTokenInput!): GenerateNewOwnerAccessTokenPayload
   deletePersistentWorker(input: DeletePersistentWorkerInput!): DeletePersistentWorkerPayload
   updatePersistentWorker(input: UpdatePersistentWorkerInput!): UpdatePersistentWorkerPayload

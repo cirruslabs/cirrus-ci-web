@@ -75,6 +75,8 @@ export function taskStatusIconName(status) {
       return 'done';
     case 'PAUSED':
       return 'pause';
+    case 'ABORTED':
+      return 'stop';
     default:
       return 'error_outlined';
   }
@@ -88,6 +90,8 @@ export function buildStatusIconName(status) {
       return 'play_arrow';
     case 'COMPLETED':
       return 'done';
+    case 'ABORTED':
+      return 'stop';
     default:
       return 'error_outlined';
   }

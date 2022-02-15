@@ -14,7 +14,10 @@ import { UserProfile_user } from './__generated__/UserProfile_user.graphql';
 import { Helmet as Head } from 'react-helmet';
 import Settings from '@mui/icons-material/Settings';
 import OwnerPlatformIcon from '../icons/OwnerPlatformIcon';
-import { List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
+import { Box, List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
+import TableBody from '@mui/material/TableBody';
+import Table from '@mui/material/Table';
+import RunningBuild from './RunningBuild';
 
 const styles = theme =>
   createStyles({
@@ -48,6 +51,20 @@ function UserProfile(props: Props) {
     }
   }, [navigate, user.relatedOwners]);
 
+  let runningBuilds = <Box sx={{ padding: 2 }}>None at the moment.</Box>;
+
+  if (user.builds && user.builds.edges.length !== 0) {
+    runningBuilds = (
+      <Table style={{ tableLayout: 'auto' }}>
+        <TableBody>
+          {user.builds.edges.map(edge => (
+            <RunningBuild build={edge.node} />
+          ))}
+        </TableBody>
+      </Table>
+    );
+  }
+
   return (
     <div>
       <Head>
@@ -79,6 +96,8 @@ function UserProfile(props: Props) {
             </ListItem>
           ))}
         </List>
+        <CardHeader title="Currently Active Builds" />
+        {runningBuilds}
       </Card>
     </div>
   );
@@ -91,6 +110,13 @@ export default createFragmentContainer(withStyles(styles)(UserProfile), {
         platform
         name
         uid
+      }
+      builds(statuses: [CREATED, NEEDS_APPROVAL, TRIGGERED, EXECUTING]) {
+        edges {
+          node {
+            ...RunningBuild_build
+          }
+        }
       }
     }
   `,

@@ -1199,6 +1199,11 @@ type User implements UserBasicInfo {
     fetching only the last certain number of nodes
     """
     last: Int
+
+    """
+    fetching only builds with the specified statuses
+    """
+    statuses: [BuildStatus]
   ): UserBuildsConnection
   topActiveRepositories: [Repository]
   balanceInCredits: String!

@@ -16,7 +16,6 @@ const ApiExplorer = () => {
 query {
   viewer {
     id
-    githubUserName
   }
 }
 `}

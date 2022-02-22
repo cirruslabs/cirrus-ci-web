@@ -1,5 +1,5 @@
-import React from 'react';
-import { createFragmentContainer } from 'react-relay';
+import React, { useState } from 'react';
+import { createFragmentContainer, useRefetchableFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { useNavigate } from 'react-router-dom';
 
@@ -18,10 +18,11 @@ import { navigateBuildHelper } from '../../utils/navigateHelper';
 import Typography from '@mui/material/Typography';
 import { WithStyles } from '@mui/styles';
 import withStyles from '@mui/styles/withStyles';
-import { ViewerBuildList_viewer } from './__generated__/ViewerBuildList_viewer.graphql';
 import { Helmet as Head } from 'react-helmet';
-import { Box } from '@mui/material';
+import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import MarkdownTypography from '../common/MarkdownTypography';
+import { ViewerBuildListRefetchQuery } from './__generated__/ViewerBuildListRefetchQuery.graphql';
+import { ViewerBuildList_viewer$key } from './__generated__/ViewerBuildList_viewer.graphql';
 
 const styles = theme => ({
   chip: {
@@ -40,12 +41,39 @@ const styles = theme => ({
 });
 
 interface Props extends WithStyles<typeof styles> {
-  viewer: ViewerBuildList_viewer;
+  viewer: ViewerBuildList_viewer$key;
 }
 
 function ViewerBuildList(props: Props) {
-  let { classes } = props;
-  let builds = props.viewer.builds;
+  let { viewer, classes } = props;
+
+  const [data, refetch] = useRefetchableFragment<ViewerBuildListRefetchQuery, any>(
+    graphql`
+      fragment ViewerBuildList_viewer on User
+      @argumentDefinitions(statuses: { type: "[BuildStatus]" })
+      @refetchable(queryName: "ViewerBuildListRefetchQuery") {
+        builds(last: 50, statuses: $statuses) {
+          edges {
+            node {
+              id
+              changeMessageTitle
+              durationInSeconds
+              status
+              ...BuildBranchNameChip_build
+              ...BuildChangeChip_build
+              ...BuildStatusChip_build
+              repository {
+                ...RepositoryNameChip_repository
+              }
+            }
+          }
+        }
+      }
+    `,
+    viewer,
+  );
+
+  let builds = data.builds;
 
   let navigate = useNavigate();
 
@@ -96,38 +124,39 @@ function ViewerBuildList(props: Props) {
       </div>
     );
   }
+
+  const [filter, setFilter] = useState('all');
+
+  const handleFilterChange = (event, newFilter) => {
+    setFilter(newFilter);
+
+    switch (newFilter) {
+      case 'all':
+        refetch({ statuses: [] });
+        break;
+      case 'running':
+        refetch({ statuses: ['CREATED', 'NEEDS_APPROVAL', 'TRIGGERED', 'EXECUTING'] });
+        break;
+    }
+  };
+
   return (
     <Paper elevation={16}>
       <Head>
         <title>Recent Builds - Cirrus CI</title>
       </Head>
       <Toolbar>
-        <Typography variant="h6">Recent Builds</Typography>
+        <Typography variant="h6" sx={{ flexGrow: 1 }}>
+          Recent Builds
+        </Typography>
+        <ToggleButtonGroup value={filter} exclusive onChange={handleFilterChange}>
+          <ToggleButton value="all">All</ToggleButton>
+          <ToggleButton value="running">Running</ToggleButton>
+        </ToggleButtonGroup>
       </Toolbar>
       {buildsComponent}
     </Paper>
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(ViewerBuildList), {
-  viewer: graphql`
-    fragment ViewerBuildList_viewer on User {
-      builds(last: 50) {
-        edges {
-          node {
-            id
-            changeMessageTitle
-            durationInSeconds
-            status
-            ...BuildBranchNameChip_build
-            ...BuildChangeChip_build
-            ...BuildStatusChip_build
-            repository {
-              ...RepositoryNameChip_repository
-            }
-          }
-        }
-      }
-    }
-  `,
-});
+export default withStyles(styles)(ViewerBuildList);

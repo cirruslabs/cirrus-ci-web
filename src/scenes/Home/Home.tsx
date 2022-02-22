@@ -16,8 +16,9 @@ export default function Home(): JSX.Element {
       query={graphql`
         query HomeViewerQuery {
           viewer {
-            ...ViewerBuildList_viewer
+            id
           }
+          ...ViewerBuildList_viewer
         }
       `}
       variables={{}}
@@ -26,7 +27,7 @@ export default function Home(): JSX.Element {
           return <CirrusLinearProgress />;
         }
         if (props.viewer) {
-          return <ViewerBuildList viewer={props.viewer} />;
+          return <ViewerBuildList viewer={props} />;
         } else {
           return <WelcomePage />;
         }

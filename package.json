@@ -85,7 +85,7 @@
     "prettier-check": "prettier --check .",
     "relay": "relay-compiler --verbose --watchman false --src ./src --schema schema.gql --language typescript",
     "sync-schema": "get-graphql-schema https://api.cirrus-ci.com/schema.json | sed -e 's/Long/Int/g' > schema.gql && prettier --write schema.gql",
-    "bootstrap": "yarn sync-schema && yarn relay"
+    "bootstrap": "yarn relay"
   },
   "eslintConfig": {
     "extends": [

@@ -49,21 +49,23 @@ function ViewerBuildList(props: Props) {
 
   const [data, refetch] = useRefetchableFragment<ViewerBuildListRefetchQuery, any>(
     graphql`
-      fragment ViewerBuildList_viewer on User
+      fragment ViewerBuildList_viewer on Query
       @argumentDefinitions(statuses: { type: "[BuildStatus]" })
       @refetchable(queryName: "ViewerBuildListRefetchQuery") {
-        builds(last: 50, statuses: $statuses) {
-          edges {
-            node {
-              id
-              changeMessageTitle
-              durationInSeconds
-              status
-              ...BuildBranchNameChip_build
-              ...BuildChangeChip_build
-              ...BuildStatusChip_build
-              repository {
-                ...RepositoryNameChip_repository
+        viewer {
+          builds(last: 50, statuses: $statuses) {
+            edges {
+              node {
+                id
+                changeMessageTitle
+                durationInSeconds
+                status
+                ...BuildBranchNameChip_build
+                ...BuildChangeChip_build
+                ...BuildStatusChip_build
+                repository {
+                  ...RepositoryNameChip_repository
+                }
               }
             }
           }

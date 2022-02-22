@@ -1,9 +1,3 @@
-schema {
-  query: Root
-  mutation: Mutation
-  subscription: Subscription
-}
-
 """
 Exposes a URL that specifies the behaviour of this scalar.
 """
@@ -908,7 +902,7 @@ type RepositorySettingsPayload {
   clientMutationId: String
 }
 
-type Root {
+type Query {
   viewer: User
   repository(id: ID!): Repository
   ownerRepository(platform: String!, owner: String!, name: String!): Repository

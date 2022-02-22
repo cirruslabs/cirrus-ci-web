@@ -1,5 +1,5 @@
 schema {
-  query: Root
+  query: Query
   mutation: Mutation
   subscription: Subscription
 }
@@ -908,7 +908,7 @@ type RepositorySettingsPayload {
   clientMutationId: String
 }
 
-type Root {
+type Query {
   viewer: User
   repository(id: ID!): Repository
   ownerRepository(platform: String!, owner: String!, name: String!): Repository
@@ -1199,6 +1199,11 @@ type User implements UserBasicInfo {
     fetching only the last certain number of nodes
     """
     last: Int
+
+    """
+    fetching only builds with the specified statuses
+    """
+    statuses: [BuildStatus]
   ): UserBuildsConnection
   topActiveRepositories: [Repository]
   balanceInCredits: String!

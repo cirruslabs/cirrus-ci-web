@@ -140,6 +140,12 @@ function ViewerBuildList(props: Props) {
   }
 
   const handleFilterChange = (event, newFilter) => {
+    // This prevents the depressing of the toggle button
+    // without pressing another button.
+    if (!newFilter) {
+      return;
+    }
+
     setFilter(newFilter);
 
     switch (newFilter) {

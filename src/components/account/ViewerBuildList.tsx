@@ -118,7 +118,7 @@ function ViewerBuildList(props: Props) {
     builds = data.viewer.builds.edges
       .map(edge => edge.node)
       .filter(build => {
-        return !(filter == 'running' && isBuildFinalStatus(build.status));
+        return !(filter === 'running' && isBuildFinalStatus(build.status));
       });
   }
 

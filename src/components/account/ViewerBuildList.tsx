@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createFragmentContainer, useRefetchableFragment } from 'react-relay';
+import { useRefetchableFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { useNavigate } from 'react-router-dom';
 
@@ -49,21 +49,23 @@ function ViewerBuildList(props: Props) {
 
   const [data, refetch] = useRefetchableFragment<ViewerBuildListRefetchQuery, any>(
     graphql`
-      fragment ViewerBuildList_viewer on User
+      fragment ViewerBuildList_viewer on Query
       @argumentDefinitions(statuses: { type: "[BuildStatus]" })
       @refetchable(queryName: "ViewerBuildListRefetchQuery") {
-        builds(last: 50, statuses: $statuses) {
-          edges {
-            node {
-              id
-              changeMessageTitle
-              durationInSeconds
-              status
-              ...BuildBranchNameChip_build
-              ...BuildChangeChip_build
-              ...BuildStatusChip_build
-              repository {
-                ...RepositoryNameChip_repository
+        viewer {
+          builds(last: 50, statuses: $statuses) {
+            edges {
+              node {
+                id
+                changeMessageTitle
+                durationInSeconds
+                status
+                ...BuildBranchNameChip_build
+                ...BuildChangeChip_build
+                ...BuildStatusChip_build
+                repository {
+                  ...RepositoryNameChip_repository
+                }
               }
             }
           }
@@ -73,7 +75,7 @@ function ViewerBuildList(props: Props) {
     viewer,
   );
 
-  let builds = data.builds;
+  let builds = data.viewer.builds;
 
   let navigate = useNavigate();
 

@@ -76,18 +76,10 @@ function ViewerBuildList(props: Props) {
     viewer,
   );
 
-  let builds = data.viewer.builds;
-
   let navigate = useNavigate();
-
-  const [filter, setFilter] = useState('all');
 
   function buildItem(build) {
     let { classes } = props;
-
-    if (filter == 'running' && isBuildFinalStatus(build.status)) {
-      return null;
-    }
 
     return (
       <TableRow
@@ -118,12 +110,24 @@ function ViewerBuildList(props: Props) {
     );
   }
 
+  const [filter, setFilter] = useState('all');
+
+  let builds = [];
+
+  if (data.viewer.builds) {
+    builds = data.viewer.builds.edges
+      .map(edge => edge.node)
+      .filter(build => {
+        return !(filter == 'running' && isBuildFinalStatus(build.status));
+      });
+  }
+
   let buildsComponent = (
     <Table style={{ tableLayout: 'auto' }}>
-      <TableBody>{builds && builds.edges.map(edge => buildItem(edge.node))}</TableBody>
+      <TableBody>{builds.map(build => buildItem(build))}</TableBody>
     </Table>
   );
-  if (!builds || builds.edges.length === 0) {
+  if (builds.length === 0) {
     buildsComponent = (
       <div className={classes.emptyBuilds}>
         <MarkdownTypography

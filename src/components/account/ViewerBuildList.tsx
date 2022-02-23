@@ -23,6 +23,7 @@ import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import MarkdownTypography from '../common/MarkdownTypography';
 import { ViewerBuildListRefetchQuery } from './__generated__/ViewerBuildListRefetchQuery.graphql';
 import { ViewerBuildList_viewer$key } from './__generated__/ViewerBuildList_viewer.graphql';
+import { isBuildFinalStatus } from '../../utils/status';
 
 const styles = theme => ({
   chip: {
@@ -79,8 +80,15 @@ function ViewerBuildList(props: Props) {
 
   let navigate = useNavigate();
 
+  const [filter, setFilter] = useState('all');
+
   function buildItem(build) {
     let { classes } = props;
+
+    if (filter == 'running' && isBuildFinalStatus(build.status)) {
+      return null;
+    }
+
     return (
       <TableRow
         key={build.id}
@@ -126,8 +134,6 @@ function ViewerBuildList(props: Props) {
       </div>
     );
   }
-
-  const [filter, setFilter] = useState('all');
 
   const handleFilterChange = (event, newFilter) => {
     setFilter(newFilter);

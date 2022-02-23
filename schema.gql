@@ -1,9 +1,3 @@
-schema {
-  query: Root
-  mutation: Mutation
-  subscription: Subscription
-}
-
 """
 Exposes a URL that specifies the behaviour of this scalar.
 """
@@ -748,6 +742,21 @@ enum PlatformType {
   FREEBSD
 }
 
+type Query {
+  viewer: User
+  repository(id: ID!): Repository
+  ownerRepository(platform: String!, owner: String!, name: String!): Repository
+  build(id: ID!): Build
+  searchBuilds(repositoryOwner: String!, repositoryName: String!, SHA: String): [Build]
+  task(id: ID!): Task
+  hook(id: ID!): Hook
+  webhookDelivery(id: String!): WebHookDelivery
+  persistentWorkerPool(poolId: ID): PersistentWorkerPool
+  persistentWorker(poolId: ID, name: String): PersistentWorker
+  ownerInfo(platform: String, uid: ID): OwnerInfo
+  ownerInfoByName(platform: String, name: String): OwnerInfo
+}
+
 type Repository {
   id: ID!
   owner: String!
@@ -906,21 +915,6 @@ input RepositorySettingsInput {
 type RepositorySettingsPayload {
   settings: RepositorySettings!
   clientMutationId: String
-}
-
-type Root {
-  viewer: User
-  repository(id: ID!): Repository
-  ownerRepository(platform: String!, owner: String!, name: String!): Repository
-  build(id: ID!): Build
-  searchBuilds(repositoryOwner: String!, repositoryName: String!, SHA: String): [Build]
-  task(id: ID!): Task
-  hook(id: ID!): Hook
-  webhookDelivery(id: String!): WebHookDelivery
-  persistentWorkerPool(poolId: ID): PersistentWorkerPool
-  persistentWorker(poolId: ID, name: String): PersistentWorker
-  ownerInfo(platform: String, uid: ID): OwnerInfo
-  ownerInfoByName(platform: String, name: String): OwnerInfo
 }
 
 input SaveWebHookSettingsInput {
@@ -1199,6 +1193,11 @@ type User implements UserBasicInfo {
     fetching only the last certain number of nodes
     """
     last: Int
+
+    """
+    fetching only builds with the specified statuses
+    """
+    statuses: [BuildStatus]
   ): UserBuildsConnection
   topActiveRepositories: [Repository]
   balanceInCredits: String!

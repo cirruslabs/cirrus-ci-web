@@ -209,7 +209,10 @@ function BuildDetails(props: Props) {
   );
 
   const canBeReTriggered =
-    (build.status === 'FAILED' || build.status === 'ERRORED' || build.status === 'COMPLETED') &&
+    (build.status === 'FAILED' ||
+      build.status === 'ERRORED' ||
+      build.status === 'COMPLETED' ||
+      build.status === 'ABORTED') &&
     hasWritePermissions(build.repository.viewerPermission) &&
     build.latestGroupTasks &&
     build.latestGroupTasks.length === 0;

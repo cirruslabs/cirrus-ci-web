@@ -10,6 +10,7 @@ import { WithStyles } from '@mui/styles';
 import withStyles from '@mui/styles/withStyles';
 import { RepositorySettingsPage_repository } from './__generated__/RepositorySettingsPage_repository.graphql';
 import RepositoryCronSettings from './RepositoryCronSettings';
+import { Link } from '@mui/material';
 
 const styles = {
   settingGap: {
@@ -24,11 +25,18 @@ interface Props extends WithStyles<typeof styles> {
 let RepositorySettingsPage = (props: Props) => {
   let { classes, repository } = props;
 
+  let link = (
+    <Link color="inherit" href={`/${repository.platform}/${repository.owner}/${repository.name}`}>
+      {repository.owner + '/' + repository.name}
+    </Link>
+  );
   return (
     <div>
       <Paper elevation={16}>
         <Toolbar>
-          <Typography variant="h6">{'Settings for ' + repository.owner + '/' + repository.name}</Typography>
+          <Typography variant="h6">
+            {'Settings for '} {link}
+          </Typography>
         </Toolbar>
       </Paper>
       <div className={classes.settingGap} />
@@ -50,6 +58,7 @@ let RepositorySettingsPage = (props: Props) => {
 export default createFragmentContainer(withStyles(styles)(RepositorySettingsPage), {
   repository: graphql`
     fragment RepositorySettingsPage_repository on Repository {
+      platform
       owner
       name
       ...RepositorySettings_repository

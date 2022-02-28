@@ -759,6 +759,7 @@ type Query {
 
 type Repository {
   id: ID!
+  platform: String!
   owner: String!
   name: String!
   cloneUrl: String!

@@ -142,8 +142,9 @@ function RepositorySettings(props: Props) {
             onChange={changeField('decryptEnvironmentVariables')}
             style={{ width: '100%' }}
           >
-            <MenuItem value={'EVERYONE'}>Everyone</MenuItem>
             <MenuItem value={'USERS_WITH_WRITE_PERMISSIONS'}>Only users with write permissions</MenuItem>
+            <MenuItem value={'COLLABORATORS'}>Collaborators, bots and users with write permissions</MenuItem>
+            <MenuItem value={'EVERYONE'}>Everyone</MenuItem>
           </Select>
         </FormControl>
         <FormControl style={{ width: '100%' }}>

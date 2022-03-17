@@ -186,6 +186,7 @@ Repository Setting to choose how to decrypt variables.
 enum DecryptEnvironmentVariablesFor {
   USERS_WITH_WRITE_PERMISSIONS
   EVERYONE
+  COLLABORATORS
 }
 
 input DeletePersistentWorkerInput {

@@ -31,7 +31,7 @@ const MarkdownTypographyLine = (props: MarkdownTypographyProps) => {
             // when <> with any :: inside treated as a link
             return <>{'<' + props.children[0] + '>'}</>;
           }
-          return <Link {...props} />;
+          return <Link {...props} color="inherit" />;
         },
         p: el => <Typography {...otherProps} children={el.children} />,
       }}

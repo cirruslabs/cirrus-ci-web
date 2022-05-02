@@ -5,7 +5,6 @@ import DialogContent from '@mui/material/DialogContent';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Input from '@mui/material/Input';
-import Typography from '@mui/material/Typography';
 import { commitMutation } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
@@ -18,6 +17,7 @@ import { CardElement, Elements, useElements, useStripe } from '@stripe/react-str
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
 import { StripeCardElementOptions, Token } from '@stripe/stripe-js';
+import { FormHelperText } from '@mui/material';
 
 const computeCreditsBuyMutation = graphql`
   mutation ComputeCreditsStripeDialogMutation($input: BuyComputeCreditsInput!) {
@@ -137,26 +137,14 @@ function ComputeCreditsStripeDialog(props: Props) {
           <InputLabel htmlFor="credits-amount">Amount of Credits to Buy</InputLabel>
           <Input
             id="credits-amount"
+            error={credits < 20}
             value={credits.toLocaleString('en-US', { useGrouping: true })}
             inputMode="decimal"
             onChange={handleAmountChange}
           />
-          <Typography variant="subtitle1">
-            <p></p>
-            <p>This amount of compute credits is equal to one of the following:</p>
-            <ul>
-              <li>
-                {(200 * credits).toLocaleString('en-US', { useGrouping: true })} minutes of 1 virtual CPU for Linux
-              </li>
-              <li>
-                {(100 * credits).toLocaleString('en-US', { useGrouping: true })} minutes of 1 virtual CPU for Windows
-              </li>
-              <li>
-                {Math.ceil((100 * credits) / 3).toLocaleString('en-US', { useGrouping: true })} minutes of 1 real CPU
-                with hyper-threading enabled for macOS.
-              </li>
-            </ul>
-          </Typography>
+          <FormHelperText id="credits-amount-helper-text" hidden={credits >= 20}>
+            The minimum amount of credits you can buy is 20.
+          </FormHelperText>
         </FormControl>
         <FormControl fullWidth>
           <CardElement

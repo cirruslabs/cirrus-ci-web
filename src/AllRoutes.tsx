@@ -267,7 +267,7 @@ function AllRoutes(props: WithStyles<typeof styles>) {
                 <Route path=":platform/:owner" element={<AsyncOwner />} />
                 <Route path="repository/:repositoryId/*" element={<AsyncRepository />} />
                 <Route path="repository/:repositoryId" element={<AsyncRepository />} />
-                <Route path="metrics/repository/:owner/:name" element={<AsyncRepositoryMetrics />} />
+                <Route path="metrics/repository/:platform/:owner/:name" element={<AsyncRepositoryMetrics />} />
                 <Route path="task/:taskId" element={<AsyncTask />} />
                 <Route path="task/:taskId/hooks" element={<AsyncTask />} />
                 <Route path="pool/:poolId" element={<AsyncPoolById />} />

@@ -115,7 +115,7 @@ function RepositoryBuildList(props: Props) {
   }
 
   let repositoryMetrics = (
-    <Link href={'/metrics/repository/' + repository.owner + '/' + repository.name}>
+    <Link href={'/metrics/repository/' + repository.platform + '/' + repository.owner + '/' + repository.name}>
       <Tooltip title="Repository Metrics">
         <IconButton size="large">
           <Timeline />
@@ -223,6 +223,7 @@ export default createFragmentContainer(withStyles(styles)(RepositoryBuildList), 
   repository: graphql`
     fragment RepositoryBuildList_repository on Repository @argumentDefinitions(branch: { type: "String" }) {
       id
+      platform
       owner
       name
       viewerPermission

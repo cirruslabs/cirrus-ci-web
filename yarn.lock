@@ -5565,7 +5565,7 @@ __metadata:
     sjcl: ^1.0.8
     ts-protoc-gen: ^0.15.0
     typescript: ^4.5.2
-    xterm: ^4.12.0
+    xterm: ^4.18.0
     xterm-addon-fit: ^0.5.0
   languageName: unknown
   linkType: soft
@@ -18836,10 +18836,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"xterm@npm:^4.12.0":
-  version: 4.15.0
-  resolution: "xterm@npm:4.15.0"
-  checksum: dae5fd8c7ea5ae8797d6810cb493d45957a30b46c17b6e8f93506ab5f83d09c877e152e2fc0bec6a3c39ff27902bf8f9b8f2966a042e5484d6166f3123fc1dfc
+"xterm@npm:^4.18.0":
+  version: 4.18.0
+  resolution: "xterm@npm:4.18.0"
+  checksum: c1f391b0894928e048f8b6334943470b9e8fe91987222716a6c82840757475b87196383f6ce872250fe3dff3d984f45411fdf3841436c22d9301e50bf6043d2e
   languageName: node
   linkType: hard
 

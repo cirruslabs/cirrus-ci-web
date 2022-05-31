@@ -82,8 +82,8 @@ function ComputeCreditsBase(props: Props) {
         <div className={classes.gap} />
         <Typography variant="subtitle1">
           <p>
-            Compute credits are used for buying <b>priority</b> CPU time on Community Clusters for your private or
-            public projects. It allows not to bother about configuring{' '}
+            Compute credits are used for buying <b>priority</b> CPU time on Community Clusters for your projects. It
+            allows not to bother about configuring{' '}
             <Link color="inherit" href="https://cirrus-ci.org/guide/supported-computing-services/">
               Compute Services
             </Link>{' '}

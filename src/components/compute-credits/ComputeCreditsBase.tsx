@@ -96,20 +96,6 @@ function ComputeCreditsBase(props: Props) {
             </Link>
             .
           </p>
-          <p>
-            <b>TLDR:</b> 1 compute credit can be bought for 1 US dollar. Here is how much 1000 minutes will cost for
-            different platforms:
-          </p>
-          <ul>
-            <li>1000 minutes of 1 virtual CPU for Linux for 5 compute credits</li>
-            <li>1000 minutes of 1 virtual CPU for Windows for 10 compute credits</li>
-            <li>
-              1000 minutes of 1 CPU with hyper-threading enabled (comparable to 2 vCPUs) for macOS for 30 compute
-              credits
-            </li>
-          </ul>
-          <b>All tasks using compute credits are charged on per-second basis.</b> 2 CPU Linux task takes 30 seconds? Pay{' '}
-          <b>0.5</b> cents.
         </Typography>
       </CardContent>
       <CardActions disableSpacing>

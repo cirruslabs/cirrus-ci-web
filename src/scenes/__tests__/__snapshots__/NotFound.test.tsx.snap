@@ -24,7 +24,7 @@ exports[`renders correctly 1`] = `
       Page not found! 
     </h2>
     <a
-      className="MuiTypography-root MuiTypography-h3 MuiLink-root MuiLink-underlineAlways css-77jlxd-MuiTypography-root-MuiLink-root"
+      className="MuiTypography-root MuiTypography-h3 MuiLink-root MuiLink-underlineAlways css-1mgvoth-MuiTypography-root-MuiLink-root"
       href="https://cirrus-ci.com"
       onBlur={[Function]}
       onFocus={[Function]}

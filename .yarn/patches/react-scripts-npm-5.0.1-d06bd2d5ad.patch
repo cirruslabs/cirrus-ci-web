@@ -1,0 +1,17 @@
+diff --git a/config/webpack.config.js b/config/webpack.config.js
+index e465d8e7a00ec889e9c4c29ba7812019f8319a41..24faad3f65c1cf117b749a292493332cc0b68a48 100644
+--- a/config/webpack.config.js
++++ b/config/webpack.config.js
+@@ -345,6 +345,12 @@ module.exports = function (webpackEnv) {
+           babelRuntimeRegenerator,
+         ]),
+       ],
++      fallback: {
++        assert: require.resolve("assert-browserify"),
++        buffer: require.resolve("buffer-browserify"),
++        crypto: require.resolve("crypto-browserify"),
++        stream: require.resolve("stream-browserify"),
++      },
+     },
+     module: {
+       strictExportPresence: true,

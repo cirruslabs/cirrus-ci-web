@@ -12,6 +12,9 @@ task:
   bootstrap_script: yarn bootstrap
   matrix:
     - name: Build
+      compile_cache:
+        # webpack's cache, speeds up rebuilds (the process of Babel transforming JS is incredibly slow)
+        folder: node_modules/.cache
       build_script: yarn build
       container:
         memory: 8G

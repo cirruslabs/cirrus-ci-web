@@ -61,7 +61,7 @@ function OwnerApiSettings(props: Props) {
     });
   }
 
-  if (props.info.apiToken.maskedToken) {
+  if (props.info.apiToken && props.info.apiToken.maskedToken) {
     existingTokenComponent = (
       <Typography variant="subtitle1">Currently active token: {props.info.apiToken.maskedToken}</Typography>
     );

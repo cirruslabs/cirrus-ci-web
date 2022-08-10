@@ -73,6 +73,7 @@ type Build {
   viewerPermission: PermissionType!
   source: String
   hooks: [Hook]
+  initializer: UserBasicInfo
 }
 
 input BuildApproveInput {
@@ -723,6 +724,7 @@ type PersistentWorkerAssignedTasksConnection {
 type PersistentWorkerInfo {
   heartbeatTimestamp: Int!
   runningTasks: [Task]
+  resourcesTotal: [PersistentWorkerResource]
 }
 
 type PersistentWorkerPool {
@@ -731,6 +733,11 @@ type PersistentWorkerPool {
   enabledForPublic: Boolean!
   workers: [PersistentWorker]
   viewerPermission: PermissionType
+}
+
+type PersistentWorkerResource {
+  key: String!
+  value: Float!
 }
 
 """
@@ -1173,7 +1180,7 @@ type UpdatePersistentWorkerPoolPayload {
 
 type User implements UserBasicInfo {
   id: ID!
-  category: UserCategoryType!
+  category: User!
   avatarURL: String
   builds(
     """
@@ -1232,6 +1239,7 @@ type User implements UserBasicInfo {
 
 interface UserBasicInfo {
   id: ID!
+  category: User!
   avatarURL: String
 }
 
@@ -1263,16 +1271,6 @@ type UserBuildsConnection {
   details about this specific page
   """
   pageInfo: PageInfo!
-}
-
-"""
-User type.
-"""
-enum UserCategoryType {
-  DEFAULT
-  BLOCKED
-  TRUSTED
-  ADMIN
 }
 
 """

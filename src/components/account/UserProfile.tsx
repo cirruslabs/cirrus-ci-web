@@ -39,14 +39,16 @@ function UserProfile(props: Props) {
 
   let { user, classes } = props;
 
+  let relatedOwners = user.relatedOwners || [];
+
   useEffect(() => {
     // in case of only one owner (like only the user with no organizations)
     // navigate to the owner's settings immediatly
-    if (user.relatedOwners.length === 1) {
-      let uniqueOwner = user.relatedOwners[0];
+    if (relatedOwners.length === 1) {
+      let uniqueOwner = relatedOwners[0];
       navigate(`/settings/${uniqueOwner.platform}/${uniqueOwner.name}`, { replace: true });
     }
-  }, [navigate, user.relatedOwners]);
+  }, [navigate, relatedOwners]);
 
   return (
     <div>
@@ -57,7 +59,7 @@ function UserProfile(props: Props) {
       <Card elevation={24}>
         <CardHeader title="All Settings" />
         <List>
-          {user.relatedOwners.map(owner => (
+          {relatedOwners.map(owner => (
             <ListItem
               key={owner.platform + owner.uid}
               onClick={e => navigateHelper(navigate, e, '/github/' + owner.name)}

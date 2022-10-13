@@ -39,16 +39,14 @@ function UserProfile(props: Props) {
 
   let { user, classes } = props;
 
-  let relatedOwners = user.relatedOwners || [];
-
   useEffect(() => {
     // in case of only one owner (like only the user with no organizations)
     // navigate to the owner's settings immediatly
-    if (relatedOwners.length === 1) {
-      let uniqueOwner = relatedOwners[0];
+    if (user.relatedOwners && user.relatedOwners.length === 1) {
+      let uniqueOwner = user.relatedOwners[0];
       navigate(`/settings/${uniqueOwner.platform}/${uniqueOwner.name}`, { replace: true });
     }
-  }, [navigate, relatedOwners]);
+  }, [navigate, user.relatedOwners]);
 
   return (
     <div>
@@ -59,27 +57,28 @@ function UserProfile(props: Props) {
       <Card elevation={24}>
         <CardHeader title="All Settings" />
         <List>
-          {relatedOwners.map(owner => (
-            <ListItem
-              key={owner.platform + owner.uid}
-              onClick={e => navigateHelper(navigate, e, '/github/' + owner.name)}
-              secondaryAction={
-                <Tooltip title="Owner settings">
-                  <IconButton
-                    onClick={e => navigateHelper(navigate, e, `/settings/${owner.platform}/${owner.name}`)}
-                    size="large"
-                  >
-                    <Settings />
-                  </IconButton>
-                </Tooltip>
-              }
-            >
-              <ListItemAvatar>
-                <OwnerPlatformIcon platform={owner.platform} />
-              </ListItemAvatar>
-              <ListItemText>{owner.name}</ListItemText>
-            </ListItem>
-          ))}
+          {user.relatedOwners &&
+            user.relatedOwners.map(owner => (
+              <ListItem
+                key={owner.platform + owner.uid}
+                onClick={e => navigateHelper(navigate, e, '/github/' + owner.name)}
+                secondaryAction={
+                  <Tooltip title="Owner settings">
+                    <IconButton
+                      onClick={e => navigateHelper(navigate, e, `/settings/${owner.platform}/${owner.name}`)}
+                      size="large"
+                    >
+                      <Settings />
+                    </IconButton>
+                  </Tooltip>
+                }
+              >
+                <ListItemAvatar>
+                  <OwnerPlatformIcon platform={owner.platform} />
+                </ListItemAvatar>
+                <ListItemText>{owner.name}</ListItemText>
+              </ListItem>
+            ))}
         </List>
       </Card>
     </div>

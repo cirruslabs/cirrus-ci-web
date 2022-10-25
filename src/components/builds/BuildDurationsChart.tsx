@@ -50,7 +50,7 @@ function BuildDurationsChart(props: Props) {
           y={y - sign * 2}
           height={height + sign * 2}
           fill={statusColorMapping[props.status]}
-          classbaName="recharts-bar-rectangle"
+          className="recharts-bar-rectangle"
         />
       );
     }

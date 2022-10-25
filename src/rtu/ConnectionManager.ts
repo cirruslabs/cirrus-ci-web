@@ -17,7 +17,7 @@ ws.onopen = () => {
   if (process.env.NODE_ENV === 'development') {
     console.log('Subscribing to ' + allTopicSubscribeRequests.length + ' topics!');
   }
-  // send reconnent events so handlers can refresh
+  // send reconnect events so handlers can refresh
   handlersManager.allTopics().forEach(topic => handlersManager.handleNewUpdate(topic, { type: 'reconnect' }));
 };
 

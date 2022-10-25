@@ -2,7 +2,7 @@
 
 First, install [librsvg](https://en.wikipedia.org/wiki/Librsvg) (e.g. `brew install librsvg` on macOS with Brew).
 
-Then, open the `logo.svg` in the text editor, change the `stroke="#FAFAFA"` paramter to the color desired and generate a new logo:
+Then, open the `logo.svg` in the text editor, change the `stroke="#FAFAFA"` parameter to the color desired and generate a new logo:
 
 ```
 rsvg-convert logo.svg -o logo-something-new.png

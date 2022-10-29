@@ -73,6 +73,7 @@ type Build {
   viewerPermission: PermissionType!
   source: String
   hooks: [Hook]
+  initializer: UserBasicInfo
 }
 
 input BuildApproveInput {
@@ -254,6 +255,20 @@ type GenerateNewOwnerAccessTokenPayload {
   clientMutationId: String
 }
 
+input GenerateNewScopedAccessTokenInput {
+  platform: ID
+  ownerUid: ID
+  durationSeconds: Int
+  permission: PermissionType
+  repositoryNames: [String]
+  clientMutationId: String
+}
+
+type GenerateNewScopedAccessTokenPayload {
+  token: String!
+  clientMutationId: String
+}
+
 input GetPersistentWorkerPoolRegistrationTokenInput {
   poolId: ID
   clientMutationId: String
@@ -312,7 +327,7 @@ type InvalidateCacheEntriesPayload {
 }
 
 """
-Int type
+A 64-bit signed integer
 """
 scalar Int
 
@@ -354,6 +369,7 @@ type Mutation {
   trigger(input: TaskTriggerInput!): TaskTriggerPayload
   saveWebHookSettings(input: SaveWebHookSettingsInput!): SaveWebHookSettingsPayload
   generateNewOwnerAccessToken(input: GenerateNewOwnerAccessTokenInput!): GenerateNewOwnerAccessTokenPayload
+  generateNewScopedAccessToken(input: GenerateNewScopedAccessTokenInput!): GenerateNewScopedAccessTokenPayload
   deletePersistentWorker(input: DeletePersistentWorkerInput!): DeletePersistentWorkerPayload
   updatePersistentWorker(input: UpdatePersistentWorkerInput!): UpdatePersistentWorkerPayload
   persistentWorkerPoolRegistrationToken(
@@ -723,6 +739,7 @@ type PersistentWorkerAssignedTasksConnection {
 type PersistentWorkerInfo {
   heartbeatTimestamp: Int!
   runningTasks: [Task]
+  resourcesTotal: [PersistentWorkerResource]
 }
 
 type PersistentWorkerPool {
@@ -731,6 +748,11 @@ type PersistentWorkerPool {
   enabledForPublic: Boolean!
   workers: [PersistentWorker]
   viewerPermission: PermissionType
+}
+
+type PersistentWorkerResource {
+  key: String!
+  value: Float!
 }
 
 """
@@ -1173,7 +1195,7 @@ type UpdatePersistentWorkerPoolPayload {
 
 type User implements UserBasicInfo {
   id: ID!
-  category: UserCategoryType!
+  category: User!
   avatarURL: String
   builds(
     """
@@ -1232,6 +1254,7 @@ type User implements UserBasicInfo {
 
 interface UserBasicInfo {
   id: ID!
+  category: User!
   avatarURL: String
 }
 
@@ -1263,16 +1286,6 @@ type UserBuildsConnection {
   details about this specific page
   """
   pageInfo: PageInfo!
-}
-
-"""
-User type.
-"""
-enum UserCategoryType {
-  DEFAULT
-  BLOCKED
-  TRUSTED
-  ADMIN
 }
 
 """

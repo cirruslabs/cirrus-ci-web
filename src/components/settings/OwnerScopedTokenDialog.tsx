@@ -21,6 +21,7 @@ import {
   OwnerScopedTokenDialogMutationVariables,
 } from './__generated__/OwnerScopedTokenDialogMutation.graphql';
 import TextField from '@mui/material/TextField';
+import { Slider } from '@mui/material';
 
 const styles = theme =>
   createStyles({
@@ -50,6 +51,7 @@ interface Props extends WithStyles<typeof styles> {
 function OwnerScopedTokenDialog(props: Props) {
   const { classes, ...other } = props;
   let [readOnly, setReadOnly] = useState(true);
+  let [expirationDays, setExpirationDays] = useState(null);
   let [repositoryNames, setRepositoryNames] = useState('');
   let [newToken, setNewToken] = useState(null);
 
@@ -61,7 +63,7 @@ function OwnerScopedTokenDialog(props: Props) {
         ownerUid: props.ownerInfo.uid,
         repositoryNames: repositoryNames.split(','),
         permission: readOnly ? 'READ' : 'WRITE',
-        durationSeconds: 0, // no limit
+        durationSeconds: 24 * 60 * 60 * (expirationDays || 0),
       },
     };
     commitMutation(environment, {
@@ -109,6 +111,14 @@ function OwnerScopedTokenDialog(props: Props) {
             value={repositoryNames}
             error={repositoryNames === ''}
             onChange={event => setRepositoryNames(event.target.value)}
+          />
+        </FormControl>
+        <FormControl fullWidth>
+          <InputLabel htmlFor="invoiceTemplate">Expiration in days (Optional)</InputLabel>
+          <Input
+            id="expiration"
+            value={expirationDays}
+            onChange={event => setExpirationDays(parseInt(event.target.value, 10) || null)}
           />
         </FormControl>
         {newTokenComponent}

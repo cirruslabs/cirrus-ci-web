@@ -17,6 +17,8 @@ import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import { Link } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
+import BillingSettingsDialog from '../compute-credits/BillingSettingsDialog';
+import OwnerScopedTokenDialog from './OwnerScopedTokenDialog';
 
 const generateNewTokenMutation = graphql`
   mutation OwnerApiSettingsMutation($input: GenerateNewOwnerAccessTokenInput!) {
@@ -43,6 +45,7 @@ function OwnerApiSettings(props: Props) {
   let { classes } = props;
   let existingTokenComponent = null;
   let [newToken, setNewToken] = useState(null);
+  let [openDialog, setOpenDialog] = useState(false);
 
   function generateNewAccessToken() {
     let input: GenerateNewOwnerAccessTokenInput = {
@@ -80,14 +83,6 @@ function OwnerApiSettings(props: Props) {
     );
   }
 
-  let cardActions = (
-    <CardActions>
-      <Button variant="contained" onClick={() => generateNewAccessToken()}>
-        Generate New Token
-      </Button>
-    </CardActions>
-  );
-
   return (
     <div>
       <Card elevation={24}>
@@ -100,11 +95,19 @@ function OwnerApiSettings(props: Props) {
             </Link>{' '}
             for more details.
           </Typography>
-          {existingTokenComponent}
+          {newToken ? null : existingTokenComponent}
           {newTokenComponent}
         </CardContent>
-        {cardActions}
+        <CardActions>
+          <Button variant="contained" onClick={() => generateNewAccessToken()}>
+            {props.info.apiToken ? 'Invalidate All Tokens' : 'Generate New Token'}
+          </Button>
+          <Button variant="contained" onClick={() => setOpenDialog(true)}>
+            Generate a scoped repository Token
+          </Button>
+        </CardActions>
       </Card>
+      <OwnerScopedTokenDialog ownerInfo={props.info} open={openDialog} onClose={() => setOpenDialog(!openDialog)} />
     </div>
   );
 }
@@ -117,6 +120,7 @@ export default createFragmentContainer(withStyles(styles)(OwnerApiSettings), {
       apiToken {
         maskedToken
       }
+      ...OwnerScopedTokenDialog_ownerInfo
     }
   `,
 });

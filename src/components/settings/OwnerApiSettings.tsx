@@ -17,7 +17,6 @@ import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import { Link } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
-import BillingSettingsDialog from '../compute-credits/BillingSettingsDialog';
 import OwnerScopedTokenDialog from './OwnerScopedTokenDialog';
 
 const generateNewTokenMutation = graphql`

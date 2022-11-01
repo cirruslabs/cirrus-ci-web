@@ -21,7 +21,6 @@ import {
   OwnerScopedTokenDialogMutationVariables,
 } from './__generated__/OwnerScopedTokenDialogMutation.graphql';
 import TextField from '@mui/material/TextField';
-import { Slider } from '@mui/material';
 
 const styles = theme =>
   createStyles({

@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import environment from '../../createRelayEnvironment';
 import { commitMutation, createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
-import FormControl from '@mui/material/FormControl';
 import { RepositoryDangerSettings_repository } from './__generated__/RepositoryDangerSettings_repository.graphql';
 import { navigateHelper } from '../../utils/navigateHelper';
 import { useNavigate } from 'react-router-dom';
@@ -13,11 +12,8 @@ import {
   RepositoryDangerSettingsDeleteMutationResponse,
   RepositoryDangerSettingsDeleteMutationVariables,
 } from './__generated__/RepositoryDangerSettingsDeleteMutation.graphql';
-import InputLabel from '@mui/material/InputLabel';
-import Input from '@mui/material/Input';
-import { FormHelperText, ListItem, ListItemText } from '@mui/material';
+import { ListItem, ListItemText } from '@mui/material';
 import Button from '@mui/material/Button';
-import Check from '@mui/icons-material/Check';
 import List from '@mui/material/List';
 
 const deleteMutation = graphql`
@@ -34,14 +30,11 @@ interface Props {
 
 function RepositoryDangerSettings(props: Props) {
   let navigate = useNavigate();
-  let [inputValue, setInputValue] = useState('');
-  let [securedVariableName, setSecuredVariableName] = useState(undefined);
 
   function deleteCurrentRepository() {
-    let valueToSecure = inputValue;
     const variables: RepositoryDangerSettingsDeleteMutationVariables = {
       input: {
-        clientMutationId: props.repository.name, // todo: replace with a hash of valueToSecure
+        clientMutationId: props.repository.name,
         repositoryId: props.repository.id,
       },
     };

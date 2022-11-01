@@ -11,6 +11,7 @@ import withStyles from '@mui/styles/withStyles';
 import { RepositorySettingsPage_repository } from './__generated__/RepositorySettingsPage_repository.graphql';
 import RepositoryCronSettings from './RepositoryCronSettings';
 import { Link } from '@mui/material';
+import RepositoryDangerSettings from './RepositoryDangerSettings';
 
 const styles = {
   settingGap: {
@@ -51,6 +52,10 @@ let RepositorySettingsPage = (props: Props) => {
       <Paper elevation={16}>
         <RepositoryCronSettings repository={repository} />
       </Paper>
+      <div className={classes.settingGap} />
+      <Paper elevation={16}>
+        <RepositoryDangerSettings repository={repository} />
+      </Paper>
     </div>
   );
 };
@@ -64,6 +69,7 @@ export default createFragmentContainer(withStyles(styles)(RepositorySettingsPage
       ...RepositorySettings_repository
       ...RepositorySecuredVariables_repository
       ...RepositoryCronSettings_repository
+      ...RepositoryDangerSettings_repository
     }
   `,
 });

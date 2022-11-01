@@ -108,7 +108,7 @@ function OwnerScopedTokenDialog(props: Props) {
             label="Read-only access"
           />
         </FormControl>
-        <FormControl fullWidth>
+        <FormControl fullWidth margin="normal">
           <InputLabel htmlFor="repositoryNames">Comma separated list of repository names</InputLabel>
           <Input
             id="repositoryNames"
@@ -117,7 +117,7 @@ function OwnerScopedTokenDialog(props: Props) {
             onChange={event => setRepositoryNames(event.target.value)}
           />
         </FormControl>
-        <FormControl fullWidth>
+        <FormControl fullWidth margin="normal">
           <InputLabel htmlFor="invoiceTemplate">Expiration in days (Optional)</InputLabel>
           <Input
             id="expiration"

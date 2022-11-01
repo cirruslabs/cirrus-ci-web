@@ -80,7 +80,11 @@ function BillingSettingsDialog(props: Props) {
     commitMutation(environment, {
       mutation: saveBillingSettingsMutation,
       variables: variables,
-      onCompleted: (response: BillingSettingsDialogMutationResponse) => {
+      onCompleted: (response: BillingSettingsDialogMutationResponse, errors) => {
+        if (errors) {
+          console.log(errors);
+          return;
+        }
         setEnabled(response.saveBillingSettings.settings.enabled);
         setBillingEmailAddress(response.saveBillingSettings.settings.billingEmailAddress);
         setInvoiceTemplate(response.saveBillingSettings.settings.invoiceTemplate);

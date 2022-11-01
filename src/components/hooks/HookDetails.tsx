@@ -132,7 +132,11 @@ function HookDetails(props: Props) {
     commitMutation(environment, {
       mutation: hooksRerunMutation,
       variables: variables,
-      onCompleted: (response: HookDetailsRerunMutationResponse) => {
+      onCompleted: (response: HookDetailsRerunMutationResponse, errors) => {
+        if (errors) {
+          console.log(errors);
+          return;
+        }
         navigateHookHelper(navigate, null, response.rerunHooks.newHooks[0].id);
       },
       onError: err => console.error(err),

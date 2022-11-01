@@ -113,7 +113,11 @@ function ComputeCreditsStripeDialog(props: Props) {
     commitMutation(environment, {
       mutation: computeCreditsBuyMutation,
       variables: variables,
-      onCompleted: (response: ComputeCreditsStripeDialogMutationResponse) => {
+      onCompleted: (response: ComputeCreditsStripeDialogMutationResponse, errors) => {
+        if (errors) {
+          setError(errors);
+          return;
+        }
         setPaymentInProgress(false);
         if (response.buyComputeCredits.error && response.buyComputeCredits.error !== '') {
           setError(response.buyComputeCredits.error);

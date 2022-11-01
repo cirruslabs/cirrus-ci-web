@@ -295,7 +295,11 @@ function TaskDetails(props: Props) {
     commitMutation(environment, {
       mutation: taskReRunMutation,
       variables: variables,
-      onCompleted: (response: TaskDetailsReRunMutationResponse) => {
+      onCompleted: (response: TaskDetailsReRunMutationResponse, errors) => {
+        if (errors) {
+          console.error(errors);
+          return;
+        }
         navigateTaskHelper(navigate, null, response.rerun.newTask.id);
       },
       onError: err => console.error(err),
@@ -393,7 +397,11 @@ function TaskDetails(props: Props) {
     commitMutation(environment, {
       mutation: invalidateCachesMutation,
       variables: variables,
-      onCompleted: (response: TaskDetailsInvalidateCachesMutationResponse) => {
+      onCompleted: (response: TaskDetailsInvalidateCachesMutationResponse, errors) => {
+        if (errors) {
+          console.log(errors);
+          return;
+        }
         setDisableInvalidateCachesButton(true);
       },
       onError: err => console.error(err),

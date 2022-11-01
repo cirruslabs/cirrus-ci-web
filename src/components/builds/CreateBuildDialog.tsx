@@ -64,8 +64,11 @@ function CreateBuildDialog(props: Props) {
     commitMutation(environment, {
       mutation: createBuildMutation,
       variables: variables,
-      onCompleted: (response: CreateBuildDialogMutationResponse) => {
-        console.log(response);
+      onCompleted: (response: CreateBuildDialogMutationResponse, errors) => {
+        if (errors) {
+          console.log(errors);
+          return;
+        }
         navigateBuildHelper(navigate, null, response.createBuild.build.id);
       },
       onError: err => console.error(err),

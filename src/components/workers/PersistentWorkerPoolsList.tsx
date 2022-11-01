@@ -148,7 +148,11 @@ function CreateNewPersistentWorkerPoolDialog(props: DialogProps) {
     commitMutation(environment, {
       mutation: createPoolMutation,
       variables: { input: input },
-      onCompleted: (response: PersistentWorkerPoolsListCreateMutationResponse) => {
+      onCompleted: (response: PersistentWorkerPoolsListCreateMutationResponse, errors) => {
+        if (errors) {
+          console.log(errors);
+          return;
+        }
         navigateHelper(navigate, '', '/pool/' + response.createPersistentWorkerPool.pool.id);
         props.onClose();
       },

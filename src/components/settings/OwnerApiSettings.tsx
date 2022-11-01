@@ -56,7 +56,11 @@ function OwnerApiSettings(props: Props) {
     commitMutation(environment, {
       mutation: generateNewTokenMutation,
       variables: { input },
-      onCompleted: (response: OwnerApiSettingsMutationResponse) => {
+      onCompleted: (response: OwnerApiSettingsMutationResponse, errors) => {
+        if (errors) {
+          console.log(errors);
+          return;
+        }
         setNewToken(response.generateNewOwnerAccessToken.token);
       },
       onError: err => console.error(err),

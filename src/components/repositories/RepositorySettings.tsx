@@ -113,7 +113,11 @@ function RepositorySettings(props: Props) {
     commitMutation(environment, {
       mutation: saveSettingsMutation,
       variables: variables,
-      onCompleted: (response: RepositorySettingsMutationResponse) => {
+      onCompleted: (response: RepositorySettingsMutationResponse, errors) => {
+        if (errors) {
+          console.log(errors);
+          return;
+        }
         setInitialSettings(response.saveSettings.settings);
       },
       onError: err => console.error(err),

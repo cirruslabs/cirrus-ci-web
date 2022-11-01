@@ -128,7 +128,11 @@ function PoolDetails(props: PoolDetailsProps) {
     commitMutation(environment, {
       mutation: getRegistrationTokenMutation,
       variables: { input: input },
-      onCompleted: (response: PoolDetailsGetRegistrationTokenMutationResponse) => {
+      onCompleted: (response: PoolDetailsGetRegistrationTokenMutationResponse, errors) => {
+        if (errors) {
+          console.log(errors);
+          return;
+        }
         setRegistrationToken(response.persistentWorkerPoolRegistrationToken.token);
       },
       onError: err => console.log(err),

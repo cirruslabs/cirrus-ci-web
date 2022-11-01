@@ -69,10 +69,14 @@ function OwnerScopedTokenDialog(props: Props) {
     commitMutation(environment, {
       mutation: generateNewScopedAccessTokenMutation,
       variables: variables,
-      onCompleted: (response: OwnerScopedTokenDialogMutationResponse) => {
-        setNewToken(
-          `Make sure to copy your new access token now. You won't be able to see it again!\n\n${response.generateNewScopedAccessToken.token}`,
-        );
+      onCompleted: (response: OwnerScopedTokenDialogMutationResponse, errors) => {
+        if (errors) {
+          setNewToken(`Failed to generate token!\n\n${errors.map(e => e.message).join('\n')}`);
+        } else {
+          setNewToken(
+            `Make sure to copy your new access token now. You won't be able to see it again!\n\n${response.generateNewScopedAccessToken.token}`,
+          );
+        }
       },
       onError: err => setNewToken(`Failed to generate token!\n\n${err}`), // just show the error instead of token
     });

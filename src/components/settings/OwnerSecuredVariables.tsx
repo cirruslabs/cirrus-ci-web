@@ -52,7 +52,11 @@ function OwnerSecuredVariables(props: Props) {
     commitMutation(environment, {
       mutation: securedVariableMutation,
       variables: variables,
-      onCompleted: (response: OwnerSecuredVariablesMutationResponse) => {
+      onCompleted: (response: OwnerSecuredVariablesMutationResponse, errors) => {
+        if (errors) {
+          console.log(errors);
+          return;
+        }
         setSecuredVariableName(response.securedOwnerVariable.variableName);
       },
       onError: err => console.error(err),

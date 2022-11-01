@@ -53,7 +53,11 @@ function RepositorySecuredVariables(props: Props) {
     commitMutation(environment, {
       mutation: securedVariableMutation,
       variables: variables,
-      onCompleted: (response: RepositorySecuredVariablesMutationResponse) => {
+      onCompleted: (response: RepositorySecuredVariablesMutationResponse, errors) => {
+        if (errors) {
+          console.log(errors);
+          return;
+        }
         setInputValue(valueToSecure);
         setSecuredVariableName(response.securedVariable.variableName);
       },

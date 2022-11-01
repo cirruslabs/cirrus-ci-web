@@ -130,7 +130,11 @@ function RepositoryCronSettings(props: Props) {
     commitMutation(environment, {
       mutation: saveCronSettingsMutation,
       variables: variables,
-      onCompleted: (response: RepositoryCronSettingsSaveMutationResponse) => {
+      onCompleted: (response: RepositoryCronSettingsSaveMutationResponse, errors) => {
+        if (errors) {
+          console.log(errors);
+          return;
+        }
         setCronSettingsList(response.saveCronSettings.settings);
       },
       onError: err => console.error(err),
@@ -149,7 +153,11 @@ function RepositoryCronSettings(props: Props) {
     commitMutation(environment, {
       mutation: removeCronSettingsMutation,
       variables: variables,
-      onCompleted: (response: RepositoryCronSettingsRemoveMutationResponse) => {
+      onCompleted: (response: RepositoryCronSettingsRemoveMutationResponse, errors) => {
+        if (errors) {
+          console.log(errors);
+          return;
+        }
         setCronSettingsList(response.removeCronSettings.settings);
       },
       onError: err => console.error(err),

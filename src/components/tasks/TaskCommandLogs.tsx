@@ -23,8 +23,8 @@ function logURL(taskId: string, command) {
   return 'https://api.cirrus-ci.com/v1/task/' + taskId + '/logs/' + command.name + '.log';
 }
 
-function cacheURL(taskId: string, executionInfo) {
-  let cacheKey = executionInfo.cacheRetrievalAttempts.hits[0].key;
+function cacheURL(taskId: string, command, executionInfo) {
+  let cacheKey = executionInfo.cacheRetrievalAttempts.hits.find(hit => hit.key.startsWith(`${command.name}-`)).key;
   return 'https://api.cirrus-ci.com/v1/task/' + taskId + '/caches/' + cacheKey + '.tar.gz';
 }
 
@@ -73,11 +73,11 @@ function TaskCommandRealTimeLogs(props: RealTimeLogsProps) {
       <Fab
         variant="circular"
         className={classes.downloadButton}
-        href={command.type === 'UPLOAD_CACHE' ? cacheURL(taskId, executionInfo) : logURL(taskId, command)}
+        href={command.type === 'CACHE' ? cacheURL(taskId, command, executionInfo) : logURL(taskId, command)}
         target="_blank"
         rel="noopener noreferrer"
       >
-        <Tooltip title={command.type === 'UPLOAD_CACHE' ? 'Download Cache' : 'Download Full Logs'}>
+        <Tooltip title={command.type === 'CACHE' ? 'Download Cache' : 'Download Full Logs'}>
           <GetApp />
         </Tooltip>
       </Fab>
@@ -114,7 +114,6 @@ function TaskCommandLogs(props: TaskCommandLogsProps) {
               cacheRetrievalAttempts {
                 hits {
                   key
-                  valid
                 }
               }
             }

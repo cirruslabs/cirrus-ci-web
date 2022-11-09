@@ -77,7 +77,7 @@ function TaskCommandRealTimeLogs(props: RealTimeLogsProps) {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <Tooltip title="Download Full Logs">
+        <Tooltip title={command.type === 'UPLOAD_CACHE' ? 'Download Cache' : 'Download Full Logs'}>
           <GetApp />
         </Tooltip>
       </Fab>

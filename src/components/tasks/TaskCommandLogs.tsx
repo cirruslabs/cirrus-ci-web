@@ -13,11 +13,19 @@ import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
 import GetApp from '@mui/icons-material/GetApp';
 import Fab from '@mui/material/Fab';
-import { TaskCommandLogsTailQuery } from './__generated__/TaskCommandLogsTailQuery.graphql';
-import { TaskCommandStatus } from './__generated__/TaskCommandList_task.graphql';
+import {
+  TaskCommandLogsTailQuery,
+  TaskCommandLogsTailQueryResponse,
+} from './__generated__/TaskCommandLogsTailQuery.graphql';
+import { TaskCommandStatus, TaskCommandType } from './__generated__/TaskCommandList_task.graphql';
 
 function logURL(taskId: string, command) {
   return 'https://api.cirrus-ci.com/v1/task/' + taskId + '/logs/' + command.name + '.log';
+}
+
+function cacheURL(taskId: string, executionInfo) {
+  let cacheKey = executionInfo.cacheRetrievalAttempts.hits[0].key;
+  return 'https://api.cirrus-ci.com/v1/task/' + taskId + '/caches/' + cacheKey + '.tar.gz';
 }
 
 let styles = theme =>
@@ -36,8 +44,10 @@ interface RealTimeLogsProps extends WithStyles<typeof styles> {
   command: {
     name: string;
     status: TaskCommandStatus;
+    type: TaskCommandType;
   };
   initialLogLines: ReadonlyArray<string>;
+  executionInfo: TaskCommandLogsTailQueryResponse['task']['executionInfo'];
 }
 
 function TaskCommandRealTimeLogs(props: RealTimeLogsProps) {
@@ -55,14 +65,15 @@ function TaskCommandRealTimeLogs(props: RealTimeLogsProps) {
     return () => closable();
   }, [realTimeLogs, props.taskId, props.command.name, additionalLogs]);
 
-  let { classes, taskId, command, initialLogLines } = props;
+  let { classes, taskId, command, initialLogLines, executionInfo } = props;
+
   let inProgress = !isTaskCommandFinalStatus(command.status);
   let downloadButton = (
     <div className={classes.actionButtons}>
       <Fab
         variant="circular"
         className={classes.downloadButton}
-        href={logURL(taskId, command)}
+        href={command.type === 'UPLOAD_CACHE' ? cacheURL(taskId, executionInfo) : logURL(taskId, command)}
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -86,6 +97,7 @@ interface TaskCommandLogsProps extends WithStyles<typeof styles> {
   command: {
     name: string;
     status: TaskCommandStatus;
+    type: TaskCommandType;
   };
 }
 
@@ -98,6 +110,14 @@ function TaskCommandLogs(props: TaskCommandLogsProps) {
         query TaskCommandLogsTailQuery($taskId: ID!, $commandName: String!) {
           task(id: $taskId) {
             commandLogsTail(name: $commandName)
+            executionInfo {
+              cacheRetrievalAttempts {
+                hits {
+                  key
+                  valid
+                }
+              }
+            }
           }
         }
       `}
@@ -109,7 +129,13 @@ function TaskCommandLogs(props: TaskCommandLogsProps) {
             </div>
           );
         }
-        return <TaskCommandRealTimeLogs initialLogLines={response.props.task.commandLogsTail || []} {...props} />;
+        return (
+          <TaskCommandRealTimeLogs
+            initialLogLines={response.props.task.commandLogsTail || []}
+            executionInfo={response.props.task.executionInfo}
+            {...props}
+          />
+        );
       }}
     />
   );

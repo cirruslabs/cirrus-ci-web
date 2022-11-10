@@ -11,7 +11,8 @@ import Tooltip from '@mui/material/Tooltip';
 import { WithStyles } from '@mui/styles';
 import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
-import GetApp from '@mui/icons-material/GetApp';
+import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
+import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
 import Fab from '@mui/material/Fab';
 import {
   TaskCommandLogsTailQuery,
@@ -33,9 +34,14 @@ let styles = theme =>
     actionButtons: {
       position: 'absolute',
       right: 0,
+      paddingTop: theme.spacing(1.5),
+      paddingRight: theme.spacing(1.5),
     },
     downloadButton: {
-      margin: theme.spacing(1.0),
+      marginRight: theme.spacing(1.5),
+    },
+    openButton: {
+      fontSize: 20,
     },
   });
 
@@ -70,17 +76,31 @@ function TaskCommandRealTimeLogs(props: RealTimeLogsProps) {
   let inProgress = !isTaskCommandFinalStatus(command.status);
   let downloadButton = (
     <div className={classes.actionButtons}>
-      <Fab
-        variant="circular"
-        className={classes.downloadButton}
-        href={command.type === 'CACHE' ? cacheURL(taskId, command, executionInfo) : logURL(taskId, command)}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Tooltip title={command.type === 'CACHE' ? 'Download Cache' : 'Download Full Logs'}>
-          <GetApp />
+      {command.type === 'CACHE' && (
+        <Tooltip title="Download Cache" disableInteractive>
+          <Fab
+            variant="circular"
+            className={classes.downloadButton}
+            href={cacheURL(taskId, command, executionInfo)}
+            rel="noopener noreferrer"
+            size="small"
+          >
+            <ArchiveOutlinedIcon />
+          </Fab>
         </Tooltip>
-      </Fab>
+      )}
+      <Tooltip title="Open Full Logs" disableInteractive>
+        <Fab
+          variant="circular"
+          className={classes.openButton}
+          href={logURL(taskId, command)}
+          target="_blank"
+          rel="noopener noreferrer"
+          size="small"
+        >
+          <OpenInNewOutlinedIcon fontSize="inherit" />
+        </Fab>
+      </Tooltip>
     </div>
   );
   return (

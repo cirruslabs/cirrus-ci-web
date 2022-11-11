@@ -24,9 +24,8 @@ function logURL(taskId: string, command) {
   return 'https://api.cirrus-ci.com/v1/task/' + taskId + '/logs/' + command.name + '.log';
 }
 
-function cacheURL(taskId: string, command, executionInfo) {
-  let cacheKey = executionInfo.cacheRetrievalAttempts.hits.find(hit => hit.key.startsWith(`${command.name}-`)).key;
-  return 'https://api.cirrus-ci.com/v1/task/' + taskId + '/caches/' + cacheKey + '.tar.gz';
+function cacheURL(taskId: string, cacheHit) {
+  return 'https://api.cirrus-ci.com/v1/task/' + taskId + '/caches/' + cacheHit.key + '.tar.gz';
 }
 
 let styles = theme =>
@@ -74,14 +73,20 @@ function TaskCommandRealTimeLogs(props: RealTimeLogsProps) {
   let { classes, taskId, command, initialLogLines, executionInfo } = props;
 
   let inProgress = !isTaskCommandFinalStatus(command.status);
+
+  let cacheHit;
+  if (command.type === 'CACHE') {
+    cacheHit = executionInfo.cacheRetrievalAttempts.hits.find(hit => hit.key.startsWith(`${command.name}-`));
+  }
+
   let downloadButton = (
     <div className={classes.actionButtons}>
-      {command.type === 'CACHE' && (
+      {cacheHit && (
         <Tooltip title="Download Cache" disableInteractive>
           <Fab
             variant="circular"
             className={classes.downloadButton}
-            href={cacheURL(taskId, command, executionInfo)}
+            href={cacheURL(taskId, cacheHit)}
             rel="noopener noreferrer"
             size="small"
           >

@@ -11,13 +11,21 @@ import Tooltip from '@mui/material/Tooltip';
 import { WithStyles } from '@mui/styles';
 import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
-import GetApp from '@mui/icons-material/GetApp';
+import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
+import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
 import Fab from '@mui/material/Fab';
-import { TaskCommandLogsTailQuery } from './__generated__/TaskCommandLogsTailQuery.graphql';
-import { TaskCommandStatus } from './__generated__/TaskCommandList_task.graphql';
+import {
+  TaskCommandLogsTailQuery,
+  TaskCommandLogsTailQueryResponse,
+} from './__generated__/TaskCommandLogsTailQuery.graphql';
+import { TaskCommandStatus, TaskCommandType } from './__generated__/TaskCommandList_task.graphql';
 
 function logURL(taskId: string, command) {
   return 'https://api.cirrus-ci.com/v1/task/' + taskId + '/logs/' + command.name + '.log';
+}
+
+function cacheURL(taskId: string, cacheHit) {
+  return 'https://api.cirrus-ci.com/v1/task/' + taskId + '/caches/' + cacheHit.key + '.tar.gz';
 }
 
 let styles = theme =>
@@ -25,9 +33,14 @@ let styles = theme =>
     actionButtons: {
       position: 'absolute',
       right: 0,
+      paddingTop: theme.spacing(1.5),
+      paddingRight: theme.spacing(1.5),
     },
     downloadButton: {
-      margin: theme.spacing(1.0),
+      marginRight: theme.spacing(1.5),
+    },
+    openButton: {
+      fontSize: 20,
     },
   });
 
@@ -36,8 +49,10 @@ interface RealTimeLogsProps extends WithStyles<typeof styles> {
   command: {
     name: string;
     status: TaskCommandStatus;
+    type: TaskCommandType;
   };
   initialLogLines: ReadonlyArray<string>;
+  executionInfo: TaskCommandLogsTailQueryResponse['task']['executionInfo'];
 }
 
 function TaskCommandRealTimeLogs(props: RealTimeLogsProps) {
@@ -55,21 +70,42 @@ function TaskCommandRealTimeLogs(props: RealTimeLogsProps) {
     return () => closable();
   }, [realTimeLogs, props.taskId, props.command.name, additionalLogs]);
 
-  let { classes, taskId, command, initialLogLines } = props;
+  let { classes, taskId, command, initialLogLines, executionInfo } = props;
+
   let inProgress = !isTaskCommandFinalStatus(command.status);
+
+  let cacheHit;
+  if (command.type === 'CACHE') {
+    cacheHit = executionInfo.cacheRetrievalAttempts.hits.find(hit => hit.key.startsWith(`${command.name}-`));
+  }
+
   let downloadButton = (
     <div className={classes.actionButtons}>
-      <Fab
-        variant="circular"
-        className={classes.downloadButton}
-        href={logURL(taskId, command)}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Tooltip title="Download Full Logs">
-          <GetApp />
+      {cacheHit && (
+        <Tooltip title="Download Cache" disableInteractive>
+          <Fab
+            variant="circular"
+            className={classes.downloadButton}
+            href={cacheURL(taskId, cacheHit)}
+            rel="noopener noreferrer"
+            size="small"
+          >
+            <ArchiveOutlinedIcon />
+          </Fab>
         </Tooltip>
-      </Fab>
+      )}
+      <Tooltip title="Open Full Logs" disableInteractive>
+        <Fab
+          variant="circular"
+          className={classes.openButton}
+          href={logURL(taskId, command)}
+          target="_blank"
+          rel="noopener noreferrer"
+          size="small"
+        >
+          <OpenInNewOutlinedIcon fontSize="inherit" />
+        </Fab>
+      </Tooltip>
     </div>
   );
   return (
@@ -86,6 +122,7 @@ interface TaskCommandLogsProps extends WithStyles<typeof styles> {
   command: {
     name: string;
     status: TaskCommandStatus;
+    type: TaskCommandType;
   };
 }
 
@@ -98,6 +135,13 @@ function TaskCommandLogs(props: TaskCommandLogsProps) {
         query TaskCommandLogsTailQuery($taskId: ID!, $commandName: String!) {
           task(id: $taskId) {
             commandLogsTail(name: $commandName)
+            executionInfo {
+              cacheRetrievalAttempts {
+                hits {
+                  key
+                }
+              }
+            }
           }
         }
       `}
@@ -109,7 +153,13 @@ function TaskCommandLogs(props: TaskCommandLogsProps) {
             </div>
           );
         }
-        return <TaskCommandRealTimeLogs initialLogLines={response.props.task.commandLogsTail || []} {...props} />;
+        return (
+          <TaskCommandRealTimeLogs
+            initialLogLines={response.props.task.commandLogsTail || []}
+            executionInfo={response.props.task.executionInfo}
+            {...props}
+          />
+        );
       }}
     />
   );

@@ -10,7 +10,6 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 import BuildDurationsChart from '../builds/BuildDurationsChart';
 import BuildBranchNameChip from '../chips/BuildBranchNameChip';
@@ -24,6 +23,7 @@ import CreateBuildDialog from '../builds/CreateBuildDialog';
 import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildList_repository.graphql';
 import { NodeOfConnection } from '../../utils/utility-types';
 import { createLinkToRepository } from '../../utils/github';
+import { absoluteLink } from '../../utils/link';
 import { Helmet as Head } from 'react-helmet';
 import Settings from '@mui/icons-material/Settings';
 import AddCircle from '@mui/icons-material/AddCircle';
@@ -115,7 +115,7 @@ function RepositoryBuildList(props: Props) {
   }
 
   let repositoryMetrics = (
-    <Link href={'/metrics/repository/' + repository.platform + '/' + repository.owner + '/' + repository.name}>
+    <Link href={absoluteLink('metrics', 'repository', repository.platform, repository.owner, repository.name)}>
       <Tooltip title="Repository Metrics">
         <IconButton size="large">
           <Timeline />
@@ -196,9 +196,14 @@ function RepositoryBuildList(props: Props) {
       <Paper elevation={16}>
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <div className={classes.wrapper}>
-            <Typography variant="h6" color="inherit">
+            <Link
+              href={absoluteLink(repository.platform, repository.owner, repository.name)}
+              rel="noopener noreferrer"
+              color="inherit"
+              variant="h6"
+            >
               {repository.owner + '/' + repository.name}
-            </Typography>
+            </Link>
             {repositoryAction}
           </div>
           <div>

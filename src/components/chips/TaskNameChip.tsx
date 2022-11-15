@@ -41,6 +41,7 @@ let TaskNameChip = (props: Props) => {
       className={className}
       label={task.name}
       onClick={onClickFunc}
+      onAuxClick={onClickFunc}
       avatar={
         <Avatar className={classes.avatar}>
           <Bookmark className={classes.avatarIcon} />

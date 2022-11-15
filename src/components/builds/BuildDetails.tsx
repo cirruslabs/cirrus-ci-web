@@ -223,6 +223,7 @@ function BuildDetails(props: Props) {
   );
 
   const hasWritePermission = hasWritePermissions(build.repository.viewerPermission);
+  const allTaskIds = build.latestGroupTasks.map(task => task.id);
   const failedTaskIds = build.latestGroupTasks
     .filter(task => task.status === 'FAILED' || (task.status === 'ABORTED' && task.requiredGroups.length === 0))
     .map(task => task.id);
@@ -230,6 +231,12 @@ function BuildDetails(props: Props) {
     .filter(task => ['SCHEDULED', 'CREATED', 'EXECUTING', 'TRIGGERED'].includes(task.status))
     .map(task => task.id);
   const reRunAllTasksButton =
+    allTaskIds.length === runningTaskIds.length || !hasWritePermission ? null : (
+      <Button variant="contained" onClick={() => batchReRun(allTaskIds)} startIcon={<Refresh />}>
+        Re-Run All Tasks
+      </Button>
+    );
+  const reRunFailedTasksButton =
     failedTaskIds.length === 0 || !hasWritePermission ? null : (
       <Button variant="contained" onClick={() => batchReRun(failedTaskIds)} startIcon={<Refresh />}>
         Re-Run Failed Tasks
@@ -313,6 +320,7 @@ function BuildDetails(props: Props) {
           {reTriggerButton}
           {approveButton}
           {reRunAllTasksButton}
+          {reRunFailedTasksButton}
           {cancelAllTasksButton}
         </CardActions>
       </Card>

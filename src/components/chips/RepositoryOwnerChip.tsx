@@ -44,6 +44,7 @@ function RepositoryOwnerChip(props: Props) {
         </Avatar>
       }
       onClick={e => handleRepositoryClick(e, repository)}
+      onAuxClick={e => handleRepositoryClick(e, repository)}
       className={props.className}
     />
   );

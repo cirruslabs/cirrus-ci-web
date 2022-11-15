@@ -109,7 +109,7 @@ function TaskListRow(props: Props) {
       <TableCell className={classes.padding}>
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <TaskDurationChip task={task} className={classNames(classes.chip, classes.lastChip)} />
-          <TaskNameChip task={task} className={classes.chip} />
+          <TaskNameChip task={task} className={classes.chip} withNavigation />
           {props.showCreation ? <TaskCreatedChip task={task} className={classes.chip} /> : null}
         </div>
       </TableCell>

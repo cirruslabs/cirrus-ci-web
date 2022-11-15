@@ -38,6 +38,7 @@ function BuildChangeChip(props: Props) {
         </Avatar>
       }
       onClick={e => navigateBuildHelper(navigate, e, build.id)}
+      onAuxClick={e => navigateBuildHelper(navigate, e, build.id)}
       className={className}
     />
   );

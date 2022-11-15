@@ -36,6 +36,7 @@ let HookNameChip = (props: Props) => {
       className={className}
       label={hook.name}
       onClick={e => navigateHookHelper(navigate, e, hook.id)}
+      onAuxClick={e => navigateHookHelper(navigate, e, hook.id)}
       avatar={
         <Avatar className={classes.avatar}>
           <Functions className={classes.avatarIcon} />

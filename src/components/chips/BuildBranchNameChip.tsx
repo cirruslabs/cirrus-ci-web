@@ -57,7 +57,8 @@ function BuildBranchNameChip(props: Props) {
               <Commit className={props.classes.avatarIcon} />
             </Avatar>
           }
-          onClick={e => handleBranchClick(e)}
+          onClick={handleBranchClick}
+          onAuxClick={handleBranchClick}
         />
       </Tooltip>
     );
@@ -72,7 +73,8 @@ function BuildBranchNameChip(props: Props) {
           <CallSplit className={props.classes.avatarIcon} />
         </Avatar>
       }
-      onClick={e => handleBranchClick(e)}
+      onClick={handleBranchClick}
+      onAuxClick={handleBranchClick}
     />
   );
 }

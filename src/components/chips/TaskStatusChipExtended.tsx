@@ -27,6 +27,7 @@ function TaskStatusChipExtended(props: Props) {
       className={className}
       label={`${task.repository.owner}/${task.repository.name} "${task.name}"`}
       onClick={e => navigateTaskHelper(navigate, e, task.id)}
+      onAuxClick={e => navigateTaskHelper(navigate, e, task.id)}
       avatar={
         <Avatar style={{ backgroundColor: useTaskStatusColor(task.status) }}>
           <Icon style={{ color: theme.palette.primary.contrastText }}>{taskStatusIconName(task.status)}</Icon>

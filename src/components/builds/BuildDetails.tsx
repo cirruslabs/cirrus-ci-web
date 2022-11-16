@@ -231,11 +231,11 @@ function BuildDetails(props: Props) {
     .filter(task => ['SCHEDULED', 'CREATED', 'EXECUTING', 'TRIGGERED'].includes(task.status))
     .map(task => task.id);
   const reRunAllTasksButton =
-    allTaskIds.length === runningTaskIds.length || !hasWritePermission ? null : (
+    runningTaskIds.length === 0 && hasWritePermission ? (
       <Button variant="contained" onClick={() => batchReRun(allTaskIds)} startIcon={<Refresh />}>
         Re-Run All Tasks
       </Button>
-    );
+    ) : null;
   const reRunFailedTasksButton =
     failedTaskIds.length === 0 || !hasWritePermission ? null : (
       <Button variant="contained" onClick={() => batchReRun(failedTaskIds)} startIcon={<Refresh />}>

@@ -6,11 +6,11 @@ exports[`renders correctly 1`] = `
   role="progressbar"
 >
   <span
-    className="MuiLinearProgress-bar CirrusLinearProgress-progress-1 MuiLinearProgress-barColorPrimary MuiLinearProgress-bar1Indeterminate css-5ir5xx-MuiLinearProgress-bar1"
+    className="MuiLinearProgress-bar MuiLinearProgress-barColorPrimary CirrusLinearProgress-progress-1 MuiLinearProgress-bar1Indeterminate css-5ir5xx-MuiLinearProgress-bar1"
     style={Object {}}
   />
   <span
-    className="MuiLinearProgress-bar CirrusLinearProgress-progress-1 MuiLinearProgress-barColorPrimary MuiLinearProgress-bar2Indeterminate css-1r8wrcl-MuiLinearProgress-bar2"
+    className="MuiLinearProgress-bar MuiLinearProgress-barColorPrimary CirrusLinearProgress-progress-1 MuiLinearProgress-bar2Indeterminate css-1r8wrcl-MuiLinearProgress-bar2"
     style={Object {}}
   />
 </span>

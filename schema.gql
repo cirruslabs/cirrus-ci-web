@@ -13,6 +13,14 @@ type ApiAccessToken {
   creationTimestamp: Int
 }
 
+"""
+Task architecture.
+"""
+enum ArchitectureType {
+  AMD64
+  ARM64
+}
+
 type ArtifactFileInfo {
   path: String!
   size: Int!
@@ -381,6 +389,7 @@ type Mutation {
   saveWebPushConfiguration(input: SaveWebPushConfigurationInput!): SaveWebPushConfigurationPayload
   deleteWebPushConfiguration(input: DeleteWebPushConfigurationInput!): DeleteWebPushConfigurationPayload
   rerunHooks(input: HooksReRunInput!): HooksReRunPayload
+  repositorySetMetadata(input: RepositorySetMetadataInput!): RepositorySetMetadataPayload
   invalidateCacheEntries(input: InvalidateCacheEntriesInput!): InvalidateCacheEntriesPayload
   saveBillingSettings(input: BillingSettingsInput!): BillingSettingsPayload
   buyComputeCredits(input: BuyComputeCreditsInput!): BuyComputeCreditsPayload
@@ -820,6 +829,8 @@ type Repository {
   viewerPermission: PermissionType
   lastDefaultBranchBuild: Build
   metrics(parameters: MetricsQueryParameters): [MetricsChart]
+  visibleMetadata: [RepositoryMetadata]
+  metadata(key: String): RepositoryMetadata
 }
 
 """
@@ -883,6 +894,13 @@ type RepositoryDeletePayload {
   clientMutationId: String
 }
 
+type RepositoryMetadata {
+  key: String
+  value: String
+  description: String
+  hidden: Boolean
+}
+
 input RepositoryRemoveCronSettingsInput {
   repositoryId: ID!
   name: String!
@@ -915,6 +933,20 @@ input RepositorySecuredVariableInput {
 
 type RepositorySecuredVariablePayload {
   variableName: String!
+  clientMutationId: String
+}
+
+input RepositorySetMetadataInput {
+  repositoryId: ID!
+  key: String
+  value: String
+  description: String
+  hidden: Boolean
+  ttlSeconds: Int
+  clientMutationId: String
+}
+
+type RepositorySetMetadataPayload {
   clientMutationId: String
 }
 
@@ -1009,6 +1041,8 @@ type Task {
   useComputeCredits: Boolean!
   usedComputeCredits: Boolean!
   triggerType: TaskTriggerType!
+  instancePlatform: PlatformType
+  instanceArchitecture: ArchitectureType
   instanceResources: InstanceResources
   executionInfo: ExecutionInfo
   baseEnvironment: [String]

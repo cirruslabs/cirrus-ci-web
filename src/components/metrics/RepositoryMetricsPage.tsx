@@ -17,6 +17,7 @@ import Grid from '@mui/material/Grid';
 import { RepositoryMetricsPage_repository } from './__generated__/RepositoryMetricsPage_repository.graphql';
 import { MetricsQueryParameters } from './__generated__/RepositoryMetricsChartsQuery.graphql';
 import { Helmet as Head } from 'react-helmet';
+import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 
 const styles = theme =>
   createStyles({
@@ -47,6 +48,12 @@ function RepositoryMetricsPage(props: Props) {
 
   return (
     <div>
+      <AppBreadcrumbs
+        page="repositoryMetrics"
+        ownerName={repository.owner}
+        platform={repository.platform}
+        repositoryName={repository.name}
+      />
       <Head>
         <title>
           {repository.owner}/{repository.name}'s Metrics - Cirrus CI
@@ -146,6 +153,7 @@ export default createFragmentContainer(withStyles(styles)(RepositoryMetricsPage)
       id
       owner
       name
+      platform
     }
   `,
 });

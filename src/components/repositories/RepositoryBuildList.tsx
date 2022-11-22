@@ -31,6 +31,7 @@ import Timeline from '@mui/icons-material/Timeline';
 import environment from '../../createRelayEnvironment';
 import { Box, Link } from '@mui/material';
 import MarkdownTypography from '../common/MarkdownTypography';
+import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 
 const styles = theme => ({
   gap: {
@@ -188,6 +189,22 @@ function RepositoryBuildList(props: Props) {
 
   return (
     <div>
+      {props.branch ? (
+        <AppBreadcrumbs
+          page="branch"
+          platform={repository.platform}
+          ownerName={repository.owner}
+          repositoryName={repository.name}
+          branchName={props.branch}
+        />
+      ) : (
+        <AppBreadcrumbs
+          page="repository"
+          platform={repository.platform}
+          ownerName={repository.owner}
+          repositoryName={repository.name}
+        />
+      )}
       <Head>
         <title>
           {repository.owner}/{repository.name} - Cirrus CI

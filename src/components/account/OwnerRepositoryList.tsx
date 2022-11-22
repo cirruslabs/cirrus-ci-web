@@ -15,6 +15,7 @@ import Settings from '@mui/icons-material/Settings';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { OwnerRepositoryList_info } from './__generated__/OwnerRepositoryList_info.graphql';
+import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 
 let styles = {
   gap: {
@@ -33,7 +34,7 @@ let OwnerRepositoryList = (props: Props) => {
 
   if (info && info.viewerPermission === 'ADMIN') {
     organizationSettings = (
-      <Tooltip title="Owner Settings">
+      <Tooltip title="Account Settings">
         <Link to={`/settings/${info.platform}/${info.name}`}>
           <IconButton size="large">
             <Settings />
@@ -45,6 +46,7 @@ let OwnerRepositoryList = (props: Props) => {
 
   return (
     <div>
+      <AppBreadcrumbs page="owner" ownerName={info.name} platform={info.platform} />
       <Paper elevation={16}>
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Typography variant="h6" color="inherit">

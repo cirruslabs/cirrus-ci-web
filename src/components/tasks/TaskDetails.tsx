@@ -19,11 +19,7 @@ import { hasWritePermissions } from '../../utils/permissions';
 import { isTaskFinalStatus } from '../../utils/status';
 import { shorten } from '../../utils/text';
 import TaskArtifacts from '../artifacts/TaskArtifacts';
-import BuildBranchNameChip from '../chips/BuildBranchNameChip';
-import BuildChangeChip from '../chips/BuildChangeChip';
-import RepositoryNameChip from '../chips/RepositoryNameChip';
 import TaskCreatedChip from '../chips/TaskCreatedChip';
-import TaskNameChip from '../chips/TaskNameChip';
 import TaskOptionalChip from '../chips/TaskOptionalChip';
 import TaskScheduledChip from '../chips/TaskScheduledChip';
 import TaskStatusChip from '../chips/TaskStatusChip';
@@ -84,6 +80,7 @@ import { TaskDetailsCancelMutationVariables } from './__generated__/TaskDetailsC
 import TaskDebuggingInformation from './TaskDebuggingInformation';
 import CirrusLinearProgress from '../common/CirrusLinearProgress';
 import CommitMessage from '../common/CommitMessage';
+import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
@@ -522,6 +519,17 @@ function TaskDetails(props: Props) {
 
   return (
     <div>
+      <AppBreadcrumbs
+        page="task"
+        platform={repository.platform}
+        ownerName={repository.owner}
+        repositoryName={repository.name}
+        branchName={build.branch}
+        buildHash={build.changeIdInRepo.substr(0, 7)}
+        buildId={build.id}
+        taskName={task.name}
+        taskId={task.id}
+      />
       <Head>
         <title>{task.name} - Cirrus CI</title>
       </Head>
@@ -530,11 +538,9 @@ function TaskDetails(props: Props) {
         <CardContent>
           <div className={classes.wrapper}>
             <div className={classes.wrapper} style={{ flexGrow: 1 }}>
-              <RepositoryOwnerChip className={classes.chip} repository={repository} />
-              <RepositoryNameChip className={classes.chip} repository={repository} />
-              <BuildBranchNameChip className={classes.chip} build={build} />
-              <BuildChangeChip className={classes.chip} build={build} />
-              <TaskNameChip className={classes.chip} task={task} />
+              <TaskCreatedChip className={classes.chip} task={task} />
+              <TaskScheduledChip className={classes.chip} task={task} />
+              <TaskStatusChip className={classes.chip} task={task} />
             </div>
             <Tooltip title="Debugging View" sx={{ display: isTaskFinalStatus(task.status) ? null : 'none' }}>
               <Badge variant="dot" color="warning" invisible={hasNoAgentNotifications}>
@@ -543,11 +549,6 @@ function TaskDetails(props: Props) {
                 </ToggleButton>
               </Badge>
             </Tooltip>
-          </div>
-          <div className={classes.wrapper}>
-            <TaskCreatedChip className={classes.chip} task={task} />
-            <TaskScheduledChip className={classes.chip} task={task} />
-            <TaskStatusChip className={classes.chip} task={task} />
           </div>
           <div className={classes.wrapper}>
             <TaskRerunnerChip className={classes.chip} task={task} />
@@ -658,6 +659,7 @@ export default createFragmentContainer(withStyles(styles)(TaskDetails), {
         ...Notification_notification
       }
       build {
+        id
         branch
         changeIdInRepo
         changeMessageTitle
@@ -666,6 +668,9 @@ export default createFragmentContainer(withStyles(styles)(TaskDetails), {
         ...BuildChangeChip_build
       }
       repository {
+        owner
+        platform
+        name
         cloneUrl
         ...RepositoryOwnerChip_repository
         ...RepositoryNameChip_repository

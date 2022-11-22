@@ -12,6 +12,7 @@ import { RepositorySettingsPage_repository } from './__generated__/RepositorySet
 import RepositoryCronSettings from './RepositoryCronSettings';
 import { Link } from '@mui/material';
 import RepositoryDangerSettings from './RepositoryDangerSettings';
+import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 
 const styles = {
   settingGap: {
@@ -33,6 +34,13 @@ let RepositorySettingsPage = (props: Props) => {
   );
   return (
     <div>
+      <AppBreadcrumbs
+        page="repositorySettings"
+        ownerName={repository.owner}
+        platform={repository.platform}
+        repositoryName={repository.name}
+        repositoryId={repository.id}
+      />
       <Paper elevation={16}>
         <Toolbar>
           <Typography variant="h6">
@@ -63,6 +71,7 @@ let RepositorySettingsPage = (props: Props) => {
 export default createFragmentContainer(withStyles(styles)(RepositorySettingsPage), {
   repository: graphql`
     fragment RepositorySettingsPage_repository on Repository {
+      id
       platform
       owner
       name

@@ -68,7 +68,6 @@ import {
 } from './__generated__/TaskDetailsInvalidateCachesMutation.graphql';
 import TaskRerunnerChip from '../chips/TaskRerunnerChip';
 import TaskCancellerChip from '../chips/TaskCancellerChip';
-import RepositoryOwnerChip from '../chips/RepositoryOwnerChip';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';

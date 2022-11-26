@@ -11,7 +11,7 @@ import ListItemText from '@mui/material/ListItemText';
 import { navigateHelper } from '../../utils/navigateHelper';
 import { useNavigate } from 'react-router-dom';
 import { AccountInformation_viewer } from './__generated__/AccountInformation_viewer.graphql';
-import Settings from '@mui/icons-material/Settings';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import DirectionsRun from '@mui/icons-material/DirectionsRun';
 import Button from '@mui/material/Button';
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -75,7 +75,7 @@ function AccountInformation(props: Props) {
           }}
         >
           <ListItemIcon>
-            <Settings />
+            <ManageAccountsIcon />
           </ListItemIcon>
           <ListItemText inset primary="Settings" />
         </MenuItem>

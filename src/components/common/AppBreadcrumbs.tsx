@@ -4,22 +4,24 @@ import SvgIcon from '@mui/material/SvgIcon';
 import withStyles from '@mui/styles/withStyles';
 import Typography from '@mui/material/Typography';
 import InputIcon from '@mui/icons-material/Input';
-import Settings from '@mui/icons-material/Settings';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import createStyles from '@mui/styles/createStyles';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import StorageIcon from '@mui/icons-material/Storage';
-import CallSplit from '@mui/icons-material/CallSplit';
 import TimelineIcon from '@mui/icons-material/Timeline';
+import CallSplitIcon from '@mui/icons-material/CallSplit';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 
 import { absoluteLink } from '../../utils/link';
+import RepositoryIcon from './RepositoryIcon';
 
-const styles = () =>
+const styles = theme =>
   createStyles({
     root: {
       padding: 22,
+      color: theme.palette.mode === 'dark' ? '#949599' : '#7a7b83',
     },
     separator: {
       marginLeft: 4,
@@ -30,9 +32,12 @@ const styles = () =>
       alignItems: 'center',
       fontSize: 15,
     },
+    crumbActive: {
+      color: theme.palette.mode === 'dark' ? theme.palette.primary.contrastText : '#000',
+    },
     icon: {
       display: 'flex',
-      fontSize: 17,
+      fontSize: 16,
       marginRight: 8,
     },
   });
@@ -74,7 +79,14 @@ const AppBreadcrumbs = ({
   classes,
 }: Props) => {
   const owner = (active = false) => (
-    <Crumb key="owner" active={active} name={ownerName} href={absoluteLink(platform, ownerName)} Icon={GitHubIcon} />
+    <Crumb
+      key="owner"
+      active={active}
+      name={ownerName}
+      href={absoluteLink(platform, ownerName)}
+      Icon={GitHubIcon}
+      iconStyle={{ fontSize: 17 }}
+    />
   );
 
   const repository = (active = false) => (
@@ -83,7 +95,8 @@ const AppBreadcrumbs = ({
       active={active}
       name={repositoryName}
       href={absoluteLink(platform, ownerName, repositoryName)}
-      Icon={StorageIcon}
+      Icon={RepositoryIcon}
+      iconStyle={{ fontSize: 16 }}
     />
   );
 
@@ -93,7 +106,8 @@ const AppBreadcrumbs = ({
       active={active}
       name={branchName}
       href={absoluteLink(platform, ownerName, repositoryName, branchName)}
-      Icon={CallSplit}
+      Icon={CallSplitIcon}
+      iconStyle={{ fontSize: 17.5 }}
     />
   );
 
@@ -104,11 +118,19 @@ const AppBreadcrumbs = ({
       name={`Build for ${buildHash}`}
       href={absoluteLink('build', buildId)}
       Icon={InputIcon}
+      iconStyle={{ fontSize: 15.5, marginRight: 9 }}
     />
   );
 
   const task = (active = false) => (
-    <Crumb key="task" active={active} name={taskName} href={absoluteLink('task', taskId)} Icon={BookmarkBorderIcon} />
+    <Crumb
+      key="task"
+      active={active}
+      name={taskName}
+      href={absoluteLink('task', taskId)}
+      Icon={BookmarkBorderIcon}
+      iconStyle={{ fontSize: 18, marginLeft: -3, marginRight: 6 }}
+    />
   );
 
   const repositoryMetrics = (active = false) => (
@@ -118,6 +140,7 @@ const AppBreadcrumbs = ({
       name="Metrics"
       href={absoluteLink('metrics', 'repository', platform, ownerName, repositoryName)}
       Icon={TimelineIcon}
+      iconStyle={{ fontSize: 16 }}
     />
   );
 
@@ -127,7 +150,8 @@ const AppBreadcrumbs = ({
       active={active}
       name="Account Settings"
       href={absoluteLink('settings', platform, ownerName)}
-      Icon={Settings}
+      Icon={ManageAccountsIcon}
+      iconStyle={{ fontSize: 18 }}
     />
   );
 
@@ -137,7 +161,8 @@ const AppBreadcrumbs = ({
       active={active}
       name="Repository Settings"
       href={absoluteLink('settings', 'repository', repositoryId)}
-      Icon={Settings}
+      Icon={SettingsOutlinedIcon}
+      iconStyle={{ fontSize: 16 }}
     />
   );
 
@@ -171,13 +196,15 @@ interface CrumbProps extends WithStyles<typeof styles> {
   active: boolean;
   name: string;
   href: string;
-  Icon: typeof SvgIcon;
+  Icon: typeof SvgIcon | React.ElementType;
+  iconStyle: Object;
 }
 
-const Crumb = styled(({ active, name, href, Icon, classes }: CrumbProps) => {
+const Crumb = styled(({ active, name, href, Icon, iconStyle, classes }: CrumbProps) => {
+  const className = `${classes.crumb} ${active ? classes.crumbActive : ''}`;
   const content = (
     <>
-      <div className={classes.icon}>
+      <div className={classes.icon} style={iconStyle}>
         <Icon fontSize="inherit" />
       </div>
       {name}
@@ -185,15 +212,11 @@ const Crumb = styled(({ active, name, href, Icon, classes }: CrumbProps) => {
   );
 
   if (active) {
-    return (
-      <Typography className={classes.crumb} color="text.primary">
-        {content}
-      </Typography>
-    );
+    return <Typography className={className}>{content}</Typography>;
   }
 
   return (
-    <Link className={classes.crumb} color="inherit" underline="hover" href={href}>
+    <Link className={className} color="inherit" underline="hover" href={href}>
       {content}
     </Link>
   );

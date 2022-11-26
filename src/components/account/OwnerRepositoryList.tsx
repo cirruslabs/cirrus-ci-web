@@ -11,7 +11,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
-import Settings from '@mui/icons-material/Settings';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { OwnerRepositoryList_info } from './__generated__/OwnerRepositoryList_info.graphql';
@@ -37,7 +37,7 @@ let OwnerRepositoryList = (props: Props) => {
       <Tooltip title="Account Settings">
         <Link to={`/settings/${info.platform}/${info.name}`}>
           <IconButton size="large">
-            <Settings />
+            <ManageAccountsIcon />
           </IconButton>
         </Link>
       </Tooltip>

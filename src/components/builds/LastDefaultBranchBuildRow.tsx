@@ -32,7 +32,7 @@ const styles = theme => ({
     width: '100%',
   },
   cell: {
-    padding: 0,
+    padding: 4,
   },
 });
 
@@ -67,7 +67,7 @@ function LastDefaultBranchBuildRow(props: Props) {
       style={{ cursor: 'pointer' }}
     >
       <TableCell className={classes.cell}>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start', padding: '4px' }}>
           <RepositoryNameChip repository={repository} className={classes.chip} />
           <BuildChangeChip build={repository.lastDefaultBranchBuild} className={classes.chip} />
         </div>

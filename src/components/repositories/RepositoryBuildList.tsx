@@ -32,6 +32,7 @@ import environment from '../../createRelayEnvironment';
 import { Box, Link } from '@mui/material';
 import MarkdownTypography from '../common/MarkdownTypography';
 import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
+import Typography from '@mui/material/Typography';
 
 const styles = theme => ({
   gap: {
@@ -47,15 +48,13 @@ const styles = theme => ({
   buildsChart: {
     height: 150,
   },
-  horizontalGap: {
-    paddingLeft: 4,
-  },
   wrapper: {
     display: 'flex',
     alignItems: 'center',
   },
-  padding: {
-    margin: theme.spacing(0.5),
+  toolbar: {
+    paddingLeft: 14,
+    background: theme.palette.action.disabledBackground,
   },
 });
 
@@ -105,7 +104,7 @@ function RepositoryBuildList(props: Props) {
     );
     repositoryAction = (
       <>
-        <div key="create-build-gap" className={classes.horizontalGap} />
+        <div key="create-build-gap" />
         <Tooltip title="Create Build">
           <IconButton key="create-build-button" onClick={() => setOpenCreateDialog(true)} size="large">
             <AddCircle />
@@ -160,7 +159,7 @@ function RepositoryBuildList(props: Props) {
         onClick={e => navigateBuildHelper(navigate, e, build.id)}
         style={{ cursor: 'pointer' }}
       >
-        <TableCell className={classes.padding}>
+        <TableCell padding="none">
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
             <BuildBranchNameChip build={build} className={classes.chip} />
             <BuildChangeChip build={build} className={classes.chip} />
@@ -211,16 +210,11 @@ function RepositoryBuildList(props: Props) {
         </title>
       </Head>
       <Paper elevation={16}>
-        <Toolbar sx={{ justifyContent: 'space-between' }}>
+        <Toolbar className={classes.toolbar} sx={{ justifyContent: 'space-between' }} disableGutters>
           <div className={classes.wrapper}>
-            <Link
-              href={absoluteLink(repository.platform, repository.owner, repository.name)}
-              rel="noopener noreferrer"
-              color="inherit"
-              variant="h6"
-            >
-              {repository.owner + '/' + repository.name}
-            </Link>
+            <Typography variant="h5" color="inherit">
+              Builds
+            </Typography>
             {repositoryAction}
           </div>
           <div>

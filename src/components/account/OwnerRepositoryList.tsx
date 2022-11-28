@@ -16,12 +16,15 @@ import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { OwnerRepositoryList_info } from './__generated__/OwnerRepositoryList_info.graphql';
 import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
+import createStyles from '@mui/styles/createStyles';
 
-let styles = {
-  gap: {
-    paddingTop: 16,
-  },
-};
+let styles = theme =>
+  createStyles({
+    toolbar: {
+      paddingLeft: 14,
+      background: theme.palette.action.disabledBackground,
+    },
+  });
 
 interface Props extends WithStyles<typeof styles> {
   info: OwnerRepositoryList_info;
@@ -48,15 +51,12 @@ let OwnerRepositoryList = (props: Props) => {
     <div>
       <AppBreadcrumbs page="owner" ownerName={info.name} platform={info.platform} />
       <Paper elevation={16}>
-        <Toolbar sx={{ justifyContent: 'space-between' }}>
-          <Typography variant="h6" color="inherit">
-            {info.name}'s Repositories
+        <Toolbar className={classes.toolbar} sx={{ justifyContent: 'space-between' }} disableGutters>
+          <Typography variant="h5" color="inherit">
+            Repositories
           </Typography>
           {organizationSettings}
         </Toolbar>
-      </Paper>
-      <div className={classes.gap} />
-      <Paper elevation={16}>
         <Table style={{ tableLayout: 'auto' }}>
           <TableBody>
             {info.repositories.edges.map(edge => (

@@ -62,7 +62,7 @@ function RepositoryMetricsPage(props: Props) {
       <Card elevation={24}>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2" className={classes.title}>
-            {repository.owner}/{repository.name}'s Metrics
+            Metrics for repository: {repository.name}
           </Typography>
           <Grid container direction="row" justifyContent="center">
             <FormControl className={classes.formControl}>

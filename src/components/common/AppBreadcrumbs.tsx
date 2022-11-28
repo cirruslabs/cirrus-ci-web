@@ -23,10 +23,6 @@ const styles = theme =>
       padding: 22,
       color: theme.palette.mode === 'dark' ? '#949599' : '#7a7b83',
     },
-    separator: {
-      marginLeft: 4,
-      marginRight: 4,
-    },
     crumb: {
       display: 'flex',
       alignItems: 'center',
@@ -96,7 +92,7 @@ const AppBreadcrumbs = ({
       name={repositoryName}
       href={absoluteLink(platform, ownerName, repositoryName)}
       Icon={RepositoryIcon}
-      iconStyle={{ fontSize: 16 }}
+      iconStyle={{ fontSize: 15.5 }}
     />
   );
 
@@ -118,7 +114,7 @@ const AppBreadcrumbs = ({
       name={`Build for ${buildHash}`}
       href={absoluteLink('build', buildId)}
       Icon={InputIcon}
-      iconStyle={{ fontSize: 15.5, marginRight: 9 }}
+      iconStyle={{ fontSize: 16, marginRight: 9 }}
     />
   );
 
@@ -182,11 +178,7 @@ const AppBreadcrumbs = ({
   const crumbs = crumbCreators.map((f, i) => f(i === crumbCount - 1));
 
   return (
-    <Breadcrumbs
-      className={classes.root}
-      separator={<NavigateNextIcon className={classes.separator} fontSize="small" />}
-      aria-label="breadcrumb"
-    >
+    <Breadcrumbs className={classes.root} separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
       {crumbs}
     </Breadcrumbs>
   );

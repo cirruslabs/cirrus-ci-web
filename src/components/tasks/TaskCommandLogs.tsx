@@ -75,7 +75,7 @@ function TaskCommandRealTimeLogs(props: RealTimeLogsProps) {
   let inProgress = !isTaskCommandFinalStatus(command.status);
 
   let cacheHit;
-  if (command.type === 'CACHE') {
+  if (command.type === 'CACHE' && executionInfo) {
     cacheHit = executionInfo.cacheRetrievalAttempts.hits.find(hit => hit.key.startsWith(`${command.name}-`));
   }
 

@@ -519,7 +519,6 @@ function TaskDetails(props: Props) {
   return (
     <div>
       <AppBreadcrumbs
-        page="task"
         platform={repository.platform}
         ownerName={repository.owner}
         repositoryName={repository.name}

@@ -7,12 +7,9 @@ import InputIcon from '@mui/icons-material/Input';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import createStyles from '@mui/styles/createStyles';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import TimelineIcon from '@mui/icons-material/Timeline';
 import CallSplitIcon from '@mui/icons-material/CallSplit';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 
 import { absoluteLink } from '../../utils/link';
 import RepositoryIcon from './RepositoryIcon';
@@ -41,15 +38,6 @@ const styles = theme =>
 const styled = withStyles(styles);
 
 interface Props extends WithStyles<typeof styles> {
-  page:
-    | 'owner'
-    | 'repository'
-    | 'branch'
-    | 'build'
-    | 'task'
-    | 'repositoryMetrics'
-    | 'ownerSettings'
-    | 'repositorySettings';
   platform: string;
   ownerName: string;
   repositoryId?: string;
@@ -59,13 +47,17 @@ interface Props extends WithStyles<typeof styles> {
   buildHash?: string;
   taskId?: string;
   taskName?: string;
+  extraCrumbs?: Array<{
+    name: string;
+    href?: string;
+    Icon: typeof SvgIcon | React.ElementType;
+    iconStyle?: Object;
+  }>;
 }
 
 const AppBreadcrumbs = ({
-  page,
   platform,
   ownerName,
-  repositoryId,
   repositoryName,
   branchName,
   buildId,
@@ -73,113 +65,58 @@ const AppBreadcrumbs = ({
   taskId,
   taskName,
   classes,
+  extraCrumbs,
 }: Props) => {
-  const owner = (active = false) => (
-    <Crumb
-      key="owner"
-      active={active}
-      name={ownerName}
-      href={absoluteLink(platform, ownerName)}
-      Icon={GitHubIcon}
-      iconStyle={{ fontSize: 17 }}
-    />
-  );
+  const owner = {
+    name: ownerName,
+    href: absoluteLink(platform, ownerName),
+    Icon: GitHubIcon,
+    iconStyle: { fontSize: 17 },
+  };
 
-  const repository = (active = false) => (
-    <Crumb
-      key="repository"
-      active={active}
-      name={repositoryName}
-      href={absoluteLink(platform, ownerName, repositoryName)}
-      Icon={RepositoryIcon}
-      iconStyle={{ fontSize: 15.5 }}
-    />
-  );
+  const repository = repositoryName && {
+    name: repositoryName,
+    href: absoluteLink(platform, ownerName, repositoryName),
+    Icon: RepositoryIcon,
+    iconStyle: { fontSize: 15.5 },
+  };
 
-  const branch = (active = false) => (
-    <Crumb
-      key="branch"
-      active={active}
-      name={branchName}
-      href={absoluteLink(platform, ownerName, repositoryName, branchName)}
-      Icon={CallSplitIcon}
-      iconStyle={{ fontSize: 17.5 }}
-    />
-  );
+  const branch = branchName && {
+    name: branchName,
+    href: absoluteLink(platform, ownerName, repositoryName, branchName),
+    Icon: CallSplitIcon,
+    iconStyle: { fontSize: 17.5 },
+  };
 
-  const build = (active = false) => (
-    <Crumb
-      key="build"
-      active={active}
-      name={`Build for ${buildHash}`}
-      href={absoluteLink('build', buildId)}
-      Icon={InputIcon}
-      iconStyle={{ fontSize: 16, marginRight: 9 }}
-    />
-  );
+  const hasBuild = !!(buildHash && buildId);
+  const build = hasBuild && {
+    name: `Build for ${buildHash}`,
+    href: absoluteLink('build', buildId),
+    Icon: InputIcon,
+    iconStyle: { fontSize: 16, marginRight: 9 },
+  };
 
-  const task = (active = false) => (
-    <Crumb
-      key="task"
-      active={active}
-      name={taskName}
-      href={absoluteLink('task', taskId)}
-      Icon={BookmarkBorderIcon}
-      iconStyle={{ fontSize: 18, marginLeft: -3, marginRight: 6 }}
-    />
-  );
+  const hasTask = !!(taskName && taskId);
+  const task = hasTask && {
+    name: taskName,
+    href: absoluteLink('task', taskId),
+    Icon: BookmarkBorderIcon,
+    iconStyle: { fontSize: 18, marginLeft: -3, marginRight: 6 },
+  };
 
-  const repositoryMetrics = (active = false) => (
-    <Crumb
-      key="repositoryMetrics"
-      active={active}
-      name="Metrics"
-      href={absoluteLink('metrics', 'repository', platform, ownerName, repositoryName)}
-      Icon={TimelineIcon}
-      iconStyle={{ fontSize: 16 }}
-    />
-  );
-
-  const ownerSettings = (active = false) => (
-    <Crumb
-      key="ownerSettings"
-      active={active}
-      name="Account Settings"
-      href={absoluteLink('settings', platform, ownerName)}
-      Icon={ManageAccountsIcon}
-      iconStyle={{ fontSize: 18 }}
-    />
-  );
-
-  const repositorySettings = (active = false) => (
-    <Crumb
-      key="repositorySettings"
-      active={active}
-      name="Repository Settings"
-      href={absoluteLink('settings', 'repository', repositoryId)}
-      Icon={SettingsOutlinedIcon}
-      iconStyle={{ fontSize: 16 }}
-    />
-  );
-
-  const crumbCreators =
-    {
-      owner: [owner],
-      repository: [owner, repository],
-      branch: [owner, repository, branch],
-      build: [owner, repository, branch, build],
-      task: [owner, repository, branch, build, task],
-      repositoryMetrics: [owner, repository, repositoryMetrics],
-      repositorySettings: [owner, repository, repositorySettings],
-      ownerSettings: [owner, ownerSettings],
-    }[page] || [];
-
-  const crumbCount = crumbCreators.length;
-  const crumbs = crumbCreators.map((f, i) => f(i === crumbCount - 1));
-
+  const crumbs = [owner, repository, branch, build, task, ...(extraCrumbs || [])].filter(Boolean);
   return (
     <Breadcrumbs className={classes.root} separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
-      {crumbs}
+      {crumbs.map((crumb, i) => (
+        <Crumb
+          key={crumb.name}
+          active={crumbs.length - 1 === i}
+          name={crumb.name}
+          href={crumb.href}
+          Icon={crumb.Icon}
+          iconStyle={crumb.iconStyle}
+        />
+      ))}
     </Breadcrumbs>
   );
 };
@@ -187,7 +124,7 @@ const AppBreadcrumbs = ({
 interface CrumbProps extends WithStyles<typeof styles> {
   active: boolean;
   name: string;
-  href: string;
+  href?: string;
   Icon: typeof SvgIcon | React.ElementType;
   iconStyle: Object;
 }

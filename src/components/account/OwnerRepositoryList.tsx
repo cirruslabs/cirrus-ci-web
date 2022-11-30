@@ -49,7 +49,7 @@ let OwnerRepositoryList = (props: Props) => {
 
   return (
     <div>
-      <AppBreadcrumbs page="owner" ownerName={info.name} platform={info.platform} />
+      <AppBreadcrumbs ownerName={info.name} platform={info.platform} />
       <Paper elevation={16}>
         <Toolbar className={classes.toolbar} sx={{ justifyContent: 'space-between' }} disableGutters>
           <Typography variant="h5" color="inherit">

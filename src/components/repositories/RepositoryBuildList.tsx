@@ -188,22 +188,12 @@ function RepositoryBuildList(props: Props) {
 
   return (
     <div>
-      {props.branch ? (
-        <AppBreadcrumbs
-          page="branch"
-          platform={repository.platform}
-          ownerName={repository.owner}
-          repositoryName={repository.name}
-          branchName={props.branch}
-        />
-      ) : (
-        <AppBreadcrumbs
-          page="repository"
-          platform={repository.platform}
-          ownerName={repository.owner}
-          repositoryName={repository.name}
-        />
-      )}
+      <AppBreadcrumbs
+        platform={repository.platform}
+        ownerName={repository.owner}
+        repositoryName={repository.name}
+        branchName={props.branch}
+      />
       <Head>
         <title>
           {repository.owner}/{repository.name} - Cirrus CI

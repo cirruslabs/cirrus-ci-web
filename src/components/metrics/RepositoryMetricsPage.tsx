@@ -18,6 +18,7 @@ import { RepositoryMetricsPage_repository } from './__generated__/RepositoryMetr
 import { MetricsQueryParameters } from './__generated__/RepositoryMetricsChartsQuery.graphql';
 import { Helmet as Head } from 'react-helmet';
 import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
+import TimelineIcon from '@mui/icons-material/Timeline';
 
 const styles = theme =>
   createStyles({
@@ -49,10 +50,16 @@ function RepositoryMetricsPage(props: Props) {
   return (
     <div>
       <AppBreadcrumbs
-        page="repositoryMetrics"
         ownerName={repository.owner}
         platform={repository.platform}
         repositoryName={repository.name}
+        extraCrumbs={[
+          {
+            name: 'Metrics',
+            Icon: TimelineIcon,
+            iconStyle: { fontSize: 16 },
+          },
+        ]}
       />
       <Head>
         <title>

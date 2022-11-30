@@ -281,7 +281,6 @@ function BuildDetails(props: Props) {
   return (
     <div>
       <AppBreadcrumbs
-        page="build"
         platform={build.repository.platform}
         ownerName={build.repository.owner}
         repositoryName={build.repository.name}

@@ -55,7 +55,7 @@ const Content = withStyles(styles)(({ classes }: WithStyles<typeof styles>) => {
   // apply mui theme to graphiql
   useEffect(() => {
     setGraphiqlTheme(muiTheme);
-  }, [muiTheme]);
+  }, [muiTheme, setGraphiqlTheme]);
 
   return (
     <div className={classes.root}>

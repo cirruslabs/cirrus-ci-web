@@ -39,7 +39,6 @@ let RepositorySettingsPage = (props: Props) => {
         ownerName={repository.owner}
         platform={repository.platform}
         repositoryName={repository.name}
-        repositoryId={repository.id}
         extraCrumbs={[
           {
             name: 'Repository Settings',
@@ -78,7 +77,6 @@ let RepositorySettingsPage = (props: Props) => {
 export default createFragmentContainer(withStyles(styles)(RepositorySettingsPage), {
   repository: graphql`
     fragment RepositorySettingsPage_repository on Repository {
-      id
       platform
       owner
       name

@@ -40,7 +40,6 @@ const styled = withStyles(styles);
 interface Props extends WithStyles<typeof styles> {
   platform: string;
   ownerName: string;
-  repositoryId?: string;
   repositoryName?: string;
   branchName?: string;
   buildId?: string;

@@ -18,7 +18,7 @@ const styles = theme =>
   createStyles({
     root: {
       padding: 22,
-      color: theme.palette.mode === 'dark' ? '#949599' : '#7a7b83',
+      color: theme.palette.text.disabled,
     },
     crumb: {
       display: 'flex',
@@ -26,12 +26,12 @@ const styles = theme =>
       fontSize: 15,
     },
     crumbActive: {
-      color: theme.palette.mode === 'dark' ? theme.palette.primary.contrastText : '#000',
+      color: theme.palette.text.primary,
     },
     icon: {
       display: 'flex',
       fontSize: 16,
-      marginRight: 8,
+      marginRight: theme.spacing(1.0),
     },
   });
 

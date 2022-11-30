@@ -18,6 +18,7 @@ const styles = theme =>
   createStyles({
     root: {
       padding: 22,
+      paddingLeft: theme.spacing(2),
       color: theme.palette.text.disabled,
     },
     crumb: {

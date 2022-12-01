@@ -72,7 +72,7 @@ const Metrics = ({ className }) => (
   </svg>
 );
 
-export default {
+const icons = {
   GitHub,
   Repository,
   Branch,
@@ -82,3 +82,5 @@ export default {
   Settings,
   Metrics,
 };
+
+export default icons;

@@ -10,6 +10,7 @@ RUN yarn
 
 ENV NODE_ENV=production
 ENV NODE_OPTIONS=--openssl-legacy-provider
+ENV REACT_APP_SENTRY_DSN="https://6cf37e33c8224cd790e140f6b4a5d595@o4504250314522624.ingest.sentry.io/4504250322845696"
 
 ADD . /tmp/cirrus-ci-web/
 RUN yarn bootstrap && yarn build && rm -rf build/service-worker.js

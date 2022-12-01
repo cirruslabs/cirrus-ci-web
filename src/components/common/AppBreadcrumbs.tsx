@@ -13,7 +13,7 @@ import icons from '../icons';
 const styles = theme =>
   createStyles({
     root: {
-      padding: 22,
+      padding: theme.spacing(2.5),
       paddingLeft: theme.spacing(2),
       color: theme.palette.text.disabled,
     },

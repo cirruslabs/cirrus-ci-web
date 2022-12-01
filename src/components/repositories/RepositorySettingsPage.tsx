@@ -13,7 +13,7 @@ import RepositoryCronSettings from './RepositoryCronSettings';
 import { Link } from '@mui/material';
 import RepositoryDangerSettings from './RepositoryDangerSettings';
 import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import icons from '../icons';
 
 const styles = {
   settingGap: {
@@ -42,8 +42,7 @@ let RepositorySettingsPage = (props: Props) => {
         extraCrumbs={[
           {
             name: 'Repository Settings',
-            Icon: SettingsOutlinedIcon,
-            iconStyle: { fontSize: 16 },
+            Icon: icons.Settings,
           },
         ]}
       />

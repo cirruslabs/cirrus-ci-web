@@ -3,16 +3,12 @@ import Link from '@mui/material/Link';
 import SvgIcon from '@mui/material/SvgIcon';
 import withStyles from '@mui/styles/withStyles';
 import Typography from '@mui/material/Typography';
-import InputIcon from '@mui/icons-material/Input';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import createStyles from '@mui/styles/createStyles';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import CallSplitIcon from '@mui/icons-material/CallSplit';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 
 import { absoluteLink } from '../../utils/link';
-import RepositoryIcon from './RepositoryIcon';
+import icons from '../icons';
 
 const styles = theme =>
   createStyles({
@@ -32,7 +28,7 @@ const styles = theme =>
     icon: {
       display: 'flex',
       fontSize: 16,
-      marginRight: theme.spacing(1.0),
+      marginRight: theme.spacing(1),
     },
   });
 
@@ -51,7 +47,6 @@ interface Props extends WithStyles<typeof styles> {
     name: string;
     href?: string;
     Icon: typeof SvgIcon | React.ElementType;
-    iconStyle?: Object;
   }>;
 }
 
@@ -70,38 +65,33 @@ const AppBreadcrumbs = ({
   const owner = {
     name: ownerName,
     href: absoluteLink(platform, ownerName),
-    Icon: GitHubIcon,
-    iconStyle: { fontSize: 17 },
+    Icon: icons.GitHub,
   };
 
   const repository = repositoryName && {
     name: repositoryName,
     href: absoluteLink(platform, ownerName, repositoryName),
-    Icon: RepositoryIcon,
-    iconStyle: { fontSize: 15.5 },
+    Icon: icons.Repository,
   };
 
   const branch = branchName && {
     name: branchName,
     href: absoluteLink(platform, ownerName, repositoryName, branchName),
-    Icon: CallSplitIcon,
-    iconStyle: { fontSize: 17.5 },
+    Icon: icons.Branch,
   };
 
   const hasBuild = !!(buildHash && buildId);
   const build = hasBuild && {
     name: `Build for ${buildHash}`,
     href: absoluteLink('build', buildId),
-    Icon: InputIcon,
-    iconStyle: { fontSize: 16, marginRight: 9 },
+    Icon: icons.Build,
   };
 
   const hasTask = !!(taskName && taskId);
   const task = hasTask && {
     name: taskName,
     href: absoluteLink('task', taskId),
-    Icon: BookmarkBorderIcon,
-    iconStyle: { fontSize: 18, marginLeft: -3, marginRight: 6 },
+    Icon: icons.Task,
   };
 
   const crumbs = [owner, repository, branch, build, task, ...(extraCrumbs || [])].filter(Boolean);
@@ -114,7 +104,6 @@ const AppBreadcrumbs = ({
           name={crumb.name}
           href={crumb.href}
           Icon={crumb.Icon}
-          iconStyle={crumb.iconStyle}
         />
       ))}
     </Breadcrumbs>
@@ -126,14 +115,13 @@ interface CrumbProps extends WithStyles<typeof styles> {
   name: string;
   href?: string;
   Icon: typeof SvgIcon | React.ElementType;
-  iconStyle: Object;
 }
 
-const Crumb = styled(({ active, name, href, Icon, iconStyle, classes }: CrumbProps) => {
+const Crumb = styled(({ active, name, href, Icon, classes }: CrumbProps) => {
   const className = `${classes.crumb} ${active ? classes.crumbActive : ''}`;
   const content = (
     <>
-      <div className={classes.icon} style={iconStyle}>
+      <div className={classes.icon}>
         <Icon fontSize="inherit" />
       </div>
       {name}

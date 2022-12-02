@@ -18,7 +18,7 @@ import CardHeader from '@mui/material/CardHeader';
 import { Card, CardActions, CardContent } from '@mui/material';
 import Button from '@mui/material/Button';
 import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
-import icons from '../icons';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 
 const styles = theme =>
   createStyles({
@@ -53,7 +53,7 @@ function OwnerSettings(props: Props) {
         extraCrumbs={[
           {
             name: 'Account Settings',
-            Icon: icons.AccountSettings,
+            Icon: ManageAccountsIcon,
           },
         ]}
       />

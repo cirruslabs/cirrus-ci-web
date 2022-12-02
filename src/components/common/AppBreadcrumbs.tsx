@@ -3,12 +3,16 @@ import Link from '@mui/material/Link';
 import SvgIcon from '@mui/material/SvgIcon';
 import withStyles from '@mui/styles/withStyles';
 import Typography from '@mui/material/Typography';
+import InputIcon from '@mui/icons-material/Input';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import CallSplitIcon from '@mui/icons-material/CallSplit';
 import createStyles from '@mui/styles/createStyles';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 
 import { absoluteLink } from '../../utils/link';
-import icons from '../icons';
+import RepositoryIcon from './RepositoryIcon';
 
 const styles = theme =>
   createStyles({
@@ -65,33 +69,33 @@ const AppBreadcrumbs = ({
   const owner = {
     name: ownerName,
     href: absoluteLink(platform, ownerName),
-    Icon: icons.GitHub,
+    Icon: GitHubIcon,
   };
 
   const repository = repositoryName && {
     name: repositoryName,
     href: absoluteLink(platform, ownerName, repositoryName),
-    Icon: icons.Repository,
+    Icon: RepositoryIcon,
   };
 
   const branch = branchName && {
     name: branchName,
     href: absoluteLink(platform, ownerName, repositoryName, branchName),
-    Icon: icons.Branch,
+    Icon: CallSplitIcon,
   };
 
   const hasBuild = !!(buildHash && buildId);
   const build = hasBuild && {
     name: `Build for ${buildHash}`,
     href: absoluteLink('build', buildId),
-    Icon: icons.Build,
+    Icon: InputIcon,
   };
 
   const hasTask = !!(taskName && taskId);
   const task = hasTask && {
     name: taskName,
     href: absoluteLink('task', taskId),
-    Icon: icons.Task,
+    Icon: BookmarkBorderIcon,
   };
 
   const crumbs = [owner, repository, branch, build, task, ...(extraCrumbs || [])].filter(Boolean);

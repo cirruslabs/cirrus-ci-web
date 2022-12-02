@@ -18,7 +18,7 @@ import { RepositoryMetricsPage_repository } from './__generated__/RepositoryMetr
 import { MetricsQueryParameters } from './__generated__/RepositoryMetricsChartsQuery.graphql';
 import { Helmet as Head } from 'react-helmet';
 import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
-import icons from '../icons';
+import TimelineIcon from '@mui/icons-material/Timeline';
 
 const styles = theme =>
   createStyles({
@@ -56,7 +56,7 @@ function RepositoryMetricsPage(props: Props) {
         extraCrumbs={[
           {
             name: 'Metrics',
-            Icon: icons.Metrics,
+            Icon: TimelineIcon,
           },
         ]}
       />

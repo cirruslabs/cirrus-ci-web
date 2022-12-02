@@ -110,9 +110,6 @@ export const styles = theme =>
       position: 'relative',
       width: drawerWidth,
     },
-    routesPadding: {
-      paddingTop: theme.spacing(1.0),
-    },
     topRepositories: {
       width: drawerWidth,
       height: '100%',
@@ -248,11 +245,7 @@ function AllRoutes(props: WithStyles<typeof styles>) {
           })}
         >
           <div className={classNames('invisible', classes.drawerHeader)} />
-          <Container
-            className={openDrawer ? '' : classes.routesPadding}
-            maxWidth={openDrawer ? false : 'lg'}
-            disableGutters={openDrawer}
-          >
+          <Container maxWidth={openDrawer ? false : 'lg'} disableGutters={openDrawer}>
             <Suspense fallback={<CirrusLinearProgress />}>
               <Routes>
                 <Route path="/" element={<AsyncHome />} />

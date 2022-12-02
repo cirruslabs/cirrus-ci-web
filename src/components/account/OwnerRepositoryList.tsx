@@ -11,16 +11,20 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
-import Settings from '@mui/icons-material/Settings';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { OwnerRepositoryList_info } from './__generated__/OwnerRepositoryList_info.graphql';
+import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
+import createStyles from '@mui/styles/createStyles';
 
-let styles = {
-  gap: {
-    paddingTop: 16,
-  },
-};
+let styles = theme =>
+  createStyles({
+    toolbar: {
+      paddingLeft: 14,
+      background: theme.palette.action.disabledBackground,
+    },
+  });
 
 interface Props extends WithStyles<typeof styles> {
   info: OwnerRepositoryList_info;
@@ -33,10 +37,10 @@ let OwnerRepositoryList = (props: Props) => {
 
   if (info && info.viewerPermission === 'ADMIN') {
     organizationSettings = (
-      <Tooltip title="Owner Settings">
+      <Tooltip title="Account Settings">
         <Link to={`/settings/${info.platform}/${info.name}`}>
           <IconButton size="large">
-            <Settings />
+            <ManageAccountsIcon />
           </IconButton>
         </Link>
       </Tooltip>
@@ -45,16 +49,14 @@ let OwnerRepositoryList = (props: Props) => {
 
   return (
     <div>
+      <AppBreadcrumbs ownerName={info.name} platform={info.platform} />
       <Paper elevation={16}>
-        <Toolbar sx={{ justifyContent: 'space-between' }}>
-          <Typography variant="h6" color="inherit">
-            {info.name}'s Repositories
+        <Toolbar className={classes.toolbar} sx={{ justifyContent: 'space-between' }} disableGutters>
+          <Typography variant="h5" color="inherit">
+            Repositories
           </Typography>
           {organizationSettings}
         </Toolbar>
-      </Paper>
-      <div className={classes.gap} />
-      <Paper elevation={16}>
         <Table style={{ tableLayout: 'auto' }}>
           <TableBody>
             {info.repositories.edges.map(edge => (

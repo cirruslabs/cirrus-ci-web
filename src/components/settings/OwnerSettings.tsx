@@ -17,6 +17,8 @@ import MarkdownTypography from '../common/MarkdownTypography';
 import CardHeader from '@mui/material/CardHeader';
 import { Card, CardActions, CardContent } from '@mui/material';
 import Button from '@mui/material/Button';
+import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 
 const styles = theme =>
   createStyles({
@@ -45,6 +47,16 @@ function OwnerSettings(props: Props) {
 
   return (
     <div>
+      <AppBreadcrumbs
+        ownerName={info.name}
+        platform={info.platform}
+        extraCrumbs={[
+          {
+            name: 'Account Settings',
+            Icon: ManageAccountsIcon,
+          },
+        ]}
+      />
       <Paper elevation={16}>
         <Toolbar className={classes.title}>
           <Typography variant="h6" color="inherit">

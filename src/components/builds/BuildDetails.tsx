@@ -13,14 +13,12 @@ import environment from '../../createRelayEnvironment';
 import { hasWritePermissions } from '../../utils/permissions';
 import BuildCreatedChip from '../chips/BuildCreatedChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
-import RepositoryNameChip from '../chips/RepositoryNameChip';
 import CirrusFavicon from '../common/CirrusFavicon';
 import TaskList from '../tasks/TaskList';
 import { BuildDetails_build } from './__generated__/BuildDetails_build.graphql';
 import { Helmet as Head } from 'react-helmet';
 import Refresh from '@mui/icons-material/Refresh';
 import Check from '@mui/icons-material/Check';
-import BuildBranchNameChip from '../chips/BuildBranchNameChip';
 import Notification from '../common/Notification';
 import ConfigurationWithIssues from './ConfigurationWithIssues';
 import HookList from '../hooks/HookList';
@@ -29,13 +27,13 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { BugReport, Cancel, Dehaze, Functions } from '@mui/icons-material';
 import Tooltip from '@mui/material/Tooltip';
 import DebuggingInformation from './BuildDebuggingInformation';
-import RepositoryOwnerChip from '../chips/RepositoryOwnerChip';
 import { HookType } from '../hooks/HookType';
 import { BuildDetailsApproveBuildMutationVariables } from './__generated__/BuildDetailsApproveBuildMutation.graphql';
 import { BuildDetailsReTriggerMutationVariables } from './__generated__/BuildDetailsReTriggerMutation.graphql';
 import { BuildDetailsReRunMutationVariables } from './__generated__/BuildDetailsReRunMutation.graphql';
 import { BuildDetailsCancelMutationVariables } from './__generated__/BuildDetailsCancelMutation.graphql';
 import CommitMessage from '../common/CommitMessage';
+import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 
 const buildApproveMutation = graphql`
   mutation BuildDetailsApproveBuildMutation($input: BuildApproveInput!) {
@@ -282,6 +280,14 @@ function BuildDetails(props: Props) {
 
   return (
     <div>
+      <AppBreadcrumbs
+        platform={build.repository.platform}
+        ownerName={build.repository.owner}
+        repositoryName={build.repository.name}
+        branchName={build.branch}
+        buildHash={build.changeIdInRepo.substr(0, 7)}
+        buildId={build.id}
+      />
       <CirrusFavicon status={build.status} />
       <Head>
         <title>{build.changeMessageTitle} - Cirrus CI</title>
@@ -290,11 +296,6 @@ function BuildDetails(props: Props) {
         <CardContent>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
             <div>
-              <div className={classes.wrapper}>
-                <RepositoryOwnerChip className={classes.chip} repository={build.repository} />
-                <RepositoryNameChip className={classes.chip} repository={build.repository} />
-                <BuildBranchNameChip className={classes.chip} build={build} />
-              </div>
               <div className={classes.wrapper}>
                 <BuildCreatedChip className={classes.chip} build={build} />
                 <BuildStatusChip className={classes.chip} build={build} />
@@ -365,6 +366,9 @@ export default createFragmentContainer(withStyles(styles)(BuildDetails), {
       repository {
         ...RepositoryOwnerChip_repository
         ...RepositoryNameChip_repository
+        platform
+        owner
+        name
         cloneUrl
         viewerPermission
       }

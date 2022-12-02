@@ -22,6 +22,7 @@ import { Container, Tooltip, useTheme } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import GCPStatus from './components/status/GCPStatus';
 import GitHubStatus from './components/status/GitHubStatus';
+import * as Sentry from '@sentry/react';
 
 const AsyncViewerProfile = React.lazy(() => import('./scenes/Profile/ViewerProfile'));
 
@@ -171,6 +172,8 @@ function AllRoutes(props: WithStyles<typeof styles>) {
     </nav>
   );
 
+  const SentryRoutes = Sentry.withSentryReactRouterV6Routing(Routes);
+
   return (
     <BrowserRouter>
       <div className={classes.appFrame}>
@@ -247,7 +250,7 @@ function AllRoutes(props: WithStyles<typeof styles>) {
           <div className={classNames('invisible', classes.drawerHeader)} />
           <Container maxWidth={openDrawer ? false : 'lg'} disableGutters={openDrawer}>
             <Suspense fallback={<CirrusLinearProgress />}>
-              <Routes>
+              <SentryRoutes>
                 <Route path="/" element={<AsyncHome />} />
                 <Route path="explorer" element={<AsyncApiExplorerRenderer />} />
                 <Route path="settings/profile" element={<AsyncViewerProfile />} />
@@ -265,7 +268,7 @@ function AllRoutes(props: WithStyles<typeof styles>) {
                 <Route path="task/:taskId/hooks" element={<AsyncTask />} />
                 <Route path="pool/:poolId" element={<AsyncPoolById />} />
                 <Route path="hook/:hookId" element={<AsyncHook />} />
-              </Routes>
+              </SentryRoutes>
             </Suspense>
           </Container>
         </main>

@@ -1,6 +1,9 @@
 import { subscribeObjectUpdates } from './rtu/ConnectionManager';
 
 import { Environment, Network, Observable, RecordSource, Store, SubscribeFunction } from 'relay-runtime';
+import * as Sentry from '@sentry/react';
+import { RequestParameters } from 'relay-runtime/lib/util/RelayConcreteNode';
+import { SpanStatus } from '@sentry/tracing';
 
 /*
  * See RelayNetwork.js:43 for details how it used in Relay
@@ -47,21 +50,34 @@ function webSocketSubscriptions(operation, variables, kind2id: Array<[string, st
   return result;
 }
 
-async function fetchQuery(operation, variables) {
+async function fetchQuery(operation: RequestParameters, variables) {
   let query = {
     query: operation.text, // GraphQL text from input
     variables,
   };
-  const response = await fetch('https://api.cirrus-ci.com/graphql', {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(query),
+  let transaction = Sentry.startTransaction({
+    op: 'gql',
+    name: operation.name,
   });
-  return response.json();
+  transaction.setTag('operationKind', operation.operationKind);
+  transaction.setData('id', operation.id);
+  try {
+    const response = await fetch('https://api.cirrus-ci.com/graphql', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(query),
+    });
+    transaction.setHttpStatus(response.status);
+    return response.json();
+  } catch (e) {
+    transaction.setStatus(SpanStatus.InternalError);
+  } finally {
+    transaction.finish();
+  }
 }
 
 // Create a network layer from the fetch function

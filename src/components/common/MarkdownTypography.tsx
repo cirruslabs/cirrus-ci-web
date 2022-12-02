@@ -11,7 +11,7 @@ const MarkdownTypography = (props: MarkdownTypographyProps) => {
   return (
     <>
       {text.split('\n').map(line => {
-        return <MarkdownTypographyLine text={line} {...otherProps} />;
+        return <MarkdownTypographyLine key={line} text={line} {...otherProps} />;
       })}
     </>
   );

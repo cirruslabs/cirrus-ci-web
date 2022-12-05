@@ -22,7 +22,7 @@ Sentry.init({
       ),
     }),
   ],
-  tracesSampleRate: 1.0,
+  tracesSampleRate: 0.1,
 });
 
 let ProfiledApp = Sentry.withProfiler(App);

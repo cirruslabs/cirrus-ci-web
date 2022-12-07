@@ -230,7 +230,12 @@ function RepositoryBuildList(props: Props) {
           </div>
         </Toolbar>
         {props.isNew ? (
-          <BuildsTable builds={builds} repository={repository} selectedBuildId={selectedBuildId} />
+          <BuildsTable
+            builds={builds}
+            repository={repository}
+            selectedBuildId={selectedBuildId}
+            setSelectedBuildId={setSelectedBuildId}
+          />
         ) : (
           <Table style={{ tableLayout: 'auto' }}>
             <TableBody>{builds.map(build => buildItem(build))}</TableBody>

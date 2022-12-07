@@ -1,4 +1,5 @@
-import React from 'react';
+import { memo, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ThemeProvider } from '@emotion/react';
 import { createFragmentContainer } from 'react-relay';
 import cx from 'classnames';
@@ -6,6 +7,7 @@ import { useRecoilValue } from 'recoil';
 import { graphql } from 'babel-plugin-relay/macro';
 
 import { WithStyles } from '@mui/styles';
+import { Link } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import Stack from '@mui/material/Stack';
@@ -16,9 +18,17 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import withStyles from '@mui/styles/withStyles';
 import InfoIcon from '@mui/icons-material/Info';
+import CommitIcon from '@mui/icons-material/Commit';
+import Typography from '@mui/material/Typography';
 import createStyles from '@mui/styles/createStyles';
+import CallSplitIcon from '@mui/icons-material/CallSplit';
 
+import BuildStatusChipNew from '../chips/BuildStatusChipNew';
 import { muiThemeOptions } from '../../cirrusTheme';
+import { shorten } from '../../utils/text';
+import { absoluteLink } from '../../utils/link';
+import { formatDuration } from '../../utils/time';
+import { navigateBuildHelper } from '../../utils/navigateHelper';
 
 import { BuildsTable_build } from './__generated__/BuildsTable_build.graphql';
 import { BuildsTable_repository } from './__generated__/BuildsTable_repository.graphql';
@@ -27,6 +37,14 @@ const styles = theme =>
   createStyles({
     table: {
       tableLayout: 'auto',
+    },
+    row: {
+      cursor: 'pointer',
+      '&.Mui-selected': {
+        background: `${
+          theme.palette.mode === 'dark' ? theme.palette.grey['800'] : theme.palette.grey['100']
+        } !important`,
+      },
     },
     cell: {
       fontSize: 16,
@@ -40,6 +58,11 @@ const styles = theme =>
       width: 160,
       minWidth: 160,
       maxWidth: 160,
+    },
+    cellStatusChip: {
+      '& *': {
+        fontSize: '14px !important',
+      },
     },
     cellCommit: {},
     cellHash: {
@@ -69,11 +92,12 @@ interface Props extends WithStyles<typeof styles> {
   builds: Array<BuildsTable_build>;
   repository: BuildsTable_repository;
   selectedBuildId?: string;
+  setSelectedBuildId: Function;
 }
 
-const BuildsTable = styled(({ classes, builds = [], repository, selectedBuildId }: Props) => {
+const BuildsTable = styled(({ classes, builds = [], repository, selectedBuildId, setSelectedBuildId }: Props) => {
   const themeOptions = useRecoilValue(muiThemeOptions);
-  const muiTheme = React.useMemo(() => createTheme(themeOptions), [themeOptions]);
+  const muiTheme = useMemo(() => createTheme(themeOptions), [themeOptions]);
 
   return (
     <ThemeProvider theme={muiTheme}>
@@ -83,7 +107,13 @@ const BuildsTable = styled(({ classes, builds = [], repository, selectedBuildId 
         </TableHead>
         <TableBody>
           {builds.map((build, i) => (
-            <BuildRow key={build.id} build={build} repository={repository} selectedBuildId={selectedBuildId} />
+            <BuildRow
+              key={build.id}
+              build={build}
+              repository={repository}
+              selected={selectedBuildId === build.id}
+              setSelectedBuildId={setSelectedBuildId}
+            />
           ))}
         </TableBody>
       </Table>
@@ -123,12 +153,76 @@ const HeadRow = styled(({ classes }: HeadRowProps) => {
 interface BuildRowProps extends WithStyles<typeof styles> {
   build: BuildsTable_build;
   repository: BuildsTable_repository;
-  selectedBuildId?: string;
+  selected: boolean;
+  setSelectedBuildId: Function;
 }
 
-const BuildRow = styled(({ classes, build, repository, selectedBuildId }: BuildRowProps) => {
-  return null;
-});
+const BuildRow = styled(
+  memo(({ classes, build, repository, selected, setSelectedBuildId }: BuildRowProps) => {
+    const navigate = useNavigate();
+
+    return (
+      <TableRow
+        className={classes.row}
+        selected={selected}
+        onMouseOver={() => {
+          if (selected) return;
+          setSelectedBuildId(build.id);
+        }}
+        onClick={e => {
+          const target = e.target as HTMLElement;
+          if (target.closest('a')) return;
+          navigateBuildHelper(navigate, e, build.id);
+        }}
+      >
+        {/* STATUS */}
+        <TableCell className={cx(classes.cell, classes.cellStatus, classes.cellStatusChip)}>
+          <BuildStatusChipNew status={build.status} />
+        </TableCell>
+
+        {/* COMMIT */}
+        <TableCell className={cx(classes.cell, classes.cellCommit)}>
+          <div style={{ position: 'relative', width: '100%', height: 24 }}>
+            <Stack
+              direction="row"
+              alignItems="center"
+              spacing={0.5}
+              sx={{ position: 'absolute', right: '0', left: '0' }}
+            >
+              <CommitIcon fontSize="inherit" />
+              <Typography noWrap title={build.changeMessageTitle}>
+                {build.changeMessageTitle}
+              </Typography>
+            </Stack>
+          </div>
+        </TableCell>
+
+        {/* HASH */}
+        <TableCell className={cx(classes.cell, classes.cellHash)}>{build.changeIdInRepo.substr(0, 7)}</TableCell>
+
+        {/* BRANCH */}
+        <TableCell className={cx(classes.cell, classes.cellBranch)}>
+          <Stack direction="row" alignItems="center" spacing={0.5}>
+            <CallSplitIcon fontSize="inherit" />
+            <Link
+              href={absoluteLink(repository.platform, repository.owner, repository.name, build.branch)}
+              underline="hover"
+              noWrap
+              title={build.branch}
+            >
+              {shorten(build.branch)}
+            </Link>
+          </Stack>
+        </TableCell>
+
+        {/* DURATION */}
+        <TableCell className={cx(classes.cell, classes.cellDuration)}>
+          {formatDuration(build.clockDurationInSeconds)}
+        </TableCell>
+      </TableRow>
+    );
+  }),
+);
 
 export default createFragmentContainer(BuildsTable, {
   build: graphql`

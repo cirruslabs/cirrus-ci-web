@@ -11,6 +11,7 @@ import { buildStatusIconName, buildStatusMessage, isBuildFinalStatus } from '../
 import { formatDuration } from '../../utils/time';
 import { BuildStatusChip_build } from './__generated__/BuildStatusChip_build.graphql';
 import { useTheme } from '@mui/material';
+import BuildStatusChipNew from './BuildStatusChipNew';
 
 const buildSubscription = graphql`
   subscription BuildStatusChipSubscription($buildID: ID!) {
@@ -24,6 +25,7 @@ interface Props {
   build: BuildStatusChip_build;
   className?: string;
   mini?: boolean;
+  new?: boolean;
 }
 
 function BuildStatusChip(props: Props) {
@@ -48,6 +50,9 @@ function BuildStatusChip(props: Props) {
   let { build, mini, className } = props;
   let message = buildStatusMessage(build.status, build.durationInSeconds);
   let buildStatusColor = useBuildStatusColor(build.status);
+  if (props.new) {
+    return <BuildStatusChipNew build={build} />;
+  }
   if (mini) {
     return (
       <Tooltip title={message}>

@@ -9,6 +9,7 @@ import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Table from '@mui/material/Table';
 import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import TableRow from '@mui/material/TableRow';
@@ -38,6 +39,14 @@ import MarkdownTypography from '../common/MarkdownTypography';
 import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildList_repository.graphql';
 
 const styles = theme => ({
+  paper: {
+    padding: theme.spacing(1.5, 2.5),
+    boxShadow: '0 16px 52px rgb(0 0 0 / 13%)',
+    borderRadius: 8,
+  },
+  header: {
+    paddingLeft: 14,
+  },
   gap: {
     paddingTop: 16,
   },
@@ -50,14 +59,6 @@ const styles = theme => ({
   },
   buildsChart: {
     height: 150,
-  },
-  wrapper: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  toolbar: {
-    paddingLeft: 14,
-    background: theme.palette.action.disabledBackground,
   },
 });
 
@@ -141,12 +142,17 @@ function RepositoryBuildList(props: Props) {
 
   if (props.branch && builds.length > 5) {
     buildsChart = (
-      <Paper elevation={16} className={classes.buildsChart}>
-        <BuildDurationsChart
-          builds={builds.slice().reverse()}
-          selectedBuildId={selectedBuildId}
-          onSelectBuildId={buildId => setSelectedBuildId(buildId)}
-        />
+      <Paper className={classes.paper} sx={{ marginBottom: 2 }}>
+        <Typography className={classes.header} variant="h4" color="inherit">
+          Duration Chart
+        </Typography>
+        <div className={classes.buildsChart}>
+          <BuildDurationsChart
+            builds={builds.slice().reverse()}
+            selectedBuildId={selectedBuildId}
+            onSelectBuildId={buildId => setSelectedBuildId(buildId)}
+          />
+        </div>
       </Paper>
     );
   }
@@ -202,21 +208,25 @@ function RepositoryBuildList(props: Props) {
           {repository.owner}/{repository.name} - Cirrus CI
         </title>
       </Head>
-      <Paper elevation={16}>
-        <Toolbar className={classes.toolbar} sx={{ justifyContent: 'space-between' }} disableGutters>
-          <div className={classes.wrapper}>
-            <Typography variant="h5" color="inherit">
+
+      {/* CHART */}
+      {buildsChart}
+
+      {/* BUILDS TABLE */}
+      <Paper className={classes.paper}>
+        <Toolbar className={classes.header} sx={{ justifyContent: 'space-between' }} disableGutters>
+          <Stack direction="row" alignItems="center" spacing={0.5}>
+            <Typography variant="h4" color="inherit">
               Builds
             </Typography>
             {repositoryAction}
-          </div>
+          </Stack>
           <div>
             {repositoryMetrics}
             {repositoryLinkButton}
             {repositorySettings}
           </div>
         </Toolbar>
-        {buildsChart}
         <Table style={{ tableLayout: 'auto' }}>
           <TableBody>{builds.map(build => buildItem(build))}</TableBody>
         </Table>

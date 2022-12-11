@@ -30,7 +30,7 @@ function BuildStatusChip({ build }: Props) {
       color={color}
       size="small"
       variant="outlined"
-      icon={<Icon>{buildStatusIconName(build.status, true)}</Icon>}
+      icon={<Icon>{buildStatusIconName(build.status)}</Icon>}
     ></Chip>
   );
 }

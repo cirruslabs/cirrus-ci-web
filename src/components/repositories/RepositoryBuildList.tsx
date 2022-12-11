@@ -230,7 +230,7 @@ function RepositoryBuildList(props: Props) {
           </div>
         </Toolbar>
         {props.isNew ? (
-          <BuildsTable />
+          <BuildsTable builds={builds} repository={repository} selectedBuildId={selectedBuildId} />
         ) : (
           <Table style={{ tableLayout: 'auto' }}>
             <TableBody>{builds.map(build => buildItem(build))}</TableBody>
@@ -252,6 +252,7 @@ export default createFragmentContainer(withStyles(styles)(RepositoryBuildList), 
       owner
       name
       viewerPermission
+      ...BuildsTable_repository
       ...CreateBuildDialog_repository
       builds(last: 50, branch: $branch) {
         edges {
@@ -260,6 +261,7 @@ export default createFragmentContainer(withStyles(styles)(RepositoryBuildList), 
             changeMessageTitle
             durationInSeconds
             status
+            ...BuildsTable_build
             ...BuildBranchNameChip_build
             ...BuildChangeChip_build
             ...BuildStatusChip_build

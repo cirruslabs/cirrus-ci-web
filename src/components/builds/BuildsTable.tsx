@@ -1,7 +1,9 @@
 import React from 'react';
 import { ThemeProvider } from '@emotion/react';
+import { createFragmentContainer } from 'react-relay';
 import cx from 'classnames';
 import { useRecoilValue } from 'recoil';
+import { graphql } from 'babel-plugin-relay/macro';
 
 import { WithStyles } from '@mui/styles';
 import { createTheme } from '@mui/material/styles';
@@ -17,6 +19,9 @@ import InfoIcon from '@mui/icons-material/Info';
 import createStyles from '@mui/styles/createStyles';
 
 import { muiThemeOptions } from '../../cirrusTheme';
+
+import { BuildsTable_build } from './__generated__/BuildsTable_build.graphql';
+import { BuildsTable_repository } from './__generated__/BuildsTable_repository.graphql';
 
 const styles = theme =>
   createStyles({
@@ -61,10 +66,12 @@ const styles = theme =>
 const styled = withStyles(styles);
 
 interface Props extends WithStyles<typeof styles> {
-  builds?: Array<{ id: number }>;
+  builds: Array<BuildsTable_build>;
+  repository: BuildsTable_repository;
+  selectedBuildId?: string;
 }
 
-const BuildsTable = styled(({ classes, builds = [] }: Props) => {
+const BuildsTable = styled(({ classes, builds = [], repository, selectedBuildId }: Props) => {
   const themeOptions = useRecoilValue(muiThemeOptions);
   const muiTheme = React.useMemo(() => createTheme(themeOptions), [themeOptions]);
 
@@ -76,7 +83,7 @@ const BuildsTable = styled(({ classes, builds = [] }: Props) => {
         </TableHead>
         <TableBody>
           {builds.map((build, i) => (
-            <BuildRow key={build.id} build={build} />
+            <BuildRow key={build.id} build={build} repository={repository} selectedBuildId={selectedBuildId} />
           ))}
         </TableBody>
       </Table>
@@ -114,11 +121,31 @@ const HeadRow = styled(({ classes }: HeadRowProps) => {
 });
 
 interface BuildRowProps extends WithStyles<typeof styles> {
-  build: Object;
+  build: BuildsTable_build;
+  repository: BuildsTable_repository;
+  selectedBuildId?: string;
 }
 
-const BuildRow = styled(({ classes }: BuildRowProps) => {
+const BuildRow = styled(({ classes, build, repository, selectedBuildId }: BuildRowProps) => {
   return null;
 });
 
-export default BuildsTable;
+export default createFragmentContainer(BuildsTable, {
+  build: graphql`
+    fragment BuildsTable_build on Build {
+      id
+      branch
+      status
+      changeIdInRepo
+      changeMessageTitle
+      clockDurationInSeconds
+    }
+  `,
+  repository: graphql`
+    fragment BuildsTable_repository on Repository {
+      platform
+      owner
+      name
+    }
+  `,
+});

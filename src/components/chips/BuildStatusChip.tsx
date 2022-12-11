@@ -25,7 +25,6 @@ interface Props {
   build: BuildStatusChip_build;
   className?: string;
   mini?: boolean;
-  new?: boolean;
 }
 
 function BuildStatusChip(props: Props) {
@@ -50,9 +49,6 @@ function BuildStatusChip(props: Props) {
   let { build, mini, className } = props;
   let message = buildStatusMessage(build.status, build.durationInSeconds);
   let buildStatusColor = useBuildStatusColor(build.status);
-  if (props.new) {
-    return <BuildStatusChipNew build={build} />;
-  }
   if (mini) {
     return (
       <Tooltip title={message}>

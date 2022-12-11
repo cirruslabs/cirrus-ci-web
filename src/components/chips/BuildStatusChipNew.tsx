@@ -1,38 +1,40 @@
 import Chip from '@mui/material/Chip';
 import Icon from '@mui/material/Icon';
-import { buildStatusIconName } from '../../utils/status';
-import { BuildStatusChip_build } from './__generated__/BuildStatusChip_build.graphql';
+import { BuildStatus } from './__generated__/BuildStatusChip_build.graphql';
 
 interface Props {
-  build: BuildStatusChip_build;
+  status: BuildStatus;
 }
 
-function BuildStatusChip({ build }: Props) {
-  const label = {
-    CREATED: 'created',
-    EXECUTING: 'executing',
-    COMPLETED: 'completed',
-    FAILED: 'failed',
-    ABORTED: 'aborted',
-  }[build.status];
+function BuildStatusChip({ status }: Props) {
+  const label =
+    {
+      CREATED: 'created',
+      EXECUTING: 'executing',
+      COMPLETED: 'completed',
+      FAILED: 'failed',
+      ABORTED: 'aborted',
+    }[status] || status.toLowerCase();
 
-  const color = {
-    CREATED: 'info',
-    EXECUTING: 'secondary',
-    COMPLETED: 'success',
-    FAILED: 'error',
-    ABORTED: 'warning',
-  }[build.status];
+  const color =
+    {
+      CREATED: 'info',
+      EXECUTING: 'secondary',
+      COMPLETED: 'success',
+      FAILED: 'error',
+      ABORTED: 'warning',
+    }[status] || 'error';
 
-  return (
-    <Chip
-      label={label}
-      color={color}
-      size="small"
-      variant="outlined"
-      icon={<Icon>{buildStatusIconName(build.status)}</Icon>}
-    ></Chip>
-  );
+  const iconName =
+    {
+      CREATED: 'cloud',
+      EXECUTING: 'play_arrow',
+      COMPLETED: 'check_circle_outlined',
+      FAILED: 'error_outline_outlined',
+      ABORTED: 'stop_circle_outlined',
+    }[status] || 'error_outline_outlined';
+
+  return <Chip label={label} color={color} size="small" variant="outlined" icon={<Icon>{iconName}</Icon>}></Chip>;
 }
 
 export default BuildStatusChip;

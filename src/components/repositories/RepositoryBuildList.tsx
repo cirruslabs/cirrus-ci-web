@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { createFragmentContainer, requestSubscription } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { Helmet as Head } from 'react-helmet';
+import cx from 'classnames';
 
 import { WithStyles } from '@mui/styles';
 import Box from '@mui/material/Box';
@@ -40,13 +41,20 @@ import BuildsTable from '../../components/builds/BuildsTable';
 import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildList_repository.graphql';
 
 const styles = theme => ({
+  root: {
+    paddingBottom: theme.spacing(16.0),
+  },
   paper: {
-    padding: theme.spacing(1.5, 2.5),
+    padding: theme.spacing(1.0, 2.5, 1.5),
     boxShadow: '0 16px 52px rgb(0 0 0 / 13%)',
     borderRadius: 8,
   },
+  paperBuildsTable: {
+    paddingBottom: theme.spacing(4.0),
+  },
   header: {
     paddingLeft: 14,
+    justifyContent: 'space-between',
   },
   gap: {
     paddingTop: 16,
@@ -144,10 +152,12 @@ function RepositoryBuildList(props: Props) {
 
   if (props.branch && builds.length > 5) {
     buildsChart = (
-      <Paper className={classes.paper} sx={{ marginBottom: 2 }}>
-        <Typography className={classes.header} variant="h4" color="inherit">
-          Duration Chart
-        </Typography>
+      <Paper className={classes.paper} sx={{ mb: 2 }}>
+        <Toolbar className={classes.header} disableGutters>
+          <Typography variant="h5" color="inherit">
+            Duration Chart
+          </Typography>
+        </Toolbar>
         <div className={classes.buildsChart}>
           <BuildDurationsChart
             builds={builds.slice().reverse()}
@@ -198,7 +208,7 @@ function RepositoryBuildList(props: Props) {
   }
 
   return (
-    <div>
+    <div className={classes.root}>
       <AppBreadcrumbs
         platform={repository.platform}
         ownerName={repository.owner}
@@ -215,10 +225,10 @@ function RepositoryBuildList(props: Props) {
       {buildsChart}
 
       {/* BUILDS TABLE */}
-      <Paper className={classes.paper}>
-        <Toolbar className={classes.header} sx={{ justifyContent: 'space-between' }} disableGutters>
-          <Stack direction="row" alignItems="center" spacing={0.5}>
-            <Typography variant="h4" color="inherit">
+      <Paper className={cx(classes.paper, classes.paperBuildsTable)}>
+        <Toolbar className={classes.header} disableGutters>
+          <Stack direction="row" alignItems="center">
+            <Typography variant="h5" color="inherit">
               Builds
             </Typography>
             {repositoryAction}

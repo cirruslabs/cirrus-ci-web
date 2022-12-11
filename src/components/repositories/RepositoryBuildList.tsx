@@ -35,6 +35,7 @@ import BuildDurationsChart from '../builds/BuildDurationsChart';
 import BuildBranchNameChip from '../chips/BuildBranchNameChip';
 import BuildChangeChip from '../chips/BuildChangeChip';
 import MarkdownTypography from '../common/MarkdownTypography';
+import BuildsTable from '../../components/builds/BuildsTable';
 
 import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildList_repository.graphql';
 
@@ -63,6 +64,7 @@ const styles = theme => ({
 });
 
 interface Props extends WithStyles<typeof styles> {
+  isNew?: boolean;
   branch?: string;
   repository: RepositoryBuildList_repository;
 }
@@ -227,9 +229,13 @@ function RepositoryBuildList(props: Props) {
             {repositorySettings}
           </div>
         </Toolbar>
-        <Table style={{ tableLayout: 'auto' }}>
-          <TableBody>{builds.map(build => buildItem(build))}</TableBody>
-        </Table>
+        {props.isNew ? (
+          <BuildsTable />
+        ) : (
+          <Table style={{ tableLayout: 'auto' }}>
+            <TableBody>{builds.map(build => buildItem(build))}</TableBody>
+          </Table>
+        )}
       </Paper>
       {openCreateDialog && (
         <CreateBuildDialog repository={repository} open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} />

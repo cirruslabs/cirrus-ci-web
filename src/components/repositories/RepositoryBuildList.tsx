@@ -1,38 +1,41 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { createFragmentContainer, requestSubscription } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { useNavigate } from 'react-router-dom';
+import { Helmet as Head } from 'react-helmet';
 
+import { WithStyles } from '@mui/styles';
+import Box from '@mui/material/Box';
+import Link from '@mui/material/Link';
 import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
-import BuildDurationsChart from '../builds/BuildDurationsChart';
-import BuildBranchNameChip from '../chips/BuildBranchNameChip';
-import BuildChangeChip from '../chips/BuildChangeChip';
-import BuildStatusChip from '../chips/BuildStatusChip';
-import { navigateBuildHelper } from '../../utils/navigateHelper';
-import { WithStyles } from '@mui/styles';
+import TableRow from '@mui/material/TableRow';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
 import withStyles from '@mui/styles/withStyles';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import CreateBuildDialog from '../builds/CreateBuildDialog';
-import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildList_repository.graphql';
-import { NodeOfConnection } from '../../utils/utility-types';
-import { createLinkToRepository } from '../../utils/github';
-import { absoluteLink } from '../../utils/link';
-import { Helmet as Head } from 'react-helmet';
 import Settings from '@mui/icons-material/Settings';
 import AddCircle from '@mui/icons-material/AddCircle';
 import Timeline from '@mui/icons-material/Timeline';
+
+import { absoluteLink } from '../../utils/link';
+import { createLinkToRepository } from '../../utils/github';
+import { NodeOfConnection } from '../../utils/utility-types';
+import { navigateBuildHelper } from '../../utils/navigateHelper';
 import environment from '../../createRelayEnvironment';
-import { Box, Link } from '@mui/material';
-import MarkdownTypography from '../common/MarkdownTypography';
 import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
-import Typography from '@mui/material/Typography';
+import BuildStatusChip from '../chips/BuildStatusChip';
+import CreateBuildDialog from '../builds/CreateBuildDialog';
+import BuildDurationsChart from '../builds/BuildDurationsChart';
+import BuildBranchNameChip from '../chips/BuildBranchNameChip';
+import BuildChangeChip from '../chips/BuildChangeChip';
+import MarkdownTypography from '../common/MarkdownTypography';
+
+import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildList_repository.graphql';
 
 const styles = theme => ({
   gap: {

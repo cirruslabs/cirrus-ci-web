@@ -30,7 +30,7 @@ import { absoluteLink } from '../../utils/link';
 import { formatDuration } from '../../utils/time';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
 
-import { BuildsTable_build } from './__generated__/BuildsTable_build.graphql';
+import { BuildsTable_builds } from './__generated__/BuildsTable_builds.graphql';
 import { BuildsTable_repository } from './__generated__/BuildsTable_repository.graphql';
 
 const styles = theme =>
@@ -89,7 +89,7 @@ const styles = theme =>
 const styled = withStyles(styles);
 
 interface Props extends WithStyles<typeof styles> {
-  builds: Array<BuildsTable_build>;
+  builds: BuildsTable_builds;
   repository: BuildsTable_repository;
   selectedBuildId?: string;
   setSelectedBuildId: Function;
@@ -151,7 +151,7 @@ const HeadRow = styled(({ classes }: HeadRowProps) => {
 });
 
 interface BuildRowProps extends WithStyles<typeof styles> {
-  build: BuildsTable_build;
+  build: BuildsTable_builds[number];
   repository: BuildsTable_repository;
   selected: boolean;
   setSelectedBuildId: Function;
@@ -225,8 +225,8 @@ const BuildRow = styled(
 );
 
 export default createFragmentContainer(BuildsTable, {
-  build: graphql`
-    fragment BuildsTable_build on Build {
+  builds: graphql`
+    fragment BuildsTable_builds on Build @relay(plural: true) {
       id
       branch
       status

@@ -276,7 +276,7 @@ export default createFragmentContainer(withStyles(styles)(RepositoryBuildList), 
             changeMessageTitle
             durationInSeconds
             status
-            ...BuildsTable_build
+            ...BuildsTable_builds
             ...BuildBranchNameChip_build
             ...BuildChangeChip_build
             ...BuildStatusChip_build

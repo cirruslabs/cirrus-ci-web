@@ -18,8 +18,8 @@ function BuildStatusChip({ status }: Props) {
 
   const color =
     {
-      CREATED: 'info',
-      EXECUTING: 'secondary',
+      CREATED: 'secondary',
+      EXECUTING: 'info',
       COMPLETED: 'success',
       FAILED: 'error',
       ABORTED: 'warning',
@@ -27,8 +27,8 @@ function BuildStatusChip({ status }: Props) {
 
   const iconName =
     {
-      CREATED: 'cloud',
-      EXECUTING: 'play_arrow',
+      CREATED: 'cloud_circle_outlined',
+      EXECUTING: 'play_circle_outlined',
       COMPLETED: 'check_circle_outlined',
       FAILED: 'error_outline_outlined',
       ABORTED: 'stop_circle_outlined',

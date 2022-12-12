@@ -11,7 +11,6 @@ import { buildStatusIconName, buildStatusMessage, isBuildFinalStatus } from '../
 import { formatDuration } from '../../utils/time';
 import { BuildStatusChip_build } from './__generated__/BuildStatusChip_build.graphql';
 import { useTheme } from '@mui/material';
-import BuildStatusChipNew from './BuildStatusChipNew';
 
 const buildSubscription = graphql`
   subscription BuildStatusChipSubscription($buildID: ID!) {

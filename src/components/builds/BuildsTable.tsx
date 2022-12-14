@@ -1,10 +1,11 @@
-import { memo, useMemo } from 'react';
+import { memo, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ThemeProvider } from '@emotion/react';
-import { createFragmentContainer } from 'react-relay';
+import { createFragmentContainer, requestSubscription } from 'react-relay';
 import cx from 'classnames';
 import { useRecoilValue } from 'recoil';
 import { graphql } from 'babel-plugin-relay/macro';
+import environment from '../../createRelayEnvironment';
 
 import { WithStyles } from '@mui/styles';
 import { Link } from '@mui/material';
@@ -28,6 +29,7 @@ import { muiThemeOptions } from '../../cirrusTheme';
 import { shorten } from '../../utils/text';
 import { absoluteLink } from '../../utils/link';
 import { formatDuration } from '../../utils/time';
+import { isBuildFinalStatus } from '../../utils/status';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
 
 import { BuildsTable_builds } from './__generated__/BuildsTable_builds.graphql';
@@ -96,6 +98,14 @@ interface Props extends WithStyles<typeof styles> {
   setSelectedBuildId: Function;
 }
 
+const buildSubscription = graphql`
+  subscription BuildsTableSubscription($buildID: ID!) {
+    build(id: $buildID) {
+      ...BuildsTable_builds
+    }
+  }
+`;
+
 const BuildsTable = styled(({ classes, builds = [], repository, selectedBuildId, setSelectedBuildId }: Props) => {
   const themeOptions = useRecoilValue(muiThemeOptions);
   const muiTheme = useMemo(() => createTheme(themeOptions), [themeOptions]);
@@ -162,6 +172,18 @@ const BuildRow = styled(
   memo(({ classes, build, repository, selected, setSelectedBuildId }: BuildRowProps) => {
     const navigate = useNavigate();
 
+    const isFinalStatus = useMemo(() => isBuildFinalStatus(build.status), [build.status]);
+    useEffect(() => {
+      if (isFinalStatus) return;
+      const subscription = requestSubscription(environment, {
+        subscription: buildSubscription,
+        variables: { buildID: build.id },
+      });
+      return () => {
+        subscription.dispose();
+      };
+    }, [build.id, isFinalStatus]);
+
     return (
       <TableRow
         className={classes.row}
@@ -218,7 +240,7 @@ const BuildRow = styled(
 
         {/* DURATION */}
         <TableCell className={cx(classes.cell, classes.cellDuration)}>
-          {formatDuration(build.clockDurationInSeconds)}
+          {build.clockDurationInSeconds ? formatDuration(build.clockDurationInSeconds) : '—'}
         </TableCell>
       </TableRow>
     );

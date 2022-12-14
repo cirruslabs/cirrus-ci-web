@@ -18,6 +18,7 @@ function BuildStatusChip({ status }: Props) {
 
   const color =
     {
+      TRIGGERED: 'info',
       CREATED: 'secondary',
       EXECUTING: 'info',
       COMPLETED: 'success',
@@ -27,6 +28,7 @@ function BuildStatusChip({ status }: Props) {
 
   const iconName =
     {
+      TRIGGERED: 'play_circle_outlined',
       CREATED: 'cloud_circle_outlined',
       EXECUTING: 'play_circle_outlined',
       COMPLETED: 'check_circle_outlined',

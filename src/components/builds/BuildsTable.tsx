@@ -33,6 +33,7 @@ import { navigateBuildHelper } from '../../utils/navigateHelper';
 import { BuildsTable_builds } from './__generated__/BuildsTable_builds.graphql';
 import { BuildsTable_repository } from './__generated__/BuildsTable_repository.graphql';
 
+// todo: move custom values to mui theme adjustments
 const styles = theme =>
   createStyles({
     table: {

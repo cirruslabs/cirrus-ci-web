@@ -40,6 +40,7 @@ import BuildsTable from '../../components/builds/BuildsTable';
 
 import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildList_repository.graphql';
 
+// todo: move custom values to mui theme adjustments
 const styles = theme => ({
   root: {
     paddingBottom: theme.spacing(16.0),
@@ -47,7 +48,7 @@ const styles = theme => ({
   paper: {
     padding: theme.spacing(1.0, 2.5, 1.5),
     boxShadow: '0 16px 52px rgb(0 0 0 / 13%)',
-    borderRadius: 8,
+    borderRadius: 4 * theme.shape.borderRadius,
   },
   paperBuildsTable: {
     paddingBottom: theme.spacing(4.0),

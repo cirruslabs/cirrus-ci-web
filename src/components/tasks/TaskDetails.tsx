@@ -125,29 +125,7 @@ const invalidateCachesMutation = graphql`
 const taskSubscription = graphql`
   subscription TaskDetailsSubscription($taskID: ID!) {
     task(id: $taskID) {
-      id
-      name
-      status
-      labels
-      creationTimestamp
-      executingTimestamp
-      durationInSeconds
-      statusDurations {
-        status
-        durationInSeconds
-      }
-      commands {
-        name
-        status
-        durationInSeconds
-      }
-      notifications {
-        ...Notification_notification
-      }
-      terminalCredential {
-        locator
-        trustedSecret
-      }
+      ...TaskDetails_task
     }
   }
 `;

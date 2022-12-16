@@ -25,7 +25,18 @@ import { ViewerBuildListRefetchQuery } from './__generated__/ViewerBuildListRefe
 import { ViewerBuildList_viewer$key } from './__generated__/ViewerBuildList_viewer.graphql';
 import { isBuildFinalStatus } from '../../utils/status';
 
+// todo: move custom values to mui theme adjustments
 const styles = theme => ({
+  paper: {
+    marginTop: theme.spacing(4),
+    padding: theme.spacing(1.0, 2.5, 1.5),
+    boxShadow: '0 16px 52px rgb(0 0 0 / 13%)',
+    borderRadius: 4 * theme.shape.borderRadius,
+  },
+  header: {
+    paddingLeft: 14,
+    justifyContent: 'space-between',
+  },
   chip: {
     margin: theme.spacing(0.5),
   },
@@ -159,14 +170,12 @@ function ViewerBuildList(props: Props) {
   };
 
   return (
-    <Paper elevation={16}>
+    <Paper className={classes.paper}>
       <Head>
         <title>Recent Builds - Cirrus CI</title>
       </Head>
-      <Toolbar>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          Recent Builds
-        </Typography>
+      <Toolbar className={classes.header} disableGutters>
+        <Typography variant="h5">Recent Builds</Typography>
         <ToggleButtonGroup value={filter} exclusive onChange={handleFilterChange}>
           <ToggleButton value="all">All</ToggleButton>
           <ToggleButton value="running">Running</ToggleButton>

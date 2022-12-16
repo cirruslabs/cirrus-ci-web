@@ -36,7 +36,6 @@ import { navigateBuildHelper } from '../../utils/navigateHelper';
 import { BuildsTable_builds } from './__generated__/BuildsTable_builds.graphql';
 
 import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
-import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 
 // todo: move custom values to mui theme adjustments
 const styles = theme =>

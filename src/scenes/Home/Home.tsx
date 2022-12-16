@@ -27,7 +27,7 @@ export default function Home(): JSX.Element {
           return <CirrusLinearProgress />;
         }
         if (props.viewer) {
-          return <ViewerBuildList viewer={props} />;
+          return <ViewerBuildList viewer={props} isNew />;
         } else {
           return <WelcomePage />;
         }

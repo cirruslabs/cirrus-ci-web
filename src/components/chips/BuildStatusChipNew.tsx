@@ -1,5 +1,4 @@
 import Chip from '@mui/material/Chip';
-import Icon from '@mui/material/Icon';
 import { BuildStatus } from './__generated__/BuildStatusChip_build.graphql';
 
 interface Props {

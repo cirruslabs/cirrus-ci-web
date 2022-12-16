@@ -7,9 +7,9 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-
 import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
+
 import RepositoryNameChip from '../chips/RepositoryNameChip';
 import BuildBranchNameChip from '../chips/BuildBranchNameChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
@@ -24,6 +24,7 @@ import MarkdownTypography from '../common/MarkdownTypography';
 import { ViewerBuildListRefetchQuery } from './__generated__/ViewerBuildListRefetchQuery.graphql';
 import { ViewerBuildList_viewer$key } from './__generated__/ViewerBuildList_viewer.graphql';
 import { isBuildFinalStatus } from '../../utils/status';
+import BuildsTable from '../../components/builds/BuildsTable';
 
 // todo: move custom values to mui theme adjustments
 const styles = theme => ({
@@ -46,6 +47,7 @@ const styles = theme => ({
   },
   emptyBuilds: {
     margin: theme.spacing(1.0),
+    marginLeft: 14,
   },
   padding: {
     margin: theme.spacing(0.5),
@@ -54,6 +56,7 @@ const styles = theme => ({
 
 interface Props extends WithStyles<typeof styles> {
   viewer: ViewerBuildList_viewer$key;
+  isNew?: boolean;
 }
 
 function ViewerBuildList(props: Props) {
@@ -75,6 +78,7 @@ function ViewerBuildList(props: Props) {
                 ...BuildBranchNameChip_build
                 ...BuildChangeChip_build
                 ...BuildStatusChip_build
+                ...BuildsTable_builds
                 repository {
                   ...RepositoryNameChip_repository
                 }
@@ -133,7 +137,9 @@ function ViewerBuildList(props: Props) {
       });
   }
 
-  let buildsComponent = (
+  let buildsComponent = props.isNew ? (
+    <BuildsTable builds={builds} />
+  ) : (
     <Table style={{ tableLayout: 'auto' }}>
       <TableBody>{builds.map(build => buildItem(build))}</TableBody>
     </Table>

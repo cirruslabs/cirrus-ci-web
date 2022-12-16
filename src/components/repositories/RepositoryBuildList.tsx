@@ -241,12 +241,7 @@ function RepositoryBuildList(props: Props) {
           </div>
         </Toolbar>
         {props.isNew ? (
-          <BuildsTable
-            builds={builds}
-            repository={repository}
-            selectedBuildId={selectedBuildId}
-            setSelectedBuildId={setSelectedBuildId}
-          />
+          <BuildsTable builds={builds} selectedBuildId={selectedBuildId} setSelectedBuildId={setSelectedBuildId} />
         ) : (
           <Table style={{ tableLayout: 'auto' }}>
             <TableBody>{builds.map(build => buildItem(build))}</TableBody>
@@ -268,7 +263,6 @@ export default createFragmentContainer(withStyles(styles)(RepositoryBuildList), 
       owner
       name
       viewerPermission
-      ...BuildsTable_repository
       ...CreateBuildDialog_repository
       builds(last: 50, branch: $branch) {
         edges {

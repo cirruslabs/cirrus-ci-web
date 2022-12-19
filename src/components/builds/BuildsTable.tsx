@@ -71,29 +71,42 @@ const styles = theme =>
       },
     },
     cellRepository: {
-      width: 200,
-      minWidth: 200,
-      maxWidth: 200,
+      width: 180,
+      minWidth: 180,
+      maxWidth: 180,
     },
     cellCommit: {},
-    cellHash: {
-      width: 140,
-      minWidth: 140,
-      maxWidth: 140,
-    },
     cellBranch: {
-      width: 210,
-      minWidth: 210,
-      maxWidth: 210,
+      width: 180,
+      minWidth: 180,
+      maxWidth: 180,
     },
     cellDuration: {
-      width: 130,
-      minWidth: 130,
-      maxWidth: 130,
+      width: 110,
+      minWidth: 110,
+      maxWidth: 110,
       textAlign: 'right',
     },
     infoIcon: {
       color: theme.palette.action.active,
+    },
+    commitName: {
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      display: '-webkit-box',
+      WebkitLineClamp: 1,
+      WebkitBoxOrient: 'vertical',
+      whiteSpace: 'normal',
+    },
+    hash: {
+      color: theme.palette.text.secondary,
+      fontFamily: 'Courier',
+      marginTop: theme.spacing(0.5),
+      border: `1px solid ${theme.palette.divider}`,
+      borderRadius: 3 * theme.shape.borderRadius,
+      width: 'fit-content',
+      padding: '1px 5px',
+      '& *': { fontSize: '14px !important' },
     },
   });
 
@@ -154,7 +167,6 @@ const HeadRow = styled(({ classes }: HeadRowProps) => {
       <TableCell className={cx(classes.cell, classes.cellStatus)}>Status</TableCell>
       <TableCell className={cx(classes.cell, classes.cellRepository)}>Repository</TableCell>
       <TableCell className={cx(classes.cell, classes.cellCommit)}>Commit</TableCell>
-      <TableCell className={cx(classes.cell, classes.cellHash)}>Hash</TableCell>
       <TableCell className={cx(classes.cell, classes.cellBranch)}>Branch</TableCell>
 
       <TableCell className={cx(classes.cell, classes.cellDuration)}>
@@ -197,9 +209,12 @@ const BuildRow = styled(
     if (selectable) {
       rowProps = {
         selected: selected,
-        onMouseOver() {
+        onMouseEnter() {
           if (selected) return;
           setSelectedBuildId(build.id);
+        },
+        onMouseOut() {
+          setSelectedBuildId(null);
         },
       };
     } else {
@@ -243,24 +258,13 @@ const BuildRow = styled(
 
         {/* COMMIT */}
         <TableCell className={cx(classes.cell, classes.cellCommit)}>
-          <div style={{ position: 'relative', width: '100%', height: 24 }}>
-            <Stack
-              direction="row"
-              alignItems="center"
-              spacing={0.5}
-              sx={{ position: 'absolute', right: '0', left: '0' }}
-            >
-              <CommitIcon fontSize="inherit" />
-              <Typography noWrap title={build.changeMessageTitle}>
-                {build.changeMessageTitle}
-              </Typography>
-            </Stack>
-          </div>
-        </TableCell>
-
-        {/* HASH */}
-        <TableCell className={cx(classes.cell, classes.cellHash)}>
-          <Typography color={theme.palette.text.secondary}>{build.changeIdInRepo.substr(0, 7)}</Typography>
+          <Typography className={classes.commitName} title={build.changeMessageTitle}>
+            {build.changeMessageTitle}
+          </Typography>
+          <Stack className={classes.hash} direction="row" alignItems="center" spacing={0.5}>
+            <CommitIcon fontSize="inherit" />
+            <span>{build.changeIdInRepo.substr(0, 7)}</span>
+          </Stack>
         </TableCell>
 
         {/* BRANCH */}

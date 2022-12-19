@@ -35,7 +35,7 @@ function BuildStatusChip({ status }: Props) {
       EXECUTING: 'play_circle_outlined',
       COMPLETED: 'check_circle_outlined',
       FAILED: 'error_outline_outlined',
-      ABORTED: <StopCircleOutlinedIcon />, //mui shows wrong icon with the name 'stop_circle_outlined'
+      ABORTED: <StopCircleOutlinedIcon />, // mui shows wrong icon with the name 'stop_circle_outlined'
     }[status] || 'error_outline_outlined';
 
   return (
@@ -44,7 +44,7 @@ function BuildStatusChip({ status }: Props) {
       color={color}
       size="small"
       variant="outlined"
-      icon={status === 'ABORTED' ? icon : <Icon>{icon}</Icon>}
+      icon={typeof status === 'string' ? <Icon>{icon}</Icon> : icon}
       sx={{
         '& .MuiChip-iconSmall': {
           marginLeft: '5px',

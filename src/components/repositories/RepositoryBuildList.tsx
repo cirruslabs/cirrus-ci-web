@@ -28,6 +28,7 @@ import { absoluteLink } from '../../utils/link';
 import { createLinkToRepository } from '../../utils/github';
 import { NodeOfConnection } from '../../utils/utility-types';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
+import usePageWidth from '../../utils/usePageWidth';
 import environment from '../../createRelayEnvironment';
 import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 import BuildStatusChip from '../chips/BuildStatusChip';
@@ -73,7 +74,6 @@ const styles = theme => ({
 });
 
 interface Props extends WithStyles<typeof styles> {
-  isNew?: boolean;
   branch?: string;
   repository: RepositoryBuildList_repository;
 }
@@ -87,6 +87,9 @@ const repositorySubscription = graphql`
 `;
 
 function RepositoryBuildList(props: Props) {
+  const pageWidth = usePageWidth();
+  const isNewDesign = pageWidth > 900;
+
   useEffect(() => {
     let variables = { repositoryID: props.repository.id, branch: props.branch };
 
@@ -240,7 +243,7 @@ function RepositoryBuildList(props: Props) {
             {repositorySettings}
           </div>
         </Toolbar>
-        {props.isNew ? (
+        {isNewDesign ? (
           <BuildsTable builds={builds} selectedBuildId={selectedBuildId} setSelectedBuildId={setSelectedBuildId} />
         ) : (
           <Table style={{ tableLayout: 'auto' }}>

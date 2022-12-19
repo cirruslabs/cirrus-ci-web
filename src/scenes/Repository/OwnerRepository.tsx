@@ -40,7 +40,7 @@ export default function OwnerRepository(): JSX.Element {
           );
           return <NotFound messageComponent={notFoundMessage} />;
         }
-        return <RepositoryBuildList repository={props.ownerRepository} branch={branch} isNew />;
+        return <RepositoryBuildList repository={props.ownerRepository} branch={branch} />;
       }}
     />
   );

@@ -1,30 +1,31 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useRefetchableFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { useNavigate } from 'react-router-dom';
+import { Helmet as Head } from 'react-helmet';
 
+import { WithStyles } from '@mui/styles';
+import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 
 import RepositoryNameChip from '../chips/RepositoryNameChip';
 import BuildBranchNameChip from '../chips/BuildBranchNameChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import BuildChangeChip from '../chips/BuildChangeChip';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
-import Typography from '@mui/material/Typography';
-import { WithStyles } from '@mui/styles';
-import withStyles from '@mui/styles/withStyles';
-import { Helmet as Head } from 'react-helmet';
-import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import usePageWidth from '../../utils/usePageWidth';
+import { isBuildFinalStatus } from '../../utils/status';
+import BuildsTable from '../../components/builds/BuildsTable';
 import MarkdownTypography from '../common/MarkdownTypography';
 import { ViewerBuildListRefetchQuery } from './__generated__/ViewerBuildListRefetchQuery.graphql';
 import { ViewerBuildList_viewer$key } from './__generated__/ViewerBuildList_viewer.graphql';
-import { isBuildFinalStatus } from '../../utils/status';
-import BuildsTable from '../../components/builds/BuildsTable';
 
 // todo: move custom values to mui theme adjustments
 const styles = theme => ({
@@ -56,11 +57,12 @@ const styles = theme => ({
 
 interface Props extends WithStyles<typeof styles> {
   viewer: ViewerBuildList_viewer$key;
-  isNew?: boolean;
 }
 
 function ViewerBuildList(props: Props) {
   let { viewer, classes } = props;
+  const pageWidth = usePageWidth();
+  const isNewDesign = pageWidth > 900;
 
   const [data, refetch] = useRefetchableFragment<ViewerBuildListRefetchQuery, any>(
     graphql`
@@ -137,7 +139,7 @@ function ViewerBuildList(props: Props) {
       });
   }
 
-  let buildsComponent = props.isNew ? (
+  let buildsComponent = isNewDesign ? (
     <BuildsTable builds={builds} />
   ) : (
     <Table style={{ tableLayout: 'auto' }}>

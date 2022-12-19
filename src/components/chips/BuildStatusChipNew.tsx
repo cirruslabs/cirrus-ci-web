@@ -1,5 +1,6 @@
 import Chip from '@mui/material/Chip';
 import Icon from '@mui/material/Icon';
+import StopCircleOutlinedIcon from '@mui/icons-material/StopCircleOutlined';
 
 import { BuildStatus } from './__generated__/BuildStatusChip_build.graphql';
 
@@ -27,14 +28,14 @@ function BuildStatusChip({ status }: Props) {
       ABORTED: 'warning',
     }[status] || 'error';
 
-  const iconName =
+  const icon =
     {
       TRIGGERED: 'play_circle_outlined',
       CREATED: 'cloud_circle_outlined',
       EXECUTING: 'play_circle_outlined',
       COMPLETED: 'check_circle_outlined',
       FAILED: 'error_outline_outlined',
-      ABORTED: 'stop_circle_outlined',
+      ABORTED: <StopCircleOutlinedIcon />, //mui shows wrong icon with the name 'stop_circle_outlined'
     }[status] || 'error_outline_outlined';
 
   return (
@@ -43,7 +44,7 @@ function BuildStatusChip({ status }: Props) {
       color={color}
       size="small"
       variant="outlined"
-      icon={<Icon>{iconName}</Icon>}
+      icon={status === 'ABORTED' ? icon : <Icon>{icon}</Icon>}
       sx={{
         '& .MuiChip-iconSmall': {
           marginLeft: '5px',

@@ -25,7 +25,17 @@ function BuildStatusChip({ status }: Props) {
       ABORTED: 'warning',
     }[status] || 'error';
 
-  return <Chip label={label} color={color} size="small" variant="outlined" />;
+  const iconName =
+    {
+      TRIGGERED: 'play_circle_outlined',
+      CREATED: 'cloud_circle_outlined',
+      EXECUTING: 'play_circle_outlined',
+      COMPLETED: 'check_circle_outlined',
+      FAILED: 'error_outline_outlined',
+      ABORTED: 'stop_circle_outlined',
+    }[status] || 'error_outline_outlined';
+
+  return <Chip label={label} color={color} size="small" variant="outlined" icon={<Icon>{iconName}</Icon>}></Chip>;
 }
 
 export default BuildStatusChip;

@@ -1,4 +1,6 @@
 import Chip from '@mui/material/Chip';
+import Icon from '@mui/material/Icon';
+
 import { BuildStatus } from './__generated__/BuildStatusChip_build.graphql';
 
 interface Props {
@@ -35,7 +37,20 @@ function BuildStatusChip({ status }: Props) {
       ABORTED: 'stop_circle_outlined',
     }[status] || 'error_outline_outlined';
 
-  return <Chip label={label} color={color} size="small" variant="outlined" icon={<Icon>{iconName}</Icon>}></Chip>;
+  return (
+    <Chip
+      label={label}
+      color={color}
+      size="small"
+      variant="outlined"
+      icon={<Icon>{iconName}</Icon>}
+      sx={{
+        '& .MuiChip-iconSmall': {
+          marginLeft: '5px',
+        },
+      }}
+    ></Chip>
+  );
 }
 
 export default BuildStatusChip;

@@ -1,31 +1,44 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useRefetchableFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { useNavigate } from 'react-router-dom';
+import { Helmet as Head } from 'react-helmet';
 
+import { WithStyles } from '@mui/styles';
+import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-
 import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+
 import RepositoryNameChip from '../chips/RepositoryNameChip';
 import BuildBranchNameChip from '../chips/BuildBranchNameChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import BuildChangeChip from '../chips/BuildChangeChip';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
-import Typography from '@mui/material/Typography';
-import { WithStyles } from '@mui/styles';
-import withStyles from '@mui/styles/withStyles';
-import { Helmet as Head } from 'react-helmet';
-import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import usePageWidth from '../../utils/usePageWidth';
+import { isBuildFinalStatus } from '../../utils/status';
+import BuildsTable from '../../components/builds/BuildsTable';
 import MarkdownTypography from '../common/MarkdownTypography';
 import { ViewerBuildListRefetchQuery } from './__generated__/ViewerBuildListRefetchQuery.graphql';
 import { ViewerBuildList_viewer$key } from './__generated__/ViewerBuildList_viewer.graphql';
-import { isBuildFinalStatus } from '../../utils/status';
 
+// todo: move custom values to mui theme adjustments
 const styles = theme => ({
+  paper: {
+    marginTop: theme.spacing(4),
+    padding: theme.spacing(1.0, 2.5, 1.5),
+    boxShadow: '0 16px 52px rgb(0 0 0 / 13%)',
+    borderRadius: 4 * theme.shape.borderRadius,
+  },
+  header: {
+    paddingLeft: 14,
+    justifyContent: 'space-between',
+  },
   chip: {
     margin: theme.spacing(0.5),
   },
@@ -35,6 +48,7 @@ const styles = theme => ({
   },
   emptyBuilds: {
     margin: theme.spacing(1.0),
+    marginLeft: 14,
   },
   padding: {
     margin: theme.spacing(0.5),
@@ -47,6 +61,8 @@ interface Props extends WithStyles<typeof styles> {
 
 function ViewerBuildList(props: Props) {
   let { viewer, classes } = props;
+  const pageWidth = usePageWidth();
+  const isNewDesign = pageWidth > 900;
 
   const [data, refetch] = useRefetchableFragment<ViewerBuildListRefetchQuery, any>(
     graphql`
@@ -64,6 +80,7 @@ function ViewerBuildList(props: Props) {
                 ...BuildBranchNameChip_build
                 ...BuildChangeChip_build
                 ...BuildStatusChip_build
+                ...BuildsTable_builds
                 repository {
                   ...RepositoryNameChip_repository
                 }
@@ -122,7 +139,9 @@ function ViewerBuildList(props: Props) {
       });
   }
 
-  let buildsComponent = (
+  let buildsComponent = isNewDesign ? (
+    <BuildsTable builds={builds} />
+  ) : (
     <Table style={{ tableLayout: 'auto' }}>
       <TableBody>{builds.map(build => buildItem(build))}</TableBody>
     </Table>
@@ -159,14 +178,12 @@ function ViewerBuildList(props: Props) {
   };
 
   return (
-    <Paper elevation={16}>
+    <Paper className={classes.paper}>
       <Head>
         <title>Recent Builds - Cirrus CI</title>
       </Head>
-      <Toolbar>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          Recent Builds
-        </Typography>
+      <Toolbar className={classes.header} disableGutters>
+        <Typography variant="h5">Recent Builds</Typography>
         <ToggleButtonGroup value={filter} exclusive onChange={handleFilterChange}>
           <ToggleButton value="all">All</ToggleButton>
           <ToggleButton value="running">Running</ToggleButton>

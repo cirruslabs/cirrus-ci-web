@@ -1,40 +1,63 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { createFragmentContainer, requestSubscription } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { useNavigate } from 'react-router-dom';
+import { Helmet as Head } from 'react-helmet';
+import cx from 'classnames';
 
+import { WithStyles } from '@mui/styles';
+import Box from '@mui/material/Box';
+import Link from '@mui/material/Link';
 import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
-import BuildDurationsChart from '../builds/BuildDurationsChart';
-import BuildBranchNameChip from '../chips/BuildBranchNameChip';
-import BuildChangeChip from '../chips/BuildChangeChip';
-import BuildStatusChip from '../chips/BuildStatusChip';
-import { navigateBuildHelper } from '../../utils/navigateHelper';
-import { WithStyles } from '@mui/styles';
+import TableRow from '@mui/material/TableRow';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
 import withStyles from '@mui/styles/withStyles';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import CreateBuildDialog from '../builds/CreateBuildDialog';
-import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildList_repository.graphql';
-import { NodeOfConnection } from '../../utils/utility-types';
-import { createLinkToRepository } from '../../utils/github';
-import { absoluteLink } from '../../utils/link';
-import { Helmet as Head } from 'react-helmet';
 import Settings from '@mui/icons-material/Settings';
 import AddCircle from '@mui/icons-material/AddCircle';
 import Timeline from '@mui/icons-material/Timeline';
-import environment from '../../createRelayEnvironment';
-import { Box, Link } from '@mui/material';
-import MarkdownTypography from '../common/MarkdownTypography';
-import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
-import Typography from '@mui/material/Typography';
 
+import { absoluteLink } from '../../utils/link';
+import { createLinkToRepository } from '../../utils/github';
+import { NodeOfConnection } from '../../utils/utility-types';
+import { navigateBuildHelper } from '../../utils/navigateHelper';
+import usePageWidth from '../../utils/usePageWidth';
+import environment from '../../createRelayEnvironment';
+import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
+import BuildStatusChip from '../chips/BuildStatusChip';
+import CreateBuildDialog from '../builds/CreateBuildDialog';
+import BuildDurationsChart from '../builds/BuildDurationsChart';
+import BuildBranchNameChip from '../chips/BuildBranchNameChip';
+import BuildChangeChip from '../chips/BuildChangeChip';
+import MarkdownTypography from '../common/MarkdownTypography';
+import BuildsTable from '../../components/builds/BuildsTable';
+
+import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildList_repository.graphql';
+
+// todo: move custom values to mui theme adjustments
 const styles = theme => ({
+  root: {
+    paddingBottom: theme.spacing(16.0),
+  },
+  paper: {
+    padding: theme.spacing(1.0, 2.5, 1.5),
+    boxShadow: '0 16px 52px rgb(0 0 0 / 13%)',
+    borderRadius: 4 * theme.shape.borderRadius,
+  },
+  paperBuildsTable: {
+    paddingBottom: theme.spacing(4.0),
+  },
+  header: {
+    paddingLeft: 14,
+    justifyContent: 'space-between',
+  },
   gap: {
     paddingTop: 16,
   },
@@ -47,14 +70,6 @@ const styles = theme => ({
   },
   buildsChart: {
     height: 150,
-  },
-  wrapper: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  toolbar: {
-    paddingLeft: 14,
-    background: theme.palette.action.disabledBackground,
   },
 });
 
@@ -72,6 +87,9 @@ const repositorySubscription = graphql`
 `;
 
 function RepositoryBuildList(props: Props) {
+  const pageWidth = usePageWidth();
+  const isNewDesign = pageWidth > 900;
+
   useEffect(() => {
     let variables = { repositoryID: props.repository.id, branch: props.branch };
 
@@ -138,12 +156,19 @@ function RepositoryBuildList(props: Props) {
 
   if (props.branch && builds.length > 5) {
     buildsChart = (
-      <Paper elevation={16} className={classes.buildsChart}>
-        <BuildDurationsChart
-          builds={builds.slice().reverse()}
-          selectedBuildId={selectedBuildId}
-          onSelectBuildId={buildId => setSelectedBuildId(buildId)}
-        />
+      <Paper className={classes.paper} sx={{ mb: 2 }}>
+        <Toolbar className={classes.header} disableGutters>
+          <Typography variant="h5" color="inherit">
+            Duration Chart
+          </Typography>
+        </Toolbar>
+        <div className={classes.buildsChart}>
+          <BuildDurationsChart
+            builds={builds.slice().reverse()}
+            selectedBuildId={selectedBuildId}
+            onSelectBuildId={buildId => setSelectedBuildId(buildId)}
+          />
+        </div>
       </Paper>
     );
   }
@@ -187,7 +212,7 @@ function RepositoryBuildList(props: Props) {
   }
 
   return (
-    <div>
+    <div className={classes.root}>
       <AppBreadcrumbs
         platform={repository.platform}
         ownerName={repository.owner}
@@ -199,24 +224,32 @@ function RepositoryBuildList(props: Props) {
           {repository.owner}/{repository.name} - Cirrus CI
         </title>
       </Head>
-      <Paper elevation={16}>
-        <Toolbar className={classes.toolbar} sx={{ justifyContent: 'space-between' }} disableGutters>
-          <div className={classes.wrapper}>
+
+      {/* CHART */}
+      {buildsChart}
+
+      {/* BUILDS TABLE */}
+      <Paper className={cx(classes.paper, classes.paperBuildsTable)}>
+        <Toolbar className={classes.header} disableGutters>
+          <Stack direction="row" alignItems="center">
             <Typography variant="h5" color="inherit">
               Builds
             </Typography>
             {repositoryAction}
-          </div>
+          </Stack>
           <div>
             {repositoryMetrics}
             {repositoryLinkButton}
             {repositorySettings}
           </div>
         </Toolbar>
-        {buildsChart}
-        <Table style={{ tableLayout: 'auto' }}>
-          <TableBody>{builds.map(build => buildItem(build))}</TableBody>
-        </Table>
+        {isNewDesign ? (
+          <BuildsTable builds={builds} selectedBuildId={selectedBuildId} setSelectedBuildId={setSelectedBuildId} />
+        ) : (
+          <Table style={{ tableLayout: 'auto' }}>
+            <TableBody>{builds.map(build => buildItem(build))}</TableBody>
+          </Table>
+        )}
       </Paper>
       {openCreateDialog && (
         <CreateBuildDialog repository={repository} open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} />
@@ -241,6 +274,7 @@ export default createFragmentContainer(withStyles(styles)(RepositoryBuildList), 
             changeMessageTitle
             durationInSeconds
             status
+            ...BuildsTable_builds
             ...BuildBranchNameChip_build
             ...BuildChangeChip_build
             ...BuildStatusChip_build

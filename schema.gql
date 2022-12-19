@@ -67,6 +67,7 @@ type Build {
   durationInSeconds: Int
   clockDurationInSeconds: Int
   pullRequest: Int
+  pullRequestLabels: [String]
   isSenderUserCollaborator: Boolean
   senderUserPermissions: String
   changeTimestamp: Int!

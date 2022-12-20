@@ -212,7 +212,7 @@ const BuildRow = styled(
           if (selected) return;
           setSelectedBuildId(build.id);
         },
-        onMouseOut() {
+        onMouseLeave() {
           setSelectedBuildId(null);
         },
       };

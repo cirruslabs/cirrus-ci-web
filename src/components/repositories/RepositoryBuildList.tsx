@@ -272,6 +272,7 @@ export default createFragmentContainer(withStyles(styles)(RepositoryBuildList), 
           node {
             id
             changeMessageTitle
+            clockDurationInSeconds
             durationInSeconds
             status
             ...BuildsTable_builds

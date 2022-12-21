@@ -58,7 +58,7 @@ function BuildDurationsChart(props: Props) {
   }
 
   return (
-    <ResponsiveContainer height="100%" width="100%">
+    <ResponsiveContainer debounce={300} height="100%" width="100%">
       <BarChart data={builds}>
         <YAxis dataKey="clockDurationInSeconds" tickFormatter={formatDuration} ticks={ticks} />
         <XAxis dataKey="changeMessageTitle" hide />

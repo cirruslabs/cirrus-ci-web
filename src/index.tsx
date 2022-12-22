@@ -8,8 +8,11 @@ import { RecoilRoot } from 'recoil';
 import * as Sentry from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
 
+let release = process.env.REACT_APP_CIRRUS_TAG ? `cirrus-ci-web@${process.env.REACT_APP_CIRRUS_TAG}` : null;
+
 Sentry.init({
   dsn: process.env.REACT_APP_SENTRY_DSN,
+  release: release,
   environment: process.env.NODE_ENV,
   integrations: [
     new BrowserTracing({

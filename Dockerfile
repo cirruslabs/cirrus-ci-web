@@ -1,5 +1,6 @@
 FROM node:current as builder
 
+ARG CIRRUS_CHANGE_IN_REPO
 ARG SENTRY_DSN
 
 WORKDIR /tmp/cirrus-ci-web
@@ -12,6 +13,7 @@ RUN yarn
 
 ENV NODE_ENV=production
 ENV NODE_OPTIONS=--openssl-legacy-provider
+ENV REACT_APP_CIRRUS_CHANGE_IN_REPO=$CIRRUS_CHANGE_IN_REPO
 ENV REACT_APP_SENTRY_DSN=$SENTRY_DSN
 
 ADD . /tmp/cirrus-ci-web/

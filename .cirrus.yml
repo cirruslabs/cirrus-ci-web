@@ -32,8 +32,23 @@ deploy_docker_builder:
     DOCKER_USER_NAME: ENCRYPTED[5eb941ed91706fab3eb53bfd01dc3b88caee18e11f9df18b4663875f83e9e390eeb0db087278035b61bf5b24e8f96328]
     DOCKER_PASSWORD: ENCRYPTED[5e9b3eb1391a7a0cf259c41920ce60d034660cc49f0b85b2738eb53d9a537b90d0d2173d6321096facd11f5e5a9e31c3]
     SENTRY_DSN: 'https://6cf37e33c8224cd790e140f6b4a5d595@o4504250314522624.ingest.sentry.io/4504250322845696'
+    SENTRY_ORG: cirrus-labs
+    SENTRY_PROJECT: cirrus-ci-web
+    SENTRY_AUTH_TOKEN: ENCRYPTED[!c16a5cf7da5f856b4bc2f21fe8cb7aa2a6c981f851c094ed4d3025fd02ea59a58a86cee8b193a69a1fc20fa217e56ac3!]
+  install_sentry_cli_script:
+    - npm install -g @sentry/cli
   build_script:
     - docker --version
-    - docker build --build-arg SENTRY_DSN=$SENTRY_DSN --cache-from cirrusci/web-front-end:latest --tag cirrusci/web-front-end:latest .
+    - docker build --build-arg CIRRUS_CHANGE_IN_REPO=$CIRRUS_CHANGE_IN_REPO --build-arg SENTRY_DSN=$SENTRY_DSN --cache-from cirrusci/web-front-end:latest --tag cirrusci/web-front-end:latest .
   login_script: docker login --username $DOCKER_USER_NAME --password $DOCKER_PASSWORD
   push_script: docker push cirrusci/web-front-end:latest
+  copyout_build_artifacts_script:
+    - export CONTAINER_ID=$(docker create docker.io/cirrusci/web-front-end:latest)
+    - docker cp $CONTAINER_ID:/svc/cirrus-ci-web/ build/
+    - docker rm -v $CONTAINER_ID
+  create_sentry_release_script:
+    - export SENTRY_RELEASE="$CIRRUS_CHANGE_IN_REPO"
+    - sentry-cli releases new $SENTRY_RELEASE
+    - sentry-cli releases set-commits $SENTRY_RELEASE --auto
+    - sentry-cli releases files $SENTRY_RELEASE upload-sourcemaps build/
+    - sentry-cli releases finalize $SENTRY_RELEASE

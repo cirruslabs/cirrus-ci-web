@@ -42,6 +42,10 @@ deploy_docker_builder:
     - docker build --build-arg CIRRUS_CHANGE_IN_REPO=$CIRRUS_CHANGE_IN_REPO --build-arg SENTRY_DSN=$SENTRY_DSN --cache-from cirrusci/web-front-end:latest --tag cirrusci/web-front-end:latest .
   login_script: docker login --username $DOCKER_USER_NAME --password $DOCKER_PASSWORD
   push_script: docker push cirrusci/web-front-end:latest
+  copyout_build_artifacts_script:
+    - export CONTAINER_ID=$(docker create docker.io/cirrusci/web-front-end:latest)
+    - docker cp $CONTAINER_ID:/svc/cirrus-ci-web/ build/
+    - docker rm -v $CONTAINER_ID
   create_sentry_release_script:
     - export SENTRY_RELEASE="$CIRRUS_CHANGE_IN_REPO"
     - sentry-cli releases new $SENTRY_RELEASE

@@ -46,4 +46,5 @@ deploy_docker_builder:
     - export SENTRY_RELEASE="$CIRRUS_CHANGE_IN_REPO"
     - sentry-cli releases new $SENTRY_RELEASE
     - sentry-cli releases set-commits $SENTRY_RELEASE --auto
+    - sentry-cli releases files $SENTRY_RELEASE upload-sourcemaps build/
     - sentry-cli releases finalize $SENTRY_RELEASE

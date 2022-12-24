@@ -6,9 +6,10 @@ import { BuildStatus } from './__generated__/BuildStatusChip_build.graphql';
 
 interface Props {
   status: BuildStatus;
+  mini?: boolean;
 }
 
-function BuildStatusChip({ status }: Props) {
+function BuildStatusChip({ status, mini = false }: Props) {
   const label =
     {
       CREATED: 'created',
@@ -28,15 +29,19 @@ function BuildStatusChip({ status }: Props) {
       ABORTED: 'warning',
     }[status] || 'error';
 
-  const icon =
+  const IconName =
     {
       TRIGGERED: 'play_circle_outlined',
       CREATED: 'cloud_circle_outlined',
       EXECUTING: 'play_circle_outlined',
       COMPLETED: 'check_circle_outlined',
       FAILED: 'error_outline_outlined',
-      ABORTED: <StopCircleOutlinedIcon />, // mui shows wrong icon with the name 'stop_circle_outlined'
+      ABORTED: StopCircleOutlinedIcon, // mui shows wrong icon with the name 'stop_circle_outlined'
     }[status] || 'error_outline_outlined';
+
+  if (mini) {
+    return typeof IconName === 'string' ? <Icon color={color}>{IconName}</Icon> : <IconName color={color} />;
+  }
 
   return (
     <Chip
@@ -44,7 +49,7 @@ function BuildStatusChip({ status }: Props) {
       color={color}
       size="small"
       variant="outlined"
-      icon={typeof status === 'string' ? <Icon>{icon}</Icon> : icon}
+      icon={typeof IconName === 'string' ? <Icon>{IconName}</Icon> : <IconName />}
       sx={{
         '& .MuiChip-iconSmall': {
           marginLeft: '5px',

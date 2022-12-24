@@ -20,29 +20,25 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import withStyles from '@mui/styles/withStyles';
 import InfoIcon from '@mui/icons-material/Info';
-import CommitIcon from '@mui/icons-material/Commit';
 import Typography from '@mui/material/Typography';
 import createStyles from '@mui/styles/createStyles';
-import CallSplitIcon from '@mui/icons-material/CallSplit';
 
 import BuildStatusChipNew from '../chips/BuildStatusChipNew';
 import { muiThemeOptions } from '../../cirrusTheme';
-import { shorten } from '../../utils/text';
 import { absoluteLink } from '../../utils/link';
-import { formatDuration } from '../../utils/time';
 import { isBuildFinalStatus } from '../../utils/status';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
+import BuildHash from './BuildHash';
+import BuildBranch from './BuildBranch';
+import BuildDuration from './BuildDuration';
 
-import { BuildsTable_builds } from './__generated__/BuildsTable_builds.graphql';
+import { BuildTable_builds } from './__generated__/BuildTable_builds.graphql';
 
 import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
 
 // todo: move custom values to mui theme adjustments
 const styles = theme =>
   createStyles({
-    table: {
-      tableLayout: 'auto',
-    },
     row: {
       height: 82,
       cursor: 'pointer',
@@ -53,12 +49,8 @@ const styles = theme =>
       },
     },
     cell: {
-      fontSize: 16,
       whiteSpace: 'nowrap',
       textOverflow: 'ellipsis',
-      '& *': {
-        fontSize: '16px !important',
-      },
     },
     cellStatus: {
       width: 150,
@@ -86,6 +78,7 @@ const styles = theme =>
       minWidth: 110,
       maxWidth: 110,
       textAlign: 'right',
+      '& > div': { justifyContent: 'flex-end' },
     },
     infoIcon: {
       color: theme.palette.action.active,
@@ -98,41 +91,31 @@ const styles = theme =>
       WebkitBoxOrient: 'vertical',
       whiteSpace: 'normal',
     },
-    hash: {
-      color: theme.palette.text.secondary,
-      fontFamily: 'Courier',
-      marginTop: theme.spacing(0.5),
-      border: `1px solid ${theme.palette.divider}`,
-      borderRadius: 3 * theme.shape.borderRadius,
-      width: 'fit-content',
-      padding: '1px 5px',
-      '& *': { fontSize: '14px !important' },
-    },
   });
 
 const styled = withStyles(styles);
 
 interface Props extends WithStyles<typeof styles> {
-  builds: BuildsTable_builds;
+  builds: BuildTable_builds;
   selectedBuildId?: string;
   setSelectedBuildId?: Function;
 }
 
 const buildSubscription = graphql`
-  subscription BuildsTableSubscription($buildID: ID!) {
+  subscription BuildTableSubscription($buildID: ID!) {
     build(id: $buildID) {
-      ...BuildsTable_builds
+      ...BuildTable_builds
     }
   }
 `;
 
-const BuildsTable = styled(({ classes, builds = [], selectedBuildId, setSelectedBuildId }: Props) => {
+const BuildTable = styled(({ classes, builds = [], selectedBuildId, setSelectedBuildId }: Props) => {
   const themeOptions = useRecoilValue(muiThemeOptions);
   const muiTheme = useMemo(() => createTheme(themeOptions), [themeOptions]);
 
   return (
     <ThemeProvider theme={muiTheme}>
-      <Table className={classes.table}>
+      <Table>
         <TableHead>
           <HeadRow />
         </TableHead>
@@ -181,7 +164,7 @@ const HeadRow = styled(({ classes }: HeadRowProps) => {
 });
 
 interface BuildRowProps extends WithStyles<typeof styles> {
-  build: BuildsTable_builds[number];
+  build: BuildTable_builds[number];
   selected?: boolean;
   setSelectedBuildId?: Function;
 }
@@ -260,55 +243,38 @@ const BuildRow = styled(
           <Typography className={classes.commitName} title={build.changeMessageTitle}>
             {build.changeMessageTitle}
           </Typography>
-          <Stack className={classes.hash} direction="row" alignItems="center" spacing={0.5}>
-            <CommitIcon fontSize="inherit" />
-            <span>{build.changeIdInRepo.substr(0, 7)}</span>
-          </Stack>
+          <Stack height={theme.spacing(0.5)} />
+          <BuildHash build={build} />
         </TableCell>
 
         {/* BRANCH */}
         <TableCell className={cx(classes.cell, classes.cellBranch)}>
-          <Stack direction="row" alignItems="center" spacing={0.5}>
-            <CallSplitIcon fontSize="inherit" />
-            <Link
-              href={absoluteLink(
-                build.repository.platform,
-                build.repository.owner,
-                build.repository.name,
-                build.branch,
-              )}
-              underline="hover"
-              noWrap
-              title={build.branch}
-            >
-              {shorten(build.branch)}
-            </Link>
-          </Stack>
+          <BuildBranch build={build} />
         </TableCell>
 
         {/* DURATION */}
         <TableCell className={cx(classes.cell, classes.cellDuration)}>
-          {build.clockDurationInSeconds ? formatDuration(build.clockDurationInSeconds) : '—'}
+          <BuildDuration build={build} />
         </TableCell>
       </TableRow>
     );
   }),
 );
 
-export default createFragmentContainer(BuildsTable, {
+export default createFragmentContainer(BuildTable, {
   builds: graphql`
-    fragment BuildsTable_builds on Build @relay(plural: true) {
+    fragment BuildTable_builds on Build @relay(plural: true) {
       id
-      branch
       status
-      changeIdInRepo
       changeMessageTitle
-      clockDurationInSeconds
       repository {
         platform
         owner
         name
       }
+      ...BuildHash_build
+      ...BuildBranch_build
+      ...BuildDuration_build
     }
   `,
 });

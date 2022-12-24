@@ -1,43 +1,31 @@
 import { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
-import { ThemeProvider } from '@emotion/react';
-import { createFragmentContainer } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
 import { useNavigate } from 'react-router-dom';
+import { ThemeProvider } from '@emotion/react';
+import { graphql } from 'babel-plugin-relay/macro';
+import { createFragmentContainer } from 'react-relay';
 
-import { WithStyles } from '@mui/styles';
-import { useTheme } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableRow from '@mui/material/TableRow';
-import TableHead from '@mui/material/TableHead';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import Typography from '@mui/material/Typography';
-import withStyles from '@mui/styles/withStyles';
-import createStyles from '@mui/styles/createStyles';
+import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import { Stack, Table, TableRow, TableHead, TableBody, TableCell, Typography } from '@mui/material';
 
 import { muiThemeOptions } from '../../cirrusTheme';
 import { navigateRepositoryHelper } from '../../utils/navigateHelper';
+import BuildPreview from '../builds/BuildPreview';
 
 import { RepositoryTable_repositories } from './__generated__/RepositoryTable_repositories.graphql';
 
 // todo: move custom values to mui theme adjustments
-const styles = theme =>
+const styles = () =>
   createStyles({
-    table: {
-      tableLayout: 'auto',
-    },
     row: {
       cursor: 'pointer',
     },
-    cell: {
-      fontSize: 16,
-      whiteSpace: 'nowrap',
-      textOverflow: 'ellipsis',
-      '& *': {
-        fontSize: '16px !important',
-      },
+    cellRepository: {},
+    cellLastBuild: {
+      width: '600px',
+      maxWidth: '600px',
+      minWidth: '600px',
     },
   });
 
@@ -53,7 +41,7 @@ const RepositoryTable = styled(({ classes, repositories = [] }: Props) => {
 
   return (
     <ThemeProvider theme={muiTheme}>
-      <Table className={classes.table}>
+      <Table>
         <TableHead>
           <HeadRow />
         </TableHead>
@@ -72,8 +60,8 @@ interface HeadRowProps extends WithStyles<typeof styles> {}
 const HeadRow = styled(({ classes }: HeadRowProps) => {
   return (
     <TableRow>
-      <TableCell className={classes.cell}>Repository</TableCell>
-      <TableCell className={classes.cell}>Last Build</TableCell>
+      <TableCell className={classes.cellRepository}>Repository</TableCell>
+      <TableCell className={classes.cellLastBuild}>Last Build</TableCell>
     </TableRow>
   );
 });
@@ -83,27 +71,29 @@ interface RepositoryRowProps extends WithStyles<typeof styles> {
 }
 
 const RepositoryRow = styled(({ classes, repository }: RepositoryRowProps) => {
-  const theme = useTheme();
   let navigate = useNavigate();
 
   let build = repository.lastDefaultBranchBuild;
-  if (!build) {
-    return null;
-  }
+  if (!build) return null;
 
   const onClick = e => {
+    if (e.target.closest('a')) return;
     navigateRepositoryHelper(navigate, e, repository.owner, repository.name);
   };
 
   return (
-    <TableRow className={classes.row} hover={true} onClick={onClick} onAuxClick={onClick}>
+    <TableRow className={classes.row} onClick={onClick} onAuxClick={onClick} hover>
       {/* REPOSITORY */}
-      <TableCell className={classes.cell}>
-        <Typography noWrap title={repository.name}>
+      <TableCell className={classes.cellRepository}>
+        <Typography title={repository.name} noWrap>
           {repository.name}
         </Typography>
       </TableCell>
-      <TableCell>Some build...</TableCell>
+
+      {/* LAST BUILD */}
+      <TableCell className={classes.cellLastBuild}>
+        <BuildPreview build={build} />
+      </TableCell>
     </TableRow>
   );
 });
@@ -114,8 +104,10 @@ export default createFragmentContainer(RepositoryTable, {
       id
       owner
       name
+      platform
       lastDefaultBranchBuild {
         id
+        ...BuildPreview_build
       }
     }
   `,

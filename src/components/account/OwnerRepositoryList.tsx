@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import Tooltip from '@mui/material/Tooltip';
@@ -18,17 +17,20 @@ import { OwnerRepositoryList_info } from './__generated__/OwnerRepositoryList_in
 import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 import createStyles from '@mui/styles/createStyles';
 import RepositoryTable from '../repositories/RepositoryTable';
+import usePageWidth from '../../utils/usePageWidth';
+import Paper from '../common/Paper';
 
 let styles = theme =>
   createStyles({
-    paper: {
-      padding: theme.spacing(1.0, 2.5, 1.5),
-      boxShadow: '0 16px 52px rgb(0 0 0 / 13%)',
-      borderRadius: 4 * theme.shape.borderRadius,
+    root: {
+      paddingBottom: theme.spacing(16.0),
     },
     header: {
       paddingLeft: 14,
       justifyContent: 'space-between',
+    },
+    paper: {
+      paddingBottom: theme.spacing(4.0),
     },
   });
 
@@ -40,6 +42,8 @@ let OwnerRepositoryList = (props: Props) => {
   let { classes, info } = props;
   let repositories = info.repositories.edges.map(edge => edge.node);
   let organizationSettings = null;
+  let pageWidth = usePageWidth();
+  let isNewDesign = pageWidth > 900;
 
   if (info && info.viewerPermission === 'ADMIN') {
     organizationSettings = (
@@ -53,9 +57,8 @@ let OwnerRepositoryList = (props: Props) => {
     );
   }
 
-  const isNewDesign = true;
   return (
-    <div>
+    <div className={classes.root}>
       <AppBreadcrumbs ownerName={info.name} platform={info.platform} />
       <Paper className={classes.paper}>
         <Toolbar className={classes.header} disableGutters>

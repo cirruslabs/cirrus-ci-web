@@ -11,7 +11,6 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
@@ -22,8 +21,9 @@ import BuildChangeChip from '../chips/BuildChangeChip';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
 import usePageWidth from '../../utils/usePageWidth';
 import { isBuildFinalStatus } from '../../utils/status';
-import BuildsTable from '../../components/builds/BuildsTable';
+import BuildTable from '../builds/BuildTable';
 import MarkdownTypography from '../common/MarkdownTypography';
+import Paper from '../common/Paper';
 import { ViewerBuildListRefetchQuery } from './__generated__/ViewerBuildListRefetchQuery.graphql';
 import { ViewerBuildList_viewer$key } from './__generated__/ViewerBuildList_viewer.graphql';
 
@@ -31,9 +31,6 @@ import { ViewerBuildList_viewer$key } from './__generated__/ViewerBuildList_view
 const styles = theme => ({
   paper: {
     marginTop: theme.spacing(4),
-    padding: theme.spacing(1.0, 2.5, 1.5),
-    boxShadow: '0 16px 52px rgb(0 0 0 / 13%)',
-    borderRadius: 4 * theme.shape.borderRadius,
   },
   header: {
     paddingLeft: 14,
@@ -80,7 +77,7 @@ function ViewerBuildList(props: Props) {
                 ...BuildBranchNameChip_build
                 ...BuildChangeChip_build
                 ...BuildStatusChip_build
-                ...BuildsTable_builds
+                ...BuildTable_builds
                 repository {
                   ...RepositoryNameChip_repository
                 }
@@ -140,7 +137,7 @@ function ViewerBuildList(props: Props) {
   }
 
   let buildsComponent = isNewDesign ? (
-    <BuildsTable builds={builds} />
+    <BuildTable builds={builds} />
   ) : (
     <Table style={{ tableLayout: 'auto' }}>
       <TableBody>{builds.map(build => buildItem(build))}</TableBody>

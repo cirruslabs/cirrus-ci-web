@@ -18,14 +18,38 @@ export const muiThemeOptions = selector({
   },
 });
 
+let muiBaseTheme: ThemeOptions = {
+  components: {
+    MuiTableCell: {
+      styleOverrides: {
+        head: ({ theme }) => ({
+          fontSize: 14,
+          textTransform: 'uppercase',
+          paddingBottom: theme.spacing(1.5),
+          color: theme.palette.text.disabled,
+          '& *': { fontSize: '14px !important' },
+        }),
+        body: {
+          fontSize: 16,
+          '& *': { fontSize: '16px !important' },
+        },
+      },
+    },
+  },
+};
+
 export let muiLightTheme: ThemeOptions = {
+  ...muiBaseTheme,
   palette: {
+    ...muiBaseTheme.palette,
     mode: 'light',
   },
 };
 
 export let muiDarkTheme: ThemeOptions = {
+  ...muiBaseTheme,
   palette: {
+    ...muiBaseTheme.palette,
     mode: 'dark',
   },
 };

@@ -3,13 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { createFragmentContainer, requestSubscription } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { Helmet as Head } from 'react-helmet';
-import cx from 'classnames';
 
 import { WithStyles } from '@mui/styles';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Table from '@mui/material/Table';
-import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
@@ -30,14 +28,15 @@ import { NodeOfConnection } from '../../utils/utility-types';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
 import usePageWidth from '../../utils/usePageWidth';
 import environment from '../../createRelayEnvironment';
-import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
+import AppBreadcrumbs from '../common/AppBreadcrumbs';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import CreateBuildDialog from '../builds/CreateBuildDialog';
 import BuildDurationsChart from '../builds/BuildDurationsChart';
 import BuildBranchNameChip from '../chips/BuildBranchNameChip';
 import BuildChangeChip from '../chips/BuildChangeChip';
 import MarkdownTypography from '../common/MarkdownTypography';
-import BuildsTable from '../../components/builds/BuildsTable';
+import BuildTable from '../builds/BuildTable';
+import Paper from '../common/Paper';
 
 import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildList_repository.graphql';
 
@@ -47,11 +46,6 @@ const styles = theme => ({
     paddingBottom: theme.spacing(16.0),
   },
   paper: {
-    padding: theme.spacing(1.0, 2.5, 1.5),
-    boxShadow: '0 16px 52px rgb(0 0 0 / 13%)',
-    borderRadius: 4 * theme.shape.borderRadius,
-  },
-  paperBuildsTable: {
     paddingBottom: theme.spacing(4.0),
   },
   header: {
@@ -156,7 +150,7 @@ function RepositoryBuildList(props: Props) {
 
   if (props.branch && builds.length > 5) {
     buildsChart = (
-      <Paper className={classes.paper} sx={{ mb: 2 }}>
+      <Paper>
         <Toolbar className={classes.header} disableGutters>
           <Typography variant="h5" color="inherit">
             Duration Chart
@@ -229,7 +223,7 @@ function RepositoryBuildList(props: Props) {
       {buildsChart}
 
       {/* BUILDS TABLE */}
-      <Paper className={cx(classes.paper, classes.paperBuildsTable)}>
+      <Paper className={classes.paper}>
         <Toolbar className={classes.header} disableGutters>
           <Stack direction="row" alignItems="center">
             <Typography variant="h5" color="inherit">
@@ -244,7 +238,7 @@ function RepositoryBuildList(props: Props) {
           </div>
         </Toolbar>
         {isNewDesign ? (
-          <BuildsTable builds={builds} selectedBuildId={selectedBuildId} setSelectedBuildId={setSelectedBuildId} />
+          <BuildTable builds={builds} selectedBuildId={selectedBuildId} setSelectedBuildId={setSelectedBuildId} />
         ) : (
           <Table style={{ tableLayout: 'auto' }}>
             <TableBody>{builds.map(build => buildItem(build))}</TableBody>
@@ -275,7 +269,7 @@ export default createFragmentContainer(withStyles(styles)(RepositoryBuildList), 
             clockDurationInSeconds
             durationInSeconds
             status
-            ...BuildsTable_builds
+            ...BuildTable_builds
             ...BuildBranchNameChip_build
             ...BuildChangeChip_build
             ...BuildStatusChip_build

@@ -17,12 +17,18 @@ import { graphql } from 'babel-plugin-relay/macro';
 import { OwnerRepositoryList_info } from './__generated__/OwnerRepositoryList_info.graphql';
 import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 import createStyles from '@mui/styles/createStyles';
+import RepositoryTable from '../repositories/RepositoryTable';
 
 let styles = theme =>
   createStyles({
-    toolbar: {
+    paper: {
+      padding: theme.spacing(1.0, 2.5, 1.5),
+      boxShadow: '0 16px 52px rgb(0 0 0 / 13%)',
+      borderRadius: 4 * theme.shape.borderRadius,
+    },
+    header: {
       paddingLeft: 14,
-      background: theme.palette.action.disabledBackground,
+      justifyContent: 'space-between',
     },
   });
 
@@ -47,23 +53,27 @@ let OwnerRepositoryList = (props: Props) => {
     );
   }
 
+  const isNewDesign = true;
+
   return (
     <div>
       <AppBreadcrumbs ownerName={info.name} platform={info.platform} />
-      <Paper elevation={16}>
-        <Toolbar className={classes.toolbar} sx={{ justifyContent: 'space-between' }} disableGutters>
-          <Typography variant="h5" color="inherit">
-            Repositories
-          </Typography>
+      <Paper className={classes.paper}>
+        <Toolbar className={classes.header} disableGutters>
+          <Typography variant="h5">Repositories</Typography>
           {organizationSettings}
         </Toolbar>
-        <Table style={{ tableLayout: 'auto' }}>
-          <TableBody>
-            {info.repositories.edges.map(edge => (
-              <LastDefaultBranchBuildRow key={edge.node.id} repository={edge.node} />
-            ))}
-          </TableBody>
-        </Table>
+        {isNewDesign ? (
+          <RepositoryTable />
+        ) : (
+          <Table style={{ tableLayout: 'auto' }}>
+            <TableBody>
+              {info.repositories.edges.map(edge => (
+                <LastDefaultBranchBuildRow key={edge.node.id} repository={edge.node} />
+              ))}
+            </TableBody>
+          </Table>
+        )}
       </Paper>
     </div>
   );

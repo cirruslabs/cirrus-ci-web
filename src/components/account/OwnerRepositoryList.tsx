@@ -38,7 +38,7 @@ interface Props extends WithStyles<typeof styles> {
 
 let OwnerRepositoryList = (props: Props) => {
   let { classes, info } = props;
-
+  let repositories = info.repositories.edges.map(edge => edge.node);
   let organizationSettings = null;
 
   if (info && info.viewerPermission === 'ADMIN') {
@@ -54,7 +54,6 @@ let OwnerRepositoryList = (props: Props) => {
   }
 
   const isNewDesign = true;
-
   return (
     <div>
       <AppBreadcrumbs ownerName={info.name} platform={info.platform} />
@@ -64,12 +63,12 @@ let OwnerRepositoryList = (props: Props) => {
           {organizationSettings}
         </Toolbar>
         {isNewDesign ? (
-          <RepositoryTable />
+          <RepositoryTable repositories={repositories} />
         ) : (
           <Table style={{ tableLayout: 'auto' }}>
             <TableBody>
-              {info.repositories.edges.map(edge => (
-                <LastDefaultBranchBuildRow key={edge.node.id} repository={edge.node} />
+              {repositories.map(repository => (
+                <LastDefaultBranchBuildRow key={repository.id} repository={repository} />
               ))}
             </TableBody>
           </Table>
@@ -91,6 +90,7 @@ export default createFragmentContainer(withStyles(styles)(OwnerRepositoryList), 
           node {
             id
             ...LastDefaultBranchBuildRow_repository
+            ...RepositoryTable_repositories
           }
         }
       }

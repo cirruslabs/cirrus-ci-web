@@ -36,7 +36,7 @@ deploy_docker_builder:
     SENTRY_PROJECT: cirrus-ci-web
     SENTRY_AUTH_TOKEN: ENCRYPTED[!c16a5cf7da5f856b4bc2f21fe8cb7aa2a6c981f851c094ed4d3025fd02ea59a58a86cee8b193a69a1fc20fa217e56ac3!]
   install_sentry_cli_script:
-    - npm install -g @sentry/cli
+    - curl -sL https://sentry.io/get-cli/ | bash
   build_script:
     - docker --version
     - docker build --build-arg CIRRUS_CHANGE_IN_REPO=$CIRRUS_CHANGE_IN_REPO --build-arg SENTRY_DSN=$SENTRY_DSN --cache-from cirrusci/web-front-end:latest --tag cirrusci/web-front-end:latest .

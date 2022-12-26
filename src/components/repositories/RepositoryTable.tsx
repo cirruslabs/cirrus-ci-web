@@ -7,7 +7,7 @@ import { createFragmentContainer } from 'react-relay';
 
 import { createTheme } from '@mui/material/styles';
 import { createStyles, withStyles, WithStyles } from '@mui/styles';
-import { Stack, Table, TableRow, TableHead, TableBody, TableCell, Typography } from '@mui/material';
+import { Table, TableRow, TableHead, TableBody, TableCell, Typography } from '@mui/material';
 
 import { muiThemeOptions } from '../../cirrusTheme';
 import { navigateRepositoryHelper } from '../../utils/navigateHelper';

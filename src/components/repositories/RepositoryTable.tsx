@@ -21,12 +21,12 @@ const styles = () =>
     row: {
       cursor: 'pointer',
     },
-    cellRepository: {},
-    cellLastBuild: {
-      width: '600px',
-      maxWidth: '600px',
-      minWidth: '600px',
+    cellRepository: {
+      width: '250px',
+      maxWidth: '250px',
+      minWidth: '250px',
     },
+    cellLastBuild: {},
   });
 
 const styled = withStyles(styles);
@@ -60,7 +60,7 @@ interface HeadRowProps extends WithStyles<typeof styles> {}
 const HeadRow = styled(({ classes }: HeadRowProps) => {
   return (
     <TableRow>
-      <TableCell className={classes.cellRepository}>Repository</TableCell>
+      <TableCell className={classes.cellRepository}>Name</TableCell>
       <TableCell className={classes.cellLastBuild}>Last Build</TableCell>
     </TableRow>
   );

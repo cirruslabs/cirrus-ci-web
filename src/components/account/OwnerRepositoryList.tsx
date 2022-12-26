@@ -23,7 +23,7 @@ import Paper from '../common/Paper';
 let styles = theme =>
   createStyles({
     root: {
-      paddingBottom: theme.spacing(16.0),
+      paddingBottom: theme.spacing(15.0),
     },
     header: {
       paddingLeft: 14,

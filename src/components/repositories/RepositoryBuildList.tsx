@@ -43,9 +43,9 @@ import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildL
 // todo: move custom values to mui theme adjustments
 const styles = theme => ({
   root: {
-    paddingBottom: theme.spacing(16.0),
+    paddingBottom: theme.spacing(15.0),
   },
-  paper: {
+  TablePaper: {
     paddingBottom: theme.spacing(4.0),
   },
   header: {
@@ -61,6 +61,9 @@ const styles = theme => ({
   cell: {
     width: '100%',
     maxWidth: '600px',
+  },
+  buildsChartPaper: {
+    marginBottom: theme.spacing(1.5),
   },
   buildsChart: {
     height: 150,
@@ -150,7 +153,7 @@ function RepositoryBuildList(props: Props) {
 
   if (props.branch && builds.length > 5) {
     buildsChart = (
-      <Paper>
+      <Paper className={classes.buildsChartPaper}>
         <Toolbar className={classes.header} disableGutters>
           <Typography variant="h5" color="inherit">
             Duration Chart
@@ -223,7 +226,7 @@ function RepositoryBuildList(props: Props) {
       {buildsChart}
 
       {/* BUILDS TABLE */}
-      <Paper className={classes.paper}>
+      <Paper className={classes.TablePaper}>
         <Toolbar className={classes.header} disableGutters>
           <Stack direction="row" alignItems="center">
             <Typography variant="h5" color="inherit">

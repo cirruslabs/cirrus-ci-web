@@ -67,7 +67,8 @@ const styles = theme =>
     },
     cellStatusChip: {
       '& *': {
-        fontSize: '14px !important',
+        fontSize: '15px !important',
+        color: theme.palette.background.default,
       },
     },
     cellRepository: {

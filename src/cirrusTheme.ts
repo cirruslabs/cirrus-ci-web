@@ -18,18 +18,6 @@ export const muiThemeOptions = selector({
   },
 });
 
-export let muiLightTheme: ThemeOptions = {
-  palette: {
-    mode: 'light',
-  },
-};
-
-export let muiDarkTheme: ThemeOptions = {
-  palette: {
-    mode: 'dark',
-  },
-};
-
 export const cirrusColorsState = selector({
   key: 'cirrusColorsState',
   get: ({ get }) => {
@@ -173,4 +161,12 @@ export let cirrusDarkTheme: ThemeOptions = {
       },
     },
   },
+};
+
+export let muiLightTheme: ThemeOptions = {
+  palette: cirrusLightTheme.palette,
+};
+
+export let muiDarkTheme: ThemeOptions = {
+  palette: cirrusDarkTheme.palette,
 };

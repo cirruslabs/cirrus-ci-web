@@ -19,7 +19,7 @@ function BuildDurationsChart(props: Props) {
   let navigate = useNavigate();
   let statusColorMapping = useBuildStatusColorMapping();
   let { builds, selectedBuildId, onSelectBuildId } = props;
-  let maxDuration = Math.max(...builds.map(build => build.clockDurationInSeconds || 0));
+  let maxDuration = Math.max(...builds.map(build => build.durationInSeconds || 0));
   let ticks = [0];
   for (let nextTick = 60; nextTick < maxDuration; nextTick += 60) {
     ticks.push(nextTick);
@@ -60,11 +60,11 @@ function BuildDurationsChart(props: Props) {
   return (
     <ResponsiveContainer debounce={300} height="100%" width="100%">
       <BarChart data={builds}>
-        <YAxis dataKey="clockDurationInSeconds" tickFormatter={formatDuration} ticks={ticks} />
+        <YAxis dataKey="durationInSeconds" tickFormatter={formatDuration} ticks={ticks} />
         <XAxis dataKey="changeMessageTitle" hide />
         <Tooltip cursor={false} content={BuildDurationsChartTooltip} />
         <Bar
-          dataKey="clockDurationInSeconds"
+          dataKey="durationInSeconds"
           isAnimationActive={false}
           shape={props => renderBuildBar(props, selectedBuildId)}
           onClick={(build, index, event) => navigateBuildHelper(navigate, event, build.id)}

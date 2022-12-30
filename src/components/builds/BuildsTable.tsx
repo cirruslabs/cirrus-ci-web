@@ -168,6 +168,7 @@ const HeadRow = styled(({ classes }: HeadRowProps) => {
       <TableCell className={cx(classes.cell, classes.cellRepository)}>Repository</TableCell>
       <TableCell className={cx(classes.cell, classes.cellCommit)}>Commit</TableCell>
       <TableCell className={cx(classes.cell, classes.cellBranch)}>Branch</TableCell>
+
       <TableCell className={cx(classes.cell, classes.cellDuration)}>
         <Stack direction="row" alignItems="center" justifyContent="end" spacing={0.5}>
           <Tooltip title={durationTooltipText}>
@@ -212,7 +213,7 @@ const BuildRow = styled(
           if (selected) return;
           setSelectedBuildId(build.id);
         },
-        onMouseLeave() {
+        onMouseOut() {
           setSelectedBuildId(null);
         },
       };

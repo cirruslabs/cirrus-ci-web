@@ -40,7 +40,7 @@ export default function Repository(): JSX.Element {
           );
           return <NotFound messageComponent={notFoundMessage} />;
         }
-        return <RepositoryBuildList repository={props.repository} isNew />;
+        return <RepositoryBuildList repository={props.repository} />;
       }}
     />
   );

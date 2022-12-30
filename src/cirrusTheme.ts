@@ -10,26 +10,6 @@ export const prefersDarkModeState = atom({
   effects_UNSTABLE: [localStorageEffect('CurrentlyPreferredTheme')],
 });
 
-export const muiThemeOptions = selector({
-  key: 'muiThemeOptions',
-  get: ({ get }) => {
-    const prefersDarkMode = get(prefersDarkModeState);
-    return prefersDarkMode ? muiDarkTheme : muiLightTheme;
-  },
-});
-
-export let muiLightTheme: ThemeOptions = {
-  palette: {
-    mode: 'light',
-  },
-};
-
-export let muiDarkTheme: ThemeOptions = {
-  palette: {
-    mode: 'dark',
-  },
-};
-
 export const cirrusColorsState = selector({
   key: 'cirrusColorsState',
   get: ({ get }) => {

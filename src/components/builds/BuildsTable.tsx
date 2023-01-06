@@ -91,6 +91,10 @@ const styles = theme =>
     infoIcon: {
       color: theme.palette.action.active,
     },
+    link: {
+      // default palette.primary.main colors
+      color: theme.palette.mode === 'dark' ? '#90caf9' : '#1976d2',
+    },
     commitName: {
       overflow: 'hidden',
       textOverflow: 'ellipsis',
@@ -243,6 +247,7 @@ const BuildRow = styled(
           <Stack direction="row" alignItems="center" spacing={0.5}>
             <BookOutlinedIcon fontSize="inherit" />
             <Link
+              className={classes.link}
               href={absoluteLink(build.repository.platform, build.repository.owner, build.repository.name)}
               underline="hover"
               noWrap
@@ -272,6 +277,7 @@ const BuildRow = styled(
           <Stack direction="row" alignItems="center" spacing={0.5}>
             <CallSplitIcon fontSize="inherit" />
             <Link
+              className={classes.link}
               href={absoluteLink(
                 build.repository.platform,
                 build.repository.owner,

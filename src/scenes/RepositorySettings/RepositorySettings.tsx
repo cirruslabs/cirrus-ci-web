@@ -21,6 +21,9 @@ export default function RepositorySettings(): JSX.Element {
           repository(id: $repositoryId) {
             ...RepositorySettingsPage_repository
           }
+          viewer {
+            ...RepositorySettingsPage_viewer
+          }
         }
       `}
       render={({ error, props }) => {
@@ -30,7 +33,7 @@ export default function RepositorySettings(): JSX.Element {
         if (!props.repository) {
           return <NotFound message={error} />;
         }
-        return <RepositorySettingsPage repository={props.repository} />;
+        return <RepositorySettingsPage viewer={props.viewer} repository={props.repository} />;
       }}
     />
   );

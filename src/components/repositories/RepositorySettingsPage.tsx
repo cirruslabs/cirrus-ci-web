@@ -9,6 +9,7 @@ import { graphql } from 'babel-plugin-relay/macro';
 import { WithStyles } from '@mui/styles';
 import withStyles from '@mui/styles/withStyles';
 import { RepositorySettingsPage_repository } from './__generated__/RepositorySettingsPage_repository.graphql';
+import { RepositorySettingsPage_viewer } from './__generated__/RepositorySettingsPage_viewer.graphql';
 import RepositoryCronSettings from './RepositoryCronSettings';
 import { Link } from '@mui/material';
 import RepositoryDangerSettings from './RepositoryDangerSettings';
@@ -23,10 +24,11 @@ const styles = {
 
 interface Props extends WithStyles<typeof styles> {
   repository: RepositorySettingsPage_repository;
+  viewer: RepositorySettingsPage_viewer;
 }
 
 let RepositorySettingsPage = (props: Props) => {
-  let { classes, repository } = props;
+  let { classes, repository, viewer } = props;
 
   let link = (
     <Link color="inherit" href={`/${repository.platform}/${repository.owner}/${repository.name}`}>
@@ -39,6 +41,7 @@ let RepositorySettingsPage = (props: Props) => {
         ownerName={repository.owner}
         platform={repository.platform}
         repositoryName={repository.name}
+        viewer={viewer}
         extraCrumbs={[
           {
             name: 'Repository Settings',
@@ -83,6 +86,11 @@ export default createFragmentContainer(withStyles(styles)(RepositorySettingsPage
       ...RepositorySecuredVariables_repository
       ...RepositoryCronSettings_repository
       ...RepositoryDangerSettings_repository
+    }
+  `,
+  viewer: graphql`
+    fragment RepositorySettingsPage_viewer on User {
+      ...AppBreadcrumbs_viewer
     }
   `,
 });

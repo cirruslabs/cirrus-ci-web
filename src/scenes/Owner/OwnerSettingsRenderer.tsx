@@ -20,13 +20,16 @@ export default function OwnerSettingsRenderer(): JSX.Element {
           ownerInfoByName(platform: $platform, name: $name) {
             ...OwnerSettings_info
           }
+          viewer {
+            ...OwnerSettings_viewer
+          }
         }
       `}
       render={({ error, props }) => {
         if (!props) {
           return <CirrusLinearProgress />;
         }
-        return <OwnerSettings info={props.ownerInfoByName} />;
+        return <OwnerSettings viewer={props.viewer} info={props.ownerInfoByName} />;
       }}
     />
   );

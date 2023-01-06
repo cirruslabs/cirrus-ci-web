@@ -21,6 +21,9 @@ export default function Task(): JSX.Element {
           task(id: $taskId) {
             ...TaskDetails_task
           }
+          viewer {
+            ...TaskDetails_viewer
+          }
         }
       `}
       render={({ error, props }) => {
@@ -30,7 +33,7 @@ export default function Task(): JSX.Element {
         if (!props.task) {
           return <NotFound message={error} />;
         }
-        return <TaskDetails task={props.task} />;
+        return <TaskDetails viewer={props.viewer} task={props.task} />;
       }}
     />
   );

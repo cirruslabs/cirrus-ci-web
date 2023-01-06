@@ -15,6 +15,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import { RepositoryMetricsPage_repository } from './__generated__/RepositoryMetricsPage_repository.graphql';
+import { RepositoryMetricsPage_viewer } from './__generated__/RepositoryMetricsPage_viewer.graphql';
 import { MetricsQueryParameters } from './__generated__/RepositoryMetricsChartsQuery.graphql';
 import { Helmet as Head } from 'react-helmet';
 import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
@@ -34,11 +35,12 @@ const styles = theme =>
 
 interface Props extends WithStyles<typeof styles> {
   repository: RepositoryMetricsPage_repository;
+  viewer: RepositoryMetricsPage_viewer;
 }
 
 function RepositoryMetricsPage(props: Props) {
   let [parameters, setParameters] = useState<MetricsQueryParameters>({});
-  let { repository, classes } = props;
+  let { repository, viewer, classes } = props;
 
   function handleChange(event) {
     setParameters({
@@ -53,6 +55,7 @@ function RepositoryMetricsPage(props: Props) {
         ownerName={repository.owner}
         platform={repository.platform}
         repositoryName={repository.name}
+        viewer={viewer}
         extraCrumbs={[
           {
             name: 'Metrics',
@@ -160,6 +163,11 @@ export default createFragmentContainer(withStyles(styles)(RepositoryMetricsPage)
       owner
       name
       platform
+    }
+  `,
+  viewer: graphql`
+    fragment RepositoryMetricsPage_viewer on User {
+      ...AppBreadcrumbs_viewer
     }
   `,
 });

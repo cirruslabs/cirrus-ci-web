@@ -24,6 +24,9 @@ export default function OwnerRepository(): JSX.Element {
           ownerRepository(platform: $platform, owner: $owner, name: $name) {
             ...RepositoryBuildList_repository @arguments(branch: $branch)
           }
+          viewer {
+            ...RepositoryBuildList_viewer
+          }
         }
       `}
       render={({ error, props }) => {
@@ -40,7 +43,7 @@ export default function OwnerRepository(): JSX.Element {
           );
           return <NotFound messageComponent={notFoundMessage} />;
         }
-        return <RepositoryBuildList repository={props.ownerRepository} branch={branch} />;
+        return <RepositoryBuildList viewer={props.viewer} repository={props.ownerRepository} branch={branch} />;
       }}
     />
   );

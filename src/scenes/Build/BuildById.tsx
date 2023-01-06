@@ -21,6 +21,9 @@ export default function BuildById(): JSX.Element {
           build(id: $buildId) {
             ...BuildDetails_build
           }
+          viewer {
+            ...BuildDetails_viewer
+          }
         }
       `}
       render={({ error, props }) => {
@@ -30,7 +33,7 @@ export default function BuildById(): JSX.Element {
         if (!props.build) {
           return <NotFound message={error} />;
         }
-        return <BuildDetails build={props.build} />;
+        return <BuildDetails viewer={props.viewer} build={props.build} />;
       }}
     />
   );

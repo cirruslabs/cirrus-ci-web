@@ -23,6 +23,9 @@ export default function BuildBySHA() {
             branch
             ...BuildDetails_build
           }
+          viewer {
+            ...BuildDetails_viewer
+          }
         }
       `}
       render={({ error, props }) => {
@@ -38,7 +41,7 @@ export default function BuildBySHA() {
             return <BuildDetails build={build} />;
           }
         }
-        return <BuildDetails build={props.searchBuilds[0]} />;
+        return <BuildDetails viewer={props.viewer} build={props.searchBuilds[0]} />;
       }}
     />
   );

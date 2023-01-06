@@ -29,6 +29,7 @@ import TaskCommandList from './TaskCommandList';
 import TaskCommandsProgress from './TaskCommandsProgress';
 import TaskList from './TaskList';
 import { TaskDetails_task } from './__generated__/TaskDetails_task.graphql';
+import { TaskDetails_viewer } from './__generated__/TaskDetails_viewer.graphql';
 import {
   TaskDetailsReRunMutationResponse,
   TaskDetailsReRunMutationVariables,
@@ -175,6 +176,7 @@ const styles = theme =>
 
 interface Props extends WithStyles<typeof styles> {
   task: TaskDetails_task;
+  viewer: TaskDetails_viewer;
 }
 
 function TaskDetails(props: Props) {
@@ -192,7 +194,7 @@ function TaskDetails(props: Props) {
     return () => subscription.dispose();
   }, [props.task.id, props.task.status]);
 
-  let { task, classes } = props;
+  let { task, viewer, classes } = props;
   let build = task.build;
   let repository = task.repository;
 
@@ -505,6 +507,7 @@ function TaskDetails(props: Props) {
         buildId={build.id}
         taskName={task.name}
         taskId={task.id}
+        viewer={viewer}
       />
       <Head>
         <title>{task.name} - Cirrus CI</title>
@@ -689,6 +692,11 @@ export default createFragmentContainer(withStyles(styles)(TaskDetails), {
         locator
         trustedSecret
       }
+    }
+  `,
+  viewer: graphql`
+    fragment TaskDetails_viewer on User {
+      ...AppBreadcrumbs_viewer
     }
   `,
 });

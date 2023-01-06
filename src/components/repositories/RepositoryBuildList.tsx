@@ -39,6 +39,7 @@ import BuildChangeChip from '../chips/BuildChangeChip';
 import MarkdownTypography from '../common/MarkdownTypography';
 import BuildsTable from '../../components/builds/BuildsTable';
 
+import { RepositoryBuildList_viewer } from './__generated__/RepositoryBuildList_viewer.graphql';
 import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildList_repository.graphql';
 
 // todo: move custom values to mui theme adjustments
@@ -75,6 +76,7 @@ const styles = theme => ({
 
 interface Props extends WithStyles<typeof styles> {
   branch?: string;
+  viewer: RepositoryBuildList_viewer;
   repository: RepositoryBuildList_repository;
 }
 
@@ -218,6 +220,7 @@ function RepositoryBuildList(props: Props) {
         ownerName={repository.owner}
         repositoryName={repository.name}
         branchName={props.branch}
+        viewer={props.viewer}
       />
       <Head>
         <title>
@@ -282,6 +285,11 @@ export default createFragmentContainer(withStyles(styles)(RepositoryBuildList), 
           }
         }
       }
+    }
+  `,
+  viewer: graphql`
+    fragment RepositoryBuildList_viewer on User {
+      ...AppBreadcrumbs_viewer
     }
   `,
 });

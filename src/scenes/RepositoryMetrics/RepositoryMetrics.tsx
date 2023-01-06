@@ -21,6 +21,9 @@ export default function RepositoryMetrics(parentProps): JSX.Element {
           ownerRepository(platform: $platform, owner: $owner, name: $name) {
             ...RepositoryMetricsPage_repository
           }
+          viewer {
+            ...RepositoryMetricsPage_viewer
+          }
         }
       `}
       render={({ error, props }) => {
@@ -30,7 +33,7 @@ export default function RepositoryMetrics(parentProps): JSX.Element {
         if (!props.ownerRepository) {
           return <NotFound message={error} />;
         }
-        return <RepositoryMetricsPage repository={props.ownerRepository} {...parentProps} />;
+        return <RepositoryMetricsPage viewer={props.viewer} repository={props.ownerRepository} {...parentProps} />;
       }}
     />
   );

@@ -32,6 +32,7 @@ import { BuildDetailsApproveBuildMutationVariables } from './__generated__/Build
 import { BuildDetailsReTriggerMutationVariables } from './__generated__/BuildDetailsReTriggerMutation.graphql';
 import { BuildDetailsReRunMutationVariables } from './__generated__/BuildDetailsReRunMutation.graphql';
 import { BuildDetailsCancelMutationVariables } from './__generated__/BuildDetailsCancelMutation.graphql';
+import { BuildDetails_viewer } from './__generated__/BuildDetails_viewer.graphql';
 import CommitMessage from '../common/CommitMessage';
 import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 
@@ -119,6 +120,7 @@ const styles = () =>
 
 interface Props extends WithStyles<typeof styles> {
   build: BuildDetails_build;
+  viewer: BuildDetails_viewer;
 }
 
 function BuildDetails(props: Props) {
@@ -133,7 +135,7 @@ function BuildDetails(props: Props) {
       subscription.dispose();
     };
   }, [props.build.id]);
-  const { build, classes } = props;
+  const { build, viewer, classes } = props;
   const repository = build.repository;
 
   function approveBuild() {
@@ -287,6 +289,7 @@ function BuildDetails(props: Props) {
         branchName={build.branch}
         buildHash={build.changeIdInRepo.substr(0, 7)}
         buildId={build.id}
+        viewer={viewer}
       />
       <CirrusFavicon status={build.status} />
       <Head>
@@ -376,6 +379,11 @@ export default createFragmentContainer(withStyles(styles)(BuildDetails), {
         timestamp
         ...HookListRow_hook
       }
+    }
+  `,
+  viewer: graphql`
+    fragment BuildDetails_viewer on User {
+      ...AppBreadcrumbs_viewer
     }
   `,
 });

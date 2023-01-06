@@ -21,6 +21,9 @@ export default function Owner(): JSX.Element {
           ownerInfoByName(platform: $platform, name: $owner) {
             ...OwnerRepositoryList_info
           }
+          viewer {
+            ...OwnerRepositoryList_viewer
+          }
         }
       `}
       render={({ error, props }) => {
@@ -30,7 +33,7 @@ export default function Owner(): JSX.Element {
         if (!props.ownerInfoByName) {
           return <NotFound />;
         }
-        return <OwnerRepositoryList info={props.ownerInfoByName} />;
+        return <OwnerRepositoryList viewer={props.viewer} info={props.ownerInfoByName} />;
       }}
     />
   );

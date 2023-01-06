@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 import { WithStyles } from '@mui/styles';
 import Link from '@mui/material/Link';
 import SvgIcon from '@mui/material/SvgIcon';
@@ -10,9 +12,20 @@ import CallSplitIcon from '@mui/icons-material/CallSplit';
 import createStyles from '@mui/styles/createStyles';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import { absoluteLink } from '../../utils/link';
 import RepositoryIcon from './RepositoryIcon';
+import { IconButton } from '@mui/material';
+import cx from 'classnames';
+
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { createFragmentContainer } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
+import { AppBreadcrumbs_viewer } from './__generated__/AppBreadcrumbs_viewer.graphql';
+import { navigateHelper } from '../../utils/navigateHelper';
+import { useNavigate } from 'react-router-dom';
 
 const styles = theme =>
   createStyles({
@@ -20,6 +33,16 @@ const styles = theme =>
       padding: theme.spacing(2.5),
       paddingLeft: theme.spacing(2),
       color: theme.palette.text.disabled,
+    },
+    accountsCrumb: {
+      background: 'none',
+      border: 'none',
+      color: theme.palette.text.disabled,
+      cursor: 'pointer',
+      marginRight: '-12px',
+      '&:hover': {
+        textDecoration: 'underline',
+      },
     },
     crumb: {
       display: 'flex',
@@ -52,6 +75,7 @@ interface Props extends WithStyles<typeof styles> {
     href?: string;
     Icon: typeof SvgIcon | React.ElementType;
   }>;
+  viewer?: AppBreadcrumbs_viewer;
 }
 
 const AppBreadcrumbs = ({
@@ -65,7 +89,9 @@ const AppBreadcrumbs = ({
   taskName,
   classes,
   extraCrumbs,
+  viewer,
 }: Props) => {
+  console.log(viewer);
   const owner = {
     name: ownerName,
     href: absoluteLink(platform, ownerName),
@@ -101,6 +127,7 @@ const AppBreadcrumbs = ({
   const crumbs = [owner, repository, branch, build, task, ...(extraCrumbs || [])].filter(Boolean);
   return (
     <Breadcrumbs className={classes.root} separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
+      {viewer.relatedOwners && viewer.relatedOwners.length === 1 ? null : <AccountsCrumb viewer={viewer} />}
       {crumbs.map((crumb, i) => (
         <Crumb
           key={crumb.name}
@@ -114,20 +141,63 @@ const AppBreadcrumbs = ({
   );
 };
 
+interface AccountsCrumbProps extends WithStyles<typeof styles> {
+  viewer: AppBreadcrumbs_viewer;
+}
+
+const AccountsCrumb = styled(({ viewer, classes }: AccountsCrumbProps) => {
+  const navigate = useNavigate();
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(e.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleMenuItemClick = (e, name) => {
+    setAnchorEl(null);
+    navigateHelper(navigate, e, '/github/' + name);
+  };
+
+  return (
+    <>
+      <button className={cx(classes.accountsCrumb, classes.crumb)} onClick={handleClick}>
+        Accounts
+        <ArrowDropDownIcon />
+      </button>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        {viewer.relatedOwners.map(viewer => {
+          return <MenuItem onClick={e => handleMenuItemClick(e, viewer.name)}>{viewer.name}</MenuItem>;
+        })}
+      </Menu>
+    </>
+  );
+});
+
 interface CrumbProps extends WithStyles<typeof styles> {
   active: boolean;
   name: string;
   href?: string;
-  Icon: typeof SvgIcon | React.ElementType;
+  Icon?: typeof SvgIcon | React.ElementType | null;
 }
 
 const Crumb = styled(({ active, name, href, Icon, classes }: CrumbProps) => {
   const className = `${classes.crumb} ${active ? classes.crumbActive : ''}`;
   const content = (
     <>
-      <div className={classes.icon}>
-        <Icon fontSize="inherit" />
-      </div>
+      <div className={classes.icon}>{Icon && <Icon fontSize="inherit" />}</div>
       {name}
     </>
   );
@@ -143,4 +213,13 @@ const Crumb = styled(({ active, name, href, Icon, classes }: CrumbProps) => {
   );
 });
 
-export default styled(AppBreadcrumbs);
+export default createFragmentContainer(withStyles(styles)(AppBreadcrumbs), {
+  viewer: graphql`
+    fragment AppBreadcrumbs_viewer on User {
+      relatedOwners {
+        platform
+        name
+      }
+    }
+  `,
+});

@@ -67,7 +67,8 @@ const styles = theme =>
     },
     cellStatusChip: {
       '& *': {
-        fontSize: '14px !important',
+        fontSize: '15px !important',
+        color: theme.palette.background.default,
       },
     },
     cellRepository: {
@@ -89,6 +90,10 @@ const styles = theme =>
     },
     infoIcon: {
       color: theme.palette.action.active,
+    },
+    link: {
+      // default palette.primary.main colors
+      color: theme.palette.mode === 'dark' ? theme.palette.info.light : theme.palette.info.main,
     },
     commitName: {
       overflow: 'hidden',
@@ -242,6 +247,7 @@ const BuildRow = styled(
           <Stack direction="row" alignItems="center" spacing={0.5}>
             <BookOutlinedIcon fontSize="inherit" />
             <Link
+              className={classes.link}
               href={absoluteLink(build.repository.platform, build.repository.owner, build.repository.name)}
               underline="hover"
               noWrap
@@ -271,6 +277,7 @@ const BuildRow = styled(
           <Stack direction="row" alignItems="center" spacing={0.5}>
             <CallSplitIcon fontSize="inherit" />
             <Link
+              className={classes.link}
               href={absoluteLink(
                 build.repository.platform,
                 build.repository.owner,

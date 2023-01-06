@@ -93,7 +93,7 @@ const styles = theme =>
     },
     link: {
       // default palette.primary.main colors
-      color: theme.palette.mode === 'dark' ? '#90caf9' : '#1976d2',
+      color: theme.palette.mode === 'dark' ? theme.palette.info.light : theme.palette.info.main,
     },
     commitName: {
       overflow: 'hidden',

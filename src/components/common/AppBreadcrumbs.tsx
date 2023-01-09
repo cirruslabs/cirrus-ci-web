@@ -20,7 +20,6 @@ import createStyles from '@mui/styles/createStyles';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ButtonGroup from '@mui/material/ButtonGroup';
 
 import RepositoryIcon from './RepositoryIcon';
 import { absoluteLink } from '../../utils/link';
@@ -168,14 +167,10 @@ const AccountsCrumb = styled(({ viewer, classes }: AccountsCrumbProps) => {
 
   return (
     <>
-      <ButtonGroup variant="contained">
-        <Button variant="contained" onClick={e => navigateHelper(navigate, e, '/settings/profile/')}>
-          Accounts
-        </Button>
-        <Button size="small" onClick={handleClick}>
-          <ArrowDropDownIcon />
-        </Button>
-      </ButtonGroup>
+      <Button variant="contained" onClick={handleClick}>
+        Accounts
+        <ArrowDropDownIcon />
+      </Button>
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}

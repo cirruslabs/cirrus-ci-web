@@ -79,7 +79,6 @@ import { TaskDetailsCancelMutationVariables } from './__generated__/TaskDetailsC
 import TaskDebuggingInformation from './TaskDebuggingInformation';
 import CirrusLinearProgress from '../common/CirrusLinearProgress';
 import CommitMessage from '../common/CommitMessage';
-import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 
 const taskReRunMutation = graphql`
   mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
@@ -496,16 +495,6 @@ function TaskDetails(props: Props) {
 
   return (
     <div>
-      <AppBreadcrumbs
-        platform={repository.platform}
-        ownerName={repository.owner}
-        repositoryName={repository.name}
-        branchName={build.branch}
-        buildHash={build.changeIdInRepo.substr(0, 7)}
-        buildId={build.id}
-        taskName={task.name}
-        taskId={task.id}
-      />
       <Head>
         <title>{task.name} - Cirrus CI</title>
       </Head>

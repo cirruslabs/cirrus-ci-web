@@ -10,6 +10,7 @@ import NotFound from '../NotFound';
 import { BuildBySHAQuery } from './__generated__/BuildBySHAQuery.graphql';
 import * as queryString from 'query-string';
 import { useParams } from 'react-router-dom';
+import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 
 export default function BuildBySHA() {
   let { owner, name, SHA } = useParams();
@@ -22,6 +23,7 @@ export default function BuildBySHA() {
           searchBuilds(repositoryOwner: $owner, repositoryName: $name, SHA: $SHA) {
             branch
             ...BuildDetails_build
+            ...AppBreadcrumbs_build
           }
         }
       `}
@@ -38,7 +40,12 @@ export default function BuildBySHA() {
             return <BuildDetails build={build} />;
           }
         }
-        return <BuildDetails build={props.searchBuilds[0]} />;
+        return (
+          <>
+            <AppBreadcrumbs build={props.searchBuilds[0]} />
+            <BuildDetails build={props.searchBuilds[0]} />
+          </>
+        );
       }}
     />
   );

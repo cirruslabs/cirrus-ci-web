@@ -12,8 +12,6 @@ import { RepositorySettingsPage_repository } from './__generated__/RepositorySet
 import RepositoryCronSettings from './RepositoryCronSettings';
 import { Link } from '@mui/material';
 import RepositoryDangerSettings from './RepositoryDangerSettings';
-import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 
 const styles = {
   settingGap: {
@@ -35,17 +33,6 @@ let RepositorySettingsPage = (props: Props) => {
   );
   return (
     <div>
-      <AppBreadcrumbs
-        ownerName={repository.owner}
-        platform={repository.platform}
-        repositoryName={repository.name}
-        extraCrumbs={[
-          {
-            name: 'Repository Settings',
-            Icon: SettingsOutlinedIcon,
-          },
-        ]}
-      />
       <Paper elevation={16}>
         <Toolbar>
           <Typography variant="h6">

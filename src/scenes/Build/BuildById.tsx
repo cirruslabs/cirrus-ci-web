@@ -9,6 +9,7 @@ import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
 import NotFound from '../NotFound';
 import { BuildByIdQuery } from './__generated__/BuildByIdQuery.graphql';
 import { useParams } from 'react-router-dom';
+import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 
 export default function BuildById(): JSX.Element {
   let { buildId } = useParams();
@@ -20,6 +21,7 @@ export default function BuildById(): JSX.Element {
         query BuildByIdQuery($buildId: ID!) {
           build(id: $buildId) {
             ...BuildDetails_build
+            ...AppBreadcrumbs_build
           }
         }
       `}
@@ -30,7 +32,12 @@ export default function BuildById(): JSX.Element {
         if (!props.build) {
           return <NotFound message={error} />;
         }
-        return <BuildDetails build={props.build} />;
+        return (
+          <>
+            <AppBreadcrumbs build={props.build} />
+            <BuildDetails build={props.build} />
+          </>
+        );
       }}
     />
   );

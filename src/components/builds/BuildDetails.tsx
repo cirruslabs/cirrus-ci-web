@@ -33,7 +33,6 @@ import { BuildDetailsReTriggerMutationVariables } from './__generated__/BuildDet
 import { BuildDetailsReRunMutationVariables } from './__generated__/BuildDetailsReRunMutation.graphql';
 import { BuildDetailsCancelMutationVariables } from './__generated__/BuildDetailsCancelMutation.graphql';
 import CommitMessage from '../common/CommitMessage';
-import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 
 const buildApproveMutation = graphql`
   mutation BuildDetailsApproveBuildMutation($input: BuildApproveInput!) {
@@ -280,14 +279,6 @@ function BuildDetails(props: Props) {
 
   return (
     <div>
-      <AppBreadcrumbs
-        platform={build.repository.platform}
-        ownerName={build.repository.owner}
-        repositoryName={build.repository.name}
-        branchName={build.branch}
-        buildHash={build.changeIdInRepo.substr(0, 7)}
-        buildId={build.id}
-      />
       <CirrusFavicon status={build.status} />
       <Head>
         <title>{build.changeMessageTitle} - Cirrus CI</title>

@@ -13,6 +13,12 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 
 import { absoluteLink } from '../../utils/link';
 import RepositoryIcon from './RepositoryIcon';
+import { createFragmentContainer } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
+import { AppBreadcrumbs_build } from './__generated__/AppBreadcrumbs_build.graphql';
+import { AppBreadcrumbs_repository } from './__generated__/AppBreadcrumbs_repository.graphql';
+import { AppBreadcrumbs_task } from './__generated__/AppBreadcrumbs_task.graphql';
+import { AppBreadcrumbs_info } from './__generated__/AppBreadcrumbs_info.graphql';
 
 const styles = theme =>
   createStyles({
@@ -39,14 +45,10 @@ const styles = theme =>
 const styled = withStyles(styles);
 
 interface Props extends WithStyles<typeof styles> {
-  platform: string;
-  ownerName: string;
-  repositoryName?: string;
-  branchName?: string;
-  buildId?: string;
-  buildHash?: string;
-  taskId?: string;
-  taskName?: string;
+  info?: AppBreadcrumbs_info;
+  repository?: AppBreadcrumbs_repository;
+  build?: AppBreadcrumbs_build;
+  task?: AppBreadcrumbs_task;
   extraCrumbs?: Array<{
     name: string;
     href?: string;
@@ -54,51 +56,50 @@ interface Props extends WithStyles<typeof styles> {
   }>;
 }
 
-const AppBreadcrumbs = ({
-  platform,
-  ownerName,
-  repositoryName,
-  branchName,
-  buildId,
-  buildHash,
-  taskId,
-  taskName,
-  classes,
-  extraCrumbs,
-}: Props) => {
-  const owner = {
+const AppBreadcrumbs = (props: Props) => {
+  let { classes, extraCrumbs, info, repository, build, task } = props;
+
+  let ownerName = task?.build?.repository?.owner || build?.repository?.owner || repository?.owner || info?.name;
+  let platform =
+    task?.build?.repository?.platform || build?.repository?.platform || repository?.platform || info?.platform;
+  const ownerCrumb = {
     name: ownerName,
     href: absoluteLink(platform, ownerName),
     Icon: GitHubIcon,
   };
 
-  const repository = repositoryName && {
+  let repositoryName = task?.build?.repository?.name || build?.repository?.name || repository?.name;
+  const repositoryCrumb = repositoryName && {
     name: repositoryName,
     href: absoluteLink(platform, ownerName, repositoryName),
     Icon: RepositoryIcon,
   };
 
-  const branch = branchName && {
+  let branchName = task?.build?.branch || build?.branch;
+  const branchCrumb = branchName && {
     name: branchName,
     href: absoluteLink(platform, ownerName, repositoryName, branchName),
     Icon: CallSplitIcon,
   };
 
+  let buildId = task?.build?.id || build?.id;
+  let buildHash = task?.build?.changeIdInRepo || build?.changeIdInRepo;
   const hasBuild = !!(buildHash && buildId);
-  const build = hasBuild && {
-    name: `Build for ${buildHash}`,
+  const buildCrumb = hasBuild && {
+    name: `Build for ${buildHash.substr(0, 7)}`,
     href: absoluteLink('build', buildId),
     Icon: InputIcon,
   };
 
-  const hasTask = !!(taskName && taskId);
-  const task = hasTask && {
-    name: taskName,
-    href: absoluteLink('task', taskId),
+  const taskCrumb = task && {
+    name: task.name,
+    href: absoluteLink('task', task.id),
     Icon: BookmarkBorderIcon,
   };
 
-  const crumbs = [owner, repository, branch, build, task, ...(extraCrumbs || [])].filter(Boolean);
+  const crumbs = [ownerCrumb, repositoryCrumb, branchCrumb, buildCrumb, taskCrumb, ...(extraCrumbs || [])].filter(
+    Boolean,
+  );
   return (
     <Breadcrumbs className={classes.root} separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
       {crumbs.map((crumb, i) => (
@@ -143,4 +144,49 @@ const Crumb = styled(({ active, name, href, Icon, classes }: CrumbProps) => {
   );
 });
 
-export default styled(AppBreadcrumbs);
+export default createFragmentContainer(styled(AppBreadcrumbs), {
+  info: graphql`
+    fragment AppBreadcrumbs_info on OwnerInfo {
+      platform
+      name
+    }
+  `,
+  repository: graphql`
+    fragment AppBreadcrumbs_repository on Repository {
+      id
+      platform
+      owner
+      name
+    }
+  `,
+  build: graphql`
+    fragment AppBreadcrumbs_build on Build {
+      id
+      branch
+      changeIdInRepo
+      repository {
+        id
+        platform
+        owner
+        name
+      }
+    }
+  `,
+  task: graphql`
+    fragment AppBreadcrumbs_task on Task {
+      id
+      name
+      build {
+        id
+        branch
+        changeIdInRepo
+        repository {
+          id
+          platform
+          owner
+          name
+        }
+      }
+    }
+  `,
+});

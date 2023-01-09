@@ -9,6 +9,8 @@ import RepositorySettingsPage from '../../components/repositories/RepositorySett
 import NotFound from '../NotFound';
 import { RepositorySettingsQuery } from './__generated__/RepositorySettingsQuery.graphql';
 import { useParams } from 'react-router-dom';
+import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 
 export default function RepositorySettings(): JSX.Element {
   let { repositoryId } = useParams();
@@ -19,6 +21,7 @@ export default function RepositorySettings(): JSX.Element {
       query={graphql`
         query RepositorySettingsQuery($repositoryId: ID!) {
           repository(id: $repositoryId) {
+            ...AppBreadcrumbs_repository
             ...RepositorySettingsPage_repository
           }
         }
@@ -30,7 +33,20 @@ export default function RepositorySettings(): JSX.Element {
         if (!props.repository) {
           return <NotFound message={error} />;
         }
-        return <RepositorySettingsPage repository={props.repository} />;
+        return (
+          <>
+            <AppBreadcrumbs
+              repository={props.repository}
+              extraCrumbs={[
+                {
+                  name: 'Repository Settings',
+                  Icon: SettingsOutlinedIcon,
+                },
+              ]}
+            />
+            <RepositorySettingsPage repository={props.repository} />
+          </>
+        );
       }}
     />
   );

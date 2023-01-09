@@ -8,6 +8,8 @@ import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
 import OwnerSettings from '../../components/settings/OwnerSettings';
 import { OwnerSettingsRendererQuery } from './__generated__/OwnerSettingsRendererQuery.graphql';
 import { useParams } from 'react-router-dom';
+import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 
 export default function OwnerSettingsRenderer(): JSX.Element {
   let { platform, name } = useParams();
@@ -19,6 +21,7 @@ export default function OwnerSettingsRenderer(): JSX.Element {
         query OwnerSettingsRendererQuery($platform: String!, $name: String!) {
           ownerInfoByName(platform: $platform, name: $name) {
             ...OwnerSettings_info
+            ...AppBreadcrumbs_info
           }
         }
       `}
@@ -26,7 +29,20 @@ export default function OwnerSettingsRenderer(): JSX.Element {
         if (!props) {
           return <CirrusLinearProgress />;
         }
-        return <OwnerSettings info={props.ownerInfoByName} />;
+        return (
+          <>
+            <AppBreadcrumbs
+              info={props.ownerInfoByName}
+              extraCrumbs={[
+                {
+                  name: 'Account Settings',
+                  Icon: ManageAccountsIcon,
+                },
+              ]}
+            />
+            <OwnerSettings info={props.ownerInfoByName} />
+          </>
+        );
       }}
     />
   );

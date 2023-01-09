@@ -9,6 +9,7 @@ import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
 import NotFound from '../NotFound';
 import { TaskQuery } from './__generated__/TaskQuery.graphql';
 import { useParams } from 'react-router-dom';
+import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 
 export default function Task(): JSX.Element {
   let { taskId } = useParams();
@@ -20,6 +21,7 @@ export default function Task(): JSX.Element {
         query TaskQuery($taskId: ID!) {
           task(id: $taskId) {
             ...TaskDetails_task
+            ...AppBreadcrumbs_task
           }
         }
       `}
@@ -30,7 +32,12 @@ export default function Task(): JSX.Element {
         if (!props.task) {
           return <NotFound message={error} />;
         }
-        return <TaskDetails task={props.task} />;
+        return (
+          <>
+            <AppBreadcrumbs task={props.task} />
+            <TaskDetails task={props.task} />
+          </>
+        );
       }}
     />
   );

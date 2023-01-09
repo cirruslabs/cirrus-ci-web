@@ -30,7 +30,6 @@ import { NodeOfConnection } from '../../utils/utility-types';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
 import usePageWidth from '../../utils/usePageWidth';
 import environment from '../../createRelayEnvironment';
-import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import CreateBuildDialog from '../builds/CreateBuildDialog';
 import BuildDurationsChart from '../builds/BuildDurationsChart';
@@ -213,12 +212,6 @@ function RepositoryBuildList(props: Props) {
 
   return (
     <div className={classes.root}>
-      <AppBreadcrumbs
-        platform={repository.platform}
-        ownerName={repository.owner}
-        repositoryName={repository.name}
-        branchName={props.branch}
-      />
       <Head>
         <title>
           {repository.owner}/{repository.name} - Cirrus CI

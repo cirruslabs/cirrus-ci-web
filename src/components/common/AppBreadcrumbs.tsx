@@ -1,8 +1,15 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { createFragmentContainer } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
 
 import { WithStyles } from '@mui/styles';
 import Link from '@mui/material/Link';
+import Menu from '@mui/material/Menu';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 import SvgIcon from '@mui/material/SvgIcon';
+import MenuItem from '@mui/material/MenuItem';
 import withStyles from '@mui/styles/withStyles';
 import Typography from '@mui/material/Typography';
 import InputIcon from '@mui/icons-material/Input';
@@ -13,19 +20,13 @@ import createStyles from '@mui/styles/createStyles';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ButtonGroup from '@mui/material/ButtonGroup';
 
-import { absoluteLink } from '../../utils/link';
 import RepositoryIcon from './RepositoryIcon';
-import { IconButton } from '@mui/material';
-import cx from 'classnames';
-
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import { createFragmentContainer } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
-import { AppBreadcrumbs_viewer } from './__generated__/AppBreadcrumbs_viewer.graphql';
+import { absoluteLink } from '../../utils/link';
 import { navigateHelper } from '../../utils/navigateHelper';
-import { useNavigate } from 'react-router-dom';
+
+import { AppBreadcrumbs_viewer } from './__generated__/AppBreadcrumbs_viewer.graphql';
 
 const styles = theme =>
   createStyles({
@@ -126,18 +127,20 @@ const AppBreadcrumbs = ({
 
   const crumbs = [owner, repository, branch, build, task, ...(extraCrumbs || [])].filter(Boolean);
   return (
-    <Breadcrumbs className={classes.root} separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
+    <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
       {viewer.relatedOwners && viewer.relatedOwners.length === 1 ? null : <AccountsCrumb viewer={viewer} />}
-      {crumbs.map((crumb, i) => (
-        <Crumb
-          key={crumb.name}
-          active={crumbs.length - 1 === i}
-          name={crumb.name}
-          href={crumb.href}
-          Icon={crumb.Icon}
-        />
-      ))}
-    </Breadcrumbs>
+      <Breadcrumbs className={classes.root} separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
+        {crumbs.map((crumb, i) => (
+          <Crumb
+            key={crumb.name}
+            active={crumbs.length - 1 === i}
+            name={crumb.name}
+            href={crumb.href}
+            Icon={crumb.Icon}
+          />
+        ))}
+      </Breadcrumbs>
+    </Stack>
   );
 };
 
@@ -165,10 +168,14 @@ const AccountsCrumb = styled(({ viewer, classes }: AccountsCrumbProps) => {
 
   return (
     <>
-      <button className={cx(classes.accountsCrumb, classes.crumb)} onClick={handleClick}>
-        Accounts
-        <ArrowDropDownIcon />
-      </button>
+      <ButtonGroup variant="contained">
+        <Button variant="contained" onClick={e => navigateHelper(navigate, e, '/settings/profile/')}>
+          Accounts
+        </Button>
+        <Button size="small" onClick={handleClick}>
+          <ArrowDropDownIcon />
+        </Button>
+      </ButtonGroup>
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}

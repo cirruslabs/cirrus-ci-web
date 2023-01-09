@@ -275,7 +275,7 @@ const BuildRow = styled(
         {/* BRANCH */}
         <TableCell className={cx(classes.cell, classes.cellBranch)}>
           <Stack direction="row" alignItems="center" spacing={0.5}>
-            <CallSplitIcon fontSize="inherit" />
+            {build.tag ? <CommitIcon fontSize="inherit" /> : <CallSplitIcon fontSize="inherit" />}
             <Link
               className={classes.link}
               href={absoluteLink(
@@ -307,6 +307,7 @@ export default createFragmentContainer(BuildsTable, {
     fragment BuildsTable_builds on Build @relay(plural: true) {
       id
       branch
+      tag
       status
       changeIdInRepo
       changeMessageTitle

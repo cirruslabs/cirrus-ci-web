@@ -10,6 +10,7 @@ import NotFound from '../NotFound';
 import { RepositoryQuery } from './__generated__/RepositoryQuery.graphql';
 import { useParams } from 'react-router-dom';
 import MarkdownTypography from '../../components/common/MarkdownTypography';
+import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 
 export default function Repository(): JSX.Element {
   let params = useParams();
@@ -22,6 +23,7 @@ export default function Repository(): JSX.Element {
       query={graphql`
         query RepositoryQuery($repositoryId: ID!, $branch: String) {
           repository(id: $repositoryId) {
+            ...AppBreadcrumbs_repository
             ...RepositoryBuildList_repository @arguments(branch: $branch)
           }
         }
@@ -40,7 +42,12 @@ export default function Repository(): JSX.Element {
           );
           return <NotFound messageComponent={notFoundMessage} />;
         }
-        return <RepositoryBuildList repository={props.repository} isNew />;
+        return (
+          <>
+            <AppBreadcrumbs repository={props.repository} />
+            <RepositoryBuildList repository={props.repository} isNew />
+          </>
+        );
       }}
     />
   );

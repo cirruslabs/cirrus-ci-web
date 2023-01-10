@@ -15,7 +15,6 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { OwnerRepositoryList_info } from './__generated__/OwnerRepositoryList_info.graphql';
-import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 import createStyles from '@mui/styles/createStyles';
 
 let styles = theme =>
@@ -49,7 +48,6 @@ let OwnerRepositoryList = (props: Props) => {
 
   return (
     <div>
-      <AppBreadcrumbs ownerName={info.name} platform={info.platform} />
       <Paper elevation={16}>
         <Toolbar className={classes.toolbar} sx={{ justifyContent: 'space-between' }} disableGutters>
           <Typography variant="h5" color="inherit">

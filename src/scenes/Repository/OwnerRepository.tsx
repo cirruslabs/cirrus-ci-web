@@ -10,6 +10,7 @@ import NotFound from '../NotFound';
 import { OwnerRepositoryQuery } from './__generated__/OwnerRepositoryQuery.graphql';
 import { useParams } from 'react-router-dom';
 import MarkdownTypography from '../../components/common/MarkdownTypography';
+import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 
 export default function OwnerRepository(): JSX.Element {
   let params = useParams();
@@ -22,6 +23,7 @@ export default function OwnerRepository(): JSX.Element {
       query={graphql`
         query OwnerRepositoryQuery($platform: String!, $owner: String!, $name: String!, $branch: String) {
           ownerRepository(platform: $platform, owner: $owner, name: $name) {
+            ...AppBreadcrumbs_repository
             ...RepositoryBuildList_repository @arguments(branch: $branch)
           }
         }
@@ -40,7 +42,12 @@ export default function OwnerRepository(): JSX.Element {
           );
           return <NotFound messageComponent={notFoundMessage} />;
         }
-        return <RepositoryBuildList repository={props.ownerRepository} branch={branch} />;
+        return (
+          <>
+            <AppBreadcrumbs repository={props.ownerRepository} />
+            <RepositoryBuildList repository={props.ownerRepository} branch={branch} />
+          </>
+        );
       }}
     />
   );

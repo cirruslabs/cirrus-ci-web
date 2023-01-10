@@ -9,6 +9,8 @@ import NotFound from '../NotFound';
 import RepositoryMetricsPage from '../../components/metrics/RepositoryMetricsPage';
 import { RepositoryMetricsQuery } from './__generated__/RepositoryMetricsQuery.graphql';
 import { useParams } from 'react-router-dom';
+import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
+import TimelineIcon from '@mui/icons-material/Timeline';
 
 export default function RepositoryMetrics(parentProps): JSX.Element {
   const { platform, owner, name } = useParams();
@@ -19,6 +21,7 @@ export default function RepositoryMetrics(parentProps): JSX.Element {
       query={graphql`
         query RepositoryMetricsQuery($platform: String!, $owner: String!, $name: String!) {
           ownerRepository(platform: $platform, owner: $owner, name: $name) {
+            ...AppBreadcrumbs_repository
             ...RepositoryMetricsPage_repository
           }
         }
@@ -30,7 +33,20 @@ export default function RepositoryMetrics(parentProps): JSX.Element {
         if (!props.ownerRepository) {
           return <NotFound message={error} />;
         }
-        return <RepositoryMetricsPage repository={props.ownerRepository} {...parentProps} />;
+        return (
+          <>
+            <AppBreadcrumbs
+              repository={props.ownerRepository}
+              extraCrumbs={[
+                {
+                  name: 'Metrics',
+                  Icon: TimelineIcon,
+                },
+              ]}
+            />
+            <RepositoryMetricsPage repository={props.ownerRepository} {...parentProps} />
+          </>
+        );
       }}
     />
   );

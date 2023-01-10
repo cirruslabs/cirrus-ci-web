@@ -54,6 +54,12 @@ const styles = theme =>
       fontSize: 16,
       marginRight: theme.spacing(1),
     },
+    accountsButton: {
+      paddingRight: theme.spacing(1.5),
+    },
+    accountsButtonIcon: {
+      marginLeft: theme.spacing(0.5),
+    },
   });
 
 const styled = withStyles(styles);
@@ -162,9 +168,9 @@ const AccountsButton = styled(({ viewer, classes }: AccountsButtonProps) => {
 
   return (
     <>
-      <Button variant="contained" onClick={handleClick}>
+      <Button className={classes.accountsButton} variant="contained" onClick={handleClick}>
         Accounts
-        <ArrowDropDownIcon />
+        <ArrowDropDownIcon className={classes.accountsButtonIcon} />
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         {viewer.relatedOwners.map(viewer => {

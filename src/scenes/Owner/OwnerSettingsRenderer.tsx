@@ -23,6 +23,9 @@ export default function OwnerSettingsRenderer(): JSX.Element {
             ...OwnerSettings_info
             ...AppBreadcrumbs_info
           }
+          viewer {
+            ...AppBreadcrumbs_viewer
+          }
         }
       `}
       render={({ error, props }) => {
@@ -33,6 +36,7 @@ export default function OwnerSettingsRenderer(): JSX.Element {
           <>
             <AppBreadcrumbs
               info={props.ownerInfoByName}
+              viewer={props.viewer}
               extraCrumbs={[
                 {
                   name: 'Account Settings',

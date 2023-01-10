@@ -1,6 +1,13 @@
+import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { WithStyles } from '@mui/styles';
 import Link from '@mui/material/Link';
+import Menu from '@mui/material/Menu';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 import SvgIcon from '@mui/material/SvgIcon';
+import MenuItem from '@mui/material/MenuItem';
 import withStyles from '@mui/styles/withStyles';
 import Typography from '@mui/material/Typography';
 import InputIcon from '@mui/icons-material/Input';
@@ -9,20 +16,27 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import CallSplitIcon from '@mui/icons-material/CallSplit';
 import createStyles from '@mui/styles/createStyles';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 
 import { absoluteLink } from '../../utils/link';
+import { navigateHelper } from '../../utils/navigateHelper';
 import RepositoryIcon from './RepositoryIcon';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
+
 import { AppBreadcrumbs_build } from './__generated__/AppBreadcrumbs_build.graphql';
 import { AppBreadcrumbs_repository } from './__generated__/AppBreadcrumbs_repository.graphql';
 import { AppBreadcrumbs_task } from './__generated__/AppBreadcrumbs_task.graphql';
 import { AppBreadcrumbs_info } from './__generated__/AppBreadcrumbs_info.graphql';
+import { AppBreadcrumbs_viewer } from './__generated__/AppBreadcrumbs_viewer.graphql';
 
 const styles = theme =>
   createStyles({
     root: {
+      alignItems: 'center',
+    },
+    breadcrumbs: {
       padding: theme.spacing(2.5),
       paddingLeft: theme.spacing(2),
       color: theme.palette.text.disabled,
@@ -55,10 +69,11 @@ interface Props extends WithStyles<typeof styles> {
     href?: string;
     Icon: typeof SvgIcon | React.ElementType;
   }>;
+  viewer: AppBreadcrumbs_viewer;
 }
 
 const AppBreadcrumbs = (props: Props) => {
-  let { classes, branch, extraCrumbs, info, repository, build, task } = props;
+  let { classes, branch, extraCrumbs, info, repository, build, task, viewer } = props;
 
   let ownerName = task?.build?.repository?.owner || build?.repository?.owner || repository?.owner || info?.name;
   let platform =
@@ -102,19 +117,63 @@ const AppBreadcrumbs = (props: Props) => {
     Boolean,
   );
   return (
-    <Breadcrumbs className={classes.root} separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
-      {crumbs.map((crumb, i) => (
-        <Crumb
-          key={crumb.name}
-          active={crumbs.length - 1 === i}
-          name={crumb.name}
-          href={crumb.href}
-          Icon={crumb.Icon}
-        />
-      ))}
-    </Breadcrumbs>
+    <Stack className={classes.root} direction="row" spacing={1}>
+      {viewer.relatedOwners && viewer.relatedOwners.length === 1 ? null : <AccountsButton viewer={viewer} />}
+      <Breadcrumbs
+        className={classes.breadcrumbs}
+        separator={<NavigateNextIcon fontSize="small" />}
+        aria-label="breadcrumb"
+      >
+        {crumbs.map((crumb, i) => (
+          <Crumb
+            key={crumb.name}
+            active={crumbs.length - 1 === i}
+            name={crumb.name}
+            href={crumb.href}
+            Icon={crumb.Icon}
+          />
+        ))}
+      </Breadcrumbs>
+    </Stack>
   );
 };
+
+interface AccountsButtonProps extends WithStyles<typeof styles> {
+  viewer: AppBreadcrumbs_viewer;
+}
+
+const AccountsButton = styled(({ viewer, classes }: AccountsButtonProps) => {
+  const navigate = useNavigate();
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(e.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleMenuItemClick = (e, name) => {
+    setAnchorEl(null);
+    navigateHelper(navigate, e, '/github/' + name);
+  };
+
+  return (
+    <>
+      <Button variant="contained" onClick={handleClick}>
+        Accounts
+        <ArrowDropDownIcon />
+      </Button>
+      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+        {viewer.relatedOwners.map(viewer => {
+          return <MenuItem onClick={e => handleMenuItemClick(e, viewer.name)}>{viewer.name}</MenuItem>;
+        })}
+      </Menu>
+    </>
+  );
+});
 
 interface CrumbProps extends WithStyles<typeof styles> {
   active: boolean;
@@ -187,6 +246,14 @@ export default createFragmentContainer(styled(AppBreadcrumbs), {
           owner
           name
         }
+      }
+    }
+  `,
+  viewer: graphql`
+    fragment AppBreadcrumbs_viewer on User {
+      relatedOwners {
+        platform
+        name
       }
     }
   `,

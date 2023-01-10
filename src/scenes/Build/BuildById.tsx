@@ -23,6 +23,9 @@ export default function BuildById(): JSX.Element {
             ...BuildDetails_build
             ...AppBreadcrumbs_build
           }
+          viewer {
+            ...AppBreadcrumbs_viewer
+          }
         }
       `}
       render={({ error, props }) => {
@@ -34,7 +37,7 @@ export default function BuildById(): JSX.Element {
         }
         return (
           <>
-            <AppBreadcrumbs build={props.build} />
+            <AppBreadcrumbs build={props.build} viewer={props.viewer} />
             <BuildDetails build={props.build} />
           </>
         );

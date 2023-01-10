@@ -23,6 +23,9 @@ export default function Task(): JSX.Element {
             ...TaskDetails_task
             ...AppBreadcrumbs_task
           }
+          viewer {
+            ...AppBreadcrumbs_viewer
+          }
         }
       `}
       render={({ error, props }) => {
@@ -34,7 +37,7 @@ export default function Task(): JSX.Element {
         }
         return (
           <>
-            <AppBreadcrumbs task={props.task} />
+            <AppBreadcrumbs task={props.task} viewer={props.viewer} />
             <TaskDetails task={props.task} />
           </>
         );

@@ -355,11 +355,7 @@ export default createFragmentContainer(withStyles(styles)(BuildDetails), {
         ...TaskListRow_task
       }
       repository {
-        ...RepositoryOwnerChip_repository
         ...RepositoryNameChip_repository
-        platform
-        owner
-        name
         cloneUrl
         viewerPermission
       }

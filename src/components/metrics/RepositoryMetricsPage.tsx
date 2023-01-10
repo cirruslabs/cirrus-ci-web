@@ -146,7 +146,6 @@ export default createFragmentContainer(withStyles(styles)(RepositoryMetricsPage)
       id
       owner
       name
-      platform
     }
   `,
 });

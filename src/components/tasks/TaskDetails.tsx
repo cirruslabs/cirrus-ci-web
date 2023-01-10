@@ -624,7 +624,6 @@ export default createFragmentContainer(withStyles(styles)(TaskDetails), {
         ...Notification_notification
       }
       build {
-        id
         branch
         changeIdInRepo
         changeMessageTitle
@@ -633,9 +632,6 @@ export default createFragmentContainer(withStyles(styles)(TaskDetails), {
         ...BuildChangeChip_build
       }
       repository {
-        owner
-        platform
-        name
         cloneUrl
         ...RepositoryOwnerChip_repository
         ...RepositoryNameChip_repository

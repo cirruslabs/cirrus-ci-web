@@ -24,6 +24,7 @@ import CommitIcon from '@mui/icons-material/Commit';
 import Typography from '@mui/material/Typography';
 import createStyles from '@mui/styles/createStyles';
 import CallSplitIcon from '@mui/icons-material/CallSplit';
+import UnarchiveIcon from '@mui/icons-material/UnarchiveOutlined';
 
 import BuildStatusChipNew from '../chips/BuildStatusChipNew';
 import { muiThemeOptions } from '../../cirrusTheme';
@@ -275,7 +276,7 @@ const BuildRow = styled(
         {/* BRANCH */}
         <TableCell className={cx(classes.cell, classes.cellBranch)}>
           <Stack direction="row" alignItems="center" spacing={0.5}>
-            {build.tag ? <CommitIcon fontSize="inherit" /> : <CallSplitIcon fontSize="inherit" />}
+            {build.tag ? <UnarchiveIcon fontSize="inherit" /> : <CallSplitIcon fontSize="inherit" />}
             <Link
               className={classes.link}
               href={absoluteLink(

@@ -9,6 +9,7 @@ import { OwnerQuery } from './__generated__/OwnerQuery.graphql';
 import { useParams } from 'react-router-dom';
 import OwnerRepositoryList from '../../components/account/OwnerRepositoryList';
 import NotFound from '../NotFound';
+import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 
 export default function Owner(): JSX.Element {
   let { platform, owner } = useParams();
@@ -20,6 +21,7 @@ export default function Owner(): JSX.Element {
         query OwnerQuery($platform: String!, $owner: String!) {
           ownerInfoByName(platform: $platform, name: $owner) {
             ...OwnerRepositoryList_info
+            ...AppBreadcrumbs_info
           }
         }
       `}
@@ -30,7 +32,12 @@ export default function Owner(): JSX.Element {
         if (!props.ownerInfoByName) {
           return <NotFound />;
         }
-        return <OwnerRepositoryList info={props.ownerInfoByName} />;
+        return (
+          <>
+            <AppBreadcrumbs info={props.ownerInfoByName} />
+            <OwnerRepositoryList info={props.ownerInfoByName} />;
+          </>
+        );
       }}
     />
   );

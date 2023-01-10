@@ -49,6 +49,7 @@ interface Props extends WithStyles<typeof styles> {
   repository?: AppBreadcrumbs_repository;
   build?: AppBreadcrumbs_build;
   task?: AppBreadcrumbs_task;
+  branch?: string;
   extraCrumbs?: Array<{
     name: string;
     href?: string;
@@ -57,7 +58,7 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 const AppBreadcrumbs = (props: Props) => {
-  let { classes, extraCrumbs, info, repository, build, task } = props;
+  let { classes, branch, extraCrumbs, info, repository, build, task } = props;
 
   let ownerName = task?.build?.repository?.owner || build?.repository?.owner || repository?.owner || info?.name;
   let platform =
@@ -75,7 +76,7 @@ const AppBreadcrumbs = (props: Props) => {
     Icon: RepositoryIcon,
   };
 
-  let branchName = task?.build?.branch || build?.branch;
+  let branchName = branch || task?.build?.branch || build?.branch;
   const branchCrumb = branchName && {
     name: branchName,
     href: absoluteLink(platform, ownerName, repositoryName, branchName),

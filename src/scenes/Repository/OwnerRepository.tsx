@@ -44,7 +44,7 @@ export default function OwnerRepository(): JSX.Element {
         }
         return (
           <>
-            <AppBreadcrumbs repository={props.ownerRepository} />
+            <AppBreadcrumbs repository={props.ownerRepository} branch={branch} />
             <RepositoryBuildList repository={props.ownerRepository} branch={branch} />
           </>
         );

@@ -2,7 +2,6 @@ import * as React from 'react';
 
 import { WithStyles } from '@mui/styles';
 import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
 import SvgIcon from '@mui/material/SvgIcon';
 import withStyles from '@mui/styles/withStyles';
 import Typography from '@mui/material/Typography';
@@ -28,9 +27,6 @@ import { AppBreadcrumbs_viewer } from './__generated__/AppBreadcrumbs_viewer.gra
 
 const styles = theme =>
   createStyles({
-    root: {
-      alignItems: 'center',
-    },
     breadcrumbs: {
       padding: theme.spacing(2.5),
       paddingLeft: theme.spacing(2),
@@ -112,26 +108,23 @@ const AppBreadcrumbs = (props: Props) => {
     Boolean,
   );
 
-  console.log(viewer);
   return (
-    <Stack className={classes.root} direction="row" spacing={1}>
-      {viewer.relatedOwners && viewer.relatedOwners.length === 1 ? null : <AccountSwitch viewer={viewer} />}
-      <Breadcrumbs
-        className={classes.breadcrumbs}
-        separator={<NavigateNextIcon fontSize="small" />}
-        aria-label="breadcrumb"
-      >
-        {crumbs.map((crumb, i) => (
-          <Crumb
-            key={crumb.name}
-            active={crumbs.length - 1 === i}
-            name={crumb.name}
-            href={crumb.href}
-            Icon={crumb.Icon}
-          />
-        ))}
-      </Breadcrumbs>
-    </Stack>
+    <Breadcrumbs
+      className={classes.breadcrumbs}
+      separator={<NavigateNextIcon fontSize="small" />}
+      aria-label="breadcrumb"
+    >
+      <AccountSwitch viewer={viewer} />
+      {crumbs.map((crumb, i) => (
+        <Crumb
+          key={crumb.name}
+          active={crumbs.length - 1 === i}
+          name={crumb.name}
+          href={crumb.href}
+          Icon={crumb.Icon}
+        />
+      ))}
+    </Breadcrumbs>
   );
 };
 
@@ -211,10 +204,6 @@ export default createFragmentContainer(styled(AppBreadcrumbs), {
   `,
   viewer: graphql`
     fragment AppBreadcrumbs_viewer on User {
-      relatedOwners {
-        platform
-        name
-      }
       ...AccountSwitch_viewer
     }
   `,

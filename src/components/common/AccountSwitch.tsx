@@ -25,27 +25,27 @@ interface AccountSwitchProps extends WithStyles<typeof styles> {
 const AccountsSwitch = styled(({ viewer, classes }: AccountSwitchProps) => {
   const navigate = useNavigate();
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
+  const [menuAnchorEl, setMenuAnchorEl] = React.useState<null | HTMLElement>(null);
+  const menuOpen = Boolean(menuAnchorEl);
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(e.currentTarget);
+  const handleMenuOpen = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setMenuAnchorEl(e.currentTarget);
   };
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleMenuClose = () => {
+    setMenuAnchorEl(null);
   };
 
   const handleMenuItemClick = (e, name) => {
-    setAnchorEl(null);
+    setMenuAnchorEl(null);
     navigateHelper(navigate, e, '/github/' + name);
   };
 
   return (
     <>
-      <Button variant="contained" onClick={handleClick} endIcon={<ArrowDropDownIcon />}>
+      <Button variant="contained" onClick={handleMenuOpen} endIcon={<ArrowDropDownIcon />}>
         Accounts
       </Button>
-      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+      <Menu anchorEl={menuAnchorEl} open={menuOpen} onClose={handleMenuClose}>
         {viewer.relatedOwners.map(viewer => {
           return <MenuItem onClick={e => handleMenuItemClick(e, viewer.name)}>{viewer.name}</MenuItem>;
         })}

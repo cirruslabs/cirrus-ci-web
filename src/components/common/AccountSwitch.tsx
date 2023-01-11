@@ -42,9 +42,8 @@ const AccountsSwitch = styled(({ viewer, classes }: AccountSwitchProps) => {
 
   return (
     <>
-      <Button variant="contained" onClick={handleClick}>
+      <Button variant="contained" onClick={handleClick} endIcon={<ArrowDropDownIcon />}>
         Accounts
-        <ArrowDropDownIcon />
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         {viewer.relatedOwners.map(viewer => {

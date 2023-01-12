@@ -25,6 +25,9 @@ export default function BuildBySHA() {
             ...BuildDetails_build
             ...AppBreadcrumbs_build
           }
+          viewer {
+            ...AppBreadcrumbs_viewer
+          }
         }
       `}
       render={({ error, props }) => {
@@ -42,7 +45,7 @@ export default function BuildBySHA() {
         }
         return (
           <>
-            <AppBreadcrumbs build={props.searchBuilds[0]} />
+            <AppBreadcrumbs build={props.searchBuilds[0]} viewer={props.viewer} />
             <BuildDetails build={props.searchBuilds[0]} />
           </>
         );

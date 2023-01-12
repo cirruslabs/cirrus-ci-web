@@ -1,5 +1,8 @@
+import * as React from 'react';
+
 import { WithStyles } from '@mui/styles';
 import Link from '@mui/material/Link';
+import Stack from '@mui/material/Stack';
 import SvgIcon from '@mui/material/SvgIcon';
 import withStyles from '@mui/styles/withStyles';
 import Typography from '@mui/material/Typography';
@@ -15,14 +18,20 @@ import { absoluteLink } from '../../utils/link';
 import RepositoryIcon from './RepositoryIcon';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
+import AccountSwitch from './AccountSwitch';
+
 import { AppBreadcrumbs_build } from './__generated__/AppBreadcrumbs_build.graphql';
 import { AppBreadcrumbs_repository } from './__generated__/AppBreadcrumbs_repository.graphql';
 import { AppBreadcrumbs_task } from './__generated__/AppBreadcrumbs_task.graphql';
 import { AppBreadcrumbs_info } from './__generated__/AppBreadcrumbs_info.graphql';
+import { AppBreadcrumbs_viewer } from './__generated__/AppBreadcrumbs_viewer.graphql';
 
 const styles = theme =>
   createStyles({
     root: {
+      alignItems: 'center',
+    },
+    breadcrumbs: {
       padding: theme.spacing(2.5),
       paddingLeft: theme.spacing(2),
       color: theme.palette.text.disabled,
@@ -55,10 +64,11 @@ interface Props extends WithStyles<typeof styles> {
     href?: string;
     Icon: typeof SvgIcon | React.ElementType;
   }>;
+  viewer: AppBreadcrumbs_viewer;
 }
 
 const AppBreadcrumbs = (props: Props) => {
-  let { classes, branch, extraCrumbs, info, repository, build, task } = props;
+  let { classes, branch, extraCrumbs, info, repository, build, task, viewer } = props;
 
   let ownerName = task?.build?.repository?.owner || build?.repository?.owner || repository?.owner || info?.name;
   let platform =
@@ -101,18 +111,26 @@ const AppBreadcrumbs = (props: Props) => {
   const crumbs = [ownerCrumb, repositoryCrumb, branchCrumb, buildCrumb, taskCrumb, ...(extraCrumbs || [])].filter(
     Boolean,
   );
+
   return (
-    <Breadcrumbs className={classes.root} separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
-      {crumbs.map((crumb, i) => (
-        <Crumb
-          key={crumb.name}
-          active={crumbs.length - 1 === i}
-          name={crumb.name}
-          href={crumb.href}
-          Icon={crumb.Icon}
-        />
-      ))}
-    </Breadcrumbs>
+    <Stack className={classes.root} direction="row" spacing={1}>
+      <AccountSwitch viewer={viewer} />
+      <Breadcrumbs
+        className={classes.breadcrumbs}
+        separator={<NavigateNextIcon fontSize="small" />}
+        aria-label="breadcrumb"
+      >
+        {crumbs.map((crumb, i) => (
+          <Crumb
+            key={crumb.name}
+            active={crumbs.length - 1 === i}
+            name={crumb.name}
+            href={crumb.href}
+            Icon={crumb.Icon}
+          />
+        ))}
+      </Breadcrumbs>
+    </Stack>
   );
 };
 
@@ -188,6 +206,11 @@ export default createFragmentContainer(styled(AppBreadcrumbs), {
           name
         }
       }
+    }
+  `,
+  viewer: graphql`
+    fragment AppBreadcrumbs_viewer on User {
+      ...AccountSwitch_viewer
     }
   `,
 });

@@ -24,6 +24,9 @@ export default function RepositorySettings(): JSX.Element {
             ...AppBreadcrumbs_repository
             ...RepositorySettingsPage_repository
           }
+          viewer {
+            ...AppBreadcrumbs_viewer
+          }
         }
       `}
       render={({ error, props }) => {
@@ -37,6 +40,7 @@ export default function RepositorySettings(): JSX.Element {
           <>
             <AppBreadcrumbs
               repository={props.repository}
+              viewer={props.viewer}
               extraCrumbs={[
                 {
                   name: 'Repository Settings',

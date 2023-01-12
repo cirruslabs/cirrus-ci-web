@@ -24,6 +24,9 @@ export default function RepositoryMetrics(parentProps): JSX.Element {
             ...AppBreadcrumbs_repository
             ...RepositoryMetricsPage_repository
           }
+          viewer {
+            ...AppBreadcrumbs_viewer
+          }
         }
       `}
       render={({ error, props }) => {
@@ -37,6 +40,7 @@ export default function RepositoryMetrics(parentProps): JSX.Element {
           <>
             <AppBreadcrumbs
               repository={props.ownerRepository}
+              viewer={props.viewer}
               extraCrumbs={[
                 {
                   name: 'Metrics',

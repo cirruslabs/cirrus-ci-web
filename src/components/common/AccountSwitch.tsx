@@ -13,7 +13,7 @@ import { navigateHelper } from '../../utils/navigateHelper';
 import { AccountSwitch_viewer } from './__generated__/AccountSwitch_viewer.graphql';
 
 interface AccountSwitchProps {
-  viewer: AccountSwitch_viewer;
+  viewer?: AccountSwitch_viewer;
 }
 
 const AccountsSwitch = ({ viewer }: AccountSwitchProps) => {
@@ -34,6 +34,7 @@ const AccountsSwitch = ({ viewer }: AccountSwitchProps) => {
     navigateHelper(navigate, e, '/github/' + name);
   };
 
+  if (!viewer) return null;
   if (viewer.relatedOwners && viewer.relatedOwners.length <= 1) return null;
 
   return (

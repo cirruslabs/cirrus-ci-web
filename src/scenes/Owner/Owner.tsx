@@ -38,7 +38,7 @@ export default function Owner(): JSX.Element {
         return (
           <>
             <AppBreadcrumbs info={props.ownerInfoByName} viewer={props.viewer} />
-            <OwnerRepositoryList info={props.ownerInfoByName} />;
+            <OwnerRepositoryList info={props.ownerInfoByName} />
           </>
         );
       }}

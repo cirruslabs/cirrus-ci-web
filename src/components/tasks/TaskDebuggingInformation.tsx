@@ -40,8 +40,10 @@ function TaskDebuggingInformation(props: Props) {
           return null;
         }
         let task = response.props.task;
+        if (!task) return;
         let events =
           task.executionInfo?.events?.map(event => {
+            if (!event) return;
             let prettyTime = new Date(event.timestamp).toLocaleTimeString();
             return `${prettyTime} ${event.message}`;
           }) || [];

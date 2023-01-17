@@ -228,9 +228,9 @@ function TaskDetails(props: Props) {
   let notificationsComponent =
     !task.notifications || task.notifications.length === 0 ? null : (
       <List>
-        {task.notifications.map(notification => (
-          <Notification key={notification.message} notification={notification} />
-        ))}
+        {task.notifications.map(
+          notification => notification && <Notification key={notification.message} notification={notification} />,
+        )}
       </List>
     );
 
@@ -345,13 +345,7 @@ function TaskDetails(props: Props) {
   function validCacheKeys(task: TaskDetails_task) {
     if (task.executionInfo === null || task.executionInfo.cacheRetrievalAttempts === null) return [];
 
-    return task.executionInfo.cacheRetrievalAttempts.hits
-      .filter(hit => {
-        return hit.valid;
-      })
-      .map(hit => {
-        return hit.key;
-      });
+    return task.executionInfo.cacheRetrievalAttempts.hits.filter(hit => hit && hit.valid).map(hit => hit && hit.key);
   }
 
   function invalidateCaches(task: TaskDetails_task) {
@@ -526,7 +520,7 @@ function TaskDetails(props: Props) {
             cloneUrl={repository.cloneUrl}
             branch={build.branch}
             changeIdInRepo={build.changeIdInRepo}
-            changeMessageTitle={build.changeMessageTitle}
+            changeMessageTitle={build.changeMessageTitle ? build.changeMessageTitle : ''}
           />
           <div className={classes.gap} />
           <div className={classNames('card-body', classes.wrapper)}>

@@ -20,6 +20,7 @@ import { isTaskFinalStatus } from '../../utils/status';
 import { useTaskStatusColorMapping } from '../../utils/colors';
 import { Box, Tooltip } from '@mui/material';
 import { formatDuration } from '../../utils/time';
+import { Task } from '@mui/icons-material';
 
 const styles = theme =>
   createStyles({
@@ -62,7 +63,7 @@ function TaskListRow(props: Props) {
   let navigate = useNavigate();
   let colorMapping = useTaskStatusColorMapping();
   let { task, classes, durationBeforeScheduling, overallDuration } = props;
-  let progress = null;
+  let progress: JSX.Element | null = null;
   if (isTaskFinalStatus(task.status) && overallDuration && task.executingTimestamp) {
     let scheduledDuration = Math.max(0, task.executingTimestamp - task.scheduledTimestamp) / 1000;
     let executionDuration = Math.max(0, task.finalStatusTimestamp - task.executingTimestamp) / 1000;

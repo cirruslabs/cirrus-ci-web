@@ -135,6 +135,7 @@ function RepositoryCronSettings(props: Props) {
           console.log(errors);
           return;
         }
+        if (!response.saveCronSettings?.settings) return;
         setCronSettingsList(response.saveCronSettings.settings);
       },
       onError: err => console.error(err),
@@ -158,6 +159,7 @@ function RepositoryCronSettings(props: Props) {
           console.log(errors);
           return;
         }
+        if (!response.removeCronSettings?.settings) return;
         setCronSettingsList(response.removeCronSettings.settings);
       },
       onError: err => console.error(err),
@@ -171,62 +173,65 @@ function RepositoryCronSettings(props: Props) {
       <CardContent>
         <Table style={{ tableLayout: 'auto' }}>
           <TableBody>
-            {cronSettingsList.map(settings => (
-              <TableRow hover={true} key={settings.name}>
-                <TableCell className={classNames(classes.cell)}>
-                  <Chip key={settings.name} className={classes.chip} label={settings.name} />
-                </TableCell>
-                <TableCell className={classNames(classes.cell)}>
-                  <Chip
-                    key={settings.branch}
-                    className={classes.chip}
-                    avatar={
-                      <Avatar className={classes.avatar}>
-                        <Icon className={classes.avatarIcon}>call_split</Icon>
-                      </Avatar>
-                    }
-                    label={settings.branch}
-                  />
-                </TableCell>
-                <TableCell className={classNames(classes.cell)}>
-                  <Chip
-                    key={settings.expression}
-                    className={classes.chip}
-                    avatar={
-                      <Avatar className={classes.avatar}>
-                        <Icon className={classes.avatarIcon}>alarm</Icon>
-                      </Avatar>
-                    }
-                    label={settings.expression}
-                  />
-                </TableCell>
-                <TableCell
-                  className={classes.cell}
-                  onClick={event => navigateBuildHelper(navigate, event, settings.lastInvocationBuild?.id)}
-                >
-                  <div style={{ display: 'flex' }}>
-                    <NextCronInvocationTimeChip settings={settings} className={classes.chip} />
-                    {settings.lastInvocationBuild ? (
-                      <Tooltip title="Last invocation build">
-                        <BuildStatusChip build={settings.lastInvocationBuild} className={classes.chip} />
-                      </Tooltip>
-                    ) : null}
-                  </div>
-                </TableCell>
-                <TableCell className={classes.cell} sx={{ justifyContent: 'flex-end' }}>
-                  <Tooltip title="Remove Cron Build">
-                    <IconButton
-                      aria-label="Remove Cron Build"
-                      component="span"
-                      onClick={() => removeCronSetting(settings.name)}
-                      size="large"
+            {cronSettingsList.map(
+              settings =>
+                settings && (
+                  <TableRow hover={true} key={settings.name}>
+                    <TableCell className={classNames(classes.cell)}>
+                      <Chip key={settings.name} className={classes.chip} label={settings.name} />
+                    </TableCell>
+                    <TableCell className={classNames(classes.cell)}>
+                      <Chip
+                        key={settings.branch}
+                        className={classes.chip}
+                        avatar={
+                          <Avatar className={classes.avatar}>
+                            <Icon className={classes.avatarIcon}>call_split</Icon>
+                          </Avatar>
+                        }
+                        label={settings.branch}
+                      />
+                    </TableCell>
+                    <TableCell className={classNames(classes.cell)}>
+                      <Chip
+                        key={settings.expression}
+                        className={classes.chip}
+                        avatar={
+                          <Avatar className={classes.avatar}>
+                            <Icon className={classes.avatarIcon}>alarm</Icon>
+                          </Avatar>
+                        }
+                        label={settings.expression}
+                      />
+                    </TableCell>
+                    <TableCell
+                      className={classes.cell}
+                      onClick={event => navigateBuildHelper(navigate, event, settings.lastInvocationBuild?.id)}
                     >
-                      <Delete />
-                    </IconButton>
-                  </Tooltip>
-                </TableCell>
-              </TableRow>
-            ))}
+                      <div style={{ display: 'flex' }}>
+                        <NextCronInvocationTimeChip settings={settings} className={classes.chip} />
+                        {settings.lastInvocationBuild ? (
+                          <Tooltip title="Last invocation build">
+                            <BuildStatusChip build={settings.lastInvocationBuild} className={classes.chip} />
+                          </Tooltip>
+                        ) : null}
+                      </div>
+                    </TableCell>
+                    <TableCell className={classes.cell} sx={{ justifyContent: 'flex-end' }}>
+                      <Tooltip title="Remove Cron Build">
+                        <IconButton
+                          aria-label="Remove Cron Build"
+                          component="span"
+                          onClick={() => removeCronSetting(settings.name)}
+                          size="large"
+                        >
+                          <Delete />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                  </TableRow>
+                ),
+            )}
           </TableBody>
         </Table>
       </CardContent>

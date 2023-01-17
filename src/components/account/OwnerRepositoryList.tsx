@@ -16,6 +16,7 @@ import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { OwnerRepositoryList_info } from './__generated__/OwnerRepositoryList_info.graphql';
 import createStyles from '@mui/styles/createStyles';
+import Context from '@mui/base/TabsUnstyled/TabsContext';
 
 let styles = theme =>
   createStyles({
@@ -32,7 +33,8 @@ interface Props extends WithStyles<typeof styles> {
 let OwnerRepositoryList = (props: Props) => {
   let { classes, info } = props;
 
-  let organizationSettings = null;
+  type organizationSettings = null | JSX.Element;
+  let organizationSettings: organizationSettings = null;
 
   if (info && info.viewerPermission === 'ADMIN') {
     organizationSettings = (
@@ -57,9 +59,9 @@ let OwnerRepositoryList = (props: Props) => {
         </Toolbar>
         <Table style={{ tableLayout: 'auto' }}>
           <TableBody>
-            {info.repositories.edges.map(edge => (
-              <LastDefaultBranchBuildRow key={edge.node.id} repository={edge.node} />
-            ))}
+            {info.repositories?.edges?.map(
+              edge => edge && <LastDefaultBranchBuildRow key={edge.node?.id} repository={edge.node} />,
+            )}
           </TableBody>
         </Table>
       </Paper>

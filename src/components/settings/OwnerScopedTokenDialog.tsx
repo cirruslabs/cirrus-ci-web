@@ -50,9 +50,9 @@ interface Props extends WithStyles<typeof styles> {
 function OwnerScopedTokenDialog(props: Props) {
   const { classes, ...other } = props;
   let [readOnly, setReadOnly] = useState(true);
-  let [expirationDays, setExpirationDays] = useState(null);
+  let [expirationDays, setExpirationDays] = useState<number | null>(null);
   let [repositoryNames, setRepositoryNames] = useState('');
-  let [newToken, setNewToken] = useState(null);
+  let [newToken, setNewToken] = useState<string | null>(null);
 
   function generateToken() {
     const variables: OwnerScopedTokenDialogMutationVariables = {
@@ -71,7 +71,7 @@ function OwnerScopedTokenDialog(props: Props) {
       onCompleted: (response: OwnerScopedTokenDialogMutationResponse, errors) => {
         if (errors) {
           setNewToken(`Failed to generate token!\n\n${errors.map(e => e.message).join('\n')}`);
-        } else {
+        } else if (response.generateNewScopedAccessToken) {
           setNewToken(
             `Make sure to copy your new access token now. You won't be able to see it again!\n\n${response.generateNewScopedAccessToken.token}`,
           );
@@ -81,7 +81,7 @@ function OwnerScopedTokenDialog(props: Props) {
     });
   }
 
-  let newTokenComponent = null;
+  let newTokenComponent: null | JSX.Element = null;
   if (newToken) {
     newTokenComponent = (
       <FormControl fullWidth>

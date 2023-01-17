@@ -74,7 +74,7 @@ const styles = theme => ({
 
 interface Props extends WithStyles<typeof styles> {
   branch?: string;
-  repository: RepositoryBuildList_repository;
+  repository: Exclude<RepositoryBuildList_repository, null>;
 }
 
 const repositorySubscription = graphql`
@@ -102,13 +102,13 @@ function RepositoryBuildList(props: Props) {
   }, [props.repository.id, props.branch]);
 
   let navigate = useNavigate();
-  let [selectedBuildId, setSelectedBuildId] = useState(null);
+  let [selectedBuildId, setSelectedBuildId] = useState<string | null>(null);
   let [openCreateDialog, setOpenCreateDialog] = useState(false);
   let { repository, classes } = props;
   let builds = repository.builds.edges.map(edge => edge.node, styles);
 
-  let repositorySettings = null;
-  let repositoryAction = null;
+  let repositorySettings: JSX.Element | null = null;
+  let repositoryAction: JSX.Element | null = null;
   if (repository.viewerPermission === 'WRITE' || repository.viewerPermission === 'ADMIN') {
     repositorySettings = (
       <Tooltip title="Repository Settings">
@@ -151,7 +151,7 @@ function RepositoryBuildList(props: Props) {
     </Tooltip>
   );
 
-  let buildsChart = null;
+  let buildsChart: JSX.Element | null = null;
 
   if (props.branch && builds.length > 5) {
     buildsChart = (
@@ -194,7 +194,11 @@ function RepositoryBuildList(props: Props) {
         </TableCell>
         <TableCell className={classes.cell}>
           <div>
-            <MarkdownTypography text={build.changeMessageTitle} variant="body1" color="inherit" />
+            <MarkdownTypography
+              text={build.changeMessageTitle ? build.changeMessageTitle : ''}
+              variant="body1"
+              color="inherit"
+            />
           </div>
         </TableCell>
         <TableCell
@@ -240,7 +244,7 @@ function RepositoryBuildList(props: Props) {
           <BuildsTable builds={builds} selectedBuildId={selectedBuildId} setSelectedBuildId={setSelectedBuildId} />
         ) : (
           <Table style={{ tableLayout: 'auto' }}>
-            <TableBody>{builds.map(build => buildItem(build))}</TableBody>
+            <TableBody>{builds.map(build => build && buildItem(build))}</TableBody>
           </Table>
         )}
       </Paper>

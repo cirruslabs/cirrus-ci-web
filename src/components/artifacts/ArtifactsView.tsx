@@ -42,8 +42,10 @@ interface SingleArtifactItemInfo {
 
 function ArtifactsView(props: Props) {
   let navigate = useNavigate();
-  let [selectedArtifactName, setSelectedArtifactName] = useState(null);
-  let [selectedPath, setSelectedPath] = useState([]);
+  type selectedArtifactName = null | string;
+  type selectedPath = Array<string>;
+  let [selectedArtifactName, setSelectedArtifactName] = useState<selectedArtifactName>(null);
+  let [selectedPath, setSelectedPath] = useState<selectedPath>([]);
   let [isFolderView, setFolderView] = useState(true);
 
   let artifactURL = (name: string) => {
@@ -54,19 +56,20 @@ function ArtifactsView(props: Props) {
     return allURLParts.filter(it => it !== null).join('/');
   };
 
-  let artifactArchiveURL = (name: string) =>
-    ['https://api.cirrus-ci.com/v1/artifact/task', props.task.id, `${name}.zip`].join('/');
+  // todo: restrict undefined as arg
+  let artifactArchiveURL = (name: string | undefined) =>
+    name && ['https://api.cirrus-ci.com/v1/artifact/task', props.task.id, `${name}.zip`].join('/');
 
   function getSelectedArtifact() {
     for (let artifact of props.task.artifacts || []) {
-      if (artifact.name && artifact.name === selectedArtifactName) {
+      if (artifact?.name && artifact?.name === selectedArtifactName) {
         return artifact;
       }
     }
     return null;
   }
 
-  function currentPath(): string {
+  function currentPath(): string | null {
     if (!selectedArtifactName) {
       return null;
     }
@@ -104,19 +107,23 @@ function ArtifactsView(props: Props) {
     }
 
     let selectedPrefix = selectedPath.length === 0 ? '' : selectedPath.join('/') + '/';
-    let results = [];
+    let results: Array<SingleArtifactItemInfo> = [];
 
     let files = currentArtifact.files;
-    for (let fileInfo of files) {
-      if (selectedPrefix === '' || fileInfo.path.startsWith(selectedPrefix)) {
-        let subPath = fileInfo.path.substring(selectedPrefix.length);
-        let folderName = subPath.substring(0, subPath.indexOf('/'));
-        results.push({
-          path: subPath,
-          folder: folderName,
-          size: fileInfo.size,
-          isTopLevel: subPath.indexOf('/') === -1,
-        });
+    if (files) {
+      for (let fileInfo of files) {
+        if (fileInfo) {
+          if (selectedPrefix === '' || fileInfo.path.startsWith(selectedPrefix)) {
+            let subPath = fileInfo.path.substring(selectedPrefix.length);
+            let folderName = subPath.substring(0, subPath.indexOf('/'));
+            results.push({
+              path: subPath,
+              folder: folderName,
+              size: fileInfo.size,
+              isTopLevel: subPath.indexOf('/') === -1,
+            });
+          }
+        }
       }
     }
 
@@ -126,7 +133,7 @@ function ArtifactsView(props: Props) {
   let { task, classes } = props;
   let { artifacts } = task;
 
-  let items = [];
+  let items: Array<JSX.Element> = [];
 
   // ... if needed
   if (selectedPath.length > 0 && isFolderView) {
@@ -149,21 +156,23 @@ function ArtifactsView(props: Props) {
     );
   }
 
-  if (!selectedArtifactName) {
+  if (!selectedArtifactName && artifacts) {
     for (let artifact of artifacts) {
-      items.push(
-        <ListItem key={artifact.name} button onClick={() => setSelectedArtifactName(artifact.name)}>
-          <ListItemIcon>
-            <FolderOpen />
-          </ListItemIcon>
-          <ListItemText primary={artifact.name} />
-          <Tooltip title="Download All Files (.zip)">
-            <IconButton onClick={e => navigateHelper(navigate, e, artifactArchiveURL(artifact.name))} size="large">
-              <GetApp />
-            </IconButton>
-          </Tooltip>
-        </ListItem>,
-      );
+      if (artifact) {
+        items.push(
+          <ListItem key={artifact.name} button onClick={() => setSelectedArtifactName(artifact?.name || null)}>
+            <ListItemIcon>
+              <FolderOpen />
+            </ListItemIcon>
+            <ListItemText primary={artifact.name} />
+            <Tooltip title="Download All Files (.zip)">
+              <IconButton onClick={e => navigateHelper(navigate, e, artifactArchiveURL(artifact?.name))} size="large">
+                <GetApp />
+              </IconButton>
+            </Tooltip>
+          </ListItem>,
+        );
+      }
     }
   } else {
     let folders: string[] = [];

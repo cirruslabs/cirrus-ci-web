@@ -65,7 +65,7 @@ function AccountInformation(props: Props) {
         onClick={handleClick}
         size="large"
       >
-        <Avatar style={{ cursor: 'pointer' }} src={viewer.avatarURL} />
+        <Avatar style={{ cursor: 'pointer' }} src={viewer.avatarURL ?? ''} />
       </IconButton>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
         <MenuItem

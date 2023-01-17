@@ -44,6 +44,7 @@ function UserProfile(props: Props) {
     // navigate to the owner's settings immediatly
     if (user.relatedOwners && user.relatedOwners.length === 1) {
       let uniqueOwner = user.relatedOwners[0];
+      if (!uniqueOwner) return;
       navigate(`/settings/${uniqueOwner.platform}/${uniqueOwner.name}`, { replace: true });
     }
   }, [navigate, user.relatedOwners]);
@@ -58,27 +59,30 @@ function UserProfile(props: Props) {
         <CardHeader title="All Settings" />
         <List>
           {user.relatedOwners &&
-            user.relatedOwners.map(owner => (
-              <ListItem
-                key={owner.platform + owner.uid}
-                onClick={e => navigateHelper(navigate, e, '/github/' + owner.name)}
-                secondaryAction={
-                  <Tooltip title="Owner settings">
-                    <IconButton
-                      onClick={e => navigateHelper(navigate, e, `/settings/${owner.platform}/${owner.name}`)}
-                      size="large"
-                    >
-                      <Settings />
-                    </IconButton>
-                  </Tooltip>
-                }
-              >
-                <ListItemAvatar>
-                  <OwnerPlatformIcon platform={owner.platform} />
-                </ListItemAvatar>
-                <ListItemText>{owner.name}</ListItemText>
-              </ListItem>
-            ))}
+            user.relatedOwners.map(
+              owner =>
+                owner && (
+                  <ListItem
+                    key={owner.platform + owner.uid}
+                    onClick={e => navigateHelper(navigate, e, '/github/' + owner!.name)}
+                    secondaryAction={
+                      <Tooltip title="Owner settings">
+                        <IconButton
+                          onClick={e => navigateHelper(navigate, e, `/settings/${owner.platform}/${owner!.name}`)}
+                          size="large"
+                        >
+                          <Settings />
+                        </IconButton>
+                      </Tooltip>
+                    }
+                  >
+                    <ListItemAvatar>
+                      <OwnerPlatformIcon platform={owner.platform} />
+                    </ListItemAvatar>
+                    <ListItemText>{owner.name}</ListItemText>
+                  </ListItem>
+                ),
+            )}
         </List>
       </Card>
     </div>

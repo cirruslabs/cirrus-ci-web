@@ -42,8 +42,8 @@ interface Props extends WithStyles<typeof styles> {
 
 function OwnerApiSettings(props: Props) {
   let { classes } = props;
-  let existingTokenComponent = null;
-  let [newToken, setNewToken] = useState(null);
+  let existingTokenComponent: JSX.Element | null = null;
+  let [newToken, setNewToken] = useState<string | null>(null);
   let [openDialog, setOpenDialog] = useState(false);
 
   function generateNewAccessToken() {
@@ -61,6 +61,7 @@ function OwnerApiSettings(props: Props) {
           console.log(errors);
           return;
         }
+        if (!response?.generateNewOwnerAccessToken?.token) return;
         setNewToken(response.generateNewOwnerAccessToken.token);
       },
       onError: err => console.error(err),
@@ -72,7 +73,7 @@ function OwnerApiSettings(props: Props) {
       <Typography variant="subtitle1">Currently active token: {props.info.apiToken.maskedToken}</Typography>
     );
   }
-  let newTokenComponent = null;
+  let newTokenComponent: JSX.Element | null = null;
   if (newToken) {
     newTokenComponent = (
       <TextField

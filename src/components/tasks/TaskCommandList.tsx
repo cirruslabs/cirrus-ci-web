@@ -15,7 +15,6 @@ import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import * as queryString from 'query-string';
 import { TaskCommandList_task } from './__generated__/TaskCommandList_task.graphql';
-import { ItemOfArray } from '../../utils/utility-types';
 import { useLocation } from 'react-router-dom';
 import { createStyles, WithStyles } from '@mui/styles';
 import { Box, useTheme } from '@mui/material';
@@ -36,15 +35,19 @@ interface Props extends WithStyles<typeof styles> {
 function TaskCommandList(props: Props) {
   let task = props.task;
   let commands = task.commands;
+  if (!commands) return null;
 
-  let commandComponents = [];
+  let commandComponents: Array<JSX.Element> = [];
   let lastTimestamp = task.executingTimestamp;
   let colorMapping = useCommandStatusColorMapping();
   let location = useLocation();
   let theme = useTheme();
   const prefersDarkMode = useRecoilValue(prefersDarkModeState);
 
-  function commandItem(command: ItemOfArray<TaskCommandList_task['commands']>, commandStartTimestamp: number) {
+  function commandItem(
+    command: Exclude<TaskCommandList_task['commands'][number], null>,
+    commandStartTimestamp: number,
+  ) {
     let search = queryString.parse(location.search);
     const selectedCommandName = search.command || search.logs;
     let summaryStyle = prefersDarkMode
@@ -115,6 +118,7 @@ function TaskCommandList(props: Props) {
 
   for (let i = 0; i < commands.length; ++i) {
     let command = commands[i];
+    if (!command || !lastTimestamp) continue;
     commandComponents.push(commandItem(command, lastTimestamp));
     lastTimestamp += command.durationInSeconds * 1000;
   }

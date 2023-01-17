@@ -8,7 +8,7 @@ import { FragmentRefs } from 'relay-runtime';
 interface Task {
   readonly id: string;
   readonly localGroupId: number;
-  readonly requiredGroups: ReadonlyArray<number | null> | null;
+  readonly requiredGroups: ReadonlyArray<number>;
   readonly scheduledTimestamp: number;
   readonly executingTimestamp: number;
   readonly finalStatusTimestamp: number;
@@ -16,18 +16,20 @@ interface Task {
 }
 
 interface Props {
-  tasks: ReadonlyArray<Task>;
+  tasks: ReadonlyArray<Task | null>;
   showCreation?: boolean;
 }
 
+type Result = Array<{
+  task: Task;
+  durationBeforeScheduling?: number;
+  overallDuration?: number;
+}>;
+
 // stable topological sort in O(n*k) where n is amount of tasks and k is amount of stages
 // plus populating data for visualization
-function topologicalSort(tasks: ReadonlyArray<Task>): ReadonlyArray<{
-  task: Task;
-  durationBeforeScheduling: number;
-  overallDuration: number;
-}> {
-  let result = [];
+function topologicalSort(tasks: ReadonlyArray<Task | null>): Result {
+  let result: Result = [];
 
   let satisfiedGroups = {};
 
@@ -47,6 +49,7 @@ function topologicalSort(tasks: ReadonlyArray<Task>): ReadonlyArray<{
 
     for (let i = 0; i < tasks.length; i++) {
       let task = tasks[i];
+      if (!task) continue;
       if (!satisfiedGroups[task.localGroupId] && allGroupsSatisfied(task.requiredGroups)) {
         newlySatisfiedGroups[task.localGroupId] = true;
         result.push({
@@ -65,7 +68,7 @@ function topologicalSort(tasks: ReadonlyArray<Task>): ReadonlyArray<{
       let executionDuration = current.task.executingTimestamp
         ? Math.max(0, current.task.finalStatusTimestamp - current.task.executingTimestamp) / 1000
         : 0;
-      let candidate = current.durationBeforeScheduling + executionDuration + scheduledDuration;
+      let candidate = current.durationBeforeScheduling! + executionDuration + scheduledDuration;
       if (candidate > currentDurationBeforeScheduling) {
         currentDurationBeforeScheduling = candidate;
       }
@@ -78,6 +81,7 @@ function topologicalSort(tasks: ReadonlyArray<Task>): ReadonlyArray<{
 
   for (let i = 0; i < tasks.length; i++) {
     let task = tasks[i];
+    if (!task) continue;
     if (!satisfiedGroups[task.localGroupId]) {
       result.push({
         task: task,

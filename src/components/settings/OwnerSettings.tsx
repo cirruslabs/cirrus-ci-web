@@ -59,11 +59,14 @@ function OwnerSettings(props: Props) {
           <MarkdownTypography text={info.description.message} />
         </CardContent>
         <CardActions>
-          {info.description.actions.map(action => (
-            <Button variant="contained" href={action.link}>
-              {action.title}
-            </Button>
-          ))}
+          {info.description.actions.map(
+            action =>
+              action && (
+                <Button variant="contained" href={action.link}>
+                  {action.title}
+                </Button>
+              ),
+          )}
         </CardActions>
       </Card>
       <div className={classes.settingGap} />

@@ -65,6 +65,7 @@ function RepositorySettings(props: Props) {
   };
 
   let setClearCaches = (event, checked) => {
+    if (!initialSettings.cacheVersion) return;
     const cacheVersion = checked ? initialSettings.cacheVersion + 1 : initialSettings.cacheVersion;
 
     setSettings({
@@ -118,6 +119,7 @@ function RepositorySettings(props: Props) {
           console.log(errors);
           return;
         }
+        if (!response?.saveSettings) return;
         setInitialSettings(response.saveSettings.settings);
       },
       onError: err => console.error(err),

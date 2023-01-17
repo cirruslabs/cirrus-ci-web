@@ -11,8 +11,11 @@ import OwnerRepositoryList from '../../components/account/OwnerRepositoryList';
 import NotFound from '../NotFound';
 import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 
-export default function Owner(): JSX.Element {
+export default function Owner(): JSX.Element | null {
   let { platform, owner } = useParams();
+
+  if (!platform || !owner) return null;
+
   return (
     <QueryRenderer<OwnerQuery>
       environment={environment}

@@ -30,9 +30,9 @@ interface Props {
 
 function RepositorySecuredVariables(props: Props) {
   let [inputValue, setInputValue] = useState('');
-  let [securedVariableName, setSecuredVariableName] = useState(undefined);
+  let [securedVariableName, setSecuredVariableName] = useState<string | undefined>(undefined);
 
-  let securedComponent = null;
+  let securedComponent: JSX.Element | null = null;
 
   if (securedVariableName) {
     let valueForYAMLFile = `ENCRYPTED[${securedVariableName}]`;

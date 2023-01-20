@@ -44,7 +44,7 @@
     "react-dom": "^17.0.2",
     "react-helmet": "^6.1.0",
     "react-markdown": "^7.1.2",
-    "react-relay": "^12.0.0",
+    "react-relay": "^14.1.0",
     "react-router-dom": "^6.0.2",
     "react-stripe-elements": "^6.1.2",
     "react-vis": "^1.11.7",
@@ -64,8 +64,9 @@
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
     "@types/react-helmet": "^6.1.0",
-    "@types/react-relay": "^11.0.3",
+    "@types/react-relay": "^14",
     "@types/react-router-dom": "^5.1.6",
+    "@types/relay-compiler": "^14",
     "@types/relay-runtime": "^12.0.1",
     "get-graphql-schema": "^2.1.2",
     "husky": "^4.3.6",
@@ -73,8 +74,7 @@
     "pretty-quick": "^3.1.0",
     "react-scripts": "^4.0.3",
     "react-test-renderer": "^17.0.1",
-    "relay-compiler": "^12.0.0",
-    "relay-compiler-language-typescript": "^15.0.0",
+    "relay-compiler": "^14.1.0",
     "typescript": "^4.5.2"
   },
   "scripts": {
@@ -85,9 +85,14 @@
     "typecheck": "tsc --project tsconfig.json --noEmit",
     "prettier": "prettier --write .",
     "prettier-check": "prettier --check .",
-    "relay": "relay-compiler --verbose --watchman false --src ./src --schema schema.gql --language typescript",
+    "relay": "relay-compiler --output verbose",
     "sync-schema": "get-graphql-schema https://api.cirrus-ci.com/schema.json | sed -e 's/Long/Int/g' > schema.gql && prettier --write schema.gql",
     "bootstrap": "yarn sync-schema && yarn relay"
+  },
+  "relay": {
+    "src": "./src",
+    "schema": "schema.gql",
+    "language": "typescript"
   },
   "eslintConfig": {
     "extends": [

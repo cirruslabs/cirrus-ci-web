@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Logs from '../logs/Logs';
-import { QueryRenderer } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
+import {QueryRenderer} from 'react-relay';
+import {graphql} from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
 import CirrusLinearProgress from '../common/CirrusLinearProgress';
-import { subscribeTaskCommandLogs } from '../../rtu/ConnectionManager';
+import {subscribeTaskCommandLogs} from '../../rtu/ConnectionManager';
 import CirrusCircularProgress from '../common/CirrusCircularProgress';
-import { isTaskCommandFinalStatus } from '../../utils/status';
+import {isTaskCommandFinalStatus} from '../../utils/status';
 import Tooltip from '@mui/material/Tooltip';
-import { WithStyles } from '@mui/styles';
-import createStyles from '@mui/styles/createStyles';
-import withStyles from '@mui/styles/withStyles';
+import {makeStyles} from '@mui/styles';
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
 import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
 import Fab from '@mui/material/Fab';
@@ -18,7 +16,7 @@ import {
   TaskCommandLogsTailQuery,
   TaskCommandLogsTailQueryResponse,
 } from './__generated__/TaskCommandLogsTailQuery.graphql';
-import { TaskCommandStatus, TaskCommandType } from './__generated__/TaskCommandList_task.graphql';
+import {TaskCommandStatus, TaskCommandType} from './__generated__/TaskCommandList_task.graphql';
 
 function logURL(taskId: string, command) {
   return 'https://api.cirrus-ci.com/v1/task/' + taskId + '/logs/' + command.name + '.log';
@@ -28,8 +26,8 @@ function cacheURL(taskId: string, cacheHit) {
   return 'https://api.cirrus-ci.com/v1/task/' + taskId + '/caches/' + cacheHit.key + '.tar.gz';
 }
 
-let styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     actionButtons: {
       position: 'absolute',
       right: 0,
@@ -42,9 +40,10 @@ let styles = theme =>
     openButton: {
       fontSize: 20,
     },
-  });
+  };
+});
 
-interface RealTimeLogsProps extends WithStyles<typeof styles> {
+interface RealTimeLogsProps {
   taskId: string;
   command: {
     name: string;
@@ -70,7 +69,8 @@ function TaskCommandRealTimeLogs(props: RealTimeLogsProps) {
     return () => closable();
   }, [realTimeLogs, props.taskId, props.command.name, additionalLogs]);
 
-  let { classes, taskId, command, initialLogLines, executionInfo } = props;
+  let { taskId, command, initialLogLines, executionInfo } = props;
+  let classes = useStyles();
 
   let inProgress = !isTaskCommandFinalStatus(command.status);
 
@@ -117,7 +117,7 @@ function TaskCommandRealTimeLogs(props: RealTimeLogsProps) {
   );
 }
 
-interface TaskCommandLogsProps extends WithStyles<typeof styles> {
+interface TaskCommandLogsProps {
   taskId: string;
   command: {
     name: string;
@@ -165,4 +165,4 @@ function TaskCommandLogs(props: TaskCommandLogsProps) {
   );
 }
 
-export default withStyles(styles)(TaskCommandLogs);
+export default TaskCommandLogs;

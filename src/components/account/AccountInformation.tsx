@@ -1,6 +1,6 @@
 import React from 'react';
-import { createFragmentContainer } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
+import {createFragmentContainer} from 'react-relay';
+import {graphql} from 'babel-plugin-relay/macro';
 
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
@@ -8,26 +8,25 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { navigateHelper } from '../../utils/navigateHelper';
-import { useNavigate } from 'react-router-dom';
-import { AccountInformation_viewer } from './__generated__/AccountInformation_viewer.graphql';
+import {navigateHelper} from '../../utils/navigateHelper';
+import {useNavigate} from 'react-router-dom';
+import {AccountInformation_viewer} from './__generated__/AccountInformation_viewer.graphql';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import DirectionsRun from '@mui/icons-material/DirectionsRun';
 import Button from '@mui/material/Button';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import { WithStyles } from '@mui/styles';
-import createStyles from '@mui/styles/createStyles';
-import withStyles from '@mui/styles/withStyles';
+import {makeStyles} from '@mui/styles';
 
-const styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     authButton: {
       color: theme.palette.primary.contrastText,
       marginLeft: 10,
     },
-  });
+  };
+});
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   viewer: AccountInformation_viewer;
 }
 
@@ -43,7 +42,8 @@ function AccountInformation(props: Props) {
     setAnchorEl(null);
   };
 
-  let { viewer, classes } = props;
+  let { viewer } = props;
+  let classes = useStyles();
 
   if (!viewer) {
     return (
@@ -95,7 +95,7 @@ function AccountInformation(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(AccountInformation), {
+export default createFragmentContainer(AccountInformation, {
   viewer: graphql`
     fragment AccountInformation_viewer on User {
       avatarURL

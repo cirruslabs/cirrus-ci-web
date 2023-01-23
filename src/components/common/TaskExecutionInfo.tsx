@@ -1,33 +1,35 @@
-import { createFragmentContainer } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
+import {createFragmentContainer} from 'react-relay';
+import {graphql} from 'babel-plugin-relay/macro';
 import React from 'react';
-import { WithStyles } from '@mui/styles';
-import withStyles from '@mui/styles/withStyles';
+import {makeStyles} from '@mui/styles';
 import Chip from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
-import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, YAxis } from 'recharts';
-import { TaskExecutionInfo_task } from './__generated__/TaskExecutionInfo_task.graphql';
-import { formatDuration } from '../../utils/time';
-import { Box, useTheme } from '@mui/material';
-import { useRecoilState } from 'recoil';
-import { prefersDarkModeState } from '../../cirrusTheme';
+import {Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, YAxis} from 'recharts';
+import {TaskExecutionInfo_task} from './__generated__/TaskExecutionInfo_task.graphql';
+import {formatDuration} from '../../utils/time';
+import {Box, useTheme} from '@mui/material';
+import {useRecoilState} from 'recoil';
+import {prefersDarkModeState} from '../../cirrusTheme';
 
-let styles = {
-  chip: {
-    marginTop: 4,
-    marginBottom: 4,
-    marginRight: 4,
-  },
-};
+const useStyles = makeStyles(theme => {
+  return {
+    chip: {
+      marginTop: 4,
+      marginBottom: 4,
+      marginRight: 4,
+    },
+  };
+});
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   task: TaskExecutionInfo_task;
 }
 
 function TaskExecutionInfo(props: Props) {
   let theme = useTheme();
   const [prefersDarkMode] = useRecoilState(prefersDarkModeState);
-  let { task, classes } = props;
+  let { task } = props;
+  let classes = useStyles();
 
   if (!task.executionInfo) return null;
 
@@ -131,7 +133,7 @@ function TaskExecutionInfo(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(TaskExecutionInfo), {
+export default createFragmentContainer(TaskExecutionInfo, {
   task: graphql`
     fragment TaskExecutionInfo_task on Task {
       instanceResources {

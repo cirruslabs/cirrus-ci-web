@@ -5,32 +5,32 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import Tooltip from '@mui/material/Tooltip';
 import LastDefaultBranchBuildRow from '../builds/LastDefaultBranchBuildRow';
-import { WithStyles } from '@mui/styles';
-import withStyles from '@mui/styles/withStyles';
+import {makeStyles} from '@mui/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import { createFragmentContainer } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
-import { OwnerRepositoryList_info } from './__generated__/OwnerRepositoryList_info.graphql';
-import createStyles from '@mui/styles/createStyles';
+import {createFragmentContainer} from 'react-relay';
+import {graphql} from 'babel-plugin-relay/macro';
+import {OwnerRepositoryList_info} from './__generated__/OwnerRepositoryList_info.graphql';
 
-let styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     toolbar: {
       paddingLeft: 14,
       background: theme.palette.action.disabledBackground,
     },
-  });
+  };
+});
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   info: OwnerRepositoryList_info;
 }
 
 let OwnerRepositoryList = (props: Props) => {
-  let { classes, info } = props;
+  let { info } = props;
+  let classes = useStyles();
 
   let organizationSettings = null;
 
@@ -67,7 +67,7 @@ let OwnerRepositoryList = (props: Props) => {
   );
 };
 
-export default createFragmentContainer(withStyles(styles)(OwnerRepositoryList), {
+export default createFragmentContainer(OwnerRepositoryList, {
   info: graphql`
     fragment OwnerRepositoryList_info on OwnerInfo {
       platform

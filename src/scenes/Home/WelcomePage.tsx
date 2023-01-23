@@ -1,16 +1,16 @@
 import React from 'react';
 import Paper from '@mui/material/Paper';
-import withStyles from '@mui/styles/withStyles';
-import { Helmet as Head } from 'react-helmet';
+import {Helmet as Head} from 'react-helmet';
 import MarkdownTypography from '../../components/common/MarkdownTypography';
-
-const styles = theme => ({
-  paper: {
-    padding: theme.spacing(3.0),
-    margin: theme.spacing(1.0),
-  },
+import {makeStyles} from '@mui/styles';
+makeStyles(theme => {
+  return {
+    paper: {
+      padding: theme.spacing(3.0),
+      margin: theme.spacing(1.0),
+    },
+  };
 });
-
 let welcomePage = props => (
   <Paper className={props.classes.paper}>
     <Head>
@@ -24,4 +24,4 @@ let welcomePage = props => (
   </Paper>
 );
 
-export default withStyles(styles)(welcomePage);
+export default welcomePage;

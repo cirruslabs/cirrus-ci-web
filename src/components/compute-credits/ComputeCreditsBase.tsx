@@ -4,26 +4,24 @@ import CardActions from '@mui/material/CardActions/CardActions';
 import CardContent from '@mui/material/CardContent/CardContent';
 import CardHeader from '@mui/material/CardHeader/CardHeader';
 import Collapse from '@mui/material/Collapse/Collapse';
-import { orange } from '@mui/material/colors';
+import {orange} from '@mui/material/colors';
 import IconButton from '@mui/material/IconButton/IconButton';
 import Typography from '@mui/material/Typography/Typography';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { WithStyles } from '@mui/styles';
-import createStyles from '@mui/styles/createStyles';
-import withStyles from '@mui/styles/withStyles';
+import {makeStyles} from '@mui/styles';
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import BillingSettingsButton from './BillingSettingsButton';
-import { createFragmentContainer } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
-import { ComputeCreditsBase_info } from './__generated__/ComputeCreditsBase_info.graphql';
-import { Helmet as Head } from 'react-helmet';
+import {createFragmentContainer} from 'react-relay';
+import {graphql} from 'babel-plugin-relay/macro';
+import {ComputeCreditsBase_info} from './__generated__/ComputeCreditsBase_info.graphql';
+import {Helmet as Head} from 'react-helmet';
 import ComputeCreditsStripeDialog from './ComputeCreditsStripeDialog';
-import { Link } from '@mui/material';
+import {Link} from '@mui/material';
 
-const styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     expand: {
       transform: 'rotate(0deg)',
       marginLeft: 'auto',
@@ -55,9 +53,10 @@ const styles = theme =>
         color: orange[900],
       },
     },
-  });
+  };
+});
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   transactionsComponent: JSX.Element;
   info?: ComputeCreditsBase_info;
   balanceInCredits?: string;
@@ -67,7 +66,7 @@ interface Props extends WithStyles<typeof styles> {
 function ComputeCreditsBase(props: Props) {
   let [expanded, setExpanded] = useState(false);
   let [openBuyCredits, setOpenBuyCredits] = useState(false);
-  let { classes } = props;
+  let classes = useStyles();
 
   return (
     <Card elevation={24}>
@@ -128,7 +127,7 @@ function ComputeCreditsBase(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(ComputeCreditsBase), {
+export default createFragmentContainer(ComputeCreditsBase, {
   info: graphql`
     fragment ComputeCreditsBase_info on OwnerInfo {
       ...BillingSettingsButton_info

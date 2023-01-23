@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { createFragmentContainer, requestSubscription } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
-import { Helmet as Head } from 'react-helmet';
+import {useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {createFragmentContainer, requestSubscription} from 'react-relay';
+import {graphql} from 'babel-plugin-relay/macro';
+import {Helmet as Head} from 'react-helmet';
 import cx from 'classnames';
 
-import { WithStyles } from '@mui/styles';
+import {makeStyles} from '@mui/styles';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Table from '@mui/material/Table';
@@ -16,7 +16,6 @@ import Tooltip from '@mui/material/Tooltip';
 import TableRow from '@mui/material/TableRow';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import withStyles from '@mui/styles/withStyles';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -24,10 +23,10 @@ import Settings from '@mui/icons-material/Settings';
 import AddCircle from '@mui/icons-material/AddCircle';
 import Timeline from '@mui/icons-material/Timeline';
 
-import { absoluteLink } from '../../utils/link';
-import { createLinkToRepository } from '../../utils/github';
-import { NodeOfConnection } from '../../utils/utility-types';
-import { navigateBuildHelper } from '../../utils/navigateHelper';
+import {absoluteLink} from '../../utils/link';
+import {createLinkToRepository} from '../../utils/github';
+import {NodeOfConnection} from '../../utils/utility-types';
+import {navigateBuildHelper} from '../../utils/navigateHelper';
 import usePageWidth from '../../utils/usePageWidth';
 import environment from '../../createRelayEnvironment';
 import BuildStatusChip from '../chips/BuildStatusChip';
@@ -38,41 +37,43 @@ import BuildChangeChip from '../chips/BuildChangeChip';
 import MarkdownTypography from '../common/MarkdownTypography';
 import BuildsTable from '../../components/builds/BuildsTable';
 
-import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildList_repository.graphql';
+import {RepositoryBuildList_repository} from './__generated__/RepositoryBuildList_repository.graphql';
 
 // todo: move custom values to mui theme adjustments
-const styles = theme => ({
-  root: {
-    paddingBottom: theme.spacing(16.0),
-  },
-  paper: {
-    padding: theme.spacing(1.0, 2.5, 1.5),
-    boxShadow: '0 16px 52px rgb(0 0 0 / 13%)',
-    borderRadius: 4 * theme.shape.borderRadius,
-  },
-  paperBuildsTable: {
-    paddingBottom: theme.spacing(4.0),
-  },
-  header: {
-    paddingLeft: 14,
-    justifyContent: 'space-between',
-  },
-  gap: {
-    paddingTop: 16,
-  },
-  chip: {
-    margin: 4,
-  },
-  cell: {
-    width: '100%',
-    maxWidth: '600px',
-  },
-  buildsChart: {
-    height: 150,
-  },
+const useStyles = makeStyles(theme => {
+  return {
+    root: {
+      paddingBottom: theme.spacing(16.0),
+    },
+    paper: {
+      padding: theme.spacing(1.0, 2.5, 1.5),
+      boxShadow: '0 16px 52px rgb(0 0 0 / 13%)',
+      borderRadius: 4 * theme.shape.borderRadius,
+    },
+    paperBuildsTable: {
+      paddingBottom: theme.spacing(4.0),
+    },
+    header: {
+      paddingLeft: 14,
+      justifyContent: 'space-between',
+    },
+    gap: {
+      paddingTop: 16,
+    },
+    chip: {
+      margin: 4,
+    },
+    cell: {
+      width: '100%',
+      maxWidth: '600px',
+    },
+    buildsChart: {
+      height: 150,
+    },
+  };
 });
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   branch?: string;
   repository: RepositoryBuildList_repository;
 }
@@ -104,8 +105,9 @@ function RepositoryBuildList(props: Props) {
   let navigate = useNavigate();
   let [selectedBuildId, setSelectedBuildId] = useState(null);
   let [openCreateDialog, setOpenCreateDialog] = useState(false);
-  let { repository, classes } = props;
-  let builds = repository.builds.edges.map(edge => edge.node, styles);
+  let { repository } = props;
+  let classes = useStyles();
+  let builds = repository.builds.edges.map(edge => edge.node);
 
   let repositorySettings = null;
   let repositoryAction = null;
@@ -251,7 +253,7 @@ function RepositoryBuildList(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(RepositoryBuildList), {
+export default createFragmentContainer(RepositoryBuildList, {
   repository: graphql`
     fragment RepositoryBuildList_repository on Repository @argumentDefinitions(branch: { type: "String" }) {
       id

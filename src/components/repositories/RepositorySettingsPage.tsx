@@ -4,27 +4,29 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import RepositorySecuredVariables from './RepositorySecuredVariables';
 import RepositorySettings from './RepositorySettings';
-import { createFragmentContainer } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
-import { WithStyles } from '@mui/styles';
-import withStyles from '@mui/styles/withStyles';
-import { RepositorySettingsPage_repository } from './__generated__/RepositorySettingsPage_repository.graphql';
+import {createFragmentContainer} from 'react-relay';
+import {graphql} from 'babel-plugin-relay/macro';
+import {makeStyles} from '@mui/styles';
+import {RepositorySettingsPage_repository} from './__generated__/RepositorySettingsPage_repository.graphql';
 import RepositoryCronSettings from './RepositoryCronSettings';
-import { Link } from '@mui/material';
+import {Link} from '@mui/material';
 import RepositoryDangerSettings from './RepositoryDangerSettings';
 
-const styles = {
-  settingGap: {
-    paddingTop: 16,
-  },
-};
+const useStyles = makeStyles(theme => {
+  return {
+    settingGap: {
+      paddingTop: 16,
+    },
+  };
+});
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   repository: RepositorySettingsPage_repository;
 }
 
 let RepositorySettingsPage = (props: Props) => {
-  let { classes, repository } = props;
+  let classes = useStyles();
+  let { repository } = props;
 
   let link = (
     <Link color="inherit" href={`/${repository.platform}/${repository.owner}/${repository.name}`}>
@@ -60,7 +62,7 @@ let RepositorySettingsPage = (props: Props) => {
   );
 };
 
-export default createFragmentContainer(withStyles(styles)(RepositorySettingsPage), {
+export default createFragmentContainer(RepositorySettingsPage, {
   repository: graphql`
     fragment RepositorySettingsPage_repository on Repository {
       platform

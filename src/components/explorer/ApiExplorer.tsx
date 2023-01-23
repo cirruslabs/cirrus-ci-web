@@ -1,13 +1,13 @@
-import { useEffect } from 'react';
-import { Helmet as Head } from 'react-helmet';
-import { useTheme as useMuiTheme, Container } from '@mui/material';
-import { useTheme as useGraphiqlTheme } from '@graphiql/react';
-import { GraphiQLProvider, GraphiQLInterface } from 'graphiql';
-import { createStyles, withStyles, WithStyles } from '@mui/styles';
+import {useEffect} from 'react';
+import {Helmet as Head} from 'react-helmet';
+import {Container, useTheme as useMuiTheme} from '@mui/material';
+import {useTheme as useGraphiqlTheme} from '@graphiql/react';
+import {GraphiQLInterface, GraphiQLProvider} from 'graphiql';
+import {makeStyles} from '@mui/styles';
 import 'graphiql/graphiql.css';
 
-const styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     root: {
       display: 'flex',
       justifyContent: 'center',
@@ -18,7 +18,8 @@ const styles = theme =>
       paddingRight: theme.spacing(2.0),
       paddingBottom: theme.spacing(1.0),
     },
-  });
+  };
+});
 
 const query = `\
 query {
@@ -48,7 +49,8 @@ const ApiExplorer = () => {
   );
 };
 
-const Content = withStyles(styles)(({ classes }: WithStyles<typeof styles>) => {
+const Content = () => {
+  let classes = useStyles();
   const muiTheme = useMuiTheme().palette.mode;
   const setGraphiqlTheme = useGraphiqlTheme().setTheme;
 
@@ -67,6 +69,6 @@ const Content = withStyles(styles)(({ classes }: WithStyles<typeof styles>) => {
       </Container>
     </div>
   );
-});
+};
 
 export default ApiExplorer;

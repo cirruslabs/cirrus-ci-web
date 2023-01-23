@@ -1,6 +1,4 @@
-import { WithStyles } from '@mui/styles';
-import createStyles from '@mui/styles/createStyles';
-import withStyles from '@mui/styles/withStyles';
+import {makeStyles} from '@mui/styles';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -8,16 +6,16 @@ import CardContent from '@mui/material/CardContent';
 import Chip from '@mui/material/Chip';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { graphql } from 'babel-plugin-relay/macro';
+import {graphql} from 'babel-plugin-relay/macro';
 import classNames from 'classnames';
-import React, { Suspense, useEffect, useState } from 'react';
-import { commitMutation, createFragmentContainer, requestSubscription } from 'react-relay';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, {Suspense, useEffect, useState} from 'react';
+import {commitMutation, createFragmentContainer, requestSubscription} from 'react-relay';
+import {useLocation, useNavigate} from 'react-router-dom';
 import environment from '../../createRelayEnvironment';
-import { navigateBuildHelper, navigateTaskHelper } from '../../utils/navigateHelper';
-import { hasWritePermissions } from '../../utils/permissions';
-import { isTaskFinalStatus } from '../../utils/status';
-import { shorten } from '../../utils/text';
+import {navigateBuildHelper, navigateTaskHelper} from '../../utils/navigateHelper';
+import {hasWritePermissions} from '../../utils/permissions';
+import {isTaskFinalStatus} from '../../utils/status';
+import {shorten} from '../../utils/text';
 import TaskArtifacts from '../artifacts/TaskArtifacts';
 import TaskCreatedChip from '../chips/TaskCreatedChip';
 import TaskOptionalChip from '../chips/TaskOptionalChip';
@@ -28,13 +26,13 @@ import CirrusFavicon from '../common/CirrusFavicon';
 import TaskCommandList from './TaskCommandList';
 import TaskCommandsProgress from './TaskCommandsProgress';
 import TaskList from './TaskList';
-import { TaskDetails_task } from './__generated__/TaskDetails_task.graphql';
+import {TaskDetails_task} from './__generated__/TaskDetails_task.graphql';
 import {
   TaskDetailsReRunMutationResponse,
   TaskDetailsReRunMutationVariables,
 } from './__generated__/TaskDetailsReRunMutation.graphql';
 import TaskResourcesChip from '../chips/TaskResourcesChip';
-import { Helmet as Head } from 'react-helmet';
+import {Helmet as Head} from 'react-helmet';
 import ExecutionInfo from '../common/TaskExecutionInfo';
 import Refresh from '@mui/icons-material/Refresh';
 import PlayCircleFilled from '@mui/icons-material/PlayCircleFilled';
@@ -46,7 +44,7 @@ import TaskTimeoutChip from '../chips/TaskTimeoutChip';
 import Notification from '../common/Notification';
 import HookList from '../hooks/HookList';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { TabContext, TabList, TabPanel, ToggleButton } from '@mui/lab';
+import {TabContext, TabList, TabPanel, ToggleButton} from '@mui/lab';
 import {
   Badge,
   ButtonGroup,
@@ -61,7 +59,7 @@ import {
   Tab,
   Tooltip,
 } from '@mui/material';
-import { BugReport, Dehaze, Functions, LayersClear } from '@mui/icons-material';
+import {BugReport, Dehaze, Functions, LayersClear} from '@mui/icons-material';
 import {
   TaskDetailsInvalidateCachesMutationResponse,
   TaskDetailsInvalidateCachesMutationVariables,
@@ -72,10 +70,10 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { CirrusTerminal } from '../cirrus-terminal/CirrusTerminal';
-import { HookType } from '../hooks/HookType';
-import { TaskDetailsTriggerMutationVariables } from './__generated__/TaskDetailsTriggerMutation.graphql';
-import { TaskDetailsCancelMutationVariables } from './__generated__/TaskDetailsCancelMutation.graphql';
+import {CirrusTerminal} from '../cirrus-terminal/CirrusTerminal';
+import {HookType} from '../hooks/HookType';
+import {TaskDetailsTriggerMutationVariables} from './__generated__/TaskDetailsTriggerMutation.graphql';
+import {TaskDetailsCancelMutationVariables} from './__generated__/TaskDetailsCancelMutation.graphql';
 import TaskDebuggingInformation from './TaskDebuggingInformation';
 import CirrusLinearProgress from '../common/CirrusLinearProgress';
 import CommitMessage from '../common/CommitMessage';
@@ -129,8 +127,8 @@ const taskSubscription = graphql`
   }
 `;
 
-const styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     title: {
       padding: 8,
       background: theme.palette.action.disabledBackground,
@@ -155,10 +153,10 @@ const styles = theme =>
       marginTop: theme.spacing(1.0),
     },
     automaticReRun: {
-      backgroundColor: theme.palette.warning.second,
+      backgroundColor: theme.palette.warning.light,
     },
     transaction: {
-      backgroundColor: theme.palette.success.second,
+      backgroundColor: theme.palette.success.light,
     },
     tabPanel: {
       padding: 0,
@@ -170,9 +168,10 @@ const styles = theme =>
     rerunOptionPopup: {
       zIndex: 1,
     },
-  });
+  };
+});
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   task: TaskDetails_task;
 }
 
@@ -191,7 +190,8 @@ function TaskDetails(props: Props) {
     return () => subscription.dispose();
   }, [props.task.id, props.task.status]);
 
-  let { task, classes } = props;
+  let { task } = props;
+  let classes = useStyles();
   let build = task.build;
   let repository = task.repository;
 
@@ -587,7 +587,7 @@ function TaskDetails(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(TaskDetails), {
+export default createFragmentContainer(TaskDetails, {
   task: graphql`
     fragment TaskDetails_task on Task {
       id

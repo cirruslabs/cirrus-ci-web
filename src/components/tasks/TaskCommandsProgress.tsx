@@ -1,19 +1,17 @@
-import { isTaskFinalStatus } from '../../utils/status';
-import React, { useEffect, useState } from 'react';
-import { useTaskStatusColorMapping } from '../../utils/colors';
+import {isTaskFinalStatus} from '../../utils/status';
+import React, {useEffect, useState} from 'react';
+import {useTaskStatusColorMapping} from '../../utils/colors';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { formatDuration } from '../../utils/time';
-import { createFragmentContainer } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
-import { TaskCommandsProgress_task } from './__generated__/TaskCommandsProgress_task.graphql';
-import { Box } from '@mui/material';
-import createStyles from '@mui/styles/createStyles';
-import withStyles from '@mui/styles/withStyles';
-import { WithStyles } from '@mui/styles';
+import {formatDuration} from '../../utils/time';
+import {createFragmentContainer} from 'react-relay';
+import {graphql} from 'babel-plugin-relay/macro';
+import {TaskCommandsProgress_task} from './__generated__/TaskCommandsProgress_task.graphql';
+import {Box} from '@mui/material';
+import {makeStyles} from '@mui/styles';
 
-const styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     progressBar: {
       backgroundColor: 'transparent',
       width: '100%',
@@ -22,15 +20,17 @@ const styles = theme =>
     progressBarElement: {
       minHeight: theme.spacing(1.5),
     },
-  });
+  };
+});
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   task: TaskCommandsProgress_task;
   className?: string;
 }
 
 function TaskCommandsProgress(props: Props) {
-  let { task, classes } = props;
+  let { task } = props;
+  let classes = useStyles();
   let [totalDuration, setTotalDuration] = useState(
     task.statusDurations.reduce((sum, statusDuration) => sum + statusDuration.durationInSeconds, 0),
   );
@@ -99,7 +99,7 @@ function TaskCommandsProgress(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(TaskCommandsProgress), {
+export default createFragmentContainer(TaskCommandsProgress, {
   task: graphql`
     fragment TaskCommandsProgress_task on Task {
       status

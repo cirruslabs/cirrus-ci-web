@@ -1,9 +1,7 @@
-import { graphql } from 'babel-plugin-relay/macro';
-import React, { useState } from 'react';
-import { createFragmentContainer } from 'react-relay';
-import { WithStyles } from '@mui/styles';
-import createStyles from '@mui/styles/createStyles';
-import withStyles from '@mui/styles/withStyles';
+import {graphql} from 'babel-plugin-relay/macro';
+import React, {useState} from 'react';
+import {createFragmentContainer} from 'react-relay';
+import {makeStyles} from '@mui/styles';
 import RepositoryMetricsCharts from './RepositoryMetricsCharts';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -14,12 +12,12 @@ import Input from '@mui/material/Input';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import { RepositoryMetricsPage_repository } from './__generated__/RepositoryMetricsPage_repository.graphql';
-import { MetricsQueryParameters } from './__generated__/RepositoryMetricsChartsQuery.graphql';
-import { Helmet as Head } from 'react-helmet';
+import {RepositoryMetricsPage_repository} from './__generated__/RepositoryMetricsPage_repository.graphql';
+import {MetricsQueryParameters} from './__generated__/RepositoryMetricsChartsQuery.graphql';
+import {Helmet as Head} from 'react-helmet';
 
-const styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     title: { 'text-align': 'center' },
     settingGap: {
       paddingTop: 16,
@@ -28,15 +26,17 @@ const styles = theme =>
       margin: theme.spacing(1),
       minWidth: 180,
     },
-  });
+  };
+});
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   repository: RepositoryMetricsPage_repository;
 }
 
 function RepositoryMetricsPage(props: Props) {
   let [parameters, setParameters] = useState<MetricsQueryParameters>({});
-  let { repository, classes } = props;
+  let { repository } = props;
+  let classes = useStyles();
 
   function handleChange(event) {
     setParameters({
@@ -140,7 +140,7 @@ function cleanEmptyOrNullValues(obj) {
   return result;
 }
 
-export default createFragmentContainer(withStyles(styles)(RepositoryMetricsPage), {
+export default createFragmentContainer(RepositoryMetricsPage, {
   repository: graphql`
     fragment RepositoryMetricsPage_repository on Repository {
       id

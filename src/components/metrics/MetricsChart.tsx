@@ -1,22 +1,21 @@
-import React, { useState } from 'react';
-import { graphql } from 'babel-plugin-relay/macro';
+import React, {useState} from 'react';
+import {graphql} from 'babel-plugin-relay/macro';
 import Typography from '@mui/material/Typography';
-import { WithStyles } from '@mui/styles';
-import createStyles from '@mui/styles/createStyles';
-import withStyles from '@mui/styles/withStyles';
-import { createFragmentContainer } from 'react-relay';
+import {makeStyles} from '@mui/styles';
+import {createFragmentContainer} from 'react-relay';
 import 'react-vis/dist/style.css';
-import { FlexibleWidthXYPlot, Hint, LineSeries, VerticalGridLines, XAxis, YAxis } from 'react-vis';
+import {FlexibleWidthXYPlot, Hint, LineSeries, VerticalGridLines, XAxis, YAxis} from 'react-vis';
 import Chip from '@mui/material/Chip';
-import { formatDuration } from '../../utils/time';
-import { MetricsChart_chart } from './__generated__/MetricsChart_chart.graphql';
+import {formatDuration} from '../../utils/time';
+import {MetricsChart_chart} from './__generated__/MetricsChart_chart.graphql';
 
-const styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     title: { 'text-align': 'center' },
-  });
+  };
+});
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   chart: MetricsChart_chart;
 }
 
@@ -32,7 +31,8 @@ function intervals(intervalIncrement, maxValue) {
 
 function MetricsChart(props: Props) {
   let [hoveredPointIndex, setHoveredPointIndex] = useState(null);
-  let { chart, classes } = props;
+  let { chart } = props;
+  let classes = useStyles();
 
   function _onNearestX(value, { index }) {
     setHoveredPointIndex(index);
@@ -119,7 +119,7 @@ function MetricsChart(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(MetricsChart), {
+export default createFragmentContainer(MetricsChart, {
   chart: graphql`
     fragment MetricsChart_chart on MetricsChart {
       title

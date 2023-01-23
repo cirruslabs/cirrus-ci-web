@@ -1,10 +1,8 @@
 import React from 'react';
-import { createFragmentContainer } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
+import {createFragmentContainer} from 'react-relay';
+import {graphql} from 'babel-plugin-relay/macro';
 import Paper from '@mui/material/Paper';
-import { WithStyles } from '@mui/styles';
-import createStyles from '@mui/styles/createStyles';
-import withStyles from '@mui/styles/withStyles';
+import {makeStyles} from '@mui/styles';
 import Typography from '@mui/material/Typography';
 import Toolbar from '@mui/material/Toolbar';
 import OwnerComputeCredits from '../compute-credits/OwnerComputeCredits';
@@ -12,28 +10,30 @@ import WebHookSettings from '../webhooks/WebHookSettings';
 import OwnerApiSettings from './OwnerApiSettings';
 import OwnerSecuredVariables from './OwnerSecuredVariables';
 import OwnerPersistentWorkerPools from './OwnerPersistentWorkerPools';
-import { OwnerSettings_info } from './__generated__/OwnerSettings_info.graphql';
+import {OwnerSettings_info} from './__generated__/OwnerSettings_info.graphql';
 import MarkdownTypography from '../common/MarkdownTypography';
 import CardHeader from '@mui/material/CardHeader';
-import { Card, CardActions, CardContent } from '@mui/material';
+import {Card, CardActions, CardContent} from '@mui/material';
 import Button from '@mui/material/Button';
 
-const styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     title: {
       backgroundColor: theme.palette.action.disabledBackground,
     },
     settingGap: {
       paddingTop: 16,
     },
-  });
+  };
+});
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   info: OwnerSettings_info;
 }
 
 function OwnerSettings(props: Props) {
-  let { info, classes } = props;
+  let { info } = props;
+  let classes = useStyles();
 
   if (!info) {
     return <Typography variant="subtitle1">Can't find information this organization!</Typography>;
@@ -91,7 +91,7 @@ function OwnerSettings(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(OwnerSettings), {
+export default createFragmentContainer(OwnerSettings, {
   info: graphql`
     fragment OwnerSettings_info on OwnerInfo {
       platform

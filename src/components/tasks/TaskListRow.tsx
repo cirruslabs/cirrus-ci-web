@@ -1,28 +1,26 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Chip from '@mui/material/Chip';
 import TaskNameChip from '../chips/TaskNameChip';
 import TaskDurationChip from '../chips/TaskDurationChip';
-import { shorten } from '../../utils/text';
-import { createFragmentContainer } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
-import { navigateTaskHelper } from '../../utils/navigateHelper';
-import { WithStyles } from '@mui/styles';
-import createStyles from '@mui/styles/createStyles';
-import withStyles from '@mui/styles/withStyles';
+import {shorten} from '../../utils/text';
+import {createFragmentContainer} from 'react-relay';
+import {graphql} from 'babel-plugin-relay/macro';
+import {navigateTaskHelper} from '../../utils/navigateHelper';
+import {makeStyles} from '@mui/styles';
 import classNames from 'classnames';
 import TaskCreatedChip from '../chips/TaskCreatedChip';
-import { TaskListRow_task } from './__generated__/TaskListRow_task.graphql';
-import { isTaskFinalStatus } from '../../utils/status';
-import { useTaskStatusColorMapping } from '../../utils/colors';
-import { Box, Tooltip } from '@mui/material';
-import { formatDuration } from '../../utils/time';
+import {TaskListRow_task} from './__generated__/TaskListRow_task.graphql';
+import {isTaskFinalStatus} from '../../utils/status';
+import {useTaskStatusColorMapping} from '../../utils/colors';
+import {Box, Tooltip} from '@mui/material';
+import {formatDuration} from '../../utils/time';
 
-const styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     chip: {
       marginTop: 4,
       marginBottom: 4,
@@ -49,9 +47,10 @@ const styles = theme =>
     progressBarElement: {
       minHeight: theme.spacing(1.5),
     },
-  });
+  };
+});
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   task: TaskListRow_task;
   showCreation: boolean;
   durationBeforeScheduling?: number;
@@ -61,7 +60,8 @@ interface Props extends WithStyles<typeof styles> {
 function TaskListRow(props: Props) {
   let navigate = useNavigate();
   let colorMapping = useTaskStatusColorMapping();
-  let { task, classes, durationBeforeScheduling, overallDuration } = props;
+  let { task, durationBeforeScheduling, overallDuration } = props;
+  let classes = useStyles();
   let progress = null;
   if (isTaskFinalStatus(task.status) && overallDuration && task.executingTimestamp) {
     let scheduledDuration = Math.max(0, task.executingTimestamp - task.scheduledTimestamp) / 1000;
@@ -137,7 +137,7 @@ function TaskListRow(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(TaskListRow), {
+export default createFragmentContainer(TaskListRow, {
   task: graphql`
     fragment TaskListRow_task on Task {
       id

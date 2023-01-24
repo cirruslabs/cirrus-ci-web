@@ -343,7 +343,7 @@ scalar Int
 type MetricsChart {
   title: String!
   points: [TimePoint]!
-  dataUnits: String!
+  dataUnits: String
 }
 
 input MetricsQueryParameters {

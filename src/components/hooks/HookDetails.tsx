@@ -1,11 +1,11 @@
-import React, {MouseEventHandler} from 'react';
+import React, { MouseEventHandler } from 'react';
 
-import {commitMutation, createFragmentContainer} from 'react-relay';
-import {makeStyles} from '@mui/styles';
-import {graphql} from 'babel-plugin-relay/macro';
-import {HookDetails_hook} from './__generated__/HookDetails_hook.graphql';
-import {Helmet as Head} from 'react-helmet';
-import {Card, CardContent} from '@mui/material';
+import { commitMutation, createFragmentContainer } from 'react-relay';
+import { makeStyles } from '@mui/styles';
+import { graphql } from 'babel-plugin-relay/macro';
+import { HookDetails_hook } from './__generated__/HookDetails_hook.graphql';
+import { Helmet as Head } from 'react-helmet';
+import { Card, CardContent } from '@mui/material';
 import RepositoryNameChip from '../chips/RepositoryNameChip';
 import BuildBranchNameChip from '../chips/BuildBranchNameChip';
 import BuildChangeChip from '../chips/BuildChangeChip';
@@ -16,12 +16,12 @@ import Logs from '../logs/Logs';
 import HookStatusChip from '../chips/HookStatusChip';
 import CirrusFavicon from '../common/CirrusFavicon';
 import classNames from 'classnames';
-import {useNotificationColor} from '../../utils/colors';
+import { useNotificationColor } from '../../utils/colors';
 import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
-import {navigateBuildHelper, navigateHookHelper, navigateTaskHelper} from '../../utils/navigateHelper';
+import { navigateBuildHelper, navigateHookHelper, navigateTaskHelper } from '../../utils/navigateHelper';
 import ArrowBack from '@mui/icons-material/ArrowBack';
-import {hasWritePermissions} from '../../utils/permissions';
+import { hasWritePermissions } from '../../utils/permissions';
 import Refresh from '@mui/icons-material/Refresh';
 import environment from '../../createRelayEnvironment';
 import {
@@ -29,7 +29,7 @@ import {
   HookDetailsRerunMutationVariables,
 } from './__generated__/HookDetailsRerunMutation.graphql';
 import RepositoryOwnerChip from '../chips/RepositoryOwnerChip';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const hooksRerunMutation = graphql`
   mutation HookDetailsRerunMutation($input: HooksReRunInput!) {

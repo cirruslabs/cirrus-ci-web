@@ -1,11 +1,11 @@
-import {useState} from 'react';
-import {useRefetchableFragment} from 'react-relay';
-import {graphql} from 'babel-plugin-relay/macro';
-import {useNavigate} from 'react-router-dom';
-import {Helmet as Head} from 'react-helmet';
+import { useState } from 'react';
+import { useRefetchableFragment } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
+import { useNavigate } from 'react-router-dom';
+import { Helmet as Head } from 'react-helmet';
 
-import {makeStyles} from '@mui/styles';
-import {Box, ToggleButton, ToggleButtonGroup} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -18,13 +18,13 @@ import RepositoryNameChip from '../chips/RepositoryNameChip';
 import BuildBranchNameChip from '../chips/BuildBranchNameChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import BuildChangeChip from '../chips/BuildChangeChip';
-import {navigateBuildHelper} from '../../utils/navigateHelper';
+import { navigateBuildHelper } from '../../utils/navigateHelper';
 import usePageWidth from '../../utils/usePageWidth';
-import {isBuildFinalStatus} from '../../utils/status';
+import { isBuildFinalStatus } from '../../utils/status';
 import BuildsTable from '../../components/builds/BuildsTable';
 import MarkdownTypography from '../common/MarkdownTypography';
-import {ViewerBuildListRefetchQuery} from './__generated__/ViewerBuildListRefetchQuery.graphql';
-import {ViewerBuildList_viewer$key} from './__generated__/ViewerBuildList_viewer.graphql';
+import { ViewerBuildListRefetchQuery } from './__generated__/ViewerBuildListRefetchQuery.graphql';
+import { ViewerBuildList_viewer$key } from './__generated__/ViewerBuildList_viewer.graphql';
 
 // todo: move custom values to mui theme adjustments
 const useStyles = makeStyles(theme => {

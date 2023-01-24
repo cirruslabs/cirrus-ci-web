@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import environment from '../../createRelayEnvironment';
-import {commitMutation, createPaginationContainer, RelayPaginationProp} from 'react-relay';
-import {graphql} from 'babel-plugin-relay/macro';
+import { commitMutation, createPaginationContainer, RelayPaginationProp } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -9,20 +9,20 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import FormControl from '@mui/material/FormControl';
-import {makeStyles} from '@mui/styles';
+import { makeStyles } from '@mui/styles';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 import classNames from 'classnames';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeliveriesList from './DeliveriesList';
-import {WebHookSettings_info} from './__generated__/WebHookSettings_info.graphql';
+import { WebHookSettings_info } from './__generated__/WebHookSettings_info.graphql';
 import FormHelperText from '@mui/material/FormHelperText';
 import sjcl from 'sjcl/sjcl.js';
 import {
   SaveWebHookSettingsInput,
   WebHookSettingsMutationVariables,
 } from './__generated__/WebHookSettingsMutation.graphql';
-import {Link} from '@mui/material';
+import { Link } from '@mui/material';
 
 const securedVariableMutation = graphql`
   mutation WebHookSettingsMutation($input: SaveWebHookSettingsInput!) {

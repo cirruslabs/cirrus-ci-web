@@ -1,17 +1,15 @@
-import React, {useEffect} from 'react';
-import {createFragmentContainer, requestSubscription} from 'react-relay';
-import {graphql} from 'babel-plugin-relay/macro';
+import React, { useEffect } from 'react';
+import { createFragmentContainer, requestSubscription } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-import {makeStyles} from '@mui/styles';
-import {navigateBuildHelper} from '../../utils/navigateHelper';
+import { makeStyles } from '@mui/styles';
+import { navigateBuildHelper } from '../../utils/navigateHelper';
 import RepositoryNameChip from '../chips/RepositoryNameChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
-import {
-  LastDefaultBranchBuildMiniRow_repository
-} from './__generated__/LastDefaultBranchBuildMiniRow_repository.graphql';
-import {useNavigate} from 'react-router-dom';
+import { LastDefaultBranchBuildMiniRow_repository } from './__generated__/LastDefaultBranchBuildMiniRow_repository.graphql';
+import { useNavigate } from 'react-router-dom';
 import MarkdownTypography from '../common/MarkdownTypography';
 
 const buildSubscription = graphql`

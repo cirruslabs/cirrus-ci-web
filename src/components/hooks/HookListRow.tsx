@@ -1,14 +1,14 @@
 import React from 'react';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-import {createFragmentContainer} from 'react-relay';
-import {graphql} from 'babel-plugin-relay/macro';
-import {navigateHookHelper} from '../../utils/navigateHelper';
-import {makeStyles} from '@mui/styles';
+import { createFragmentContainer } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
+import { navigateHookHelper } from '../../utils/navigateHelper';
+import { makeStyles } from '@mui/styles';
 import classNames from 'classnames';
-import {HookListRow_hook} from './__generated__/HookListRow_hook.graphql';
+import { HookListRow_hook } from './__generated__/HookListRow_hook.graphql';
 import HookStatusChip from '../chips/HookStatusChip';
 import HookNameChip from '../chips/HookNameChip';
 import HookCreatedChip from '../chips/HookCreatedChip';

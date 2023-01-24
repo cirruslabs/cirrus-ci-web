@@ -1,8 +1,8 @@
 import React from 'react';
 import AnsiUp from 'ansi_up';
-import {useLocation, useNavigate} from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
-import {makeStyles} from '@mui/styles';
+import { makeStyles } from '@mui/styles';
 import * as queryString from 'query-string';
 
 let ansiFormatter = new (AnsiUp as any)();

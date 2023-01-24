@@ -1,8 +1,8 @@
 import React from 'react';
 import Paper from '@mui/material/Paper';
-import {Helmet as Head} from 'react-helmet';
+import { Helmet as Head } from 'react-helmet';
 import MarkdownTypography from '../../components/common/MarkdownTypography';
-import {makeStyles} from '@mui/styles';
+import { makeStyles } from '@mui/styles';
 makeStyles(theme => {
   return {
     paper: {

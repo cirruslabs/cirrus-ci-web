@@ -2,8 +2,8 @@ import React from 'react';
 import DialogContent from '@mui/material/DialogContent/DialogContent';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import {DeliveryInfoDialogLazyContentQueryResponse} from './__generated__/DeliveryInfoDialogLazyContentQuery.graphql';
-import {makeStyles} from '@mui/styles';
+import { DeliveryInfoDialogLazyContentQueryResponse } from './__generated__/DeliveryInfoDialogLazyContentQuery.graphql';
+import { makeStyles } from '@mui/styles';
 import MarkdownTypography from '../common/MarkdownTypography';
 
 const useStyles = makeStyles(theme => {

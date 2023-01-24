@@ -1,15 +1,15 @@
-import {memo, useEffect, useMemo} from 'react';
-import {useNavigate} from 'react-router-dom';
-import {ThemeProvider} from '@emotion/react';
-import {createFragmentContainer, requestSubscription} from 'react-relay';
+import { memo, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ThemeProvider } from '@emotion/react';
+import { createFragmentContainer, requestSubscription } from 'react-relay';
 import cx from 'classnames';
-import {useRecoilValue} from 'recoil';
-import {graphql} from 'babel-plugin-relay/macro';
+import { useRecoilValue } from 'recoil';
+import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
 
-import {Link, useTheme} from '@mui/material';
-import {makeStyles} from '@mui/styles';
-import {createTheme} from '@mui/material/styles';
+import { Link, useTheme } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { createTheme } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
@@ -24,14 +24,14 @@ import CallSplitIcon from '@mui/icons-material/CallSplit';
 import UnarchiveIcon from '@mui/icons-material/UnarchiveOutlined';
 
 import BuildStatusChipNew from '../chips/BuildStatusChipNew';
-import {muiThemeOptions} from '../../cirrusTheme';
-import {shorten} from '../../utils/text';
-import {absoluteLink} from '../../utils/link';
-import {formatDuration} from '../../utils/time';
-import {isBuildFinalStatus} from '../../utils/status';
-import {navigateBuildHelper} from '../../utils/navigateHelper';
+import { muiThemeOptions } from '../../cirrusTheme';
+import { shorten } from '../../utils/text';
+import { absoluteLink } from '../../utils/link';
+import { formatDuration } from '../../utils/time';
+import { isBuildFinalStatus } from '../../utils/status';
+import { navigateBuildHelper } from '../../utils/navigateHelper';
 
-import {BuildsTable_builds} from './__generated__/BuildsTable_builds.graphql';
+import { BuildsTable_builds } from './__generated__/BuildsTable_builds.graphql';
 
 import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
 
@@ -109,7 +109,7 @@ const useStyles = makeStyles(theme => {
       borderRadius: 3 * theme.shape.borderRadius,
       width: 'fit-content',
       padding: '1px 5px',
-      '& *': {fontSize: '14px !important'},
+      '& *': { fontSize: '14px !important' },
     },
   };
 });
@@ -128,7 +128,7 @@ const buildSubscription = graphql`
   }
 `;
 
-const BuildsTable = ({builds = [], selectedBuildId, setSelectedBuildId}: Props) => {
+const BuildsTable = ({ builds = [], selectedBuildId, setSelectedBuildId }: Props) => {
   let classes = useStyles();
   const themeOptions = useRecoilValue(muiThemeOptions);
   const muiTheme = useMemo(() => createTheme(themeOptions), [themeOptions]);
@@ -137,7 +137,7 @@ const BuildsTable = ({builds = [], selectedBuildId, setSelectedBuildId}: Props) 
     <ThemeProvider theme={muiTheme}>
       <Table className={classes.table}>
         <TableHead>
-          <HeadRow/>
+          <HeadRow />
         </TableHead>
         <TableBody>
           {builds.map((build, i) => (
@@ -172,7 +172,7 @@ const HeadRow = () => {
       <TableCell className={cx(classes.cell, classes.cellDuration)}>
         <Stack direction="row" alignItems="center" justifyContent="end" spacing={0.5}>
           <Tooltip title={durationTooltipText}>
-            <InfoIcon className={classes.infoIcon} fontSize="inherit"/>
+            <InfoIcon className={classes.infoIcon} fontSize="inherit" />
           </Tooltip>
           <span>Duration</span>
         </Stack>
@@ -187,7 +187,7 @@ interface BuildRowProps {
   setSelectedBuildId?: Function;
 }
 
-const BuildRow = memo(({build, selected, setSelectedBuildId}: BuildRowProps) => {
+const BuildRow = memo(({ build, selected, setSelectedBuildId }: BuildRowProps) => {
   let classes = useStyles();
   const theme = useTheme();
   const navigate = useNavigate();
@@ -197,7 +197,7 @@ const BuildRow = memo(({build, selected, setSelectedBuildId}: BuildRowProps) => 
     if (isFinalStatus) return;
     const subscription = requestSubscription(environment, {
       subscription: buildSubscription,
-      variables: {buildID: build.id},
+      variables: { buildID: build.id },
     });
     return () => {
       subscription.dispose();
@@ -235,13 +235,13 @@ const BuildRow = memo(({build, selected, setSelectedBuildId}: BuildRowProps) => 
     >
       {/* STATUS */}
       <TableCell className={cx(classes.cell, classes.cellStatus, classes.cellStatusChip)}>
-        <BuildStatusChipNew status={build.status}/>
+        <BuildStatusChipNew status={build.status} />
       </TableCell>
 
       {/* REPOSITORY */}
       <TableCell className={cx(classes.cell, classes.cellRepository)}>
         <Stack direction="row" alignItems="center" spacing={0.5}>
-          <BookOutlinedIcon fontSize="inherit"/>
+          <BookOutlinedIcon fontSize="inherit" />
           <Link
             className={classes.link}
             href={absoluteLink(build.repository.platform, build.repository.owner, build.repository.name)}
@@ -263,7 +263,7 @@ const BuildRow = memo(({build, selected, setSelectedBuildId}: BuildRowProps) => 
           {build.changeMessageTitle}
         </Typography>
         <Stack className={classes.hash} direction="row" alignItems="center" spacing={0.5}>
-          <CommitIcon fontSize="inherit"/>
+          <CommitIcon fontSize="inherit" />
           <span>{build.changeIdInRepo.substr(0, 7)}</span>
         </Stack>
       </TableCell>
@@ -271,15 +271,10 @@ const BuildRow = memo(({build, selected, setSelectedBuildId}: BuildRowProps) => 
       {/* BRANCH */}
       <TableCell className={cx(classes.cell, classes.cellBranch)}>
         <Stack direction="row" alignItems="center" spacing={0.5}>
-          {build.tag ? <UnarchiveIcon fontSize="inherit"/> : <CallSplitIcon fontSize="inherit"/>}
+          {build.tag ? <UnarchiveIcon fontSize="inherit" /> : <CallSplitIcon fontSize="inherit" />}
           <Link
             className={classes.link}
-            href={absoluteLink(
-              build.repository.platform,
-              build.repository.owner,
-              build.repository.name,
-              build.branch,
-            )}
+            href={absoluteLink(build.repository.platform, build.repository.owner, build.repository.name, build.branch)}
             underline="hover"
             noWrap
             title={build.branch}

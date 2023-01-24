@@ -2,10 +2,10 @@ import React from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import HookListRow from './HookListRow';
-import {FragmentRefs} from 'relay-runtime';
-import {Card, CardContent, Link, Typography} from '@mui/material';
-import {HookType} from './HookType';
-import {makeStyles} from '@mui/styles';
+import { FragmentRefs } from 'relay-runtime';
+import { Card, CardContent, Link, Typography } from '@mui/material';
+import { HookType } from './HookType';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(theme => {
   return {

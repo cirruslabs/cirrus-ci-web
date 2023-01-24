@@ -1,9 +1,9 @@
-import React, {ReactNode} from 'react';
-import {Alert} from '@mui/material';
-import {makeStyles} from '@mui/styles';
-import {createFragmentContainer} from 'react-relay';
-import {graphql} from 'babel-plugin-relay/macro';
-import {ConfigurationWithIssues_build} from './__generated__/ConfigurationWithIssues_build.graphql';
+import React, { ReactNode } from 'react';
+import { Alert } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { createFragmentContainer } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
+import { ConfigurationWithIssues_build } from './__generated__/ConfigurationWithIssues_build.graphql';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';

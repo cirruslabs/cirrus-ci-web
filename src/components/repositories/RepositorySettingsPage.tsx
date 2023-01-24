@@ -4,12 +4,12 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import RepositorySecuredVariables from './RepositorySecuredVariables';
 import RepositorySettings from './RepositorySettings';
-import {createFragmentContainer} from 'react-relay';
-import {graphql} from 'babel-plugin-relay/macro';
-import {makeStyles} from '@mui/styles';
-import {RepositorySettingsPage_repository} from './__generated__/RepositorySettingsPage_repository.graphql';
+import { createFragmentContainer } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
+import { makeStyles } from '@mui/styles';
+import { RepositorySettingsPage_repository } from './__generated__/RepositorySettingsPage_repository.graphql';
 import RepositoryCronSettings from './RepositoryCronSettings';
-import {Link} from '@mui/material';
+import { Link } from '@mui/material';
 import RepositoryDangerSettings from './RepositoryDangerSettings';
 
 const useStyles = makeStyles(theme => {

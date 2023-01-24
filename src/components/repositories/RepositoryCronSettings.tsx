@@ -1,23 +1,23 @@
-import React, {useState} from 'react';
-import {commitMutation, createFragmentContainer} from 'react-relay';
-import {graphql} from 'babel-plugin-relay/macro';
+import React, { useState } from 'react';
+import { commitMutation, createFragmentContainer } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
-import {makeStyles} from '@mui/styles';
-import {RepositoryCronSettings_repository} from './__generated__/RepositoryCronSettings_repository.graphql';
+import { makeStyles } from '@mui/styles';
+import { RepositoryCronSettings_repository } from './__generated__/RepositoryCronSettings_repository.graphql';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import classNames from 'classnames';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Chip from '@mui/material/Chip';
 import BuildStatusChip from '../chips/BuildStatusChip';
-import {Add, Delete} from '@mui/icons-material';
+import { Add, Delete } from '@mui/icons-material';
 import environment from '../../createRelayEnvironment';
 import Avatar from '@mui/material/Avatar';
 import Icon from '@mui/material/Icon';
@@ -30,8 +30,8 @@ import {
   RepositoryCronSettingsRemoveMutationResponse,
   RepositoryCronSettingsRemoveMutationVariables,
 } from './__generated__/RepositoryCronSettingsRemoveMutation.graphql';
-import {navigateBuildHelper} from '../../utils/navigateHelper';
-import {CardActions} from '@mui/material';
+import { navigateBuildHelper } from '../../utils/navigateHelper';
+import { CardActions } from '@mui/material';
 
 const saveCronSettingsMutation = graphql`
   mutation RepositoryCronSettingsSaveMutation($input: RepositorySaveCronSettingsInput!) {

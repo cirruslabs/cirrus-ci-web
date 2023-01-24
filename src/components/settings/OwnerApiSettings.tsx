@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import {commitMutation, createFragmentContainer} from 'react-relay';
-import {graphql} from 'babel-plugin-relay/macro';
-import {OwnerApiSettings_info} from './__generated__/OwnerApiSettings_info.graphql';
+import React, { useState } from 'react';
+import { commitMutation, createFragmentContainer } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
+import { OwnerApiSettings_info } from './__generated__/OwnerApiSettings_info.graphql';
 import {
   GenerateNewOwnerAccessTokenInput,
   OwnerApiSettingsMutationResponse,
@@ -14,8 +14,8 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
-import {Link} from '@mui/material';
-import {makeStyles} from '@mui/styles';
+import { Link } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import OwnerScopedTokenDialog from './OwnerScopedTokenDialog';
 
 const generateNewTokenMutation = graphql`

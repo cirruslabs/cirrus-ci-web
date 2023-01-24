@@ -1,14 +1,14 @@
 import React from 'react';
 
-import {QueryRenderer} from 'react-relay';
-import {graphql} from 'babel-plugin-relay/macro';
+import { QueryRenderer } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
 
 import environment from '../../createRelayEnvironment';
 import RepositoryBuildList from '../../components/repositories/RepositoryBuildList';
 import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
 import NotFound from '../NotFound';
-import {RepositoryQuery} from './__generated__/RepositoryQuery.graphql';
-import {useParams} from 'react-router-dom';
+import { RepositoryQuery } from './__generated__/RepositoryQuery.graphql';
+import { useParams } from 'react-router-dom';
 import MarkdownTypography from '../../components/common/MarkdownTypography';
 import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 

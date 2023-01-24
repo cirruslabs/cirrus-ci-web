@@ -1,15 +1,15 @@
-import {createFragmentContainer} from 'react-relay';
-import {graphql} from 'babel-plugin-relay/macro';
+import { createFragmentContainer } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
 import React from 'react';
-import {makeStyles} from '@mui/styles';
+import { makeStyles } from '@mui/styles';
 import Chip from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
-import {Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, YAxis} from 'recharts';
-import {TaskExecutionInfo_task} from './__generated__/TaskExecutionInfo_task.graphql';
-import {formatDuration} from '../../utils/time';
-import {Box, useTheme} from '@mui/material';
-import {useRecoilState} from 'recoil';
-import {prefersDarkModeState} from '../../cirrusTheme';
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, YAxis } from 'recharts';
+import { TaskExecutionInfo_task } from './__generated__/TaskExecutionInfo_task.graphql';
+import { formatDuration } from '../../utils/time';
+import { Box, useTheme } from '@mui/material';
+import { useRecoilState } from 'recoil';
+import { prefersDarkModeState } from '../../cirrusTheme';
 
 const useStyles = makeStyles(theme => {
   return {

@@ -1,9 +1,9 @@
-import {useEffect} from 'react';
-import {Helmet as Head} from 'react-helmet';
-import {Container, useTheme as useMuiTheme} from '@mui/material';
-import {useTheme as useGraphiqlTheme} from '@graphiql/react';
-import {GraphiQLInterface, GraphiQLProvider} from 'graphiql';
-import {makeStyles} from '@mui/styles';
+import { useEffect } from 'react';
+import { Helmet as Head } from 'react-helmet';
+import { Container, useTheme as useMuiTheme } from '@mui/material';
+import { useTheme as useGraphiqlTheme } from '@graphiql/react';
+import { GraphiQLInterface, GraphiQLProvider } from 'graphiql';
+import { makeStyles } from '@mui/styles';
 import 'graphiql/graphiql.css';
 
 const useStyles = makeStyles(theme => {

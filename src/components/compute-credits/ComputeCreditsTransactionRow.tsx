@@ -1,22 +1,20 @@
 import React from 'react';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Chip from '@mui/material/Chip';
 import TaskNameChip from '../chips/TaskNameChip';
 import TaskDurationChip from '../chips/TaskDurationChip';
-import {createFragmentContainer} from 'react-relay';
-import {graphql} from 'babel-plugin-relay/macro';
-import {makeStyles} from '@mui/styles';
+import { createFragmentContainer } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
+import { makeStyles } from '@mui/styles';
 import classNames from 'classnames';
 import RepositoryNameChip from '../chips/RepositoryNameChip';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import TaskCreatedChip from '../chips/TaskCreatedChip';
-import {navigateTaskHelper} from '../../utils/navigateHelper';
-import {
-  ComputeCreditsTransactionRow_transaction
-} from './__generated__/ComputeCreditsTransactionRow_transaction.graphql';
+import { navigateTaskHelper } from '../../utils/navigateHelper';
+import { ComputeCreditsTransactionRow_transaction } from './__generated__/ComputeCreditsTransactionRow_transaction.graphql';
 
 const useStyles = makeStyles(theme => {
   return {

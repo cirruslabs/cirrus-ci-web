@@ -3,15 +3,15 @@ import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
 import CallSplit from '@mui/icons-material/CallSplit';
-import {useNavigate} from 'react-router-dom';
-import {navigateHelper} from '../../utils/navigateHelper';
-import {createFragmentContainer} from 'react-relay';
-import {graphql} from 'babel-plugin-relay/macro';
-import {BuildBranchNameChip_build} from './__generated__/BuildBranchNameChip_build.graphql';
-import {shorten} from '../../utils/text';
-import {makeStyles} from '@mui/styles';
-import {Commit} from '@mui/icons-material';
-import {Tooltip} from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { navigateHelper } from '../../utils/navigateHelper';
+import { createFragmentContainer } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
+import { BuildBranchNameChip_build } from './__generated__/BuildBranchNameChip_build.graphql';
+import { shorten } from '../../utils/text';
+import { makeStyles } from '@mui/styles';
+import { Commit } from '@mui/icons-material';
+import { Tooltip } from '@mui/material';
 
 const useStyles = makeStyles(theme => {
   return {

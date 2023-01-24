@@ -7,13 +7,13 @@ import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
-import {makeStyles} from '@mui/styles';
+import { makeStyles } from '@mui/styles';
 import Switch from '@mui/material/Switch';
-import {graphql} from 'babel-plugin-relay/macro';
-import React, {useState} from 'react';
-import {commitMutation, createFragmentContainer} from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
+import React, { useState } from 'react';
+import { commitMutation, createFragmentContainer } from 'react-relay';
 import environment from '../../createRelayEnvironment';
-import {OwnerScopedTokenDialog_ownerInfo} from './__generated__/OwnerScopedTokenDialog_ownerInfo.graphql';
+import { OwnerScopedTokenDialog_ownerInfo } from './__generated__/OwnerScopedTokenDialog_ownerInfo.graphql';
 import {
   OwnerScopedTokenDialogMutationResponse,
   OwnerScopedTokenDialogMutationVariables,

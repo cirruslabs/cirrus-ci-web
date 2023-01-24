@@ -1,14 +1,14 @@
-import {isTaskFinalStatus} from '../../utils/status';
-import React, {useEffect, useState} from 'react';
-import {useTaskStatusColorMapping} from '../../utils/colors';
+import { isTaskFinalStatus } from '../../utils/status';
+import React, { useEffect, useState } from 'react';
+import { useTaskStatusColorMapping } from '../../utils/colors';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import {formatDuration} from '../../utils/time';
-import {createFragmentContainer} from 'react-relay';
-import {graphql} from 'babel-plugin-relay/macro';
-import {TaskCommandsProgress_task} from './__generated__/TaskCommandsProgress_task.graphql';
-import {Box} from '@mui/material';
-import {makeStyles} from '@mui/styles';
+import { formatDuration } from '../../utils/time';
+import { createFragmentContainer } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
+import { TaskCommandsProgress_task } from './__generated__/TaskCommandsProgress_task.graphql';
+import { Box } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(theme => {
   return {

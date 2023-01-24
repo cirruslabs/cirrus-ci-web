@@ -2,11 +2,11 @@ import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
 import AccessTime from '@mui/icons-material/AccessTime';
 import Tooltip from '@mui/material/Tooltip';
-import {graphql} from 'babel-plugin-relay/macro';
+import { graphql } from 'babel-plugin-relay/macro';
 import React from 'react';
-import {createFragmentContainer} from 'react-relay';
-import {NextCronInvocationTimeChip_settings} from './__generated__/NextCronInvocationTimeChip_settings.graphql';
-import {makeStyles} from '@mui/styles';
+import { createFragmentContainer } from 'react-relay';
+import { NextCronInvocationTimeChip_settings } from './__generated__/NextCronInvocationTimeChip_settings.graphql';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(theme => {
   return {

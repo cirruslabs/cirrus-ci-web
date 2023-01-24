@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
-import {graphql} from 'babel-plugin-relay/macro';
+import React, { useState } from 'react';
+import { graphql } from 'babel-plugin-relay/macro';
 import Typography from '@mui/material/Typography';
-import {makeStyles} from '@mui/styles';
-import {createFragmentContainer} from 'react-relay';
+import { makeStyles } from '@mui/styles';
+import { createFragmentContainer } from 'react-relay';
 import 'react-vis/dist/style.css';
-import {FlexibleWidthXYPlot, Hint, LineSeries, VerticalGridLines, XAxis, YAxis} from 'react-vis';
+import { FlexibleWidthXYPlot, Hint, LineSeries, VerticalGridLines, XAxis, YAxis } from 'react-vis';
 import Chip from '@mui/material/Chip';
-import {formatDuration} from '../../utils/time';
-import {MetricsChart_chart} from './__generated__/MetricsChart_chart.graphql';
+import { formatDuration } from '../../utils/time';
+import { MetricsChart_chart } from './__generated__/MetricsChart_chart.graphql';
 
 const useStyles = makeStyles(theme => {
   return {

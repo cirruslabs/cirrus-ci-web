@@ -1,7 +1,7 @@
-import {graphql} from 'babel-plugin-relay/macro';
-import React, {useState} from 'react';
-import {createFragmentContainer} from 'react-relay';
-import {makeStyles} from '@mui/styles';
+import { graphql } from 'babel-plugin-relay/macro';
+import React, { useState } from 'react';
+import { createFragmentContainer } from 'react-relay';
+import { makeStyles } from '@mui/styles';
 import RepositoryMetricsCharts from './RepositoryMetricsCharts';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -12,9 +12,9 @@ import Input from '@mui/material/Input';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import {RepositoryMetricsPage_repository} from './__generated__/RepositoryMetricsPage_repository.graphql';
-import {MetricsQueryParameters} from './__generated__/RepositoryMetricsChartsQuery.graphql';
-import {Helmet as Head} from 'react-helmet';
+import { RepositoryMetricsPage_repository } from './__generated__/RepositoryMetricsPage_repository.graphql';
+import { MetricsQueryParameters } from './__generated__/RepositoryMetricsChartsQuery.graphql';
+import { Helmet as Head } from 'react-helmet';
 
 const useStyles = makeStyles(theme => {
   return {

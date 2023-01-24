@@ -1,11 +1,11 @@
-import {useEffect, useState} from 'react';
-import {useNavigate} from 'react-router-dom';
-import {createFragmentContainer, requestSubscription} from 'react-relay';
-import {graphql} from 'babel-plugin-relay/macro';
-import {Helmet as Head} from 'react-helmet';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { createFragmentContainer, requestSubscription } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
+import { Helmet as Head } from 'react-helmet';
 import cx from 'classnames';
 
-import {makeStyles} from '@mui/styles';
+import { makeStyles } from '@mui/styles';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Table from '@mui/material/Table';
@@ -23,10 +23,10 @@ import Settings from '@mui/icons-material/Settings';
 import AddCircle from '@mui/icons-material/AddCircle';
 import Timeline from '@mui/icons-material/Timeline';
 
-import {absoluteLink} from '../../utils/link';
-import {createLinkToRepository} from '../../utils/github';
-import {NodeOfConnection} from '../../utils/utility-types';
-import {navigateBuildHelper} from '../../utils/navigateHelper';
+import { absoluteLink } from '../../utils/link';
+import { createLinkToRepository } from '../../utils/github';
+import { NodeOfConnection } from '../../utils/utility-types';
+import { navigateBuildHelper } from '../../utils/navigateHelper';
 import usePageWidth from '../../utils/usePageWidth';
 import environment from '../../createRelayEnvironment';
 import BuildStatusChip from '../chips/BuildStatusChip';
@@ -37,7 +37,7 @@ import BuildChangeChip from '../chips/BuildChangeChip';
 import MarkdownTypography from '../common/MarkdownTypography';
 import BuildsTable from '../../components/builds/BuildsTable';
 
-import {RepositoryBuildList_repository} from './__generated__/RepositoryBuildList_repository.graphql';
+import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildList_repository.graphql';
 
 // todo: move custom values to mui theme adjustments
 const useStyles = makeStyles(theme => {

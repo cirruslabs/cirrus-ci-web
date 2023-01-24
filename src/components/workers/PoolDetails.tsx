@@ -1,10 +1,10 @@
-import {makeStyles} from '@mui/styles';
+import { makeStyles } from '@mui/styles';
 import Card from '@mui/material/Card';
-import {graphql} from 'babel-plugin-relay/macro';
-import React, {useEffect, useState} from 'react';
-import {commitMutation, createRefetchContainer, RelayRefetchProp} from 'react-relay';
-import {Helmet as Head} from 'react-helmet';
-import {PoolDetails_pool} from './__generated__/PoolDetails_pool.graphql';
+import { graphql } from 'babel-plugin-relay/macro';
+import React, { useEffect, useState } from 'react';
+import { commitMutation, createRefetchContainer, RelayRefetchProp } from 'react-relay';
+import { Helmet as Head } from 'react-helmet';
+import { PoolDetails_pool } from './__generated__/PoolDetails_pool.graphql';
 import {
   Avatar,
   CardActions,
@@ -35,7 +35,7 @@ import InputLabel from '@mui/material/InputLabel';
 import Input from '@mui/material/Input';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
-import {UpdatePersistentWorkerPoolInput} from './__generated__/PoolDetailsUpdateMutation.graphql';
+import { UpdatePersistentWorkerPoolInput } from './__generated__/PoolDetailsUpdateMutation.graphql';
 import {
   GetPersistentWorkerPoolRegistrationTokenInput,
   PoolDetailsGetRegistrationTokenMutationResponse,
@@ -46,8 +46,8 @@ import TaskStatusChipExtended from '../chips/TaskStatusChipExtended';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import PauseCircleOutlineIcon from '@mui/icons-material/PauseCircleOutline';
-import {DeletePersistentWorkerInput} from './__generated__/PoolDetailsDeleteWorkerMutation.graphql';
-import {UpdatePersistentWorkerInput} from './__generated__/PoolDetailsUpdateWorkerMutation.graphql';
+import { DeletePersistentWorkerInput } from './__generated__/PoolDetailsDeleteWorkerMutation.graphql';
+import { UpdatePersistentWorkerInput } from './__generated__/PoolDetailsUpdateWorkerMutation.graphql';
 
 const useStyles = makeStyles(theme => {
   return {

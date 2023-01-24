@@ -1,25 +1,25 @@
 import React from 'react';
 
-import {useCommandStatusColorMapping} from '../../utils/colors';
+import { useCommandStatusColorMapping } from '../../utils/colors';
 import TaskCommandLogs from './TaskCommandLogs';
-import {formatDuration} from '../../utils/time';
-import {isTaskCommandExecuting, isTaskCommandFinalStatus} from '../../utils/status';
+import { formatDuration } from '../../utils/time';
+import { isTaskCommandExecuting, isTaskCommandFinalStatus } from '../../utils/status';
 import DurationTicker from '../common/DurationTicker';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
-import {createFragmentContainer} from 'react-relay';
-import {graphql} from 'babel-plugin-relay/macro';
+import { createFragmentContainer } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
 import * as queryString from 'query-string';
-import {TaskCommandList_task} from './__generated__/TaskCommandList_task.graphql';
-import {ItemOfArray} from '../../utils/utility-types';
-import {useLocation} from 'react-router-dom';
-import {makeStyles} from '@mui/styles';
-import {Box, useTheme} from '@mui/material';
-import {useRecoilValue} from 'recoil';
-import {prefersDarkModeState} from '../../cirrusTheme';
+import { TaskCommandList_task } from './__generated__/TaskCommandList_task.graphql';
+import { ItemOfArray } from '../../utils/utility-types';
+import { useLocation } from 'react-router-dom';
+import { makeStyles } from '@mui/styles';
+import { Box, useTheme } from '@mui/material';
+import { useRecoilValue } from 'recoil';
+import { prefersDarkModeState } from '../../cirrusTheme';
 
 const useStyles = makeStyles(theme => {
   return {

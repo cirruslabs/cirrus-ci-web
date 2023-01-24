@@ -5,15 +5,15 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import Tooltip from '@mui/material/Tooltip';
 import LastDefaultBranchBuildRow from '../builds/LastDefaultBranchBuildRow';
-import {makeStyles} from '@mui/styles';
+import { makeStyles } from '@mui/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import {createFragmentContainer} from 'react-relay';
-import {graphql} from 'babel-plugin-relay/macro';
-import {OwnerRepositoryList_info} from './__generated__/OwnerRepositoryList_info.graphql';
+import { createFragmentContainer } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
+import { OwnerRepositoryList_info } from './__generated__/OwnerRepositoryList_info.graphql';
 
 const useStyles = makeStyles(theme => {
   return {

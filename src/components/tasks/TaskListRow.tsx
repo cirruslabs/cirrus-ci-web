@@ -1,23 +1,23 @@
 import React from 'react';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Chip from '@mui/material/Chip';
 import TaskNameChip from '../chips/TaskNameChip';
 import TaskDurationChip from '../chips/TaskDurationChip';
-import {shorten} from '../../utils/text';
-import {createFragmentContainer} from 'react-relay';
-import {graphql} from 'babel-plugin-relay/macro';
-import {navigateTaskHelper} from '../../utils/navigateHelper';
-import {makeStyles} from '@mui/styles';
+import { shorten } from '../../utils/text';
+import { createFragmentContainer } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
+import { navigateTaskHelper } from '../../utils/navigateHelper';
+import { makeStyles } from '@mui/styles';
 import classNames from 'classnames';
 import TaskCreatedChip from '../chips/TaskCreatedChip';
-import {TaskListRow_task} from './__generated__/TaskListRow_task.graphql';
-import {isTaskFinalStatus} from '../../utils/status';
-import {useTaskStatusColorMapping} from '../../utils/colors';
-import {Box, Tooltip} from '@mui/material';
-import {formatDuration} from '../../utils/time';
+import { TaskListRow_task } from './__generated__/TaskListRow_task.graphql';
+import { isTaskFinalStatus } from '../../utils/status';
+import { useTaskStatusColorMapping } from '../../utils/colors';
+import { Box, Tooltip } from '@mui/material';
+import { formatDuration } from '../../utils/time';
 
 const useStyles = makeStyles(theme => {
   return {

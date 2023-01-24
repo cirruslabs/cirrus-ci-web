@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Typography from '@mui/material/Typography';
-import {makeStyles} from '@mui/styles';
+import { makeStyles } from '@mui/styles';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -9,8 +9,8 @@ import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Paper from '@mui/material/Paper';
-import {navigateHelper} from '../../utils/navigateHelper';
-import {TaskArtifacts_task} from './__generated__/TaskArtifacts_task.graphql';
+import { navigateHelper } from '../../utils/navigateHelper';
+import { TaskArtifacts_task } from './__generated__/TaskArtifacts_task.graphql';
 import Folder from '@mui/icons-material/Folder';
 import InsertDriveFile from '@mui/icons-material/InsertDriveFile';
 import GetApp from '@mui/icons-material/GetApp';
@@ -19,7 +19,7 @@ import ViewList from '@mui/icons-material/ViewList';
 import AccountTree from '@mui/icons-material/AccountTree';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => {
   return {

@@ -2,12 +2,12 @@ import React from 'react';
 
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
-import {navigateHelper} from '../../utils/navigateHelper';
-import {createFragmentContainer} from 'react-relay';
-import {graphql} from 'babel-plugin-relay/macro';
-import {RepositoryOwnerChip_repository} from './__generated__/RepositoryOwnerChip_repository.graphql';
-import {makeStyles} from '@mui/styles';
-import {useNavigate} from 'react-router-dom';
+import { navigateHelper } from '../../utils/navigateHelper';
+import { createFragmentContainer } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
+import { RepositoryOwnerChip_repository } from './__generated__/RepositoryOwnerChip_repository.graphql';
+import { makeStyles } from '@mui/styles';
+import { useNavigate } from 'react-router-dom';
 import GitHubIcon from '@mui/icons-material/GitHub';
 
 const useStyles = makeStyles(theme => {

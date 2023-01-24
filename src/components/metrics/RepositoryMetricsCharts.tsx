@@ -22,7 +22,6 @@ export default function RepositoryMetricsCharts(props: RepositoryMetricsChartsQu
     props,
   );
   let metrics = response.repository.metrics || [];
-  console.log(response);
   let chartComponents = metrics.map((chart, index) => <MetricsChart key={index} chart={chart} />);
   return <div>{chartComponents}</div>;
 }

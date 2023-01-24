@@ -50,8 +50,6 @@ export default function MetricsChart(props: Props) {
     props.chart,
   );
 
-  console.log('char', chart);
-
   function _onNearestX(value, { index }) {
     setHoveredPointIndex(index);
   }

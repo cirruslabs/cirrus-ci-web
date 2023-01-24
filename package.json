@@ -82,6 +82,7 @@
     "start-untyped": "TSC_COMPILE_ON_ERROR=\"true\" react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
+    "update-snapshots": "react-scripts test --env=jsdom --updateSnapshot",
     "typecheck": "tsc --project tsconfig.json --noEmit",
     "prettier": "prettier --write .",
     "prettier-check": "prettier --check .",

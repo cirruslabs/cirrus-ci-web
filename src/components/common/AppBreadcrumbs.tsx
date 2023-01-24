@@ -1,16 +1,14 @@
 import * as React from 'react';
 
-import { WithStyles } from '@mui/styles';
+import { makeStyles } from '@mui/styles';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import SvgIcon from '@mui/material/SvgIcon';
-import withStyles from '@mui/styles/withStyles';
 import Typography from '@mui/material/Typography';
 import InputIcon from '@mui/icons-material/Input';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import CallSplitIcon from '@mui/icons-material/CallSplit';
-import createStyles from '@mui/styles/createStyles';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 
@@ -26,8 +24,8 @@ import { AppBreadcrumbs_task } from './__generated__/AppBreadcrumbs_task.graphql
 import { AppBreadcrumbs_info } from './__generated__/AppBreadcrumbs_info.graphql';
 import { AppBreadcrumbs_viewer } from './__generated__/AppBreadcrumbs_viewer.graphql';
 
-const styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     root: {
       alignItems: 'center',
     },
@@ -49,11 +47,10 @@ const styles = theme =>
       fontSize: 16,
       marginRight: theme.spacing(1),
     },
-  });
+  };
+});
 
-const styled = withStyles(styles);
-
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   info?: AppBreadcrumbs_info;
   repository?: AppBreadcrumbs_repository;
   build?: AppBreadcrumbs_build;
@@ -64,11 +61,12 @@ interface Props extends WithStyles<typeof styles> {
     href?: string;
     Icon: typeof SvgIcon | React.ElementType;
   }>;
-  viewer: AppBreadcrumbs_viewer;
+  viewer?: AppBreadcrumbs_viewer;
 }
 
 const AppBreadcrumbs = (props: Props) => {
-  let { classes, branch, extraCrumbs, info, repository, build, task, viewer } = props;
+  let { branch, extraCrumbs, info, repository, build, task, viewer } = props;
+  let classes = useStyles();
 
   let ownerName = task?.build?.repository?.owner || build?.repository?.owner || repository?.owner || info?.name;
   let platform =
@@ -134,14 +132,15 @@ const AppBreadcrumbs = (props: Props) => {
   );
 };
 
-interface CrumbProps extends WithStyles<typeof styles> {
+interface CrumbProps {
   active: boolean;
   name: string;
   href?: string;
   Icon: typeof SvgIcon | React.ElementType;
 }
 
-const Crumb = styled(({ active, name, href, Icon, classes }: CrumbProps) => {
+const Crumb = ({ active, name, href, Icon }: CrumbProps) => {
+  let classes = useStyles();
   const className = `${classes.crumb} ${active ? classes.crumbActive : ''}`;
   const content = (
     <>
@@ -161,9 +160,9 @@ const Crumb = styled(({ active, name, href, Icon, classes }: CrumbProps) => {
       {content}
     </Link>
   );
-});
+};
 
-export default createFragmentContainer(styled(AppBreadcrumbs), {
+export default createFragmentContainer(AppBreadcrumbs, {
   info: graphql`
     fragment AppBreadcrumbs_info on OwnerInfo {
       platform

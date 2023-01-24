@@ -1,6 +1,4 @@
-import { WithStyles } from '@mui/styles';
-import createStyles from '@mui/styles/createStyles';
-import withStyles from '@mui/styles/withStyles';
+import { makeStyles } from '@mui/styles';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -96,8 +94,8 @@ const taskCancelMutation = graphql`
   }
 `;
 
-const styles = () =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     gap: {
       paddingTop: 16,
     },
@@ -114,9 +112,10 @@ const styles = () =>
     tabPanel: {
       padding: 0,
     },
-  });
+  };
+});
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   build: BuildDetails_build;
 }
 
@@ -132,7 +131,8 @@ function BuildDetails(props: Props) {
       subscription.dispose();
     };
   }, [props.build.id]);
-  const { build, classes } = props;
+  const { build } = props;
+  let classes = useStyles();
   const repository = build.repository;
 
   function approveBuild() {
@@ -327,7 +327,7 @@ function BuildDetails(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(BuildDetails), {
+export default createFragmentContainer(BuildDetails, {
   build: graphql`
     fragment BuildDetails_build on Build {
       id

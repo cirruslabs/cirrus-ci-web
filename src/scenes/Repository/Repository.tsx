@@ -45,7 +45,7 @@ export default function Repository(): JSX.Element {
         return (
           <>
             <AppBreadcrumbs repository={props.repository} />
-            <RepositoryBuildList repository={props.repository} isNew />
+            <RepositoryBuildList repository={props.repository} />
           </>
         );
       }}

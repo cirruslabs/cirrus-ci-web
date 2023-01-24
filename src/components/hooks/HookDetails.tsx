@@ -1,9 +1,7 @@
 import React, { MouseEventHandler } from 'react';
 
 import { commitMutation, createFragmentContainer } from 'react-relay';
-import { WithStyles } from '@mui/styles';
-import createStyles from '@mui/styles/createStyles';
-import withStyles from '@mui/styles/withStyles';
+import { makeStyles } from '@mui/styles';
 import { graphql } from 'babel-plugin-relay/macro';
 import { HookDetails_hook } from './__generated__/HookDetails_hook.graphql';
 import { Helmet as Head } from 'react-helmet';
@@ -43,8 +41,8 @@ const hooksRerunMutation = graphql`
   }
 `;
 
-const styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     gap: {
       paddingTop: theme.spacing(2),
     },
@@ -66,14 +64,16 @@ const styles = theme =>
     potentialError: {
       padding: theme.spacing(1),
     },
-  });
+  };
+});
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   hook: HookDetails_hook;
 }
 
 function HookDetails(props: Props) {
-  let { hook, classes } = props;
+  let { hook } = props;
+  let classes = useStyles();
 
   let navigate = useNavigate();
 
@@ -221,7 +221,7 @@ function HookDetails(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(HookDetails), {
+export default createFragmentContainer(HookDetails, {
   hook: graphql`
     fragment HookDetails_hook on Hook {
       id

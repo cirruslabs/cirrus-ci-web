@@ -1,8 +1,6 @@
 import React, { ReactNode } from 'react';
-import { Alert, Theme } from '@mui/material';
-import createStyles from '@mui/styles/createStyles';
-import { WithStyles } from '@mui/styles';
-import withStyles from '@mui/styles/withStyles';
+import { Alert } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { ConfigurationWithIssues_build } from './__generated__/ConfigurationWithIssues_build.graphql';
@@ -12,8 +10,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from '@mui/material/Typography';
 import AccordionDetails from '@mui/material/AccordionDetails';
 
-const styles = (theme: Theme) =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     configurationTable: {
       color: theme.palette.mode === 'dark' ? theme.palette.primary.light : theme.palette.primary.dark,
       background: theme.palette.mode === 'dark' ? theme.palette.primary.dark : theme.palette.primary.light,
@@ -46,14 +44,16 @@ const styles = (theme: Theme) =>
     topPadded: {
       paddingTop: theme.spacing(2),
     },
-  });
+  };
+});
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   build: ConfigurationWithIssues_build;
 }
 
 function ConfigurationWithIssues(props: Props) {
-  let { build, classes } = props;
+  let { build } = props;
+  let classes = useStyles();
 
   if (!build.parsingResult || build.parsingResult.issues.length === 0) {
     return null;
@@ -195,7 +195,7 @@ function ConfigurationWithIssues(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(ConfigurationWithIssues), {
+export default createFragmentContainer(ConfigurationWithIssues, {
   build: graphql`
     fragment ConfigurationWithIssues_build on Build {
       parsingResult {

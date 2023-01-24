@@ -2,14 +2,14 @@ import React from 'react';
 import AnsiUp from 'ansi_up';
 import { useLocation, useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
-import { createStyles, WithStyles, withStyles } from '@mui/styles';
+import { makeStyles } from '@mui/styles';
 import * as queryString from 'query-string';
 
 let ansiFormatter = new (AnsiUp as any)();
 ansiFormatter.use_classes = true;
 
-let styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     logContainer: {
       overflowY: 'hidden',
       minHeight: '70px',
@@ -37,9 +37,10 @@ let styles = theme =>
     logLineHighlighted: {
       background: theme.palette.secondary.dark,
     },
-  });
+  };
+});
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   logsName: string;
   logs: string;
 }
@@ -77,7 +78,7 @@ function Logs(props: Props) {
     });
   }
 
-  let { classes } = props;
+  let classes = useStyles();
   return (
     <div className={classes.logContainer}>
       {props.logs.split('\n').map((line, index) => (
@@ -96,4 +97,4 @@ function Logs(props: Props) {
   );
 }
 
-export default withStyles(styles)(Logs);
+export default Logs;

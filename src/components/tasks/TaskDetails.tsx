@@ -1,6 +1,4 @@
-import { WithStyles } from '@mui/styles';
-import createStyles from '@mui/styles/createStyles';
-import withStyles from '@mui/styles/withStyles';
+import { makeStyles } from '@mui/styles';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -129,8 +127,8 @@ const taskSubscription = graphql`
   }
 `;
 
-const styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     title: {
       padding: 8,
       background: theme.palette.action.disabledBackground,
@@ -155,10 +153,10 @@ const styles = theme =>
       marginTop: theme.spacing(1.0),
     },
     automaticReRun: {
-      backgroundColor: theme.palette.warning.second,
+      backgroundColor: theme.palette.warning.light,
     },
     transaction: {
-      backgroundColor: theme.palette.success.second,
+      backgroundColor: theme.palette.success.light,
     },
     tabPanel: {
       padding: 0,
@@ -170,9 +168,10 @@ const styles = theme =>
     rerunOptionPopup: {
       zIndex: 1,
     },
-  });
+  };
+});
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   task: TaskDetails_task;
 }
 
@@ -191,7 +190,8 @@ function TaskDetails(props: Props) {
     return () => subscription.dispose();
   }, [props.task.id, props.task.status]);
 
-  let { task, classes } = props;
+  let { task } = props;
+  let classes = useStyles();
   let build = task.build;
   let repository = task.repository;
 
@@ -587,7 +587,7 @@ function TaskDetails(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(TaskDetails), {
+export default createFragmentContainer(TaskDetails, {
   task: graphql`
     fragment TaskDetails_task on Task {
       id

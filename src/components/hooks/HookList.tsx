@@ -3,33 +3,33 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import HookListRow from './HookListRow';
 import { FragmentRefs } from 'relay-runtime';
-import { Card, CardContent, Link, Theme, Typography } from '@mui/material';
-import createStyles from '@mui/styles/createStyles';
+import { Card, CardContent, Link, Typography } from '@mui/material';
 import { HookType } from './HookType';
-import { WithStyles } from '@mui/styles';
-import withStyles from '@mui/styles/withStyles';
+import { makeStyles } from '@mui/styles';
 
-const styles = (theme: Theme) =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     pre: {
       color: theme.palette.mode === 'dark' ? theme.palette.primary.light : theme.palette.primary.dark,
       background: theme.palette.mode === 'dark' ? theme.palette.primary.dark : theme.palette.primary.light,
       padding: theme.spacing(0.5),
     },
-  });
+  };
+});
 
 interface Hook {
   readonly timestamp: number;
   readonly ' $fragmentRefs': FragmentRefs<'HookListRow_hook'>;
 }
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   hooks: ReadonlyArray<Hook>;
   type: HookType;
 }
 
 function HooksList(props: Props) {
-  let { hooks, type, classes } = props;
+  let { hooks, type } = props;
+  let classes = useStyles();
 
   if (hooks.length === 0) {
     const hookExampleTemplate = `load("cirrus", "env", "http")
@@ -109,4 +109,4 @@ def on_ENTITY_failed(ctx):
   );
 }
 
-export default withStyles(styles)(HooksList);
+export default HooksList;

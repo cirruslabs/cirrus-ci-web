@@ -3,9 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import Tooltip from '@mui/material/Tooltip';
-import { WithStyles } from '@mui/styles';
-import createStyles from '@mui/styles/createStyles';
-import withStyles from '@mui/styles/withStyles';
+import { makeStyles } from '@mui/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import { navigateHelper } from '../../utils/navigateHelper';
@@ -16,8 +14,8 @@ import Settings from '@mui/icons-material/Settings';
 import OwnerPlatformIcon from '../icons/OwnerPlatformIcon';
 import { List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 
-const styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     title: {
       backgroundColor: theme.palette.action.disabledBackground,
     },
@@ -28,16 +26,18 @@ const styles = theme =>
       display: 'flex',
       alignItems: 'center',
     },
-  });
+  };
+});
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   user: UserProfile_user;
 }
 
 function UserProfile(props: Props) {
   const navigate = useNavigate();
 
-  let { user, classes } = props;
+  let { user } = props;
+  let classes = useStyles();
 
   useEffect(() => {
     // in case of only one owner (like only the user with no organizations)
@@ -85,7 +85,7 @@ function UserProfile(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(UserProfile), {
+export default createFragmentContainer(UserProfile, {
   user: graphql`
     fragment UserProfile_user on User {
       relatedOwners {

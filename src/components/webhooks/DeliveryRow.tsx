@@ -5,8 +5,7 @@ import TableRow from '@mui/material/TableRow';
 import Chip from '@mui/material/Chip';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { WithStyles } from '@mui/styles';
-import withStyles from '@mui/styles/withStyles';
+import { makeStyles } from '@mui/styles';
 import ReportIcon from '@mui/icons-material/Report';
 import SendIcon from '@mui/icons-material/Send';
 import classNames from 'classnames';
@@ -15,19 +14,21 @@ import { DeliveryRow_delivery } from './__generated__/DeliveryRow_delivery.graph
 import Avatar from '@mui/material/Avatar';
 import { useTheme } from '@mui/material';
 
-const styles = {
-  chip: {
-    marginTop: 4,
-    marginBottom: 4,
-    marginLeft: 4,
-  },
-  cell: {
-    padding: 0,
-    height: '100%',
-  },
-};
+const useStyles = makeStyles(theme => {
+  return {
+    chip: {
+      marginTop: 4,
+      marginBottom: 4,
+      marginLeft: 4,
+    },
+    cell: {
+      padding: 0,
+      height: '100%',
+    },
+  };
+});
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   delivery: DeliveryRow_delivery;
 }
 
@@ -35,7 +36,8 @@ function DeliveryRow(props: Props) {
   let [showDetails, setShowDetails] = useState(false);
   let theme = useTheme();
 
-  let { delivery, classes } = props;
+  let { delivery } = props;
+  let classes = useStyles();
 
   let success = 200 <= delivery.response.status && delivery.response.status < 300;
   let statusColor = success ? theme.palette.success.main : theme.palette.error.main;
@@ -67,7 +69,7 @@ function DeliveryRow(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(DeliveryRow), {
+export default createFragmentContainer(DeliveryRow, {
   delivery: graphql`
     fragment DeliveryRow_delivery on WebHookDelivery {
       id

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Typography from '@mui/material/Typography';
-import { WithStyles } from '@mui/styles';
-import withStyles from '@mui/styles/withStyles';
+import { makeStyles } from '@mui/styles';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -22,14 +21,16 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { useNavigate } from 'react-router-dom';
 
-const styles = {
-  title: {
-    display: 'flex',
-    flexGrow: 1,
-  },
-};
+const useStyles = makeStyles(theme => {
+  return {
+    title: {
+      display: 'flex',
+      flexGrow: 1,
+    },
+  };
+});
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   task: TaskArtifacts_task;
 }
 
@@ -123,7 +124,8 @@ function ArtifactsView(props: Props) {
     return results;
   }
 
-  let { task, classes } = props;
+  let { task } = props;
+  let classes = useStyles();
   let { artifacts } = task;
 
   let items = [];
@@ -224,4 +226,4 @@ function ArtifactsView(props: Props) {
   );
 }
 
-export default withStyles(styles)(ArtifactsView);
+export default ArtifactsView;

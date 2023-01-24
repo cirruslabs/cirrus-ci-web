@@ -1,4 +1,4 @@
-import { memo, useMemo, useEffect } from 'react';
+import { memo, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ThemeProvider } from '@emotion/react';
 import { createFragmentContainer, requestSubscription } from 'react-relay';
@@ -7,9 +7,8 @@ import { useRecoilValue } from 'recoil';
 import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
 
-import { useTheme } from '@mui/material';
-import { WithStyles } from '@mui/styles';
-import { Link } from '@mui/material';
+import { Link, useTheme } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { createTheme } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import Stack from '@mui/material/Stack';
@@ -18,11 +17,9 @@ import TableRow from '@mui/material/TableRow';
 import TableHead from '@mui/material/TableHead';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import withStyles from '@mui/styles/withStyles';
 import InfoIcon from '@mui/icons-material/Info';
 import CommitIcon from '@mui/icons-material/Commit';
 import Typography from '@mui/material/Typography';
-import createStyles from '@mui/styles/createStyles';
 import CallSplitIcon from '@mui/icons-material/CallSplit';
 import UnarchiveIcon from '@mui/icons-material/UnarchiveOutlined';
 
@@ -39,8 +36,8 @@ import { BuildsTable_builds } from './__generated__/BuildsTable_builds.graphql';
 import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
 
 // todo: move custom values to mui theme adjustments
-const styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     table: {
       tableLayout: 'auto',
     },
@@ -114,11 +111,10 @@ const styles = theme =>
       padding: '1px 5px',
       '& *': { fontSize: '14px !important' },
     },
-  });
+  };
+});
 
-const styled = withStyles(styles);
-
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   builds: BuildsTable_builds;
   selectedBuildId?: string;
   setSelectedBuildId?: Function;
@@ -132,7 +128,8 @@ const buildSubscription = graphql`
   }
 `;
 
-const BuildsTable = styled(({ classes, builds = [], selectedBuildId, setSelectedBuildId }: Props) => {
+const BuildsTable = ({ builds = [], selectedBuildId, setSelectedBuildId }: Props) => {
+  let classes = useStyles();
   const themeOptions = useRecoilValue(muiThemeOptions);
   const muiTheme = useMemo(() => createTheme(themeOptions), [themeOptions]);
 
@@ -155,11 +152,9 @@ const BuildsTable = styled(({ classes, builds = [], selectedBuildId, setSelected
       </Table>
     </ThemeProvider>
   );
-});
-
-interface HeadRowProps extends WithStyles<typeof styles> {}
-
-const HeadRow = styled(({ classes }: HeadRowProps) => {
+};
+const HeadRow = () => {
+  let classes = useStyles();
   const durationTooltipText = (
     <>
       Clock duration reflects elapsed time between creation of all tasks for a particular build and completion of the
@@ -184,124 +179,118 @@ const HeadRow = styled(({ classes }: HeadRowProps) => {
       </TableCell>
     </TableRow>
   );
-});
+};
 
-interface BuildRowProps extends WithStyles<typeof styles> {
+interface BuildRowProps {
   build: BuildsTable_builds[number];
   selected?: boolean;
   setSelectedBuildId?: Function;
 }
 
-const BuildRow = styled(
-  memo(({ classes, build, selected, setSelectedBuildId }: BuildRowProps) => {
-    const theme = useTheme();
-    const navigate = useNavigate();
+const BuildRow = memo(({ build, selected, setSelectedBuildId }: BuildRowProps) => {
+  let classes = useStyles();
+  const theme = useTheme();
+  const navigate = useNavigate();
 
-    const isFinalStatus = useMemo(() => isBuildFinalStatus(build.status), [build.status]);
-    useEffect(() => {
-      if (isFinalStatus) return;
-      const subscription = requestSubscription(environment, {
-        subscription: buildSubscription,
-        variables: { buildID: build.id },
-      });
-      return () => {
-        subscription.dispose();
-      };
-    }, [build.id, isFinalStatus]);
+  const isFinalStatus = useMemo(() => isBuildFinalStatus(build.status), [build.status]);
+  useEffect(() => {
+    if (isFinalStatus) return;
+    const subscription = requestSubscription(environment, {
+      subscription: buildSubscription,
+      variables: { buildID: build.id },
+    });
+    return () => {
+      subscription.dispose();
+    };
+  }, [build.id, isFinalStatus]);
 
-    let rowProps;
-    const selectable = !!setSelectedBuildId;
-    if (selectable) {
-      rowProps = {
-        selected: selected,
-        onMouseEnter() {
-          if (selected) return;
-          setSelectedBuildId(build.id);
-        },
-        onMouseLeave() {
-          setSelectedBuildId(null);
-        },
-      };
-    } else {
-      rowProps = {
-        hover: true,
-      };
-    }
+  let rowProps;
+  const selectable = !!setSelectedBuildId;
+  if (selectable) {
+    rowProps = {
+      selected: selected,
+      onMouseEnter() {
+        if (selected) return;
+        setSelectedBuildId(build.id);
+      },
+      onMouseLeave() {
+        setSelectedBuildId(null);
+      },
+    };
+  } else {
+    rowProps = {
+      hover: true,
+    };
+  }
 
-    return (
-      <TableRow
-        className={classes.row}
-        {...rowProps}
-        onClick={e => {
-          const target = e.target as HTMLElement;
-          if (target.closest('a')) return;
-          navigateBuildHelper(navigate, e, build.id);
-        }}
-      >
-        {/* STATUS */}
-        <TableCell className={cx(classes.cell, classes.cellStatus, classes.cellStatusChip)}>
-          <BuildStatusChipNew status={build.status} />
-        </TableCell>
+  return (
+    <TableRow
+      className={classes.row}
+      {...rowProps}
+      onClick={e => {
+        const target = e.target as HTMLElement;
+        if (target.closest('a')) return;
+        navigateBuildHelper(navigate, e, build.id);
+      }}
+    >
+      {/* STATUS */}
+      <TableCell className={cx(classes.cell, classes.cellStatus, classes.cellStatusChip)}>
+        <BuildStatusChipNew status={build.status} />
+      </TableCell>
 
-        {/* REPOSITORY */}
-        <TableCell className={cx(classes.cell, classes.cellRepository)}>
-          <Stack direction="row" alignItems="center" spacing={0.5}>
-            <BookOutlinedIcon fontSize="inherit" />
-            <Link
-              className={classes.link}
-              href={absoluteLink(build.repository.platform, build.repository.owner, build.repository.name)}
-              underline="hover"
-              noWrap
-              title={build.repository.name}
-            >
-              {build.repository.name}
-            </Link>
-          </Stack>
-          <Typography noWrap color={theme.palette.text.secondary} title={build.repository.owner}>
-            by {build.repository.owner}
-          </Typography>
-        </TableCell>
+      {/* REPOSITORY */}
+      <TableCell className={cx(classes.cell, classes.cellRepository)}>
+        <Stack direction="row" alignItems="center" spacing={0.5}>
+          <BookOutlinedIcon fontSize="inherit" />
+          <Link
+            className={classes.link}
+            href={absoluteLink(build.repository.platform, build.repository.owner, build.repository.name)}
+            underline="hover"
+            noWrap
+            title={build.repository.name}
+          >
+            {build.repository.name}
+          </Link>
+        </Stack>
+        <Typography noWrap color={theme.palette.text.secondary} title={build.repository.owner}>
+          by {build.repository.owner}
+        </Typography>
+      </TableCell>
 
-        {/* COMMIT */}
-        <TableCell className={cx(classes.cell, classes.cellCommit)}>
-          <Typography className={classes.commitName} title={build.changeMessageTitle}>
-            {build.changeMessageTitle}
-          </Typography>
-          <Stack className={classes.hash} direction="row" alignItems="center" spacing={0.5}>
-            <CommitIcon fontSize="inherit" />
-            <span>{build.changeIdInRepo.substr(0, 7)}</span>
-          </Stack>
-        </TableCell>
+      {/* COMMIT */}
+      <TableCell className={cx(classes.cell, classes.cellCommit)}>
+        <Typography className={classes.commitName} title={build.changeMessageTitle}>
+          {build.changeMessageTitle}
+        </Typography>
+        <Stack className={classes.hash} direction="row" alignItems="center" spacing={0.5}>
+          <CommitIcon fontSize="inherit" />
+          <span>{build.changeIdInRepo.substr(0, 7)}</span>
+        </Stack>
+      </TableCell>
 
-        {/* BRANCH */}
-        <TableCell className={cx(classes.cell, classes.cellBranch)}>
-          <Stack direction="row" alignItems="center" spacing={0.5}>
-            {build.tag ? <UnarchiveIcon fontSize="inherit" /> : <CallSplitIcon fontSize="inherit" />}
-            <Link
-              className={classes.link}
-              href={absoluteLink(
-                build.repository.platform,
-                build.repository.owner,
-                build.repository.name,
-                build.branch,
-              )}
-              underline="hover"
-              noWrap
-              title={build.branch}
-            >
-              {shorten(build.branch)}
-            </Link>
-          </Stack>
-        </TableCell>
+      {/* BRANCH */}
+      <TableCell className={cx(classes.cell, classes.cellBranch)}>
+        <Stack direction="row" alignItems="center" spacing={0.5}>
+          {build.tag ? <UnarchiveIcon fontSize="inherit" /> : <CallSplitIcon fontSize="inherit" />}
+          <Link
+            className={classes.link}
+            href={absoluteLink(build.repository.platform, build.repository.owner, build.repository.name, build.branch)}
+            underline="hover"
+            noWrap
+            title={build.branch}
+          >
+            {shorten(build.branch)}
+          </Link>
+        </Stack>
+      </TableCell>
 
-        {/* DURATION */}
-        <TableCell className={cx(classes.cell, classes.cellDuration)}>
-          {build.clockDurationInSeconds ? formatDuration(build.clockDurationInSeconds) : '—'}
-        </TableCell>
-      </TableRow>
-    );
-  }),
-);
+      {/* DURATION */}
+      <TableCell className={cx(classes.cell, classes.cellDuration)}>
+        {build.clockDurationInSeconds ? formatDuration(build.clockDurationInSeconds) : '—'}
+      </TableCell>
+    </TableRow>
+  );
+});
 
 export default createFragmentContainer(BuildsTable, {
   builds: graphql`

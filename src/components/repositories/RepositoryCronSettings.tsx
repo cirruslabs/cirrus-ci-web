@@ -7,9 +7,7 @@ import CardHeader from '@mui/material/CardHeader';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
-import { WithStyles } from '@mui/styles';
-import createStyles from '@mui/styles/createStyles';
-import withStyles from '@mui/styles/withStyles';
+import { makeStyles } from '@mui/styles';
 import { RepositoryCronSettings_repository } from './__generated__/RepositoryCronSettings_repository.graphql';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -69,12 +67,12 @@ const removeCronSettingsMutation = graphql`
   }
 `;
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   repository: RepositoryCronSettings_repository;
 }
 
-const styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     chip: {
       marginTop: 4,
       marginBottom: 4,
@@ -93,7 +91,8 @@ const styles = theme =>
     roundButton: {
       right: 0,
     },
-  });
+  };
+});
 
 function RepositoryCronSettings(props: Props) {
   let navigate = useNavigate();
@@ -164,7 +163,7 @@ function RepositoryCronSettings(props: Props) {
     });
   }
 
-  let { classes } = props;
+  let classes = useStyles();
   return (
     <Card elevation={24}>
       <CardHeader title="Cron Settings" />
@@ -262,7 +261,7 @@ function RepositoryCronSettings(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(RepositoryCronSettings), {
+export default createFragmentContainer(RepositoryCronSettings, {
   repository: graphql`
     fragment RepositoryCronSettings_repository on Repository {
       id

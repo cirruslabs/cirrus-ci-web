@@ -7,9 +7,7 @@ import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
-import { WithStyles } from '@mui/styles';
-import createStyles from '@mui/styles/createStyles';
-import withStyles from '@mui/styles/withStyles';
+import { makeStyles } from '@mui/styles';
 import Switch from '@mui/material/Switch';
 import { graphql } from 'babel-plugin-relay/macro';
 import React, { useState } from 'react';
@@ -22,14 +20,15 @@ import {
 } from './__generated__/OwnerScopedTokenDialogMutation.graphql';
 import TextField from '@mui/material/TextField';
 
-const styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     textField: {
       width: '100%',
       marginLeft: theme.spacing(1.0),
       marginRight: theme.spacing(1.0),
     },
-  });
+  };
+});
 
 const generateNewScopedAccessTokenMutation = graphql`
   mutation OwnerScopedTokenDialogMutation($input: GenerateNewScopedAccessTokenInput!) {
@@ -39,7 +38,7 @@ const generateNewScopedAccessTokenMutation = graphql`
   }
 `;
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   ownerInfo: OwnerScopedTokenDialog_ownerInfo;
 
   onClose(...args: any[]): void;
@@ -48,7 +47,8 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 function OwnerScopedTokenDialog(props: Props) {
-  const { classes, ...other } = props;
+  let classes = useStyles();
+  const { ...other } = props;
   let [readOnly, setReadOnly] = useState(true);
   let [expirationDays, setExpirationDays] = useState(null);
   let [repositoryNames, setRepositoryNames] = useState('');
@@ -138,7 +138,7 @@ function OwnerScopedTokenDialog(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(OwnerScopedTokenDialog), {
+export default createFragmentContainer(OwnerScopedTokenDialog, {
   ownerInfo: graphql`
     fragment OwnerScopedTokenDialog_ownerInfo on OwnerInfo {
       platform

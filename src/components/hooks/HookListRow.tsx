@@ -6,17 +6,15 @@ import TableRow from '@mui/material/TableRow';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { navigateHookHelper } from '../../utils/navigateHelper';
-import { WithStyles } from '@mui/styles';
-import createStyles from '@mui/styles/createStyles';
-import withStyles from '@mui/styles/withStyles';
+import { makeStyles } from '@mui/styles';
 import classNames from 'classnames';
 import { HookListRow_hook } from './__generated__/HookListRow_hook.graphql';
 import HookStatusChip from '../chips/HookStatusChip';
 import HookNameChip from '../chips/HookNameChip';
 import HookCreatedChip from '../chips/HookCreatedChip';
 
-const styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     chip: {
       marginTop: theme.spacing(0.5),
       marginBottom: theme.spacing(0.5),
@@ -29,14 +27,16 @@ const styles = theme =>
       padding: 0,
       height: '100%',
     },
-  });
+  };
+});
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   hook: HookListRow_hook;
 }
 
 function HookListRow(props: Props) {
-  let { hook, classes } = props;
+  let { hook } = props;
+  let classes = useStyles();
   let navigate = useNavigate();
 
   return (
@@ -50,7 +50,7 @@ function HookListRow(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(HookListRow), {
+export default createFragmentContainer(HookListRow, {
   hook: graphql`
     fragment HookListRow_hook on Hook {
       id

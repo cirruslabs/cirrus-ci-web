@@ -6,7 +6,6 @@ import {
   GenerateNewOwnerAccessTokenInput,
   OwnerApiSettingsMutationResponse,
 } from './__generated__/OwnerApiSettingsMutation.graphql';
-import createStyles from '@mui/styles/createStyles';
 import environment from '../../createRelayEnvironment';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
@@ -16,7 +15,7 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import { Link } from '@mui/material';
-import { withStyles, WithStyles } from '@mui/styles';
+import { makeStyles } from '@mui/styles';
 import OwnerScopedTokenDialog from './OwnerScopedTokenDialog';
 
 const generateNewTokenMutation = graphql`
@@ -27,21 +26,22 @@ const generateNewTokenMutation = graphql`
   }
 `;
 
-const styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     textField: {
       width: '100%',
       marginLeft: theme.spacing(1.0),
       marginRight: theme.spacing(1.0),
     },
-  });
+  };
+});
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   info: OwnerApiSettings_info;
 }
 
 function OwnerApiSettings(props: Props) {
-  let { classes } = props;
+  let classes = useStyles();
   let existingTokenComponent = null;
   let [newToken, setNewToken] = useState(null);
   let [openDialog, setOpenDialog] = useState(false);
@@ -115,7 +115,7 @@ function OwnerApiSettings(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(OwnerApiSettings), {
+export default createFragmentContainer(OwnerApiSettings, {
   info: graphql`
     fragment OwnerApiSettings_info on OwnerInfo {
       platform

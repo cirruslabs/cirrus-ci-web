@@ -4,9 +4,8 @@ import { graphql } from 'babel-plugin-relay/macro';
 import { useNavigate } from 'react-router-dom';
 import { Helmet as Head } from 'react-helmet';
 
-import { WithStyles } from '@mui/styles';
+import { makeStyles } from '@mui/styles';
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -28,39 +27,42 @@ import { ViewerBuildListRefetchQuery } from './__generated__/ViewerBuildListRefe
 import { ViewerBuildList_viewer$key } from './__generated__/ViewerBuildList_viewer.graphql';
 
 // todo: move custom values to mui theme adjustments
-const styles = theme => ({
-  paper: {
-    marginTop: theme.spacing(4),
-    padding: theme.spacing(1.0, 2.5, 1.5),
-    boxShadow: '0 16px 52px rgb(0 0 0 / 13%)',
-    borderRadius: 4 * theme.shape.borderRadius,
-  },
-  header: {
-    paddingLeft: 14,
-    justifyContent: 'space-between',
-  },
-  chip: {
-    margin: theme.spacing(0.5),
-  },
-  cell: {
-    width: '100%',
-    maxWidth: '600px',
-  },
-  emptyBuilds: {
-    margin: theme.spacing(1.0),
-    marginLeft: 14,
-  },
-  padding: {
-    margin: theme.spacing(0.5),
-  },
+const useStyles = makeStyles(theme => {
+  return {
+    paper: {
+      marginTop: theme.spacing(4),
+      padding: theme.spacing(1.0, 2.5, 1.5),
+      boxShadow: '0 16px 52px rgb(0 0 0 / 13%)',
+      borderRadius: 4 * theme.shape.borderRadius,
+    },
+    header: {
+      paddingLeft: 14,
+      justifyContent: 'space-between',
+    },
+    chip: {
+      margin: theme.spacing(0.5),
+    },
+    cell: {
+      width: '100%',
+      maxWidth: '600px',
+    },
+    emptyBuilds: {
+      margin: theme.spacing(1.0),
+      marginLeft: 14,
+    },
+    padding: {
+      margin: theme.spacing(0.5),
+    },
+  };
 });
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   viewer: ViewerBuildList_viewer$key;
 }
 
 function ViewerBuildList(props: Props) {
-  let { viewer, classes } = props;
+  let { viewer } = props;
+  let classes = useStyles();
   const pageWidth = usePageWidth();
   const isNewDesign = pageWidth > 900;
 
@@ -96,8 +98,6 @@ function ViewerBuildList(props: Props) {
   let navigate = useNavigate();
 
   function buildItem(build) {
-    let { classes } = props;
-
     return (
       <TableRow
         key={build.id}
@@ -194,4 +194,4 @@ function ViewerBuildList(props: Props) {
   );
 }
 
-export default withStyles(styles)(ViewerBuildList);
+export default ViewerBuildList;

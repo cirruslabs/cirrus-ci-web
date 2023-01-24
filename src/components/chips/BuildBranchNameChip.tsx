@@ -9,28 +9,28 @@ import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { BuildBranchNameChip_build } from './__generated__/BuildBranchNameChip_build.graphql';
 import { shorten } from '../../utils/text';
-import { WithStyles } from '@mui/styles';
-import createStyles from '@mui/styles/createStyles';
-import withStyles from '@mui/styles/withStyles';
+import { makeStyles } from '@mui/styles';
 import { Commit } from '@mui/icons-material';
 import { Tooltip } from '@mui/material';
 
-const styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     avatar: {
       backgroundColor: theme.palette.primary.main,
     },
     avatarIcon: {
       color: theme.palette.primary.contrastText,
     },
-  });
+  };
+});
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   className?: string;
   build: BuildBranchNameChip_build;
 }
 
 function BuildBranchNameChip(props: Props) {
+  let classes = useStyles();
   let navigate = useNavigate();
   let build = props.build;
 
@@ -53,8 +53,8 @@ function BuildBranchNameChip(props: Props) {
           className={props.className}
           label={shorten(build.branch)}
           avatar={
-            <Avatar className={props.classes.avatar}>
-              <Commit className={props.classes.avatarIcon} />
+            <Avatar className={classes.avatar}>
+              <Commit className={classes.avatarIcon} />
             </Avatar>
           }
           onClick={handleBranchClick}
@@ -69,8 +69,8 @@ function BuildBranchNameChip(props: Props) {
       className={props.className}
       label={shorten(build.branch)}
       avatar={
-        <Avatar className={props.classes.avatar}>
-          <CallSplit className={props.classes.avatarIcon} />
+        <Avatar className={classes.avatar}>
+          <CallSplit className={classes.avatarIcon} />
         </Avatar>
       }
       onClick={handleBranchClick}
@@ -79,7 +79,7 @@ function BuildBranchNameChip(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(BuildBranchNameChip), {
+export default createFragmentContainer(BuildBranchNameChip, {
   build: graphql`
     fragment BuildBranchNameChip_build on Build {
       id

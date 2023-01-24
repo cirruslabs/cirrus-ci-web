@@ -1,6 +1,4 @@
-import { WithStyles } from '@mui/styles';
-import createStyles from '@mui/styles/createStyles';
-import withStyles from '@mui/styles/withStyles';
+import { makeStyles } from '@mui/styles';
 import Card from '@mui/material/Card';
 import { graphql } from 'babel-plugin-relay/macro';
 import React, { useEffect, useState } from 'react';
@@ -51,8 +49,8 @@ import PauseCircleOutlineIcon from '@mui/icons-material/PauseCircleOutline';
 import { DeletePersistentWorkerInput } from './__generated__/PoolDetailsDeleteWorkerMutation.graphql';
 import { UpdatePersistentWorkerInput } from './__generated__/PoolDetailsUpdateWorkerMutation.graphql';
 
-const styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     gap: {
       paddingTop: 16,
     },
@@ -69,9 +67,10 @@ const styles = theme =>
     enabledWorkerButton: {
       color: theme.palette.warning.main,
     },
-  });
+  };
+});
 
-interface PoolDetailsProps extends WithStyles<typeof styles> {
+interface PoolDetailsProps {
   pool: PoolDetails_pool;
   relay: RelayRefetchProp;
 }
@@ -107,7 +106,8 @@ const updateWorkerMutation = graphql`
 function PoolDetails(props: PoolDetailsProps) {
   let [openEditDialog, setOpenEditDialog] = useState(false);
   let [registrationToken, setRegistrationToken] = useState(null);
-  let { pool, classes } = props;
+  let { pool } = props;
+  let classes = useStyles();
 
   function refetchData() {
     props.relay.refetch({ poolId: props.pool.id }, { force: true });
@@ -390,7 +390,7 @@ function EditPersistentWorkerPoolDialog(props: DialogProps) {
 }
 
 export default createRefetchContainer(
-  withStyles(styles)(PoolDetails),
+  PoolDetails,
   {
     pool: graphql`
       fragment PoolDetails_pool on PersistentWorkerPool {

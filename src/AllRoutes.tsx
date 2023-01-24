@@ -6,9 +6,7 @@ import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { WithStyles } from '@mui/styles';
-import createStyles from '@mui/styles/createStyles';
-import withStyles from '@mui/styles/withStyles';
+import { makeStyles } from '@mui/styles';
 import BookIcon from '@mui/icons-material/Book';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -54,8 +52,8 @@ const AsyncApiExplorerRenderer = React.lazy(() => import('./components/explorer/
 
 const drawerWidth = 360;
 
-export const styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     flex: {
       flex: 1,
     },
@@ -70,7 +68,7 @@ export const styles = theme =>
       marginLeft: 8,
     },
     titleShift: {
-      marginLeft: 2 * theme.spacing(1.0),
+      marginLeft: theme.spacing(2.0),
     },
     marginRight: {
       marginRight: theme.spacing(1.0),
@@ -131,7 +129,8 @@ export const styles = theme =>
       padding: 0,
       marginLeft: 0,
     },
-  });
+  };
+});
 
 const cirrusOpenDrawerState = atom({
   key: 'CirrusOpenDrawer',
@@ -139,9 +138,8 @@ const cirrusOpenDrawerState = atom({
   effects_UNSTABLE: [localStorageEffect('CirrusOpenDrawer')],
 });
 
-function AllRoutes(props: WithStyles<typeof styles>) {
-  let { classes } = props;
-
+function AllRoutes() {
+  let classes = useStyles();
   let theme = useTheme();
   const [openDrawer, setOpenDrawer] = useRecoilState(cirrusOpenDrawerState);
 
@@ -277,4 +275,4 @@ function AllRoutes(props: WithStyles<typeof styles>) {
   );
 }
 
-export default withStyles(styles)(AllRoutes);
+export default AllRoutes;

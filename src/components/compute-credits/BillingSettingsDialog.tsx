@@ -8,9 +8,7 @@ import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
-import { WithStyles } from '@mui/styles';
-import createStyles from '@mui/styles/createStyles';
-import withStyles from '@mui/styles/withStyles';
+import { makeStyles } from '@mui/styles';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import { graphql } from 'babel-plugin-relay/macro';
@@ -24,15 +22,16 @@ import {
 import { BillingSettingsDialog_billingSettings } from './__generated__/BillingSettingsDialog_billingSettings.graphql';
 import { Link } from '@mui/material';
 
-const styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     limit: {
       color: orange[700],
       '&:hover': {
         color: orange[900],
       },
     },
-  });
+  };
+});
 
 const saveBillingSettingsMutation = graphql`
   mutation BillingSettingsDialogMutation($input: BillingSettingsInput!) {
@@ -48,7 +47,7 @@ const saveBillingSettingsMutation = graphql`
   }
 `;
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   billingSettings: BillingSettingsDialog_billingSettings;
 
   onClose(...args: any[]): void;
@@ -57,7 +56,8 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 function BillingSettingsDialog(props: Props) {
-  const { billingSettings, classes, ...other } = props;
+  let classes = useStyles();
+  const { billingSettings, ...other } = props;
   let [enabled, setEnabled] = useState(billingSettings.enabled);
   let [billingEmailAddress, setBillingEmailAddress] = useState(billingSettings.billingEmailAddress);
   let [invoiceTemplate, setInvoiceTemplate] = useState(billingSettings.invoiceTemplate);
@@ -148,7 +148,7 @@ function BillingSettingsDialog(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(BillingSettingsDialog), {
+export default createFragmentContainer(BillingSettingsDialog, {
   billingSettings: graphql`
     fragment BillingSettingsDialog_billingSettings on BillingSettings {
       ownerUid

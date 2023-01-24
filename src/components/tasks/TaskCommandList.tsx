@@ -5,7 +5,6 @@ import TaskCommandLogs from './TaskCommandLogs';
 import { formatDuration } from '../../utils/time';
 import { isTaskCommandExecuting, isTaskCommandFinalStatus } from '../../utils/status';
 import DurationTicker from '../common/DurationTicker';
-import withStyles from '@mui/styles/withStyles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -17,23 +16,25 @@ import * as queryString from 'query-string';
 import { TaskCommandList_task } from './__generated__/TaskCommandList_task.graphql';
 import { ItemOfArray } from '../../utils/utility-types';
 import { useLocation } from 'react-router-dom';
-import { createStyles, WithStyles } from '@mui/styles';
+import { makeStyles } from '@mui/styles';
 import { Box, useTheme } from '@mui/material';
 import { useRecoilValue } from 'recoil';
 import { prefersDarkModeState } from '../../cirrusTheme';
 
-const styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     details: {
       padding: 0,
     },
-  });
+  };
+});
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   task: TaskCommandList_task;
 }
 
 function TaskCommandList(props: Props) {
+  let classes = useStyles();
   let task = props.task;
   let commands = task.commands;
 
@@ -105,7 +106,7 @@ function TaskCommandList(props: Props) {
               </Typography>
             </div>
           </AccordionSummary>
-          <AccordionDetails className={props.classes.details}>
+          <AccordionDetails className={classes.details}>
             <TaskCommandLogs taskId={props.task.id} command={command} />
           </AccordionDetails>
         </Accordion>
@@ -121,7 +122,7 @@ function TaskCommandList(props: Props) {
   return <div>{commandComponents}</div>;
 }
 
-export default createFragmentContainer(withStyles(styles)(TaskCommandList), {
+export default createFragmentContainer(TaskCommandList, {
   task: graphql`
     fragment TaskCommandList_task on Task {
       id

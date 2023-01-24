@@ -8,8 +8,7 @@ import TaskNameChip from '../chips/TaskNameChip';
 import TaskDurationChip from '../chips/TaskDurationChip';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { WithStyles } from '@mui/styles';
-import withStyles from '@mui/styles/withStyles';
+import { makeStyles } from '@mui/styles';
 import classNames from 'classnames';
 import RepositoryNameChip from '../chips/RepositoryNameChip';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
@@ -17,25 +16,28 @@ import TaskCreatedChip from '../chips/TaskCreatedChip';
 import { navigateTaskHelper } from '../../utils/navigateHelper';
 import { ComputeCreditsTransactionRow_transaction } from './__generated__/ComputeCreditsTransactionRow_transaction.graphql';
 
-const styles = {
-  chip: {
-    marginTop: 4,
-    marginBottom: 4,
-    marginLeft: 4,
-  },
-  cell: {
-    padding: 0,
-    height: '100%',
-  },
-};
+const useStyles = makeStyles(theme => {
+  return {
+    chip: {
+      marginTop: 4,
+      marginBottom: 4,
+      marginLeft: 4,
+    },
+    cell: {
+      padding: 0,
+      height: '100%',
+    },
+  };
+});
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   transaction: ComputeCreditsTransactionRow_transaction;
 }
 
 function ComputeCreditsTransactionRow(props: Props) {
   let navigate = useNavigate();
-  let { transaction, classes } = props;
+  let { transaction } = props;
+  let classes = useStyles();
   let { task, repository } = transaction;
   return (
     <TableRow onClick={e => navigateTaskHelper(navigate, e, task.id)} hover={true} style={{ cursor: 'pointer' }}>
@@ -60,7 +62,7 @@ function ComputeCreditsTransactionRow(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(ComputeCreditsTransactionRow), {
+export default createFragmentContainer(ComputeCreditsTransactionRow, {
   transaction: graphql`
     fragment ComputeCreditsTransactionRow_transaction on OwnerTransaction {
       timestamp

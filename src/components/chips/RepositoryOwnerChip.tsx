@@ -6,28 +6,28 @@ import { navigateHelper } from '../../utils/navigateHelper';
 import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { RepositoryOwnerChip_repository } from './__generated__/RepositoryOwnerChip_repository.graphql';
-import { WithStyles } from '@mui/styles';
-import createStyles from '@mui/styles/createStyles';
-import withStyles from '@mui/styles/withStyles';
+import { makeStyles } from '@mui/styles';
 import { useNavigate } from 'react-router-dom';
 import GitHubIcon from '@mui/icons-material/GitHub';
 
-const styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     avatar: {
       backgroundColor: theme.palette.primary.main,
     },
     avatarIcon: {
       color: theme.palette.primary.contrastText,
     },
-  });
+  };
+});
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   className?: string;
   repository: RepositoryOwnerChip_repository;
 }
 
 function RepositoryOwnerChip(props: Props) {
+  let classes = useStyles();
   let navigate = useNavigate();
   let repository = props.repository;
 
@@ -39,8 +39,8 @@ function RepositoryOwnerChip(props: Props) {
     <Chip
       label={repository.owner}
       avatar={
-        <Avatar className={props.classes.avatar}>
-          <GitHubIcon className={props.classes.avatarIcon} />
+        <Avatar className={classes.avatar}>
+          <GitHubIcon className={classes.avatarIcon} />
         </Avatar>
       }
       onClick={e => handleRepositoryClick(e, repository)}
@@ -50,7 +50,7 @@ function RepositoryOwnerChip(props: Props) {
   );
 }
 
-export default createFragmentContainer(withStyles(styles)(RepositoryOwnerChip), {
+export default createFragmentContainer(RepositoryOwnerChip, {
   repository: graphql`
     fragment RepositoryOwnerChip_repository on Repository {
       owner

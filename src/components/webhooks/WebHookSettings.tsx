@@ -9,9 +9,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import FormControl from '@mui/material/FormControl';
-import { WithStyles } from '@mui/styles';
-import createStyles from '@mui/styles/createStyles';
-import withStyles from '@mui/styles/withStyles';
+import { makeStyles } from '@mui/styles';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 import classNames from 'classnames';
@@ -40,8 +38,8 @@ const securedVariableMutation = graphql`
   }
 `;
 
-const styles = theme =>
-  createStyles({
+const useStyles = makeStyles(theme => {
+  return {
     expand: {
       transform: 'rotate(0deg)',
       marginLeft: 'auto',
@@ -52,9 +50,10 @@ const styles = theme =>
     expandOpen: {
       transform: 'rotate(180deg)',
     },
-  });
+  };
+});
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
   info: WebHookSettings_info;
   relay: RelayPaginationProp;
 }
@@ -63,7 +62,8 @@ function WebHookSettings(props: Props) {
   let [expanded, setExpanded] = useState(false);
   let [webhookURL, setWebhookURL] = useState(props.info.webhookSettings.webhookURL || '');
   let [secretToken, setSecretToken] = useState('');
-  let { info, classes } = props;
+  let { info } = props;
+  let classes = useStyles();
 
   function saveWebhookSettings() {
     const variables: WebHookSettingsMutationVariables = {
@@ -196,7 +196,7 @@ function WebHookSettings(props: Props) {
 }
 
 export default createPaginationContainer(
-  withStyles(styles)(WebHookSettings) as typeof WebHookSettings,
+  WebHookSettings as typeof WebHookSettings,
   {
     info: graphql`
       fragment WebHookSettings_info on OwnerInfo

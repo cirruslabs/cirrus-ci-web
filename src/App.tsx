@@ -6,6 +6,7 @@ import { createTheme, StyledEngineProvider, Theme, ThemeProvider } from '@mui/ma
 import CirrusFavicon from './components/common/CirrusFavicon';
 import { CssBaseline } from '@mui/material';
 import { useRecoilValue } from 'recoil';
+import * as Sentry from '@sentry/react';
 
 declare module '@mui/styles/defaultTheme' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -22,7 +23,9 @@ export default function App(): JSX.Element {
       <ThemeProvider theme={theme}>
         <CirrusFavicon />
         <CssBaseline />
-        <Routes />
+        <Sentry.ErrorBoundary>
+          <Routes />
+        </Sentry.ErrorBoundary>
       </ThemeProvider>
     </StyledEngineProvider>
   );

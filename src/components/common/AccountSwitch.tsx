@@ -44,7 +44,11 @@ const AccountsSwitch = ({ viewer }: AccountSwitchProps) => {
       </Button>
       <Menu anchorEl={menuAnchorEl} open={menuOpen} onClose={handleMenuClose}>
         {viewer.relatedOwners.map(viewer => {
-          return <MenuItem onClick={e => handleMenuItemClick(e, viewer.name)}>{viewer.name}</MenuItem>;
+          return (
+            <MenuItem key={viewer.name} onClick={e => handleMenuItemClick(e, viewer.name)}>
+              {viewer.name}
+            </MenuItem>
+          );
         })}
       </Menu>
     </>

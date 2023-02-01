@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { graphql } from 'babel-plugin-relay/macro';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@mui/styles';
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import 'react-vis/dist/style.css';
 import { FlexibleWidthXYPlot, Hint, LineSeries, VerticalGridLines, XAxis, YAxis } from 'react-vis';
 import Chip from '@mui/material/Chip';
 import { formatDuration } from '../../utils/time';
-import { MetricsChart_chart } from './__generated__/MetricsChart_chart.graphql';
+import { MetricsChart_chart$key } from './__generated__/MetricsChart_chart.graphql';
 
 const useStyles = makeStyles(theme => {
   return {
@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  chart: MetricsChart_chart;
+  chart: MetricsChart_chart$key;
 }
 
 function intervals(intervalIncrement, maxValue) {
@@ -29,24 +29,40 @@ function intervals(intervalIncrement, maxValue) {
   return result;
 }
 
-function MetricsChart(props: Props) {
+export default function MetricsChart(props: Props) {
   let [hoveredPointIndex, setHoveredPointIndex] = useState(null);
-  let { chart } = props;
   let classes = useStyles();
+  let chart = useFragment(
+    graphql`
+      fragment MetricsChart_chart on MetricsChart {
+        title
+        dataUnits
+        points {
+          date {
+            year
+            month
+            day
+          }
+          value
+        }
+      }
+    `,
+    props.chart,
+  );
 
   function _onNearestX(value, { index }) {
     setHoveredPointIndex(index);
   }
 
   function formatValue(value) {
-    if (props.chart.dataUnits === 'seconds') {
+    if (chart.dataUnits === 'seconds') {
       return formatDuration(value);
     }
     return value;
   }
 
   function intermediateValues() {
-    let points = props.chart.points || [];
+    let points = chart.points || [];
     let maxValue = 0;
     for (let point of points) {
       if (maxValue < point.value) {
@@ -54,7 +70,7 @@ function MetricsChart(props: Props) {
       }
     }
 
-    if (props.chart.dataUnits === 'seconds') {
+    if (chart.dataUnits === 'seconds') {
       if (maxValue < 60) return null;
       // 10 minutes
       if (maxValue < 10 * 60) return intervals(60, maxValue);
@@ -118,20 +134,3 @@ function MetricsChart(props: Props) {
     </div>
   );
 }
-
-export default createFragmentContainer(MetricsChart, {
-  chart: graphql`
-    fragment MetricsChart_chart on MetricsChart {
-      title
-      dataUnits
-      points {
-        date {
-          year
-          month
-          day
-        }
-        value
-      }
-    }
-  `,
-});

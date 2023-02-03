@@ -3,10 +3,10 @@ import Chip from '@mui/material/Chip';
 import Input from '@mui/icons-material/Input';
 import { graphql } from 'babel-plugin-relay/macro';
 import React from 'react';
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import { useNavigate } from 'react-router-dom';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
-import { BuildChangeChip_build } from './__generated__/BuildChangeChip_build.graphql';
+import { BuildChangeChip_build$key } from './__generated__/BuildChangeChip_build.graphql';
 import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(theme => {
@@ -21,12 +21,22 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  build: BuildChangeChip_build;
+  build: BuildChangeChip_build$key;
   className?: string;
 }
 
-function BuildChangeChip(props: Props) {
-  let { build, className } = props;
+export default function BuildChangeChip(props: Props) {
+  let build = useFragment(
+    graphql`
+      fragment BuildChangeChip_build on Build {
+        id
+        changeIdInRepo
+      }
+    `,
+    props.build,
+  );
+
+  let { className } = props;
   let navigate = useNavigate();
   let classes = useStyles();
   return (
@@ -43,12 +53,3 @@ function BuildChangeChip(props: Props) {
     />
   );
 }
-
-export default createFragmentContainer(BuildChangeChip, {
-  build: graphql`
-    fragment BuildChangeChip_build on Build {
-      id
-      changeIdInRepo
-    }
-  `,
-});

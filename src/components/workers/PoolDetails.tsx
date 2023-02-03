@@ -1,10 +1,10 @@
 import { makeStyles } from '@mui/styles';
 import Card from '@mui/material/Card';
 import { graphql } from 'babel-plugin-relay/macro';
-import React, { useEffect, useState } from 'react';
-import { commitMutation, createRefetchContainer, RelayRefetchProp } from 'react-relay';
+import React, { useCallback, useEffect, useState } from 'react';
+import { commitMutation, useRefetchableFragment } from 'react-relay';
 import { Helmet as Head } from 'react-helmet';
-import { PoolDetails_pool } from './__generated__/PoolDetails_pool.graphql';
+import { PoolDetails_pool$key } from './__generated__/PoolDetails_pool.graphql';
 import {
   Avatar,
   CardActions,
@@ -71,8 +71,7 @@ const useStyles = makeStyles(theme => {
 });
 
 interface PoolDetailsProps {
-  pool: PoolDetails_pool;
-  relay: RelayRefetchProp;
+  pool: PoolDetails_pool$key;
 }
 
 const getRegistrationTokenMutation = graphql`
@@ -103,15 +102,39 @@ const updateWorkerMutation = graphql`
   }
 `;
 
-function PoolDetails(props: PoolDetailsProps) {
+export default function PoolDetails(props: PoolDetailsProps) {
+  const [pool, refetch] = useRefetchableFragment(
+    graphql`
+      fragment PoolDetails_pool on PersistentWorkerPool @refetchable(queryName: "PoolDetailsRefetchQuery") {
+        id
+        name
+        enabledForPublic
+        viewerPermission
+        workers {
+          name
+          disabled
+          hostname
+          version
+          labels
+          ...WorkerStatusChip_worker
+          info {
+            runningTasks {
+              ...TaskStatusChipExtended_task
+            }
+          }
+        }
+      }
+    `,
+    props.pool,
+  );
+
   let [openEditDialog, setOpenEditDialog] = useState(false);
   let [registrationToken, setRegistrationToken] = useState(null);
-  let { pool } = props;
   let classes = useStyles();
 
-  function refetchData() {
-    props.relay.refetch({ poolId: props.pool.id }, { force: true });
-  }
+  const refetchData = useCallback(() => {
+    refetch({ poolId: pool.id });
+  }, [refetch, pool.id]);
 
   useEffect(() => {
     const timeoutId = setInterval(() => {
@@ -122,8 +145,8 @@ function PoolDetails(props: PoolDetailsProps) {
 
   function retrieveRegistrationToken() {
     const input: GetPersistentWorkerPoolRegistrationTokenInput = {
-      clientMutationId: 'get-worker-pool-token-' + props.pool.id,
-      poolId: props.pool.id,
+      clientMutationId: 'get-worker-pool-token-' + pool.id,
+      poolId: pool.id,
     };
     commitMutation(environment, {
       mutation: getRegistrationTokenMutation,
@@ -140,7 +163,7 @@ function PoolDetails(props: PoolDetailsProps) {
   }
 
   function deleteWorker(workerName) {
-    let poolId = props.pool.id;
+    let poolId = pool.id;
     const input: DeletePersistentWorkerInput = {
       clientMutationId: `delete-persistent-worker-${poolId}-${workerName}`,
       poolId: poolId,
@@ -161,7 +184,7 @@ function PoolDetails(props: PoolDetailsProps) {
   }
 
   function updateWorker(workerName, disabled) {
-    let poolId = props.pool.id;
+    let poolId = pool.id;
     const input: UpdatePersistentWorkerInput = {
       clientMutationId: `update-persistent-worker-${poolId}-${workerName}`,
       poolId: poolId,
@@ -203,9 +226,9 @@ function PoolDetails(props: PoolDetailsProps) {
                 </IconButton>
               </Tooltip>
               <EditPersistentWorkerPoolDialog
-                poolId={props.pool.id}
-                name={props.pool.name}
-                enabledForPublic={props.pool.enabledForPublic}
+                poolId={pool.id}
+                name={pool.name}
+                enabledForPublic={pool.enabledForPublic}
                 open={openEditDialog}
                 onClose={() => setOpenEditDialog(!openEditDialog)}
               />
@@ -388,37 +411,3 @@ function EditPersistentWorkerPoolDialog(props: DialogProps) {
     </Dialog>
   );
 }
-
-export default createRefetchContainer(
-  PoolDetails,
-  {
-    pool: graphql`
-      fragment PoolDetails_pool on PersistentWorkerPool {
-        id
-        name
-        enabledForPublic
-        viewerPermission
-        workers {
-          name
-          disabled
-          hostname
-          version
-          labels
-          ...WorkerStatusChip_worker
-          info {
-            runningTasks {
-              ...TaskStatusChipExtended_task
-            }
-          }
-        }
-      }
-    `,
-  },
-  graphql`
-    query PoolDetailsRefetchQuery($poolId: ID!) {
-      persistentWorkerPool(poolId: $poolId) {
-        ...PoolDetails_pool
-      }
-    }
-  `,
-);

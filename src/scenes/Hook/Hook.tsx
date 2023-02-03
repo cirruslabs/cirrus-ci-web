@@ -8,7 +8,7 @@ import NotFound from '../NotFound';
 
 import { HookQuery } from './__generated__/HookQuery.graphql';
 
-export default function Hook() {
+export default function Hook(): JSX.Element {
   let { hookId } = useParams();
 
   const response = useLazyLoadQuery<HookQuery>(

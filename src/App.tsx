@@ -7,6 +7,8 @@ import CirrusFavicon from './components/common/CirrusFavicon';
 import { CssBaseline } from '@mui/material';
 import { useRecoilValue } from 'recoil';
 import * as Sentry from '@sentry/react';
+import { RelayEnvironmentProvider } from 'react-relay';
+import environment from '../src/createRelayEnvironment';
 
 declare module '@mui/styles/defaultTheme' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -19,14 +21,16 @@ export default function App(): JSX.Element {
   const theme = React.useMemo(() => createTheme(themeOptions), [themeOptions]);
 
   return (
-    <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={theme}>
-        <CirrusFavicon />
-        <CssBaseline />
-        <Sentry.ErrorBoundary>
-          <Routes />
-        </Sentry.ErrorBoundary>
-      </ThemeProvider>
-    </StyledEngineProvider>
+    <RelayEnvironmentProvider environment={environment}>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={theme}>
+          <CirrusFavicon />
+          <CssBaseline />
+          <Sentry.ErrorBoundary>
+            <Routes />
+          </Sentry.ErrorBoundary>
+        </ThemeProvider>
+      </StyledEngineProvider>
+    </RelayEnvironmentProvider>
   );
 }

@@ -3,10 +3,10 @@ import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
 import Bookmark from '@mui/icons-material/Bookmark';
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { makeStyles } from '@mui/styles';
-import { TaskNameChip_task } from './__generated__/TaskNameChip_task.graphql';
+import { TaskNameChip_task$key } from './__generated__/TaskNameChip_task.graphql';
 import { navigateTaskHelper } from '../../utils/navigateHelper';
 import { useNavigate } from 'react-router-dom';
 
@@ -22,13 +22,23 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  task: TaskNameChip_task;
+  task: TaskNameChip_task$key;
   className?: string;
   withNavigation?: boolean;
 }
 
-let TaskNameChip = (props: Props) => {
-  const { task, className } = props;
+export default function TaskNameChip(props: Props) {
+  let task = useFragment(
+    graphql`
+      fragment TaskNameChip_task on Task {
+        id
+        name
+      }
+    `,
+    props.task,
+  );
+
+  const { className } = props;
   let classes = useStyles();
   let navigate = useNavigate();
 
@@ -49,13 +59,4 @@ let TaskNameChip = (props: Props) => {
       }
     />
   );
-};
-
-export default createFragmentContainer(TaskNameChip, {
-  task: graphql`
-    fragment TaskNameChip_task on Task {
-      id
-      name
-    }
-  `,
-});
+}

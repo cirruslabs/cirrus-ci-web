@@ -7,20 +7,30 @@ import Icon from '@mui/material/Icon';
 import { useTaskStatusColor } from '../../utils/colors';
 import { taskStatusIconName } from '../../utils/status';
 import { roundAndPresentDuration } from '../../utils/time';
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { useTheme } from '@mui/material';
-import { HookCreatedChip_hook } from './__generated__/HookCreatedChip_hook.graphql';
+import { HookCreatedChip_hook$key } from './__generated__/HookCreatedChip_hook.graphql';
 
 interface Props {
-  hook: HookCreatedChip_hook;
+  hook: HookCreatedChip_hook$key;
   className?: string;
 }
 
-let HookCreatedChip = (props: Props) => {
+export default function HookCreatedChip(props: Props) {
+  let hook = useFragment(
+    graphql`
+      fragment HookCreatedChip_hook on Hook {
+        id
+        timestamp
+      }
+    `,
+    props.hook,
+  );
+
   let theme = useTheme();
 
-  const creationTimestamp = props.hook.timestamp;
+  const creationTimestamp = hook.timestamp;
   const [durationAgoInSeconds, setDurationAgoInSeconds] = React.useState((Date.now() - creationTimestamp) / 1000);
 
   useEffect(() => {
@@ -51,13 +61,4 @@ let HookCreatedChip = (props: Props) => {
       />
     </Tooltip>
   );
-};
-
-export default createFragmentContainer(HookCreatedChip, {
-  hook: graphql`
-    fragment HookCreatedChip_hook on Hook {
-      id
-      timestamp
-    }
-  `,
-});
+}

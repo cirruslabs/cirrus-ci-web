@@ -97,7 +97,7 @@ export default function HookDetails(props: Props) {
     props.hook,
   );
 
-  const [commitDetailsRerunMutation] = useMutation<HookDetailsRerunMutation>(graphql`
+  const [commitDetailsRerunMutation, isInFlight] = useMutation<HookDetailsRerunMutation>(graphql`
     mutation HookDetailsRerunMutation($input: HooksReRunInput!) {
       rerunHooks(input: $input) {
         newHooks {
@@ -171,7 +171,7 @@ export default function HookDetails(props: Props) {
   }
 
   let rerunButton = !hasWritePermissions(hook.build.viewerPermission) ? null : (
-    <Button variant="contained" onClick={() => rerunHook(hook.id)} startIcon={<Refresh />}>
+    <Button variant="contained" onClick={() => rerunHook(hook.id)} startIcon={<Refresh />} disabled={isInFlight}>
       Re-Run
     </Button>
   );

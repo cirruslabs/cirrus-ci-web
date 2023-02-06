@@ -56,7 +56,7 @@ type BillingSettingsPayload {
   clientMutationId: String
 }
 
-type Build {
+type Build implements Node {
   id: ID!
   repositoryId: ID!
   branch: String!
@@ -288,7 +288,7 @@ type GetPersistentWorkerPoolRegistrationTokenPayload {
   clientMutationId: String
 }
 
-type Hook {
+type Hook implements Node {
   id: ID!
   repositoryId: ID!
   repository: Repository!
@@ -394,6 +394,16 @@ type Mutation {
   invalidateCacheEntries(input: InvalidateCacheEntriesInput!): InvalidateCacheEntriesPayload
   saveBillingSettings(input: BillingSettingsInput!): BillingSettingsPayload
   buyComputeCredits(input: BuyComputeCreditsInput!): BuyComputeCreditsPayload
+}
+
+"""
+An object with an ID
+"""
+interface Node {
+  """
+  The ID of an object
+  """
+  id: ID!
 }
 
 type Notification {
@@ -752,7 +762,7 @@ type PersistentWorkerInfo {
   resourcesTotal: [PersistentWorkerResource]!
 }
 
-type PersistentWorkerPool {
+type PersistentWorkerPool implements Node {
   id: ID!
   name: String!
   enabledForPublic: Boolean!
@@ -776,6 +786,7 @@ enum PlatformType {
 }
 
 type Query {
+  node(id: ID!): Node
   viewer: User
   repository(id: ID!): Repository
   ownerRepository(platform: String!, owner: String!, name: String!): Repository
@@ -790,7 +801,7 @@ type Query {
   ownerInfoByName(platform: String, name: String): OwnerInfo
 }
 
-type Repository {
+type Repository implements Node {
   id: ID!
   platform: String!
   owner: String!
@@ -977,7 +988,7 @@ type RepositorySettingsPayload {
 input SaveWebHookSettingsInput {
   platform: String!
   ownerUid: ID!
-  webhookURL: String!
+  webhookURL: String
   secretToken: String
   clientMutationId: String
 }
@@ -1005,7 +1016,7 @@ type Subscription {
   repository(id: ID!): Repository
 }
 
-type Task {
+type Task implements Node {
   id: ID!
   buildId: ID!
   repositoryId: ID!
@@ -1229,7 +1240,7 @@ type UpdatePersistentWorkerPoolPayload {
   clientMutationId: String
 }
 
-type User implements UserBasicInfo {
+type User implements Node & UserBasicInfo {
   id: ID!
   category: User!
   avatarURL: String
@@ -1354,8 +1365,8 @@ type UserTransactionsConnection {
   pageInfo: PageInfo!
 }
 
-type WebHookDelivery {
-  id: String!
+type WebHookDelivery implements Node {
+  id: ID!
   platform: String!
   ownerUid: String!
   repositoryId: Int!
@@ -1377,6 +1388,6 @@ type WebHookDeliveryResponse {
 }
 
 type WebHookSettings {
-  webhookURL: String!
-  maskedSecretToken: String!
+  webhookURL: String
+  maskedSecretToken: String
 }

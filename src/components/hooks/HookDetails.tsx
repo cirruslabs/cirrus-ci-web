@@ -88,7 +88,6 @@ export default function HookDetails(props: Props) {
         info {
           error
           arguments
-          result
           outputLogs
           environment
         }

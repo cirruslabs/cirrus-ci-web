@@ -162,12 +162,10 @@ export default function HookDetails(props: Props) {
           hookIds: [hookId],
         },
       },
-      onCompleted: (response: HookDetailsRerunMutationResponse, error) => {
-        if (error) {
-          console.log(error);
-          return;
+      onCompleted: (response: HookDetailsRerunMutationResponse) => {
+        if (response.rerunHooks) {
+          navigateHookHelper(navigate, null, response.rerunHooks.newHooks[0].id);
         }
-        navigateHookHelper(navigate, null, response.rerunHooks.newHooks[0].id);
       },
       onError: err => console.error(err),
     });

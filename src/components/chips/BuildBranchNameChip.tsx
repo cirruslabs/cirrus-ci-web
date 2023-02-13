@@ -5,9 +5,9 @@ import Chip from '@mui/material/Chip';
 import CallSplit from '@mui/icons-material/CallSplit';
 import { useNavigate } from 'react-router-dom';
 import { navigateHelper } from '../../utils/navigateHelper';
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { BuildBranchNameChip_build } from './__generated__/BuildBranchNameChip_build.graphql';
+import { BuildBranchNameChip_build$key } from './__generated__/BuildBranchNameChip_build.graphql';
 import { shorten } from '../../utils/text';
 import { makeStyles } from '@mui/styles';
 import { Commit } from '@mui/icons-material';
@@ -26,13 +26,28 @@ const useStyles = makeStyles(theme => {
 
 interface Props {
   className?: string;
-  build: BuildBranchNameChip_build;
+  build: BuildBranchNameChip_build$key;
 }
 
-function BuildBranchNameChip(props: Props) {
+export default function BuildBranchNameChip(props: Props) {
+  let build = useFragment(
+    graphql`
+      fragment BuildBranchNameChip_build on Build {
+        id
+        branch
+        tag
+        repository {
+          id
+          owner
+          name
+        }
+      }
+    `,
+    props.build,
+  );
+
   let classes = useStyles();
   let navigate = useNavigate();
-  let build = props.build;
 
   function handleBranchClick(event) {
     if (build.repository) {
@@ -78,18 +93,3 @@ function BuildBranchNameChip(props: Props) {
     />
   );
 }
-
-export default createFragmentContainer(BuildBranchNameChip, {
-  build: graphql`
-    fragment BuildBranchNameChip_build on Build {
-      id
-      branch
-      tag
-      repository {
-        id
-        owner
-        name
-      }
-    }
-  `,
-});

@@ -4,9 +4,9 @@ import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
 import Storage from '@mui/icons-material/Storage';
 import { navigateHelper } from '../../utils/navigateHelper';
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { RepositoryNameChip_repository } from './__generated__/RepositoryNameChip_repository.graphql';
+import { RepositoryNameChip_repository$key } from './__generated__/RepositoryNameChip_repository.graphql';
 import { makeStyles } from '@mui/styles';
 import { useNavigate } from 'react-router-dom';
 
@@ -24,13 +24,22 @@ const useStyles = makeStyles(theme => {
 interface Props {
   className?: string;
   fullName?: boolean;
-  repository: RepositoryNameChip_repository;
+  repository: RepositoryNameChip_repository$key;
 }
 
-function RepositoryNameChip(props: Props) {
+export default function RepositoryNameChip(props: Props) {
+  let repository = useFragment(
+    graphql`
+      fragment RepositoryNameChip_repository on Repository {
+        owner
+        name
+      }
+    `,
+    props.repository,
+  );
+
   let classes = useStyles();
   let navigate = useNavigate();
-  let repository = props.repository;
 
   function handleRepositoryClick(event, repository) {
     navigateHelper(navigate, event, '/github/' + repository.owner + '/' + repository.name);
@@ -50,12 +59,3 @@ function RepositoryNameChip(props: Props) {
     />
   );
 }
-
-export default createFragmentContainer(RepositoryNameChip, {
-  repository: graphql`
-    fragment RepositoryNameChip_repository on Repository {
-      owner
-      name
-    }
-  `,
-});

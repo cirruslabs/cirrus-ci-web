@@ -76,6 +76,7 @@ type Build implements Node {
   notifications: [Notification]!
   parsingResult: ParsingResult
   tasks: [Task]!
+  executingTasks: [Task]!
   taskGroupsAmount: Int
   latestGroupTasks: [Task]!
   repository: Repository!

@@ -16,15 +16,19 @@ import { useTheme } from '@mui/material';
 interface Props {
   task: TaskStatusChipExtended_task;
   className?: string;
+  key?: string;
 }
 
 function TaskStatusChipExtended(props: Props) {
-  let { task, className } = props;
+  let { task, className, key } = props;
   let navigate = useNavigate();
   let theme = useTheme();
+  let hasExecutingTimestamp = task.executingTimestamp && task.executingTimestamp > 0;
+
   let chip = (
     <Chip
       className={className}
+      key={!hasExecutingTimestamp ? key : null}
       label={`${task.repository.owner}/${task.repository.name} "${task.name}"`}
       onClick={e => navigateTaskHelper(navigate, e, task.id)}
       onAuxClick={e => navigateTaskHelper(navigate, e, task.id)}
@@ -35,9 +39,11 @@ function TaskStatusChipExtended(props: Props) {
       }
     />
   );
-  if (task.executingTimestamp && task.executingTimestamp > 0) {
+  if (hasExecutingTimestamp) {
     return (
-      <Tooltip title={`Execution started at ${new Date(task.executingTimestamp).toLocaleTimeString()}`}>{chip}</Tooltip>
+      <Tooltip key={key} title={`Execution started at ${new Date(task.executingTimestamp).toLocaleTimeString()}`}>
+        {chip}
+      </Tooltip>
     );
   }
   return chip;

@@ -81,7 +81,6 @@ const useStyles = makeStyles(theme => {
 
 interface PoolDetailsProps {
   pool: PoolDetails_pool$key;
-  // relay: RelayRefetchProp;
 }
 
 export default function PoolDetails(props: PoolDetailsProps) {
@@ -101,6 +100,7 @@ export default function PoolDetails(props: PoolDetailsProps) {
           ...WorkerStatusChip_worker
           info {
             runningTasks {
+              name
               ...TaskStatusChipExtended_task
             }
           }
@@ -123,6 +123,9 @@ export default function PoolDetails(props: PoolDetailsProps) {
     mutation PoolDetailsDeleteWorkerMutation($input: DeletePersistentWorkerInput!) {
       deletePersistentWorker(input: $input) {
         clientMutationId
+        deletedWorker {
+          id @deleteRecord
+        }
       }
     }
   `);
@@ -170,8 +173,6 @@ export default function PoolDetails(props: PoolDetailsProps) {
       onCompleted: (response, errors) => {
         if (errors) {
           console.log(errors);
-        } else {
-          // refetchData();
         }
       },
       onError: err => console.log(err),
@@ -286,7 +287,9 @@ export default function PoolDetails(props: PoolDetailsProps) {
                       <TableCell>
                         {!worker.info
                           ? null
-                          : worker.info.runningTasks.map(task => <TaskStatusChipExtended task={task} />)}
+                          : worker.info.runningTasks.map(task => (
+                              <TaskStatusChipExtended key={task.name} task={task} />
+                            ))}
                       </TableCell>
                       <TableCell>
                         <Tooltip title={worker.disabled ? 'Enable task scheduling' : 'Disable task scheduling'}>

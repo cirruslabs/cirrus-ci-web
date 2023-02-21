@@ -2,7 +2,7 @@ import { makeStyles } from '@mui/styles';
 import Card from '@mui/material/Card';
 import { graphql } from 'babel-plugin-relay/macro';
 import React, { useEffect, useState } from 'react';
-import { commitMutation, createRefetchContainer, RelayRefetchProp } from 'react-relay';
+import { commitMutation, createRefetchContainer, RelayRefetchProp, useMutation } from 'react-relay';
 import { Helmet as Head } from 'react-helmet';
 import { PoolDetails_pool } from './__generated__/PoolDetails_pool.graphql';
 import {
@@ -35,10 +35,14 @@ import InputLabel from '@mui/material/InputLabel';
 import Input from '@mui/material/Input';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
-import { UpdatePersistentWorkerPoolInput } from './__generated__/PoolDetailsUpdateMutation.graphql';
+import {
+  UpdatePersistentWorkerPoolInput,
+  PoolDetailsUpdateMutation,
+} from './__generated__/PoolDetailsUpdateMutation.graphql';
 import {
   GetPersistentWorkerPoolRegistrationTokenInput,
   PoolDetailsGetRegistrationTokenMutationResponse,
+  PoolDetailsGetRegistrationTokenMutation,
 } from './__generated__/PoolDetailsGetRegistrationTokenMutation.graphql';
 import CopyPasteField from '../common/CopyPasteField';
 import WorkerStatusChip from './WorkerStatusChip';
@@ -46,8 +50,14 @@ import TaskStatusChipExtended from '../chips/TaskStatusChipExtended';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import PauseCircleOutlineIcon from '@mui/icons-material/PauseCircleOutline';
-import { DeletePersistentWorkerInput } from './__generated__/PoolDetailsDeleteWorkerMutation.graphql';
-import { UpdatePersistentWorkerInput } from './__generated__/PoolDetailsUpdateWorkerMutation.graphql';
+import {
+  DeletePersistentWorkerInput,
+  PoolDetailsDeleteWorkerMutation,
+} from './__generated__/PoolDetailsDeleteWorkerMutation.graphql';
+import {
+  UpdatePersistentWorkerInput,
+  PoolDetailsUpdateWorkerMutation,
+} from './__generated__/PoolDetailsUpdateWorkerMutation.graphql';
 
 const useStyles = makeStyles(theme => {
   return {
@@ -75,37 +85,35 @@ interface PoolDetailsProps {
   relay: RelayRefetchProp;
 }
 
-const getRegistrationTokenMutation = graphql`
-  mutation PoolDetailsGetRegistrationTokenMutation($input: GetPersistentWorkerPoolRegistrationTokenInput!) {
-    persistentWorkerPoolRegistrationToken(input: $input) {
-      token
-    }
-  }
-`;
-
-const deleteWorkerMutation = graphql`
-  mutation PoolDetailsDeleteWorkerMutation($input: DeletePersistentWorkerInput!) {
-    deletePersistentWorker(input: $input) {
-      clientMutationId
-    }
-  }
-`;
-
-const updateWorkerMutation = graphql`
-  mutation PoolDetailsUpdateWorkerMutation($input: UpdatePersistentWorkerInput!) {
-    updatePersistentWorker(input: $input) {
-      clientMutationId
-      worker {
-        name
-        disabled
-      }
-    }
-  }
-`;
-
 function PoolDetails(props: PoolDetailsProps) {
   let [openEditDialog, setOpenEditDialog] = useState(false);
   let [registrationToken, setRegistrationToken] = useState(null);
+  const [commitGetRegistrationTokenMutation] = useMutation<PoolDetailsGetRegistrationTokenMutation>(graphql`
+    mutation PoolDetailsGetRegistrationTokenMutation($input: GetPersistentWorkerPoolRegistrationTokenInput!) {
+      persistentWorkerPoolRegistrationToken(input: $input) {
+        token
+      }
+    }
+  `);
+  const [commitDeleteWorkerMutation] = useMutation<PoolDetailsDeleteWorkerMutation>(graphql`
+    mutation PoolDetailsDeleteWorkerMutation($input: DeletePersistentWorkerInput!) {
+      deletePersistentWorker(input: $input) {
+        clientMutationId
+      }
+    }
+  `);
+  const [commitUpdateWorkerMutation] = useMutation<PoolDetailsUpdateWorkerMutation>(graphql`
+    mutation PoolDetailsUpdateWorkerMutation($input: UpdatePersistentWorkerInput!) {
+      updatePersistentWorker(input: $input) {
+        clientMutationId
+        worker {
+          name
+          disabled
+        }
+      }
+    }
+  `);
+
   let { pool } = props;
   let classes = useStyles();
 
@@ -125,8 +133,7 @@ function PoolDetails(props: PoolDetailsProps) {
       clientMutationId: 'get-worker-pool-token-' + props.pool.id,
       poolId: props.pool.id,
     };
-    commitMutation(environment, {
-      mutation: getRegistrationTokenMutation,
+    commitGetRegistrationTokenMutation({
       variables: { input: input },
       onCompleted: (response: PoolDetailsGetRegistrationTokenMutationResponse, errors) => {
         if (errors) {
@@ -146,8 +153,7 @@ function PoolDetails(props: PoolDetailsProps) {
       poolId: poolId,
       name: workerName,
     };
-    commitMutation(environment, {
-      mutation: deleteWorkerMutation,
+    commitDeleteWorkerMutation({
       variables: { input: input },
       onCompleted: (response, errors) => {
         if (errors) {
@@ -168,8 +174,7 @@ function PoolDetails(props: PoolDetailsProps) {
       name: workerName,
       disabled: disabled,
     };
-    commitMutation(environment, {
-      mutation: updateWorkerMutation,
+    commitUpdateWorkerMutation({
       variables: { input: input },
       onCompleted: (response, errors) => {
         if (errors) {
@@ -319,21 +324,20 @@ interface DialogProps {
   onClose(...args: any[]): void;
 }
 
-const updatePoolMutation = graphql`
-  mutation PoolDetailsUpdateMutation($input: UpdatePersistentWorkerPoolInput!) {
-    updatePersistentWorkerPool(input: $input) {
-      pool {
-        id
-        name
-        enabledForPublic
-      }
-    }
-  }
-`;
-
 function EditPersistentWorkerPoolDialog(props: DialogProps) {
   let [name, setName] = useState(props.name);
   let [enabledForPublic, setEnabledForPublic] = useState(props.enabledForPublic);
+  const [commitUpdatePoolMutation] = useMutation<PoolDetailsUpdateMutation>(graphql`
+    mutation PoolDetailsUpdateMutation($input: UpdatePersistentWorkerPoolInput!) {
+      updatePersistentWorkerPool(input: $input) {
+        pool {
+          id
+          name
+          enabledForPublic
+        }
+      }
+    }
+  `);
 
   function createPool() {
     const input: UpdatePersistentWorkerPoolInput = {
@@ -342,8 +346,7 @@ function EditPersistentWorkerPoolDialog(props: DialogProps) {
       name: name,
       enabledForPublic: enabledForPublic,
     };
-    commitMutation(environment, {
-      mutation: updatePoolMutation,
+    commitUpdatePoolMutation({
       variables: { input: input },
       onCompleted: props.onClose,
       onError: err => console.log(err),

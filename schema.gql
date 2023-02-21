@@ -207,6 +207,7 @@ input DeletePersistentWorkerInput {
 }
 
 type DeletePersistentWorkerPayload {
+  deletedWorker: PersistentWorker!
   clientMutationId: String
 }
 
@@ -217,6 +218,7 @@ input DeletePersistentWorkerPoolInput {
 
 type DeletePersistentWorkerPoolPayload {
   deletedPoolId: String!
+  deletedPool: PersistentWorkerPool!
   clientMutationId: String
 }
 
@@ -696,6 +698,7 @@ enum PermissionType {
 }
 
 type PersistentWorker {
+  id: ID!
   name: String!
   disabled: Boolean!
   arch: String!
@@ -904,6 +907,7 @@ input RepositoryDeleteInput {
 
 type RepositoryDeletePayload {
   deleted: Boolean!
+  deletedRepository: Repository
   clientMutationId: String
 }
 

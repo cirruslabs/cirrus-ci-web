@@ -7,9 +7,22 @@ import NotFound from '../NotFound';
 import PoolDetails from '../../components/workers/PoolDetails';
 
 import { PoolByIdQuery } from './__generated__/PoolByIdQuery.graphql';
+import { useEffect, useState } from 'react';
 
 export default function PoolById(): JSX.Element {
   let { poolId } = useParams();
+  const [refreshedQueryOptions, setRefreshedQueryOptions] = useState(null);
+
+  useEffect(() => {
+    const timeoutId = setInterval(() => {
+      setRefreshedQueryOptions(prev => ({
+        fetchKey: (prev?.fetchKey ?? 0) + 1,
+        fetchPolicy: 'network-only',
+      }));
+      console.log(refreshedQueryOptions);
+    }, 1_000);
+    return () => clearInterval(timeoutId);
+  });
 
   const response = useLazyLoadQuery<PoolByIdQuery>(
     graphql`
@@ -20,6 +33,7 @@ export default function PoolById(): JSX.Element {
       }
     `,
     { poolId },
+    refreshedQueryOptions ?? {},
   );
 
   // todo: pass error message to <NotFound>

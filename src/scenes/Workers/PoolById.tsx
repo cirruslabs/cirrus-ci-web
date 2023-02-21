@@ -17,10 +17,9 @@ export default function PoolById(): JSX.Element {
     const timeoutId = setInterval(() => {
       setRefreshedQueryOptions(prev => ({
         fetchKey: (prev?.fetchKey ?? 0) + 1,
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'store-and-network',
       }));
-      console.log(refreshedQueryOptions);
-    }, 1_000);
+    }, 10_000);
     return () => clearInterval(timeoutId);
   });
 

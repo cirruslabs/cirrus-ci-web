@@ -1,30 +1,50 @@
 import React from 'react';
 
+import { useFragment } from 'react-relay';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
 import Icon from '@mui/material/Icon';
 import Tooltip from '@mui/material/Tooltip';
 import { useTaskStatusColor } from '../../utils/colors';
 import { taskStatusIconName } from '../../utils/status';
-import { createFragmentContainer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { TaskStatusChipExtended_task } from './__generated__/TaskStatusChipExtended_task.graphql';
+import { TaskStatusChipExtended_task$key } from './__generated__/TaskStatusChipExtended_task.graphql';
 import { navigateTaskHelper } from '../../utils/navigateHelper';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material';
 
 interface Props {
-  task: TaskStatusChipExtended_task;
+  task: TaskStatusChipExtended_task$key;
   className?: string;
+  key?: string;
 }
 
-function TaskStatusChipExtended(props: Props) {
-  let { task, className } = props;
+export default function TaskStatusChipExtended(props: Props) {
+  let task = useFragment(
+    graphql`
+      fragment TaskStatusChipExtended_task on Task {
+        id
+        name
+        status
+        durationInSeconds
+        executingTimestamp
+        repository {
+          owner
+          name
+        }
+      }
+    `,
+    props.task,
+  );
+  let { className, key } = props;
   let navigate = useNavigate();
   let theme = useTheme();
+  let hasExecutingTimestamp = task.executingTimestamp && task.executingTimestamp > 0;
+
   let chip = (
     <Chip
       className={className}
+      key={!hasExecutingTimestamp ? key : null}
       label={`${task.repository.owner}/${task.repository.name} "${task.name}"`}
       onClick={e => navigateTaskHelper(navigate, e, task.id)}
       onAuxClick={e => navigateTaskHelper(navigate, e, task.id)}
@@ -35,26 +55,12 @@ function TaskStatusChipExtended(props: Props) {
       }
     />
   );
-  if (task.executingTimestamp && task.executingTimestamp > 0) {
+  if (hasExecutingTimestamp) {
     return (
-      <Tooltip title={`Execution started at ${new Date(task.executingTimestamp).toLocaleTimeString()}`}>{chip}</Tooltip>
+      <Tooltip key={key} title={`Execution started at ${new Date(task.executingTimestamp).toLocaleTimeString()}`}>
+        {chip}
+      </Tooltip>
     );
   }
   return chip;
 }
-
-export default createFragmentContainer(TaskStatusChipExtended, {
-  task: graphql`
-    fragment TaskStatusChipExtended_task on Task {
-      id
-      name
-      status
-      durationInSeconds
-      executingTimestamp
-      repository {
-        owner
-        name
-      }
-    }
-  `,
-});

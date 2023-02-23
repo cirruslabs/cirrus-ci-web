@@ -53,6 +53,7 @@ const useStyles = makeStyles(theme => {
     cell: {
       fontSize: 16,
       whiteSpace: 'nowrap',
+      overflowWrap: 'anywhere',
       textOverflow: 'ellipsis',
       '& *': {
         fontSize: '16px !important',

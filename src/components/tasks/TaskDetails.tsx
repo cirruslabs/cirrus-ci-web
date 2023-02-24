@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import { graphql } from 'babel-plugin-relay/macro';
 import classNames from 'classnames';
 import React, { Suspense, useEffect, useState } from 'react';
-import { commitMutation, requestSubscription, useFragment } from 'react-relay';
+import { commitMutation, requestSubscription, useFragment, useMutation } from 'react-relay';
 import { useLocation, useNavigate } from 'react-router-dom';
 import environment from '../../createRelayEnvironment';
 import { navigateBuildHelper, navigateTaskHelper } from '../../utils/navigateHelper';
@@ -28,6 +28,7 @@ import TaskCommandsProgress from './TaskCommandsProgress';
 import TaskList from './TaskList';
 import { TaskDetails_task, TaskDetails_task$key } from './__generated__/TaskDetails_task.graphql';
 import {
+  TaskDetailsReRunMutation,
   TaskDetailsReRunMutationResponse,
   TaskDetailsReRunMutationVariables,
 } from './__generated__/TaskDetailsReRunMutation.graphql';
@@ -77,47 +78,6 @@ import { TaskDetailsCancelMutationVariables } from './__generated__/TaskDetailsC
 import TaskDebuggingInformation from './TaskDebuggingInformation';
 import CirrusLinearProgress from '../common/CirrusLinearProgress';
 import CommitMessage from '../common/CommitMessage';
-
-const taskReRunMutation = graphql`
-  mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
-    rerun(input: $input) {
-      newTask {
-        id
-      }
-    }
-  }
-`;
-
-const taskTriggerMutation = graphql`
-  mutation TaskDetailsTriggerMutation($input: TaskTriggerInput!) {
-    trigger(input: $input) {
-      task {
-        id
-        status
-        triggerType
-      }
-    }
-  }
-`;
-
-const taskCancelMutation = graphql`
-  mutation TaskDetailsCancelMutation($input: TaskAbortInput!) {
-    abortTask(input: $input) {
-      abortedTask {
-        id
-        status
-      }
-    }
-  }
-`;
-
-const invalidateCachesMutation = graphql`
-  mutation TaskDetailsInvalidateCachesMutation($input: InvalidateCacheEntriesInput!) {
-    invalidateCacheEntries(input: $input) {
-      clientMutationId
-    }
-  }
-`;
 
 const taskSubscription = graphql`
   subscription TaskDetailsSubscription($taskID: ID!) {
@@ -285,6 +245,51 @@ export default function TaskDetails(props: Props) {
   let build = task.build;
   let repository = task.repository;
 
+  const [commitTaskReRunMutation] = useMutation<TaskDetailsReRunMutation>(graphql`
+    mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
+      rerun(input: $input) {
+        newTask {
+          id
+        }
+      }
+    }
+  `);
+
+  const [commitTaskTriggerMutation] = useMutation(
+    graphql`
+      mutation TaskDetailsTriggerMutation($input: TaskTriggerInput!) {
+        trigger(input: $input) {
+          task {
+            id
+            status
+            triggerType
+          }
+        }
+      }
+    `,
+  );
+
+  const [commitTaskCancelMutation] = useMutation(
+    graphql`
+      mutation TaskDetailsCancelMutation($input: TaskAbortInput!) {
+        abortTask(input: $input) {
+          abortedTask {
+            id
+            status
+          }
+        }
+      }
+    `,
+  );
+
+  const [commitInvalidateCachesMutation] = useMutation(graphql`
+    mutation TaskDetailsInvalidateCachesMutation($input: InvalidateCacheEntriesInput!) {
+      invalidateCacheEntries(input: $input) {
+        clientMutationId
+      }
+    }
+  `);
+
   function trigger(taskId) {
     const variables: TaskDetailsTriggerMutationVariables = {
       input: {
@@ -293,8 +298,7 @@ export default function TaskDetails(props: Props) {
       },
     };
 
-    commitMutation(environment, {
-      mutation: taskTriggerMutation,
+    commitTaskTriggerMutation({
       variables: variables,
       onError: err => console.error(err),
     });
@@ -308,8 +312,7 @@ export default function TaskDetails(props: Props) {
       },
     };
 
-    commitMutation(environment, {
-      mutation: taskCancelMutation,
+    commitTaskCancelMutation({
       variables: variables,
       onError: err => console.error(err),
     });
@@ -355,8 +358,7 @@ export default function TaskDetails(props: Props) {
       },
     };
 
-    commitMutation(environment, {
-      mutation: taskReRunMutation,
+    commitTaskReRunMutation({
       variables: variables,
       onCompleted: (response: TaskDetailsReRunMutationResponse, errors) => {
         if (errors) {
@@ -457,8 +459,7 @@ export default function TaskDetails(props: Props) {
       },
     };
 
-    commitMutation(environment, {
-      mutation: invalidateCachesMutation,
+    commitInvalidateCachesMutation({
       variables: variables,
       onCompleted: (response: TaskDetailsInvalidateCachesMutationResponse, errors) => {
         if (errors) {

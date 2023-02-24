@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import { graphql } from 'babel-plugin-relay/macro';
 import classNames from 'classnames';
 import React, { Suspense, useEffect, useState } from 'react';
-import { commitMutation, createFragmentContainer, requestSubscription } from 'react-relay';
+import { commitMutation, requestSubscription, useFragment } from 'react-relay';
 import { useLocation, useNavigate } from 'react-router-dom';
 import environment from '../../createRelayEnvironment';
 import { navigateBuildHelper, navigateTaskHelper } from '../../utils/navigateHelper';
@@ -26,7 +26,7 @@ import CirrusFavicon from '../common/CirrusFavicon';
 import TaskCommandList from './TaskCommandList';
 import TaskCommandsProgress from './TaskCommandsProgress';
 import TaskList from './TaskList';
-import { TaskDetails_task } from './__generated__/TaskDetails_task.graphql';
+import { TaskDetails_task, TaskDetails_task$key } from './__generated__/TaskDetails_task.graphql';
 import {
   TaskDetailsReRunMutationResponse,
   TaskDetailsReRunMutationVariables,
@@ -172,25 +172,115 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  task: TaskDetails_task;
+  task: TaskDetails_task$key;
 }
 
-function TaskDetails(props: Props) {
+export default function TaskDetails(props: Props) {
+  let task = useFragment(
+    graphql`
+      fragment TaskDetails_task on Task {
+        id
+        name
+        buildId
+        status
+        triggerType
+        automaticReRun
+        ...TaskNameChip_task
+        ...TaskCreatedChip_task
+        ...TaskScheduledChip_task
+        ...TaskStatusChip_task
+        commands {
+          name
+        }
+        ...TaskCommandsProgress_task
+        ...TaskCommandList_task
+        ...TaskArtifacts_task
+        ...TaskTransactionChip_task
+        ...TaskOptionalChip_task
+        ...TaskResourcesChip_task
+        ...TaskExperimentalChip_task
+        ...TaskTimeoutChip_task
+        ...TaskStatefulChip_task
+        ...TaskOptionalChip_task
+        ...TaskRerunnerChip_task
+        ...TaskCancellerChip_task
+        labels
+        artifacts {
+          name
+        }
+        notifications {
+          message
+          ...Notification_notification
+        }
+        build {
+          branch
+          changeIdInRepo
+          changeMessageTitle
+          viewerPermission
+          ...BuildBranchNameChip_build
+          ...BuildChangeChip_build
+        }
+        repository {
+          cloneUrl
+          ...RepositoryOwnerChip_repository
+          ...RepositoryNameChip_repository
+        }
+        allOtherRuns {
+          id
+          localGroupId
+          requiredGroups
+          scheduledTimestamp
+          executingTimestamp
+          finalStatusTimestamp
+          ...TaskListRow_task
+        }
+        dependencies {
+          id
+          localGroupId
+          requiredGroups
+          scheduledTimestamp
+          executingTimestamp
+          finalStatusTimestamp
+          ...TaskListRow_task
+        }
+        ...TaskExecutionInfo_task
+        hooks {
+          timestamp
+          ...HookListRow_hook
+        }
+        executionInfo {
+          cacheRetrievalAttempts {
+            hits {
+              key
+              valid
+            }
+          }
+          agentNotifications {
+            message
+          }
+        }
+        terminalCredential {
+          locator
+          trustedSecret
+        }
+      }
+    `,
+    props.task,
+  );
   let navigate = useNavigate();
   useEffect(() => {
-    if (isTaskFinalStatus(props.task.status)) {
+    if (isTaskFinalStatus(task.status)) {
       return;
     }
 
-    let variables = { taskID: props.task.id };
+    let variables = { taskID: task.id };
     let subscription = requestSubscription(environment, {
       subscription: taskSubscription,
       variables: variables,
     });
     return () => subscription.dispose();
-  }, [props.task.id, props.task.status]);
+  }, [task.id, task.status]);
 
-  let { task } = props;
   let classes = useStyles();
   let build = task.build;
   let repository = task.repository;
@@ -452,7 +542,7 @@ function TaskDetails(props: Props) {
     return !(label.startsWith('canceller_') || label.startsWith('rerunner_'));
   }
 
-  const shouldRunTerminal = props.task.terminalCredential != null && !isTaskFinalStatus(props.task.status);
+  const shouldRunTerminal = task.terminalCredential != null && !isTaskFinalStatus(task.status);
 
   useEffect(() => {
     let ct = new CirrusTerminal(document.getElementById('terminal'));
@@ -460,15 +550,15 @@ function TaskDetails(props: Props) {
     if (shouldRunTerminal) {
       ct.connect(
         'https://terminal.cirrus-ci.com',
-        props.task.terminalCredential.locator,
-        props.task.terminalCredential.trustedSecret,
+        task.terminalCredential.locator,
+        task.terminalCredential.trustedSecret,
       );
     }
 
     return () => {
       ct.dispose();
     };
-  }, [shouldRunTerminal, props.task.terminalCredential]);
+  }, [shouldRunTerminal, task.terminalCredential]);
 
   let taskLabelsToShow = task.labels.filter(desiredLabel);
   let MAX_TASK_LABELS_TO_SHOW = 5;
@@ -491,7 +581,7 @@ function TaskDetails(props: Props) {
     );
   }
 
-  const hasNoAgentNotifications = props.task.executionInfo?.agentNotifications?.length === 0;
+  const hasNoAgentNotifications = task.executionInfo?.agentNotifications?.length === 0;
 
   return (
     <div>
@@ -586,94 +676,3 @@ function TaskDetails(props: Props) {
     </div>
   );
 }
-
-export default createFragmentContainer(TaskDetails, {
-  task: graphql`
-    fragment TaskDetails_task on Task {
-      id
-      name
-      buildId
-      status
-      triggerType
-      automaticReRun
-      ...TaskNameChip_task
-      ...TaskCreatedChip_task
-      ...TaskScheduledChip_task
-      ...TaskStatusChip_task
-      commands {
-        name
-      }
-      ...TaskCommandsProgress_task
-      ...TaskCommandList_task
-      ...TaskArtifacts_task
-      ...TaskTransactionChip_task
-      ...TaskOptionalChip_task
-      ...TaskResourcesChip_task
-      ...TaskExperimentalChip_task
-      ...TaskTimeoutChip_task
-      ...TaskStatefulChip_task
-      ...TaskOptionalChip_task
-      ...TaskRerunnerChip_task
-      ...TaskCancellerChip_task
-      labels
-      artifacts {
-        name
-      }
-      notifications {
-        message
-        ...Notification_notification
-      }
-      build {
-        branch
-        changeIdInRepo
-        changeMessageTitle
-        viewerPermission
-        ...BuildBranchNameChip_build
-        ...BuildChangeChip_build
-      }
-      repository {
-        cloneUrl
-        ...RepositoryOwnerChip_repository
-        ...RepositoryNameChip_repository
-      }
-      allOtherRuns {
-        id
-        localGroupId
-        requiredGroups
-        scheduledTimestamp
-        executingTimestamp
-        finalStatusTimestamp
-        ...TaskListRow_task
-      }
-      dependencies {
-        id
-        localGroupId
-        requiredGroups
-        scheduledTimestamp
-        executingTimestamp
-        finalStatusTimestamp
-        ...TaskListRow_task
-      }
-      ...TaskExecutionInfo_task
-      hooks {
-        timestamp
-        ...HookListRow_hook
-      }
-      executionInfo {
-        cacheRetrievalAttempts {
-          hits {
-            key
-            valid
-          }
-        }
-        agentNotifications {
-          message
-        }
-      }
-      terminalCredential {
-        locator
-        trustedSecret
-      }
-    }
-  `,
-});

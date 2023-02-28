@@ -8,8 +8,8 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { graphql } from 'babel-plugin-relay/macro';
 import classNames from 'classnames';
-import React, { Suspense, useEffect, useState } from 'react';
-import { commitMutation, requestSubscription, useFragment, useMutation } from 'react-relay';
+import React, { Suspense, useEffect, useState, useMemo } from 'react';
+import { commitMutation, requestSubscription, useFragment, useMutation, useSubscription } from 'react-relay';
 import { useLocation, useNavigate } from 'react-router-dom';
 import environment from '../../createRelayEnvironment';
 import { navigateBuildHelper, navigateTaskHelper } from '../../utils/navigateHelper';
@@ -228,6 +228,17 @@ export default function TaskDetails(props: Props) {
     props.task,
   );
   let navigate = useNavigate();
+
+  // const taskSubscriptionConfig = useMemo(
+  //   () => ({
+  //     variables: { taskID: task.id },
+  //     subscription: taskSubscription,
+  //   }),
+  //   [task.id, taskSubscription],
+  // );
+
+  // useSubscription(taskSubscriptionConfig);
+
   useEffect(() => {
     if (isTaskFinalStatus(task.status)) {
       return;

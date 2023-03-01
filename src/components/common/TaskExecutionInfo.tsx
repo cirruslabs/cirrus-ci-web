@@ -1,11 +1,11 @@
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import React from 'react';
 import { makeStyles } from '@mui/styles';
 import Chip from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, YAxis } from 'recharts';
-import { TaskExecutionInfo_task } from './__generated__/TaskExecutionInfo_task.graphql';
+import { TaskExecutionInfo_task$key } from './__generated__/TaskExecutionInfo_task.graphql';
 import { formatDuration } from '../../utils/time';
 import { Box, useTheme } from '@mui/material';
 import { useRecoilState } from 'recoil';
@@ -22,13 +22,41 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  task: TaskExecutionInfo_task;
+  task: TaskExecutionInfo_task$key;
 }
 
-function TaskExecutionInfo(props: Props) {
+export default function TaskExecutionInfo(props: Props) {
+  let task = useFragment(
+    graphql`
+      fragment TaskExecutionInfo_task on Task {
+        instanceResources {
+          cpu
+          memory
+        }
+        executionInfo {
+          labels
+          cpuChart {
+            maxValue
+            points {
+              value
+              secondsFromStart
+            }
+          }
+          memoryChart {
+            maxValue
+            points {
+              value
+              secondsFromStart
+            }
+          }
+        }
+      }
+    `,
+    props.task,
+  );
+
   let theme = useTheme();
   const [prefersDarkMode] = useRecoilState(prefersDarkModeState);
-  let { task } = props;
   let classes = useStyles();
 
   if (!task.executionInfo) return null;
@@ -132,31 +160,3 @@ function TaskExecutionInfo(props: Props) {
     </div>
   );
 }
-
-export default createFragmentContainer(TaskExecutionInfo, {
-  task: graphql`
-    fragment TaskExecutionInfo_task on Task {
-      instanceResources {
-        cpu
-        memory
-      }
-      executionInfo {
-        labels
-        cpuChart {
-          maxValue
-          points {
-            value
-            secondsFromStart
-          }
-        }
-        memoryChart {
-          maxValue
-          points {
-            value
-            secondsFromStart
-          }
-        }
-      }
-    }
-  `,
-});

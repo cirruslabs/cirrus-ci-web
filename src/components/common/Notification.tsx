@@ -1,21 +1,31 @@
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import React from 'react';
 import { useNotificationColor } from '../../utils/colors';
 import IconButton from '@mui/material/IconButton';
 import Icon from '@mui/material/Icon';
 import { navigateHelper } from '../../utils/navigateHelper';
-import { Notification_notification } from './__generated__/Notification_notification.graphql';
+import { Notification_notification$key } from './__generated__/Notification_notification.graphql';
 import { useNavigate } from 'react-router-dom';
 import { ListItem, ListItemText } from '@mui/material';
 
 interface Props {
-  notification: Notification_notification;
+  notification: Notification_notification$key;
 }
 
-function Notification(props: Props) {
+export default function Notification(props: Props) {
+  let notification = useFragment(
+    graphql`
+      fragment Notification_notification on Notification {
+        level
+        message
+        link
+      }
+    `,
+    props.notification,
+  );
+
   let navigate = useNavigate();
-  let { notification } = props;
   return (
     <ListItem
       key={notification.message}
@@ -32,13 +42,3 @@ function Notification(props: Props) {
     </ListItem>
   );
 }
-
-export default createFragmentContainer(Notification, {
-  notification: graphql`
-    fragment Notification_notification on Notification {
-      level
-      message
-      link
-    }
-  `,
-});

@@ -123,7 +123,7 @@ export default function TaskCommandList(props: Props) {
             </div>
           </AccordionSummary>
           <AccordionDetails className={classes.details}>
-            <TaskCommandLogs taskId={props.task.id} command={command} />
+            <TaskCommandLogs taskId={task.id} command={command} />
           </AccordionDetails>
         </Accordion>
       </Box>

@@ -9,9 +9,8 @@ import Typography from '@mui/material/Typography';
 import { graphql } from 'babel-plugin-relay/macro';
 import classNames from 'classnames';
 import React, { Suspense, useEffect, useState, useMemo } from 'react';
-import { commitMutation, requestSubscription, useFragment, useMutation, useSubscription } from 'react-relay';
+import { useFragment, useMutation, useSubscription } from 'react-relay';
 import { useLocation, useNavigate } from 'react-router-dom';
-import environment from '../../createRelayEnvironment';
 import { navigateBuildHelper, navigateTaskHelper } from '../../utils/navigateHelper';
 import { hasWritePermissions } from '../../utils/permissions';
 import { isTaskFinalStatus } from '../../utils/status';
@@ -229,28 +228,15 @@ export default function TaskDetails(props: Props) {
   );
   let navigate = useNavigate();
 
-  // const taskSubscriptionConfig = useMemo(
-  //   () => ({
-  //     variables: { taskID: task.id },
-  //     subscription: taskSubscription,
-  //   }),
-  //   [task.id, taskSubscription],
-  // );
-
-  // useSubscription(taskSubscriptionConfig);
-
-  useEffect(() => {
-    if (isTaskFinalStatus(task.status)) {
-      return;
-    }
-
-    let variables = { taskID: task.id };
-    let subscription = requestSubscription(environment, {
+  const taskSubscriptionConfig = useMemo(
+    () => ({
+      variables: { taskID: task.id },
       subscription: taskSubscription,
-      variables: variables,
-    });
-    return () => subscription.dispose();
-  }, [task.id, task.status]);
+    }),
+    [task.id, taskSubscription],
+  );
+
+  useSubscription(taskSubscriptionConfig);
 
   let classes = useStyles();
   let build = task.build;

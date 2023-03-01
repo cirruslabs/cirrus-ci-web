@@ -44,7 +44,8 @@ import TaskTimeoutChip from '../chips/TaskTimeoutChip';
 import Notification from '../common/Notification';
 import HookList from '../hooks/HookList';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { TabContext, TabList, TabPanel, ToggleButton } from '@mui/lab';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
+import { ToggleButton } from '@mui/material';
 import {
   Badge,
   ButtonGroup,
@@ -233,7 +234,7 @@ export default function TaskDetails(props: Props) {
       variables: { taskID: task.id },
       subscription: taskSubscription,
     }),
-    [task.id, taskSubscription],
+    [task.id],
   );
 
   useSubscription(taskSubscriptionConfig);

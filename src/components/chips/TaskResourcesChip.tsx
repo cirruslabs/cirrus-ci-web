@@ -4,10 +4,10 @@ import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
 import Tooltip from '@mui/material/Tooltip';
 import Memory from '@mui/icons-material/Memory';
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { makeStyles } from '@mui/styles';
-import { TaskResourcesChip_task } from './__generated__/TaskResourcesChip_task.graphql';
+import { TaskResourcesChip_task$key } from './__generated__/TaskResourcesChip_task.graphql';
 
 const useStyles = makeStyles(theme => {
   return {
@@ -21,13 +21,25 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  task: TaskResourcesChip_task;
+  task: TaskResourcesChip_task$key;
   className?: string;
 }
 
-function TaskResourcesChip(props: Props) {
+export default function TaskResourcesChip(props: Props) {
+  let task = useFragment(
+    graphql`
+      fragment TaskResourcesChip_task on Task {
+        instanceResources {
+          cpu
+          memory
+        }
+      }
+    `,
+    props.task,
+  );
+
   let classes = useStyles();
-  let { task, className } = props;
+  let { className } = props;
   let resources = task.instanceResources;
   if (!resources) {
     return null;
@@ -48,14 +60,3 @@ function TaskResourcesChip(props: Props) {
     </Tooltip>
   );
 }
-
-export default createFragmentContainer(TaskResourcesChip, {
-  task: graphql`
-    fragment TaskResourcesChip_task on Task {
-      instanceResources {
-        cpu
-        memory
-      }
-    }
-  `,
-});

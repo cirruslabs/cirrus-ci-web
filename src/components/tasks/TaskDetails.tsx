@@ -236,7 +236,6 @@ export default function TaskDetails(props: Props) {
     }),
     [task.id],
   );
-
   useSubscription(taskSubscriptionConfig);
 
   let classes = useStyles();

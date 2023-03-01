@@ -10,10 +10,10 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import * as queryString from 'query-string';
-import { TaskCommandList_task } from './__generated__/TaskCommandList_task.graphql';
+import { TaskCommandList_task, TaskCommandList_task$key } from './__generated__/TaskCommandList_task.graphql';
 import { ItemOfArray } from '../../utils/utility-types';
 import { useLocation } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
@@ -30,12 +30,28 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  task: TaskCommandList_task;
+  task: TaskCommandList_task$key;
 }
 
-function TaskCommandList(props: Props) {
+export default function TaskCommandList(props: Props) {
+  let task = useFragment(
+    graphql`
+      fragment TaskCommandList_task on Task {
+        id
+        status
+        executingTimestamp
+        commands {
+          name
+          type
+          status
+          durationInSeconds
+        }
+      }
+    `,
+    props.task,
+  );
+
   let classes = useStyles();
-  let task = props.task;
   let commands = task.commands;
 
   let commandComponents = [];
@@ -121,19 +137,3 @@ function TaskCommandList(props: Props) {
   }
   return <div>{commandComponents}</div>;
 }
-
-export default createFragmentContainer(TaskCommandList, {
-  task: graphql`
-    fragment TaskCommandList_task on Task {
-      id
-      status
-      executingTimestamp
-      commands {
-        name
-        type
-        status
-        durationInSeconds
-      }
-    }
-  `,
-});

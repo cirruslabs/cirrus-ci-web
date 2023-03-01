@@ -7,19 +7,32 @@ import Tooltip from '@mui/material/Tooltip';
 import { useTaskStatusColor } from '../../utils/colors';
 import { taskStatusIconName } from '../../utils/status';
 import { formatDuration } from '../../utils/time';
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { TaskScheduledChip_task } from './__generated__/TaskScheduledChip_task.graphql';
+import { TaskScheduledChip_task$key } from './__generated__/TaskScheduledChip_task.graphql';
 import { useTheme } from '@mui/material';
 
 interface Props {
-  task: TaskScheduledChip_task;
+  task: TaskScheduledChip_task$key;
   className?: string;
 }
 
-function TaskScheduledChip(props: Props) {
+export default function TaskScheduledChip(props: Props) {
+  let task = useFragment(
+    graphql`
+      fragment TaskScheduledChip_task on Task {
+        status
+        statusDurations {
+          status
+          durationInSeconds
+        }
+      }
+    `,
+    props.task,
+  );
+
   let theme = useTheme();
-  let { task, className } = props;
+  let { className } = props;
   let scheduledColor = useTaskStatusColor('SCHEDULED');
 
   let scheduledStatusDuration = task.statusDurations.find(it => it.status === 'SCHEDULED');
@@ -40,15 +53,3 @@ function TaskScheduledChip(props: Props) {
   }
   return <div />;
 }
-
-export default createFragmentContainer(TaskScheduledChip, {
-  task: graphql`
-    fragment TaskScheduledChip_task on Task {
-      status
-      statusDurations {
-        status
-        durationInSeconds
-      }
-    }
-  `,
-});

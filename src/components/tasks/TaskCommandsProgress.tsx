@@ -4,9 +4,9 @@ import { useTaskStatusColorMapping } from '../../utils/colors';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { formatDuration } from '../../utils/time';
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { TaskCommandsProgress_task } from './__generated__/TaskCommandsProgress_task.graphql';
+import { TaskCommandsProgress_task$key } from './__generated__/TaskCommandsProgress_task.graphql';
 import { Box } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
@@ -24,12 +24,25 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  task: TaskCommandsProgress_task;
+  task: TaskCommandsProgress_task$key;
   className?: string;
 }
 
-function TaskCommandsProgress(props: Props) {
-  let { task } = props;
+export default function TaskCommandsProgress(props: Props) {
+  let task = useFragment(
+    graphql`
+      fragment TaskCommandsProgress_task on Task {
+        status
+        creationTimestamp
+        statusDurations {
+          status
+          durationInSeconds
+        }
+      }
+    `,
+    props.task,
+  );
+
   let classes = useStyles();
   let [totalDuration, setTotalDuration] = useState(
     task.statusDurations.reduce((sum, statusDuration) => sum + statusDuration.durationInSeconds, 0),
@@ -98,16 +111,3 @@ function TaskCommandsProgress(props: Props) {
     </Tooltip>
   );
 }
-
-export default createFragmentContainer(TaskCommandsProgress, {
-  task: graphql`
-    fragment TaskCommandsProgress_task on Task {
-      status
-      creationTimestamp
-      statusDurations {
-        status
-        durationInSeconds
-      }
-    }
-  `,
-});

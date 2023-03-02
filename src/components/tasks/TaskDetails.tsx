@@ -1,4 +1,5 @@
 import { makeStyles } from '@mui/styles';
+import environment from '../../createRelayEnvironment';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -8,8 +9,8 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { graphql } from 'babel-plugin-relay/macro';
 import classNames from 'classnames';
-import React, { Suspense, useEffect, useState, useMemo } from 'react';
-import { useFragment, useMutation, useSubscription } from 'react-relay';
+import React, { Suspense, useEffect, useState } from 'react';
+import { useFragment, useMutation, requestSubscription } from 'react-relay';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { navigateBuildHelper, navigateTaskHelper } from '../../utils/navigateHelper';
 import { hasWritePermissions } from '../../utils/permissions';
@@ -229,14 +230,18 @@ export default function TaskDetails(props: Props) {
   );
   let navigate = useNavigate();
 
-  const taskSubscriptionConfig = useMemo(
-    () => ({
-      variables: { taskID: task.id },
+  useEffect(() => {
+    if (isTaskFinalStatus(task.status)) {
+      return;
+    }
+
+    let variables = { taskID: task.id };
+    let subscription = requestSubscription(environment, {
       subscription: taskSubscription,
-    }),
-    [task.id],
-  );
-  useSubscription(taskSubscriptionConfig);
+      variables: variables,
+    });
+    return () => subscription.dispose();
+  }, [task.id, task.status]);
 
   let classes = useStyles();
   let build = task.build;

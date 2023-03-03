@@ -9,7 +9,7 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { graphql } from 'babel-plugin-relay/macro';
 import classNames from 'classnames';
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState, useMemo } from 'react';
 import { useFragment, useMutation, requestSubscription } from 'react-relay';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { navigateBuildHelper, navigateTaskHelper } from '../../utils/navigateHelper';
@@ -230,8 +230,9 @@ export default function TaskDetails(props: Props) {
   );
   let navigate = useNavigate();
 
+  const isFinalStatus = useMemo(() => isTaskFinalStatus(task.status), [task.status]);
   useEffect(() => {
-    if (isTaskFinalStatus(task.status)) {
+    if (isFinalStatus) {
       return;
     }
 
@@ -241,7 +242,7 @@ export default function TaskDetails(props: Props) {
       variables: variables,
     });
     return () => subscription.dispose();
-  }, [task.id, task.status]);
+  }, [task.id, isFinalStatus]);
 
   let classes = useStyles();
   let build = task.build;

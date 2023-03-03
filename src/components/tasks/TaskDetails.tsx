@@ -375,7 +375,7 @@ export default function TaskDetails(props: Props) {
   }
 
   let reRunButton =
-    !hasWritePermissions(build.viewerPermission) || !isTaskFinalStatus(task.status) ? null : (
+    !hasWritePermissions(build.viewerPermission) || !isFinalStatus ? null : (
       <>
         <ButtonGroup variant="contained" ref={anchorRef}>
           <Button onClick={() => rerun(task.id, false)} startIcon={<Refresh />}>
@@ -429,7 +429,7 @@ export default function TaskDetails(props: Props) {
     );
 
   let abortButton =
-    isTaskFinalStatus(task.status) || !hasWritePermissions(build.viewerPermission) ? null : (
+    isFinalStatus || !hasWritePermissions(build.viewerPermission) ? null : (
       <Button variant="contained" onClick={() => abort(task.id)} startIcon={<Cancel />}>
         Cancel
       </Button>
@@ -546,7 +546,7 @@ export default function TaskDetails(props: Props) {
     return !(label.startsWith('canceller_') || label.startsWith('rerunner_'));
   }
 
-  const shouldRunTerminal = task.terminalCredential != null && !isTaskFinalStatus(task.status);
+  const shouldRunTerminal = task.terminalCredential != null && !isFinalStatus;
 
   useEffect(() => {
     let ct = new CirrusTerminal(document.getElementById('terminal'));
@@ -601,7 +601,7 @@ export default function TaskDetails(props: Props) {
               <TaskScheduledChip className={classes.chip} task={task} />
               <TaskStatusChip className={classes.chip} task={task} />
             </div>
-            <Tooltip title="Debugging View" sx={{ display: isTaskFinalStatus(task.status) ? null : 'none' }}>
+            <Tooltip title="Debugging View" sx={{ display: isFinalStatus ? null : 'none' }}>
               <Badge variant="dot" color="warning" invisible={hasNoAgentNotifications}>
                 <ToggleButton value="bug" onClick={toggleDisplayDebugInfo} selected={displayDebugInfo}>
                   <BugReport />

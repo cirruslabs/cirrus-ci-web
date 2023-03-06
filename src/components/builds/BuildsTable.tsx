@@ -21,6 +21,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import CommitIcon from '@mui/icons-material/Commit';
 import Typography from '@mui/material/Typography';
 import CallSplitIcon from '@mui/icons-material/CallSplit';
+import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
 import UnarchiveIcon from '@mui/icons-material/UnarchiveOutlined';
 
 import BuildStatusChipNew from '../chips/BuildStatusChipNew';
@@ -32,8 +33,6 @@ import { isBuildFinalStatus } from '../../utils/status';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
 
 import { BuildsTable_builds } from './__generated__/BuildsTable_builds.graphql';
-
-import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
 
 // todo: move custom values to mui theme adjustments
 const useStyles = makeStyles(theme => {

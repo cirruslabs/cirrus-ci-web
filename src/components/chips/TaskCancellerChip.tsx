@@ -3,17 +3,28 @@ import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
 
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { TaskCancellerChip_task } from './__generated__/TaskCancellerChip_task.graphql';
+import { TaskCancellerChip_task$key } from './__generated__/TaskCancellerChip_task.graphql';
 
 interface Props {
-  task: TaskCancellerChip_task;
+  task: TaskCancellerChip_task$key;
   className?: string;
 }
 
-function TaskCancellerChip(props: Props) {
-  let { cancelledBy } = props.task;
+export default function TaskCancellerChip(props: Props) {
+  let task = useFragment(
+    graphql`
+      fragment TaskCancellerChip_task on Task {
+        cancelledBy {
+          avatarURL
+        }
+      }
+    `,
+    props.task,
+  );
+
+  let { cancelledBy } = task;
 
   if (!cancelledBy) return <></>;
 
@@ -21,13 +32,3 @@ function TaskCancellerChip(props: Props) {
     <Chip className={props.className} label="Cancelled by a user" avatar={<Avatar src={cancelledBy.avatarURL} />} />
   );
 }
-
-export default createFragmentContainer(TaskCancellerChip, {
-  task: graphql`
-    fragment TaskCancellerChip_task on Task {
-      cancelledBy {
-        avatarURL
-      }
-    }
-  `,
-});

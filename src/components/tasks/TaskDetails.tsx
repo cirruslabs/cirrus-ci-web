@@ -1,4 +1,5 @@
 import { makeStyles } from '@mui/styles';
+import environment from '../../createRelayEnvironment';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -8,10 +9,9 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { graphql } from 'babel-plugin-relay/macro';
 import classNames from 'classnames';
-import React, { Suspense, useEffect, useState } from 'react';
-import { commitMutation, createFragmentContainer, requestSubscription } from 'react-relay';
+import React, { Suspense, useEffect, useState, useMemo } from 'react';
+import { useFragment, useMutation, requestSubscription } from 'react-relay';
 import { useLocation, useNavigate } from 'react-router-dom';
-import environment from '../../createRelayEnvironment';
 import { navigateBuildHelper, navigateTaskHelper } from '../../utils/navigateHelper';
 import { hasWritePermissions } from '../../utils/permissions';
 import { isTaskFinalStatus } from '../../utils/status';
@@ -26,8 +26,9 @@ import CirrusFavicon from '../common/CirrusFavicon';
 import TaskCommandList from './TaskCommandList';
 import TaskCommandsProgress from './TaskCommandsProgress';
 import TaskList from './TaskList';
-import { TaskDetails_task } from './__generated__/TaskDetails_task.graphql';
+import { TaskDetails_task, TaskDetails_task$key } from './__generated__/TaskDetails_task.graphql';
 import {
+  TaskDetailsReRunMutation,
   TaskDetailsReRunMutationResponse,
   TaskDetailsReRunMutationVariables,
 } from './__generated__/TaskDetailsReRunMutation.graphql';
@@ -44,7 +45,8 @@ import TaskTimeoutChip from '../chips/TaskTimeoutChip';
 import Notification from '../common/Notification';
 import HookList from '../hooks/HookList';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { TabContext, TabList, TabPanel, ToggleButton } from '@mui/lab';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
+import { ToggleButton } from '@mui/material';
 import {
   Badge,
   ButtonGroup,
@@ -77,47 +79,6 @@ import { TaskDetailsCancelMutationVariables } from './__generated__/TaskDetailsC
 import TaskDebuggingInformation from './TaskDebuggingInformation';
 import CirrusLinearProgress from '../common/CirrusLinearProgress';
 import CommitMessage from '../common/CommitMessage';
-
-const taskReRunMutation = graphql`
-  mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
-    rerun(input: $input) {
-      newTask {
-        id
-      }
-    }
-  }
-`;
-
-const taskTriggerMutation = graphql`
-  mutation TaskDetailsTriggerMutation($input: TaskTriggerInput!) {
-    trigger(input: $input) {
-      task {
-        id
-        status
-        triggerType
-      }
-    }
-  }
-`;
-
-const taskCancelMutation = graphql`
-  mutation TaskDetailsCancelMutation($input: TaskAbortInput!) {
-    abortTask(input: $input) {
-      abortedTask {
-        id
-        status
-      }
-    }
-  }
-`;
-
-const invalidateCachesMutation = graphql`
-  mutation TaskDetailsInvalidateCachesMutation($input: InvalidateCacheEntriesInput!) {
-    invalidateCacheEntries(input: $input) {
-      clientMutationId
-    }
-  }
-`;
 
 const taskSubscription = graphql`
   subscription TaskDetailsSubscription($taskID: ID!) {
@@ -172,28 +133,165 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  task: TaskDetails_task;
+  task: TaskDetails_task$key;
 }
 
-function TaskDetails(props: Props) {
+export default function TaskDetails(props: Props) {
+  let task = useFragment(
+    graphql`
+      fragment TaskDetails_task on Task {
+        id
+        name
+        buildId
+        status
+        triggerType
+        automaticReRun
+        ...TaskNameChip_task
+        ...TaskCreatedChip_task
+        ...TaskScheduledChip_task
+        ...TaskStatusChip_task
+        commands {
+          name
+        }
+        ...TaskCommandsProgress_task
+        ...TaskCommandList_task
+        ...TaskArtifacts_task
+        ...TaskTransactionChip_task
+        ...TaskOptionalChip_task
+        ...TaskResourcesChip_task
+        ...TaskExperimentalChip_task
+        ...TaskTimeoutChip_task
+        ...TaskStatefulChip_task
+        ...TaskOptionalChip_task
+        ...TaskRerunnerChip_task
+        ...TaskCancellerChip_task
+        labels
+        artifacts {
+          name
+        }
+        notifications {
+          message
+          ...Notification_notification
+        }
+        build {
+          branch
+          changeIdInRepo
+          changeMessageTitle
+          viewerPermission
+          ...BuildBranchNameChip_build
+          ...BuildChangeChip_build
+        }
+        repository {
+          cloneUrl
+          ...RepositoryOwnerChip_repository
+          ...RepositoryNameChip_repository
+        }
+        allOtherRuns {
+          id
+          localGroupId
+          requiredGroups
+          scheduledTimestamp
+          executingTimestamp
+          finalStatusTimestamp
+          ...TaskListRow_task
+        }
+        dependencies {
+          id
+          localGroupId
+          requiredGroups
+          scheduledTimestamp
+          executingTimestamp
+          finalStatusTimestamp
+          ...TaskListRow_task
+        }
+        ...TaskExecutionInfo_task
+        hooks {
+          timestamp
+          ...HookListRow_hook
+        }
+        executionInfo {
+          cacheRetrievalAttempts {
+            hits {
+              key
+              valid
+            }
+          }
+          agentNotifications {
+            message
+          }
+        }
+        terminalCredential {
+          locator
+          trustedSecret
+        }
+      }
+    `,
+    props.task,
+  );
   let navigate = useNavigate();
+
+  const isFinalStatus = useMemo(() => isTaskFinalStatus(task.status), [task.status]);
   useEffect(() => {
-    if (isTaskFinalStatus(props.task.status)) {
+    if (isFinalStatus) {
       return;
     }
 
-    let variables = { taskID: props.task.id };
+    let variables = { taskID: task.id };
     let subscription = requestSubscription(environment, {
       subscription: taskSubscription,
       variables: variables,
     });
     return () => subscription.dispose();
-  }, [props.task.id, props.task.status]);
+  }, [task.id, isFinalStatus]);
 
-  let { task } = props;
   let classes = useStyles();
   let build = task.build;
   let repository = task.repository;
+
+  const [commitTaskReRunMutation] = useMutation<TaskDetailsReRunMutation>(graphql`
+    mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
+      rerun(input: $input) {
+        newTask {
+          id
+        }
+      }
+    }
+  `);
+
+  const [commitTaskTriggerMutation] = useMutation(
+    graphql`
+      mutation TaskDetailsTriggerMutation($input: TaskTriggerInput!) {
+        trigger(input: $input) {
+          task {
+            id
+            status
+            triggerType
+          }
+        }
+      }
+    `,
+  );
+
+  const [commitTaskCancelMutation] = useMutation(
+    graphql`
+      mutation TaskDetailsCancelMutation($input: TaskAbortInput!) {
+        abortTask(input: $input) {
+          abortedTask {
+            id
+            status
+          }
+        }
+      }
+    `,
+  );
+
+  const [commitInvalidateCachesMutation] = useMutation(graphql`
+    mutation TaskDetailsInvalidateCachesMutation($input: InvalidateCacheEntriesInput!) {
+      invalidateCacheEntries(input: $input) {
+        clientMutationId
+      }
+    }
+  `);
 
   function trigger(taskId) {
     const variables: TaskDetailsTriggerMutationVariables = {
@@ -203,8 +301,7 @@ function TaskDetails(props: Props) {
       },
     };
 
-    commitMutation(environment, {
-      mutation: taskTriggerMutation,
+    commitTaskTriggerMutation({
       variables: variables,
       onError: err => console.error(err),
     });
@@ -218,8 +315,7 @@ function TaskDetails(props: Props) {
       },
     };
 
-    commitMutation(environment, {
-      mutation: taskCancelMutation,
+    commitTaskCancelMutation({
       variables: variables,
       onError: err => console.error(err),
     });
@@ -265,8 +361,7 @@ function TaskDetails(props: Props) {
       },
     };
 
-    commitMutation(environment, {
-      mutation: taskReRunMutation,
+    commitTaskReRunMutation({
       variables: variables,
       onCompleted: (response: TaskDetailsReRunMutationResponse, errors) => {
         if (errors) {
@@ -280,7 +375,7 @@ function TaskDetails(props: Props) {
   }
 
   let reRunButton =
-    !hasWritePermissions(build.viewerPermission) || !isTaskFinalStatus(task.status) ? null : (
+    !hasWritePermissions(build.viewerPermission) || !isFinalStatus ? null : (
       <>
         <ButtonGroup variant="contained" ref={anchorRef}>
           <Button onClick={() => rerun(task.id, false)} startIcon={<Refresh />}>
@@ -334,7 +429,7 @@ function TaskDetails(props: Props) {
     );
 
   let abortButton =
-    isTaskFinalStatus(task.status) || !hasWritePermissions(build.viewerPermission) ? null : (
+    isFinalStatus || !hasWritePermissions(build.viewerPermission) ? null : (
       <Button variant="contained" onClick={() => abort(task.id)} startIcon={<Cancel />}>
         Cancel
       </Button>
@@ -367,8 +462,7 @@ function TaskDetails(props: Props) {
       },
     };
 
-    commitMutation(environment, {
-      mutation: invalidateCachesMutation,
+    commitInvalidateCachesMutation({
       variables: variables,
       onCompleted: (response: TaskDetailsInvalidateCachesMutationResponse, errors) => {
         if (errors) {
@@ -452,7 +546,7 @@ function TaskDetails(props: Props) {
     return !(label.startsWith('canceller_') || label.startsWith('rerunner_'));
   }
 
-  const shouldRunTerminal = props.task.terminalCredential != null && !isTaskFinalStatus(props.task.status);
+  const shouldRunTerminal = task.terminalCredential != null && !isFinalStatus;
 
   useEffect(() => {
     let ct = new CirrusTerminal(document.getElementById('terminal'));
@@ -460,15 +554,15 @@ function TaskDetails(props: Props) {
     if (shouldRunTerminal) {
       ct.connect(
         'https://terminal.cirrus-ci.com',
-        props.task.terminalCredential.locator,
-        props.task.terminalCredential.trustedSecret,
+        task.terminalCredential.locator,
+        task.terminalCredential.trustedSecret,
       );
     }
 
     return () => {
       ct.dispose();
     };
-  }, [shouldRunTerminal, props.task.terminalCredential]);
+  }, [shouldRunTerminal, task.terminalCredential]);
 
   let taskLabelsToShow = task.labels.filter(desiredLabel);
   let MAX_TASK_LABELS_TO_SHOW = 5;
@@ -491,7 +585,7 @@ function TaskDetails(props: Props) {
     );
   }
 
-  const hasNoAgentNotifications = props.task.executionInfo?.agentNotifications?.length === 0;
+  const hasNoAgentNotifications = task.executionInfo?.agentNotifications?.length === 0;
 
   return (
     <div>
@@ -507,7 +601,7 @@ function TaskDetails(props: Props) {
               <TaskScheduledChip className={classes.chip} task={task} />
               <TaskStatusChip className={classes.chip} task={task} />
             </div>
-            <Tooltip title="Debugging View" sx={{ display: isTaskFinalStatus(task.status) ? null : 'none' }}>
+            <Tooltip title="Debugging View" sx={{ display: isFinalStatus ? null : 'none' }}>
               <Badge variant="dot" color="warning" invisible={hasNoAgentNotifications}>
                 <ToggleButton value="bug" onClick={toggleDisplayDebugInfo} selected={displayDebugInfo}>
                   <BugReport />
@@ -586,94 +680,3 @@ function TaskDetails(props: Props) {
     </div>
   );
 }
-
-export default createFragmentContainer(TaskDetails, {
-  task: graphql`
-    fragment TaskDetails_task on Task {
-      id
-      name
-      buildId
-      status
-      triggerType
-      automaticReRun
-      ...TaskNameChip_task
-      ...TaskCreatedChip_task
-      ...TaskScheduledChip_task
-      ...TaskStatusChip_task
-      commands {
-        name
-      }
-      ...TaskCommandsProgress_task
-      ...TaskCommandList_task
-      ...TaskArtifacts_task
-      ...TaskTransactionChip_task
-      ...TaskOptionalChip_task
-      ...TaskResourcesChip_task
-      ...TaskExperimentalChip_task
-      ...TaskTimeoutChip_task
-      ...TaskStatefulChip_task
-      ...TaskOptionalChip_task
-      ...TaskRerunnerChip_task
-      ...TaskCancellerChip_task
-      labels
-      artifacts {
-        name
-      }
-      notifications {
-        message
-        ...Notification_notification
-      }
-      build {
-        branch
-        changeIdInRepo
-        changeMessageTitle
-        viewerPermission
-        ...BuildBranchNameChip_build
-        ...BuildChangeChip_build
-      }
-      repository {
-        cloneUrl
-        ...RepositoryOwnerChip_repository
-        ...RepositoryNameChip_repository
-      }
-      allOtherRuns {
-        id
-        localGroupId
-        requiredGroups
-        scheduledTimestamp
-        executingTimestamp
-        finalStatusTimestamp
-        ...TaskListRow_task
-      }
-      dependencies {
-        id
-        localGroupId
-        requiredGroups
-        scheduledTimestamp
-        executingTimestamp
-        finalStatusTimestamp
-        ...TaskListRow_task
-      }
-      ...TaskExecutionInfo_task
-      hooks {
-        timestamp
-        ...HookListRow_hook
-      }
-      executionInfo {
-        cacheRetrievalAttempts {
-          hits {
-            key
-            valid
-          }
-        }
-        agentNotifications {
-          message
-        }
-      }
-      terminalCredential {
-        locator
-        trustedSecret
-      }
-    }
-  `,
-});

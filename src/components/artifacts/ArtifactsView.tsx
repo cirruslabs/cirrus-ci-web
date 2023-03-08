@@ -10,7 +10,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Paper from '@mui/material/Paper';
 import { navigateHelper } from '../../utils/navigateHelper';
-import { TaskArtifacts_task } from './__generated__/TaskArtifacts_task.graphql';
+import { ArtifactsView_task$key } from './__generated__/ArtifactsView_task.graphql';
 import Folder from '@mui/icons-material/Folder';
 import InsertDriveFile from '@mui/icons-material/InsertDriveFile';
 import GetApp from '@mui/icons-material/GetApp';
@@ -20,6 +20,8 @@ import AccountTree from '@mui/icons-material/AccountTree';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { useNavigate } from 'react-router-dom';
+import { useFragment } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
 
 const useStyles = makeStyles(theme => {
   return {
@@ -31,7 +33,7 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  task: TaskArtifacts_task;
+  task: ArtifactsView_task$key;
 }
 
 interface SingleArtifactItemInfo {
@@ -41,14 +43,30 @@ interface SingleArtifactItemInfo {
   isTopLevel: boolean;
 }
 
-function ArtifactsView(props: Props) {
+export default function ArtifactsView(props: Props) {
+  let task = useFragment(
+    graphql`
+      fragment ArtifactsView_task on Task {
+        id
+        artifacts {
+          name
+          files {
+            path
+            size
+          }
+        }
+      }
+    `,
+    props.task,
+  );
+
   let navigate = useNavigate();
   let [selectedArtifactName, setSelectedArtifactName] = useState(null);
   let [selectedPath, setSelectedPath] = useState([]);
   let [isFolderView, setFolderView] = useState(true);
 
   let artifactURL = (name: string) => {
-    let allURLParts = ['https://api.cirrus-ci.com/v1/artifact/task', props.task.id, selectedArtifactName].concat(
+    let allURLParts = ['https://api.cirrus-ci.com/v1/artifact/task', task.id, selectedArtifactName].concat(
       selectedPath,
     );
     allURLParts.push(name);
@@ -56,10 +74,10 @@ function ArtifactsView(props: Props) {
   };
 
   let artifactArchiveURL = (name: string) =>
-    ['https://api.cirrus-ci.com/v1/artifact/task', props.task.id, `${name}.zip`].join('/');
+    ['https://api.cirrus-ci.com/v1/artifact/task', task.id, `${name}.zip`].join('/');
 
   function getSelectedArtifact() {
-    for (let artifact of props.task.artifacts || []) {
+    for (let artifact of task.artifacts || []) {
       if (artifact.name && artifact.name === selectedArtifactName) {
         return artifact;
       }
@@ -124,7 +142,6 @@ function ArtifactsView(props: Props) {
     return results;
   }
 
-  let { task } = props;
   let classes = useStyles();
   let { artifacts } = task;
 
@@ -225,5 +242,3 @@ function ArtifactsView(props: Props) {
     </Paper>
   );
 }
-
-export default ArtifactsView;

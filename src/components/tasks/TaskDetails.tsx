@@ -156,6 +156,7 @@ export default function TaskDetails(props: Props) {
         ...TaskCommandsProgress_task
         ...TaskCommandList_task
         ...TaskArtifacts_task
+        ...ArtifactsView_task
         ...TaskTransactionChip_task
         ...TaskOptionalChip_task
         ...TaskResourcesChip_task

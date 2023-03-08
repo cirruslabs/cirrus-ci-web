@@ -15,6 +15,7 @@ export default function TaskArtifacts(props) {
             size
           }
         }
+        ...ArtifactsView_task
       }
     `,
     props.task,

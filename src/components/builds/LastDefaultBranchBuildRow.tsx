@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
-import { useFragment, requestSubscription } from 'react-relay';
+import React, { useMemo } from 'react';
+import { useFragment, useSubscription } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import environment from '../../createRelayEnvironment';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import { makeStyles } from '@mui/styles';
@@ -61,17 +60,14 @@ export default function LastDefaultBranchBuildRow(props: Props) {
     props.repository,
   );
 
-  useEffect(() => {
-    let variables = { repositoryID: repository.id };
-
-    let subscription = requestSubscription(environment, {
+  const buildSubscriptionConfig = useMemo(
+    () => ({
+      variables: { repositoryID: repository.id },
       subscription: buildSubscription,
-      variables: variables,
-    });
-    return () => {
-      subscription.dispose();
-    };
-  }, [repository.id]);
+    }),
+    [repository.id],
+  );
+  useSubscription(buildSubscriptionConfig);
 
   let navigate = useNavigate();
   let classes = useStyles();

@@ -3,7 +3,7 @@ import Chip from '@mui/material/Chip';
 import Icon from '@mui/material/Icon';
 import Tooltip from '@mui/material/Tooltip';
 import { graphql } from 'babel-plugin-relay/macro';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useFragment, requestSubscription } from 'react-relay';
 import environment from '../../createRelayEnvironment';
 import { useBuildStatusColor } from '../../utils/colors';
@@ -41,8 +41,9 @@ export default function BuildStatusChip(props: Props) {
 
   let theme = useTheme();
 
+  const isFinalStatus = useMemo(() => isBuildFinalStatus(build.status), [build.status]);
   useEffect(() => {
-    if (isBuildFinalStatus(build.status)) {
+    if (isFinalStatus) {
       return;
     }
 
@@ -55,7 +56,7 @@ export default function BuildStatusChip(props: Props) {
     return () => {
       subscription.dispose();
     };
-  }, [build.id, build.status]);
+  }, [build.id, isFinalStatus]);
 
   let { mini, className } = props;
   let message = buildStatusMessage(build.status, build.durationInSeconds);

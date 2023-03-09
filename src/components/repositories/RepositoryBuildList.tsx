@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { requestSubscription, useFragment } from 'react-relay';
+import { useFragment, useSubscription } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { Helmet as Head } from 'react-helmet';
 import cx from 'classnames';
@@ -28,7 +28,6 @@ import { createLinkToRepository } from '../../utils/github';
 import { NodeOfConnection } from '../../utils/utility-types';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
 import usePageWidth from '../../utils/usePageWidth';
-import environment from '../../createRelayEnvironment';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import CreateBuildDialog from '../builds/CreateBuildDialog';
 import BuildDurationsChart from '../builds/BuildDurationsChart';
@@ -122,17 +121,14 @@ export default function RepositoryBuildList(props: Props) {
   const pageWidth = usePageWidth();
   const isNewDesign = pageWidth > 900;
 
-  useEffect(() => {
-    let variables = { repositoryID: repository.id, branch: props.branch };
-
-    const subscription = requestSubscription(environment, {
+  const repositorySubscriptionConfig = useMemo(
+    () => ({
+      variables: { repositoryID: repository.id, branch: props.branch },
       subscription: repositorySubscription,
-      variables: variables,
-    });
-    return () => {
-      subscription.dispose();
-    };
-  }, [repository.id, props.branch]);
+    }),
+    [repository.id, props.branch],
+  );
+  useSubscription(repositorySubscriptionConfig);
 
   let navigate = useNavigate();
   let [selectedBuildId, setSelectedBuildId] = useState(null);
@@ -250,10 +246,8 @@ export default function RepositoryBuildList(props: Props) {
           {repository.owner}/{repository.name} - Cirrus CI
         </title>
       </Head>
-
       {/* CHART */}
       {buildsChart}
-
       {/* BUILDS TABLE */}
       <Paper className={cx(classes.paper, classes.paperBuildsTable)}>
         <Toolbar className={classes.header} disableGutters>

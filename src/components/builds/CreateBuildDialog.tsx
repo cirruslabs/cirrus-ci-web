@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import environment from '../../createRelayEnvironment';
-import { commitMutation, createFragmentContainer } from 'react-relay';
+import { commitMutation, useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -15,7 +15,7 @@ import { navigateBuildHelper } from '../../utils/navigateHelper';
 
 import 'ace-builds/src-noconflict/mode-yaml';
 import 'ace-builds/src-noconflict/theme-github';
-import { CreateBuildDialog_repository } from './__generated__/CreateBuildDialog_repository.graphql';
+import { CreateBuildDialog_repository$key } from './__generated__/CreateBuildDialog_repository.graphql';
 import {
   CreateBuildDialogMutationResponse,
   CreateBuildDialogMutationVariables,
@@ -34,15 +34,26 @@ const createBuildMutation = graphql`
 interface Props {
   onClose: Function;
   open: boolean;
-  repository: CreateBuildDialog_repository;
+  repository: CreateBuildDialog_repository$key;
 }
 
-function CreateBuildDialog(props: Props) {
+export default function CreateBuildDialog(props: Props) {
+  let repository = useFragment(
+    graphql`
+      fragment CreateBuildDialog_repository on Repository {
+        id
+        owner
+        name
+        masterBranch
+      }
+    `,
+    props.repository,
+  );
+
   let navigate = useNavigate();
-  let [branch, setBranch] = useState(props.repository.masterBranch);
+  let [branch, setBranch] = useState(repository.masterBranch);
   let [configOverride, setConfigOverride] = useState('');
   let [sha, setSHA] = useState('');
-  let { repository } = props;
 
   function handleClose() {
     if (props.onClose) {
@@ -53,8 +64,8 @@ function CreateBuildDialog(props: Props) {
   function sendMutation() {
     const variables: CreateBuildDialogMutationVariables = {
       input: {
-        clientMutationId: props.repository.name,
-        repositoryId: props.repository.id,
+        clientMutationId: repository.name,
+        repositoryId: repository.id,
         branch: branch,
         sha: sha,
         configOverride: configOverride,
@@ -118,14 +129,3 @@ function CreateBuildDialog(props: Props) {
     </Dialog>
   );
 }
-
-export default createFragmentContainer(CreateBuildDialog, {
-  repository: graphql`
-    fragment CreateBuildDialog_repository on Repository {
-      id
-      owner
-      name
-      masterBranch
-    }
-  `,
-});

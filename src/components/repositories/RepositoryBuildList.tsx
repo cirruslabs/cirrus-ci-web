@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createFragmentContainer, requestSubscription } from 'react-relay';
+import { useFragment, useSubscription } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { Helmet as Head } from 'react-helmet';
 import cx from 'classnames';
@@ -28,7 +28,6 @@ import { createLinkToRepository } from '../../utils/github';
 import { NodeOfConnection } from '../../utils/utility-types';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
 import usePageWidth from '../../utils/usePageWidth';
-import environment from '../../createRelayEnvironment';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import CreateBuildDialog from '../builds/CreateBuildDialog';
 import BuildDurationsChart from '../builds/BuildDurationsChart';
@@ -37,7 +36,10 @@ import BuildChangeChip from '../chips/BuildChangeChip';
 import MarkdownTypography from '../common/MarkdownTypography';
 import BuildsTable from '../../components/builds/BuildsTable';
 
-import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildList_repository.graphql';
+import {
+  RepositoryBuildList_repository,
+  RepositoryBuildList_repository$key,
+} from './__generated__/RepositoryBuildList_repository.graphql';
 
 // todo: move custom values to mui theme adjustments
 const useStyles = makeStyles(theme => {
@@ -75,7 +77,7 @@ const useStyles = makeStyles(theme => {
 
 interface Props {
   branch?: string;
-  repository: RepositoryBuildList_repository;
+  repository: RepositoryBuildList_repository$key;
 }
 
 const repositorySubscription = graphql`
@@ -86,26 +88,51 @@ const repositorySubscription = graphql`
   }
 `;
 
-function RepositoryBuildList(props: Props) {
+export default function RepositoryBuildList(props: Props) {
+  let repository = useFragment(
+    graphql`
+      fragment RepositoryBuildList_repository on Repository @argumentDefinitions(branch: { type: "String" }) {
+        id
+        platform
+        owner
+        name
+        viewerPermission
+        ...CreateBuildDialog_repository
+        builds(last: 50, branch: $branch) {
+          edges {
+            node {
+              id
+              changeMessageTitle
+              clockDurationInSeconds
+              durationInSeconds
+              status
+              ...BuildsTable_builds
+              ...BuildBranchNameChip_build
+              ...BuildChangeChip_build
+              ...BuildStatusChip_build
+            }
+          }
+        }
+      }
+    `,
+    props.repository,
+  );
+
   const pageWidth = usePageWidth();
   const isNewDesign = pageWidth > 900;
 
-  useEffect(() => {
-    let variables = { repositoryID: props.repository.id, branch: props.branch };
-
-    const subscription = requestSubscription(environment, {
+  const repositorySubscriptionConfig = useMemo(
+    () => ({
+      variables: { repositoryID: repository.id, branch: props.branch },
       subscription: repositorySubscription,
-      variables: variables,
-    });
-    return () => {
-      subscription.dispose();
-    };
-  }, [props.repository.id, props.branch]);
+    }),
+    [repository.id, props.branch],
+  );
+  useSubscription(repositorySubscriptionConfig);
 
   let navigate = useNavigate();
   let [selectedBuildId, setSelectedBuildId] = useState(null);
   let [openCreateDialog, setOpenCreateDialog] = useState(false);
-  let { repository } = props;
   let classes = useStyles();
   let builds = repository.builds.edges.map(edge => edge.node);
 
@@ -219,10 +246,8 @@ function RepositoryBuildList(props: Props) {
           {repository.owner}/{repository.name} - Cirrus CI
         </title>
       </Head>
-
       {/* CHART */}
       {buildsChart}
-
       {/* BUILDS TABLE */}
       <Paper className={cx(classes.paper, classes.paperBuildsTable)}>
         <Toolbar className={classes.header} disableGutters>
@@ -252,31 +277,3 @@ function RepositoryBuildList(props: Props) {
     </div>
   );
 }
-
-export default createFragmentContainer(RepositoryBuildList, {
-  repository: graphql`
-    fragment RepositoryBuildList_repository on Repository @argumentDefinitions(branch: { type: "String" }) {
-      id
-      platform
-      owner
-      name
-      viewerPermission
-      ...CreateBuildDialog_repository
-      builds(last: 50, branch: $branch) {
-        edges {
-          node {
-            id
-            changeMessageTitle
-            clockDurationInSeconds
-            durationInSeconds
-            status
-            ...BuildsTable_builds
-            ...BuildBranchNameChip_build
-            ...BuildChangeChip_build
-            ...BuildStatusChip_build
-          }
-        }
-      }
-    }
-  `,
-});

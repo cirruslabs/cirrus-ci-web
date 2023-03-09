@@ -1,7 +1,7 @@
 import { memo, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ThemeProvider } from '@emotion/react';
-import { createFragmentContainer, requestSubscription } from 'react-relay';
+import { requestSubscription, useFragment } from 'react-relay';
 import cx from 'classnames';
 import { useRecoilValue } from 'recoil';
 import { graphql } from 'babel-plugin-relay/macro';
@@ -32,7 +32,7 @@ import { formatDuration } from '../../utils/time';
 import { isBuildFinalStatus } from '../../utils/status';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
 
-import { BuildsTable_builds } from './__generated__/BuildsTable_builds.graphql';
+import { BuildsTable_builds, BuildsTable_builds$key } from './__generated__/BuildsTable_builds.graphql';
 
 // todo: move custom values to mui theme adjustments
 const useStyles = makeStyles(theme => {
@@ -115,7 +115,7 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  builds: BuildsTable_builds;
+  builds: BuildsTable_builds$key;
   selectedBuildId?: string;
   setSelectedBuildId?: Function;
 }
@@ -128,7 +128,27 @@ const buildSubscription = graphql`
   }
 `;
 
-const BuildsTable = ({ builds = [], selectedBuildId, setSelectedBuildId }: Props) => {
+export default function BuildsTable({ selectedBuildId, setSelectedBuildId, ...props }: Props) {
+  let builds = useFragment(
+    graphql`
+      fragment BuildsTable_builds on Build @relay(plural: true) {
+        id
+        branch
+        tag
+        status
+        changeIdInRepo
+        changeMessageTitle
+        clockDurationInSeconds
+        repository {
+          platform
+          owner
+          name
+        }
+      }
+    `,
+    props.builds,
+  );
+
   let classes = useStyles();
   const themeOptions = useRecoilValue(muiThemeOptions);
   const muiTheme = useMemo(() => createTheme(themeOptions), [themeOptions]);
@@ -152,7 +172,7 @@ const BuildsTable = ({ builds = [], selectedBuildId, setSelectedBuildId }: Props
       </Table>
     </ThemeProvider>
   );
-};
+}
 const HeadRow = () => {
   let classes = useStyles();
   const durationTooltipText = (
@@ -290,23 +310,4 @@ const BuildRow = memo(({ build, selected, setSelectedBuildId }: BuildRowProps) =
       </TableCell>
     </TableRow>
   );
-});
-
-export default createFragmentContainer(BuildsTable, {
-  builds: graphql`
-    fragment BuildsTable_builds on Build @relay(plural: true) {
-      id
-      branch
-      tag
-      status
-      changeIdInRepo
-      changeMessageTitle
-      clockDurationInSeconds
-      repository {
-        platform
-        owner
-        name
-      }
-    }
-  `,
 });

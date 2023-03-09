@@ -11,9 +11,9 @@ import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { OwnerRepositoryList_info } from './__generated__/OwnerRepositoryList_info.graphql';
+import { OwnerRepositoryList_info$key } from './__generated__/OwnerRepositoryList_info.graphql';
 
 const useStyles = makeStyles(theme => {
   return {
@@ -25,11 +25,30 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  info: OwnerRepositoryList_info;
+  info: OwnerRepositoryList_info$key;
 }
 
-let OwnerRepositoryList = (props: Props) => {
-  let { info } = props;
+export default function OwnerRepositoryList(props: Props) {
+  let info = useFragment(
+    graphql`
+      fragment OwnerRepositoryList_info on OwnerInfo {
+        platform
+        uid
+        name
+        viewerPermission
+        repositories(last: 50) {
+          edges {
+            node {
+              id
+              ...LastDefaultBranchBuildRow_repository
+            }
+          }
+        }
+      }
+    `,
+    props.info,
+  );
+
   let classes = useStyles();
 
   let organizationSettings = null;
@@ -65,23 +84,4 @@ let OwnerRepositoryList = (props: Props) => {
       </Paper>
     </div>
   );
-};
-
-export default createFragmentContainer(OwnerRepositoryList, {
-  info: graphql`
-    fragment OwnerRepositoryList_info on OwnerInfo {
-      platform
-      uid
-      name
-      viewerPermission
-      repositories(last: 50) {
-        edges {
-          node {
-            id
-            ...LastDefaultBranchBuildRow_repository
-          }
-        }
-      }
-    }
-  `,
-});
+}

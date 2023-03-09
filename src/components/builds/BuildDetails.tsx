@@ -5,15 +5,14 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Paper from '@mui/material/Paper';
 import { graphql } from 'babel-plugin-relay/macro';
-import React, { useEffect } from 'react';
-import { commitMutation, createFragmentContainer, requestSubscription } from 'react-relay';
-import environment from '../../createRelayEnvironment';
+import React, { useMemo } from 'react';
+import { useFragment, useSubscription, useMutation } from 'react-relay';
 import { hasWritePermissions } from '../../utils/permissions';
 import BuildCreatedChip from '../chips/BuildCreatedChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import CirrusFavicon from '../common/CirrusFavicon';
 import TaskList from '../tasks/TaskList';
-import { BuildDetails_build } from './__generated__/BuildDetails_build.graphql';
+import { BuildDetails_build$key } from './__generated__/BuildDetails_build.graphql';
 import { Helmet as Head } from 'react-helmet';
 import Refresh from '@mui/icons-material/Refresh';
 import Check from '@mui/icons-material/Check';
@@ -26,31 +25,23 @@ import { BugReport, Cancel, Dehaze, Functions } from '@mui/icons-material';
 import Tooltip from '@mui/material/Tooltip';
 import DebuggingInformation from './BuildDebuggingInformation';
 import { HookType } from '../hooks/HookType';
-import { BuildDetailsApproveBuildMutationVariables } from './__generated__/BuildDetailsApproveBuildMutation.graphql';
-import { BuildDetailsReTriggerMutationVariables } from './__generated__/BuildDetailsReTriggerMutation.graphql';
-import { BuildDetailsReRunMutationVariables } from './__generated__/BuildDetailsReRunMutation.graphql';
-import { BuildDetailsCancelMutationVariables } from './__generated__/BuildDetailsCancelMutation.graphql';
+import {
+  BuildDetailsApproveBuildMutation,
+  BuildDetailsApproveBuildMutationVariables,
+} from './__generated__/BuildDetailsApproveBuildMutation.graphql';
+import {
+  BuildDetailsReTriggerMutation,
+  BuildDetailsReTriggerMutationVariables,
+} from './__generated__/BuildDetailsReTriggerMutation.graphql';
+import {
+  BuildDetailsReRunMutation,
+  BuildDetailsReRunMutationVariables,
+} from './__generated__/BuildDetailsReRunMutation.graphql';
+import {
+  BuildDetailsCancelMutation,
+  BuildDetailsCancelMutationVariables,
+} from './__generated__/BuildDetailsCancelMutation.graphql';
 import CommitMessage from '../common/CommitMessage';
-
-const buildApproveMutation = graphql`
-  mutation BuildDetailsApproveBuildMutation($input: BuildApproveInput!) {
-    approve(input: $input) {
-      build {
-        ...BuildDetails_build
-      }
-    }
-  }
-`;
-
-const buildReTriggerMutation = graphql`
-  mutation BuildDetailsReTriggerMutation($input: BuildReTriggerInput!) {
-    retrigger(input: $input) {
-      build {
-        ...BuildDetails_build
-      }
-    }
-  }
-`;
 
 const buildSubscription = graphql`
   subscription BuildDetailsSubscription($buildID: ID!) {
@@ -67,28 +58,6 @@ const buildSubscription = graphql`
         requiredGroups
         status
         ...TaskListRow_task
-      }
-    }
-  }
-`;
-
-const taskBatchReRunMutation = graphql`
-  mutation BuildDetailsReRunMutation($input: TasksReRunInput!) {
-    batchReRun(input: $input) {
-      newTasks {
-        build {
-          ...BuildDetails_build
-        }
-      }
-    }
-  }
-`;
-
-const taskCancelMutation = graphql`
-  mutation BuildDetailsCancelMutation($input: TaskAbortInput!) {
-    abortTask(input: $input) {
-      abortedTask {
-        id
       }
     }
   }
@@ -116,25 +85,72 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  build: BuildDetails_build;
+  build: BuildDetails_build$key;
 }
 
-function BuildDetails(props: Props) {
-  useEffect(() => {
-    let variables = { buildID: props.build.id };
+export default function BuildDetails(props: Props) {
+  let build = useFragment(
+    graphql`
+      fragment BuildDetails_build on Build {
+        id
+        branch
+        status
+        changeIdInRepo
+        changeMessageTitle
+        ...BuildCreatedChip_build
+        ...BuildBranchNameChip_build
+        ...BuildStatusChip_build
+        notifications {
+          message
+          ...Notification_notification
+        }
+        ...ConfigurationWithIssues_build
+        ...BuildDebuggingInformation_build
+        latestGroupTasks {
+          id
+          localGroupId
+          requiredGroups
+          scheduledTimestamp
+          executingTimestamp
+          finalStatusTimestamp
+          status
+          ...TaskListRow_task
+        }
+        repository {
+          ...RepositoryNameChip_repository
+          cloneUrl
+          viewerPermission
+        }
+        hooks {
+          timestamp
+          ...HookListRow_hook
+        }
+      }
+    `,
+    props.build,
+  );
 
-    const subscription = requestSubscription(environment, {
+  const buildSubscriptionConfig = useMemo(
+    () => ({
+      variables: { buildID: build.id },
       subscription: buildSubscription,
-      variables: variables,
-    });
-    return () => {
-      subscription.dispose();
-    };
-  }, [props.build.id]);
-  const { build } = props;
+    }),
+    [build.id],
+  );
+  useSubscription(buildSubscriptionConfig);
+
   let classes = useStyles();
   const repository = build.repository;
 
+  const [commitBuildApproveMutation] = useMutation<BuildDetailsApproveBuildMutation>(graphql`
+    mutation BuildDetailsApproveBuildMutation($input: BuildApproveInput!) {
+      approve(input: $input) {
+        build {
+          ...BuildDetails_build
+        }
+      }
+    }
+  `);
   function approveBuild() {
     const variables: BuildDetailsApproveBuildMutationVariables = {
       input: {
@@ -143,13 +159,21 @@ function BuildDetails(props: Props) {
       },
     };
 
-    commitMutation(environment, {
-      mutation: buildApproveMutation,
+    commitBuildApproveMutation({
       variables: variables,
       onError: err => console.error(err),
     });
   }
 
+  const [commitBuildReTriggerMutation] = useMutation<BuildDetailsReTriggerMutation>(graphql`
+    mutation BuildDetailsReTriggerMutation($input: BuildReTriggerInput!) {
+      retrigger(input: $input) {
+        build {
+          ...BuildDetails_build
+        }
+      }
+    }
+  `);
   function reTriggerBuild() {
     const variables: BuildDetailsReTriggerMutationVariables = {
       input: {
@@ -158,39 +182,56 @@ function BuildDetails(props: Props) {
       },
     };
 
-    commitMutation(environment, {
-      mutation: buildReTriggerMutation,
+    commitBuildReTriggerMutation({
       variables: variables,
       onError: err => console.error(err),
     });
   }
 
+  const [commitTaskBatchReRunMutation] = useMutation<BuildDetailsReRunMutation>(graphql`
+    mutation BuildDetailsReRunMutation($input: TasksReRunInput!) {
+      batchReRun(input: $input) {
+        newTasks {
+          build {
+            ...BuildDetails_build
+          }
+        }
+      }
+    }
+  `);
   function batchReRun(taskIds) {
     const variables: BuildDetailsReRunMutationVariables = {
       input: {
-        clientMutationId: 'batch-rerun-' + props.build.id,
+        clientMutationId: 'batch-rerun-' + build.id,
         taskIds: taskIds,
       },
     };
 
-    commitMutation(environment, {
-      mutation: taskBatchReRunMutation,
+    commitTaskBatchReRunMutation({
       variables: variables,
       onError: err => console.error(err),
     });
   }
 
+  const [commitTaskCancelMutation] = useMutation<BuildDetailsCancelMutation>(graphql`
+    mutation BuildDetailsCancelMutation($input: TaskAbortInput!) {
+      abortTask(input: $input) {
+        abortedTask {
+          id
+        }
+      }
+    }
+  `);
   function batchCancellation(taskIds: string[]) {
     taskIds.forEach(id => {
       const variables: BuildDetailsCancelMutationVariables = {
         input: {
-          clientMutationId: `batch-cancellation-${props.build.id}-${id}`,
+          clientMutationId: `batch-cancellation-${build.id}-${id}`,
           taskId: id,
         },
       };
 
-      commitMutation(environment, {
-        mutation: taskCancelMutation,
+      commitTaskCancelMutation({
         variables: variables,
         onError: err => console.error(err),
       });
@@ -326,43 +367,3 @@ function BuildDetails(props: Props) {
     </div>
   );
 }
-
-export default createFragmentContainer(BuildDetails, {
-  build: graphql`
-    fragment BuildDetails_build on Build {
-      id
-      branch
-      status
-      changeIdInRepo
-      changeMessageTitle
-      ...BuildCreatedChip_build
-      ...BuildBranchNameChip_build
-      ...BuildStatusChip_build
-      notifications {
-        message
-        ...Notification_notification
-      }
-      ...ConfigurationWithIssues_build
-      ...BuildDebuggingInformation_build
-      latestGroupTasks {
-        id
-        localGroupId
-        requiredGroups
-        scheduledTimestamp
-        executingTimestamp
-        finalStatusTimestamp
-        status
-        ...TaskListRow_task
-      }
-      repository {
-        ...RepositoryNameChip_repository
-        cloneUrl
-        viewerPermission
-      }
-      hooks {
-        timestamp
-        ...HookListRow_hook
-      }
-    }
-  `,
-});

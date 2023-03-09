@@ -7,20 +7,29 @@ import Icon from '@mui/material/Icon';
 import { useTaskStatusColor } from '../../utils/colors';
 import { taskStatusIconName } from '../../utils/status';
 import { roundAndPresentDuration } from '../../utils/time';
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { BuildCreatedChip_build } from './__generated__/BuildCreatedChip_build.graphql';
+import { BuildCreatedChip_build$key } from './__generated__/BuildCreatedChip_build.graphql';
 import { useTheme } from '@mui/material';
 
 interface Props {
-  build: BuildCreatedChip_build;
+  build: BuildCreatedChip_build$key;
   className?: string;
 }
 
-let BuildCreatedChip = (props: Props) => {
+export default function BuildCreatedChip(props: Props) {
+  let build = useFragment(
+    graphql`
+      fragment BuildCreatedChip_build on Build {
+        id
+        buildCreatedTimestamp
+      }
+    `,
+    props.build,
+  );
   let theme = useTheme();
 
-  const creationTimestamp = props.build.buildCreatedTimestamp;
+  const creationTimestamp = build.buildCreatedTimestamp;
   const [durationAgoInSeconds, setDurationAgoInSeconds] = React.useState((Date.now() - creationTimestamp) / 1000);
 
   useEffect(() => {
@@ -51,13 +60,4 @@ let BuildCreatedChip = (props: Props) => {
       />
     </Tooltip>
   );
-};
-
-export default createFragmentContainer(BuildCreatedChip, {
-  build: graphql`
-    fragment BuildCreatedChip_build on Build {
-      id
-      buildCreatedTimestamp
-    }
-  `,
-});
+}

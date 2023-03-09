@@ -5,15 +5,15 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Paper from '@mui/material/Paper';
 import { graphql } from 'babel-plugin-relay/macro';
-import React, { useEffect } from 'react';
-import { commitMutation, createFragmentContainer, requestSubscription } from 'react-relay';
+import React, { useMemo } from 'react';
+import { commitMutation, useFragment, useSubscription } from 'react-relay';
 import environment from '../../createRelayEnvironment';
 import { hasWritePermissions } from '../../utils/permissions';
 import BuildCreatedChip from '../chips/BuildCreatedChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import CirrusFavicon from '../common/CirrusFavicon';
 import TaskList from '../tasks/TaskList';
-import { BuildDetails_build } from './__generated__/BuildDetails_build.graphql';
+import { BuildDetails_build$key } from './__generated__/BuildDetails_build.graphql';
 import { Helmet as Head } from 'react-helmet';
 import Refresh from '@mui/icons-material/Refresh';
 import Check from '@mui/icons-material/Check';
@@ -116,22 +116,60 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  build: BuildDetails_build;
+  build: BuildDetails_build$key;
 }
 
-function BuildDetails(props: Props) {
-  useEffect(() => {
-    let variables = { buildID: props.build.id };
+export default function BuildDetails(props: Props) {
+  let build = useFragment(
+    graphql`
+      fragment BuildDetails_build on Build {
+        id
+        branch
+        status
+        changeIdInRepo
+        changeMessageTitle
+        ...BuildCreatedChip_build
+        ...BuildBranchNameChip_build
+        ...BuildStatusChip_build
+        notifications {
+          message
+          ...Notification_notification
+        }
+        ...ConfigurationWithIssues_build
+        ...BuildDebuggingInformation_build
+        latestGroupTasks {
+          id
+          localGroupId
+          requiredGroups
+          scheduledTimestamp
+          executingTimestamp
+          finalStatusTimestamp
+          status
+          ...TaskListRow_task
+        }
+        repository {
+          ...RepositoryNameChip_repository
+          cloneUrl
+          viewerPermission
+        }
+        hooks {
+          timestamp
+          ...HookListRow_hook
+        }
+      }
+    `,
+    props.build,
+  );
 
-    const subscription = requestSubscription(environment, {
+  const buildSubscriptionConfig = useMemo(
+    () => ({
+      variables: { buildID: build.id },
       subscription: buildSubscription,
-      variables: variables,
-    });
-    return () => {
-      subscription.dispose();
-    };
-  }, [props.build.id]);
-  const { build } = props;
+    }),
+    [build.id],
+  );
+  useSubscription(buildSubscriptionConfig);
+
   let classes = useStyles();
   const repository = build.repository;
 
@@ -168,7 +206,7 @@ function BuildDetails(props: Props) {
   function batchReRun(taskIds) {
     const variables: BuildDetailsReRunMutationVariables = {
       input: {
-        clientMutationId: 'batch-rerun-' + props.build.id,
+        clientMutationId: 'batch-rerun-' + build.id,
         taskIds: taskIds,
       },
     };
@@ -184,7 +222,7 @@ function BuildDetails(props: Props) {
     taskIds.forEach(id => {
       const variables: BuildDetailsCancelMutationVariables = {
         input: {
-          clientMutationId: `batch-cancellation-${props.build.id}-${id}`,
+          clientMutationId: `batch-cancellation-${build.id}-${id}`,
           taskId: id,
         },
       };
@@ -326,43 +364,3 @@ function BuildDetails(props: Props) {
     </div>
   );
 }
-
-export default createFragmentContainer(BuildDetails, {
-  build: graphql`
-    fragment BuildDetails_build on Build {
-      id
-      branch
-      status
-      changeIdInRepo
-      changeMessageTitle
-      ...BuildCreatedChip_build
-      ...BuildBranchNameChip_build
-      ...BuildStatusChip_build
-      notifications {
-        message
-        ...Notification_notification
-      }
-      ...ConfigurationWithIssues_build
-      ...BuildDebuggingInformation_build
-      latestGroupTasks {
-        id
-        localGroupId
-        requiredGroups
-        scheduledTimestamp
-        executingTimestamp
-        finalStatusTimestamp
-        status
-        ...TaskListRow_task
-      }
-      repository {
-        ...RepositoryNameChip_repository
-        cloneUrl
-        viewerPermission
-      }
-      hooks {
-        timestamp
-        ...HookListRow_hook
-      }
-    }
-  `,
-});

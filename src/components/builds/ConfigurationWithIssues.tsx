@@ -1,9 +1,9 @@
 import React, { ReactNode } from 'react';
 import { Alert } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { ConfigurationWithIssues_build } from './__generated__/ConfigurationWithIssues_build.graphql';
+import { ConfigurationWithIssues_build$key } from './__generated__/ConfigurationWithIssues_build.graphql';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -48,11 +48,29 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  build: ConfigurationWithIssues_build;
+  build: ConfigurationWithIssues_build$key;
 }
 
-function ConfigurationWithIssues(props: Props) {
-  let { build } = props;
+export default function ConfigurationWithIssues(props: Props) {
+  let build = useFragment(
+    graphql`
+      fragment ConfigurationWithIssues_build on Build {
+        parsingResult {
+          rawStarlarkConfig
+          processedYamlConfig
+          issues {
+            level
+            message
+            path
+            line
+            column
+          }
+        }
+      }
+    `,
+    props.build,
+  );
+
   let classes = useStyles();
 
   if (!build.parsingResult || build.parsingResult.issues.length === 0) {
@@ -194,21 +212,3 @@ function ConfigurationWithIssues(props: Props) {
     </Accordion>
   );
 }
-
-export default createFragmentContainer(ConfigurationWithIssues, {
-  build: graphql`
-    fragment ConfigurationWithIssues_build on Build {
-      parsingResult {
-        rawStarlarkConfig
-        processedYamlConfig
-        issues {
-          level
-          message
-          path
-          line
-          column
-        }
-      }
-    }
-  `,
-});

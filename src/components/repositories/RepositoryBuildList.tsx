@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createFragmentContainer, requestSubscription } from 'react-relay';
+import { requestSubscription, useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { Helmet as Head } from 'react-helmet';
 import cx from 'classnames';
@@ -37,7 +37,10 @@ import BuildChangeChip from '../chips/BuildChangeChip';
 import MarkdownTypography from '../common/MarkdownTypography';
 import BuildsTable from '../../components/builds/BuildsTable';
 
-import { RepositoryBuildList_repository } from './__generated__/RepositoryBuildList_repository.graphql';
+import {
+  RepositoryBuildList_repository,
+  RepositoryBuildList_repository$key,
+} from './__generated__/RepositoryBuildList_repository.graphql';
 
 // todo: move custom values to mui theme adjustments
 const useStyles = makeStyles(theme => {
@@ -75,7 +78,7 @@ const useStyles = makeStyles(theme => {
 
 interface Props {
   branch?: string;
-  repository: RepositoryBuildList_repository;
+  repository: RepositoryBuildList_repository$key;
 }
 
 const repositorySubscription = graphql`
@@ -86,12 +89,41 @@ const repositorySubscription = graphql`
   }
 `;
 
-function RepositoryBuildList(props: Props) {
+export default function RepositoryBuildList(props: Props) {
+  let repository = useFragment(
+    graphql`
+      fragment RepositoryBuildList_repository on Repository @argumentDefinitions(branch: { type: "String" }) {
+        id
+        platform
+        owner
+        name
+        viewerPermission
+        ...CreateBuildDialog_repository
+        builds(last: 50, branch: $branch) {
+          edges {
+            node {
+              id
+              changeMessageTitle
+              clockDurationInSeconds
+              durationInSeconds
+              status
+              ...BuildsTable_builds
+              ...BuildBranchNameChip_build
+              ...BuildChangeChip_build
+              ...BuildStatusChip_build
+            }
+          }
+        }
+      }
+    `,
+    props.repository,
+  );
+
   const pageWidth = usePageWidth();
   const isNewDesign = pageWidth > 900;
 
   useEffect(() => {
-    let variables = { repositoryID: props.repository.id, branch: props.branch };
+    let variables = { repositoryID: repository.id, branch: props.branch };
 
     const subscription = requestSubscription(environment, {
       subscription: repositorySubscription,
@@ -100,12 +132,11 @@ function RepositoryBuildList(props: Props) {
     return () => {
       subscription.dispose();
     };
-  }, [props.repository.id, props.branch]);
+  }, [repository.id, props.branch]);
 
   let navigate = useNavigate();
   let [selectedBuildId, setSelectedBuildId] = useState(null);
   let [openCreateDialog, setOpenCreateDialog] = useState(false);
-  let { repository } = props;
   let classes = useStyles();
   let builds = repository.builds.edges.map(edge => edge.node);
 
@@ -252,31 +283,3 @@ function RepositoryBuildList(props: Props) {
     </div>
   );
 }
-
-export default createFragmentContainer(RepositoryBuildList, {
-  repository: graphql`
-    fragment RepositoryBuildList_repository on Repository @argumentDefinitions(branch: { type: "String" }) {
-      id
-      platform
-      owner
-      name
-      viewerPermission
-      ...CreateBuildDialog_repository
-      builds(last: 50, branch: $branch) {
-        edges {
-          node {
-            id
-            changeMessageTitle
-            clockDurationInSeconds
-            durationInSeconds
-            status
-            ...BuildsTable_builds
-            ...BuildBranchNameChip_build
-            ...BuildChangeChip_build
-            ...BuildStatusChip_build
-          }
-        }
-      }
-    }
-  `,
-});

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import environment from '../../createRelayEnvironment';
-import { commitMutation, useFragment } from 'react-relay';
+import { useFragment, useMutation } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -17,19 +16,10 @@ import 'ace-builds/src-noconflict/mode-yaml';
 import 'ace-builds/src-noconflict/theme-github';
 import { CreateBuildDialog_repository$key } from './__generated__/CreateBuildDialog_repository.graphql';
 import {
+  CreateBuildDialogMutation,
   CreateBuildDialogMutationResponse,
   CreateBuildDialogMutationVariables,
 } from './__generated__/CreateBuildDialogMutation.graphql';
-
-const createBuildMutation = graphql`
-  mutation CreateBuildDialogMutation($input: RepositoryCreateBuildInput!) {
-    createBuild(input: $input) {
-      build {
-        id
-      }
-    }
-  }
-`;
 
 interface Props {
   onClose: Function;
@@ -48,6 +38,18 @@ export default function CreateBuildDialog(props: Props) {
       }
     `,
     props.repository,
+  );
+
+  const [commitCreateBuildMutation] = useMutation<CreateBuildDialogMutation>(
+    graphql`
+      mutation CreateBuildDialogMutation($input: RepositoryCreateBuildInput!) {
+        createBuild(input: $input) {
+          build {
+            id
+          }
+        }
+      }
+    `,
   );
 
   let navigate = useNavigate();
@@ -72,8 +74,7 @@ export default function CreateBuildDialog(props: Props) {
       },
     };
 
-    commitMutation(environment, {
-      mutation: createBuildMutation,
+    commitCreateBuildMutation({
       variables: variables,
       onCompleted: (response: CreateBuildDialogMutationResponse, errors) => {
         if (errors) {

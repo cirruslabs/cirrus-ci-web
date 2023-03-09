@@ -1,10 +1,8 @@
 import React from 'react';
 
-import { QueryRenderer } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
+import { useLazyLoadQuery } from 'react-relay';
 
-import environment from '../../createRelayEnvironment';
-import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
 import NotFound from '../NotFound';
 import RepositoryMetricsPage from '../../components/metrics/RepositoryMetricsPage';
 import { RepositoryMetricsQuery } from './__generated__/RepositoryMetricsQuery.graphql';
@@ -14,44 +12,38 @@ import TimelineIcon from '@mui/icons-material/Timeline';
 
 export default function RepositoryMetrics(parentProps): JSX.Element {
   const { platform, owner, name } = useParams();
+
+  const response = useLazyLoadQuery<RepositoryMetricsQuery>(
+    graphql`
+      query RepositoryMetricsQuery($platform: String!, $owner: String!, $name: String!) {
+        ownerRepository(platform: $platform, owner: $owner, name: $name) {
+          ...AppBreadcrumbs_repository
+          ...RepositoryMetricsPage_repository
+        }
+        viewer {
+          ...AppBreadcrumbs_viewer
+        }
+      }
+    `,
+    { platform, owner, name },
+  );
+
+  if (!response.ownerRepository) {
+    return <NotFound />;
+  }
   return (
-    <QueryRenderer<RepositoryMetricsQuery>
-      environment={environment}
-      variables={{ platform, owner, name }}
-      query={graphql`
-        query RepositoryMetricsQuery($platform: String!, $owner: String!, $name: String!) {
-          ownerRepository(platform: $platform, owner: $owner, name: $name) {
-            ...AppBreadcrumbs_repository
-            ...RepositoryMetricsPage_repository
-          }
-          viewer {
-            ...AppBreadcrumbs_viewer
-          }
-        }
-      `}
-      render={({ error, props }) => {
-        if (!props) {
-          return <CirrusLinearProgress />;
-        }
-        if (!props.ownerRepository) {
-          return <NotFound message={error} />;
-        }
-        return (
-          <>
-            <AppBreadcrumbs
-              repository={props.ownerRepository}
-              viewer={props.viewer}
-              extraCrumbs={[
-                {
-                  name: 'Metrics',
-                  Icon: TimelineIcon,
-                },
-              ]}
-            />
-            <RepositoryMetricsPage repository={props.ownerRepository} {...parentProps} />
-          </>
-        );
-      }}
-    />
+    <>
+      <AppBreadcrumbs
+        repository={response.ownerRepository}
+        viewer={response.viewer}
+        extraCrumbs={[
+          {
+            name: 'Metrics',
+            Icon: TimelineIcon,
+          },
+        ]}
+      />
+      <RepositoryMetricsPage repository={response.ownerRepository} {...parentProps} />
+    </>
   );
 }

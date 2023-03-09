@@ -1,18 +1,32 @@
 import React from 'react';
 import { CardContent } from '@mui/material';
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
-import { BuildDebuggingInformation_build } from './__generated__/BuildDebuggingInformation_build.graphql';
+import { BuildDebuggingInformation_build$key } from './__generated__/BuildDebuggingInformation_build.graphql';
 import InlineLogs from '../logs/InlineLogs';
 
 interface Props {
-  build: BuildDebuggingInformation_build;
+  build: BuildDebuggingInformation_build$key;
 }
 
-function BuildDebuggingInformation(props: Props) {
-  let { build } = props;
+export default function BuildDebuggingInformation(props: Props) {
+  let build = useFragment(
+    graphql`
+      fragment BuildDebuggingInformation_build on Build {
+        parsingResult {
+          rawYamlConfig
+          rawStarlarkConfig
+          processedYamlConfig
+          outputLogs
+          environment
+          affectedFiles
+        }
+      }
+    `,
+    props.build,
+  );
 
   if (!build.parsingResult) {
     return null;
@@ -39,18 +53,3 @@ function BuildDebuggingInformation(props: Props) {
     </Card>
   );
 }
-
-export default createFragmentContainer(BuildDebuggingInformation, {
-  build: graphql`
-    fragment BuildDebuggingInformation_build on Build {
-      parsingResult {
-        rawYamlConfig
-        rawStarlarkConfig
-        processedYamlConfig
-        outputLogs
-        environment
-        affectedFiles
-      }
-    }
-  `,
-});

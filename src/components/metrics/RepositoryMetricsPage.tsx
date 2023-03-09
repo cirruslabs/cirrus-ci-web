@@ -1,6 +1,6 @@
 import { graphql } from 'babel-plugin-relay/macro';
 import React, { useState } from 'react';
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import { makeStyles } from '@mui/styles';
 import RepositoryMetricsCharts from './RepositoryMetricsCharts';
 import Card from '@mui/material/Card';
@@ -12,7 +12,7 @@ import Input from '@mui/material/Input';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import { RepositoryMetricsPage_repository } from './__generated__/RepositoryMetricsPage_repository.graphql';
+import { RepositoryMetricsPage_repository$key } from './__generated__/RepositoryMetricsPage_repository.graphql';
 import { MetricsQueryParameters } from './__generated__/RepositoryMetricsChartsQuery.graphql';
 import { Helmet as Head } from 'react-helmet';
 
@@ -30,12 +30,22 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  repository: RepositoryMetricsPage_repository;
+  repository: RepositoryMetricsPage_repository$key;
 }
 
-function RepositoryMetricsPage(props: Props) {
+export default function RepositoryMetricsPage(props: Props) {
+  let repository = useFragment(
+    graphql`
+      fragment RepositoryMetricsPage_repository on Repository {
+        id
+        owner
+        name
+      }
+    `,
+    props.repository,
+  );
+
   let [parameters, setParameters] = useState<MetricsQueryParameters>({});
-  let { repository } = props;
   let classes = useStyles();
 
   function handleChange(event) {
@@ -139,13 +149,3 @@ function cleanEmptyOrNullValues(obj) {
   }
   return result;
 }
-
-export default createFragmentContainer(RepositoryMetricsPage, {
-  repository: graphql`
-    fragment RepositoryMetricsPage_repository on Repository {
-      id
-      owner
-      name
-    }
-  `,
-});

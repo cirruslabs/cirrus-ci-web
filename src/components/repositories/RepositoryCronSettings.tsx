@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { commitMutation, useFragment } from 'react-relay';
+import { useFragment, useMutation } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -18,54 +18,21 @@ import { useNavigate } from 'react-router-dom';
 import Chip from '@mui/material/Chip';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import { Add, Delete } from '@mui/icons-material';
-import environment from '../../createRelayEnvironment';
 import Avatar from '@mui/material/Avatar';
 import Icon from '@mui/material/Icon';
 import NextCronInvocationTimeChip from '../chips/NextCronInvocationTimeChip';
 import {
+  RepositoryCronSettingsSaveMutation,
   RepositoryCronSettingsSaveMutationResponse,
   RepositoryCronSettingsSaveMutationVariables,
 } from './__generated__/RepositoryCronSettingsSaveMutation.graphql';
 import {
+  RepositoryCronSettingsRemoveMutation,
   RepositoryCronSettingsRemoveMutationResponse,
   RepositoryCronSettingsRemoveMutationVariables,
 } from './__generated__/RepositoryCronSettingsRemoveMutation.graphql';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
 import { CardActions } from '@mui/material';
-
-const saveCronSettingsMutation = graphql`
-  mutation RepositoryCronSettingsSaveMutation($input: RepositorySaveCronSettingsInput!) {
-    saveCronSettings(input: $input) {
-      settings {
-        name
-        branch
-        expression
-        ...NextCronInvocationTimeChip_settings
-        lastInvocationBuild {
-          id
-          ...BuildStatusChip_build
-        }
-      }
-    }
-  }
-`;
-
-const removeCronSettingsMutation = graphql`
-  mutation RepositoryCronSettingsRemoveMutation($input: RepositoryRemoveCronSettingsInput!) {
-    removeCronSettings(input: $input) {
-      settings {
-        name
-        branch
-        expression
-        ...NextCronInvocationTimeChip_settings
-        lastInvocationBuild {
-          id
-          ...BuildStatusChip_build
-        }
-      }
-    }
-  }
-`;
 
 interface Props {
   repository: RepositoryCronSettings_repository$key;
@@ -137,6 +104,22 @@ export default function RepositoryCronSettings(props: Props) {
     };
   }
 
+  const [commitSaveCronSettingsMutation] = useMutation<RepositoryCronSettingsSaveMutation>(graphql`
+    mutation RepositoryCronSettingsSaveMutation($input: RepositorySaveCronSettingsInput!) {
+      saveCronSettings(input: $input) {
+        settings {
+          name
+          branch
+          expression
+          ...NextCronInvocationTimeChip_settings
+          lastInvocationBuild {
+            id
+            ...BuildStatusChip_build
+          }
+        }
+      }
+    }
+  `);
   function addNewCronSetting() {
     const variables: RepositoryCronSettingsSaveMutationVariables = {
       input: {
@@ -148,8 +131,7 @@ export default function RepositoryCronSettings(props: Props) {
       },
     };
 
-    commitMutation(environment, {
-      mutation: saveCronSettingsMutation,
+    commitSaveCronSettingsMutation({
       variables: variables,
       onCompleted: (response: RepositoryCronSettingsSaveMutationResponse, errors) => {
         if (errors) {
@@ -162,6 +144,24 @@ export default function RepositoryCronSettings(props: Props) {
     });
   }
 
+  const [commitRemoveCronSettingsMutation] = useMutation<RepositoryCronSettingsRemoveMutation>(
+    graphql`
+      mutation RepositoryCronSettingsRemoveMutation($input: RepositoryRemoveCronSettingsInput!) {
+        removeCronSettings(input: $input) {
+          settings {
+            name
+            branch
+            expression
+            ...NextCronInvocationTimeChip_settings
+            lastInvocationBuild {
+              id
+              ...BuildStatusChip_build
+            }
+          }
+        }
+      }
+    `,
+  );
   function removeCronSetting(name: string) {
     const variables: RepositoryCronSettingsRemoveMutationVariables = {
       input: {
@@ -171,8 +171,7 @@ export default function RepositoryCronSettings(props: Props) {
       },
     };
 
-    commitMutation(environment, {
-      mutation: removeCronSettingsMutation,
+    commitRemoveCronSettingsMutation({
       variables: variables,
       onCompleted: (response: RepositoryCronSettingsRemoveMutationResponse, errors) => {
         if (errors) {

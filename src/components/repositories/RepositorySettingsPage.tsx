@@ -4,10 +4,10 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import RepositorySecuredVariables from './RepositorySecuredVariables';
 import RepositorySettings from './RepositorySettings';
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { makeStyles } from '@mui/styles';
-import { RepositorySettingsPage_repository } from './__generated__/RepositorySettingsPage_repository.graphql';
+import { RepositorySettingsPage_repository$key } from './__generated__/RepositorySettingsPage_repository.graphql';
 import RepositoryCronSettings from './RepositoryCronSettings';
 import { Link } from '@mui/material';
 import RepositoryDangerSettings from './RepositoryDangerSettings';
@@ -21,12 +21,26 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  repository: RepositorySettingsPage_repository;
+  repository: RepositorySettingsPage_repository$key;
 }
 
-let RepositorySettingsPage = (props: Props) => {
+export default function RepositorySettingsPage(props: Props) {
+  let repository = useFragment(
+    graphql`
+      fragment RepositorySettingsPage_repository on Repository {
+        platform
+        owner
+        name
+        ...RepositorySettings_repository
+        ...RepositorySecuredVariables_repository
+        ...RepositoryCronSettings_repository
+        ...RepositoryDangerSettings_repository
+      }
+    `,
+    props.repository,
+  );
+
   let classes = useStyles();
-  let { repository } = props;
 
   let link = (
     <Link color="inherit" href={`/${repository.platform}/${repository.owner}/${repository.name}`}>
@@ -60,18 +74,4 @@ let RepositorySettingsPage = (props: Props) => {
       </Paper>
     </div>
   );
-};
-
-export default createFragmentContainer(RepositorySettingsPage, {
-  repository: graphql`
-    fragment RepositorySettingsPage_repository on Repository {
-      platform
-      owner
-      name
-      ...RepositorySettings_repository
-      ...RepositorySecuredVariables_repository
-      ...RepositoryCronSettings_repository
-      ...RepositoryDangerSettings_repository
-    }
-  `,
-});
+}

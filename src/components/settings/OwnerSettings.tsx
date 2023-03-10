@@ -1,5 +1,5 @@
 import React from 'react';
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import Paper from '@mui/material/Paper';
 import { makeStyles } from '@mui/styles';
@@ -10,7 +10,7 @@ import WebHookSettings from '../webhooks/WebHookSettings';
 import OwnerApiSettings from './OwnerApiSettings';
 import OwnerSecuredVariables from './OwnerSecuredVariables';
 import OwnerPersistentWorkerPools from './OwnerPersistentWorkerPools';
-import { OwnerSettings_info } from './__generated__/OwnerSettings_info.graphql';
+import { OwnerSettings_info$key } from './__generated__/OwnerSettings_info.graphql';
 import MarkdownTypography from '../common/MarkdownTypography';
 import CardHeader from '@mui/material/CardHeader';
 import { Card, CardActions, CardContent } from '@mui/material';
@@ -28,11 +28,34 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  info: OwnerSettings_info;
+  info: OwnerSettings_info$key;
 }
 
-function OwnerSettings(props: Props) {
-  let { info } = props;
+export default function OwnerSettings(props: Props) {
+  let info = useFragment(
+    graphql`
+      fragment OwnerSettings_info on OwnerInfo {
+        platform
+        uid
+        name
+        viewerPermission
+        description {
+          message
+          actions {
+            title
+            link
+          }
+        }
+        ...OwnerComputeCredits_info
+        ...OwnerApiSettings_info
+        ...OwnerSecuredVariables_info
+        ...OwnerPersistentWorkerPools_info
+        ...WebHookSettings_info
+      }
+    `,
+    props.info,
+  );
+
   let classes = useStyles();
 
   if (!info) {
@@ -90,26 +113,3 @@ function OwnerSettings(props: Props) {
     </div>
   );
 }
-
-export default createFragmentContainer(OwnerSettings, {
-  info: graphql`
-    fragment OwnerSettings_info on OwnerInfo {
-      platform
-      uid
-      name
-      viewerPermission
-      description {
-        message
-        actions {
-          title
-          link
-        }
-      }
-      ...OwnerComputeCredits_info
-      ...OwnerApiSettings_info
-      ...OwnerSecuredVariables_info
-      ...OwnerPersistentWorkerPools_info
-      ...WebHookSettings_info
-    }
-  `,
-});

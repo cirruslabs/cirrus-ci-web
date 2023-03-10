@@ -1,6 +1,5 @@
 import React from 'react';
-import environment from '../../createRelayEnvironment';
-import { commitMutation, useFragment } from 'react-relay';
+import { useMutation, useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -9,20 +8,13 @@ import { RepositoryDangerSettings_repository$key } from './__generated__/Reposit
 import { navigateHelper } from '../../utils/navigateHelper';
 import { useNavigate } from 'react-router-dom';
 import {
+  RepositoryDangerSettingsDeleteMutation,
   RepositoryDangerSettingsDeleteMutationResponse,
   RepositoryDangerSettingsDeleteMutationVariables,
 } from './__generated__/RepositoryDangerSettingsDeleteMutation.graphql';
 import { ListItem, ListItemText } from '@mui/material';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
-
-const deleteMutation = graphql`
-  mutation RepositoryDangerSettingsDeleteMutation($input: RepositoryDeleteInput!) {
-    deleteRepository(input: $input) {
-      deleted
-    }
-  }
-`;
 
 interface Props {
   repository: RepositoryDangerSettings_repository$key;
@@ -42,6 +34,13 @@ export default function RepositoryDangerSettings(props: Props) {
 
   let navigate = useNavigate();
 
+  const [commitDeleteMutation] = useMutation<RepositoryDangerSettingsDeleteMutation>(graphql`
+    mutation RepositoryDangerSettingsDeleteMutation($input: RepositoryDeleteInput!) {
+      deleteRepository(input: $input) {
+        deleted
+      }
+    }
+  `);
   function deleteCurrentRepository() {
     const variables: RepositoryDangerSettingsDeleteMutationVariables = {
       input: {
@@ -50,8 +49,7 @@ export default function RepositoryDangerSettings(props: Props) {
       },
     };
 
-    commitMutation(environment, {
-      mutation: deleteMutation,
+    commitDeleteMutation({
       variables: variables,
       onCompleted: (response: RepositoryDangerSettingsDeleteMutationResponse, errors) => {
         if (errors) {

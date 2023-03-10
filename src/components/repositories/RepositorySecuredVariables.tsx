@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import environment from '../../createRelayEnvironment';
-import { commitMutation, useFragment } from 'react-relay';
+import { useFragment, useMutation } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -12,17 +11,10 @@ import CopyPasteField from '../common/CopyPasteField';
 import TextField from '@mui/material/TextField';
 import { RepositorySecuredVariables_repository$key } from './__generated__/RepositorySecuredVariables_repository.graphql';
 import {
+  RepositorySecuredVariablesMutation,
   RepositorySecuredVariablesMutationResponse,
   RepositorySecuredVariablesMutationVariables,
 } from './__generated__/RepositorySecuredVariablesMutation.graphql';
-
-const securedVariableMutation = graphql`
-  mutation RepositorySecuredVariablesMutation($input: RepositorySecuredVariableInput!) {
-    securedVariable(input: $input) {
-      variableName
-    }
-  }
-`;
 
 interface Props {
   repository: RepositorySecuredVariables_repository$key;
@@ -51,6 +43,13 @@ export default function RepositorySecuredVariables(props: Props) {
     securedComponent = <CopyPasteField name="securedVariable" fullWidth={true} value={valueForYAMLFile} />;
   }
 
+  const [commitSecuredVariableMutation] = useMutation<RepositorySecuredVariablesMutation>(graphql`
+    mutation RepositorySecuredVariablesMutation($input: RepositorySecuredVariableInput!) {
+      securedVariable(input: $input) {
+        variableName
+      }
+    }
+  `);
   function encryptCurrentValue() {
     let valueToSecure = inputValue;
     const variables: RepositorySecuredVariablesMutationVariables = {
@@ -61,8 +60,7 @@ export default function RepositorySecuredVariables(props: Props) {
       },
     };
 
-    commitMutation(environment, {
-      mutation: securedVariableMutation,
+    commitSecuredVariableMutation({
       variables: variables,
       onCompleted: (response: RepositorySecuredVariablesMutationResponse, errors) => {
         if (errors) {

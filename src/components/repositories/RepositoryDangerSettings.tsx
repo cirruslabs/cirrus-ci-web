@@ -1,11 +1,11 @@
 import React from 'react';
 import environment from '../../createRelayEnvironment';
-import { commitMutation, createFragmentContainer } from 'react-relay';
+import { commitMutation, useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
-import { RepositoryDangerSettings_repository } from './__generated__/RepositoryDangerSettings_repository.graphql';
+import { RepositoryDangerSettings_repository$key } from './__generated__/RepositoryDangerSettings_repository.graphql';
 import { navigateHelper } from '../../utils/navigateHelper';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -25,17 +25,28 @@ const deleteMutation = graphql`
 `;
 
 interface Props {
-  repository: RepositoryDangerSettings_repository;
+  repository: RepositoryDangerSettings_repository$key;
 }
 
-function RepositoryDangerSettings(props: Props) {
+export default function RepositoryDangerSettings(props: Props) {
+  let repository = useFragment(
+    graphql`
+      fragment RepositoryDangerSettings_repository on Repository {
+        id
+        owner
+        name
+      }
+    `,
+    props.repository,
+  );
+
   let navigate = useNavigate();
 
   function deleteCurrentRepository() {
     const variables: RepositoryDangerSettingsDeleteMutationVariables = {
       input: {
-        clientMutationId: props.repository.name,
-        repositoryId: props.repository.id,
+        clientMutationId: repository.name,
+        repositoryId: repository.id,
       },
     };
 
@@ -76,13 +87,3 @@ function RepositoryDangerSettings(props: Props) {
     </Card>
   );
 }
-
-export default createFragmentContainer(RepositoryDangerSettings, {
-  repository: graphql`
-    fragment RepositoryDangerSettings_repository on Repository {
-      id
-      owner
-      name
-    }
-  `,
-});

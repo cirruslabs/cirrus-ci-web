@@ -10,9 +10,9 @@ import Select from '@mui/material/Select';
 import Switch from '@mui/material/Switch';
 import { graphql } from 'babel-plugin-relay/macro';
 import React, { useState } from 'react';
-import { commitMutation, createFragmentContainer } from 'react-relay';
+import { commitMutation, useFragment } from 'react-relay';
 import environment from '../../createRelayEnvironment';
-import { RepositorySettings_repository } from './__generated__/RepositorySettings_repository.graphql';
+import { RepositorySettings_repository$key } from './__generated__/RepositorySettings_repository.graphql';
 import {
   RepositorySettingsMutationResponse,
   RepositorySettingsMutationVariables,
@@ -46,12 +46,28 @@ const saveSettingsMutation = graphql`
 `;
 
 interface Props {
-  repository: RepositorySettings_repository;
+  repository: RepositorySettings_repository$key;
 }
 
-function RepositorySettings(props: Props) {
-  let [initialSettings, setInitialSettings] = useState(props.repository.settings);
-  let [settings, setSettings] = useState(props.repository.settings);
+export default function RepositorySettings(props: Props) {
+  let repository = useFragment(
+    graphql`
+      fragment RepositorySettings_repository on Repository {
+        id
+        settings {
+          needsApproval
+          decryptEnvironmentVariables
+          configResolutionStrategy
+          additionalEnvironment
+          cacheVersion
+        }
+      }
+    `,
+    props.repository,
+  );
+
+  let [initialSettings, setInitialSettings] = useState(repository.settings);
+  let [settings, setSettings] = useState(repository.settings);
   let [additionalEnvironmentToAdd, setAdditionalEnvironmentToAdd] = useState('');
 
   let changeField = field => {
@@ -100,8 +116,8 @@ function RepositorySettings(props: Props) {
   function onSave() {
     const variables: RepositorySettingsMutationVariables = {
       input: {
-        clientMutationId: 'save-settings-' + props.repository.id,
-        repositoryId: props.repository.id,
+        clientMutationId: 'save-settings-' + repository.id,
+        repositoryId: repository.id,
         needsApproval: settings.needsApproval,
         decryptEnvironmentVariables: settings.decryptEnvironmentVariables,
         configResolutionStrategy: settings.configResolutionStrategy,
@@ -212,18 +228,3 @@ function RepositorySettings(props: Props) {
     </Card>
   );
 }
-
-export default createFragmentContainer(RepositorySettings, {
-  repository: graphql`
-    fragment RepositorySettings_repository on Repository {
-      id
-      settings {
-        needsApproval
-        decryptEnvironmentVariables
-        configResolutionStrategy
-        additionalEnvironment
-        cacheVersion
-      }
-    }
-  `,
-});

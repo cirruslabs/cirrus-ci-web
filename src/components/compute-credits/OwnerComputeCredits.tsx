@@ -28,7 +28,8 @@ export default createPaginationContainer(
   {
     info: graphql`
       fragment OwnerComputeCredits_info on OwnerInfo
-      @argumentDefinitions(count: { type: "Int", defaultValue: 50 }, cursor: { type: "String" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 50 }, cursor: { type: "String" })
+      @refetchable(queryName: "") {
         uid
         name
         balanceInCredits

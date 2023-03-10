@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import environment from '../../createRelayEnvironment';
-import { commitMutation, createFragmentContainer } from 'react-relay';
+import { useFragment, useMutation } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -10,25 +9,29 @@ import CardHeader from '@mui/material/CardHeader';
 import FormControl from '@mui/material/FormControl';
 import CopyPasteField from '../common/CopyPasteField';
 import TextField from '@mui/material/TextField';
-import { RepositorySecuredVariables_repository } from './__generated__/RepositorySecuredVariables_repository.graphql';
+import { RepositorySecuredVariables_repository$key } from './__generated__/RepositorySecuredVariables_repository.graphql';
 import {
+  RepositorySecuredVariablesMutation,
   RepositorySecuredVariablesMutationResponse,
   RepositorySecuredVariablesMutationVariables,
 } from './__generated__/RepositorySecuredVariablesMutation.graphql';
 
-const securedVariableMutation = graphql`
-  mutation RepositorySecuredVariablesMutation($input: RepositorySecuredVariableInput!) {
-    securedVariable(input: $input) {
-      variableName
-    }
-  }
-`;
-
 interface Props {
-  repository: RepositorySecuredVariables_repository;
+  repository: RepositorySecuredVariables_repository$key;
 }
 
-function RepositorySecuredVariables(props: Props) {
+export default function RepositorySecuredVariables(props: Props) {
+  let repository = useFragment(
+    graphql`
+      fragment RepositorySecuredVariables_repository on Repository {
+        id
+        owner
+        name
+      }
+    `,
+    props.repository,
+  );
+
   let [inputValue, setInputValue] = useState('');
   let [securedVariableName, setSecuredVariableName] = useState(undefined);
 
@@ -40,18 +43,24 @@ function RepositorySecuredVariables(props: Props) {
     securedComponent = <CopyPasteField name="securedVariable" fullWidth={true} value={valueForYAMLFile} />;
   }
 
+  const [commitSecuredVariableMutation] = useMutation<RepositorySecuredVariablesMutation>(graphql`
+    mutation RepositorySecuredVariablesMutation($input: RepositorySecuredVariableInput!) {
+      securedVariable(input: $input) {
+        variableName
+      }
+    }
+  `);
   function encryptCurrentValue() {
     let valueToSecure = inputValue;
     const variables: RepositorySecuredVariablesMutationVariables = {
       input: {
-        clientMutationId: props.repository.name, // todo: replace with a hash of valueToSecure
-        repositoryId: props.repository.id,
+        clientMutationId: repository.name, // todo: replace with a hash of valueToSecure
+        repositoryId: repository.id,
         valueToSecure: valueToSecure,
       },
     };
 
-    commitMutation(environment, {
-      mutation: securedVariableMutation,
+    commitSecuredVariableMutation({
       variables: variables,
       onCompleted: (response: RepositorySecuredVariablesMutationResponse, errors) => {
         if (errors) {
@@ -89,13 +98,3 @@ function RepositorySecuredVariables(props: Props) {
     </Card>
   );
 }
-
-export default createFragmentContainer(RepositorySecuredVariables, {
-  repository: graphql`
-    fragment RepositorySecuredVariables_repository on Repository {
-      id
-      owner
-      name
-    }
-  `,
-});

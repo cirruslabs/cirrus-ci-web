@@ -63,6 +63,7 @@ import {
 } from '@mui/material';
 import { BugReport, Dehaze, Functions, LayersClear } from '@mui/icons-material';
 import {
+  TaskDetailsInvalidateCachesMutation,
   TaskDetailsInvalidateCachesMutationResponse,
   TaskDetailsInvalidateCachesMutationVariables,
 } from './__generated__/TaskDetailsInvalidateCachesMutation.graphql';
@@ -74,8 +75,14 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { CirrusTerminal } from '../cirrus-terminal/CirrusTerminal';
 import { HookType } from '../hooks/HookType';
-import { TaskDetailsTriggerMutationVariables } from './__generated__/TaskDetailsTriggerMutation.graphql';
-import { TaskDetailsCancelMutationVariables } from './__generated__/TaskDetailsCancelMutation.graphql';
+import {
+  TaskDetailsTriggerMutation,
+  TaskDetailsTriggerMutationVariables,
+} from './__generated__/TaskDetailsTriggerMutation.graphql';
+import {
+  TaskDetailsCancelMutation,
+  TaskDetailsCancelMutationVariables,
+} from './__generated__/TaskDetailsCancelMutation.graphql';
 import TaskDebuggingInformation from './TaskDebuggingInformation';
 import CirrusLinearProgress from '../common/CirrusLinearProgress';
 import CommitMessage from '../common/CommitMessage';
@@ -259,7 +266,7 @@ export default function TaskDetails(props: Props) {
     }
   `);
 
-  const [commitTaskTriggerMutation] = useMutation(
+  const [commitTaskTriggerMutation] = useMutation<TaskDetailsTriggerMutation>(
     graphql`
       mutation TaskDetailsTriggerMutation($input: TaskTriggerInput!) {
         trigger(input: $input) {
@@ -273,7 +280,7 @@ export default function TaskDetails(props: Props) {
     `,
   );
 
-  const [commitTaskCancelMutation] = useMutation(
+  const [commitTaskCancelMutation] = useMutation<TaskDetailsCancelMutation>(
     graphql`
       mutation TaskDetailsCancelMutation($input: TaskAbortInput!) {
         abortTask(input: $input) {
@@ -286,7 +293,7 @@ export default function TaskDetails(props: Props) {
     `,
   );
 
-  const [commitInvalidateCachesMutation] = useMutation(graphql`
+  const [commitInvalidateCachesMutation] = useMutation<TaskDetailsInvalidateCachesMutation>(graphql`
     mutation TaskDetailsInvalidateCachesMutation($input: InvalidateCacheEntriesInput!) {
       invalidateCacheEntries(input: $input) {
         clientMutationId

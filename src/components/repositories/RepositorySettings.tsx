@@ -10,10 +10,10 @@ import Select from '@mui/material/Select';
 import Switch from '@mui/material/Switch';
 import { graphql } from 'babel-plugin-relay/macro';
 import React, { useState } from 'react';
-import { commitMutation, createFragmentContainer } from 'react-relay';
-import environment from '../../createRelayEnvironment';
-import { RepositorySettings_repository } from './__generated__/RepositorySettings_repository.graphql';
+import { useFragment, useMutation } from 'react-relay';
+import { RepositorySettings_repository$key } from './__generated__/RepositorySettings_repository.graphql';
 import {
+  RepositorySettingsMutation,
   RepositorySettingsMutationResponse,
   RepositorySettingsMutationVariables,
 } from './__generated__/RepositorySettingsMutation.graphql';
@@ -31,27 +31,29 @@ import {
 import { AddCircle } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const saveSettingsMutation = graphql`
-  mutation RepositorySettingsMutation($input: RepositorySettingsInput!) {
-    saveSettings(input: $input) {
-      settings {
-        needsApproval
-        decryptEnvironmentVariables
-        configResolutionStrategy
-        additionalEnvironment
-        cacheVersion
-      }
-    }
-  }
-`;
-
 interface Props {
-  repository: RepositorySettings_repository;
+  repository: RepositorySettings_repository$key;
 }
 
-function RepositorySettings(props: Props) {
-  let [initialSettings, setInitialSettings] = useState(props.repository.settings);
-  let [settings, setSettings] = useState(props.repository.settings);
+export default function RepositorySettings(props: Props) {
+  let repository = useFragment(
+    graphql`
+      fragment RepositorySettings_repository on Repository {
+        id
+        settings {
+          needsApproval
+          decryptEnvironmentVariables
+          configResolutionStrategy
+          additionalEnvironment
+          cacheVersion
+        }
+      }
+    `,
+    props.repository,
+  );
+
+  let [initialSettings, setInitialSettings] = useState(repository.settings);
+  let [settings, setSettings] = useState(repository.settings);
   let [additionalEnvironmentToAdd, setAdditionalEnvironmentToAdd] = useState('');
 
   let changeField = field => {
@@ -97,11 +99,24 @@ function RepositorySettings(props: Props) {
     });
   };
 
+  const [commitSaveSettingsMutation] = useMutation<RepositorySettingsMutation>(graphql`
+    mutation RepositorySettingsMutation($input: RepositorySettingsInput!) {
+      saveSettings(input: $input) {
+        settings {
+          needsApproval
+          decryptEnvironmentVariables
+          configResolutionStrategy
+          additionalEnvironment
+          cacheVersion
+        }
+      }
+    }
+  `);
   function onSave() {
     const variables: RepositorySettingsMutationVariables = {
       input: {
-        clientMutationId: 'save-settings-' + props.repository.id,
-        repositoryId: props.repository.id,
+        clientMutationId: 'save-settings-' + repository.id,
+        repositoryId: repository.id,
         needsApproval: settings.needsApproval,
         decryptEnvironmentVariables: settings.decryptEnvironmentVariables,
         configResolutionStrategy: settings.configResolutionStrategy,
@@ -110,8 +125,7 @@ function RepositorySettings(props: Props) {
       },
     };
 
-    commitMutation(environment, {
-      mutation: saveSettingsMutation,
+    commitSaveSettingsMutation({
       variables: variables,
       onCompleted: (response: RepositorySettingsMutationResponse, errors) => {
         if (errors) {
@@ -212,18 +226,3 @@ function RepositorySettings(props: Props) {
     </Card>
   );
 }
-
-export default createFragmentContainer(RepositorySettings, {
-  repository: graphql`
-    fragment RepositorySettings_repository on Repository {
-      id
-      settings {
-        needsApproval
-        decryptEnvironmentVariables
-        configResolutionStrategy
-        additionalEnvironment
-        cacheVersion
-      }
-    }
-  `,
-});

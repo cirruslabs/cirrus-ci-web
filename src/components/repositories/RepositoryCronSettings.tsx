@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { commitMutation, createFragmentContainer } from 'react-relay';
+import { commitMutation, useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import { makeStyles } from '@mui/styles';
-import { RepositoryCronSettings_repository } from './__generated__/RepositoryCronSettings_repository.graphql';
+import { RepositoryCronSettings_repository$key } from './__generated__/RepositoryCronSettings_repository.graphql';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
@@ -68,7 +68,7 @@ const removeCronSettingsMutation = graphql`
 `;
 
 interface Props {
-  repository: RepositoryCronSettings_repository;
+  repository: RepositoryCronSettings_repository$key;
 }
 
 const useStyles = makeStyles(theme => {
@@ -94,16 +94,38 @@ const useStyles = makeStyles(theme => {
   };
 });
 
-function RepositoryCronSettings(props: Props) {
+export default function RepositoryCronSettings(props: Props) {
+  let repository = useFragment(
+    graphql`
+      fragment RepositoryCronSettings_repository on Repository {
+        id
+        owner
+        name
+        masterBranch
+        cronSettings {
+          name
+          branch
+          expression
+          ...NextCronInvocationTimeChip_settings
+          lastInvocationBuild {
+            id
+            ...BuildStatusChip_build
+          }
+        }
+      }
+    `,
+    props.repository,
+  );
+
   let navigate = useNavigate();
 
   let defaultSettings = {
     name: 'nightly',
-    branch: props.repository.masterBranch,
+    branch: repository.masterBranch,
     expression: '0 0 0 * * ?',
   };
   let [settings, setSettings] = useState(defaultSettings);
-  let [cronSettingsList, setCronSettingsList] = useState(props.repository.cronSettings);
+  let [cronSettingsList, setCronSettingsList] = useState(repository.cronSettings);
 
   function changeField(field) {
     return event => {
@@ -118,8 +140,8 @@ function RepositoryCronSettings(props: Props) {
   function addNewCronSetting() {
     const variables: RepositoryCronSettingsSaveMutationVariables = {
       input: {
-        clientMutationId: `cron-save-${props.repository.id}-${settings.name}`,
-        repositoryId: props.repository.id,
+        clientMutationId: `cron-save-${repository.id}-${settings.name}`,
+        repositoryId: repository.id,
         name: settings.name,
         expression: settings.expression,
         branch: settings.branch,
@@ -143,8 +165,8 @@ function RepositoryCronSettings(props: Props) {
   function removeCronSetting(name: string) {
     const variables: RepositoryCronSettingsRemoveMutationVariables = {
       input: {
-        clientMutationId: `cron-remove-${props.repository.id}-${name}`,
-        repositoryId: props.repository.id,
+        clientMutationId: `cron-remove-${repository.id}-${name}`,
+        repositoryId: repository.id,
         name: name,
       },
     };
@@ -260,24 +282,3 @@ function RepositoryCronSettings(props: Props) {
     </Card>
   );
 }
-
-export default createFragmentContainer(RepositoryCronSettings, {
-  repository: graphql`
-    fragment RepositoryCronSettings_repository on Repository {
-      id
-      owner
-      name
-      masterBranch
-      cronSettings {
-        name
-        branch
-        expression
-        ...NextCronInvocationTimeChip_settings
-        lastInvocationBuild {
-          id
-          ...BuildStatusChip_build
-        }
-      }
-    }
-  `,
-});

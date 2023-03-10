@@ -10,10 +10,10 @@ import Select from '@mui/material/Select';
 import Switch from '@mui/material/Switch';
 import { graphql } from 'babel-plugin-relay/macro';
 import React, { useState } from 'react';
-import { commitMutation, useFragment } from 'react-relay';
-import environment from '../../createRelayEnvironment';
+import { useFragment, useMutation } from 'react-relay';
 import { RepositorySettings_repository$key } from './__generated__/RepositorySettings_repository.graphql';
 import {
+  RepositorySettingsMutation,
   RepositorySettingsMutationResponse,
   RepositorySettingsMutationVariables,
 } from './__generated__/RepositorySettingsMutation.graphql';
@@ -30,20 +30,6 @@ import {
 } from '@mui/material';
 import { AddCircle } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
-
-const saveSettingsMutation = graphql`
-  mutation RepositorySettingsMutation($input: RepositorySettingsInput!) {
-    saveSettings(input: $input) {
-      settings {
-        needsApproval
-        decryptEnvironmentVariables
-        configResolutionStrategy
-        additionalEnvironment
-        cacheVersion
-      }
-    }
-  }
-`;
 
 interface Props {
   repository: RepositorySettings_repository$key;
@@ -113,6 +99,19 @@ export default function RepositorySettings(props: Props) {
     });
   };
 
+  const [commitSaveSettingsMutation] = useMutation<RepositorySettingsMutation>(graphql`
+    mutation RepositorySettingsMutation($input: RepositorySettingsInput!) {
+      saveSettings(input: $input) {
+        settings {
+          needsApproval
+          decryptEnvironmentVariables
+          configResolutionStrategy
+          additionalEnvironment
+          cacheVersion
+        }
+      }
+    }
+  `);
   function onSave() {
     const variables: RepositorySettingsMutationVariables = {
       input: {
@@ -126,8 +125,7 @@ export default function RepositorySettings(props: Props) {
       },
     };
 
-    commitMutation(environment, {
-      mutation: saveSettingsMutation,
+    commitSaveSettingsMutation({
       variables: variables,
       onCompleted: (response: RepositorySettingsMutationResponse, errors) => {
         if (errors) {

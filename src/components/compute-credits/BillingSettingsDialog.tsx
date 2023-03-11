@@ -13,9 +13,9 @@ import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import { graphql } from 'babel-plugin-relay/macro';
 import React, { useState } from 'react';
-import { commitMutation, useFragment } from 'react-relay';
-import environment from '../../createRelayEnvironment';
+import { useMutation, useFragment } from 'react-relay';
 import {
+  BillingSettingsDialogMutation,
   BillingSettingsDialogMutationResponse,
   BillingSettingsDialogMutationVariables,
 } from './__generated__/BillingSettingsDialogMutation.graphql';
@@ -32,20 +32,6 @@ const useStyles = makeStyles(theme => {
     },
   };
 });
-
-const saveBillingSettingsMutation = graphql`
-  mutation BillingSettingsDialogMutation($input: BillingSettingsInput!) {
-    saveBillingSettings(input: $input) {
-      settings {
-        ownerUid
-        enabled
-        billingCreditsLimit
-        billingEmailAddress
-        invoiceTemplate
-      }
-    }
-  }
-`;
 
 interface Props {
   billingSettings: BillingSettingsDialog_billingSettings$key;
@@ -78,6 +64,19 @@ export default function BillingSettingsDialog(props: Props) {
     billingSettings.billingEmailAddress === billingEmailAddress &&
     billingSettings.invoiceTemplate === invoiceTemplate;
 
+  const [commitSaveBillingSettingsMutation] = useMutation<BillingSettingsDialogMutation>(graphql`
+    mutation BillingSettingsDialogMutation($input: BillingSettingsInput!) {
+      saveBillingSettings(input: $input) {
+        settings {
+          ownerUid
+          enabled
+          billingCreditsLimit
+          billingEmailAddress
+          invoiceTemplate
+        }
+      }
+    }
+  `);
   function updateSettings() {
     const variables: BillingSettingsDialogMutationVariables = {
       input: {
@@ -88,8 +87,7 @@ export default function BillingSettingsDialog(props: Props) {
         invoiceTemplate: invoiceTemplate,
       },
     };
-    commitMutation(environment, {
-      mutation: saveBillingSettingsMutation,
+    commitSaveBillingSettingsMutation({
       variables: variables,
       onCompleted: (response: BillingSettingsDialogMutationResponse, errors) => {
         if (errors) {

@@ -3,12 +3,12 @@ import Chip from '@mui/material/Chip';
 import Icon from '@mui/material/Icon';
 import { graphql } from 'babel-plugin-relay/macro';
 import React, { useEffect } from 'react';
-import { createFragmentContainer, requestSubscription } from 'react-relay';
+import { useFragment, requestSubscription } from 'react-relay';
 import environment from '../../createRelayEnvironment';
 import { useTaskStatusColor } from '../../utils/colors';
 import { isTaskFinalStatus, isTaskInProgressStatus, taskStatusIconName } from '../../utils/status';
 import { formatDuration } from '../../utils/time';
-import { TaskDurationChip_task } from './__generated__/TaskDurationChip_task.graphql';
+import { TaskDurationChip_task$key } from './__generated__/TaskDurationChip_task.graphql';
 import { useTheme } from '@mui/material';
 
 const taskSubscription = graphql`
@@ -20,19 +20,33 @@ const taskSubscription = graphql`
 `;
 
 interface Props {
-  task: TaskDurationChip_task;
+  task: TaskDurationChip_task$key;
   className?: string;
 }
 
-function TaskDurationChip(props: Props) {
+export default function TaskDurationChip(props: Props) {
+  let task = useFragment(
+    graphql`
+      fragment TaskDurationChip_task on Task {
+        id
+        status
+        creationTimestamp
+        scheduledTimestamp
+        executingTimestamp
+        durationInSeconds
+      }
+    `,
+    props.task,
+  );
+
   let theme = useTheme();
 
   useEffect(() => {
-    if (isTaskFinalStatus(props.task.status)) {
+    if (isTaskFinalStatus(task.status)) {
       return;
     }
 
-    let variables = { taskID: props.task.id };
+    let variables = { taskID: task.id };
 
     const subscription = requestSubscription(environment, {
       subscription: taskSubscription,
@@ -41,21 +55,21 @@ function TaskDurationChip(props: Props) {
     return () => {
       subscription.dispose();
     };
-  }, [props.task.id, props.task.status]);
+  }, [task.id, task.status]);
 
   const [now, setNow] = React.useState(Date.now());
 
   useEffect(() => {
-    if (isTaskFinalStatus(props.task.status)) {
+    if (isTaskFinalStatus(task.status)) {
       return;
     }
     const timeoutId = setInterval(() => {
       setNow(Date.now());
     }, 1_000);
     return () => clearInterval(timeoutId);
-  }, [now, props.task.status]);
+  }, [now, task.status]);
 
-  let { task, className } = props;
+  let { className } = props;
 
   let durationInSeconds = task.durationInSeconds;
   if (!isTaskInProgressStatus(task.status) && !isTaskFinalStatus(task.status)) {
@@ -77,16 +91,3 @@ function TaskDurationChip(props: Props) {
     />
   );
 }
-
-export default createFragmentContainer(TaskDurationChip, {
-  task: graphql`
-    fragment TaskDurationChip_task on Task {
-      id
-      status
-      creationTimestamp
-      scheduledTimestamp
-      executingTimestamp
-      durationInSeconds
-    }
-  `,
-});

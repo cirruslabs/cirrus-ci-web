@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { commitMutation, useFragment } from 'react-relay';
+import { useMutation, useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { OwnerApiSettings_info$key } from './__generated__/OwnerApiSettings_info.graphql';
 import {
+  OwnerApiSettingsMutation,
   GenerateNewOwnerAccessTokenInput,
   OwnerApiSettingsMutationResponse,
 } from './__generated__/OwnerApiSettingsMutation.graphql';
-import environment from '../../createRelayEnvironment';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import CardActions from '@mui/material/CardActions';
@@ -17,14 +17,6 @@ import CardContent from '@mui/material/CardContent';
 import { Link } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import OwnerScopedTokenDialog from './OwnerScopedTokenDialog';
-
-const generateNewTokenMutation = graphql`
-  mutation OwnerApiSettingsMutation($input: GenerateNewOwnerAccessTokenInput!) {
-    generateNewOwnerAccessToken(input: $input) {
-      token
-    }
-  }
-`;
 
 const useStyles = makeStyles(theme => {
   return {
@@ -60,6 +52,13 @@ export default function OwnerApiSettings(props: Props) {
   let [newToken, setNewToken] = useState(null);
   let [openDialog, setOpenDialog] = useState(false);
 
+  const [commitGenerateNewTokenMutation] = useMutation<OwnerApiSettingsMutation>(graphql`
+    mutation OwnerApiSettingsMutation($input: GenerateNewOwnerAccessTokenInput!) {
+      generateNewOwnerAccessToken(input: $input) {
+        token
+      }
+    }
+  `);
   function generateNewAccessToken() {
     let input: GenerateNewOwnerAccessTokenInput = {
       clientMutationId: `generate-api-token-${info.uid}`,
@@ -67,8 +66,7 @@ export default function OwnerApiSettings(props: Props) {
       ownerUid: info.uid,
     };
 
-    commitMutation(environment, {
-      mutation: generateNewTokenMutation,
+    commitGenerateNewTokenMutation({
       variables: { input },
       onCompleted: (response: OwnerApiSettingsMutationResponse, errors) => {
         if (errors) {

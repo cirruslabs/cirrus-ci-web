@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { createFragmentContainer, requestSubscription } from 'react-relay';
+import { useFragment, requestSubscription } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
 import TableCell from '@mui/material/TableCell';
@@ -8,7 +8,7 @@ import { makeStyles } from '@mui/styles';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
 import RepositoryNameChip from '../chips/RepositoryNameChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
-import { LastDefaultBranchBuildMiniRow_repository } from './__generated__/LastDefaultBranchBuildMiniRow_repository.graphql';
+import { LastDefaultBranchBuildMiniRow_repository$key } from './__generated__/LastDefaultBranchBuildMiniRow_repository.graphql';
 import { useNavigate } from 'react-router-dom';
 import MarkdownTypography from '../common/MarkdownTypography';
 
@@ -33,12 +33,27 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  repository: LastDefaultBranchBuildMiniRow_repository;
+  repository: LastDefaultBranchBuildMiniRow_repository$key;
 }
 
-function LastDefaultBranchBuildRow(props: Props) {
+export default function LastDefaultBranchBuildRow(props: Props) {
+  let repository = useFragment(
+    graphql`
+      fragment LastDefaultBranchBuildMiniRow_repository on Repository {
+        id
+        lastDefaultBranchBuild {
+          id
+          changeMessageTitle
+          ...BuildStatusChip_build
+        }
+        ...RepositoryNameChip_repository
+      }
+    `,
+    props.repository,
+  );
+
   useEffect(() => {
-    let variables = { repositoryID: props.repository.id };
+    let variables = { repositoryID: repository.id };
 
     const subscription = requestSubscription(environment, {
       subscription: buildSubscription,
@@ -47,11 +62,10 @@ function LastDefaultBranchBuildRow(props: Props) {
     return () => {
       subscription.dispose();
     };
-  }, [props.repository.id]);
+  }, [repository.id]);
 
   let navigate = useNavigate();
 
-  let { repository } = props;
   let classes = useStyles();
   let build = repository.lastDefaultBranchBuild;
   if (!build) {
@@ -76,17 +90,3 @@ function LastDefaultBranchBuildRow(props: Props) {
     </TableRow>
   );
 }
-
-export default createFragmentContainer(LastDefaultBranchBuildRow, {
-  repository: graphql`
-    fragment LastDefaultBranchBuildMiniRow_repository on Repository {
-      id
-      lastDefaultBranchBuild {
-        id
-        changeMessageTitle
-        ...BuildStatusChip_build
-      }
-      ...RepositoryNameChip_repository
-    }
-  `,
-});

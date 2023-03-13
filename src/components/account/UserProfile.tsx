@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import Tooltip from '@mui/material/Tooltip';
 import { makeStyles } from '@mui/styles';
@@ -8,7 +8,7 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import { navigateHelper } from '../../utils/navigateHelper';
 import IconButton from '@mui/material/IconButton';
-import { UserProfile_user } from './__generated__/UserProfile_user.graphql';
+import { UserProfile_user$key } from './__generated__/UserProfile_user.graphql';
 import { Helmet as Head } from 'react-helmet';
 import Settings from '@mui/icons-material/Settings';
 import OwnerPlatformIcon from '../icons/OwnerPlatformIcon';
@@ -30,13 +30,25 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  user: UserProfile_user;
+  user: UserProfile_user$key;
 }
 
-function UserProfile(props: Props) {
+export default function UserProfile(props: Props) {
+  let user = useFragment(
+    graphql`
+      fragment UserProfile_user on User {
+        relatedOwners {
+          platform
+          name
+          uid
+        }
+      }
+    `,
+    props.user,
+  );
+
   const navigate = useNavigate();
 
-  let { user } = props;
   let classes = useStyles();
 
   useEffect(() => {
@@ -84,15 +96,3 @@ function UserProfile(props: Props) {
     </div>
   );
 }
-
-export default createFragmentContainer(UserProfile, {
-  user: graphql`
-    fragment UserProfile_user on User {
-      relatedOwners {
-        platform
-        name
-        uid
-      }
-    }
-  `,
-});

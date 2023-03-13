@@ -1,37 +1,28 @@
 import React from 'react';
 
-import { QueryRenderer } from 'react-relay';
+import { useLazyLoadQuery } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 
-import environment from '../../createRelayEnvironment';
 import ViewerBuildList from '../../components/account/ViewerBuildList';
-import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
 import WelcomePage from './WelcomePage';
 import { HomeViewerQuery } from './__generated__/HomeViewerQuery.graphql';
 
 export default function Home(): JSX.Element {
-  return (
-    <QueryRenderer<HomeViewerQuery>
-      environment={environment}
-      query={graphql`
-        query HomeViewerQuery {
-          viewer {
-            id
-          }
-          ...ViewerBuildList_viewer
+  const response = useLazyLoadQuery<HomeViewerQuery>(
+    graphql`
+      query HomeViewerQuery {
+        viewer {
+          id
         }
-      `}
-      variables={{}}
-      render={({ error, props }) => {
-        if (!props) {
-          return <CirrusLinearProgress />;
-        }
-        if (props.viewer) {
-          return <ViewerBuildList viewer={props} />;
-        } else {
-          return <WelcomePage />;
-        }
-      }}
-    />
+        ...ViewerBuildList_viewer
+      }
+    `,
+    {},
   );
+
+  if (response.viewer) {
+    return <ViewerBuildList viewer={response} />;
+  } else {
+    return <WelcomePage />;
+  }
 }

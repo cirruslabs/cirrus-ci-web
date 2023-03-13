@@ -1,5 +1,5 @@
 import React from 'react';
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 
 import Avatar from '@mui/material/Avatar';
@@ -10,7 +10,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { navigateHelper } from '../../utils/navigateHelper';
 import { useNavigate } from 'react-router-dom';
-import { AccountInformation_viewer } from './__generated__/AccountInformation_viewer.graphql';
+import { AccountInformation_viewer$key } from './__generated__/AccountInformation_viewer.graphql';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import DirectionsRun from '@mui/icons-material/DirectionsRun';
 import Button from '@mui/material/Button';
@@ -27,10 +27,18 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  viewer: AccountInformation_viewer;
+  viewer: AccountInformation_viewer$key;
 }
 
-function AccountInformation(props: Props) {
+export default function AccountInformation(props: Props) {
+  let viewer = useFragment(
+    graphql`
+      fragment AccountInformation_viewer on User {
+        avatarURL
+      }
+    `,
+    props.viewer,
+  );
   let navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -42,7 +50,6 @@ function AccountInformation(props: Props) {
     setAnchorEl(null);
   };
 
-  let { viewer } = props;
   let classes = useStyles();
 
   if (!viewer) {
@@ -94,11 +101,3 @@ function AccountInformation(props: Props) {
     </div>
   );
 }
-
-export default createFragmentContainer(AccountInformation, {
-  viewer: graphql`
-    fragment AccountInformation_viewer on User {
-      avatarURL
-    }
-  `,
-});

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import { useCommandStatusColorMapping } from '../../utils/colors';
 import TaskCommandLogs from './TaskCommandLogs';
@@ -20,6 +20,7 @@ import { makeStyles } from '@mui/styles';
 import { Box, useTheme } from '@mui/material';
 import { useRecoilValue } from 'recoil';
 import { prefersDarkModeState } from '../../cirrusTheme';
+import CirrusCircularProgress from '../common/CirrusCircularProgress';
 
 const useStyles = makeStyles(theme => {
   return {
@@ -123,7 +124,9 @@ export default function TaskCommandList(props: Props) {
             </div>
           </AccordionSummary>
           <AccordionDetails className={classes.details}>
-            <TaskCommandLogs taskId={task.id} command={command} />
+            <Suspense fallback={<CirrusCircularProgress />}>
+              <TaskCommandLogs taskId={task.id} command={command} />
+            </Suspense>
           </AccordionDetails>
         </Accordion>
       </Box>

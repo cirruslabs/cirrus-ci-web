@@ -165,7 +165,9 @@ function AllRoutes() {
             <ChevronLeftIcon />
           </IconButton>
         </div>
-        <ViewerTopRepositories className={classes.topRepositories} />
+        <Suspense fallback={<CirrusLinearProgress />}>
+          <ViewerTopRepositories className={classes.topRepositories} />
+        </Suspense>
       </Drawer>
     </nav>
   );

@@ -7,13 +7,13 @@ import Chip from '@mui/material/Chip';
 import TaskNameChip from '../chips/TaskNameChip';
 import TaskDurationChip from '../chips/TaskDurationChip';
 import { shorten } from '../../utils/text';
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { navigateTaskHelper } from '../../utils/navigateHelper';
 import { makeStyles } from '@mui/styles';
 import classNames from 'classnames';
 import TaskCreatedChip from '../chips/TaskCreatedChip';
-import { TaskListRow_task } from './__generated__/TaskListRow_task.graphql';
+import { TaskListRow_task$key } from './__generated__/TaskListRow_task.graphql';
 import { isTaskFinalStatus } from '../../utils/status';
 import { useTaskStatusColorMapping } from '../../utils/colors';
 import { Box, Tooltip } from '@mui/material';
@@ -51,16 +51,33 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  task: TaskListRow_task;
+  task: TaskListRow_task$key;
   showCreation: boolean;
   durationBeforeScheduling?: number;
   overallDuration?: number;
 }
 
-function TaskListRow(props: Props) {
+export default function TaskListRow(props: Props) {
+  let task = useFragment(
+    graphql`
+      fragment TaskListRow_task on Task {
+        id
+        status
+        executingTimestamp
+        scheduledTimestamp
+        finalStatusTimestamp
+        ...TaskDurationChip_task
+        ...TaskNameChip_task
+        ...TaskCreatedChip_task
+        uniqueLabels
+      }
+    `,
+    props.task,
+  );
+
   let navigate = useNavigate();
   let colorMapping = useTaskStatusColorMapping();
-  let { task, durationBeforeScheduling, overallDuration } = props;
+  let { durationBeforeScheduling, overallDuration } = props;
   let classes = useStyles();
   let progress = null;
   if (isTaskFinalStatus(task.status) && overallDuration && task.executingTimestamp) {
@@ -136,19 +153,3 @@ function TaskListRow(props: Props) {
     </TableRow>
   );
 }
-
-export default createFragmentContainer(TaskListRow, {
-  task: graphql`
-    fragment TaskListRow_task on Task {
-      id
-      status
-      executingTimestamp
-      scheduledTimestamp
-      finalStatusTimestamp
-      ...TaskDurationChip_task
-      ...TaskNameChip_task
-      ...TaskCreatedChip_task
-      uniqueLabels
-    }
-  `,
-});

@@ -3,12 +3,12 @@ import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
 import Functions from '@mui/icons-material/Functions';
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { makeStyles } from '@mui/styles';
 import { navigateHookHelper } from '../../utils/navigateHelper';
 import { useNavigate } from 'react-router-dom';
-import { HookNameChip_hook } from './__generated__/HookNameChip_hook.graphql';
+import { HookNameChip_hook$key } from './__generated__/HookNameChip_hook.graphql';
 
 const useStyles = makeStyles(theme => {
   return {
@@ -22,12 +22,21 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  hook: HookNameChip_hook;
+  hook: HookNameChip_hook$key;
   className?: string;
 }
 
-let HookNameChip = (props: Props) => {
-  const { hook, className } = props;
+export default function HookNameChip(props: Props) {
+  let hook = useFragment(
+    graphql`
+      fragment HookNameChip_hook on Hook {
+        id
+        name
+      }
+    `,
+    props.hook,
+  );
+  const { className } = props;
   let classes = useStyles();
   let navigate = useNavigate();
 
@@ -44,13 +53,4 @@ let HookNameChip = (props: Props) => {
       }
     />
   );
-};
-
-export default createFragmentContainer(HookNameChip, {
-  hook: graphql`
-    fragment HookNameChip_hook on Hook {
-      id
-      name
-    }
-  `,
-});
+}

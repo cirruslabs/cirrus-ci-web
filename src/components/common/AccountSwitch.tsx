@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 
 import Menu from '@mui/material/Menu';
@@ -10,13 +10,25 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import { navigateHelper } from '../../utils/navigateHelper';
 
-import { AccountSwitch_viewer } from './__generated__/AccountSwitch_viewer.graphql';
+import { AccountSwitch_viewer$key } from './__generated__/AccountSwitch_viewer.graphql';
 
 interface AccountSwitchProps {
-  viewer?: AccountSwitch_viewer;
+  viewer?: AccountSwitch_viewer$key;
 }
 
-const AccountsSwitch = ({ viewer }: AccountSwitchProps) => {
+export default function AccountsSwitch(props: AccountSwitchProps) {
+  let viewer = useFragment(
+    graphql`
+      fragment AccountSwitch_viewer on User {
+        relatedOwners {
+          platform
+          name
+        }
+      }
+    `,
+    props.viewer,
+  );
+
   const navigate = useNavigate();
 
   const [menuAnchorEl, setMenuAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -53,15 +65,4 @@ const AccountsSwitch = ({ viewer }: AccountSwitchProps) => {
       </Menu>
     </>
   );
-};
-
-export default createFragmentContainer(AccountsSwitch, {
-  viewer: graphql`
-    fragment AccountSwitch_viewer on User {
-      relatedOwners {
-        platform
-        name
-      }
-    }
-  `,
-});
+}

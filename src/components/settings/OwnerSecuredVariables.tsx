@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import environment from '../../createRelayEnvironment';
-import { commitMutation, useFragment } from 'react-relay';
+import { useMutation, useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -11,18 +10,11 @@ import FormControl from '@mui/material/FormControl';
 import CopyPasteField from '../common/CopyPasteField';
 import TextField from '@mui/material/TextField';
 import {
+  OwnerSecuredVariablesMutation,
   OwnerSecuredVariablesMutationResponse,
   OwnerSecuredVariablesMutationVariables,
 } from './__generated__/OwnerSecuredVariablesMutation.graphql';
 import { OwnerSecuredVariables_info$key } from './__generated__/OwnerSecuredVariables_info.graphql';
-
-const securedVariableMutation = graphql`
-  mutation OwnerSecuredVariablesMutation($input: OwnerSecuredVariableInput!) {
-    securedOwnerVariable(input: $input) {
-      variableName
-    }
-  }
-`;
 
 interface Props {
   info: OwnerSecuredVariables_info$key;
@@ -50,6 +42,13 @@ export default function OwnerSecuredVariables(props: Props) {
     securedComponent = <CopyPasteField name="securedVariable" fullWidth={true} value={valueForYAMLFile} />;
   }
 
+  const [commitSecuredVariableMutation] = useMutation<OwnerSecuredVariablesMutation>(graphql`
+    mutation OwnerSecuredVariablesMutation($input: OwnerSecuredVariableInput!) {
+      securedOwnerVariable(input: $input) {
+        variableName
+      }
+    }
+  `);
   function encryptCurrentValue() {
     const variables: OwnerSecuredVariablesMutationVariables = {
       input: {
@@ -60,8 +59,7 @@ export default function OwnerSecuredVariables(props: Props) {
       },
     };
 
-    commitMutation(environment, {
-      mutation: securedVariableMutation,
+    commitSecuredVariableMutation({
       variables: variables,
       onCompleted: (response: OwnerSecuredVariablesMutationResponse, errors) => {
         if (errors) {

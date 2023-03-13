@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { commitMutation, createFragmentContainer } from 'react-relay';
+import { commitMutation, useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { OwnerApiSettings_info } from './__generated__/OwnerApiSettings_info.graphql';
+import { OwnerApiSettings_info$key } from './__generated__/OwnerApiSettings_info.graphql';
 import {
   GenerateNewOwnerAccessTokenInput,
   OwnerApiSettingsMutationResponse,
@@ -37,10 +37,24 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  info: OwnerApiSettings_info;
+  info: OwnerApiSettings_info$key;
 }
 
-function OwnerApiSettings(props: Props) {
+export default function OwnerApiSettings(props: Props) {
+  let info = useFragment(
+    graphql`
+      fragment OwnerApiSettings_info on OwnerInfo {
+        platform
+        uid
+        apiToken {
+          maskedToken
+        }
+        ...OwnerScopedTokenDialog_ownerInfo
+      }
+    `,
+    props.info,
+  );
+
   let classes = useStyles();
   let existingTokenComponent = null;
   let [newToken, setNewToken] = useState(null);
@@ -48,9 +62,9 @@ function OwnerApiSettings(props: Props) {
 
   function generateNewAccessToken() {
     let input: GenerateNewOwnerAccessTokenInput = {
-      clientMutationId: `generate-api-token-${props.info.uid}`,
-      platform: props.info.platform,
-      ownerUid: props.info.uid,
+      clientMutationId: `generate-api-token-${info.uid}`,
+      platform: info.platform,
+      ownerUid: info.uid,
     };
 
     commitMutation(environment, {
@@ -67,9 +81,9 @@ function OwnerApiSettings(props: Props) {
     });
   }
 
-  if (props.info.apiToken && props.info.apiToken.maskedToken) {
+  if (info.apiToken && info.apiToken.maskedToken) {
     existingTokenComponent = (
-      <Typography variant="subtitle1">Currently active token: {props.info.apiToken.maskedToken}</Typography>
+      <Typography variant="subtitle1">Currently active token: {info.apiToken.maskedToken}</Typography>
     );
   }
   let newTokenComponent = null;
@@ -103,27 +117,14 @@ function OwnerApiSettings(props: Props) {
         </CardContent>
         <CardActions>
           <Button variant="contained" onClick={() => generateNewAccessToken()}>
-            {props.info.apiToken ? 'Invalidate All Tokens' : 'Generate New Token'}
+            {info.apiToken ? 'Invalidate All Tokens' : 'Generate New Token'}
           </Button>
           <Button variant="contained" onClick={() => setOpenDialog(true)}>
             Generate a scoped repository Token
           </Button>
         </CardActions>
       </Card>
-      <OwnerScopedTokenDialog ownerInfo={props.info} open={openDialog} onClose={() => setOpenDialog(!openDialog)} />
+      <OwnerScopedTokenDialog ownerInfo={info} open={openDialog} onClose={() => setOpenDialog(!openDialog)} />
     </div>
   );
 }
-
-export default createFragmentContainer(OwnerApiSettings, {
-  info: graphql`
-    fragment OwnerApiSettings_info on OwnerInfo {
-      platform
-      uid
-      apiToken {
-        maskedToken
-      }
-      ...OwnerScopedTokenDialog_ownerInfo
-    }
-  `,
-});

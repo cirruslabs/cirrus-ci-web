@@ -11,9 +11,9 @@ import { makeStyles } from '@mui/styles';
 import Switch from '@mui/material/Switch';
 import { graphql } from 'babel-plugin-relay/macro';
 import React, { useState } from 'react';
-import { commitMutation, createFragmentContainer } from 'react-relay';
+import { commitMutation, useFragment } from 'react-relay';
 import environment from '../../createRelayEnvironment';
-import { OwnerScopedTokenDialog_ownerInfo } from './__generated__/OwnerScopedTokenDialog_ownerInfo.graphql';
+import { OwnerScopedTokenDialog_ownerInfo$key } from './__generated__/OwnerScopedTokenDialog_ownerInfo.graphql';
 import {
   OwnerScopedTokenDialogMutationResponse,
   OwnerScopedTokenDialogMutationVariables,
@@ -39,16 +39,25 @@ const generateNewScopedAccessTokenMutation = graphql`
 `;
 
 interface Props {
-  ownerInfo: OwnerScopedTokenDialog_ownerInfo;
+  ownerInfo: OwnerScopedTokenDialog_ownerInfo$key;
 
   onClose(...args: any[]): void;
 
   open: boolean;
 }
 
-function OwnerScopedTokenDialog(props: Props) {
+export default function OwnerScopedTokenDialog(props: Props) {
+  let ownerInfo = useFragment(
+    graphql`
+      fragment OwnerScopedTokenDialog_ownerInfo on OwnerInfo {
+        platform
+        uid
+      }
+    `,
+    props.ownerInfo,
+  );
+
   let classes = useStyles();
-  const { ...other } = props;
   let [readOnly, setReadOnly] = useState(true);
   let [expirationDays, setExpirationDays] = useState(null);
   let [repositoryNames, setRepositoryNames] = useState('');
@@ -57,9 +66,9 @@ function OwnerScopedTokenDialog(props: Props) {
   function generateToken() {
     const variables: OwnerScopedTokenDialogMutationVariables = {
       input: {
-        clientMutationId: 'generate-scoped-token-' + props.ownerInfo.uid + repositoryNames,
-        platform: props.ownerInfo.platform,
-        ownerUid: props.ownerInfo.uid,
+        clientMutationId: 'generate-scoped-token-' + ownerInfo.uid + repositoryNames,
+        platform: ownerInfo.platform,
+        ownerUid: ownerInfo.uid,
         repositoryNames: repositoryNames.split(','),
         permission: readOnly ? 'READ' : 'WRITE',
         durationSeconds: 24 * 60 * 60 * (expirationDays || 0),
@@ -98,7 +107,7 @@ function OwnerScopedTokenDialog(props: Props) {
   }
 
   return (
-    <Dialog {...other}>
+    <Dialog onClose={props.onClose} open={props.open}>
       <DialogTitle>Generate API token for repositories</DialogTitle>
       <DialogContent>
         <FormControl fullWidth>
@@ -137,12 +146,3 @@ function OwnerScopedTokenDialog(props: Props) {
     </Dialog>
   );
 }
-
-export default createFragmentContainer(OwnerScopedTokenDialog, {
-  ownerInfo: graphql`
-    fragment OwnerScopedTokenDialog_ownerInfo on OwnerInfo {
-      platform
-      uid
-    }
-  `,
-});

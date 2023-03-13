@@ -5,11 +5,11 @@ import DialogContent from '@mui/material/DialogContent';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Input from '@mui/material/Input';
-import { commitMutation } from 'react-relay';
+import { useMutation } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import environment from '../../createRelayEnvironment';
 import { UnspecifiedCallbackFunction } from '../../utils/utility-types';
 import {
+  ComputeCreditsStripeDialogMutation,
   ComputeCreditsStripeDialogMutationResponse,
   ComputeCreditsStripeDialogMutationVariables,
 } from './__generated__/ComputeCreditsStripeDialogMutation.graphql';
@@ -18,19 +18,6 @@ import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
 import { StripeCardElementOptions, Token } from '@stripe/stripe-js';
 import { FormHelperText } from '@mui/material';
-
-const computeCreditsBuyMutation = graphql`
-  mutation ComputeCreditsStripeDialogMutation($input: BuyComputeCreditsInput!) {
-    buyComputeCredits(input: $input) {
-      error
-      info {
-        uid
-        balanceInCredits
-        balanceInCredits
-      }
-    }
-  }
-`;
 
 const CARD_ELEMENT_OPTIONS: StripeCardElementOptions = {
   hidePostalCode: true,
@@ -98,6 +85,18 @@ function ComputeCreditsStripeDialog(props: Props) {
     }
   };
 
+  const [commitComputeCreditsBuyMutation] = useMutation<ComputeCreditsStripeDialogMutation>(graphql`
+    mutation ComputeCreditsStripeDialogMutation($input: BuyComputeCreditsInput!) {
+      buyComputeCredits(input: $input) {
+        error
+        info {
+          uid
+          balanceInCredits
+          balanceInCredits
+        }
+      }
+    }
+  `);
   const stripeTokenHandler = (token: Token) => {
     const variables: ComputeCreditsStripeDialogMutationVariables = {
       input: {
@@ -110,8 +109,7 @@ function ComputeCreditsStripeDialog(props: Props) {
       },
     };
 
-    commitMutation(environment, {
-      mutation: computeCreditsBuyMutation,
+    commitComputeCreditsBuyMutation({
       variables: variables,
       onCompleted: (response: ComputeCreditsStripeDialogMutationResponse, errors) => {
         if (errors) {

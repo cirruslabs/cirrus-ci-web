@@ -13,13 +13,13 @@ import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import { graphql } from 'babel-plugin-relay/macro';
 import React, { useState } from 'react';
-import { commitMutation, createFragmentContainer } from 'react-relay';
-import environment from '../../createRelayEnvironment';
+import { useMutation, useFragment } from 'react-relay';
 import {
+  BillingSettingsDialogMutation,
   BillingSettingsDialogMutationResponse,
   BillingSettingsDialogMutationVariables,
 } from './__generated__/BillingSettingsDialogMutation.graphql';
-import { BillingSettingsDialog_billingSettings } from './__generated__/BillingSettingsDialog_billingSettings.graphql';
+import { BillingSettingsDialog_billingSettings$key } from './__generated__/BillingSettingsDialog_billingSettings.graphql';
 import { Link } from '@mui/material';
 
 const useStyles = makeStyles(theme => {
@@ -33,31 +33,28 @@ const useStyles = makeStyles(theme => {
   };
 });
 
-const saveBillingSettingsMutation = graphql`
-  mutation BillingSettingsDialogMutation($input: BillingSettingsInput!) {
-    saveBillingSettings(input: $input) {
-      settings {
-        ownerUid
-        enabled
-        billingCreditsLimit
-        billingEmailAddress
-        invoiceTemplate
-      }
-    }
-  }
-`;
-
 interface Props {
-  billingSettings: BillingSettingsDialog_billingSettings;
+  billingSettings: BillingSettingsDialog_billingSettings$key;
 
   onClose(...args: any[]): void;
 
   open: boolean;
 }
 
-function BillingSettingsDialog(props: Props) {
+export default function BillingSettingsDialog(props: Props) {
+  let billingSettings = useFragment(
+    graphql`
+      fragment BillingSettingsDialog_billingSettings on BillingSettings {
+        ownerUid
+        enabled
+        billingCreditsLimit
+        billingEmailAddress
+        invoiceTemplate
+      }
+    `,
+    props.billingSettings,
+  );
   let classes = useStyles();
-  const { billingSettings, ...other } = props;
   let [enabled, setEnabled] = useState(billingSettings.enabled);
   let [billingEmailAddress, setBillingEmailAddress] = useState(billingSettings.billingEmailAddress);
   let [invoiceTemplate, setInvoiceTemplate] = useState(billingSettings.invoiceTemplate);
@@ -67,18 +64,30 @@ function BillingSettingsDialog(props: Props) {
     billingSettings.billingEmailAddress === billingEmailAddress &&
     billingSettings.invoiceTemplate === invoiceTemplate;
 
+  const [commitSaveBillingSettingsMutation] = useMutation<BillingSettingsDialogMutation>(graphql`
+    mutation BillingSettingsDialogMutation($input: BillingSettingsInput!) {
+      saveBillingSettings(input: $input) {
+        settings {
+          ownerUid
+          enabled
+          billingCreditsLimit
+          billingEmailAddress
+          invoiceTemplate
+        }
+      }
+    }
+  `);
   function updateSettings() {
     const variables: BillingSettingsDialogMutationVariables = {
       input: {
-        clientMutationId: 'save-billing-settings-' + props.billingSettings.ownerUid,
-        ownerUid: props.billingSettings.ownerUid,
+        clientMutationId: 'save-billing-settings-' + billingSettings.ownerUid,
+        ownerUid: billingSettings.ownerUid,
         enabled: enabled,
         billingEmailAddress: billingEmailAddress,
         invoiceTemplate: invoiceTemplate,
       },
     };
-    commitMutation(environment, {
-      mutation: saveBillingSettingsMutation,
+    commitSaveBillingSettingsMutation({
       variables: variables,
       onCompleted: (response: BillingSettingsDialogMutationResponse, errors) => {
         if (errors) {
@@ -95,7 +104,7 @@ function BillingSettingsDialog(props: Props) {
   }
 
   return (
-    <Dialog {...other}>
+    <Dialog onClose={props.onClose} open={props.open}>
       <DialogTitle>Compute Credits Auto Pay</DialogTitle>
       <DialogContent>
         <FormControl fullWidth>
@@ -147,15 +156,3 @@ function BillingSettingsDialog(props: Props) {
     </Dialog>
   );
 }
-
-export default createFragmentContainer(BillingSettingsDialog, {
-  billingSettings: graphql`
-    fragment BillingSettingsDialog_billingSettings on BillingSettings {
-      ownerUid
-      enabled
-      billingCreditsLimit
-      billingEmailAddress
-      invoiceTemplate
-    }
-  `,
-});

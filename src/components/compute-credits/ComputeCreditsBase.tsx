@@ -13,9 +13,9 @@ import { makeStyles } from '@mui/styles';
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import BillingSettingsButton from './BillingSettingsButton';
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { ComputeCreditsBase_info } from './__generated__/ComputeCreditsBase_info.graphql';
+import { ComputeCreditsBase_info$key } from './__generated__/ComputeCreditsBase_info.graphql';
 import { Helmet as Head } from 'react-helmet';
 import ComputeCreditsStripeDialog from './ComputeCreditsStripeDialog';
 import { Link } from '@mui/material';
@@ -58,12 +58,21 @@ const useStyles = makeStyles(theme => {
 
 interface Props {
   transactionsComponent: JSX.Element;
-  info?: ComputeCreditsBase_info;
+  info?: ComputeCreditsBase_info$key;
   balanceInCredits?: string;
   ownerUid: string;
 }
 
-function ComputeCreditsBase(props: Props) {
+export default function ComputeCreditsBase(props: Props) {
+  let info = useFragment(
+    graphql`
+      fragment ComputeCreditsBase_info on OwnerInfo {
+        ...BillingSettingsButton_info
+      }
+    `,
+    props.info,
+  );
+
   let [expanded, setExpanded] = useState(false);
   let [openBuyCredits, setOpenBuyCredits] = useState(false);
   let classes = useStyles();
@@ -102,7 +111,7 @@ function ComputeCreditsBase(props: Props) {
           <AttachMoneyIcon />
           Add More Credits
         </Button>
-        <BillingSettingsButton info={props.info} />
+        <BillingSettingsButton info={info} />
         <IconButton
           className={classNames(classes.expand, {
             [classes.expandOpen]: expanded,
@@ -126,11 +135,3 @@ function ComputeCreditsBase(props: Props) {
     </Card>
   );
 }
-
-export default createFragmentContainer(ComputeCreditsBase, {
-  info: graphql`
-    fragment ComputeCreditsBase_info on OwnerInfo {
-      ...BillingSettingsButton_info
-    }
-  `,
-});

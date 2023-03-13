@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Logs from '../logs/Logs';
-import { QueryRenderer } from 'react-relay';
+import { useLazyLoadQuery } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import environment from '../../createRelayEnvironment';
 import CirrusLinearProgress from '../common/CirrusLinearProgress';
 import { subscribeTaskCommandLogs } from '../../rtu/ConnectionManager';
-import CirrusCircularProgress from '../common/CirrusCircularProgress';
 import { isTaskCommandFinalStatus } from '../../utils/status';
 import Tooltip from '@mui/material/Tooltip';
 import { makeStyles } from '@mui/styles';
@@ -126,43 +124,30 @@ interface TaskCommandLogsProps {
   };
 }
 
-function TaskCommandLogs(props: TaskCommandLogsProps) {
-  return (
-    <QueryRenderer<TaskCommandLogsTailQuery>
-      environment={environment}
-      variables={{ taskId: props.taskId, commandName: props.command.name }}
-      query={graphql`
-        query TaskCommandLogsTailQuery($taskId: ID!, $commandName: String!) {
-          task(id: $taskId) {
-            commandLogsTail(name: $commandName)
-            executionInfo {
-              cacheRetrievalAttempts {
-                hits {
-                  key
-                }
+export default function TaskCommandLogs(props: TaskCommandLogsProps) {
+  const response = useLazyLoadQuery<TaskCommandLogsTailQuery>(
+    graphql`
+      query TaskCommandLogsTailQuery($taskId: ID!, $commandName: String!) {
+        task(id: $taskId) {
+          commandLogsTail(name: $commandName)
+          executionInfo {
+            cacheRetrievalAttempts {
+              hits {
+                key
               }
             }
           }
         }
-      `}
-      render={response => {
-        if (!response.props) {
-          return (
-            <div style={{ width: '100%', minHeight: 100, justifyContent: 'center' }}>
-              <CirrusCircularProgress />
-            </div>
-          );
-        }
-        return (
-          <TaskCommandRealTimeLogs
-            initialLogLines={response.props.task.commandLogsTail || []}
-            executionInfo={response.props.task.executionInfo}
-            {...props}
-          />
-        );
-      }}
+      }
+    `,
+    { taskId: props.taskId, commandName: props.command.name },
+  );
+
+  return (
+    <TaskCommandRealTimeLogs
+      initialLogLines={response.task.commandLogsTail || []}
+      executionInfo={response.task.executionInfo}
+      {...props}
     />
   );
 }
-
-export default TaskCommandLogs;

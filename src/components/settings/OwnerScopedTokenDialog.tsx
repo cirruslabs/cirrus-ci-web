@@ -11,10 +11,10 @@ import { makeStyles } from '@mui/styles';
 import Switch from '@mui/material/Switch';
 import { graphql } from 'babel-plugin-relay/macro';
 import React, { useState } from 'react';
-import { commitMutation, useFragment } from 'react-relay';
-import environment from '../../createRelayEnvironment';
+import { useMutation, useFragment } from 'react-relay';
 import { OwnerScopedTokenDialog_ownerInfo$key } from './__generated__/OwnerScopedTokenDialog_ownerInfo.graphql';
 import {
+  OwnerScopedTokenDialogMutation,
   OwnerScopedTokenDialogMutationResponse,
   OwnerScopedTokenDialogMutationVariables,
 } from './__generated__/OwnerScopedTokenDialogMutation.graphql';
@@ -29,14 +29,6 @@ const useStyles = makeStyles(theme => {
     },
   };
 });
-
-const generateNewScopedAccessTokenMutation = graphql`
-  mutation OwnerScopedTokenDialogMutation($input: GenerateNewScopedAccessTokenInput!) {
-    generateNewScopedAccessToken(input: $input) {
-      token
-    }
-  }
-`;
 
 interface Props {
   ownerInfo: OwnerScopedTokenDialog_ownerInfo$key;
@@ -63,6 +55,15 @@ export default function OwnerScopedTokenDialog(props: Props) {
   let [repositoryNames, setRepositoryNames] = useState('');
   let [newToken, setNewToken] = useState(null);
 
+  const [commitGenerateNewScopedAccessTokenMutation] = useMutation<OwnerScopedTokenDialogMutation>(
+    graphql`
+      mutation OwnerScopedTokenDialogMutation($input: GenerateNewScopedAccessTokenInput!) {
+        generateNewScopedAccessToken(input: $input) {
+          token
+        }
+      }
+    `,
+  );
   function generateToken() {
     const variables: OwnerScopedTokenDialogMutationVariables = {
       input: {
@@ -74,8 +75,7 @@ export default function OwnerScopedTokenDialog(props: Props) {
         durationSeconds: 24 * 60 * 60 * (expirationDays || 0),
       },
     };
-    commitMutation(environment, {
-      mutation: generateNewScopedAccessTokenMutation,
+    commitGenerateNewScopedAccessTokenMutation({
       variables: variables,
       onCompleted: (response: OwnerScopedTokenDialogMutationResponse, errors) => {
         if (errors) {

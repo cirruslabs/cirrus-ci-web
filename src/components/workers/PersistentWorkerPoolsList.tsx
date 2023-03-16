@@ -56,7 +56,7 @@ function PersistentWorkerPoolsList(props: PoolsListProps) {
   const [commitDeleteMutation] = useMutation<PersistentWorkerPoolsListDeleteMutation>(graphql`
     mutation PersistentWorkerPoolsListDeleteMutation($input: DeletePersistentWorkerPoolInput!) {
       deletePersistentWorkerPool(input: $input) {
-        deletedPoolId
+        deletedPoolId @deleteRecord
       }
     }
   `);
@@ -69,12 +69,6 @@ function PersistentWorkerPoolsList(props: PoolsListProps) {
     };
     commitDeleteMutation({
       variables: variables,
-      configs: [
-        {
-          type: 'NODE_DELETE',
-          deletedIDFieldName: 'deletedPoolId',
-        },
-      ],
       onError: err => console.log(err),
     });
   };

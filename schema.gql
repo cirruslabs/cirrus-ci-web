@@ -217,7 +217,7 @@ input DeletePersistentWorkerPoolInput {
 }
 
 type DeletePersistentWorkerPoolPayload {
-  deletedPoolId: String!
+  deletedPoolId: ID!
   deletedPool: PersistentWorkerPool!
   clientMutationId: String
 }

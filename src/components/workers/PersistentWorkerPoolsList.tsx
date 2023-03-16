@@ -5,8 +5,7 @@ import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
-import { commitMutation } from 'react-relay';
-import environment from '../../createRelayEnvironment';
+import { useMutation } from 'react-relay';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -18,6 +17,7 @@ import Input from '@mui/material/Input';
 import DialogActions from '@mui/material/DialogActions';
 import { graphql } from 'babel-plugin-relay/macro';
 import {
+  PersistentWorkerPoolsListCreateMutation,
   CreatePersistentWorkerPoolInput,
   PersistentWorkerPoolsListCreateMutationResponse,
 } from './__generated__/PersistentWorkerPoolsListCreateMutation.graphql';
@@ -33,7 +33,10 @@ import {
   ListItemText,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { PersistentWorkerPoolsListDeleteMutationVariables } from './__generated__/PersistentWorkerPoolsListDeleteMutation.graphql';
+import {
+  PersistentWorkerPoolsListDeleteMutation,
+  PersistentWorkerPoolsListDeleteMutationVariables,
+} from './__generated__/PersistentWorkerPoolsListDeleteMutation.graphql';
 import PoolVisibilityIcon from '../icons/PoolVisibilityIcon';
 import { useNavigate } from 'react-router-dom';
 
@@ -46,18 +49,17 @@ interface PoolsListProps {
   }>;
 }
 
-const deletePoolMutation = graphql`
-  mutation PersistentWorkerPoolsListDeleteMutation($input: DeletePersistentWorkerPoolInput!) {
-    deletePersistentWorkerPool(input: $input) {
-      deletedPoolId
-    }
-  }
-`;
-
 function PersistentWorkerPoolsList(props: PoolsListProps) {
   let navigate = useNavigate();
   let [openDialog, setOpenDialog] = useState(false);
 
+  const [commitDeleteMutation] = useMutation<PersistentWorkerPoolsListDeleteMutation>(graphql`
+    mutation PersistentWorkerPoolsListDeleteMutation($input: DeletePersistentWorkerPoolInput!) {
+      deletePersistentWorkerPool(input: $input) {
+        deletedPoolId @deleteRecord
+      }
+    }
+  `);
   let deletePool = poolId => {
     const variables: PersistentWorkerPoolsListDeleteMutationVariables = {
       input: {
@@ -65,15 +67,8 @@ function PersistentWorkerPoolsList(props: PoolsListProps) {
         poolId: poolId,
       },
     };
-    commitMutation(environment, {
-      mutation: deletePoolMutation,
+    commitDeleteMutation({
       variables: variables,
-      configs: [
-        {
-          type: 'NODE_DELETE',
-          deletedIDFieldName: 'deletedPoolId',
-        },
-      ],
       onError: err => console.log(err),
     });
   };
@@ -123,21 +118,20 @@ interface DialogProps {
   onClose(...args: any[]): void;
 }
 
-const createPoolMutation = graphql`
-  mutation PersistentWorkerPoolsListCreateMutation($input: CreatePersistentWorkerPoolInput!) {
-    createPersistentWorkerPool(input: $input) {
-      pool {
-        id
-      }
-    }
-  }
-`;
-
 function CreateNewPersistentWorkerPoolDialog(props: DialogProps) {
   let navigate = useNavigate();
   let [name, setName] = useState('');
   let [enabledForPublic, setEnabledForPublic] = useState(true);
 
+  const [commitCreatePoolMutation] = useMutation<PersistentWorkerPoolsListCreateMutation>(graphql`
+    mutation PersistentWorkerPoolsListCreateMutation($input: CreatePersistentWorkerPoolInput!) {
+      createPersistentWorkerPool(input: $input) {
+        pool {
+          id
+        }
+      }
+    }
+  `);
   function createPool() {
     const input: CreatePersistentWorkerPoolInput = {
       clientMutationId: 'create-persistent-worker-pool-' + props.ownerUid,
@@ -145,8 +139,7 @@ function CreateNewPersistentWorkerPoolDialog(props: DialogProps) {
       name: name,
       enabledForPublic: enabledForPublic,
     };
-    commitMutation(environment, {
-      mutation: createPoolMutation,
+    commitCreatePoolMutation({
       variables: { input: input },
       onCompleted: (response: PersistentWorkerPoolsListCreateMutationResponse, errors) => {
         if (errors) {

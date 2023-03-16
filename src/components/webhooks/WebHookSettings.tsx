@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import environment from '../../createRelayEnvironment';
-import { commitMutation, useFragment } from 'react-relay';
+import { useMutation, useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -19,24 +18,11 @@ import { WebHookSettings_info$key } from './__generated__/WebHookSettings_info.g
 import FormHelperText from '@mui/material/FormHelperText';
 import sjcl from 'sjcl/sjcl.js';
 import {
+  WebHookSettingsMutation,
   SaveWebHookSettingsInput,
   WebHookSettingsMutationVariables,
 } from './__generated__/WebHookSettingsMutation.graphql';
 import { Link } from '@mui/material';
-
-const securedVariableMutation = graphql`
-  mutation WebHookSettingsMutation($input: SaveWebHookSettingsInput!) {
-    saveWebHookSettings(input: $input) {
-      error
-      info {
-        webhookSettings {
-          webhookURL
-          maskedSecretToken
-        }
-      }
-    }
-  }
-`;
 
 const useStyles = makeStyles(theme => {
   return {
@@ -84,6 +70,20 @@ export default function WebHookSettings(props: Props) {
   let [secretToken, setSecretToken] = useState('');
   let classes = useStyles();
 
+  const [commitSecuredVariableMutation] = useMutation<WebHookSettingsMutation>(graphql`
+    mutation WebHookSettingsMutation($input: SaveWebHookSettingsInput!) {
+      saveWebHookSettings(input: $input) {
+        error
+        info {
+          uid
+          webhookSettings {
+            webhookURL
+            maskedSecretToken
+          }
+        }
+      }
+    }
+  `);
   function saveWebhookSettings() {
     const variables: WebHookSettingsMutationVariables = {
       input: {
@@ -100,8 +100,7 @@ export default function WebHookSettings(props: Props) {
       variables.input['secretToken'] = secretToken;
     }
 
-    commitMutation(environment, {
-      mutation: securedVariableMutation,
+    commitSecuredVariableMutation({
       variables: variables,
       onError: err => console.error(err),
     });
@@ -116,8 +115,7 @@ export default function WebHookSettings(props: Props) {
       secretToken: '',
     };
 
-    commitMutation(environment, {
-      mutation: securedVariableMutation,
+    commitSecuredVariableMutation({
       variables: { input },
       onError: err => console.error(err),
     });

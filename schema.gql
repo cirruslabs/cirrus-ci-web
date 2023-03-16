@@ -1001,6 +1001,7 @@ input SaveWebHookSettingsInput {
 type SaveWebHookSettingsPayload {
   error: String
   info: OwnerInfo
+  settings: WebHookSettings
   clientMutationId: String
 }
 
@@ -1393,6 +1394,7 @@ type WebHookDeliveryResponse {
 }
 
 type WebHookSettings {
+  ownerUid: ID
   webhookURL: String
   maskedSecretToken: String
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import environment from '../../createRelayEnvironment';
-import { commitMutation, createPaginationContainer, RelayPaginationProp } from 'react-relay';
+import { commitMutation, useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -15,7 +15,7 @@ import IconButton from '@mui/material/IconButton';
 import classNames from 'classnames';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeliveriesList from './DeliveriesList';
-import { WebHookSettings_info } from './__generated__/WebHookSettings_info.graphql';
+import { WebHookSettings_info$key } from './__generated__/WebHookSettings_info.graphql';
 import FormHelperText from '@mui/material/FormHelperText';
 import sjcl from 'sjcl/sjcl.js';
 import {
@@ -54,23 +54,42 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  info: WebHookSettings_info;
-  relay: RelayPaginationProp;
+  info: WebHookSettings_info$key;
 }
 
-function WebHookSettings(props: Props) {
+export default function WebHookSettings(props: Props) {
+  let info = useFragment(
+    graphql`
+      fragment WebHookSettings_info on OwnerInfo {
+        platform
+        uid
+        webhookSettings {
+          webhookURL
+          maskedSecretToken
+        }
+        webhookDeliveries(last: 50) {
+          edges {
+            node {
+              ...DeliveryRow_delivery
+            }
+          }
+        }
+      }
+    `,
+    props.info,
+  );
+
   let [expanded, setExpanded] = useState(false);
-  let [webhookURL, setWebhookURL] = useState(props.info.webhookSettings.webhookURL || '');
+  let [webhookURL, setWebhookURL] = useState(info.webhookSettings.webhookURL || '');
   let [secretToken, setSecretToken] = useState('');
-  let { info } = props;
   let classes = useStyles();
 
   function saveWebhookSettings() {
     const variables: WebHookSettingsMutationVariables = {
       input: {
         clientMutationId: webhookURL,
-        platform: props.info.platform,
-        ownerUid: props.info.uid,
+        platform: info.platform,
+        ownerUid: info.uid,
         webhookURL: webhookURL,
       },
     };
@@ -90,10 +109,10 @@ function WebHookSettings(props: Props) {
 
   function resetSecretToken() {
     let input: SaveWebHookSettingsInput = {
-      clientMutationId: `reset-${props.info.webhookSettings.maskedSecretToken}`,
-      platform: props.info.platform,
-      ownerUid: props.info.uid,
-      webhookURL: props.info.webhookSettings.webhookURL,
+      clientMutationId: `reset-${info.webhookSettings.maskedSecretToken}`,
+      platform: info.platform,
+      ownerUid: info.uid,
+      webhookURL: info.webhookSettings.webhookURL,
       secretToken: '',
     };
 
@@ -104,12 +123,12 @@ function WebHookSettings(props: Props) {
     });
   }
 
-  const hasTokenSet = props.info.webhookSettings != null && props.info.webhookSettings.maskedSecretToken !== '';
+  const hasTokenSet = info.webhookSettings != null && info.webhookSettings.maskedSecretToken !== '';
   const secretTokenControl = hasTokenSet ? (
     <FormControl style={{ width: '100%' }}>
       <FormHelperText>
-        Currently the secret token is set to <code>{props.info.webhookSettings.maskedSecretToken}</code>, reset it first
-        to set a new one:
+        Currently the secret token is set to <code>{info.webhookSettings.maskedSecretToken}</code>, reset it first to
+        set a new one:
       </FormHelperText>
       <Button variant="contained" onClick={resetSecretToken}>
         Reset Secret Token
@@ -140,8 +159,7 @@ function WebHookSettings(props: Props) {
     </FormControl>
   );
 
-  const webhookURLUnchanged =
-    props.info.webhookSettings != null && props.info.webhookSettings.webhookURL === webhookURL;
+  const webhookURLUnchanged = info.webhookSettings != null && info.webhookSettings.webhookURL === webhookURL;
   const secretTokenUnchanged = hasTokenSet || secretToken === '';
 
   return (
@@ -194,55 +212,3 @@ function WebHookSettings(props: Props) {
     </Card>
   );
 }
-
-export default createPaginationContainer(
-  WebHookSettings as typeof WebHookSettings,
-  {
-    info: graphql`
-      fragment WebHookSettings_info on OwnerInfo
-      @argumentDefinitions(count: { type: "Int", defaultValue: 50 }, cursor: { type: "String" }) {
-        platform
-        uid
-        webhookSettings {
-          webhookURL
-          maskedSecretToken
-        }
-        webhookDeliveries(last: $count, after: $cursor) @connection(key: "WebHookSettings_webhookDeliveries") {
-          edges {
-            node {
-              ...DeliveryRow_delivery
-            }
-          }
-        }
-      }
-    `,
-  },
-  {
-    direction: 'forward',
-    getConnectionFromProps(props: any) {
-      return props.info && props.info.deliveries;
-    },
-    // This is also the default implementation of `getFragmentVariables` if it isn't provided.
-    getFragmentVariables(prevVars, totalCount) {
-      return {
-        ...prevVars,
-        count: totalCount,
-      };
-    },
-    getVariables(props, { count, cursor }, fragmentVariables) {
-      return {
-        count: count,
-        cursor: cursor,
-        platform: props.info.platform,
-        uid: props.info.uid,
-      };
-    },
-    query: graphql`
-      query WebHookSettingsQuery($platform: String!, $uid: ID!, $count: Int!, $cursor: String) {
-        ownerInfo(platform: $platform, uid: $uid) {
-          ...WebHookSettings_info @arguments(count: $count, cursor: $cursor)
-        }
-      }
-    `,
-  },
-);

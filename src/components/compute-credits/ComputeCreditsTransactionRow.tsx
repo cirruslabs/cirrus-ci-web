@@ -6,7 +6,7 @@ import TableRow from '@mui/material/TableRow';
 import Chip from '@mui/material/Chip';
 import TaskNameChip from '../chips/TaskNameChip';
 import TaskDurationChip from '../chips/TaskDurationChip';
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { makeStyles } from '@mui/styles';
 import classNames from 'classnames';
@@ -14,7 +14,7 @@ import RepositoryNameChip from '../chips/RepositoryNameChip';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import TaskCreatedChip from '../chips/TaskCreatedChip';
 import { navigateTaskHelper } from '../../utils/navigateHelper';
-import { ComputeCreditsTransactionRow_transaction } from './__generated__/ComputeCreditsTransactionRow_transaction.graphql';
+import { ComputeCreditsTransactionRow_transaction$key } from './__generated__/ComputeCreditsTransactionRow_transaction.graphql';
 
 const useStyles = makeStyles(theme => {
   return {
@@ -31,12 +31,31 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  transaction: ComputeCreditsTransactionRow_transaction;
+  transaction: ComputeCreditsTransactionRow_transaction$key;
 }
 
-function ComputeCreditsTransactionRow(props: Props) {
+export default function ComputeCreditsTransactionRow(props: Props) {
+  let transaction = useFragment(
+    graphql`
+      fragment ComputeCreditsTransactionRow_transaction on OwnerTransaction {
+        timestamp
+        creditsAmount
+        task {
+          id
+          name
+          ...TaskCreatedChip_task
+          ...TaskDurationChip_task
+          ...TaskNameChip_task
+        }
+        repository {
+          ...RepositoryNameChip_repository
+        }
+      }
+    `,
+    props.transaction,
+  );
+
   let navigate = useNavigate();
-  let { transaction } = props;
   let classes = useStyles();
   let { task, repository } = transaction;
   return (
@@ -61,22 +80,3 @@ function ComputeCreditsTransactionRow(props: Props) {
     </TableRow>
   );
 }
-
-export default createFragmentContainer(ComputeCreditsTransactionRow, {
-  transaction: graphql`
-    fragment ComputeCreditsTransactionRow_transaction on OwnerTransaction {
-      timestamp
-      creditsAmount
-      task {
-        id
-        name
-        ...TaskCreatedChip_task
-        ...TaskDurationChip_task
-        ...TaskNameChip_task
-      }
-      repository {
-        ...RepositoryNameChip_repository
-      }
-    }
-  `,
-});

@@ -236,7 +236,9 @@ function AllRoutes() {
               </IconButton>
             </Tooltip>
             <div className={classes.marginRight}>
-              <ActiveRepositoriesDrawer />
+              <Suspense fallback={<CirrusLinearProgress />}>
+                <ActiveRepositoriesDrawer />
+              </Suspense>
             </div>
           </Toolbar>
         </AppBar>

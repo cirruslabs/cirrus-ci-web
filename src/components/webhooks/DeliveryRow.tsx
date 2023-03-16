@@ -3,14 +3,14 @@ import React, { useState } from 'react';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Chip from '@mui/material/Chip';
-import { createFragmentContainer } from 'react-relay';
+import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { makeStyles } from '@mui/styles';
 import ReportIcon from '@mui/icons-material/Report';
 import SendIcon from '@mui/icons-material/Send';
 import classNames from 'classnames';
 import DeliveryInfoDialog from './DeliveryInfoDialog';
-import { DeliveryRow_delivery } from './__generated__/DeliveryRow_delivery.graphql';
+import { DeliveryRow_delivery$key } from './__generated__/DeliveryRow_delivery.graphql';
 import Avatar from '@mui/material/Avatar';
 import { useTheme } from '@mui/material';
 
@@ -29,14 +29,26 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  delivery: DeliveryRow_delivery;
+  delivery: DeliveryRow_delivery$key;
 }
 
-function DeliveryRow(props: Props) {
+export default function DeliveryRow(props: Props) {
+  let delivery = useFragment(
+    graphql`
+      fragment DeliveryRow_delivery on WebHookDelivery {
+        id
+        timestamp
+        response {
+          status
+        }
+      }
+    `,
+    props.delivery,
+  );
+
   let [showDetails, setShowDetails] = useState(false);
   let theme = useTheme();
 
-  let { delivery } = props;
   let classes = useStyles();
 
   let success = 200 <= delivery.response.status && delivery.response.status < 300;
@@ -68,15 +80,3 @@ function DeliveryRow(props: Props) {
     </TableRow>
   );
 }
-
-export default createFragmentContainer(DeliveryRow, {
-  delivery: graphql`
-    fragment DeliveryRow_delivery on WebHookDelivery {
-      id
-      timestamp
-      response {
-        status
-      }
-    }
-  `,
-});

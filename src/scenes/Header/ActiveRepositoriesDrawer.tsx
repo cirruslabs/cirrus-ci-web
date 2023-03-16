@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { commitMutation, QueryRenderer } from 'react-relay';
+import { commitMutation, useLazyLoadQuery } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 
 import environment from '../../createRelayEnvironment';
 import AccountInformation from '../../components/account/AccountInformation';
-import CirrusLinearProgress from '../../components/common/CirrusLinearProgress';
 import { ActiveRepositoriesDrawerQuery } from './__generated__/ActiveRepositoriesDrawerQuery.graphql';
 import { ActiveRepositoriesDrawerDeleteWebPushConfigurationMutationVariables } from './__generated__/ActiveRepositoriesDrawerDeleteWebPushConfigurationMutation.graphql';
 import { ActiveRepositoriesDrawerSaveWebPushConfigurationMutationVariables } from './__generated__/ActiveRepositoriesDrawerSaveWebPushConfigurationMutation.graphql';
@@ -114,28 +113,21 @@ function base64toUIntArray(text: string): Uint8Array {
 }
 
 export default function ActiveRepositoriesDrawer(): JSX.Element {
-  return (
-    <QueryRenderer<ActiveRepositoriesDrawerQuery>
-      environment={environment}
-      query={graphql`
-        query ActiveRepositoriesDrawerQuery {
-          viewer {
-            id
-            webPushServerKey
-            ...AccountInformation_viewer
-          }
+  const response = useLazyLoadQuery<ActiveRepositoriesDrawerQuery>(
+    graphql`
+      query ActiveRepositoriesDrawerQuery {
+        viewer {
+          id
+          webPushServerKey
+          ...AccountInformation_viewer
         }
-      `}
-      variables={{}}
-      render={({ props }) => {
-        if (!props) {
-          return <CirrusLinearProgress />;
-        }
-        if (props.viewer && props.viewer.webPushServerKey) {
-          registerServiceWorkerIfNeeded(props.viewer.id, props.viewer.webPushServerKey);
-        }
-        return <AccountInformation viewer={props.viewer} />;
-      }}
-    />
+      }
+    `,
+    {},
   );
+
+  if (response.viewer && response.viewer.webPushServerKey) {
+    registerServiceWorkerIfNeeded(response.viewer.id, response.viewer.webPushServerKey);
+  }
+  return <AccountInformation viewer={response.viewer} />;
 }

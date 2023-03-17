@@ -86,7 +86,8 @@ const network = Network.create(fetchQuery, subscription);
 const source = new RecordSource();
 const store = new Store(source);
 
-export default new Environment({
+let environment = new Environment({
   network,
   store,
 });
+export default environment;

@@ -6,7 +6,7 @@ import { graphql } from 'babel-plugin-relay/macro';
 import BuildDetails from '../../components/builds/BuildDetails';
 import NotFound from '../NotFound';
 import { BuildBySHAQuery } from './__generated__/BuildBySHAQuery.graphql';
-import * as queryString from 'query-string';
+import queryString from 'query-string';
 import { useParams } from 'react-router-dom';
 import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 

@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Paper from '@mui/material/Paper';
-import { Helmet as Head } from 'react-helmet';
 import MarkdownTypography from '../../components/common/MarkdownTypography';
 import { makeStyles } from '@mui/styles';
 
@@ -15,11 +14,12 @@ const useStyles = makeStyles(theme => {
 
 function WelcomePage() {
   let classes = useStyles();
+
+  useEffect(() => {
+    document.title = 'Welcome - Cirrus CI';
+  }, []);
   return (
     <Paper className={classes.paper}>
-      <Head>
-        <title>Welcome - Cirrus CI</title>
-      </Head>
       <MarkdownTypography text={'# Welcome to Cirrus CI.'} />
       <MarkdownTypography
         text={'Please [**sign in**](https://api.cirrus-ci.com/redirect/auth/github) to see your recent builds.'}

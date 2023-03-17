@@ -9,8 +9,8 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { graphql } from 'babel-plugin-relay/macro';
 import classNames from 'classnames';
-import React, { Suspense, useEffect, useState, useMemo } from 'react';
-import { useFragment, useMutation, requestSubscription } from 'react-relay';
+import React, { Suspense, useEffect, useMemo, useState } from 'react';
+import { requestSubscription, useFragment, useMutation } from 'react-relay';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { navigateBuildHelper, navigateTaskHelper } from '../../utils/navigateHelper';
 import { hasWritePermissions } from '../../utils/permissions';
@@ -33,7 +33,6 @@ import {
   TaskDetailsReRunMutationVariables,
 } from './__generated__/TaskDetailsReRunMutation.graphql';
 import TaskResourcesChip from '../chips/TaskResourcesChip';
-import { Helmet as Head } from 'react-helmet';
 import ExecutionInfo from '../common/TaskExecutionInfo';
 import Refresh from '@mui/icons-material/Refresh';
 import PlayCircleFilled from '@mui/icons-material/PlayCircleFilled';
@@ -46,7 +45,6 @@ import Notification from '../common/Notification';
 import HookList from '../hooks/HookList';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { ToggleButton } from '@mui/material';
 import {
   Badge,
   ButtonGroup,
@@ -59,6 +57,7 @@ import {
   MenuList,
   Popper,
   Tab,
+  ToggleButton,
   Tooltip,
 } from '@mui/material';
 import { BugReport, Dehaze, Functions, LayersClear } from '@mui/icons-material';
@@ -595,11 +594,12 @@ export default function TaskDetails(props: Props) {
 
   const hasNoAgentNotifications = task.executionInfo?.agentNotifications?.length === 0;
 
+  useEffect(() => {
+    document.title = `${task.name} - Cirrus CI`;
+  }, [task.name]);
+
   return (
     <div>
-      <Head>
-        <title>{task.name} - Cirrus CI</title>
-      </Head>
       <CirrusFavicon status={task.status} />
       <Card elevation={24}>
         <CardContent>

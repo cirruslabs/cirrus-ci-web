@@ -30,3 +30,5 @@ yarn-error.log*
 !.yarn/patches
 !.yarn/sdks
 !.yarn/plugins
+
+.husky

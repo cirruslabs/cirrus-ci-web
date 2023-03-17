@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { Helmet as Head } from 'react-helmet';
 import { Container, useTheme as useMuiTheme } from '@mui/material';
 import { useTheme as useGraphiqlTheme } from '@graphiql/react';
 import { GraphiQLInterface, GraphiQLProvider } from 'graphiql';
@@ -59,11 +58,12 @@ const Content = () => {
     setGraphiqlTheme(muiTheme);
   }, [muiTheme, setGraphiqlTheme]);
 
+  useEffect(() => {
+    document.title = 'API Explorer - Cirrus CI';
+  }, []);
+
   return (
     <div className={classes.root}>
-      <Head>
-        <title>API Explorer - Cirrus CI</title>
-      </Head>
       <Container maxWidth="lg">
         <GraphiQLInterface />
       </Container>

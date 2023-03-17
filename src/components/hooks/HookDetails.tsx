@@ -1,5 +1,4 @@
-import React, { MouseEventHandler } from 'react';
-import { Helmet as Head } from 'react-helmet';
+import React, { MouseEventHandler, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFragment, useMutation } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
@@ -192,12 +191,13 @@ export default function HookDetails(props: Props) {
       <Logs logsName="output" logs={hook.info.outputLogs.join('\n')} />
     );
 
+  useEffect(() => {
+    document.title = `${targetName} hook - Cirrus CI`;
+  }, [targetName]);
+
   return (
     <div>
       <CirrusFavicon status={hook.info.error === ''} />
-      <Head>
-        <title>{targetName} hook - Cirrus CI</title>
-      </Head>
       <Card elevation={24}>
         <CardContent>
           <div className={classes.wrapper}>

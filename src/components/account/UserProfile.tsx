@@ -9,7 +9,6 @@ import CardHeader from '@mui/material/CardHeader';
 import { navigateHelper } from '../../utils/navigateHelper';
 import IconButton from '@mui/material/IconButton';
 import { UserProfile_user$key } from './__generated__/UserProfile_user.graphql';
-import { Helmet as Head } from 'react-helmet';
 import Settings from '@mui/icons-material/Settings';
 import OwnerPlatformIcon from '../icons/OwnerPlatformIcon';
 import { List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
@@ -60,11 +59,12 @@ export default function UserProfile(props: Props) {
     }
   }, [navigate, user.relatedOwners]);
 
+  useEffect(() => {
+    document.title = 'Settings - Cirrus CI';
+  }, []);
+
   return (
     <div>
-      <Head>
-        <title>Settings - Cirrus CI</title>
-      </Head>
       <div className={classes.gap} />
       <Card elevation={24}>
         <CardHeader title="All Settings" />

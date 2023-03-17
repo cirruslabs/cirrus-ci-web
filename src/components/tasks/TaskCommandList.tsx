@@ -12,7 +12,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import * as queryString from 'query-string';
+import queryString from 'query-string';
 import { TaskCommandList_task, TaskCommandList_task$key } from './__generated__/TaskCommandList_task.graphql';
 import { ItemOfArray } from '../../utils/utility-types';
 import { useLocation } from 'react-router-dom';

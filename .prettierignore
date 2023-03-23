@@ -1,2 +1,4 @@
+build/**
+.yarn/**
 **/vendor/**/*
 **/__generated__/**/*

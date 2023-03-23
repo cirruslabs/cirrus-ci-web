@@ -13,6 +13,10 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 export default function RepositorySettings(): JSX.Element {
   let { repositoryId } = useParams();
 
+  if (!repositoryId) {
+    return <NotFound />;
+  }
+
   const response = useLazyLoadQuery<RepositorySettingsQuery>(
     graphql`
       query RepositorySettingsQuery($repositoryId: ID!) {

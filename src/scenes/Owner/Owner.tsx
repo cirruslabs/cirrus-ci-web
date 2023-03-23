@@ -12,6 +12,10 @@ import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 export default function Owner(): JSX.Element {
   let { platform, owner } = useParams();
 
+  if (!platform || !owner) {
+    return <NotFound />;
+  }
+
   const response = useLazyLoadQuery<OwnerQuery>(
     graphql`
       query OwnerQuery($platform: String!, $owner: String!) {

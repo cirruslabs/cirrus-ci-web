@@ -12,6 +12,10 @@ import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 export default function Task(): JSX.Element {
   let { taskId } = useParams();
 
+  if (!taskId) {
+    return <NotFound />;
+  }
+
   const response = useLazyLoadQuery<TaskQuery>(
     graphql`
       query TaskQuery($taskId: ID!) {

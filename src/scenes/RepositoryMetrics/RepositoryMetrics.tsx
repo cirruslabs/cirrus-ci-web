@@ -13,6 +13,10 @@ import TimelineIcon from '@mui/icons-material/Timeline';
 export default function RepositoryMetrics(parentProps): JSX.Element {
   const { platform, owner, name } = useParams();
 
+  if (!platform || !owner || !name) {
+    return <NotFound />;
+  }
+
   const response = useLazyLoadQuery<RepositoryMetricsQuery>(
     graphql`
       query RepositoryMetricsQuery($platform: String!, $owner: String!, $name: String!) {

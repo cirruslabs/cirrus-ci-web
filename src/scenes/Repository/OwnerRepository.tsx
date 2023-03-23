@@ -13,6 +13,11 @@ import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 export default function OwnerRepository(): JSX.Element {
   let params = useParams();
   let { platform, owner, name } = params;
+
+  if (!platform || !owner || !name) {
+    return <NotFound />;
+  }
+
   let branch = params['*'];
 
   const response = useLazyLoadQuery<OwnerRepositoryQuery>(

@@ -11,6 +11,10 @@ import { HookQuery } from './__generated__/HookQuery.graphql';
 export default function Hook(): JSX.Element {
   let { hookId } = useParams();
 
+  if (!hookId) {
+    return <NotFound />;
+  }
+
   const response = useLazyLoadQuery<HookQuery>(
     graphql`
       query HookQuery($hookId: ID!) {

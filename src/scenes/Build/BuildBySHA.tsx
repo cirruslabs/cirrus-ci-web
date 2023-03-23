@@ -13,6 +13,10 @@ import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 export default function BuildBySHA() {
   let { owner, name, SHA } = useParams();
 
+  if (!owner || !name || !SHA) {
+    return <NotFound />;
+  }
+
   const response = useLazyLoadQuery<BuildBySHAQuery>(
     graphql`
       query BuildBySHAQuery($owner: String!, $name: String!, $SHA: String) {

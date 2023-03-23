@@ -8,9 +8,14 @@ import { OwnerSettingsRendererQuery } from './__generated__/OwnerSettingsRendere
 import { useParams } from 'react-router-dom';
 import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import NotFound from '../NotFound';
 
 export default function OwnerSettingsRenderer(): JSX.Element {
   let { platform, name } = useParams();
+
+  if (!platform || !name) {
+    return <NotFound />;
+  }
 
   const response = useLazyLoadQuery<OwnerSettingsRendererQuery>(
     graphql`

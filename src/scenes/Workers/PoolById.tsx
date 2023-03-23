@@ -11,6 +11,11 @@ import { useEffect, useState } from 'react';
 
 export default function PoolById(): JSX.Element {
   let { poolId } = useParams();
+
+  if (!poolId) {
+    return <NotFound />;
+  }
+
   const [refreshedQueryOptions, setRefreshedQueryOptions] = useState(null);
 
   useEffect(() => {

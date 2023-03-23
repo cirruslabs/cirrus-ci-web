@@ -13,6 +13,11 @@ import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 export default function Repository(): JSX.Element {
   let params = useParams();
   let { repositoryId } = params;
+
+  if (!repositoryId) {
+    return <NotFound />;
+  }
+
   let branch = params['*'];
 
   const response = useLazyLoadQuery<RepositoryQuery>(

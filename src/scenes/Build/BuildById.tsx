@@ -12,6 +12,10 @@ import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 export default function BuildById(): JSX.Element {
   let { buildId } = useParams();
 
+  if (!buildId) {
+    return <NotFound />;
+  }
+
   const response = useLazyLoadQuery<BuildByIdQuery>(
     graphql`
       query BuildByIdQuery($buildId: ID!) {

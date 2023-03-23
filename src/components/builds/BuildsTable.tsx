@@ -25,6 +25,7 @@ import UnarchiveIcon from '@mui/icons-material/UnarchiveOutlined';
 
 import Hash from '../chips/Hash';
 import BuildStatusChipNew from '../chips/BuildStatusChipNew';
+import BuildBranchNameChipNew from '../chips/BuildBranchNameChipNew';
 import { muiThemeOptions } from '../../cirrusTheme';
 import { shorten } from '../../utils/text';
 import { absoluteLink } from '../../utils/link';
@@ -145,6 +146,7 @@ export default function BuildsTable({ selectedBuildId, setSelectedBuildId, ...pr
           name
         }
         ...Hash_build
+        ...BuildBranchNameChipNew_build
       }
     `,
     props.builds,
@@ -288,18 +290,7 @@ const BuildRow = memo(({ build, selected, setSelectedBuildId }: BuildRowProps) =
 
       {/* BRANCH */}
       <TableCell className={cx(classes.cell, classes.cellBranch)}>
-        <Stack direction="row" alignItems="center" spacing={0.5}>
-          {build.tag ? <UnarchiveIcon fontSize="inherit" /> : <CallSplitIcon fontSize="inherit" />}
-          <Link
-            className={classes.link}
-            href={absoluteLink(build.repository.platform, build.repository.owner, build.repository.name, build.branch)}
-            underline="hover"
-            noWrap
-            title={build.branch}
-          >
-            {shorten(build.branch)}
-          </Link>
-        </Stack>
+        <BuildBranchNameChipNew build={build} />
       </TableCell>
 
       {/* DURATION */}

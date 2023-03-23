@@ -19,10 +19,10 @@ const useStyles = makeStyles(theme => {
   return {
     chip: {
       '& .MuiChip-avatar': {
-        height: 18,
-        width: 18,
-        marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(-1),
+        height: 16,
+        width: 16,
+        marginLeft: 6,
+        marginRight: theme.spacing(-0.5),
         color: deepOrange[500],
       },
     },
@@ -86,6 +86,7 @@ export default function BuildBranchNameChipNew(props: Props) {
       label={shorten(build.branch)}
       avatar={<CallSplitIcon />}
       size="small"
+      title={build.branch}
       onClick={handleBranchClick}
       onAuxClick={handleBranchClick}
     />

@@ -18,7 +18,9 @@ const useStyles = makeStyles(theme => {
       borderRadius: 3 * theme.shape.borderRadius,
       width: 'fit-content',
       padding: '1px 5px',
-      '& *': { fontSize: '14px !important' },
+    },
+    text: {
+      fontSize: '14px !important',
     },
   };
 });
@@ -42,8 +44,8 @@ export default function Hash(props: Props) {
 
   return (
     <Stack className={cx(props.className, classes.hash)} direction="row" alignItems="center" spacing={0.5}>
-      <CommitIcon fontSize="inherit" />
-      <span>{build.changeIdInRepo.substr(0, 7)}</span>
+      <CommitIcon />
+      <span className={classes.text}>{build.changeIdInRepo.substr(0, 7)}</span>
     </Stack>
   );
 }

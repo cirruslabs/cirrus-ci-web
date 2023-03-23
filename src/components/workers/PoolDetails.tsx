@@ -198,7 +198,7 @@ export default function PoolDetails(props: PoolDetailsProps) {
   }
 
   useEffect(() => {
-    document.title = `${pool.name} pool`;
+    document.title = `${pool.name} pool - Cirrus CI`;
   }, [pool.name]);
 
   let viewerCanSeeToken = pool.viewerPermission === 'ADMIN' || pool.viewerPermission === 'WRITE';

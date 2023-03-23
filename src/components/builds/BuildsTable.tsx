@@ -18,12 +18,12 @@ import TableHead from '@mui/material/TableHead';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import InfoIcon from '@mui/icons-material/Info';
-import CommitIcon from '@mui/icons-material/Commit';
 import Typography from '@mui/material/Typography';
 import CallSplitIcon from '@mui/icons-material/CallSplit';
 import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
 import UnarchiveIcon from '@mui/icons-material/UnarchiveOutlined';
 
+import Hash from '../chips/Hash';
 import BuildStatusChipNew from '../chips/BuildStatusChipNew';
 import { muiThemeOptions } from '../../cirrusTheme';
 import { shorten } from '../../utils/text';
@@ -144,6 +144,7 @@ export default function BuildsTable({ selectedBuildId, setSelectedBuildId, ...pr
           owner
           name
         }
+        ...Hash_build
       }
     `,
     props.builds,
@@ -282,10 +283,7 @@ const BuildRow = memo(({ build, selected, setSelectedBuildId }: BuildRowProps) =
         <Typography className={classes.commitName} title={build.changeMessageTitle}>
           {build.changeMessageTitle}
         </Typography>
-        <Stack className={classes.hash} direction="row" alignItems="center" spacing={0.5}>
-          <CommitIcon fontSize="inherit" />
-          <span>{build.changeIdInRepo.substr(0, 7)}</span>
-        </Stack>
+        <Hash build={build} />
       </TableCell>
 
       {/* BRANCH */}

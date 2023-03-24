@@ -26,6 +26,7 @@ import UnarchiveIcon from '@mui/icons-material/UnarchiveOutlined';
 import Hash from '../chips/Hash';
 import BuildStatusChipNew from '../chips/BuildStatusChipNew';
 import BuildBranchNameChipNew from '../chips/BuildBranchNameChipNew';
+import RepositoryNameChipNew from '../chips/RepositoryNameChipNew';
 import { muiThemeOptions } from '../../cirrusTheme';
 import { shorten } from '../../utils/text';
 import { absoluteLink } from '../../utils/link';
@@ -102,16 +103,6 @@ const useStyles = makeStyles(theme => {
       WebkitBoxOrient: 'vertical',
       whiteSpace: 'normal',
     },
-    hash: {
-      color: theme.palette.text.secondary,
-      fontFamily: 'Courier',
-      marginTop: theme.spacing(0.5),
-      border: `1px solid ${theme.palette.divider}`,
-      borderRadius: 3 * theme.shape.borderRadius,
-      width: 'fit-content',
-      padding: '1px 5px',
-      '& *': { fontSize: '14px !important' },
-    },
   };
 });
 
@@ -144,6 +135,7 @@ export default function BuildsTable({ selectedBuildId, setSelectedBuildId, ...pr
           platform
           owner
           name
+          ...RepositoryNameChipNew_repository
         }
         ...Hash_build
         ...BuildBranchNameChipNew_build
@@ -263,18 +255,7 @@ const BuildRow = memo(({ build, selected, setSelectedBuildId }: BuildRowProps) =
 
       {/* REPOSITORY */}
       <TableCell className={cx(classes.cell, classes.cellRepository)}>
-        <Stack direction="row" alignItems="center" spacing={0.5}>
-          <BookOutlinedIcon fontSize="inherit" />
-          <Link
-            className={classes.link}
-            href={absoluteLink(build.repository.platform, build.repository.owner, build.repository.name)}
-            underline="hover"
-            noWrap
-            title={build.repository.name}
-          >
-            {build.repository.name}
-          </Link>
-        </Stack>
+        <RepositoryNameChipNew repository={build.repository} />
         <Typography noWrap color={theme.palette.text.secondary} title={build.repository.owner}>
           by {build.repository.owner}
         </Typography>

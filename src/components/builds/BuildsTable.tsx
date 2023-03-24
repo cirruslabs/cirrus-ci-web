@@ -7,7 +7,7 @@ import { useRecoilValue } from 'recoil';
 import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
 
-import { Link, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { createTheme } from '@mui/material/styles';
 import Table from '@mui/material/Table';
@@ -19,17 +19,13 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import InfoIcon from '@mui/icons-material/Info';
 import Typography from '@mui/material/Typography';
-import CallSplitIcon from '@mui/icons-material/CallSplit';
-import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
-import UnarchiveIcon from '@mui/icons-material/UnarchiveOutlined';
 
 import Hash from '../chips/Hash';
 import BuildStatusChipNew from '../chips/BuildStatusChipNew';
 import BuildBranchNameChipNew from '../chips/BuildBranchNameChipNew';
 import RepositoryNameChipNew from '../chips/RepositoryNameChipNew';
+import RepositoryOwnerChipNew from '../chips/RepositoryOwnerChipNew';
 import { muiThemeOptions } from '../../cirrusTheme';
-import { shorten } from '../../utils/text';
-import { absoluteLink } from '../../utils/link';
 import { formatDuration } from '../../utils/time';
 import { isBuildFinalStatus } from '../../utils/status';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
@@ -136,6 +132,7 @@ export default function BuildsTable({ selectedBuildId, setSelectedBuildId, ...pr
           owner
           name
           ...RepositoryNameChipNew_repository
+          ...RepositoryOwnerChipNew_repository
         }
         ...Hash_build
         ...BuildBranchNameChipNew_build
@@ -257,7 +254,7 @@ const BuildRow = memo(({ build, selected, setSelectedBuildId }: BuildRowProps) =
       <TableCell className={cx(classes.cell, classes.cellRepository)}>
         <RepositoryNameChipNew repository={build.repository} />
         <Typography noWrap color={theme.palette.text.secondary} title={build.repository.owner}>
-          by {build.repository.owner}
+          by <RepositoryOwnerChipNew repository={build.repository} />
         </Typography>
       </TableCell>
 

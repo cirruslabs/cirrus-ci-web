@@ -51,13 +51,13 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  info: AppBreadcrumbs_info$key | null;
-  repository: AppBreadcrumbs_repository$key | null;
-  build: AppBreadcrumbs_build$key | null;
-  task: AppBreadcrumbs_task$key | null;
-  branch: string | null;
-  extraCrumbs: Array<Crumb> | null;
-  viewer: AppBreadcrumbs_viewer$key | null;
+  info?: AppBreadcrumbs_info$key | null;
+  repository?: AppBreadcrumbs_repository$key | null;
+  build?: AppBreadcrumbs_build$key | null;
+  task?: AppBreadcrumbs_task$key | null;
+  branch?: string | null;
+  extraCrumbs?: Array<Crumb> | null;
+  viewer?: AppBreadcrumbs_viewer$key | null;
 }
 
 interface Crumb {

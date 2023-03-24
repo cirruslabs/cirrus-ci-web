@@ -7,17 +7,13 @@ import { useRecoilValue } from 'recoil';
 import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
 
-import { useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { createTheme } from '@mui/material/styles';
 import Table from '@mui/material/Table';
-import Stack from '@mui/material/Stack';
-import Tooltip from '@mui/material/Tooltip';
 import TableRow from '@mui/material/TableRow';
 import TableHead from '@mui/material/TableHead';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import InfoIcon from '@mui/icons-material/Info';
 import Typography from '@mui/material/Typography';
 
 import Hash from '../chips/Hash';
@@ -53,7 +49,7 @@ const useStyles = makeStyles(theme => {
       overflowWrap: 'anywhere',
       textOverflow: 'ellipsis',
       '& *': {
-        fontSize: '16px !important',
+        fontSize: 16,
       },
     },
     cellStatus: {
@@ -98,6 +94,9 @@ const useStyles = makeStyles(theme => {
       WebkitLineClamp: 1,
       WebkitBoxOrient: 'vertical',
       whiteSpace: 'normal',
+    },
+    chip: {
+      fontSize: '14px !important',
     },
   };
 });
@@ -148,9 +147,7 @@ export default function BuildsTable({ selectedBuildId, setSelectedBuildId, ...pr
   return (
     <ThemeProvider theme={muiTheme}>
       <Table className={classes.table}>
-        <TableHead>
-          <HeadRow />
-        </TableHead>
+        <TableHead></TableHead>
         <TableBody>
           {builds.map((build, i) => (
             <BuildRow
@@ -165,33 +162,6 @@ export default function BuildsTable({ selectedBuildId, setSelectedBuildId, ...pr
     </ThemeProvider>
   );
 }
-const HeadRow = () => {
-  let classes = useStyles();
-  const durationTooltipText = (
-    <>
-      Clock duration reflects elapsed time between creation of all tasks for a particular build and completion of the
-      last one of them. Clock duration can be impacted by resource availability, scheduling delays, parallelism
-      constraints and other factors that affect execution of tasks.
-    </>
-  );
-
-  return (
-    <TableRow>
-      <TableCell className={cx(classes.cell, classes.cellStatus)}>Status</TableCell>
-      <TableCell className={cx(classes.cell, classes.cellRepository)}>Repository</TableCell>
-      <TableCell className={cx(classes.cell, classes.cellCommit)}>Commit</TableCell>
-      <TableCell className={cx(classes.cell, classes.cellBranch)}>Branch</TableCell>
-      <TableCell className={cx(classes.cell, classes.cellDuration)}>
-        <Stack direction="row" alignItems="center" justifyContent="end" spacing={0.5}>
-          <Tooltip title={durationTooltipText}>
-            <InfoIcon className={classes.infoIcon} fontSize="inherit" />
-          </Tooltip>
-          <span>Duration</span>
-        </Stack>
-      </TableCell>
-    </TableRow>
-  );
-};
 
 interface BuildRowProps {
   build: BuildsTable_builds[number];
@@ -201,7 +171,6 @@ interface BuildRowProps {
 
 const BuildRow = memo(({ build, selected, setSelectedBuildId }: BuildRowProps) => {
   let classes = useStyles();
-  const theme = useTheme();
   const navigate = useNavigate();
 
   const isFinalStatus = useMemo(() => isBuildFinalStatus(build.status), [build.status]);
@@ -252,10 +221,8 @@ const BuildRow = memo(({ build, selected, setSelectedBuildId }: BuildRowProps) =
 
       {/* REPOSITORY */}
       <TableCell className={cx(classes.cell, classes.cellRepository)}>
-        <RepositoryNameChipNew repository={build.repository} />
-        <Typography noWrap color={theme.palette.text.secondary} title={build.repository.owner}>
-          by <RepositoryOwnerChipNew repository={build.repository} />
-        </Typography>
+        <RepositoryNameChipNew className={classes.chip} repository={build.repository} withHeader />
+        <RepositoryOwnerChipNew className={classes.chip} repository={build.repository} withHeader />
       </TableCell>
 
       {/* COMMIT */}
@@ -268,7 +235,7 @@ const BuildRow = memo(({ build, selected, setSelectedBuildId }: BuildRowProps) =
 
       {/* BRANCH */}
       <TableCell className={cx(classes.cell, classes.cellBranch)}>
-        <BuildBranchNameChipNew build={build} />
+        <BuildBranchNameChipNew className={classes.chip} build={build} withHeader />
       </TableCell>
 
       {/* DURATION */}

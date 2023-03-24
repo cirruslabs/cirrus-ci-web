@@ -2,10 +2,12 @@ import React from 'react';
 import { useFragment } from 'react-relay';
 import { useNavigate } from 'react-router-dom';
 import { graphql } from 'babel-plugin-relay/macro';
+import cx from 'classnames';
 
 import { makeStyles } from '@mui/styles';
 import { deepPurple } from '@mui/material/colors';
 import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
 import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
 
 import { navigateHelper } from '../../utils/navigateHelper';
@@ -14,6 +16,10 @@ import { RepositoryNameChipNew_repository$key } from './__generated__/Repository
 
 const useStyles = makeStyles(theme => {
   return {
+    header: {
+      fontSize: '14px !important',
+      color: theme.palette.text.disabled,
+    },
     chip: {
       '& .MuiChip-avatar': {
         height: 16,
@@ -28,6 +34,8 @@ const useStyles = makeStyles(theme => {
 
 interface Props {
   repository: RepositoryNameChipNew_repository$key;
+  withHeader?: boolean;
+  className?: string;
 }
 
 export default function RepositoryNameChipNew(props: Props) {
@@ -49,14 +57,31 @@ export default function RepositoryNameChipNew(props: Props) {
   }
 
   return (
-    <Chip
-      className={classes.chip}
-      label={repository.name}
-      avatar={<BookOutlinedIcon />}
-      size="small"
-      title={repository.name}
-      onClick={e => handleRepositoryClick(e, repository)}
-      onAuxClick={e => handleRepositoryClick(e, repository)}
-    />
+    <>
+      {props.withHeader ? (
+        <Stack direction="column" spacing={0.5} alignItems="flex-start">
+          <div className={classes.header}>Repository</div>
+          <Chip
+            className={cx(props.className, classes.chip)}
+            label={repository.name}
+            avatar={<BookOutlinedIcon />}
+            size="small"
+            title={repository.name}
+            onClick={e => handleRepositoryClick(e, repository)}
+            onAuxClick={e => handleRepositoryClick(e, repository)}
+          />
+        </Stack>
+      ) : (
+        <Chip
+          className={cx(props.className, classes.chip)}
+          label={repository.name}
+          avatar={<BookOutlinedIcon />}
+          size="small"
+          title={repository.name}
+          onClick={e => handleRepositoryClick(e, repository)}
+          onAuxClick={e => handleRepositoryClick(e, repository)}
+        />
+      )}
+    </>
   );
 }

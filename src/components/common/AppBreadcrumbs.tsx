@@ -51,13 +51,13 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  info?: AppBreadcrumbs_info$key;
-  repository?: AppBreadcrumbs_repository$key;
-  build?: AppBreadcrumbs_build$key;
-  task?: AppBreadcrumbs_task$key;
-  branch?: string;
-  extraCrumbs?: Array<Crumb>;
-  viewer?: AppBreadcrumbs_viewer$key;
+  info: AppBreadcrumbs_info$key | null;
+  repository: AppBreadcrumbs_repository$key | null;
+  build: AppBreadcrumbs_build$key | null;
+  task: AppBreadcrumbs_task$key | null;
+  branch: string | null;
+  extraCrumbs: Array<Crumb> | null;
+  viewer: AppBreadcrumbs_viewer$key | null;
 }
 
 interface Crumb {
@@ -67,80 +67,70 @@ interface Crumb {
 }
 
 export default function AppBreadcrumbs(props: Props) {
-  let info = props.info
-    ? useFragment(
-        graphql`
-          fragment AppBreadcrumbs_info on OwnerInfo {
-            platform
-            name
-          }
-        `,
-        props.info,
-      )
-    : null;
-  let repository = props.repository
-    ? useFragment(
-        graphql`
-          fragment AppBreadcrumbs_repository on Repository {
+  let info = useFragment(
+    graphql`
+      fragment AppBreadcrumbs_info on OwnerInfo {
+        platform
+        name
+      }
+    `,
+    props.info,
+  );
+  let repository = useFragment(
+    graphql`
+      fragment AppBreadcrumbs_repository on Repository {
+        id
+        platform
+        owner
+        name
+      }
+    `,
+    props.repository,
+  );
+  let build = useFragment(
+    graphql`
+      fragment AppBreadcrumbs_build on Build {
+        id
+        branch
+        changeIdInRepo
+        repository {
+          id
+          platform
+          owner
+          name
+        }
+      }
+    `,
+    props.build,
+  );
+  let task = useFragment(
+    graphql`
+      fragment AppBreadcrumbs_task on Task {
+        id
+        name
+        build {
+          id
+          branch
+          changeIdInRepo
+          repository {
             id
             platform
             owner
             name
           }
-        `,
-        props.repository,
-      )
-    : null;
-  let build = props.build
-    ? useFragment(
-        graphql`
-          fragment AppBreadcrumbs_build on Build {
-            id
-            branch
-            changeIdInRepo
-            repository {
-              id
-              platform
-              owner
-              name
-            }
-          }
-        `,
-        props.build,
-      )
-    : null;
-  let task = props.task
-    ? useFragment(
-        graphql`
-          fragment AppBreadcrumbs_task on Task {
-            id
-            name
-            build {
-              id
-              branch
-              changeIdInRepo
-              repository {
-                id
-                platform
-                owner
-                name
-              }
-            }
-          }
-        `,
-        props.task,
-      )
-    : null;
-  let viewer = props.viewer
-    ? useFragment(
-        graphql`
-          fragment AppBreadcrumbs_viewer on User {
-            ...AccountSwitch_viewer
-          }
-        `,
-        props.viewer,
-      )
-    : null;
+        }
+      }
+    `,
+    props.task,
+  );
+  let viewer = useFragment(
+    graphql`
+      fragment AppBreadcrumbs_viewer on User {
+        ...AccountSwitch_viewer
+      }
+    `,
+    props.viewer,
+  );
 
   let { branch, extraCrumbs } = props;
   let classes = useStyles();

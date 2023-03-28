@@ -22,8 +22,8 @@ const useStyles = makeStyles(theme => {
     },
     chip: {
       '& .MuiChip-avatar': {
-        height: 16,
-        width: 16,
+        height: theme.spacing(2),
+        width: theme.spacing(2),
         marginLeft: 6,
         marginRight: theme.spacing(-0.5),
         color: theme.palette.mode === 'dark' ? deepPurple['A100'] : deepPurple[500],

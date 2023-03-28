@@ -69,7 +69,7 @@ function ViewerBuildList(props: Props) {
   const [data, refetch] = useRefetchableFragment<ViewerBuildListRefetchQuery, any>(
     graphql`
       fragment ViewerBuildList_viewer on Query
-      @argumentDefinitions(statuses: { type: "[BuildStatus]" })
+      @argumentDefinitions(statuses: { type: "[BuildStatus!]" })
       @refetchable(queryName: "ViewerBuildListRefetchQuery") {
         viewer {
           builds(last: 50, statuses: $statuses) {

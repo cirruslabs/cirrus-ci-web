@@ -30,7 +30,7 @@ type Artifacts {
   name: String!
   type: String
   format: String
-  files: [ArtifactFileInfo]!
+  files: [ArtifactFileInfo!]!
 }
 
 type BillingSettings {
@@ -67,22 +67,22 @@ type Build implements Node {
   durationInSeconds: Int
   clockDurationInSeconds: Int
   pullRequest: Int
-  pullRequestLabels: [String]!
+  pullRequestLabels: [String!]!
   isSenderUserCollaborator: Boolean!
   senderUserPermissions: String!
   changeTimestamp: Int!
   buildCreatedTimestamp: Int!
   status: BuildStatus!
-  notifications: [Notification]!
+  notifications: [Notification!]!
   parsingResult: ParsingResult
-  tasks: [Task]!
-  executingTasks: [Task]!
+  tasks: [Task!]!
+  executingTasks: [Task!]!
   taskGroupsAmount: Int
-  latestGroupTasks: [Task]!
+  latestGroupTasks: [Task!]!
   repository: Repository!
   viewerPermission: PermissionType!
   source: String
-  hooks: [Hook]!
+  hooks: [Hook!]!
   initializer: UserBasicInfo
 }
 
@@ -158,9 +158,9 @@ type CacheRetrievalAttemptMiss {
 }
 
 type CacheRetrievalAttempts {
-  errors: [CacheRetrievalAttemptError]!
-  hits: [CacheRetrievalAttemptHit]!
-  misses: [CacheRetrievalAttemptMiss]!
+  errors: [CacheRetrievalAttemptError!]!
+  hits: [CacheRetrievalAttemptHit!]!
+  misses: [CacheRetrievalAttemptMiss!]!
 }
 
 """
@@ -234,7 +234,7 @@ type DeleteWebPushConfigurationPayload {
 type ExecutionChart {
   maxValue: Float!
   minValue: Float!
-  points: [ExecutionChartPoint]!
+  points: [ExecutionChartPoint!]!
 }
 
 type ExecutionChartPoint {
@@ -248,12 +248,12 @@ type ExecutionEvent {
 }
 
 type ExecutionInfo {
-  labels: [String]!
-  events: [ExecutionEvent]!
+  labels: [String!]!
+  events: [ExecutionEvent!]!
   cpuChart: ExecutionChart
   memoryChart: ExecutionChart
   cacheRetrievalAttempts: CacheRetrievalAttempts!
-  agentNotifications: [Notification]!
+  agentNotifications: [Notification!]!
 }
 
 input GenerateNewOwnerAccessTokenInput {
@@ -272,7 +272,7 @@ input GenerateNewScopedAccessTokenInput {
   ownerUid: ID
   durationSeconds: Int
   permission: PermissionType
-  repositoryNames: [String]
+  repositoryNames: [String!]
   clientMutationId: String
 }
 
@@ -308,18 +308,18 @@ type HookExecutionInfo {
   error: String!
   arguments: String!
   result: String!
-  outputLogs: [String]!
+  outputLogs: [String!]!
   durationNanos: Int
-  environment: [String]!
+  environment: [String!]!
 }
 
 input HooksReRunInput {
-  hookIds: [ID]
+  hookIds: [ID!]
   clientMutationId: String
 }
 
 type HooksReRunPayload {
-  newHooks: [Hook]
+  newHooks: [Hook!]
   clientMutationId: String
 }
 
@@ -330,7 +330,7 @@ type InstanceResources {
 
 input InvalidateCacheEntriesInput {
   taskId: ID!
-  cacheKeys: [String]
+  cacheKeys: [String!]
   clientMutationId: String
 }
 
@@ -345,7 +345,7 @@ scalar Int
 
 type MetricsChart {
   title: String!
-  points: [TimePoint]!
+  points: [TimePoint!]!
   dataUnits: String
 }
 
@@ -442,7 +442,7 @@ type OwnerInfo {
   description: OwnerInfoDescription!
   viewerPermission: PermissionType!
   apiToken: ApiAccessToken
-  persistentWorkerPools: [PersistentWorkerPool]!
+  persistentWorkerPools: [PersistentWorkerPool!]!
   webhookSettings: WebHookSettings!
   webhookDeliveries(
     """
@@ -513,7 +513,7 @@ type OwnerInfo {
 
 type OwnerInfoDescription {
   message: String!
-  actions: [OwnerInfoDescriptionAction]!
+  actions: [OwnerInfoDescriptionAction!]!
 }
 
 type OwnerInfoDescriptionAction {
@@ -666,10 +666,10 @@ type ParsingResult {
   rawYamlConfig: String!
   rawStarlarkConfig: String!
   processedYamlConfig: String!
-  issues: [ParsingResultIssue]!
-  affectedFiles: [String]!
-  outputLogs: [String]!
-  environment: [String]!
+  issues: [ParsingResultIssue!]!
+  affectedFiles: [String!]!
+  outputLogs: [String!]!
+  environment: [String!]!
 }
 
 type ParsingResultIssue {
@@ -705,7 +705,7 @@ type PersistentWorker {
   hostname: String!
   os: String!
   version: String!
-  labels: [String]!
+  labels: [String!]!
   info: PersistentWorkerInfo
   assignedTasks(
     """
@@ -762,15 +762,15 @@ type PersistentWorkerAssignedTasksConnection {
 
 type PersistentWorkerInfo {
   heartbeatTimestamp: Int!
-  runningTasks: [Task]!
-  resourcesTotal: [PersistentWorkerResource]!
+  runningTasks: [Task!]!
+  resourcesTotal: [PersistentWorkerResource!]!
 }
 
 type PersistentWorkerPool implements Node {
   id: ID!
   name: String!
   enabledForPublic: Boolean!
-  workers: [PersistentWorker]!
+  workers: [PersistentWorker!]!
   viewerPermission: PermissionType!
 }
 
@@ -795,7 +795,7 @@ type Query {
   repository(id: ID!): Repository
   ownerRepository(platform: String!, owner: String!, name: String!): Repository
   build(id: ID!): Build
-  searchBuilds(repositoryOwner: String!, repositoryName: String!, SHA: String): [Build]
+  searchBuilds(repositoryOwner: String!, repositoryName: String!, SHA: String): [Build!]
   task(id: ID!): Task
   hook(id: ID!): Hook
   webhookDelivery(id: String!): WebHookDelivery
@@ -841,11 +841,11 @@ type Repository implements Node {
     branch: String
   ): RepositoryBuildsConnection!
   settings: RepositorySettings!
-  cronSettings: [RepositoryCronSettings]!
+  cronSettings: [RepositoryCronSettings!]!
   viewerPermission: PermissionType!
   lastDefaultBranchBuild: Build
-  metrics(parameters: MetricsQueryParameters): [MetricsChart]!
-  visibleMetadata: [RepositoryMetadata]!
+  metrics(parameters: MetricsQueryParameters): [MetricsChart!]!
+  visibleMetadata: [RepositoryMetadata!]!
   metadata(key: String): RepositoryMetadata
 }
 
@@ -925,7 +925,7 @@ input RepositoryRemoveCronSettingsInput {
 }
 
 type RepositoryRemoveCronSettingsPayload {
-  settings: [RepositoryCronSettings]
+  settings: [RepositoryCronSettings!]
   clientMutationId: String
 }
 
@@ -938,7 +938,7 @@ input RepositorySaveCronSettingsInput {
 }
 
 type RepositorySaveCronSettingsPayload {
-  settings: [RepositoryCronSettings]
+  settings: [RepositoryCronSettings!]
   clientMutationId: String
 }
 
@@ -971,7 +971,7 @@ type RepositorySettings {
   needsApproval: Boolean!
   decryptEnvironmentVariables: DecryptEnvironmentVariablesFor!
   configResolutionStrategy: ConfigResolutionStrategy!
-  additionalEnvironment: [String]!
+  additionalEnvironment: [String!]!
   cacheVersion: Int
 }
 
@@ -980,7 +980,7 @@ input RepositorySettingsInput {
   needsApproval: Boolean
   decryptEnvironmentVariables: DecryptEnvironmentVariablesFor
   configResolutionStrategy: ConfigResolutionStrategy
-  additionalEnvironment: [String]
+  additionalEnvironment: [String!]
   cacheVersion: Int
   clientMutationId: String
 }
@@ -1028,30 +1028,30 @@ type Task implements Node {
   repositoryId: ID!
   name: String!
   localGroupId: Int
-  requiredGroups: [Int]!
+  requiredGroups: [Int!]!
   status: TaskStatus!
-  notifications: [Notification]!
-  commands: [TaskCommand]!
+  notifications: [Notification!]!
+  commands: [TaskCommand!]!
   firstFailedCommand: TaskCommand
-  artifacts: [Artifacts]!
-  commandLogsTail(name: String!): [String]
+  artifacts: [Artifacts!]!
+  commandLogsTail(name: String!): [String!]
   statusTimestamp: Int
   creationTimestamp: Int
   scheduledTimestamp: Int
   executingTimestamp: Int
   finalStatusTimestamp: Int
   durationInSeconds: Int
-  labels: [String]!
-  uniqueLabels: [String]!
-  requiredPRLabels: [String]!
+  labels: [String!]!
+  uniqueLabels: [String!]!
+  requiredPRLabels: [String!]!
   timeoutInSeconds: Int
   optional: Boolean!
-  statusDurations: [TaskStatusDuration]!
+  statusDurations: [TaskStatusDuration!]!
   repository: Repository!
   build: Build!
-  previousRuns: [Task]!
-  allOtherRuns: [Task]!
-  dependencies: [Task]!
+  previousRuns: [Task!]!
+  allOtherRuns: [Task!]!
+  dependencies: [Task!]!
   automaticReRun: Boolean!
   automaticallyReRunnable: Boolean!
   experimental: Boolean!
@@ -1063,8 +1063,8 @@ type Task implements Node {
   instanceArchitecture: ArchitectureType!
   instanceResources: InstanceResources
   executionInfo: ExecutionInfo
-  baseEnvironment: [String]!
-  hooks: [Hook]!
+  baseEnvironment: [String!]!
+  hooks: [Hook!]!
   reranBy: UserBasicInfo
   cancelledBy: UserBasicInfo
   terminalCredential: TerminalCredential
@@ -1082,12 +1082,12 @@ type TaskAbortPayload {
 }
 
 input TaskBatchAbortInput {
-  taskIds: [ID]
+  taskIds: [ID!]
   clientMutationId: String
 }
 
 type TaskBatchAbortPayload {
-  tasks: [Task]
+  tasks: [Task!]
   clientMutationId: String
 }
 
@@ -1096,7 +1096,7 @@ type TaskCommand {
   type: TaskCommandType!
   status: TaskCommandStatus!
   durationInSeconds: Int!
-  logsTail: [String]
+  logsTail: [String!]
 }
 
 """
@@ -1139,13 +1139,13 @@ type TaskReRunPayload {
 }
 
 input TasksReRunInput {
-  taskIds: [ID]
+  taskIds: [ID!]
   attachTerminal: Boolean
   clientMutationId: String
 }
 
 type TasksReRunPayload {
-  newTasks: [Task]
+  newTasks: [Task!]
   clientMutationId: String
 }
 
@@ -1274,14 +1274,14 @@ type User implements Node & UserBasicInfo {
     """
     fetching only builds with the specified statuses
     """
-    statuses: [BuildStatus]
+    statuses: [BuildStatus!]
   ): UserBuildsConnection!
-  topActiveRepositories: [Repository]!
+  topActiveRepositories: [Repository!]!
   balanceInCredits: String!
   apiToken: ApiAccessToken
   webPushServerKey: String!
-  persistentWorkerPools: [PersistentWorkerPool]!
-  relatedOwners: [OwnerInfo]!
+  persistentWorkerPools: [PersistentWorkerPool!]!
+  relatedOwners: [OwnerInfo!]!
   transactions(
     """
     fetching only nodes before this node (exclusive)

@@ -439,6 +439,7 @@ type OwnerInfo {
   uid: ID!
   platform: String!
   name: String!
+  avatarURL: String!
   description: OwnerInfoDescription!
   viewerPermission: PermissionType!
   apiToken: ApiAccessToken
@@ -1249,7 +1250,7 @@ type UpdatePersistentWorkerPoolPayload {
 type User implements Node & UserBasicInfo {
   id: ID!
   category: User!
-  avatarURL: String
+  avatarURL: String!
   builds(
     """
     fetching only nodes before this node (exclusive)

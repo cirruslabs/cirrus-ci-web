@@ -14,7 +14,6 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import TableRow from '@mui/material/TableRow';
-import TableHead from '@mui/material/TableHead';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
@@ -243,7 +242,7 @@ const BuildRow = memo(({ build, selected, setSelectedBuildId }: BuildRowProps) =
 
       {/* DURATION */}
       <TableCell className={cx(classes.cell, classes.cellDuration)}>
-        <Stack direction="row" spacing={0.5} alignItems="center" justifyContent={'flex-end'}>
+        <Stack direction="row" spacing={0.5} alignItems="center" justifyContent="flex-end">
           <div>{build.clockDurationInSeconds ? formatDuration(build.clockDurationInSeconds) : '—'}</div>
           <Tooltip title={durationTooltipTitle}>
             <AccessTimeIcon />

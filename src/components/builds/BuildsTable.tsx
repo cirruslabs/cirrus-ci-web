@@ -37,6 +37,9 @@ const useStyles = makeStyles(theme => {
   return {
     table: {
       tableLayout: 'auto',
+      '& .MuiTableCell-sizeMedium': {
+        padding: `${theme.spacing(1.5)}  ${theme.spacing(2)} `,
+      },
     },
     row: {
       height: 82,
@@ -147,7 +150,6 @@ export default function BuildsTable({ selectedBuildId, setSelectedBuildId, ...pr
   return (
     <ThemeProvider theme={muiTheme}>
       <Table className={classes.table}>
-        <TableHead></TableHead>
         <TableBody>
           {builds.map((build, i) => (
             <BuildRow

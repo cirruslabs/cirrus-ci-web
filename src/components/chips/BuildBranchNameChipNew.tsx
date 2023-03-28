@@ -31,8 +31,8 @@ const useStyles = makeStyles(theme => {
     chip: {
       flexGrow: 0,
       '& .MuiChip-avatar': {
-        height: 16,
-        width: 16,
+        height: theme.spacing(2),
+        width: theme.spacing(2),
         marginLeft: 6,
         marginRight: theme.spacing(-0.5),
         color: deepOrange[500],

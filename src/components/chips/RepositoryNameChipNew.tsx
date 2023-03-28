@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => {
         width: 16,
         marginLeft: 6,
         marginRight: theme.spacing(-0.5),
-        color: deepPurple[500],
+        color: theme.palette.mode === 'dark' ? deepPurple['A100'] : deepPurple[500],
       },
     },
   };

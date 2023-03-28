@@ -8,13 +8,17 @@ import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
 
 import { makeStyles } from '@mui/styles';
+import { Tooltip } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import TableRow from '@mui/material/TableRow';
 import TableHead from '@mui/material/TableHead';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 import Hash from '../chips/Hash';
 import BuildStatusChipNew from '../chips/BuildStatusChipNew';
@@ -73,19 +77,12 @@ const useStyles = makeStyles(theme => {
       width: 180,
       minWidth: 180,
       maxWidth: 180,
+      verticalAlign: 'text-top',
     },
     cellDuration: {
       width: 110,
       minWidth: 110,
       maxWidth: 110,
-      textAlign: 'right',
-    },
-    infoIcon: {
-      color: theme.palette.action.active,
-    },
-    link: {
-      // default palette.primary.main colors
-      color: theme.palette.mode === 'dark' ? theme.palette.info.light : theme.palette.info.main,
     },
     commitName: {
       overflow: 'hidden',
@@ -114,6 +111,9 @@ const buildSubscription = graphql`
     }
   }
 `;
+
+const durationTooltipTitle =
+  'Clock duration reflects elapsed time between creation of all tasks for a particular build and completion of the last one of them. Clock duration can be impacted by resource availability, scheduling delays, parallelism constraints and other factors that affect execution of tasks.';
 
 export default function BuildsTable({ selectedBuildId, setSelectedBuildId, ...props }: Props) {
   let builds = useFragment(
@@ -219,18 +219,19 @@ const BuildRow = memo(({ build, selected, setSelectedBuildId }: BuildRowProps) =
         <BuildStatusChipNew status={build.status} />
       </TableCell>
 
-      {/* REPOSITORY */}
-      <TableCell className={cx(classes.cell, classes.cellRepository)}>
-        <RepositoryNameChipNew className={classes.chip} repository={build.repository} withHeader />
-        <RepositoryOwnerChipNew className={classes.chip} repository={build.repository} withHeader />
-      </TableCell>
-
       {/* COMMIT */}
       <TableCell className={cx(classes.cell, classes.cellCommit)}>
         <Typography className={classes.commitName} title={build.changeMessageTitle}>
           {build.changeMessageTitle}
         </Typography>
         <Hash build={build} />
+      </TableCell>
+
+      {/* REPOSITORY */}
+      <TableCell className={cx(classes.cell, classes.cellRepository)}>
+        <RepositoryNameChipNew className={classes.chip} repository={build.repository} withHeader />
+        <Box mb={0.5} />
+        <RepositoryOwnerChipNew className={classes.chip} repository={build.repository} withHeader />
       </TableCell>
 
       {/* BRANCH */}
@@ -240,7 +241,12 @@ const BuildRow = memo(({ build, selected, setSelectedBuildId }: BuildRowProps) =
 
       {/* DURATION */}
       <TableCell className={cx(classes.cell, classes.cellDuration)}>
-        {build.clockDurationInSeconds ? formatDuration(build.clockDurationInSeconds) : '—'}
+        <Stack direction="row" spacing={0.5} alignItems="center" justifyContent={'flex-end'}>
+          <div>{build.clockDurationInSeconds ? formatDuration(build.clockDurationInSeconds) : '—'}</div>
+          <Tooltip title={durationTooltipTitle}>
+            <AccessTimeIcon />
+          </Tooltip>
+        </Stack>
       </TableCell>
     </TableRow>
   );

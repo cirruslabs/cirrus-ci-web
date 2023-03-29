@@ -13,6 +13,7 @@ import { Duration_build$key } from './__generated__/Duration_build.graphql';
 interface Props {
   build: Duration_build$key;
   rightAlighment?: boolean;
+  iconFirst?: boolean;
 }
 
 const durationTooltipTitle =
@@ -29,7 +30,12 @@ export default function Duration(props: Props) {
   );
 
   return (
-    <Stack direction="row" alignItems="center" spacing={0.5} justifyContent={props.rightAlighment && 'flex-end'}>
+    <Stack
+      direction={props.iconFirst ? 'row-reverse' : 'row'}
+      alignItems="center"
+      spacing={0.5}
+      justifyContent={props.rightAlighment && 'flex-end'}
+    >
       <Typography variant="subtitle1">
         {build.clockDurationInSeconds ? formatDuration(build.clockDurationInSeconds) : '—'}
       </Typography>

@@ -239,7 +239,6 @@ export default function RepositoryBuildList(props: Props) {
             >
               <Duration build={build} iconFirst />
             </Box>
-            <BuildBranchNameChipNew build={build} />
           </Stack>
         </TableCell>
 
@@ -248,7 +247,10 @@ export default function RepositoryBuildList(props: Props) {
           <Typography variant="subtitle1" title={build.changeMessageTitle} gutterBottom>
             {build.changeMessageTitle}
           </Typography>
-          <Hash build={build} />
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Hash build={build} />
+            <BuildBranchNameChipNew build={build} />
+          </Stack>
         </TableCell>
 
         {/* DURATION SM-SCREEN*/}

@@ -129,11 +129,10 @@ function ViewerBuildList(props: Props) {
             </div>
             {/* DURATION XS-SCREEN */}
             <Box component="span" sx={{ display: { xs: 'block', sm: 'none' } }} pl={0.5}>
-              <Duration build={build} iconFirst />{' '}
+              <Duration build={build} iconFirst />
             </Box>
             <RepositoryNameChipNew repository={build.repository} />
             <RepositoryOwnerChipNew repository={build.repository} />
-            <BuildBranchNameChipNew build={build} />
           </Stack>
         </TableCell>
 
@@ -142,7 +141,10 @@ function ViewerBuildList(props: Props) {
           <Typography variant="subtitle1" title={build.changeMessageTitle} gutterBottom>
             {build.changeMessageTitle}
           </Typography>
-          <Hash build={build} />
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Hash build={build} />
+            <BuildBranchNameChipNew build={build} />
+          </Stack>
         </TableCell>
 
         {/* DURATION SM-SCREEN */}

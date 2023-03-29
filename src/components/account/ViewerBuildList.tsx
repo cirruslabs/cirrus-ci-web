@@ -94,10 +94,10 @@ function ViewerBuildList(props: Props) {
                 ...Hash_build
                 ...Duration_build
                 ...BuildsTable_builds
-                ...RepositoryOwnerChipNew_build
                 ...BuildBranchNameChipNew_build
                 repository {
                   ...RepositoryNameChipNew_repository
+                  ...RepositoryOwnerChipNew_repository
                 }
               }
             }
@@ -132,7 +132,7 @@ function ViewerBuildList(props: Props) {
               <Duration build={build} iconFirst />{' '}
             </Box>
             <RepositoryNameChipNew repository={build.repository} />
-            <RepositoryOwnerChipNew build={build} />
+            <RepositoryOwnerChipNew repository={build.repository} />
             <BuildBranchNameChipNew build={build} />
           </Stack>
         </TableCell>

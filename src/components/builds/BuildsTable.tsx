@@ -1,11 +1,10 @@
-import { memo, useEffect, useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ThemeProvider } from '@emotion/react';
-import { requestSubscription, useFragment } from 'react-relay';
+import { useFragment } from 'react-relay';
 import cx from 'classnames';
 import { useRecoilValue } from 'recoil';
 import { graphql } from 'babel-plugin-relay/macro';
-import environment from '../../createRelayEnvironment';
 
 import { makeStyles } from '@mui/styles';
 import { createTheme } from '@mui/material/styles';
@@ -23,7 +22,6 @@ import BuildBranchNameChipNew from '../chips/BuildBranchNameChipNew';
 import RepositoryNameChipNew from '../chips/RepositoryNameChipNew';
 import RepositoryOwnerChipNew from '../chips/RepositoryOwnerChipNew';
 import { muiThemeOptions } from '../../cirrusTheme';
-import { isBuildFinalStatus } from '../../utils/status';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
 
 import { BuildsTable_builds, BuildsTable_builds$key } from './__generated__/BuildsTable_builds.graphql';
@@ -92,14 +90,6 @@ interface Props {
   setSelectedBuildId?: Function;
 }
 
-const buildSubscription = graphql`
-  subscription BuildsTableSubscription($buildID: ID!) {
-    build(id: $buildID) {
-      ...BuildsTable_builds
-    }
-  }
-`;
-
 export default function BuildsTable({ selectedBuildId, setSelectedBuildId, ...props }: Props) {
   let builds = useFragment(
     graphql`
@@ -120,6 +110,7 @@ export default function BuildsTable({ selectedBuildId, setSelectedBuildId, ...pr
         }
         ...Hash_build
         ...Duration_build
+        ...BuildStatusChipNew_build
         ...BuildBranchNameChipNew_build
       }
     `,
@@ -158,18 +149,6 @@ const BuildRow = memo(({ build, selected, setSelectedBuildId }: BuildRowProps) =
   let classes = useStyles();
   const navigate = useNavigate();
 
-  const isFinalStatus = useMemo(() => isBuildFinalStatus(build.status), [build.status]);
-  useEffect(() => {
-    if (isFinalStatus) return;
-    const subscription = requestSubscription(environment, {
-      subscription: buildSubscription,
-      variables: { buildID: build.id },
-    });
-    return () => {
-      subscription.dispose();
-    };
-  }, [build.id, isFinalStatus]);
-
   let rowProps;
   const selectable = !!setSelectedBuildId;
   if (selectable) {
@@ -201,7 +180,7 @@ const BuildRow = memo(({ build, selected, setSelectedBuildId }: BuildRowProps) =
     >
       {/* STATUS */}
       <TableCell className={cx(classes.cell, classes.cellStatus, classes.cellStatusChip)}>
-        <BuildStatusChipNew status={build.status} />
+        <BuildStatusChipNew build={build} />
       </TableCell>
 
       {/* COMMIT */}

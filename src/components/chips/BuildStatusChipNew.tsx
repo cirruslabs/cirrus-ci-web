@@ -1,11 +1,18 @@
+import React, { useEffect, useMemo } from 'react';
+import { graphql } from 'babel-plugin-relay/macro';
+import environment from '../../createRelayEnvironment';
+import { useFragment, requestSubscription } from 'react-relay';
+
 import Chip from '@mui/material/Chip';
 import Icon from '@mui/material/Icon';
 import { makeStyles } from '@mui/styles';
 
-import { BuildStatus } from './__generated__/BuildStatusChip_build.graphql';
+import { isBuildFinalStatus } from '../../utils/status';
+
+import { BuildStatusChipNew_build$key } from './__generated__/BuildStatusChipNew_build.graphql';
 
 interface Props {
-  status: BuildStatus;
+  build: BuildStatusChipNew_build$key;
   mini?: boolean;
 }
 
@@ -17,8 +24,43 @@ const useStyles = makeStyles(() => {
   };
 });
 
-function BuildStatusChip({ status, mini }: Props) {
+const buildSubscription = graphql`
+  subscription BuildStatusChipNewSubscription($buildID: ID!) {
+    build(id: $buildID) {
+      ...BuildStatusChipNew_build
+    }
+  }
+`;
+
+export default function BuildStatusChip(props: Props) {
+  let build = useFragment(
+    graphql`
+      fragment BuildStatusChipNew_build on Build {
+        id
+        status
+      }
+    `,
+    props.build,
+  );
+
   let classes = useStyles();
+
+  const isFinalStatus = useMemo(() => isBuildFinalStatus(build.status), [build.status]);
+  useEffect(() => {
+    if (isFinalStatus) {
+      return;
+    }
+
+    let variables = { buildID: build.id };
+
+    const subscription = requestSubscription(environment, {
+      subscription: buildSubscription,
+      variables: variables,
+    });
+    return () => {
+      subscription.dispose();
+    };
+  }, [build.id, isFinalStatus]);
 
   const label =
     {
@@ -27,7 +69,7 @@ function BuildStatusChip({ status, mini }: Props) {
       COMPLETED: 'completed',
       FAILED: 'failed',
       ABORTED: 'aborted',
-    }[status] || status.toLowerCase();
+    }[build.status] || build.status.toLowerCase();
 
   const color =
     {
@@ -37,7 +79,7 @@ function BuildStatusChip({ status, mini }: Props) {
       COMPLETED: 'success',
       FAILED: 'error',
       ABORTED: 'warning',
-    }[status] || 'error';
+    }[build.status] || 'error';
 
   const icon =
     {
@@ -47,9 +89,9 @@ function BuildStatusChip({ status, mini }: Props) {
       COMPLETED: 'check_circle',
       FAILED: 'error_circle',
       ABORTED: 'stop_circle',
-    }[status] || 'error_circle';
+    }[build.status] || 'error_circle';
 
-  if (mini) {
+  if (props.mini) {
     return (
       <Icon className={classes.iconMini} color={color}>
         {icon}
@@ -58,5 +100,3 @@ function BuildStatusChip({ status, mini }: Props) {
   }
   return <Chip label={label} color={color} size="small" variant="filled" icon={<Icon>{icon}</Icon>}></Chip>;
 }
-
-export default BuildStatusChip;

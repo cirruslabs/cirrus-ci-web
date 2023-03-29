@@ -94,6 +94,7 @@ function ViewerBuildList(props: Props) {
                 ...Hash_build
                 ...Duration_build
                 ...BuildsTable_builds
+                ...BuildStatusChipNew_build
                 ...BuildBranchNameChipNew_build
                 repository {
                   ...RepositoryNameChipNew_repository
@@ -125,7 +126,7 @@ function ViewerBuildList(props: Props) {
         <TableCell className={classes.padding}>
           <Stack direction="column" alignItems="start" spacing={0.5}>
             <div className={classes.statusChip}>
-              <BuildStatusChipNew status={build.status} />
+              <BuildStatusChipNew build={build} />
             </div>
             {/* DURATION XS-SCREEN */}
             <Box component="span" sx={{ display: { xs: 'block', sm: 'none' } }} pl={0.5}>

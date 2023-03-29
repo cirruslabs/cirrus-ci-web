@@ -118,6 +118,7 @@ export default function RepositoryBuildList(props: Props) {
               ...Hash_build
               ...Duration_build
               ...BuildsTable_builds
+              ...BuildStatusChipNew_build
               ...BuildBranchNameChipNew_build
             }
           }
@@ -228,7 +229,7 @@ export default function RepositoryBuildList(props: Props) {
         <TableCell>
           <Stack direction="column" alignItems="start" spacing={0.5}>
             <div className={classes.statusChip}>
-              <BuildStatusChipNew status={build.status} />
+              <BuildStatusChipNew build={build} />
             </div>
             {/* DURATION XS-SCREEN */}
             <Box

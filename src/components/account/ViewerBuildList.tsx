@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useRefetchableFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { useNavigate } from 'react-router-dom';
+import { ThemeProvider } from '@emotion/react';
+import { useRecoilValue } from 'recoil';
 import { Helmet as Head } from 'react-helmet';
 
+import { createTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import Table from '@mui/material/Table';
@@ -11,13 +14,17 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import RepositoryNameChip from '../chips/RepositoryNameChip';
-import BuildBranchNameChip from '../chips/BuildBranchNameChip';
-import BuildStatusChip from '../chips/BuildStatusChip';
-import BuildChangeChip from '../chips/BuildChangeChip';
+import Hash from '../chips/Hash';
+import Duration from '../chips/Duration';
+import { muiThemeOptions } from '../../cirrusTheme';
+import RepositoryNameChipNew from '../chips/RepositoryNameChipNew';
+import RepositoryOwnerChipNew from '../chips/RepositoryOwnerChipNew';
+import BuildBranchNameChipNew from '../chips/BuildBranchNameChipNew';
+import BuildStatusChipNew from '../chips/BuildStatusChipNew';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
 import usePageWidth from '../../utils/usePageWidth';
 import { isBuildFinalStatus } from '../../utils/status';
@@ -53,6 +60,11 @@ const useStyles = makeStyles(theme => {
     padding: {
       margin: theme.spacing(0.5),
     },
+    statusChip: {
+      '& *': {
+        color: theme.palette.background.default,
+      },
+    },
   };
 });
 
@@ -79,12 +91,13 @@ function ViewerBuildList(props: Props) {
                 changeMessageTitle
                 durationInSeconds
                 status
-                ...BuildBranchNameChip_build
-                ...BuildChangeChip_build
-                ...BuildStatusChip_build
+                ...Hash_build
+                ...Duration_build
                 ...BuildsTable_builds
+                ...RepositoryOwnerChipNew_build
+                ...BuildBranchNameChipNew_build
                 repository {
-                  ...RepositoryNameChip_repository
+                  ...RepositoryNameChipNew_repository
                 }
               }
             }
@@ -97,6 +110,9 @@ function ViewerBuildList(props: Props) {
 
   let navigate = useNavigate();
 
+  const themeOptions = useRecoilValue(muiThemeOptions);
+  const muiTheme = useMemo(() => createTheme(themeOptions), [themeOptions]);
+
   function buildItem(build) {
     return (
       <TableRow
@@ -105,23 +121,33 @@ function ViewerBuildList(props: Props) {
         hover={true}
         style={{ cursor: 'pointer' }}
       >
+        {/* STATUS REPOSITORY BRANCH */}
         <TableCell className={classes.padding}>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
-            <RepositoryNameChip repository={build.repository} fullName={true} className={classes.chip} />
-            <BuildBranchNameChip build={build} className={classes.chip} />
-            <BuildChangeChip build={build} className={classes.chip} />
-            <Box component="span" sx={{ display: { xs: 'block', sm: 'none' } }}>
-              <BuildStatusChip build={build} className={classes.chip} />
+          <Stack direction="column" alignItems="start" spacing={0.5}>
+            <div className={classes.statusChip}>
+              <BuildStatusChipNew status={build.status} />
+            </div>
+            {/* DURATION XS-SCREEN */}
+            <Box component="span" sx={{ display: { xs: 'block', sm: 'none' } }} pl={0.5}>
+              <Duration build={build} iconFirst />{' '}
             </Box>
-          </div>
+            <RepositoryNameChipNew repository={build.repository} />
+            <RepositoryOwnerChipNew build={build} />
+            <BuildBranchNameChipNew build={build} />
+          </Stack>
         </TableCell>
+
+        {/* COMMIT */}
         <TableCell className={classes.cell}>
-          <div>
-            <MarkdownTypography text={build.changeMessageTitle} variant="body1" color="inherit" />
-          </div>
+          <Typography variant="subtitle1" title={build.changeMessageTitle} gutterBottom>
+            {build.changeMessageTitle}
+          </Typography>
+          <Hash build={build} />
         </TableCell>
+
+        {/* DURATION SM-SCREEN */}
         <TableCell className={classes.cell} sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
-          <BuildStatusChip build={build} className={classes.chip} />
+          <Duration build={build} rightAlighment />
         </TableCell>
       </TableRow>
     );
@@ -178,19 +204,21 @@ function ViewerBuildList(props: Props) {
   };
 
   return (
-    <Paper className={classes.paper}>
-      <Head>
-        <title>Recent Builds - Cirrus CI</title>
-      </Head>
-      <Toolbar className={classes.header} disableGutters>
-        <Typography variant="h5">Recent Builds</Typography>
-        <ToggleButtonGroup value={filter} exclusive onChange={handleFilterChange}>
-          <ToggleButton value="all">All</ToggleButton>
-          <ToggleButton value="running">Running</ToggleButton>
-        </ToggleButtonGroup>
-      </Toolbar>
-      {buildsComponent}
-    </Paper>
+    <ThemeProvider theme={muiTheme}>
+      <Paper className={classes.paper}>
+        <Head>
+          <title>Recent Builds - Cirrus CI</title>
+        </Head>
+        <Toolbar className={classes.header} disableGutters>
+          <Typography variant="h5">Recent Builds</Typography>
+          <ToggleButtonGroup value={filter} exclusive onChange={handleFilterChange}>
+            <ToggleButton value="all">All</ToggleButton>
+            <ToggleButton value="running">Running</ToggleButton>
+          </ToggleButtonGroup>
+        </Toolbar>
+        {buildsComponent}
+      </Paper>
+    </ThemeProvider>
   );
 }
 

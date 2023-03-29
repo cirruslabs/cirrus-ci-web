@@ -230,7 +230,6 @@ export default function RepositoryBuildList(props: Props) {
             <div className={classes.statusChip}>
               <BuildStatusChipNew status={build.status} />
             </div>
-            <BuildBranchNameChipNew build={build} />
             {/* DURATION XS-SCREEN */}
             <Box
               sx={{
@@ -240,6 +239,7 @@ export default function RepositoryBuildList(props: Props) {
             >
               <Duration build={build} iconFirst />
             </Box>
+            <BuildBranchNameChipNew build={build} />
           </Stack>
         </TableCell>
 

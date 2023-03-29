@@ -7,7 +7,7 @@ import { useTheme } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
+import Ballot from '@mui/icons-material/Ballot';
 
 import { navigateHelper } from '../../utils/navigateHelper';
 
@@ -47,7 +47,7 @@ export default function RepositoryNameChipNew(props: Props) {
           <Chip
             className={props.className}
             label={repository.name}
-            avatar={<BookOutlinedIcon />}
+            avatar={<Ballot />}
             size="small"
             title={repository.name}
             onClick={e => handleRepositoryClick(e, repository)}
@@ -58,7 +58,7 @@ export default function RepositoryNameChipNew(props: Props) {
         <Chip
           className={props.className}
           label={repository.name}
-          avatar={<BookOutlinedIcon />}
+          avatar={<Ballot />}
           size="small"
           title={repository.name}
           onClick={e => handleRepositoryClick(e, repository)}

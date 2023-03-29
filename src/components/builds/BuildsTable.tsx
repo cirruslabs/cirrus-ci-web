@@ -116,11 +116,11 @@ export default function BuildsTable({ selectedBuildId, setSelectedBuildId, ...pr
           owner
           name
           ...RepositoryNameChipNew_repository
+          ...RepositoryOwnerChipNew_repository
         }
         ...Hash_build
         ...Duration_build
         ...BuildBranchNameChipNew_build
-        ...RepositoryOwnerChipNew_build
       }
     `,
     props.builds,
@@ -216,7 +216,7 @@ const BuildRow = memo(({ build, selected, setSelectedBuildId }: BuildRowProps) =
       <TableCell className={cx(classes.cell, classes.cellRepository)}>
         <RepositoryNameChipNew repository={build.repository} withHeader />
         <Box mb={0.5} />
-        <RepositoryOwnerChipNew build={build} withHeader />
+        <RepositoryOwnerChipNew repository={build.repository} withHeader />
       </TableCell>
 
       {/* BRANCH */}

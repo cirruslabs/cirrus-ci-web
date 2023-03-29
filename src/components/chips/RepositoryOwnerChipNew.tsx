@@ -6,32 +6,26 @@ import { graphql } from 'babel-plugin-relay/macro';
 import { useTheme } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
-import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 
 import { navigateHelper } from '../../utils/navigateHelper';
 
-import { RepositoryOwnerChipNew_build$key } from './__generated__/RepositoryOwnerChipNew_build.graphql';
+import { RepositoryOwnerChipNew_repository$key } from './__generated__/RepositoryOwnerChipNew_repository.graphql';
 
 interface Props {
-  build: RepositoryOwnerChipNew_build$key;
+  repository: RepositoryOwnerChipNew_repository$key;
   withHeader?: boolean;
   className?: string;
 }
 
 export default function RepositoryOwnerChipNew(props: Props) {
-  let build = useFragment(
+  let repository = useFragment(
     graphql`
-      fragment RepositoryOwnerChipNew_build on Build {
-        initializer {
-          avatarURL
-        }
-        repository {
-          owner
-        }
+      fragment RepositoryOwnerChipNew_repository on Repository {
+        owner
       }
     `,
-    props.build,
+    props.repository,
   );
 
   let navigate = useNavigate();
@@ -44,12 +38,11 @@ export default function RepositoryOwnerChipNew(props: Props) {
   const OwnerChip: React.FC = () => (
     <Chip
       className={props.className}
-      label={build.repository.owner}
-      avatar={<Avatar src={build.initializer?.avatarURL} alt={build.repository.owner} />}
+      label={repository.owner}
       size="small"
-      title={build.repository.owner}
-      onClick={e => handleRepositoryClick(e, build.repository)}
-      onAuxClick={e => handleRepositoryClick(e, build.repository)}
+      title={repository.owner}
+      onClick={e => handleRepositoryClick(e, repository)}
+      onAuxClick={e => handleRepositoryClick(e, repository)}
     />
   );
 

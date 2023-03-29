@@ -5,9 +5,10 @@ import { graphql } from 'babel-plugin-relay/macro';
 import cx from 'classnames';
 
 import { makeStyles } from '@mui/styles';
+import { useTheme } from '@mui/material';
 import { Tooltip } from '@mui/material';
-import { deepOrange } from '@mui/material/colors';
 import Chip from '@mui/material/Chip';
+import Typography from '@mui/material/Typography';
 import CallSplitIcon from '@mui/icons-material/CallSplit';
 import UnarchiveIcon from '@mui/icons-material/UnarchiveOutlined';
 
@@ -24,19 +25,8 @@ const useStyles = makeStyles(theme => {
       alignItems: 'flex-start',
       gap: theme.spacing(0.5),
     },
-    header: {
-      fontSize: '14px !important',
-      color: theme.palette.text.disabled,
-    },
     chip: {
       flexGrow: 0,
-      '& .MuiChip-avatar': {
-        height: theme.spacing(2),
-        width: theme.spacing(2),
-        marginLeft: 6,
-        marginRight: theme.spacing(-0.5),
-        color: deepOrange[500],
-      },
     },
   };
 });
@@ -66,6 +56,7 @@ export default function BuildBranchNameChipNew(props: Props) {
 
   let classes = useStyles();
   let navigate = useNavigate();
+  let theme = useTheme();
 
   function handleBranchClick(event) {
     if (build.repository) {
@@ -81,7 +72,11 @@ export default function BuildBranchNameChipNew(props: Props) {
 
   return (
     <div className={props.withHeader ? classes.container : ''}>
-      {props.withHeader && <div className={classes.header}>Branch</div>}
+      {props.withHeader && (
+        <Typography variant="caption" color={theme.palette.text.disabled}>
+          Branch
+        </Typography>
+      )}
       {build.tag ? (
         <Tooltip title={`${build.tag} tag`}>
           <Chip

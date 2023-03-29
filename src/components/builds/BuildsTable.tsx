@@ -36,9 +36,6 @@ const useStyles = makeStyles(theme => {
   return {
     table: {
       tableLayout: 'auto',
-      '& .MuiTableCell-sizeMedium': {
-        padding: `${theme.spacing(1.5)}  ${theme.spacing(2)} `,
-      },
     },
     row: {
       height: 82,
@@ -50,13 +47,9 @@ const useStyles = makeStyles(theme => {
       },
     },
     cell: {
-      fontSize: 16,
       whiteSpace: 'nowrap',
       overflowWrap: 'anywhere',
       textOverflow: 'ellipsis',
-      '& *': {
-        fontSize: 16,
-      },
     },
     cellStatus: {
       width: 150,
@@ -65,7 +58,6 @@ const useStyles = makeStyles(theme => {
     },
     cellStatusChip: {
       '& *': {
-        fontSize: '15px !important',
         color: theme.palette.background.default,
       },
     },
@@ -93,9 +85,6 @@ const useStyles = makeStyles(theme => {
       WebkitLineClamp: 1,
       WebkitBoxOrient: 'vertical',
       whiteSpace: 'normal',
-    },
-    chip: {
-      fontSize: '14px !important',
     },
   };
 });
@@ -222,7 +211,7 @@ const BuildRow = memo(({ build, selected, setSelectedBuildId }: BuildRowProps) =
 
       {/* COMMIT */}
       <TableCell className={cx(classes.cell, classes.cellCommit)}>
-        <Typography className={classes.commitName} title={build.changeMessageTitle}>
+        <Typography className={classes.commitName} variant="subtitle1" title={build.changeMessageTitle} gutterBottom>
           {build.changeMessageTitle}
         </Typography>
         <Hash build={build} />
@@ -230,22 +219,24 @@ const BuildRow = memo(({ build, selected, setSelectedBuildId }: BuildRowProps) =
 
       {/* REPOSITORY */}
       <TableCell className={cx(classes.cell, classes.cellRepository)}>
-        <RepositoryNameChipNew className={classes.chip} repository={build.repository} withHeader />
+        <RepositoryNameChipNew repository={build.repository} withHeader />
         <Box mb={0.5} />
-        <RepositoryOwnerChipNew className={classes.chip} repository={build.repository} withHeader />
+        <RepositoryOwnerChipNew repository={build.repository} withHeader />
       </TableCell>
 
       {/* BRANCH */}
       <TableCell className={cx(classes.cell, classes.cellBranch)}>
-        <BuildBranchNameChipNew className={classes.chip} build={build} withHeader />
+        <BuildBranchNameChipNew build={build} withHeader />
       </TableCell>
 
       {/* DURATION */}
       <TableCell className={cx(classes.cell, classes.cellDuration)}>
         <Stack direction="row" spacing={0.5} alignItems="center" justifyContent="flex-end">
-          <div>{build.clockDurationInSeconds ? formatDuration(build.clockDurationInSeconds) : '—'}</div>
+          <Typography variant="subtitle1">
+            {build.clockDurationInSeconds ? formatDuration(build.clockDurationInSeconds) : '—'}
+          </Typography>
           <Tooltip title={durationTooltipTitle}>
-            <AccessTimeIcon />
+            <AccessTimeIcon fontSize="small" />
           </Tooltip>
         </Stack>
       </TableCell>

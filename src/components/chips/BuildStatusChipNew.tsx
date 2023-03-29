@@ -56,20 +56,7 @@ function BuildStatusChip({ status, mini }: Props) {
       </Icon>
     );
   }
-  return (
-    <Chip
-      label={label}
-      color={color}
-      size="small"
-      variant="filled"
-      icon={<Icon>{icon}</Icon>}
-      sx={{
-        '& .MuiChip-iconSmall': {
-          marginLeft: '5px',
-        },
-      }}
-    ></Chip>
-  );
+  return <Chip label={label} color={color} size="small" variant="filled" icon={<Icon>{icon}</Icon>}></Chip>;
 }
 
 export default BuildStatusChip;

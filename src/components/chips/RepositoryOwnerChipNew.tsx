@@ -6,6 +6,7 @@ import { graphql } from 'babel-plugin-relay/macro';
 import { useTheme } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
+import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 
 import { navigateHelper } from '../../utils/navigateHelper';
@@ -39,6 +40,7 @@ export default function RepositoryOwnerChipNew(props: Props) {
     <Chip
       className={props.className}
       label={repository.owner}
+      avatar={<Avatar src={`https://github.com/${repository.owner}.png`} alt={repository.owner} />}
       size="small"
       title={repository.owner}
       onClick={e => handleRepositoryClick(e, repository)}

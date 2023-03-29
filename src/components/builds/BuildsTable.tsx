@@ -8,24 +8,21 @@ import { graphql } from 'babel-plugin-relay/macro';
 import environment from '../../createRelayEnvironment';
 
 import { makeStyles } from '@mui/styles';
-import { Tooltip } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import TableRow from '@mui/material/TableRow';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 import Hash from '../chips/Hash';
+import Duration from '../chips/Duration';
 import BuildStatusChipNew from '../chips/BuildStatusChipNew';
 import BuildBranchNameChipNew from '../chips/BuildBranchNameChipNew';
 import RepositoryNameChipNew from '../chips/RepositoryNameChipNew';
 import RepositoryOwnerChipNew from '../chips/RepositoryOwnerChipNew';
 import { muiThemeOptions } from '../../cirrusTheme';
-import { formatDuration } from '../../utils/time';
 import { isBuildFinalStatus } from '../../utils/status';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
 
@@ -103,9 +100,6 @@ const buildSubscription = graphql`
   }
 `;
 
-const durationTooltipTitle =
-  'Clock duration reflects elapsed time between creation of all tasks for a particular build and completion of the last one of them. Clock duration can be impacted by resource availability, scheduling delays, parallelism constraints and other factors that affect execution of tasks.';
-
 export default function BuildsTable({ selectedBuildId, setSelectedBuildId, ...props }: Props) {
   let builds = useFragment(
     graphql`
@@ -124,6 +118,7 @@ export default function BuildsTable({ selectedBuildId, setSelectedBuildId, ...pr
           ...RepositoryNameChipNew_repository
         }
         ...Hash_build
+        ...Duration_build
         ...BuildBranchNameChipNew_build
         ...RepositoryOwnerChipNew_build
       }
@@ -231,14 +226,7 @@ const BuildRow = memo(({ build, selected, setSelectedBuildId }: BuildRowProps) =
 
       {/* DURATION */}
       <TableCell className={cx(classes.cell, classes.cellDuration)}>
-        <Stack direction="row" spacing={0.5} alignItems="center" justifyContent="flex-end">
-          <Typography variant="subtitle1">
-            {build.clockDurationInSeconds ? formatDuration(build.clockDurationInSeconds) : '—'}
-          </Typography>
-          <Tooltip title={durationTooltipTitle}>
-            <AccessTimeIcon fontSize="small" />
-          </Tooltip>
-        </Stack>
+        <Duration build={build} rightAlighment />
       </TableCell>
     </TableRow>
   );

@@ -1,35 +1,27 @@
-import { memo, useEffect, useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ThemeProvider } from '@emotion/react';
-import { requestSubscription, useFragment } from 'react-relay';
+import { useFragment } from 'react-relay';
 import cx from 'classnames';
 import { useRecoilValue } from 'recoil';
 import { graphql } from 'babel-plugin-relay/macro';
-import environment from '../../createRelayEnvironment';
 
-import { Link, useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { createTheme } from '@mui/material/styles';
+import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
-import Stack from '@mui/material/Stack';
-import Tooltip from '@mui/material/Tooltip';
 import TableRow from '@mui/material/TableRow';
-import TableHead from '@mui/material/TableHead';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import InfoIcon from '@mui/icons-material/Info';
-import CommitIcon from '@mui/icons-material/Commit';
 import Typography from '@mui/material/Typography';
-import CallSplitIcon from '@mui/icons-material/CallSplit';
-import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
-import UnarchiveIcon from '@mui/icons-material/UnarchiveOutlined';
 
+import Hash from '../chips/Hash';
+import Duration from '../chips/Duration';
 import BuildStatusChipNew from '../chips/BuildStatusChipNew';
+import BuildBranchNameChipNew from '../chips/BuildBranchNameChipNew';
+import RepositoryNameChipNew from '../chips/RepositoryNameChipNew';
+import RepositoryOwnerChipNew from '../chips/RepositoryOwnerChipNew';
 import { muiThemeOptions } from '../../cirrusTheme';
-import { shorten } from '../../utils/text';
-import { absoluteLink } from '../../utils/link';
-import { formatDuration } from '../../utils/time';
-import { isBuildFinalStatus } from '../../utils/status';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
 
 import { BuildsTable_builds, BuildsTable_builds$key } from './__generated__/BuildsTable_builds.graphql';
@@ -50,13 +42,9 @@ const useStyles = makeStyles(theme => {
       },
     },
     cell: {
-      fontSize: 16,
       whiteSpace: 'nowrap',
       overflowWrap: 'anywhere',
       textOverflow: 'ellipsis',
-      '& *': {
-        fontSize: '16px !important',
-      },
     },
     cellStatus: {
       width: 150,
@@ -65,7 +53,6 @@ const useStyles = makeStyles(theme => {
     },
     cellStatusChip: {
       '& *': {
-        fontSize: '15px !important',
         color: theme.palette.background.default,
       },
     },
@@ -79,19 +66,12 @@ const useStyles = makeStyles(theme => {
       width: 180,
       minWidth: 180,
       maxWidth: 180,
+      verticalAlign: 'text-top',
     },
     cellDuration: {
       width: 110,
       minWidth: 110,
       maxWidth: 110,
-      textAlign: 'right',
-    },
-    infoIcon: {
-      color: theme.palette.action.active,
-    },
-    link: {
-      // default palette.primary.main colors
-      color: theme.palette.mode === 'dark' ? theme.palette.info.light : theme.palette.info.main,
     },
     commitName: {
       overflow: 'hidden',
@@ -101,16 +81,6 @@ const useStyles = makeStyles(theme => {
       WebkitBoxOrient: 'vertical',
       whiteSpace: 'normal',
     },
-    hash: {
-      color: theme.palette.text.secondary,
-      fontFamily: 'Courier',
-      marginTop: theme.spacing(0.5),
-      border: `1px solid ${theme.palette.divider}`,
-      borderRadius: 3 * theme.shape.borderRadius,
-      width: 'fit-content',
-      padding: '1px 5px',
-      '& *': { fontSize: '14px !important' },
-    },
   };
 });
 
@@ -119,14 +89,6 @@ interface Props {
   selectedBuildId?: string;
   setSelectedBuildId?: Function;
 }
-
-const buildSubscription = graphql`
-  subscription BuildsTableSubscription($buildID: ID!) {
-    build(id: $buildID) {
-      ...BuildsTable_builds
-    }
-  }
-`;
 
 export default function BuildsTable({ selectedBuildId, setSelectedBuildId, ...props }: Props) {
   let builds = useFragment(
@@ -143,7 +105,13 @@ export default function BuildsTable({ selectedBuildId, setSelectedBuildId, ...pr
           platform
           owner
           name
+          ...RepositoryNameChipNew_repository
+          ...RepositoryOwnerChipNew_repository
         }
+        ...Hash_build
+        ...Duration_build
+        ...BuildStatusChipNew_build
+        ...BuildBranchNameChipNew_build
       }
     `,
     props.builds,
@@ -156,9 +124,6 @@ export default function BuildsTable({ selectedBuildId, setSelectedBuildId, ...pr
   return (
     <ThemeProvider theme={muiTheme}>
       <Table className={classes.table}>
-        <TableHead>
-          <HeadRow />
-        </TableHead>
         <TableBody>
           {builds.map((build, i) => (
             <BuildRow
@@ -173,33 +138,6 @@ export default function BuildsTable({ selectedBuildId, setSelectedBuildId, ...pr
     </ThemeProvider>
   );
 }
-const HeadRow = () => {
-  let classes = useStyles();
-  const durationTooltipText = (
-    <>
-      Clock duration reflects elapsed time between creation of all tasks for a particular build and completion of the
-      last one of them. Clock duration can be impacted by resource availability, scheduling delays, parallelism
-      constraints and other factors that affect execution of tasks.
-    </>
-  );
-
-  return (
-    <TableRow>
-      <TableCell className={cx(classes.cell, classes.cellStatus)}>Status</TableCell>
-      <TableCell className={cx(classes.cell, classes.cellRepository)}>Repository</TableCell>
-      <TableCell className={cx(classes.cell, classes.cellCommit)}>Commit</TableCell>
-      <TableCell className={cx(classes.cell, classes.cellBranch)}>Branch</TableCell>
-      <TableCell className={cx(classes.cell, classes.cellDuration)}>
-        <Stack direction="row" alignItems="center" justifyContent="end" spacing={0.5}>
-          <Tooltip title={durationTooltipText}>
-            <InfoIcon className={classes.infoIcon} fontSize="inherit" />
-          </Tooltip>
-          <span>Duration</span>
-        </Stack>
-      </TableCell>
-    </TableRow>
-  );
-};
 
 interface BuildRowProps {
   build: BuildsTable_builds[number];
@@ -209,20 +147,7 @@ interface BuildRowProps {
 
 const BuildRow = memo(({ build, selected, setSelectedBuildId }: BuildRowProps) => {
   let classes = useStyles();
-  const theme = useTheme();
   const navigate = useNavigate();
-
-  const isFinalStatus = useMemo(() => isBuildFinalStatus(build.status), [build.status]);
-  useEffect(() => {
-    if (isFinalStatus) return;
-    const subscription = requestSubscription(environment, {
-      subscription: buildSubscription,
-      variables: { buildID: build.id },
-    });
-    return () => {
-      subscription.dispose();
-    };
-  }, [build.id, isFinalStatus]);
 
   let rowProps;
   const selectable = !!setSelectedBuildId;
@@ -255,58 +180,32 @@ const BuildRow = memo(({ build, selected, setSelectedBuildId }: BuildRowProps) =
     >
       {/* STATUS */}
       <TableCell className={cx(classes.cell, classes.cellStatus, classes.cellStatusChip)}>
-        <BuildStatusChipNew status={build.status} />
-      </TableCell>
-
-      {/* REPOSITORY */}
-      <TableCell className={cx(classes.cell, classes.cellRepository)}>
-        <Stack direction="row" alignItems="center" spacing={0.5}>
-          <BookOutlinedIcon fontSize="inherit" />
-          <Link
-            className={classes.link}
-            href={absoluteLink(build.repository.platform, build.repository.owner, build.repository.name)}
-            underline="hover"
-            noWrap
-            title={build.repository.name}
-          >
-            {build.repository.name}
-          </Link>
-        </Stack>
-        <Typography noWrap color={theme.palette.text.secondary} title={build.repository.owner}>
-          by {build.repository.owner}
-        </Typography>
+        <BuildStatusChipNew build={build} />
       </TableCell>
 
       {/* COMMIT */}
       <TableCell className={cx(classes.cell, classes.cellCommit)}>
-        <Typography className={classes.commitName} title={build.changeMessageTitle}>
+        <Typography className={classes.commitName} variant="subtitle1" title={build.changeMessageTitle} gutterBottom>
           {build.changeMessageTitle}
         </Typography>
-        <Stack className={classes.hash} direction="row" alignItems="center" spacing={0.5}>
-          <CommitIcon fontSize="inherit" />
-          <span>{build.changeIdInRepo.substr(0, 7)}</span>
-        </Stack>
+        <Hash build={build} />
+      </TableCell>
+
+      {/* REPOSITORY */}
+      <TableCell className={cx(classes.cell, classes.cellRepository)}>
+        <RepositoryNameChipNew repository={build.repository} withHeader />
+        <Box mb={0.5} />
+        <RepositoryOwnerChipNew repository={build.repository} withHeader />
       </TableCell>
 
       {/* BRANCH */}
       <TableCell className={cx(classes.cell, classes.cellBranch)}>
-        <Stack direction="row" alignItems="center" spacing={0.5}>
-          {build.tag ? <UnarchiveIcon fontSize="inherit" /> : <CallSplitIcon fontSize="inherit" />}
-          <Link
-            className={classes.link}
-            href={absoluteLink(build.repository.platform, build.repository.owner, build.repository.name, build.branch)}
-            underline="hover"
-            noWrap
-            title={build.branch}
-          >
-            {shorten(build.branch)}
-          </Link>
-        </Stack>
+        <BuildBranchNameChipNew build={build} withHeader />
       </TableCell>
 
       {/* DURATION */}
       <TableCell className={cx(classes.cell, classes.cellDuration)}>
-        {build.clockDurationInSeconds ? formatDuration(build.clockDurationInSeconds) : '—'}
+        <Duration build={build} rightAlighment />
       </TableCell>
     </TableRow>
   );

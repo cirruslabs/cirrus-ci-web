@@ -1,10 +1,13 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ThemeProvider } from '@emotion/react';
+import { useRecoilValue } from 'recoil';
 import { useFragment, useSubscription } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { Helmet as Head } from 'react-helmet';
 import cx from 'classnames';
 
+import { createTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -23,18 +26,19 @@ import Settings from '@mui/icons-material/Settings';
 import AddCircle from '@mui/icons-material/AddCircle';
 import Timeline from '@mui/icons-material/Timeline';
 
+import Hash from '../chips/Hash';
+import Duration from '../chips/Duration';
 import { absoluteLink } from '../../utils/link';
+import { muiThemeOptions } from '../../cirrusTheme';
 import { createLinkToRepository } from '../../utils/github';
 import { NodeOfConnection } from '../../utils/utility-types';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
 import usePageWidth from '../../utils/usePageWidth';
-import BuildStatusChip from '../chips/BuildStatusChip';
 import CreateBuildDialog from '../builds/CreateBuildDialog';
 import BuildDurationsChart from '../builds/BuildDurationsChart';
-import BuildBranchNameChip from '../chips/BuildBranchNameChip';
-import BuildChangeChip from '../chips/BuildChangeChip';
-import MarkdownTypography from '../common/MarkdownTypography';
 import BuildsTable from '../../components/builds/BuildsTable';
+import BuildStatusChipNew from '../chips/BuildStatusChipNew';
+import BuildBranchNameChipNew from '../chips/BuildBranchNameChipNew';
 
 import {
   RepositoryBuildList_repository,
@@ -68,6 +72,11 @@ const useStyles = makeStyles(theme => {
     cell: {
       width: '100%',
       maxWidth: '600px',
+    },
+    statusChip: {
+      '& *': {
+        color: theme.palette.background.default,
+      },
     },
     buildsChart: {
       height: 150,
@@ -106,10 +115,11 @@ export default function RepositoryBuildList(props: Props) {
               clockDurationInSeconds
               durationInSeconds
               status
+              ...Hash_build
+              ...Duration_build
               ...BuildsTable_builds
-              ...BuildBranchNameChip_build
-              ...BuildChangeChip_build
-              ...BuildStatusChip_build
+              ...BuildStatusChipNew_build
+              ...BuildBranchNameChipNew_build
             }
           }
         }
@@ -120,6 +130,9 @@ export default function RepositoryBuildList(props: Props) {
 
   const pageWidth = usePageWidth();
   const isNewDesign = pageWidth > 900;
+
+  const themeOptions = useRecoilValue(muiThemeOptions);
+  const muiTheme = useMemo(() => createTheme(themeOptions), [themeOptions]);
 
   const repositorySubscriptionConfig = useMemo(
     () => ({
@@ -212,68 +225,90 @@ export default function RepositoryBuildList(props: Props) {
         onClick={e => navigateBuildHelper(navigate, e, build.id)}
         style={{ cursor: 'pointer' }}
       >
-        <TableCell padding="none">
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
-            <BuildBranchNameChip build={build} className={classes.chip} />
-            <BuildChangeChip build={build} className={classes.chip} />
-            <Box component="span" sx={{ display: { xs: 'block', sm: 'none' } }}>
-              <BuildStatusChip build={build} className={classes.chip} />
+        {/* STATUS BRANCH */}
+        <TableCell>
+          <Stack direction="column" alignItems="start" spacing={0.5}>
+            <div className={classes.statusChip}>
+              <BuildStatusChipNew build={build} />
+            </div>
+            {/* DURATION XS-SCREEN */}
+            <Box
+              sx={{
+                display: { xs: 'block', sm: 'none' },
+              }}
+              pl={0.5}
+            >
+              <Duration build={build} iconFirst />
             </Box>
-          </div>
+          </Stack>
         </TableCell>
+
+        {/* COMMIT */}
         <TableCell className={classes.cell}>
-          <div>
-            <MarkdownTypography text={build.changeMessageTitle} variant="body1" color="inherit" />
-          </div>
+          <Typography variant="subtitle1" title={build.changeMessageTitle} gutterBottom>
+            {build.changeMessageTitle}
+          </Typography>
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Hash build={build} />
+            <BuildBranchNameChipNew build={build} />
+          </Stack>
         </TableCell>
+
+        {/* DURATION SM-SCREEN*/}
         <TableCell
           className={classes.cell}
           sx={{
             display: { xs: 'none', sm: 'table-cell' },
-            alignItems: 'center',
           }}
         >
-          <BuildStatusChip build={build} className={classes.chip} />
+          <Duration build={build} rightAlighment />
         </TableCell>
       </TableRow>
     );
   }
 
   return (
-    <div className={classes.root}>
-      <Head>
-        <title>
-          {repository.owner}/{repository.name} - Cirrus CI
-        </title>
-      </Head>
-      {/* CHART */}
-      {buildsChart}
-      {/* BUILDS TABLE */}
-      <Paper className={cx(classes.paper, classes.paperBuildsTable)}>
-        <Toolbar className={classes.header} disableGutters>
-          <Stack direction="row" alignItems="center">
-            <Typography variant="h5" color="inherit">
-              Builds
-            </Typography>
-            {repositoryAction}
-          </Stack>
-          <div>
-            {repositoryMetrics}
-            {repositoryLinkButton}
-            {repositorySettings}
-          </div>
-        </Toolbar>
-        {isNewDesign ? (
-          <BuildsTable builds={builds} selectedBuildId={selectedBuildId} setSelectedBuildId={setSelectedBuildId} />
-        ) : (
-          <Table style={{ tableLayout: 'auto' }}>
-            <TableBody>{builds.map(build => buildItem(build))}</TableBody>
-          </Table>
+    <ThemeProvider theme={muiTheme}>
+      <div className={classes.root}>
+        <Head>
+          <title>
+            {repository.owner}/{repository.name} - Cirrus CI
+          </title>
+        </Head>
+        {/* CHART */}
+        {buildsChart}
+
+        {/* BUILDS TABLE */}
+        <Paper className={cx(classes.paper, classes.paperBuildsTable)}>
+          <Toolbar className={classes.header} disableGutters>
+            <Stack direction="row" alignItems="center">
+              <Typography variant="h5" color="inherit">
+                Builds
+              </Typography>
+              {repositoryAction}
+            </Stack>
+            <div>
+              {repositoryMetrics}
+              {repositoryLinkButton}
+              {repositorySettings}
+            </div>
+          </Toolbar>
+          {isNewDesign ? (
+            <BuildsTable builds={builds} selectedBuildId={selectedBuildId} setSelectedBuildId={setSelectedBuildId} />
+          ) : (
+            <Table style={{ tableLayout: 'auto' }}>
+              <TableBody>{builds.map(build => buildItem(build))}</TableBody>
+            </Table>
+          )}
+        </Paper>
+        {openCreateDialog && (
+          <CreateBuildDialog
+            repository={repository}
+            open={openCreateDialog}
+            onClose={() => setOpenCreateDialog(false)}
+          />
         )}
-      </Paper>
-      {openCreateDialog && (
-        <CreateBuildDialog repository={repository} open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} />
-      )}
-    </div>
+      </div>
+    </ThemeProvider>
   );
 }

@@ -11,6 +11,7 @@ import { useTheme } from '@mui/material';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
 import { createTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
@@ -46,6 +47,7 @@ const useStyles = makeStyles(theme => {
     },
     status: {
       width: 150,
+      flexShrink: 0,
     },
     commitName: {
       overflow: 'hidden',
@@ -113,7 +115,15 @@ export default function LastDefaultBranchBuildRow(props: Props) {
         <Typography variant="caption" color={theme.palette.text.disabled}>
           Last build
         </Typography>
-        <Typography className={classes.commitName} variant="subtitle1" title={build.changeMessageTitle} gutterBottom>
+        <Typography
+          className={classes.commitName}
+          variant="subtitle1"
+          title={build.changeMessageTitle}
+          gutterBottom
+          lineHeight={1}
+          mt={0.5}
+          mb={0.5}
+        >
           {build.changeMessageTitle}
         </Typography>
         <Hash build={build} />
@@ -122,6 +132,7 @@ export default function LastDefaultBranchBuildRow(props: Props) {
       {/* STATUS DURATION */}
       <div className={classes.status}>
         <BuildStatusChipNew build={build} />
+        <Box mt={0.5} />
         <Duration build={build} iconFirst rightAlighment />
       </div>
     </Stack>

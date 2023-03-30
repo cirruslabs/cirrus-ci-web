@@ -122,7 +122,7 @@ function ViewerBuildList(props: Props) {
           <Stack direction="column" alignItems="start" spacing={0.5}>
             <BuildStatusChipNew build={build} />
             {/* DURATION XS-SCREEN */}
-            <Box component="span" sx={{ display: { xs: 'block', sm: 'none' } }} pl={0.5}>
+            <Box component="span" sx={{ display: { xs: 'block', sm: 'none' } }} pl={0.5} mt={0.5}>
               <Duration build={build} iconFirst />
             </Box>
             <RepositoryNameChipNew repository={build.repository} />
@@ -132,7 +132,7 @@ function ViewerBuildList(props: Props) {
 
         {/* COMMIT */}
         <TableCell className={classes.cell}>
-          <Typography variant="subtitle1" title={build.changeMessageTitle} gutterBottom>
+          <Typography variant="subtitle1" title={build.changeMessageTitle} gutterBottom lineHeight={1}>
             {build.changeMessageTitle}
           </Typography>
           <Stack direction="row" spacing={1} alignItems="center">

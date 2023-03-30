@@ -238,7 +238,7 @@ export default function RepositoryBuildList(props: Props) {
 
         {/* COMMIT */}
         <TableCell className={classes.cell}>
-          <Typography variant="subtitle1" title={build.changeMessageTitle} gutterBottom>
+          <Typography variant="subtitle1" title={build.changeMessageTitle} gutterBottom lineHeight={1}>
             {build.changeMessageTitle}
           </Typography>
           <Stack direction="row" spacing={1} alignItems="center">

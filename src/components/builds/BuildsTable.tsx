@@ -180,7 +180,13 @@ const BuildRow = memo(({ build, selected, setSelectedBuildId }: BuildRowProps) =
 
       {/* COMMIT */}
       <TableCell className={cx(classes.cell, classes.cellCommit)}>
-        <Typography className={classes.commitName} variant="subtitle1" title={build.changeMessageTitle} gutterBottom>
+        <Typography
+          className={classes.commitName}
+          variant="subtitle1"
+          title={build.changeMessageTitle}
+          gutterBottom
+          lineHeight={1}
+        >
           {build.changeMessageTitle}
         </Typography>
         <Hash build={build} />

@@ -36,7 +36,7 @@ export default function Duration(props: Props) {
       spacing={0.5}
       justifyContent={props.rightAlighment && 'flex-end'}
     >
-      <Typography variant="subtitle1">
+      <Typography variant="subtitle1" lineHeight={1}>
         {build.clockDurationInSeconds ? formatDuration(build.clockDurationInSeconds) : '—'}
       </Typography>
       <Tooltip title={durationTooltipTitle}>

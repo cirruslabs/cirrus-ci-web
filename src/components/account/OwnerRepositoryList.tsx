@@ -17,9 +17,13 @@ import { OwnerRepositoryList_info$key } from './__generated__/OwnerRepositoryLis
 
 const useStyles = makeStyles(theme => {
   return {
+    paper: {
+      padding: theme.spacing(1, 2.5, 1.5),
+      boxShadow: '0 16px 52px rgb(0 0 0 / 13%)',
+      borderRadius: 4 * theme.shape.borderRadius,
+    },
     toolbar: {
       paddingLeft: 14,
-      background: theme.palette.action.disabledBackground,
     },
   };
 });
@@ -66,22 +70,20 @@ export default function OwnerRepositoryList(props: Props) {
   }
 
   return (
-    <div>
-      <Paper elevation={16}>
-        <Toolbar className={classes.toolbar} sx={{ justifyContent: 'space-between' }} disableGutters>
-          <Typography variant="h5" color="inherit">
-            Repositories
-          </Typography>
-          {organizationSettings}
-        </Toolbar>
-        <Table style={{ tableLayout: 'auto' }}>
-          <TableBody>
-            {info.repositories.edges.map(edge => (
-              <LastDefaultBranchBuildRow key={edge.node.id} repository={edge.node} />
-            ))}
-          </TableBody>
-        </Table>
-      </Paper>
-    </div>
+    <Paper className={classes.paper}>
+      <Toolbar className={classes.toolbar} sx={{ justifyContent: 'space-between' }} disableGutters>
+        <Typography variant="h5" color="inherit">
+          Repositories
+        </Typography>
+        {organizationSettings}
+      </Toolbar>
+      <Table style={{ tableLayout: 'auto' }}>
+        <TableBody>
+          {info.repositories.edges.map(edge => (
+            <LastDefaultBranchBuildRow key={edge.node.id} repository={edge.node} />
+          ))}
+        </TableBody>
+      </Table>
+    </Paper>
   );
 }

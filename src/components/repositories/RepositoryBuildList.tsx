@@ -73,11 +73,6 @@ const useStyles = makeStyles(theme => {
       width: '100%',
       maxWidth: '600px',
     },
-    statusChip: {
-      '& *': {
-        color: theme.palette.background.default,
-      },
-    },
     buildsChart: {
       height: 150,
     },
@@ -228,9 +223,7 @@ export default function RepositoryBuildList(props: Props) {
         {/* STATUS BRANCH */}
         <TableCell>
           <Stack direction="column" alignItems="start" spacing={0.5}>
-            <div className={classes.statusChip}>
-              <BuildStatusChipNew build={build} />
-            </div>
+            <BuildStatusChipNew build={build} />
             {/* DURATION XS-SCREEN */}
             <Box
               sx={{

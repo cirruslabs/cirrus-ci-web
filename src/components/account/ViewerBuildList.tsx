@@ -60,11 +60,6 @@ const useStyles = makeStyles(theme => {
     padding: {
       margin: theme.spacing(0.5),
     },
-    statusChip: {
-      '& *': {
-        color: theme.palette.background.default,
-      },
-    },
   };
 });
 
@@ -125,9 +120,7 @@ function ViewerBuildList(props: Props) {
         {/* STATUS REPOSITORY BRANCH */}
         <TableCell className={classes.padding}>
           <Stack direction="column" alignItems="start" spacing={0.5}>
-            <div className={classes.statusChip}>
-              <BuildStatusChipNew build={build} />
-            </div>
+            <BuildStatusChipNew build={build} />
             {/* DURATION XS-SCREEN */}
             <Box component="span" sx={{ display: { xs: 'block', sm: 'none' } }} pl={0.5}>
               <Duration build={build} iconFirst />

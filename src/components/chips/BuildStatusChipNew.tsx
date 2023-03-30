@@ -16,8 +16,13 @@ interface Props {
   mini?: boolean;
 }
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles(theme => {
   return {
+    chip: {
+      '& *': {
+        color: theme.palette.background.default,
+      },
+    },
     iconMini: {
       fontSize: '25px !important',
     },
@@ -98,5 +103,9 @@ export default function BuildStatusChip(props: Props) {
       </Icon>
     );
   }
-  return <Chip label={label} color={color} size="small" variant="filled" icon={<Icon>{icon}</Icon>}></Chip>;
+  return (
+    <div className={classes.chip}>
+      <Chip label={label} color={color} size="small" variant="filled" icon={<Icon>{icon}</Icon>}></Chip>
+    </div>
+  );
 }

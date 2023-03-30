@@ -52,10 +52,11 @@ const useStyles = makeStyles(theme => {
     commitName: {
       overflow: 'hidden',
       textOverflow: 'ellipsis',
+      whiteSpace: 'normal',
+      // Text truncate doesnt't work here without styles below
       display: '-webkit-box',
       WebkitLineClamp: 1,
       WebkitBoxOrient: 'vertical',
-      whiteSpace: 'normal',
     },
   };
 });

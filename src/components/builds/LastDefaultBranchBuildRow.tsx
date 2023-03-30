@@ -10,7 +10,6 @@ import { makeStyles } from '@mui/styles';
 import { useTheme } from '@mui/material';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
-import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { createTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
@@ -19,7 +18,6 @@ import Hash from '../chips/Hash';
 import Duration from '../chips/Duration';
 import BuildStatusChipNew from '../chips/BuildStatusChipNew';
 import RepositoryNameChipNew from '../chips/RepositoryNameChipNew';
-import MarkdownTypography from '../common/MarkdownTypography';
 import { muiThemeOptions } from '../../cirrusTheme';
 import { navigateRepositoryHelper } from '../../utils/navigateHelper';
 

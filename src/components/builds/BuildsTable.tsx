@@ -186,6 +186,7 @@ const BuildRow = memo(({ build, selected, setSelectedBuildId }: BuildRowProps) =
           title={build.changeMessageTitle}
           gutterBottom
           lineHeight={1}
+          mt={{ xs: 0, sm: 1 }}
         >
           {build.changeMessageTitle}
         </Typography>

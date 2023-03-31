@@ -45,10 +45,6 @@ const useStyles = makeStyles(theme => {
       maxWidth: 180,
       verticalAlign: 'top',
     },
-    container: {
-      width: 150,
-      flexShrink: 0,
-    },
     commitName: {
       overflow: 'hidden',
       textOverflow: 'ellipsis',
@@ -105,12 +101,7 @@ export default function LastDefaultBranchBuildRow(props: Props) {
   let build = repository.lastDefaultBranchBuild;
 
   const LastBuild = () => (
-    <Stack
-      direction={{ xs: 'column', sm: 'row' }}
-      justifyContent={{ sm: 'space-between' }}
-      alignItems={{ sm: 'end' }}
-      // spacing={{ xs: 0.5 }}
-    >
+    <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent={{ sm: 'space-between' }} alignItems={{ sm: 'end' }}>
       {/* COMMIT */}
       <div>
         <Typography variant="caption" color={theme.palette.text.disabled}>
@@ -133,13 +124,13 @@ export default function LastDefaultBranchBuildRow(props: Props) {
       </div>
 
       {/* STATUS DURATION */}
-      <div className={classes.container}>
+      <Box width={150} flexShrink={0}>
         <BuildStatusChipNew build={build} />
         <Box mt={0.5} />
         <Box pl={0.5}>
           <Duration build={build} iconFirst rightAlighment />
         </Box>
-      </div>
+      </Box>
     </Stack>
   );
 

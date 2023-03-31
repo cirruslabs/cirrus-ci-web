@@ -72,7 +72,7 @@ const useStyles = makeStyles(theme => {
       whiteSpace: 'normal',
       // Text truncate doesnt't work here without styles below
       display: '-webkit-box',
-      WebkitLineClamp: 1,
+      WebkitLineClamp: 2,
       WebkitBoxOrient: 'vertical',
     },
   };

@@ -46,19 +46,23 @@ const useStyles = makeStyles(theme => {
       paddingLeft: 14,
       justifyContent: 'space-between',
     },
-    chip: {
-      margin: theme.spacing(0.5),
-    },
-    cell: {
-      width: '100%',
-      maxWidth: '600px',
-    },
     emptyBuilds: {
       margin: theme.spacing(1.0),
       marginLeft: 14,
     },
-    padding: {
-      margin: theme.spacing(0.5),
+    cellLeft: {
+      width: 150,
+      minWidth: 150,
+      maxWidth: 150,
+    },
+    commitName: {
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'normal',
+      // Text truncate doesnt't work here without styles below
+      display: '-webkit-box',
+      WebkitLineClamp: 3,
+      WebkitBoxOrient: 'vertical',
     },
   };
 });
@@ -118,11 +122,11 @@ function ViewerBuildList(props: Props) {
         style={{ cursor: 'pointer' }}
       >
         {/* STATUS REPOSITORY BRANCH */}
-        <TableCell className={classes.padding}>
+        <TableCell className={classes.cellLeft} sx={{ m: 0.5 }}>
           <Stack direction="column" alignItems="start" spacing={0.5}>
             <BuildStatusChipNew build={build} />
             {/* DURATION XS-SCREEN */}
-            <Box component="span" sx={{ display: { xs: 'block', sm: 'none' } }} pl={0.5} mt={0.5}>
+            <Box sx={{ display: { xs: 'block', sm: 'none' } }} pl={0.5}>
               <Duration build={build} iconFirst />
             </Box>
             <RepositoryNameChipNew repository={build.repository} />
@@ -131,18 +135,26 @@ function ViewerBuildList(props: Props) {
         </TableCell>
 
         {/* COMMIT */}
-        <TableCell className={classes.cell}>
-          <Typography variant="subtitle1" title={build.changeMessageTitle} gutterBottom lineHeight={1}>
+        <TableCell>
+          <Typography
+            className={classes.commitName}
+            variant="subtitle1"
+            title={build.changeMessageTitle}
+            gutterBottom
+            lineHeight={1}
+          >
             {build.changeMessageTitle}
           </Typography>
           <Stack direction="row" spacing={1} alignItems="center">
             <Hash build={build} />
-            <BuildBranchNameChipNew build={build} />
+            <Box maxWidth={150}>
+              <BuildBranchNameChipNew build={build} />
+            </Box>
           </Stack>
         </TableCell>
 
         {/* DURATION SM-SCREEN */}
-        <TableCell className={classes.cell} sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
+        <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>
           <Duration build={build} rightAlighment />
         </TableCell>
       </TableRow>

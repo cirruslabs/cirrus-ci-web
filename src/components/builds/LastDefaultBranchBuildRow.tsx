@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => {
       maxWidth: 180,
       verticalAlign: 'top',
     },
-    status: {
+    container: {
       width: 150,
       flexShrink: 0,
     },
@@ -109,7 +109,7 @@ export default function LastDefaultBranchBuildRow(props: Props) {
       direction={{ xs: 'column', sm: 'row' }}
       justifyContent={{ sm: 'space-between' }}
       alignItems={{ sm: 'end' }}
-      spacing={{ xs: 0.5 }}
+      // spacing={{ xs: 0.5 }}
     >
       {/* COMMIT */}
       <div>
@@ -127,14 +127,18 @@ export default function LastDefaultBranchBuildRow(props: Props) {
         >
           {build.changeMessageTitle}
         </Typography>
-        <Hash build={build} />
+        <Box display={{ xs: 'none', sm: 'block' }}>
+          <Hash build={build} />
+        </Box>
       </div>
 
       {/* STATUS DURATION */}
-      <div className={classes.status}>
+      <div className={classes.container}>
         <BuildStatusChipNew build={build} />
         <Box mt={0.5} />
-        <Duration build={build} iconFirst rightAlighment />
+        <Box pl={0.5}>
+          <Duration build={build} iconFirst rightAlighment />
+        </Box>
       </div>
     </Stack>
   );

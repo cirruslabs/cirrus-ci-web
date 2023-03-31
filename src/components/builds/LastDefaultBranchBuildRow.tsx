@@ -1,17 +1,28 @@
 import React, { useMemo } from 'react';
-import { useFragment, useSubscription } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
-import TableCell from '@mui/material/TableCell';
-import TableRow from '@mui/material/TableRow';
-import { makeStyles } from '@mui/styles';
+import { useRecoilValue } from 'recoil';
+import { ThemeProvider } from '@emotion/react';
 import { useNavigate } from 'react-router-dom';
+import { graphql } from 'babel-plugin-relay/macro';
+import { useFragment, useSubscription } from 'react-relay';
+import cx from 'classnames';
+
+import { makeStyles } from '@mui/styles';
+import { useTheme } from '@mui/material';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+import { createTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+
+import Hash from '../chips/Hash';
+import Duration from '../chips/Duration';
+import BuildStatusChipNew from '../chips/BuildStatusChipNew';
+import RepositoryNameChipNew from '../chips/RepositoryNameChipNew';
+import { muiThemeOptions } from '../../cirrusTheme';
 import { navigateRepositoryHelper } from '../../utils/navigateHelper';
-import RepositoryNameChip from '../chips/RepositoryNameChip';
-import BuildStatusChip from '../chips/BuildStatusChip';
-import classNames from 'classnames';
-import BuildChangeChip from '../chips/BuildChangeChip';
+
 import { LastDefaultBranchBuildRow_repository$key } from './__generated__/LastDefaultBranchBuildRow_repository.graphql';
-import MarkdownTypography from '../common/MarkdownTypography';
 
 const buildSubscription = graphql`
   subscription LastDefaultBranchBuildRowSubscription($repositoryID: ID!) {
@@ -23,15 +34,25 @@ const buildSubscription = graphql`
 
 const useStyles = makeStyles(theme => {
   return {
-    chip: {
-      margin: 4,
-    },
-    message: {
-      margin: theme.spacing(1.0),
-      width: '100%',
-    },
     cell: {
-      padding: 4,
+      whiteSpace: 'nowrap',
+      overflowWrap: 'anywhere',
+      textOverflow: 'ellipsis',
+    },
+    cellRepository: {
+      width: 180,
+      minWidth: 180,
+      maxWidth: 180,
+      verticalAlign: 'top',
+    },
+    commitName: {
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'normal',
+      // Text truncate doesnt't work here without styles below
+      display: '-webkit-box',
+      WebkitLineClamp: 1,
+      WebkitBoxOrient: 'vertical',
     },
   };
 });
@@ -51,10 +72,11 @@ export default function LastDefaultBranchBuildRow(props: Props) {
           id
           branch
           changeMessageTitle
-          ...BuildChangeChip_build
-          ...BuildStatusChip_build
+          ...Hash_build
+          ...Duration_build
+          ...BuildStatusChipNew_build
         }
-        ...RepositoryNameChip_repository
+        ...RepositoryNameChipNew_repository
       }
     `,
     props.repository,
@@ -71,36 +93,68 @@ export default function LastDefaultBranchBuildRow(props: Props) {
 
   let navigate = useNavigate();
   let classes = useStyles();
+  let theme = useTheme();
+
+  const themeOptions = useRecoilValue(muiThemeOptions);
+  const muiTheme = useMemo(() => createTheme(themeOptions), [themeOptions]);
+
   let build = repository.lastDefaultBranchBuild;
+
+  const LastBuild = () => (
+    <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent={{ sm: 'space-between' }} alignItems={{ sm: 'end' }}>
+      {/* COMMIT */}
+      <div>
+        <Typography variant="caption" color={theme.palette.text.disabled}>
+          Last build
+        </Typography>
+        <Typography
+          className={classes.commitName}
+          variant="subtitle1"
+          title={build.changeMessageTitle}
+          gutterBottom
+          lineHeight={1}
+          mt={0.5}
+          mb={0.5}
+        >
+          {build.changeMessageTitle}
+        </Typography>
+        <Box display={{ xs: 'none', sm: 'block' }}>
+          <Hash build={build} />
+        </Box>
+      </div>
+
+      {/* STATUS DURATION */}
+      <Box width={150} flexShrink={0}>
+        <BuildStatusChipNew build={build} />
+        <Box mt={0.5} />
+        <Box pl={0.5}>
+          <Duration build={build} iconFirst rightAlighment />
+        </Box>
+      </Box>
+    </Stack>
+  );
+
   if (!build) {
     return null;
   }
   return (
-    <TableRow
-      key={repository.id}
-      onClick={e => navigateRepositoryHelper(navigate, e, repository.owner, repository.name)}
-      hover={true}
-      style={{ cursor: 'pointer' }}
-    >
-      <TableCell className={classes.cell}>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start', padding: '4px' }}>
-          <RepositoryNameChip repository={repository} className={classes.chip} />
-          <BuildChangeChip build={repository.lastDefaultBranchBuild} className={classes.chip} />
-        </div>
-        <MarkdownTypography
-          text={build.changeMessageTitle}
-          variant="body1"
-          color="inherit"
-          className={classes.message}
-          sx={{ display: { xs: 'block', sm: 'none' } }}
-        />
-      </TableCell>
-      <TableCell className={classNames(classes.cell, classes.message)}>
-        <MarkdownTypography text={build.changeMessageTitle} variant="body1" color="inherit" />
-      </TableCell>
-      <TableCell className={classes.cell}>
-        <BuildStatusChip build={build} className={classNames('pull-right', classes.chip)} />
-      </TableCell>
-    </TableRow>
+    <ThemeProvider theme={muiTheme}>
+      <TableRow
+        key={repository.id}
+        onClick={e => navigateRepositoryHelper(navigate, e, repository.owner, repository.name)}
+        hover={true}
+        style={{ cursor: 'pointer' }}
+      >
+        {/* REPOSITORY */}
+        <TableCell className={cx(classes.cell, classes.cellRepository)}>
+          <RepositoryNameChipNew repository={repository} withHeader />
+        </TableCell>
+
+        {/* LAST BUILD */}
+        <TableCell className={classes.cell}>
+          <LastBuild />
+        </TableCell>
+      </TableRow>
+    </ThemeProvider>
   );
 }

@@ -63,23 +63,17 @@ const useStyles = makeStyles(theme => {
       paddingLeft: 14,
       justifyContent: 'space-between',
     },
-    gap: {
-      paddingTop: 16,
-    },
-    chip: {
-      margin: 4,
-    },
-    cell: {
-      width: '100%',
-      maxWidth: '600px',
-    },
-    statusChip: {
-      '& *': {
-        color: theme.palette.background.default,
-      },
-    },
     buildsChart: {
       height: 150,
+    },
+    commitName: {
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'normal',
+      // Text truncate doesnt't work here without styles below
+      display: '-webkit-box',
+      WebkitLineClamp: 2,
+      WebkitBoxOrient: 'vertical',
     },
   };
 });
@@ -225,12 +219,10 @@ export default function RepositoryBuildList(props: Props) {
         onClick={e => navigateBuildHelper(navigate, e, build.id)}
         style={{ cursor: 'pointer' }}
       >
-        {/* STATUS BRANCH */}
+        {/* STATUS */}
         <TableCell>
           <Stack direction="column" alignItems="start" spacing={0.5}>
-            <div className={classes.statusChip}>
-              <BuildStatusChipNew build={build} />
-            </div>
+            <BuildStatusChipNew build={build} />
             {/* DURATION XS-SCREEN */}
             <Box
               sx={{
@@ -244,19 +236,27 @@ export default function RepositoryBuildList(props: Props) {
         </TableCell>
 
         {/* COMMIT */}
-        <TableCell className={classes.cell}>
-          <Typography variant="subtitle1" title={build.changeMessageTitle} gutterBottom>
+        <TableCell>
+          <Typography
+            className={classes.commitName}
+            variant="subtitle1"
+            title={build.changeMessageTitle}
+            gutterBottom
+            lineHeight={1}
+          >
             {build.changeMessageTitle}
           </Typography>
+          {/* HASH BRANCH */}
           <Stack direction="row" spacing={1} alignItems="center">
             <Hash build={build} />
-            <BuildBranchNameChipNew build={build} />
+            <Box maxWidth={170}>
+              <BuildBranchNameChipNew build={build} />
+            </Box>
           </Stack>
         </TableCell>
 
         {/* DURATION SM-SCREEN*/}
         <TableCell
-          className={classes.cell}
           sx={{
             display: { xs: 'none', sm: 'table-cell' },
           }}

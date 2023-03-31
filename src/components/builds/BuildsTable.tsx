@@ -51,11 +51,6 @@ const useStyles = makeStyles(theme => {
       minWidth: 150,
       maxWidth: 150,
     },
-    cellStatusChip: {
-      '& *': {
-        color: theme.palette.background.default,
-      },
-    },
     cellRepository: {
       width: 180,
       minWidth: 180,
@@ -179,13 +174,20 @@ const BuildRow = memo(({ build, selected, setSelectedBuildId }: BuildRowProps) =
       }}
     >
       {/* STATUS */}
-      <TableCell className={cx(classes.cell, classes.cellStatus, classes.cellStatusChip)}>
+      <TableCell className={cx(classes.cell, classes.cellStatus)}>
         <BuildStatusChipNew build={build} />
       </TableCell>
 
       {/* COMMIT */}
       <TableCell className={cx(classes.cell, classes.cellCommit)}>
-        <Typography className={classes.commitName} variant="subtitle1" title={build.changeMessageTitle} gutterBottom>
+        <Typography
+          className={classes.commitName}
+          variant="subtitle1"
+          title={build.changeMessageTitle}
+          gutterBottom
+          lineHeight={1}
+          mt={{ xs: 0, sm: 1 }}
+        >
           {build.changeMessageTitle}
         </Typography>
         <Hash build={build} />

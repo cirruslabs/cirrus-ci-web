@@ -1,23 +1,41 @@
 import React, { useState } from 'react';
+import { useMutation } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
+import { StripeCardElementOptions, Token } from '@stripe/stripe-js';
+import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js';
+import cx from 'classnames';
+
+import { makeStyles } from '@mui/styles';
+import { FormHelperText } from '@mui/material';
+import Typography from '@mui/material/Typography';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Input from '@mui/material/Input';
-import { useMutation } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
+import Button from '@mui/material/Button';
+import DialogActions from '@mui/material/DialogActions';
+
 import { UnspecifiedCallbackFunction } from '../../utils/utility-types';
+
 import {
   ComputeCreditsStripeDialogMutation,
   ComputeCreditsStripeDialogMutationResponse,
   ComputeCreditsStripeDialogMutationVariables,
 } from './__generated__/ComputeCreditsStripeDialogMutation.graphql';
-import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js';
-import Button from '@mui/material/Button';
-import DialogActions from '@mui/material/DialogActions';
-import { StripeCardElementOptions, Token } from '@stripe/stripe-js';
-import { FormHelperText } from '@mui/material';
+
+const useStyles = makeStyles(theme => {
+  return {
+    cardInput: {
+      '&.StripeElement': {
+        padding: theme.spacing(1),
+        border: `1px solid ${theme.palette.divider}`,
+        borderRadius: theme.shape.borderRadius,
+      },
+    },
+  };
+});
 
 const CARD_ELEMENT_OPTIONS: StripeCardElementOptions = {
   hidePostalCode: true,
@@ -47,8 +65,9 @@ interface Props {
 
 function ComputeCreditsStripeDialog(props: Props) {
   const { ownerUid, ...other } = props;
+  let classes = useStyles();
 
-  const [credits, setCredits] = useState(100);
+  const [credits, setCredits] = useState(20);
   const handleAmountChange = event => {
     setCredits(parseInt((event.target.value || '0').replace(/,/g, ''), 10));
   };
@@ -134,8 +153,8 @@ function ComputeCreditsStripeDialog(props: Props) {
   return (
     <Dialog {...other}>
       <DialogTitle>Buy Compute Credits</DialogTitle>
-      <DialogContent>
-        <FormControl fullWidth>
+      <DialogContent sx={{ overflowY: 'visible' }}>
+        <FormControl fullWidth variant="standard">
           <InputLabel htmlFor="credits-amount">Amount of Credits to Buy</InputLabel>
           <Input
             id="credits-amount"
@@ -143,20 +162,14 @@ function ComputeCreditsStripeDialog(props: Props) {
             value={credits.toLocaleString('en-US', { useGrouping: true })}
             inputMode="decimal"
             onChange={handleAmountChange}
+            autoFocus
           />
-          <FormHelperText id="credits-amount-helper-text" hidden={credits >= 20}>
+          <FormHelperText id="credits-amount-helper-text" error={credits < 20}>
             The minimum amount of credits you can buy is 20.
           </FormHelperText>
         </FormControl>
-        <FormControl fullWidth>
-          <CardElement
-            id="card-element"
-            className="form-control"
-            options={CARD_ELEMENT_OPTIONS}
-            onChange={handleChange}
-          />
-        </FormControl>
-        <FormControl fullWidth required={true}>
+
+        <FormControl fullWidth required={true} variant="standard">
           <InputLabel htmlFor="receipt-email">Receipt Email</InputLabel>
           <Input
             id="receipt-email"
@@ -166,7 +179,17 @@ function ComputeCreditsStripeDialog(props: Props) {
             onChange={event => setReceiptEmail(event.target.value)}
           />
         </FormControl>
-        {error}
+        <FormControl fullWidth sx={{ marginTop: 2 }}>
+          <CardElement
+            id="card-element"
+            className={cx('form-control', classes.cardInput)}
+            options={CARD_ELEMENT_OPTIONS}
+            onChange={handleChange}
+          />
+        </FormControl>
+        <Typography color="error" mt={1}>
+          {error}
+        </Typography>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleSubmit} disabled={paymentInProgress} variant="contained">

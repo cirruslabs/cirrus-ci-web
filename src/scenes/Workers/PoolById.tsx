@@ -8,13 +8,7 @@ import PoolDetails from '../../components/workers/PoolDetails';
 
 import { PoolByIdQuery } from './__generated__/PoolByIdQuery.graphql';
 
-export default function PoolById(): JSX.Element {
-  let { poolId } = useParams();
-
-  if (!poolId) {
-    return <NotFound />;
-  }
-
+function PoolDetailsById(poolId: string): JSX.Element {
   const [fetchKey, setFetchKey] = useState(0);
 
   useEffect(() => {
@@ -44,4 +38,14 @@ export default function PoolById(): JSX.Element {
     return <NotFound />;
   }
   return <PoolDetails pool={response.persistentWorkerPool} />;
+}
+
+export default function PoolById(): JSX.Element {
+  let { poolId } = useParams();
+
+  if (!poolId) {
+    return <NotFound />;
+  }
+
+  return PoolDetailsById(poolId);
 }

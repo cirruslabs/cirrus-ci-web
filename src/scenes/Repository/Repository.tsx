@@ -10,16 +10,7 @@ import { useParams } from 'react-router-dom';
 import MarkdownTypography from '../../components/common/MarkdownTypography';
 import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 
-export default function Repository(): JSX.Element {
-  let params = useParams();
-  let { repositoryId } = params;
-
-  if (!repositoryId) {
-    return <NotFound />;
-  }
-
-  let branch = params['*'];
-
+function RepositoryById(repositoryId: string, branch?: string): JSX.Element {
   const response = useLazyLoadQuery<RepositoryQuery>(
     graphql`
       query RepositoryQuery($repositoryId: ID!, $branch: String) {
@@ -48,4 +39,14 @@ export default function Repository(): JSX.Element {
       <RepositoryBuildList repository={response.repository} />
     </>
   );
+}
+export default function Repository(): JSX.Element {
+  let params = useParams();
+  let { repositoryId } = params;
+
+  if (!repositoryId) {
+    return <NotFound />;
+  }
+
+  return RepositoryById(repositoryId, params['*']);
 }

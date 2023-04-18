@@ -9,13 +9,7 @@ import { TaskQuery } from './__generated__/TaskQuery.graphql';
 import { useParams } from 'react-router-dom';
 import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 
-export default function Task(): JSX.Element {
-  let { taskId } = useParams();
-
-  if (!taskId) {
-    return <NotFound />;
-  }
-
+function TaskById(taskId: string): JSX.Element {
   const response = useLazyLoadQuery<TaskQuery>(
     graphql`
       query TaskQuery($taskId: ID!) {
@@ -40,4 +34,14 @@ export default function Task(): JSX.Element {
       <TaskDetails task={response.task} />
     </>
   );
+}
+
+export default function Task(): JSX.Element {
+  let { taskId } = useParams();
+
+  if (!taskId) {
+    return <NotFound />;
+  }
+
+  return TaskById(taskId);
 }

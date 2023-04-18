@@ -10,13 +10,7 @@ import { useParams } from 'react-router-dom';
 import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 
-export default function RepositorySettings(): JSX.Element {
-  let { repositoryId } = useParams();
-
-  if (!repositoryId) {
-    return <NotFound />;
-  }
-
+function RepositorySettingsById(repositoryId: string): JSX.Element {
   const response = useLazyLoadQuery<RepositorySettingsQuery>(
     graphql`
       query RepositorySettingsQuery($repositoryId: ID!) {
@@ -50,4 +44,13 @@ export default function RepositorySettings(): JSX.Element {
       <RepositorySettingsPage repository={response.repository} />
     </>
   );
+}
+export default function RepositorySettings(): JSX.Element {
+  let { repositoryId } = useParams();
+
+  if (!repositoryId) {
+    return <NotFound />;
+  }
+
+  return RepositorySettingsById(repositoryId);
 }

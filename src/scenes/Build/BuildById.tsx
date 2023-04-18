@@ -9,7 +9,7 @@ import { BuildByIdQuery } from './__generated__/BuildByIdQuery.graphql';
 import { useParams } from 'react-router-dom';
 import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 
-function buildById(buildId: string): JSX.Element {
+function BuildByIdStrict(buildId: string): JSX.Element {
   const response = useLazyLoadQuery<BuildByIdQuery>(
     graphql`
       query BuildByIdQuery($buildId: ID!) {
@@ -43,5 +43,5 @@ export default function BuildById(): JSX.Element {
     return <NotFound />;
   }
 
-  return buildById(buildId);
+  return BuildByIdStrict(buildId);
 }

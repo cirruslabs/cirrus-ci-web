@@ -10,13 +10,7 @@ import queryString from 'query-string';
 import { useParams } from 'react-router-dom';
 import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 
-export default function BuildBySHA() {
-  let { owner, name, SHA } = useParams();
-
-  if (!owner || !name || !SHA) {
-    return <NotFound />;
-  }
-
+function BuildBySHAFor(owner: string, name: string, SHA: string): JSX.Element {
   const response = useLazyLoadQuery<BuildBySHAQuery>(
     graphql`
       query BuildBySHAQuery($owner: String!, $name: String!, $SHA: String) {
@@ -48,4 +42,11 @@ export default function BuildBySHA() {
       <BuildDetails build={response.searchBuilds[0]} />
     </>
   );
+}
+export default function BuildBySHA() {
+  let { owner, name, SHA } = useParams();
+
+  if (!owner || !name || !SHA) {
+    return <NotFound />;
+  }
 }

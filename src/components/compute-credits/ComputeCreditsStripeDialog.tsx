@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useMutation } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { StripeCardElementOptions, Token } from '@stripe/stripe-js';
 import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js';
 import cx from 'classnames';
 
+import { useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { FormHelperText } from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -27,6 +28,11 @@ import {
 
 const useStyles = makeStyles(theme => {
   return {
+    inputLabel: {
+      '&.Mui-focused': {
+        color: theme.palette.text.primary,
+      },
+    },
     cardInput: {
       '&.StripeElement': {
         padding: theme.spacing(1),
@@ -37,25 +43,6 @@ const useStyles = makeStyles(theme => {
   };
 });
 
-const CARD_ELEMENT_OPTIONS: StripeCardElementOptions = {
-  hidePostalCode: true,
-  style: {
-    base: {
-      color: '#32325d',
-      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-      fontSmoothing: 'antialiased',
-      fontSize: '16px',
-      '::placeholder': {
-        color: '#aab7c4',
-      },
-    },
-    invalid: {
-      color: '#fa755a',
-      iconColor: '#fa755a',
-    },
-  },
-};
-
 interface Props {
   platform?: string;
   ownerUid: string;
@@ -64,8 +51,32 @@ interface Props {
 }
 
 function ComputeCreditsStripeDialog(props: Props) {
-  const { ownerUid, ...other } = props;
+  let theme = useTheme();
   let classes = useStyles();
+  const CARD_ELEMENT_OPTIONS: StripeCardElementOptions = useMemo(
+    () => ({
+      hidePostalCode: true,
+
+      style: {
+        base: {
+          color: theme.palette.text.primary,
+          fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+          fontSmoothing: 'antialiased',
+          fontSize: '16px',
+          '::placeholder': {
+            color: '#aab7c4',
+          },
+        },
+        invalid: {
+          color: '#fa755a',
+          iconColor: '#fa755a',
+        },
+      },
+    }),
+    [theme.palette.text.primary],
+  );
+
+  const { ownerUid, ...other } = props;
 
   const [credits, setCredits] = useState(20);
   const handleAmountChange = event => {
@@ -155,7 +166,9 @@ function ComputeCreditsStripeDialog(props: Props) {
       <DialogTitle>Buy Compute Credits</DialogTitle>
       <DialogContent sx={{ overflowY: 'visible' }}>
         <FormControl fullWidth variant="standard">
-          <InputLabel htmlFor="credits-amount">Amount of Credits to Buy</InputLabel>
+          <InputLabel htmlFor="credits-amount" className={classes.inputLabel}>
+            Amount of Credits to Buy
+          </InputLabel>
           <Input
             id="credits-amount"
             error={credits < 20}
@@ -170,7 +183,9 @@ function ComputeCreditsStripeDialog(props: Props) {
         </FormControl>
 
         <FormControl fullWidth required={true} variant="standard">
-          <InputLabel htmlFor="receipt-email">Receipt Email</InputLabel>
+          <InputLabel htmlFor="receipt-email" className={classes.inputLabel}>
+            Receipt Email
+          </InputLabel>
           <Input
             id="receipt-email"
             value={receiptEmail}

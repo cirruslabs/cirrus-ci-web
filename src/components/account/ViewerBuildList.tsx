@@ -33,6 +33,8 @@ import MarkdownTypography from '../common/MarkdownTypography';
 import { ViewerBuildListRefetchQuery } from './__generated__/ViewerBuildListRefetchQuery.graphql';
 import { ViewerBuildList_viewer$key } from './__generated__/ViewerBuildList_viewer.graphql';
 
+import BuildCard from '../../components/builds/BuildCard';
+
 // todo: move custom values to mui theme adjustments
 const useStyles = makeStyles(theme => {
   return {
@@ -92,6 +94,7 @@ function ViewerBuildList(props: Props) {
                 status
                 ...Hash_build
                 ...Duration_build
+                ...BuildCard_build
                 ...BuildsTable_builds
                 ...BuildStatusChipNew_build
                 ...BuildBranchNameChipNew_build
@@ -173,8 +176,8 @@ function ViewerBuildList(props: Props) {
       });
   }
 
-  let buildsComponent = isNewDesign ? (
-    <BuildsTable builds={builds} />
+  let buildsComponent = true ? (
+    builds.map(build => <BuildCard build={build} />)
   ) : (
     <Table style={{ tableLayout: 'auto' }}>
       <TableBody>{builds.map(build => buildItem(build))}</TableBody>

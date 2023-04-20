@@ -4,7 +4,6 @@ import { ThemeProvider } from '@emotion/react';
 import { useFragment } from 'react-relay';
 import { useRecoilValue } from 'recoil';
 import { graphql } from 'babel-plugin-relay/macro';
-import cx from 'classnames';
 
 import { useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
@@ -143,7 +142,7 @@ export default function BuildCard(props: Props) {
           <Grid
             container
             columns={11}
-            direction={{ xs: 'row', md: 'row' }}
+            direction="row"
             spacing={{ xs: 0.5, md: 1 }}
             alignItems={{ xs: 'start', md: 'center' }}
           >
@@ -162,7 +161,7 @@ export default function BuildCard(props: Props) {
               <RepositoryOwnerChipNew withHeader={isMdScreenWidth} repository={build.repository} />
             </Grid>
 
-            {/* BRANCHE*/}
+            {/* BRANCH*/}
             <Grid sm={11} md={3}>
               <BuildBranchNameChipNew withHeader={isMdScreenWidth} build={build} />
             </Grid>

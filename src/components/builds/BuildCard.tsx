@@ -1,8 +1,10 @@
 import { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ThemeProvider } from '@emotion/react';
 import { useFragment } from 'react-relay';
 import { useRecoilValue } from 'recoil';
 import { graphql } from 'babel-plugin-relay/macro';
+import cx from 'classnames';
 
 import { useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
@@ -17,12 +19,20 @@ import BuildStatusChipNew from '../chips/BuildStatusChipNew';
 import BuildBranchNameChipNew from '../chips/BuildBranchNameChipNew';
 import RepositoryNameChipNew from '../chips/RepositoryNameChipNew';
 import RepositoryOwnerChipNew from '../chips/RepositoryOwnerChipNew';
+import usePageWidth from '../../utils/usePageWidth';
+import { navigateBuildHelper } from '../../utils/navigateHelper';
 import { muiThemeOptions } from '../../cirrusTheme';
 
 import { BuildCard_build$key } from './__generated__/BuildCard_build.graphql';
 
 const useStyles = makeStyles(theme => {
   return {
+    card: {
+      cursor: 'pointer',
+      '&:hover': {
+        backgroundColor: theme.palette.action.hover,
+      },
+    },
     commitName: {
       overflow: 'hidden',
       textOverflow: 'ellipsis',
@@ -60,36 +70,49 @@ export default function BuildCard(props: Props) {
 
   let classes = useStyles();
   let theme = useTheme();
+  const navigate = useNavigate();
+
+  const pageWidth = usePageWidth();
+
+  let isMdScreenWidth = pageWidth >= theme.breakpoints.values.md;
+
   const themeOptions = useRecoilValue(muiThemeOptions);
   const muiTheme = useMemo(() => createTheme(themeOptions), [themeOptions]);
 
   return (
     <ThemeProvider theme={muiTheme}>
       <Grid
+        className={classes.card}
         container
+        columns={4}
+        direction={{ xs: 'column', sm: 'row' }}
         spacing={{ xs: 0.5, sm: 1 }}
         wrap="wrap"
         alignItems={{ xs: 'start', sm: 'center' }}
-        columns={4}
         py={{ md: 1.5 }}
-        pb={{ xs: 0.5, sm: 0 }}
-        pt={{ xs: 1, sm: 0.5 }}
+        pb={{ xs: 1, sm: 0 }}
+        pt={{ xs: 1.5, sm: 0.5 }}
         sx={{
           borderBottom: '1px solid',
           borderColor: 'action.hover',
         }}
+        onClick={e => {
+          const target = e.target as HTMLElement;
+          if (target.closest('a')) return;
+          navigateBuildHelper(navigate, e, build.id);
+        }}
       >
         {/* LEFT */}
-        <Grid xs={2} sm={3} md={2}>
+        <Grid xs={4} sm={3} md={2}>
           <Grid
             container
             spacing={{ xs: 0.5, sm: 1 }}
             alignItems={{ xs: 'start', sm: 'center' }}
-            direction={{ xs: 'column', sm: 'row' }}
+            direction="row"
             wrap="nowrap"
           >
-            {/* STATUS */}
-            <Grid xs={3} minWidth={120} flexShrink={0}>
+            {/* STATUS UP XS-SCREEN*/}
+            <Grid display={{ xs: 'none', sm: 'block' }} minWidth={120} flexShrink={0}>
               <BuildStatusChipNew build={build} />
             </Grid>
 
@@ -107,38 +130,47 @@ export default function BuildCard(props: Props) {
               </Typography>
               <Hash build={build} />
             </Grid>
+
+            {/* DURATION XS-SCREEN*/}
+            <Grid display={{ xs: 'block', sm: 'none' }} xs={3}>
+              <Duration build={build} iconFirst />
+            </Grid>
           </Grid>
         </Grid>
 
         {/* RIGHT */}
-        <Grid xs={2} sm={1} md={2}>
+        <Grid xs={4} sm={1} md={2}>
           <Grid
             container
-            columns={10}
+            columns={11}
+            direction={{ xs: 'row', md: 'row' }}
             spacing={{ xs: 0.5, md: 1 }}
             alignItems={{ xs: 'start', md: 'center' }}
-            direction={{ xs: 'column', md: 'row' }}
-            wrap="nowrap"
           >
+            {/* STATUS XS-SCREEN */}
+            <Grid display={{ xs: 'block', sm: 'none' }}>
+              <BuildStatusChipNew build={build} />
+            </Grid>
+
             {/* REPOSITORY */}
-            <Grid sm="auto" md={3}>
-              <RepositoryNameChipNew repository={build.repository} />
+            <Grid sm={11} md={3}>
+              <RepositoryNameChipNew withHeader={isMdScreenWidth} repository={build.repository} />
             </Grid>
 
             {/* OWNER */}
-            <Grid sm="auto" md={3}>
-              <RepositoryOwnerChipNew repository={build.repository} />
+            <Grid sm={11} md={3}>
+              <RepositoryOwnerChipNew withHeader={isMdScreenWidth} repository={build.repository} />
             </Grid>
 
             {/* BRANCHE*/}
-            <Grid sm="auto" md={3}>
-              <BuildBranchNameChipNew build={build} />
+            <Grid sm={11} md={3}>
+              <BuildBranchNameChipNew withHeader={isMdScreenWidth} build={build} />
             </Grid>
 
-            {/* DURATION */}
-            <Grid sm="auto" md={1}>
-              <Box ml={0.5}>
-                <Duration build={build} iconFirst />
+            {/* DURATION UP XS-SCREEN*/}
+            <Grid display={{ xs: 'none', sm: 'block' }} sm={11} md={2}>
+              <Box ml={0.5} mt={{ md: 2.5 }}>
+                <Duration build={build} iconFirst rightAlighment={!isMdScreenWidth} />
               </Box>
             </Grid>
           </Grid>

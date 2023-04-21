@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'flex-start',
-      gap: theme.spacing(0.5),
+      gap: theme.spacing(1),
     },
     chip: {
       flexGrow: 0,
@@ -73,7 +73,7 @@ export default function BuildBranchNameChipNew(props: Props) {
   return (
     <div className={props.withHeader ? classes.container : ''}>
       {props.withHeader && (
-        <Typography variant="caption" color={theme.palette.text.disabled}>
+        <Typography variant="caption" color={theme.palette.text.disabled} lineHeight={1}>
           Branch
         </Typography>
       )}

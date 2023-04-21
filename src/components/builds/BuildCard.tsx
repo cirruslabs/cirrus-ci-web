@@ -112,6 +112,7 @@ export default function BuildCard(props: Props) {
         direction={{ xs: 'column', sm: 'row' }}
         spacing={{ xs: 0.5, sm: 1 }}
         alignItems={{ xs: 'start', sm: 'center' }}
+        mb={{ sm: 0.5 }}
         // TODO: fix paddings
         py={{ md: 1.5 }}
         pb={{ xs: 1, sm: 0 }}
@@ -168,8 +169,9 @@ export default function BuildCard(props: Props) {
             container
             columns={11}
             direction="row"
-            spacing={{ xs: 0.5, md: 1 }}
+            spacing={{ xs: 0.5, sm: 1 }}
             alignItems={{ xs: 'start', md: 'center' }}
+            pt={{ sm: 0 }}
           >
             {/* STATUS XS-SCREEN */}
             <Grid display={{ xs: 'block', sm: 'none' }}>
@@ -193,7 +195,7 @@ export default function BuildCard(props: Props) {
 
             {/* DURATION UP XS-SCREEN*/}
             <Grid display={{ xs: 'none', sm: 'block' }} sm={11} md={2}>
-              <Box ml={0.5} mt={{ md: 2.5 }}>
+              <Box ml={0.5} mt={{ md: 2 }}>
                 <Duration build={build} iconFirst rightAlighment={!isMdScreenWidth} />
               </Box>
             </Grid>

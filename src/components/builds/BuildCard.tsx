@@ -4,6 +4,7 @@ import { ThemeProvider } from '@emotion/react';
 import { useFragment } from 'react-relay';
 import { useRecoilValue } from 'recoil';
 import { graphql } from 'babel-plugin-relay/macro';
+import cx from 'classnames';
 
 import { useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
@@ -32,6 +33,10 @@ const useStyles = makeStyles(theme => {
         backgroundColor: theme.palette.action.hover,
       },
     },
+    // For pages with chart
+    cardSelected: {
+      backgroundColor: theme.palette.action.hover,
+    },
     commitName: {
       overflow: 'hidden',
       textOverflow: 'ellipsis',
@@ -48,7 +53,9 @@ const useStyles = makeStyles(theme => {
 
 interface Props {
   build: BuildCard_build$key;
-  selected?: boolean;
+  // For pages with chart
+  selectedBuildId?: boolean;
+  setSelectedBuildId?: Function;
 }
 
 export default function BuildCard(props: Props) {
@@ -81,10 +88,25 @@ export default function BuildCard(props: Props) {
   const themeOptions = useRecoilValue(muiThemeOptions);
   const muiTheme = useMemo(() => createTheme(themeOptions), [themeOptions]);
 
+  // For pages with chart
+  let rowProps;
+  const selectable = !!props.setSelectedBuildId;
+  if (selectable) {
+    rowProps = {
+      onMouseEnter() {
+        if (props.selectedBuildId) return;
+        props.setSelectedBuildId(build.id);
+      },
+      onMouseLeave() {
+        props.setSelectedBuildId(null);
+      },
+    };
+  }
+
   return (
     <ThemeProvider theme={muiTheme}>
       <Grid
-        className={classes.card}
+        className={cx(classes.card, props.selectedBuildId && classes.cardSelected)}
         container
         columns={4}
         direction={{ xs: 'column', sm: 'row' }}
@@ -103,6 +125,7 @@ export default function BuildCard(props: Props) {
           if (target.closest('a')) return;
           navigateBuildHelper(navigate, e, build.id);
         }}
+        {...rowProps}
       >
         {/* LEFT */}
         <Grid xs={4} sm={3} md={2}>

@@ -39,6 +39,9 @@ const useStyles = makeStyles(theme => {
       WebkitLineClamp: 1,
       WebkitBoxOrient: 'vertical',
       whiteSpace: 'normal',
+      [theme.breakpoints.only('xs')]: {
+        marginBottom: theme.spacing(2.5),
+      },
     },
   };
 });
@@ -86,14 +89,14 @@ export default function BuildCard(props: Props) {
         columns={4}
         direction={{ xs: 'column', sm: 'row' }}
         spacing={{ xs: 0.5, sm: 1 }}
-        wrap="wrap"
         alignItems={{ xs: 'start', sm: 'center' }}
+        // TODO: fix paddings
         py={{ md: 1.5 }}
         pb={{ xs: 1, sm: 0 }}
         pt={{ xs: 1.5, sm: 0.5 }}
         sx={{
           borderBottom: '1px solid',
-          borderColor: 'action.hover',
+          borderColor: 'divider',
         }}
         onClick={e => {
           const target = e.target as HTMLElement;
@@ -105,9 +108,9 @@ export default function BuildCard(props: Props) {
         <Grid xs={4} sm={3} md={2}>
           <Grid
             container
+            direction="row"
             spacing={{ xs: 0.5, sm: 1 }}
             alignItems={{ xs: 'start', sm: 'center' }}
-            direction="row"
             wrap="nowrap"
           >
             {/* STATUS UP XS-SCREEN*/}
@@ -123,7 +126,6 @@ export default function BuildCard(props: Props) {
                 title={build.changeMessageTitle}
                 gutterBottom
                 lineHeight={1}
-                mt={{ xs: 0, sm: 1 }}
               >
                 {build.changeMessageTitle}
               </Typography>

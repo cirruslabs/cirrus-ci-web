@@ -91,11 +91,13 @@ const useStyles = makeStyles(theme => {
       width: `calc(100% - ${drawerWidth}px)`,
     },
     appBarShift: {
-      marginLeft: drawerWidth,
-      transition: theme.transitions.create(['margin', 'width'], {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
+      [theme.breakpoints.not('xs')]: {
+        marginLeft: drawerWidth,
+        transition: theme.transitions.create(['margin', 'width'], {
+          easing: theme.transitions.easing.easeOut,
+          duration: theme.transitions.duration.enteringScreen,
+        }),
+      },
     },
     drawerHeader: {
       display: 'flex',
@@ -149,26 +151,45 @@ function AllRoutes() {
     return openDrawer ? { marginLeft: '15px', ...shared } : shared;
   }
 
+  const drawerContent = (
+    <>
+      <div className={classes.drawerHeader}>
+        <Typography variant="h6" color="inherit">
+          Active Repositories
+        </Typography>
+        <IconButton onClick={() => setOpenDrawer(false)} size="large">
+          <ChevronLeftIcon />
+        </IconButton>
+      </div>
+      <Suspense fallback={<CirrusLinearProgress />}>
+        <ViewerTopRepositories className={classes.topRepositories} />
+      </Suspense>
+    </>
+  );
+
   const drawer = (
     <nav>
       <Drawer
+        variant="temporary"
+        open={openDrawer}
+        sx={{
+          display: { xs: 'block', sm: 'none' },
+          '& .MuiDrawer-paper': { width: { xs: '100vw' } },
+        }}
+      >
+        {drawerContent}
+      </Drawer>
+      <Drawer
         variant="persistent"
+        sx={{
+          display: { xs: 'none', sm: 'block' },
+        }}
         open={openDrawer}
         classes={{
           paper: classes.drawerPaper,
         }}
       >
-        <div className={classes.drawerHeader}>
-          <Typography variant="h6" color="inherit">
-            Active Repositories
-          </Typography>
-          <IconButton onClick={() => setOpenDrawer(false)} size="large">
-            <ChevronLeftIcon />
-          </IconButton>
-        </div>
-        <Suspense fallback={<CirrusLinearProgress />}>
-          <ViewerTopRepositories className={classes.topRepositories} />
-        </Suspense>
+        {drawerContent}
       </Drawer>
     </nav>
   );

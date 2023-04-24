@@ -110,13 +110,9 @@ export default function BuildCard(props: Props) {
         container
         columns={4}
         direction={{ xs: 'column', sm: 'row' }}
-        spacing={{ xs: 0.5, sm: 1 }}
+        spacing={{ xs: 0.5, sm: 1, md: 3 }}
+        mt={{ sm: 0.5, md: 1.5 }}
         alignItems={{ xs: 'start', sm: 'center' }}
-        mb={{ sm: 0.5 }}
-        // TODO: fix paddings
-        py={{ md: 1.5 }}
-        pb={{ xs: 1, sm: 0 }}
-        pt={{ xs: 1.5, sm: 0.5 }}
         sx={{
           borderBottom: '1px solid',
           borderColor: 'divider',
@@ -129,7 +125,7 @@ export default function BuildCard(props: Props) {
         {...rowProps}
       >
         {/* LEFT */}
-        <Grid xs={4} sm={3} md={2}>
+        <Grid xs={4} sm={3} md={2} mt={{ xs: 1, sm: 0 }}>
           <Grid
             container
             direction="row"
@@ -138,12 +134,12 @@ export default function BuildCard(props: Props) {
             wrap="nowrap"
           >
             {/* STATUS UP XS-SCREEN*/}
-            <Grid display={{ xs: 'none', sm: 'block' }} minWidth={120} flexShrink={0}>
+            <Grid display={{ xs: 'none', sm: 'block' }} minWidth={120} flexShrink={0} py={0}>
               <BuildStatusChipNew build={build} />
             </Grid>
 
             {/* COMMIT */}
-            <Grid xs={9}>
+            <Grid xs={9} py={{ xs: 'default', sm: 0 }}>
               <Typography
                 className={classes.commitName}
                 variant="subtitle1"
@@ -164,14 +160,13 @@ export default function BuildCard(props: Props) {
         </Grid>
 
         {/* RIGHT */}
-        <Grid xs={4} sm={1} md={2}>
+        <Grid xs={4} sm={1} md={2} mb={{ xs: 1, sm: 0 }}>
           <Grid
             container
             columns={11}
             direction="row"
             spacing={{ xs: 0.5, sm: 1 }}
             alignItems={{ xs: 'start', md: 'center' }}
-            pt={{ sm: 0 }}
           >
             {/* STATUS XS-SCREEN */}
             <Grid display={{ xs: 'block', sm: 'none' }}>
@@ -179,22 +174,22 @@ export default function BuildCard(props: Props) {
             </Grid>
 
             {/* REPOSITORY */}
-            <Grid sm={11} md={3}>
+            <Grid sm={11} md={3} py={{ sm: 'default', md: 0 }}>
               <RepositoryNameChipNew withHeader={isMdScreenWidth} repository={build.repository} />
             </Grid>
 
             {/* OWNER */}
-            <Grid sm={11} md={3}>
+            <Grid sm={11} md={3} py={{ sm: 'default', md: 0 }}>
               <RepositoryOwnerChipNew withHeader={isMdScreenWidth} repository={build.repository} />
             </Grid>
 
             {/* BRANCH*/}
-            <Grid sm={11} md={3}>
+            <Grid sm={11} md={3} py={{ sm: 'default', md: 0 }}>
               <BuildBranchNameChipNew withHeader={isMdScreenWidth} build={build} />
             </Grid>
 
             {/* DURATION UP XS-SCREEN*/}
-            <Grid display={{ xs: 'none', sm: 'block' }} sm={11} md={2}>
+            <Grid display={{ xs: 'none', sm: 'block' }} sm={11} md={2} py={{ sm: 'default', md: 0 }}>
               <Box ml={0.5} mt={{ md: 2 }}>
                 <Duration build={build} iconFirst rightAlighment={!isMdScreenWidth} />
               </Box>

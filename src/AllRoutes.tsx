@@ -91,7 +91,7 @@ const useStyles = makeStyles(theme => {
       width: `calc(100% - ${drawerWidth}px)`,
     },
     appBarShift: {
-      [theme.breakpoints.not('xs')]: {
+      [theme.breakpoints.up('sm')]: {
         marginLeft: drawerWidth,
         transition: theme.transitions.create(['margin', 'width'], {
           easing: theme.transitions.easing.easeOut,
@@ -172,9 +172,10 @@ function AllRoutes() {
       <Drawer
         variant="temporary"
         open={openDrawer}
+        onClose={() => setOpenDrawer(false)}
         sx={{
-          display: { xs: 'block', sm: 'none' },
-          '& .MuiDrawer-paper': { width: { xs: '100vw' } },
+          display: { xs: 'block', md: 'none' },
+          '& .MuiDrawer-paper': { width: { xs: '100vw', sm: drawerWidth } },
         }}
       >
         {drawerContent}
@@ -182,7 +183,7 @@ function AllRoutes() {
       <Drawer
         variant="persistent"
         sx={{
-          display: { xs: 'none', sm: 'block' },
+          display: { xs: 'none', md: 'block' },
         }}
         open={openDrawer}
         classes={{

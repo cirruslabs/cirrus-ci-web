@@ -51,8 +51,8 @@ export default function RepositoryOwnerChipNew(props: Props) {
   return (
     <>
       {props.withHeader ? (
-        <Stack direction="column" spacing={0.5} alignItems="flex-start">
-          <Typography variant="caption" color={theme.palette.text.disabled}>
+        <Stack direction="column" spacing={1} alignItems="flex-start">
+          <Typography variant="caption" color={theme.palette.text.disabled} lineHeight={1}>
             Owner
           </Typography>
           <OwnerChip />

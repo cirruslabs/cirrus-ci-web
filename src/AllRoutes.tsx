@@ -91,11 +91,13 @@ const useStyles = makeStyles(theme => {
       width: `calc(100% - ${drawerWidth}px)`,
     },
     appBarShift: {
-      marginLeft: drawerWidth,
-      transition: theme.transitions.create(['margin', 'width'], {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
+      [theme.breakpoints.up('sm')]: {
+        marginLeft: drawerWidth,
+        transition: theme.transitions.create(['margin', 'width'], {
+          easing: theme.transitions.easing.easeOut,
+          duration: theme.transitions.duration.enteringScreen,
+        }),
+      },
     },
     drawerHeader: {
       display: 'flex',
@@ -115,6 +117,7 @@ const useStyles = makeStyles(theme => {
     },
     content: {
       flexGrow: 1,
+      width: '100%',
       transition: theme.transitions.create('margin', {
         easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.leavingScreen,
@@ -148,26 +151,46 @@ function AllRoutes() {
     return openDrawer ? { marginLeft: '15px', ...shared } : shared;
   }
 
+  const drawerContent = (
+    <>
+      <div className={classes.drawerHeader}>
+        <Typography variant="h6" color="inherit">
+          Active Repositories
+        </Typography>
+        <IconButton onClick={() => setOpenDrawer(false)} size="large">
+          <ChevronLeftIcon />
+        </IconButton>
+      </div>
+      <Suspense fallback={<CirrusLinearProgress />}>
+        <ViewerTopRepositories className={classes.topRepositories} />
+      </Suspense>
+    </>
+  );
+
   const drawer = (
     <nav>
       <Drawer
+        variant="temporary"
+        open={openDrawer}
+        onClose={() => setOpenDrawer(false)}
+        sx={{
+          display: { xs: 'block', md: 'none' },
+          '& .MuiDrawer-paper': { width: { xs: '100vw', sm: drawerWidth } },
+        }}
+      >
+        {drawerContent}
+      </Drawer>
+      <Drawer
         variant="persistent"
+        sx={{
+          display: { xs: 'none', md: 'block' },
+        }}
         open={openDrawer}
         classes={{
           paper: classes.drawerPaper,
         }}
       >
-        <div className={classes.drawerHeader}>
-          <Typography variant="h6" color="inherit">
-            Active Repositories
-          </Typography>
-          <IconButton onClick={() => setOpenDrawer(false)} size="large">
-            <ChevronLeftIcon />
-          </IconButton>
-        </div>
-        <Suspense fallback={<CirrusLinearProgress />}>
-          <ViewerTopRepositories className={classes.topRepositories} />
-        </Suspense>
+        {drawerContent}
       </Drawer>
     </nav>
   );

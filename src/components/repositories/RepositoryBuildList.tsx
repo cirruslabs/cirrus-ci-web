@@ -155,7 +155,9 @@ export default function RepositoryBuildList(props: Props) {
 
   let buildsChart = null;
 
-  if (props.branch && builds.length > 5) {
+  const isDisplayBuildChart = props.branch && builds.length > 5;
+
+  if (isDisplayBuildChart) {
     buildsChart = (
       <Paper className={classes.paper} sx={{ mb: 2 }}>
         <Toolbar className={classes.header} disableGutters>
@@ -205,7 +207,7 @@ export default function RepositoryBuildList(props: Props) {
             <BuildCard
               build={build}
               selectedBuildId={selectedBuildId === build.id}
-              setSelectedBuildId={setSelectedBuildId}
+              setSelectedBuildId={isDisplayBuildChart && setSelectedBuildId}
             />
           ))}
         </Paper>

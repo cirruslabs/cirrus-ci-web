@@ -122,6 +122,11 @@ export default function BuildCard(props: Props) {
           if (target.closest('a')) return;
           navigateBuildHelper(navigate, e, build.id);
         }}
+        onAuxClick={e => {
+          const target = e.target as HTMLElement;
+          if (target.closest('a')) return;
+          navigateBuildHelper(navigate, e, build.id);
+        }}
         {...rowProps}
       >
         {/* LEFT */}

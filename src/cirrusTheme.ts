@@ -10,11 +10,21 @@ export const prefersDarkModeState = atom({
   effects_UNSTABLE: [localStorageEffect('CurrentlyPreferredTheme')],
 });
 
+// Mui theme + custom color palette
 export const muiThemeOptions = selector({
   key: 'muiThemeOptions',
   get: ({ get }) => {
     const prefersDarkMode = get(prefersDarkModeState);
     return prefersDarkMode ? muiDarkTheme : muiLightTheme;
+  },
+});
+
+// Mui theme + custom color palette & breakpoints
+export const muiCustomBreakpoints = selector({
+  key: 'muiThemeOptionsCustomBreakpoints',
+  get: ({ get }) => {
+    const prefersDarkMode = get(prefersDarkModeState);
+    return prefersDarkMode ? muiDarkCustomBreakpointsTheme : muiLightCustomBreakpointsTheme;
   },
 });
 
@@ -168,5 +178,31 @@ export let muiLightTheme: ThemeOptions = {
 };
 
 export let muiDarkTheme: ThemeOptions = {
+  palette: cirrusDarkTheme.palette,
+};
+
+export let muiLightCustomBreakpointsTheme: ThemeOptions = {
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 900,
+      md: 1200,
+      lg: 1600,
+      xl: 1800,
+    },
+  },
+  palette: cirrusLightTheme.palette,
+};
+
+export let muiDarkCustomBreakpointsTheme: ThemeOptions = {
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 900,
+      md: 1200,
+      lg: 1600,
+      xl: 1800,
+    },
+  },
   palette: cirrusDarkTheme.palette,
 };

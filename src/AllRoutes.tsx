@@ -21,6 +21,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import GCPStatus from './components/status/GCPStatus';
 import GitHubStatus from './components/status/GitHubStatus';
 import * as Sentry from '@sentry/react';
+import AccountsSwitch from './components/common/AccountSwitch';
 
 const AsyncViewerProfile = React.lazy(() => import('./scenes/Profile/ViewerProfile'));
 
@@ -228,6 +229,11 @@ function AllRoutes() {
                 Cirrus CI
               </Typography>
             </Link>
+            <Suspense fallback={<div />}>
+              <div className={classes.titleShift}>
+                <AccountsSwitch></AccountsSwitch>
+              </div>
+            </Suspense>
             <div className={classes.flex} />
             <Suspense fallback={<div />}>
               <GCPStatus />

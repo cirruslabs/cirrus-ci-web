@@ -19,9 +19,6 @@ export default function BuildById(): JSX.Element {
           ...BuildDetails_build
           ...AppBreadcrumbs_build
         }
-        viewer {
-          ...AppBreadcrumbs_viewer
-        }
       }
     `,
     { buildId },
@@ -32,7 +29,7 @@ export default function BuildById(): JSX.Element {
   }
   return (
     <>
-      <AppBreadcrumbs build={response.build} viewer={response.viewer} />
+      <AppBreadcrumbs build={response.build} />
       <BuildDetails build={response.build} />
     </>
   );

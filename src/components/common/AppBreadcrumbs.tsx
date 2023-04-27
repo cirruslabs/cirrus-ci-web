@@ -16,13 +16,11 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 
 import { absoluteLink } from '../../utils/link';
 import RepositoryIcon from './RepositoryIcon';
-import AccountSwitch from './AccountSwitch';
 
 import { AppBreadcrumbs_build$key } from './__generated__/AppBreadcrumbs_build.graphql';
 import { AppBreadcrumbs_repository$key } from './__generated__/AppBreadcrumbs_repository.graphql';
 import { AppBreadcrumbs_task$key } from './__generated__/AppBreadcrumbs_task.graphql';
 import { AppBreadcrumbs_info$key } from './__generated__/AppBreadcrumbs_info.graphql';
-import { AppBreadcrumbs_viewer$key } from './__generated__/AppBreadcrumbs_viewer.graphql';
 
 const useStyles = makeStyles(theme => {
   return {
@@ -61,7 +59,6 @@ interface Props {
     href?: string;
     Icon: typeof SvgIcon | React.ElementType;
   }>;
-  viewer?: AppBreadcrumbs_viewer$key;
 }
 
 export default function AppBreadcrumbs(props: Props) {
@@ -121,14 +118,6 @@ export default function AppBreadcrumbs(props: Props) {
     `,
     props.task,
   );
-  let viewer = useFragment(
-    graphql`
-      fragment AppBreadcrumbs_viewer on User {
-        ...AccountSwitch_viewer
-      }
-    `,
-    props.viewer,
-  );
 
   let { branch, extraCrumbs } = props;
   let classes = useStyles();
@@ -177,7 +166,6 @@ export default function AppBreadcrumbs(props: Props) {
 
   return (
     <Stack className={classes.root} direction="row" spacing={1}>
-      <AccountSwitch viewer={viewer} />
       <Breadcrumbs
         className={classes.breadcrumbs}
         separator={<NavigateNextIcon fontSize="small" />}

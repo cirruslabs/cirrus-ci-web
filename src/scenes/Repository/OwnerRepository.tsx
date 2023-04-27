@@ -22,9 +22,6 @@ export default function OwnerRepository(): JSX.Element {
           ...AppBreadcrumbs_repository
           ...RepositoryBuildList_repository @arguments(branch: $branch)
         }
-        viewer {
-          ...AppBreadcrumbs_viewer
-        }
       }
     `,
     { platform, owner, name, branch },
@@ -42,7 +39,7 @@ export default function OwnerRepository(): JSX.Element {
   }
   return (
     <>
-      <AppBreadcrumbs repository={response.ownerRepository} viewer={response.viewer} branch={branch} />
+      <AppBreadcrumbs repository={response.ownerRepository} branch={branch} />
       <RepositoryBuildList repository={response.ownerRepository} branch={branch} />
     </>
   );

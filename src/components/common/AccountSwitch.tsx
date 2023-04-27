@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useFragment } from 'react-relay';
+import { useLazyLoadQuery } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 
 import Menu from '@mui/material/Menu';
@@ -10,25 +10,11 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import { navigateHelper } from '../../utils/navigateHelper';
 
-import { AccountSwitch_viewer$key } from './__generated__/AccountSwitch_viewer.graphql';
+import { AccountSwitchQuery } from './__generated__/AccountSwitchQuery.graphql';
 
-interface AccountSwitchProps {
-  viewer?: AccountSwitch_viewer$key;
-}
+interface AccountSwitchProps {}
 
 export default function AccountsSwitch(props: AccountSwitchProps) {
-  let viewer = useFragment(
-    graphql`
-      fragment AccountSwitch_viewer on User {
-        relatedOwners {
-          platform
-          name
-        }
-      }
-    `,
-    props.viewer,
-  );
-
   const navigate = useNavigate();
 
   const [menuAnchorEl, setMenuAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -46,6 +32,19 @@ export default function AccountsSwitch(props: AccountSwitchProps) {
     navigateHelper(navigate, e, '/github/' + name);
   };
 
+  const viewer = useLazyLoadQuery<AccountSwitchQuery>(
+    graphql`
+      query AccountSwitchQuery {
+        viewer {
+          relatedOwners {
+            platform
+            name
+          }
+        }
+      }
+    `,
+    {},
+  ).viewer;
   if (!viewer) return null;
   if (viewer.relatedOwners && viewer.relatedOwners.length <= 1) return null;
 

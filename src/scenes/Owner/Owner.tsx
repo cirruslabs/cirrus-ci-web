@@ -19,9 +19,6 @@ export default function Owner(): JSX.Element {
           ...OwnerRepositoryList_info
           ...AppBreadcrumbs_info
         }
-        viewer {
-          ...AppBreadcrumbs_viewer
-        }
       }
     `,
     { platform, owner },
@@ -32,7 +29,7 @@ export default function Owner(): JSX.Element {
   }
   return (
     <>
-      <AppBreadcrumbs info={response.ownerInfoByName} viewer={response.viewer} />
+      <AppBreadcrumbs info={response.ownerInfoByName} />
       <OwnerRepositoryList info={response.ownerInfoByName} />
     </>
   );

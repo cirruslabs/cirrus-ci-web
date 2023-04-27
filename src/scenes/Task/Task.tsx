@@ -19,9 +19,6 @@ export default function Task(): JSX.Element {
           ...TaskDetails_task
           ...AppBreadcrumbs_task
         }
-        viewer {
-          ...AppBreadcrumbs_viewer
-        }
       }
     `,
     { taskId },
@@ -32,7 +29,7 @@ export default function Task(): JSX.Element {
   }
   return (
     <>
-      <AppBreadcrumbs task={response.task} viewer={response.viewer} />
+      <AppBreadcrumbs task={response.task} />
       <TaskDetails task={response.task} />
     </>
   );

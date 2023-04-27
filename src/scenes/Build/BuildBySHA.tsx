@@ -21,9 +21,6 @@ export default function BuildBySHA() {
           ...BuildDetails_build
           ...AppBreadcrumbs_build
         }
-        viewer {
-          ...AppBreadcrumbs_viewer
-        }
       }
     `,
     { owner, name, SHA },
@@ -40,7 +37,7 @@ export default function BuildBySHA() {
   }
   return (
     <>
-      <AppBreadcrumbs build={response.searchBuilds[0]} viewer={response.viewer} />
+      <AppBreadcrumbs build={response.searchBuilds[0]} />
       <BuildDetails build={response.searchBuilds[0]} />
     </>
   );

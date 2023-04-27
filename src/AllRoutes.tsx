@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, {Suspense, useMemo} from 'react';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import ActiveRepositoriesDrawer from './scenes/Header/ActiveRepositoriesDrawer';
 import AppBar from '@mui/material/AppBar';
@@ -6,7 +6,7 @@ import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { makeStyles } from '@mui/styles';
+import {makeStyles, ThemeProvider} from '@mui/styles';
 import BookIcon from '@mui/icons-material/Book';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -14,13 +14,15 @@ import classNames from 'classnames';
 import ViewerTopRepositories from './scenes/Profile/ViewerTopRepositories';
 import CirrusLinearProgress from './components/common/CirrusLinearProgress';
 import ThemeSwitchButton from './components/common/ThemeSwitchButton';
-import { atom, useRecoilState } from 'recoil';
+import {atom, useRecoilState, useRecoilValue} from 'recoil';
 import { localStorageEffect } from './utils/recoil';
 import { Container, Tooltip, useTheme } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import GCPStatus from './components/status/GCPStatus';
 import GitHubStatus from './components/status/GitHubStatus';
 import * as Sentry from '@sentry/react';
+import {muiThemeOptions} from "./cirrusTheme";
+import {createTheme} from "@mui/material/styles";
 
 const AsyncViewerProfile = React.lazy(() => import('./scenes/Profile/ViewerProfile'));
 
@@ -143,8 +145,26 @@ const cirrusOpenDrawerState = atom({
 
 function AllRoutes() {
   let classes = useStyles();
-  let theme = useTheme();
   const [openDrawer, setOpenDrawer] = useRecoilState(cirrusOpenDrawerState);
+
+  let themeOptions = useRecoilValue(muiThemeOptions);
+  if (openDrawer) {
+    // adjust breakpoints to account for the drawer
+    // a little bit of copy pasta but makes typescript compiler happy
+    themeOptions = {
+      ...themeOptions,
+      breakpoints: {
+        values: {
+          xs: Math.max(0, themeOptions.breakpoints.values.xs - drawerWidth),
+          sm: Math.max(0, themeOptions.breakpoints.values.sm - drawerWidth),
+          md: Math.max(0, themeOptions.breakpoints.values.md - drawerWidth),
+          lg: Math.max(0, themeOptions.breakpoints.values.lg - drawerWidth),
+          xl: Math.max(0, themeOptions.breakpoints.values.xl - drawerWidth),
+        },
+      }
+    }
+  }
+  const theme = useMemo(() => createTheme(themeOptions), [themeOptions, openDrawer]);
 
   function getNavbarTitleStyling() {
     const shared = { cursor: 'pointer' };
@@ -273,29 +293,31 @@ function AllRoutes() {
           })}
         >
           <div className={classNames('invisible', classes.drawerHeader)} />
-          <Container maxWidth={openDrawer ? false : 'lg'} disableGutters={openDrawer}>
-            <Suspense fallback={<CirrusLinearProgress />}>
-              <SentryRoutes>
-                <Route path="/" element={<AsyncHome />} />
-                <Route path="explorer" element={<AsyncApiExplorerRenderer />} />
-                <Route path="settings/profile" element={<AsyncViewerProfile />} />
-                <Route path="settings/:platform/:name" element={<AsyncOwnerSettingsRenderer />} />
-                <Route path="settings/repository/:repositoryId" element={<AsyncRepositorySettings />} />
-                <Route path="build/:buildId" element={<AsyncBuildById />} />
-                <Route path="build/:owner/:name/:SHA" element={<AsyncBuildBySHA />} />
-                <Route path=":platform/:owner/:name/*" element={<AsyncOwnerRepository />} />
-                <Route path=":platform/:owner/:name" element={<AsyncOwnerRepository />} />
-                <Route path=":platform/:owner" element={<AsyncOwner />} />
-                <Route path="repository/:repositoryId/*" element={<AsyncRepository />} />
-                <Route path="repository/:repositoryId" element={<AsyncRepository />} />
-                <Route path="metrics/repository/:platform/:owner/:name" element={<AsyncRepositoryMetrics />} />
-                <Route path="task/:taskId" element={<AsyncTask />} />
-                <Route path="task/:taskId/hooks" element={<AsyncTask />} />
-                <Route path="pool/:poolId" element={<AsyncPoolById />} />
-                <Route path="hook/:hookId" element={<AsyncHook />} />
-              </SentryRoutes>
-            </Suspense>
-          </Container>
+          <ThemeProvider theme={theme}>
+            <Container maxWidth={openDrawer ? false : 'lg'} disableGutters={openDrawer}>
+              <Suspense fallback={<CirrusLinearProgress />}>
+                <SentryRoutes>
+                  <Route path="/" element={<AsyncHome />} />
+                  <Route path="explorer" element={<AsyncApiExplorerRenderer />} />
+                  <Route path="settings/profile" element={<AsyncViewerProfile />} />
+                  <Route path="settings/:platform/:name" element={<AsyncOwnerSettingsRenderer />} />
+                  <Route path="settings/repository/:repositoryId" element={<AsyncRepositorySettings />} />
+                  <Route path="build/:buildId" element={<AsyncBuildById />} />
+                  <Route path="build/:owner/:name/:SHA" element={<AsyncBuildBySHA />} />
+                  <Route path=":platform/:owner/:name/*" element={<AsyncOwnerRepository />} />
+                  <Route path=":platform/:owner/:name" element={<AsyncOwnerRepository />} />
+                  <Route path=":platform/:owner" element={<AsyncOwner />} />
+                  <Route path="repository/:repositoryId/*" element={<AsyncRepository />} />
+                  <Route path="repository/:repositoryId" element={<AsyncRepository />} />
+                  <Route path="metrics/repository/:platform/:owner/:name" element={<AsyncRepositoryMetrics />} />
+                  <Route path="task/:taskId" element={<AsyncTask />} />
+                  <Route path="task/:taskId/hooks" element={<AsyncTask />} />
+                  <Route path="pool/:poolId" element={<AsyncPoolById />} />
+                  <Route path="hook/:hookId" element={<AsyncHook />} />
+                </SentryRoutes>
+              </Suspense>
+            </Container>
+          </ThemeProvider>
         </main>
       </div>
     </BrowserRouter>

@@ -3,6 +3,7 @@ import { atom, selector } from 'recoil';
 import { localStorageEffect } from './utils/recoil';
 
 import { grey, lightGreen, orange, red } from '@mui/material/colors';
+import {BreakpointsOptions} from "@mui/system/createTheme/createBreakpoints";
 
 export const prefersDarkModeState = atom({
   key: 'CurrentlyPrefersDarkMode',
@@ -163,10 +164,22 @@ export let cirrusDarkTheme: ThemeOptions = {
   },
 };
 
+let defaultBreakpointsOptions: BreakpointsOptions = {
+  values: {
+    xs: 0,
+    sm: 600,
+    md: 900,
+    lg: 1200,
+    xl: 1536,
+  },
+}
+
 export let muiLightTheme: ThemeOptions = {
+  breakpoints: defaultBreakpointsOptions,
   palette: cirrusLightTheme.palette,
 };
 
 export let muiDarkTheme: ThemeOptions = {
+  breakpoints: defaultBreakpointsOptions,
   palette: cirrusDarkTheme.palette,
 };

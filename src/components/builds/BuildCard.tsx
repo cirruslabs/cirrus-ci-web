@@ -21,6 +21,7 @@ import RepositoryOwnerChipNew from '../chips/RepositoryOwnerChipNew';
 import usePageWidth from '../../utils/usePageWidth';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
 import { muiThemeOptions, cirrusOpenDrawerState } from '../../cirrusTheme';
+import { useSelectedBuildContext } from '../../contexts/SelectedBuildContext';
 
 import { BuildCard_build$key } from './__generated__/BuildCard_build.graphql';
 
@@ -53,8 +54,7 @@ const useStyles = makeStyles(theme => {
 interface Props {
   build: BuildCard_build$key;
   // For pages with chart
-  selectedBuildId?: boolean;
-  setSelectedBuildId?: Function;
+  selectable?: boolean;
 }
 
 export default function BuildCard(props: Props) {
@@ -75,6 +75,8 @@ export default function BuildCard(props: Props) {
     `,
     props.build,
   );
+
+  const { buildId, setBuildId } = useSelectedBuildContext();
 
   let classes = useStyles();
   const navigate = useNavigate();
@@ -106,15 +108,14 @@ export default function BuildCard(props: Props) {
 
   // For pages with chart
   let rowProps;
-  const selectable = !!props.setSelectedBuildId;
-  if (selectable) {
+  if (props.selectable) {
     rowProps = {
       onMouseEnter() {
-        if (props.selectedBuildId) return;
-        props.setSelectedBuildId(build.id);
+        if (buildId === build.id) return;
+        setBuildId(build.id);
       },
       onMouseLeave() {
-        props.setSelectedBuildId(null);
+        setBuildId('0');
       },
     };
   }
@@ -122,7 +123,7 @@ export default function BuildCard(props: Props) {
   return (
     <ThemeProvider theme={muiTheme}>
       <Grid
-        className={cx(classes.card, props.selectedBuildId && classes.cardSelected)}
+        className={cx(classes.card, buildId === build.id && classes.cardSelected)}
         container
         columns={4}
         direction={{ xs: 'column', sm: 'row' }}

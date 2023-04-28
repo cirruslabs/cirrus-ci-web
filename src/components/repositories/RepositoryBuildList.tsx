@@ -22,6 +22,7 @@ import { createLinkToRepository } from '../../utils/github';
 import CreateBuildDialog from '../builds/CreateBuildDialog';
 import BuildDurationsChart from '../builds/BuildDurationsChart';
 import BuildCard from '../../components/builds/BuildCard';
+import { SelectedBuildProvider } from '../../contexts/SelectedBuildContext';
 
 import { RepositoryBuildList_repository$key } from './__generated__/RepositoryBuildList_repository.graphql';
 
@@ -96,7 +97,6 @@ export default function RepositoryBuildList(props: Props) {
   );
   useSubscription(repositorySubscriptionConfig);
 
-  let [selectedBuildId, setSelectedBuildId] = useState(null);
   let [openCreateDialog, setOpenCreateDialog] = useState(false);
   let classes = useStyles();
   let builds = repository.builds.edges.map(edge => edge.node);
@@ -159,54 +159,51 @@ export default function RepositoryBuildList(props: Props) {
           </Typography>
         </Toolbar>
         <div className={classes.buildsChart}>
-          <BuildDurationsChart
-            builds={builds.slice().reverse()}
-            selectedBuildId={selectedBuildId}
-            onSelectBuildId={buildId => setSelectedBuildId(buildId)}
-          />
+          <BuildDurationsChart builds={builds.slice().reverse()} />
         </div>
       </Paper>
     );
   }
 
   return (
-    <div className={classes.root}>
-      <Head>
-        <title>
-          {repository.owner}/{repository.name} - Cirrus CI
-        </title>
-      </Head>
-      {/* CHART */}
-      {buildsChart}
+    <SelectedBuildProvider>
+      <div className={classes.root}>
+        <Head>
+          <title>
+            {repository.owner}/{repository.name} - Cirrus CI
+          </title>
+        </Head>
+        {/* CHART */}
+        {buildsChart}
 
-      {/* BUILDS */}
-      <Paper className={cx(classes.paper, classes.paperBuilds)}>
-        <Toolbar className={classes.header} disableGutters>
-          <Stack direction="row" alignItems="center">
-            <Typography variant="h5" color="inherit">
-              Builds
-            </Typography>
-            {repositoryAction}
-          </Stack>
-          <div>
-            {repositoryMetrics}
-            {repositoryLinkButton}
-            {repositorySettings}
-          </div>
-        </Toolbar>
+        {/* BUILDS */}
+        <Paper className={cx(classes.paper, classes.paperBuilds)}>
+          <Toolbar className={classes.header} disableGutters>
+            <Stack direction="row" alignItems="center">
+              <Typography variant="h5" color="inherit">
+                Builds
+              </Typography>
+              {repositoryAction}
+            </Stack>
+            <div>
+              {repositoryMetrics}
+              {repositoryLinkButton}
+              {repositorySettings}
+            </div>
+          </Toolbar>
 
-        {builds.map(build => (
-          <BuildCard
-            key={build.id}
-            build={build}
-            selectedBuildId={selectedBuildId === build.id}
-            setSelectedBuildId={isDisplayBuildChart && setSelectedBuildId}
+          {builds.map(build => (
+            <BuildCard build={build} selectable={isDisplayBuildChart} />
+          ))}
+        </Paper>
+        {openCreateDialog && (
+          <CreateBuildDialog
+            repository={repository}
+            open={openCreateDialog}
+            onClose={() => setOpenCreateDialog(false)}
           />
-        ))}
-      </Paper>
-      {openCreateDialog && (
-        <CreateBuildDialog repository={repository} open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} />
-      )}
-    </div>
+        )}
+      </div>
+    </SelectedBuildProvider>
   );
 }

@@ -8,17 +8,17 @@ import { RepositoryBuildList_repository } from '../repositories/__generated__/Re
 import { withStyles } from '@mui/styles';
 import { useNavigate } from 'react-router-dom';
 import { Paper, Typography } from '@mui/material';
+import { useSelectedBuildContext } from '../../contexts/SelectedBuildContext';
 
 interface Props {
   builds: NodeOfConnection<RepositoryBuildList_repository['builds']>[];
-  selectedBuildId: string;
-  onSelectBuildId: UnspecifiedCallbackFunction;
 }
 
 function BuildDurationsChart(props: Props) {
+  const { buildId, setBuildId } = useSelectedBuildContext();
   let navigate = useNavigate();
   let statusColorMapping = useBuildStatusColorMapping();
-  let { builds, selectedBuildId, onSelectBuildId } = props;
+  let { builds } = props;
   let maxDuration = Math.max(...builds.map(build => build.clockDurationInSeconds || 0));
   let ticks = [0];
   for (let nextTick = 60; nextTick < maxDuration; nextTick += 60) {
@@ -66,10 +66,10 @@ function BuildDurationsChart(props: Props) {
         <Bar
           dataKey="clockDurationInSeconds"
           isAnimationActive={false}
-          shape={props => renderBuildBar(props, selectedBuildId)}
+          shape={props => renderBuildBar(props, buildId)}
           onClick={(build, index, event) => navigateBuildHelper(navigate, event, build.id)}
-          onMouseEnter={entry => onSelectBuildId(entry.id)}
-          onMouseLeave={() => onSelectBuildId('0')}
+          onMouseEnter={entry => setBuildId(entry.id)}
+          onMouseLeave={() => setBuildId('0')}
         />
       </BarChart>
     </ResponsiveContainer>

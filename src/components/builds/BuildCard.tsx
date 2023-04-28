@@ -21,7 +21,7 @@ import RepositoryNameChipNew from '../chips/RepositoryNameChipNew';
 import RepositoryOwnerChipNew from '../chips/RepositoryOwnerChipNew';
 import usePageWidth from '../../utils/usePageWidth';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
-import { muiThemeOptions, muiCustomBreakpoints } from '../../cirrusTheme';
+import { muiThemeOptions } from '../../cirrusTheme';
 
 import { BuildCard_build$key } from './__generated__/BuildCard_build.graphql';
 

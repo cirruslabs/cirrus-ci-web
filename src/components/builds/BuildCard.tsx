@@ -91,26 +91,26 @@ export default function BuildCard(props: Props) {
   const pageWidth = usePageWidth();
 
   // For default Chip component values
-  const themeOptions = useRecoilValue(muiThemeOptions);
+  let themeOptions = useRecoilValue(muiThemeOptions);
+
+  if (isDrawerOpen) {
+    themeOptions = {
+      ...themeOptions,
+      breakpoints: {
+        values: {
+          xs: 0,
+          sm: 900,
+          md: 1200,
+          lg: 1600,
+          xl: 1800,
+        },
+      },
+    };
+  }
+
   const muiTheme = useMemo(() => createTheme(themeOptions), [themeOptions]);
 
-  // For screens with open Drawer
-  const muiThemeWithCustomBreakpoints = createTheme({
-    ...muiTheme,
-    breakpoints: {
-      values: {
-        xs: 0,
-        sm: 900,
-        md: 1200,
-        lg: 1600,
-        xl: 1800,
-      },
-    },
-  });
-
-  const showChipsHeader = isDrawerOpen
-    ? pageWidth >= muiThemeWithCustomBreakpoints.breakpoints.values.md
-    : pageWidth >= muiTheme.breakpoints.values.md;
+  const showChipsHeader = pageWidth >= muiTheme.breakpoints.values.md;
 
   // For pages with chart
   let rowProps;
@@ -128,7 +128,7 @@ export default function BuildCard(props: Props) {
   }
 
   return (
-    <ThemeProvider theme={isDrawerOpen ? muiThemeWithCustomBreakpoints : muiTheme}>
+    <ThemeProvider theme={muiTheme}>
       <Grid
         className={cx(classes.card, props.selectedBuildId && classes.cardSelected)}
         container

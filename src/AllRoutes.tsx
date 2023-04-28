@@ -21,6 +21,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import GCPStatus from './components/status/GCPStatus';
 import GitHubStatus from './components/status/GitHubStatus';
 import * as Sentry from '@sentry/react';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const AsyncViewerProfile = React.lazy(() => import('./scenes/Profile/ViewerProfile'));
 
@@ -151,6 +152,8 @@ function AllRoutes() {
     return openDrawer ? { marginLeft: '15px', ...shared } : shared;
   }
 
+  const isScreenDownMdSize = useMediaQuery(theme.breakpoints.down('md'));
+
   const drawerContent = (
     <>
       <div className={classes.drawerHeader}>
@@ -171,7 +174,8 @@ function AllRoutes() {
     <nav>
       <Drawer
         variant="temporary"
-        open={openDrawer}
+        // Prevent body overflow hidden
+        open={isScreenDownMdSize && openDrawer}
         onClose={() => setOpenDrawer(false)}
         sx={{
           display: { xs: 'block', md: 'none' },

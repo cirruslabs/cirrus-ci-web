@@ -98,6 +98,14 @@ export default function BuildCard(props: Props) {
       ...themeOptions,
       breakpoints: {
         values: {
+          // Require cirrusTheme update
+          // xs: Math.max(0, themeOptions.breakpoints.values.xs - 360),
+          // sm: Math.max(0, themeOptions.breakpoints.values.sm - 360),
+          // md: Math.max(0, themeOptions.breakpoints.values.md - 360),
+          // lg: Math.max(0, themeOptions.breakpoints.values.lg - 360),
+          // xl: Math.max(0, themeOptions.breakpoints.values.xl - 360),
+
+          // Simple option =)
           xs: 0,
           sm: 900,
           md: 1200,

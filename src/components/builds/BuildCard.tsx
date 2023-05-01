@@ -211,8 +211,8 @@ export default function BuildCard(props: Props) {
 
             {/* DURATION UP XS-SCREEN*/}
             <Grid display={{ xs: 'none', sm: 'block' }} sm={11} md={2} py={{ sm: 'default', md: 0 }}>
-              {/* TODO: fix mt: md value work incorrectly with custom breakpoint */}
-              <Box ml={0.5} mt={{ md: 2 }}>
+              {/* Custom breakpoint value doesn`t inherited by mt here*/}
+              <Box ml={0.5} mt={isDrawerOpen ? { md: 0, lg: 2 } : { md: 2 }}>
                 <Duration build={build} iconFirst rightAlighment={!showChipsHeader} />
               </Box>
             </Grid>

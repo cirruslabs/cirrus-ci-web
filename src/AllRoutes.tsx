@@ -88,9 +88,6 @@ const useStyles = makeStyles(theme => {
         duration: theme.transitions.duration.leavingScreen,
       }),
     },
-    shiftedFixedWidth: {
-      width: `calc(100% - ${drawerWidth}px)`,
-    },
     appBarShift: {
       [theme.breakpoints.not('xs')]: {
         marginLeft: drawerWidth,
@@ -132,6 +129,9 @@ const useStyles = makeStyles(theme => {
       }),
       padding: 0,
       marginLeft: 0,
+    },
+    shiftedFixedWidth: {
+      width: `calc(100% - ${drawerWidth}px)`,
     },
   };
 });

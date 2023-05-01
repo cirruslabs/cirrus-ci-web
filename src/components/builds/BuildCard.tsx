@@ -2,9 +2,8 @@ import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ThemeProvider } from '@emotion/react';
 import { useFragment } from 'react-relay';
-import { useRecoilValue, atom } from 'recoil';
-import { localStorageEffect } from '../../utils/recoil';
 import { graphql } from 'babel-plugin-relay/macro';
+import { useRecoilValue } from 'recoil';
 import cx from 'classnames';
 
 import { makeStyles } from '@mui/styles';

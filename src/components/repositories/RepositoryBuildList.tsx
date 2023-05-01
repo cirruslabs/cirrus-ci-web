@@ -1,12 +1,9 @@
 import { useState, useMemo } from 'react';
-import { ThemeProvider } from '@emotion/react';
-import { useRecoilValue } from 'recoil';
 import { useFragment, useSubscription } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { Helmet as Head } from 'react-helmet';
 import cx from 'classnames';
 
-import { createTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
@@ -21,7 +18,6 @@ import AddCircle from '@mui/icons-material/AddCircle';
 import Timeline from '@mui/icons-material/Timeline';
 
 import { absoluteLink } from '../../utils/link';
-import { muiThemeOptions } from '../../cirrusTheme';
 import { createLinkToRepository } from '../../utils/github';
 import CreateBuildDialog from '../builds/CreateBuildDialog';
 import BuildDurationsChart from '../builds/BuildDurationsChart';
@@ -90,9 +86,6 @@ export default function RepositoryBuildList(props: Props) {
     `,
     props.repository,
   );
-
-  const themeOptions = useRecoilValue(muiThemeOptions);
-  const muiTheme = useMemo(() => createTheme(themeOptions), [themeOptions]);
 
   const repositorySubscriptionConfig = useMemo(
     () => ({
@@ -177,48 +170,43 @@ export default function RepositoryBuildList(props: Props) {
   }
 
   return (
-    <ThemeProvider theme={muiTheme}>
-      <div className={classes.root}>
-        <Head>
-          <title>
-            {repository.owner}/{repository.name} - Cirrus CI
-          </title>
-        </Head>
-        {/* CHART */}
-        {buildsChart}
+    <div className={classes.root}>
+      <Head>
+        <title>
+          {repository.owner}/{repository.name} - Cirrus CI
+        </title>
+      </Head>
+      {/* CHART */}
+      {buildsChart}
 
-        {/* BUILDS */}
-        <Paper className={cx(classes.paper, classes.paperBuilds)}>
-          <Toolbar className={classes.header} disableGutters>
-            <Stack direction="row" alignItems="center">
-              <Typography variant="h5" color="inherit">
-                Builds
-              </Typography>
-              {repositoryAction}
-            </Stack>
-            <div>
-              {repositoryMetrics}
-              {repositoryLinkButton}
-              {repositorySettings}
-            </div>
-          </Toolbar>
+      {/* BUILDS */}
+      <Paper className={cx(classes.paper, classes.paperBuilds)}>
+        <Toolbar className={classes.header} disableGutters>
+          <Stack direction="row" alignItems="center">
+            <Typography variant="h5" color="inherit">
+              Builds
+            </Typography>
+            {repositoryAction}
+          </Stack>
+          <div>
+            {repositoryMetrics}
+            {repositoryLinkButton}
+            {repositorySettings}
+          </div>
+        </Toolbar>
 
-          {builds.map(build => (
-            <BuildCard
-              build={build}
-              selectedBuildId={selectedBuildId === build.id}
-              setSelectedBuildId={isDisplayBuildChart && setSelectedBuildId}
-            />
-          ))}
-        </Paper>
-        {openCreateDialog && (
-          <CreateBuildDialog
-            repository={repository}
-            open={openCreateDialog}
-            onClose={() => setOpenCreateDialog(false)}
+        {builds.map(build => (
+          <BuildCard
+            key={build.id}
+            build={build}
+            selectedBuildId={selectedBuildId === build.id}
+            setSelectedBuildId={isDisplayBuildChart && setSelectedBuildId}
           />
-        )}
-      </div>
-    </ThemeProvider>
+        ))}
+      </Paper>
+      {openCreateDialog && (
+        <CreateBuildDialog repository={repository} open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} />
+      )}
+    </div>
   );
 }

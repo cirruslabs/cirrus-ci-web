@@ -14,14 +14,14 @@ import classNames from 'classnames';
 import ViewerTopRepositories from './scenes/Profile/ViewerTopRepositories';
 import CirrusLinearProgress from './components/common/CirrusLinearProgress';
 import ThemeSwitchButton from './components/common/ThemeSwitchButton';
-import { atom, useRecoilState } from 'recoil';
-import { localStorageEffect } from './utils/recoil';
+import { useRecoilState } from 'recoil';
 import { Container, Tooltip, useTheme } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import GCPStatus from './components/status/GCPStatus';
 import GitHubStatus from './components/status/GitHubStatus';
 import * as Sentry from '@sentry/react';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { cirrusOpenDrawerState } from '../src/cirrusTheme';
 
 const AsyncViewerProfile = React.lazy(() => import('./scenes/Profile/ViewerProfile'));
 
@@ -88,11 +88,8 @@ const useStyles = makeStyles(theme => {
         duration: theme.transitions.duration.leavingScreen,
       }),
     },
-    shiftedFixedWidth: {
-      width: `calc(100% - ${drawerWidth}px)`,
-    },
     appBarShift: {
-      [theme.breakpoints.up('sm')]: {
+      [theme.breakpoints.not('xs')]: {
         marginLeft: drawerWidth,
         transition: theme.transitions.create(['margin', 'width'], {
           easing: theme.transitions.easing.easeOut,
@@ -133,13 +130,10 @@ const useStyles = makeStyles(theme => {
       padding: 0,
       marginLeft: 0,
     },
+    shiftedFixedWidth: {
+      width: `calc(100% - ${drawerWidth}px)`,
+    },
   };
-});
-
-const cirrusOpenDrawerState = atom({
-  key: 'CirrusOpenDrawer',
-  default: false,
-  effects_UNSTABLE: [localStorageEffect('CirrusOpenDrawer')],
 });
 
 function AllRoutes() {
@@ -178,8 +172,8 @@ function AllRoutes() {
         open={isScreenDownMdSize && openDrawer}
         onClose={() => setOpenDrawer(false)}
         sx={{
-          display: { xs: 'block', md: 'none' },
-          '& .MuiDrawer-paper': { width: { xs: '100vw', sm: drawerWidth } },
+          display: { xs: 'block', sm: 'none' },
+          '& .MuiDrawer-paper': { width: { xs: '100vw' } },
         }}
       >
         {drawerContent}
@@ -187,7 +181,7 @@ function AllRoutes() {
       <Drawer
         variant="persistent"
         sx={{
-          display: { xs: 'none', md: 'block' },
+          display: { xs: 'none', sm: 'block' },
         }}
         open={openDrawer}
         classes={{

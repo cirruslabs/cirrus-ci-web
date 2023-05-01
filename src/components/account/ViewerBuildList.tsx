@@ -1,18 +1,14 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { useRefetchableFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { ThemeProvider } from '@emotion/react';
-import { useRecoilValue } from 'recoil';
 import { Helmet as Head } from 'react-helmet';
 
-import { createTheme } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import { muiThemeOptions } from '../../cirrusTheme';
 import BuildCard from '../../components/builds/BuildCard';
 import { isBuildFinalStatus } from '../../utils/status';
 import MarkdownTypography from '../common/MarkdownTypography';
@@ -68,9 +64,6 @@ function ViewerBuildList(props: Props) {
     viewer,
   );
 
-  const themeOptions = useRecoilValue(muiThemeOptions);
-  const muiTheme = useMemo(() => createTheme(themeOptions), [themeOptions]);
-
   const [filter, setFilter] = useState('all');
 
   let builds = [];
@@ -102,31 +95,29 @@ function ViewerBuildList(props: Props) {
   };
 
   return (
-    <ThemeProvider theme={muiTheme}>
-      <Paper className={classes.paper}>
-        <Head>
-          <title>Recent Builds - Cirrus CI</title>
-        </Head>
-        <Toolbar className={classes.header} disableGutters>
-          <Typography variant="h5">Recent Builds</Typography>
-          <ToggleButtonGroup value={filter} exclusive onChange={handleFilterChange}>
-            <ToggleButton value="all">All</ToggleButton>
-            <ToggleButton value="running">Running</ToggleButton>
-          </ToggleButtonGroup>
-        </Toolbar>
-        {builds.length === 0 ? (
-          <div className={classes.emptyBuilds}>
-            <MarkdownTypography
-              text={
-                'No recent builds! Please check the [documentation](https://cirrus-ci.org/) on how to start with Cirrus CI.'
-              }
-            />
-          </div>
-        ) : (
-          builds.map(build => <BuildCard build={build} />)
-        )}
-      </Paper>
-    </ThemeProvider>
+    <Paper className={classes.paper}>
+      <Head>
+        <title>Recent Builds - Cirrus CI</title>
+      </Head>
+      <Toolbar className={classes.header} disableGutters>
+        <Typography variant="h5">Recent Builds</Typography>
+        <ToggleButtonGroup value={filter} exclusive onChange={handleFilterChange}>
+          <ToggleButton value="all">All</ToggleButton>
+          <ToggleButton value="running">Running</ToggleButton>
+        </ToggleButtonGroup>
+      </Toolbar>
+      {builds.length === 0 ? (
+        <div className={classes.emptyBuilds}>
+          <MarkdownTypography
+            text={
+              'No recent builds! Please check the [documentation](https://cirrus-ci.org/) on how to start with Cirrus CI.'
+            }
+          />
+        </div>
+      ) : (
+        builds.map(build => <BuildCard key={build.id} build={build} />)
+      )}
+    </Paper>
   );
 }
 

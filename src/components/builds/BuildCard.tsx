@@ -2,11 +2,10 @@ import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ThemeProvider } from '@emotion/react';
 import { useFragment } from 'react-relay';
-import { useRecoilValue } from 'recoil';
 import { graphql } from 'babel-plugin-relay/macro';
+import { useRecoilValue } from 'recoil';
 import cx from 'classnames';
 
-import { useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { createTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -21,7 +20,7 @@ import RepositoryNameChipNew from '../chips/RepositoryNameChipNew';
 import RepositoryOwnerChipNew from '../chips/RepositoryOwnerChipNew';
 import usePageWidth from '../../utils/usePageWidth';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
-import { muiThemeOptions } from '../../cirrusTheme';
+import { muiThemeOptions, cirrusOpenDrawerState } from '../../cirrusTheme';
 
 import { BuildCard_build$key } from './__generated__/BuildCard_build.graphql';
 
@@ -78,15 +77,32 @@ export default function BuildCard(props: Props) {
   );
 
   let classes = useStyles();
-  let theme = useTheme();
   const navigate = useNavigate();
+  const isDrawerOpen = useRecoilValue(cirrusOpenDrawerState);
 
   const pageWidth = usePageWidth();
 
-  let isMdScreenWidth = pageWidth >= theme.breakpoints.values.md;
+  // For default Chip component values
+  let themeOptions = useRecoilValue(muiThemeOptions);
 
-  const themeOptions = useRecoilValue(muiThemeOptions);
+  if (isDrawerOpen) {
+    themeOptions = {
+      ...themeOptions,
+      breakpoints: {
+        values: {
+          xs: 0,
+          sm: 900,
+          md: 1200,
+          lg: 1600,
+          xl: 1800,
+        },
+      },
+    };
+  }
+
   const muiTheme = useMemo(() => createTheme(themeOptions), [themeOptions]);
+
+  const showChipsHeader = pageWidth >= muiTheme.breakpoints.values.md;
 
   // For pages with chart
   let rowProps;
@@ -180,23 +196,23 @@ export default function BuildCard(props: Props) {
 
             {/* REPOSITORY */}
             <Grid sm={11} md={3} py={{ sm: 'default', md: 0 }}>
-              <RepositoryNameChipNew withHeader={isMdScreenWidth} repository={build.repository} />
+              <RepositoryNameChipNew withHeader={showChipsHeader} repository={build.repository} />
             </Grid>
 
             {/* OWNER */}
             <Grid sm={11} md={3} py={{ sm: 'default', md: 0 }}>
-              <RepositoryOwnerChipNew withHeader={isMdScreenWidth} repository={build.repository} />
+              <RepositoryOwnerChipNew withHeader={showChipsHeader} repository={build.repository} />
             </Grid>
 
             {/* BRANCH*/}
             <Grid sm={11} md={3} py={{ sm: 'default', md: 0 }}>
-              <BuildBranchNameChipNew withHeader={isMdScreenWidth} build={build} />
+              <BuildBranchNameChipNew withHeader={showChipsHeader} build={build} />
             </Grid>
 
             {/* DURATION UP XS-SCREEN*/}
             <Grid display={{ xs: 'none', sm: 'block' }} sm={11} md={2} py={{ sm: 'default', md: 0 }}>
-              <Box ml={0.5} mt={{ md: 2 }}>
-                <Duration build={build} iconFirst rightAlighment={!isMdScreenWidth} />
+              <Box ml={0.5} mt={isDrawerOpen ? { lg: 2 } : { md: 2 }}>
+                <Duration build={build} iconFirst rightAlighment={!showChipsHeader} />
               </Box>
             </Grid>
           </Grid>

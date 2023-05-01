@@ -21,7 +21,7 @@ import RepositoryNameChipNew from '../chips/RepositoryNameChipNew';
 import RepositoryOwnerChipNew from '../chips/RepositoryOwnerChipNew';
 import usePageWidth from '../../utils/usePageWidth';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
-import { muiThemeOptions } from '../../cirrusTheme';
+import { muiThemeOptions, cirrusOpenDrawerState } from '../../cirrusTheme';
 
 import { BuildCard_build$key } from './__generated__/BuildCard_build.graphql';
 
@@ -58,13 +58,6 @@ interface Props {
   setSelectedBuildId?: Function;
 }
 
-// TODO: move cirrusOpenDrawerState to separate component
-const cirrusOpenDrawerState = atom({
-  key: 'CirrusOpenDrawer',
-  default: false,
-  effects_UNSTABLE: [localStorageEffect('CirrusOpenDrawer')],
-});
-
 export default function BuildCard(props: Props) {
   let build = useFragment(
     graphql`
@@ -98,14 +91,6 @@ export default function BuildCard(props: Props) {
       ...themeOptions,
       breakpoints: {
         values: {
-          // Require cirrusTheme update
-          // xs: Math.max(0, themeOptions.breakpoints.values.xs - 360),
-          // sm: Math.max(0, themeOptions.breakpoints.values.sm - 360),
-          // md: Math.max(0, themeOptions.breakpoints.values.md - 360),
-          // lg: Math.max(0, themeOptions.breakpoints.values.lg - 360),
-          // xl: Math.max(0, themeOptions.breakpoints.values.xl - 360),
-
-          // Simple option =)
           xs: 0,
           sm: 900,
           md: 1200,

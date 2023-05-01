@@ -170,3 +170,9 @@ export let muiLightTheme: ThemeOptions = {
 export let muiDarkTheme: ThemeOptions = {
   palette: cirrusDarkTheme.palette,
 };
+
+export const cirrusOpenDrawerState = atom({
+  key: 'CirrusOpenDrawer',
+  default: false,
+  effects_UNSTABLE: [localStorageEffect('CirrusOpenDrawer')],
+});

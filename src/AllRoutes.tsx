@@ -14,14 +14,14 @@ import classNames from 'classnames';
 import ViewerTopRepositories from './scenes/Profile/ViewerTopRepositories';
 import CirrusLinearProgress from './components/common/CirrusLinearProgress';
 import ThemeSwitchButton from './components/common/ThemeSwitchButton';
-import { atom, useRecoilState } from 'recoil';
-import { localStorageEffect } from './utils/recoil';
+import { useRecoilState } from 'recoil';
 import { Container, Tooltip, useTheme } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import GCPStatus from './components/status/GCPStatus';
 import GitHubStatus from './components/status/GitHubStatus';
 import * as Sentry from '@sentry/react';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { cirrusOpenDrawerState } from '../src/cirrusTheme';
 
 const AsyncViewerProfile = React.lazy(() => import('./scenes/Profile/ViewerProfile'));
 
@@ -134,12 +134,6 @@ const useStyles = makeStyles(theme => {
       marginLeft: 0,
     },
   };
-});
-
-const cirrusOpenDrawerState = atom({
-  key: 'CirrusOpenDrawer',
-  default: false,
-  effects_UNSTABLE: [localStorageEffect('CirrusOpenDrawer')],
 });
 
 function AllRoutes() {

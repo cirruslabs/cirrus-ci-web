@@ -115,7 +115,7 @@ function ViewerBuildList(props: Props) {
           />
         </div>
       ) : (
-        builds.map(build => <BuildCard build={build} />)
+        builds.map(build => <BuildCard key={build.id} build={build} />)
       )}
     </Paper>
   );

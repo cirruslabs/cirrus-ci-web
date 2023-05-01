@@ -197,6 +197,7 @@ export default function RepositoryBuildList(props: Props) {
 
         {builds.map(build => (
           <BuildCard
+            key={build.id}
             build={build}
             selectedBuildId={selectedBuildId === build.id}
             setSelectedBuildId={isDisplayBuildChart && setSelectedBuildId}

@@ -12,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import BuildCard from '../../components/builds/BuildCard';
 import { isBuildFinalStatus } from '../../utils/status';
 import MarkdownTypography from '../common/MarkdownTypography';
+import { SelectedBuildProvider } from '../../contexts/SelectedBuildContext';
 import { ViewerBuildListRefetchQuery } from './__generated__/ViewerBuildListRefetchQuery.graphql';
 import { ViewerBuildList_viewer$key } from './__generated__/ViewerBuildList_viewer.graphql';
 
@@ -95,29 +96,31 @@ function ViewerBuildList(props: Props) {
   };
 
   return (
-    <Paper className={classes.paper}>
-      <Head>
-        <title>Recent Builds - Cirrus CI</title>
-      </Head>
-      <Toolbar className={classes.header} disableGutters>
-        <Typography variant="h5">Recent Builds</Typography>
-        <ToggleButtonGroup value={filter} exclusive onChange={handleFilterChange}>
-          <ToggleButton value="all">All</ToggleButton>
-          <ToggleButton value="running">Running</ToggleButton>
-        </ToggleButtonGroup>
-      </Toolbar>
-      {builds.length === 0 ? (
-        <div className={classes.emptyBuilds}>
-          <MarkdownTypography
-            text={
-              'No recent builds! Please check the [documentation](https://cirrus-ci.org/) on how to start with Cirrus CI.'
-            }
-          />
-        </div>
-      ) : (
-        builds.map(build => <BuildCard key={build.id} build={build} />)
-      )}
-    </Paper>
+    <SelectedBuildProvider>
+      <Paper className={classes.paper}>
+        <Head>
+          <title>Recent Builds - Cirrus CI</title>
+        </Head>
+        <Toolbar className={classes.header} disableGutters>
+          <Typography variant="h5">Recent Builds</Typography>
+          <ToggleButtonGroup value={filter} exclusive onChange={handleFilterChange}>
+            <ToggleButton value="all">All</ToggleButton>
+            <ToggleButton value="running">Running</ToggleButton>
+          </ToggleButtonGroup>
+        </Toolbar>
+        {builds.length === 0 ? (
+          <div className={classes.emptyBuilds}>
+            <MarkdownTypography
+              text={
+                'No recent builds! Please check the [documentation](https://cirrus-ci.org/) on how to start with Cirrus CI.'
+              }
+            />
+          </div>
+        ) : (
+          builds.map(build => <BuildCard key={build.id} build={build} />)
+        )}
+      </Paper>
+    </SelectedBuildProvider>
   );
 }
 

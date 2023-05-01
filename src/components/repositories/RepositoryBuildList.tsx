@@ -193,7 +193,7 @@ export default function RepositoryBuildList(props: Props) {
           </Toolbar>
 
           {builds.map(build => (
-            <BuildCard build={build} selectable={isDisplayBuildChart} />
+            <BuildCard key={build.id} build={build} selectable={isDisplayBuildChart} />
           ))}
         </Paper>
         {openCreateDialog && (

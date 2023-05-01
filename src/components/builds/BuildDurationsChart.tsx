@@ -3,7 +3,7 @@ import { Bar, BarChart, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } 
 import { useBuildStatusColorMapping } from '../../utils/colors';
 import { formatDuration } from '../../utils/time';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
-import { NodeOfConnection, UnspecifiedCallbackFunction } from '../../utils/utility-types';
+import { NodeOfConnection } from '../../utils/utility-types';
 import { RepositoryBuildList_repository } from '../repositories/__generated__/RepositoryBuildList_repository.graphql';
 import { withStyles } from '@mui/styles';
 import { useNavigate } from 'react-router-dom';

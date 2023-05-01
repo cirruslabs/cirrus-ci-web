@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ThemeProvider } from '@emotion/react';
 import { useFragment } from 'react-relay';
@@ -23,7 +23,7 @@ import { navigateBuildHelper } from '../../utils/navigateHelper';
 import { muiThemeOptions, cirrusOpenDrawerState } from '../../cirrusTheme';
 import { useSelectedBuildContext } from '../../contexts/SelectedBuildContext';
 
-import { BuildCard_build$key } from './__generated__/BuildCard_build.graphql';
+import { BuildCard_build, BuildCard_build$key } from './__generated__/BuildCard_build.graphql';
 
 const useStyles = makeStyles(theme => {
   return {
@@ -57,8 +57,10 @@ interface Props {
   selectable?: boolean;
 }
 
-export default function BuildCard(props: Props) {
-  let build = useFragment(
+export default function BuildCardWrapped(props: Props) {
+  const { buildId, setBuildId } = useSelectedBuildContext();
+
+  const build = useFragment(
     graphql`
       fragment BuildCard_build on Build {
         id
@@ -76,8 +78,20 @@ export default function BuildCard(props: Props) {
     props.build,
   );
 
-  const { buildId, setBuildId } = useSelectedBuildContext();
+  const selected = useMemo(() => buildId === build.id, [buildId, build.id]);
 
+  return <BuildCard build={build} selectable={props.selectable} selected={selected} setBuildId={setBuildId} />;
+}
+
+interface BuildCardProps {
+  build: BuildCard_build;
+  selectable: boolean;
+  selected: boolean;
+  setBuildId: (buildId: String) => void;
+}
+
+const BuildCard = memo((props: BuildCardProps) => {
+  const build = props.build;
   let classes = useStyles();
   const navigate = useNavigate();
   const isDrawerOpen = useRecoilValue(cirrusOpenDrawerState);
@@ -111,11 +125,11 @@ export default function BuildCard(props: Props) {
   if (props.selectable) {
     rowProps = {
       onMouseEnter() {
-        if (buildId === build.id) return;
-        setBuildId(build.id);
+        if (props.selected) return;
+        props.setBuildId(build.id);
       },
       onMouseLeave() {
-        setBuildId('0');
+        props.setBuildId('0');
       },
     };
   }
@@ -123,7 +137,7 @@ export default function BuildCard(props: Props) {
   return (
     <ThemeProvider theme={muiTheme}>
       <Grid
-        className={cx(classes.card, buildId === build.id && classes.cardSelected)}
+        className={cx(classes.card, props.selected && classes.cardSelected)}
         container
         columns={4}
         direction={{ xs: 'column', sm: 'row' }}
@@ -221,4 +235,4 @@ export default function BuildCard(props: Props) {
       </Grid>
     </ThemeProvider>
   );
-}
+});

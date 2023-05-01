@@ -12,7 +12,7 @@ export const useSelectedBuildContext = () => {
 };
 
 export const SelectedBuildProvider: React.FC<React.ReactNode> = ({ children }) => {
-  const [buildId, setBuildId] = useState<String>(null);
+  const [buildId, setBuildId] = useState<String | null>(null);
 
   return <SelectedBuildContext.Provider value={{ buildId, setBuildId }}>{children}</SelectedBuildContext.Provider>;
 };

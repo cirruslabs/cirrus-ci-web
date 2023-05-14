@@ -974,6 +974,8 @@ type RepositorySettings {
   configResolutionStrategy: ConfigResolutionStrategy!
   additionalEnvironment: [String!]!
   cacheVersion: Int
+  paused: Boolean
+  oidcSubIncludeClaimKeys: [String!]!
 }
 
 input RepositorySettingsInput {
@@ -983,6 +985,7 @@ input RepositorySettingsInput {
   configResolutionStrategy: ConfigResolutionStrategy
   additionalEnvironment: [String!]
   cacheVersion: Int
+  oidcSubIncludeClaimKeys: [String!]
   clientMutationId: String
 }
 

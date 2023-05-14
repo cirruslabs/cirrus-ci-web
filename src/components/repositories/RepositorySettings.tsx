@@ -8,10 +8,10 @@ import FormHelperText from '@mui/material/FormHelperText';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Switch from '@mui/material/Switch';
-import {graphql} from 'babel-plugin-relay/macro';
-import React, {useState} from 'react';
-import {useFragment, useMutation} from 'react-relay';
-import {RepositorySettings_repository$key} from './__generated__/RepositorySettings_repository.graphql';
+import { graphql } from 'babel-plugin-relay/macro';
+import React, { useState } from 'react';
+import { useFragment, useMutation } from 'react-relay';
+import { RepositorySettings_repository$key } from './__generated__/RepositorySettings_repository.graphql';
 import {
   RepositorySettingsMutation,
   RepositorySettingsMutationResponse,
@@ -28,7 +28,7 @@ import {
   ListItemSecondaryAction,
   ListItemText,
 } from '@mui/material';
-import {AddCircle} from '@mui/icons-material';
+import { AddCircle } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 interface Props {
@@ -154,7 +154,7 @@ export default function RepositorySettings(props: Props) {
       <CardContent>
         <FormControl fullWidth variant="standard">
           <FormControlLabel
-            control={<Switch checked={settings.needsApproval} onChange={toggleField('needsApproval')}/>}
+            control={<Switch checked={settings.needsApproval} onChange={toggleField('needsApproval')} />}
             label="Require approval for builds from users without write permissions"
           />
         </FormControl>
@@ -163,7 +163,8 @@ export default function RepositorySettings(props: Props) {
           <Select
             value={settings.decryptEnvironmentVariables}
             onChange={changeField('decryptEnvironmentVariables')}
-            fullWidth variant="standard"
+            fullWidth
+            variant="standard"
           >
             <MenuItem value={'USERS_WITH_WRITE_PERMISSIONS'}>Only users with write permissions</MenuItem>
             <MenuItem value={'COLLABORATORS'}>Collaborators, bots and users with write permissions</MenuItem>
@@ -175,7 +176,8 @@ export default function RepositorySettings(props: Props) {
           <Select
             value={settings.configResolutionStrategy}
             onChange={changeField('configResolutionStrategy')}
-            fullWidth variant="standard"
+            fullWidth
+            variant="standard"
           >
             <MenuItem value={'SAME_SHA'}>Same SHA</MenuItem>
             <MenuItem value={'MERGE_FOR_PRS'}>Merge for PRs</MenuItem>
@@ -188,11 +190,13 @@ export default function RepositorySettings(props: Props) {
           </InputLabel>
           <Input
             id="oidc-sub-extra-claims"
-            value={settings.oidcSubIncludeClaimKeys.join(",")}
-            onChange={event => setSettings({
-              ...settings,
-              oidcSubIncludeClaimKeys: event.target.value.split(","),
-            })}
+            value={settings.oidcSubIncludeClaimKeys.join(',')}
+            onChange={event =>
+              setSettings({
+                ...settings,
+                oidcSubIncludeClaimKeys: event.target.value.split(','),
+              })
+            }
           />
         </FormControl>
         {settings.additionalEnvironment.length > 0 && (
@@ -201,10 +205,10 @@ export default function RepositorySettings(props: Props) {
             <List>
               {settings.additionalEnvironment.map(line => (
                 <ListItem key={line}>
-                  <ListItemText primary={line}/>
+                  <ListItemText primary={line} />
                   <ListItemSecondaryAction>
                     <IconButton edge="end" aria-label="delete" onClick={() => deleteEnv(line)} size="large">
-                      <DeleteIcon/>
+                      <DeleteIcon />
                     </IconButton>
                   </ListItemSecondaryAction>
                 </ListItem>
@@ -223,7 +227,7 @@ export default function RepositorySettings(props: Props) {
             endAdornment={
               <InputAdornment position="end">
                 <IconButton aria-label="add new env variable override" onClick={addNewEnvVariable} size="large">
-                  <AddCircle/>
+                  <AddCircle />
                 </IconButton>
               </InputAdornment>
             }
@@ -232,7 +236,7 @@ export default function RepositorySettings(props: Props) {
         <FormControl fullWidth variant="standard">
           <FormControlLabel
             control={
-              <Checkbox checked={initialSettings.cacheVersion !== settings.cacheVersion} onChange={setClearCaches}/>
+              <Checkbox checked={initialSettings.cacheVersion !== settings.cacheVersion} onChange={setClearCaches} />
             }
             label="Clear all repository caches"
           />

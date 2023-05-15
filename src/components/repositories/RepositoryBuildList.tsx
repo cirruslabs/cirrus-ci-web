@@ -96,7 +96,6 @@ export default function RepositoryBuildList(props: Props) {
   );
   useSubscription(repositorySubscriptionConfig);
 
-  let [selectedBuildId, setSelectedBuildId] = useState(null);
   let [openCreateDialog, setOpenCreateDialog] = useState(false);
   let classes = useStyles();
   let builds = repository.builds.edges.map(edge => edge.node);
@@ -159,11 +158,7 @@ export default function RepositoryBuildList(props: Props) {
           </Typography>
         </Toolbar>
         <div className={classes.buildsChart}>
-          <BuildDurationsChart
-            builds={builds.slice().reverse()}
-            selectedBuildId={selectedBuildId}
-            onSelectBuildId={buildId => setSelectedBuildId(buildId)}
-          />
+          <BuildDurationsChart builds={builds.slice().reverse()} />
         </div>
       </Paper>
     );
@@ -196,12 +191,7 @@ export default function RepositoryBuildList(props: Props) {
         </Toolbar>
 
         {builds.map(build => (
-          <BuildCard
-            key={build.id}
-            build={build}
-            selectedBuildId={selectedBuildId === build.id}
-            setSelectedBuildId={isDisplayBuildChart && setSelectedBuildId}
-          />
+          <BuildCard key={build.id} build={build} />
         ))}
       </Paper>
       {openCreateDialog && (

@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Bar, BarChart, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { useBuildStatusColorMapping } from '../../utils/colors';
 import { formatDuration } from '../../utils/time';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
-import { NodeOfConnection, UnspecifiedCallbackFunction } from '../../utils/utility-types';
+import { NodeOfConnection } from '../../utils/utility-types';
 import { RepositoryBuildList_repository } from '../repositories/__generated__/RepositoryBuildList_repository.graphql';
 import { withStyles } from '@mui/styles';
 import { useNavigate } from 'react-router-dom';
@@ -11,14 +11,13 @@ import { Paper, Typography } from '@mui/material';
 
 interface Props {
   builds: NodeOfConnection<RepositoryBuildList_repository['builds']>[];
-  selectedBuildId: string;
-  onSelectBuildId: UnspecifiedCallbackFunction;
 }
 
 function BuildDurationsChart(props: Props) {
+  let [selectedBuildId, setSelectedBuildId] = useState(null);
   let navigate = useNavigate();
   let statusColorMapping = useBuildStatusColorMapping();
-  let { builds, selectedBuildId, onSelectBuildId } = props;
+  let { builds } = props;
   let maxDuration = Math.max(...builds.map(build => build.clockDurationInSeconds || 0));
   let ticks = [0];
   for (let nextTick = 60; nextTick < maxDuration; nextTick += 60) {
@@ -51,6 +50,7 @@ function BuildDurationsChart(props: Props) {
           height={height + sign * 2}
           fill={statusColorMapping[props.status]}
           className="recharts-bar-rectangle"
+          cursor="pointer"
         />
       );
     }
@@ -68,8 +68,8 @@ function BuildDurationsChart(props: Props) {
           isAnimationActive={false}
           shape={props => renderBuildBar(props, selectedBuildId)}
           onClick={(build, index, event) => navigateBuildHelper(navigate, event, build.id)}
-          onMouseEnter={entry => onSelectBuildId(entry.id)}
-          onMouseLeave={() => onSelectBuildId('0')}
+          onMouseEnter={entry => setSelectedBuildId(entry.id)}
+          onMouseLeave={() => setSelectedBuildId('0')}
         />
       </BarChart>
     </ResponsiveContainer>

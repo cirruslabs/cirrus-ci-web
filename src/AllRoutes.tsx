@@ -8,6 +8,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@mui/styles';
 import BookIcon from '@mui/icons-material/Book';
+import Stack from '@mui/material/Stack';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import classNames from 'classnames';
@@ -68,6 +69,10 @@ const useStyles = makeStyles(theme => {
       color: theme.palette.primary.contrastText,
       marginLeft: 8,
     },
+    // Reset ml for <nav> inside mui <Stack>
+    nav: {
+      marginLeft: '0 !important',
+    },
     titleShift: {
       marginLeft: theme.spacing(2.0),
     },
@@ -77,9 +82,6 @@ const useStyles = makeStyles(theme => {
     appFrame: {
       width: '100%',
       height: '100%',
-      zIndex: 1,
-      position: 'relative',
-      display: 'flex',
     },
     appBar: {
       position: 'absolute',
@@ -165,7 +167,7 @@ function AllRoutes() {
   );
 
   const drawer = (
-    <nav>
+    <nav className={classes.nav}>
       <Drawer
         variant="temporary"
         // Prevent body overflow hidden
@@ -197,7 +199,7 @@ function AllRoutes() {
 
   return (
     <BrowserRouter>
-      <div className={classes.appFrame}>
+      <Stack className={classes.appFrame} direction="row" spacing={1} position="relative" zIndex={1}>
         <AppBar
           enableColorOnDark
           position="static"
@@ -295,7 +297,7 @@ function AllRoutes() {
             </Suspense>
           </Container>
         </main>
-      </div>
+      </Stack>
     </BrowserRouter>
   );
 }

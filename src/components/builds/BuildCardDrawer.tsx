@@ -8,13 +8,10 @@ import { ThemeProvider } from '@emotion/react';
 import { makeStyles } from '@mui/styles';
 import { createTheme } from '@mui/material/styles';
 import { muiThemeOptions } from '../../cirrusTheme';
-import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
-import MarkdownTypography from '../common/MarkdownTypography';
 import BuildStatusChipNew from '../chips/BuildStatusChipNew';
 import RepositoryOwnerChipNew from '../chips/RepositoryOwnerChipNew';
 import RepositoryNameChipNew from '../chips/RepositoryNameChipNew';
@@ -36,6 +33,7 @@ const useStyles = makeStyles(theme => {
       // boxShadow: '0 16px 52px rgb(0 0 0 / 13%)',
       '&:hover': {
         backgroundColor: theme.palette.action.hover,
+        outline: `1px solid ${theme.palette.action.selected}`,
       },
       cursor: 'pointer',
     },

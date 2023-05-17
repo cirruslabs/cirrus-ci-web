@@ -1,12 +1,11 @@
 import React from 'react';
-
 import { useLazyLoadQuery } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
+
 import Typography from '@mui/material/Typography';
+
 import { ViewerTopRepositoriesQuery } from './__generated__/ViewerTopRepositoriesQuery.graphql';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import LastDefaultBranchBuildMiniRow from '../../components/builds/LastDefaultBranchBuildMiniRow';
+import BuildCardDrawer from '../../components/builds/BuildCardDrawer';
 
 interface Props {
   className?: string;
@@ -19,7 +18,7 @@ export default function ViewerTopRepositories(props: Props) {
         viewer {
           topActiveRepositories {
             id
-            ...LastDefaultBranchBuildMiniRow_repository
+            ...BuildCardDrawer_repository
           }
         }
       }
@@ -36,12 +35,10 @@ export default function ViewerTopRepositories(props: Props) {
   }
   let repositories = response.viewer.topActiveRepositories;
   return (
-    <Table style={{ tableLayout: 'auto' }}>
-      <TableBody>
-        {repositories.map(repo => (
-          <LastDefaultBranchBuildMiniRow key={repo.id} repository={repo} />
-        ))}
-      </TableBody>
-    </Table>
+    <>
+      {repositories.map(repo => (
+        <BuildCardDrawer key={repo.id} repository={repo} />
+      ))}
+    </>
   );
 }

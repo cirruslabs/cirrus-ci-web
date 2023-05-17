@@ -52,7 +52,7 @@ const AsyncHook = React.lazy(() => import('./scenes/Hook/Hook'));
 
 const AsyncApiExplorerRenderer = React.lazy(() => import('./components/explorer/ApiExplorer'));
 
-const drawerWidth = 360;
+const drawerWidth = 330;
 
 const useStyles = makeStyles(theme => {
   return {
@@ -104,12 +104,15 @@ const useStyles = makeStyles(theme => {
       alignItems: 'center',
       justifyContent: 'flex-end',
       paddingTop: '0',
+      marginBottom: theme.spacing(0.5),
       backgroundColor: theme.palette.action.disabledBackground,
       ...theme.mixins.toolbar,
     },
     drawerPaper: {
       position: 'relative',
       width: drawerWidth,
+      backgroundColor: '#bac0c61f',
+      border: 'none',
     },
     topRepositories: {
       width: drawerWidth,
@@ -184,6 +187,10 @@ function AllRoutes() {
         variant="persistent"
         sx={{
           display: { xs: 'none', sm: 'block' },
+          '& .MuiDrawer-paper': {
+            borderRadius: `0px 0px ${theme.shape.borderRadius * 2}px 0px`,
+            paddingBottom: theme.spacing(0.5),
+          },
         }}
         open={openDrawer}
         classes={{

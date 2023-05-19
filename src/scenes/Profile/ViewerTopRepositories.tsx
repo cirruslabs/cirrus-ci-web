@@ -2,10 +2,12 @@ import React from 'react';
 import { useLazyLoadQuery } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
 import Typography from '@mui/material/Typography';
 
 import { ViewerTopRepositoriesQuery } from './__generated__/ViewerTopRepositoriesQuery.graphql';
-import BuildCardDrawer from '../../components/builds/BuildCardDrawer';
+import ActiveRepositoryCard from '../../components/builds/ActiveRepositoryCard';
 
 interface Props {
   className?: string;
@@ -18,7 +20,7 @@ export default function ViewerTopRepositories(props: Props) {
         viewer {
           topActiveRepositories {
             id
-            ...BuildCardDrawer_repository
+            ...ActiveRepositoryCard_repository
           }
         }
       }
@@ -35,10 +37,12 @@ export default function ViewerTopRepositories(props: Props) {
   }
   let repositories = response.viewer.topActiveRepositories;
   return (
-    <>
+    <List disablePadding>
       {repositories.map(repo => (
-        <BuildCardDrawer key={repo.id} repository={repo} />
+        <ListItem key={repo.id} disablePadding sx={{ mb: 0.5 }}>
+          <ActiveRepositoryCard repository={repo} />
+        </ListItem>
       ))}
-    </>
+    </List>
   );
 }

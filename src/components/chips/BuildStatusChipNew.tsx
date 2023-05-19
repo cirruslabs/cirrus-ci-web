@@ -93,6 +93,10 @@ export default function BuildStatusChip(props: Props) {
       ABORTED: 'stop_circle',
     }[build.status] || 'error_circle';
 
+  if (props.mini) {
+    return <Icon color={color}>{icon}</Icon>;
+  }
+
   return (
     <div className={classes.chip}>
       <Chip label={label} color={color} size="small" variant="filled" icon={<Icon>{icon}</Icon>}></Chip>

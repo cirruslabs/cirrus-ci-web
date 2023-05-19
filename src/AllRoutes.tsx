@@ -1,28 +1,31 @@
 import React, { Suspense } from 'react';
+import * as Sentry from '@sentry/react';
+import { useRecoilState } from 'recoil';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
-import ActiveRepositoriesDrawer from './scenes/Header/ActiveRepositoriesDrawer';
+import classNames from 'classnames';
+
+import { makeStyles } from '@mui/styles';
+import { Container, Tooltip, useTheme } from '@mui/material';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import AppBar from '@mui/material/AppBar';
 import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import { makeStyles } from '@mui/styles';
-import BookIcon from '@mui/icons-material/Book';
-import Stack from '@mui/material/Stack';
 import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import classNames from 'classnames';
-import ViewerTopRepositories from './scenes/Profile/ViewerTopRepositories';
-import CirrusLinearProgress from './components/common/CirrusLinearProgress';
-import ThemeSwitchButton from './components/common/ThemeSwitchButton';
-import { useRecoilState } from 'recoil';
-import { Container, Tooltip, useTheme } from '@mui/material';
+import BookIcon from '@mui/icons-material/Book';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
 import GitHubIcon from '@mui/icons-material/GitHub';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+
+import { cirrusOpenDrawerState } from '../src/cirrusTheme';
 import GCPStatus from './components/status/GCPStatus';
 import GitHubStatus from './components/status/GitHubStatus';
-import * as Sentry from '@sentry/react';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { cirrusOpenDrawerState } from '../src/cirrusTheme';
+import ThemeSwitchButton from './components/common/ThemeSwitchButton';
+import CirrusLinearProgress from './components/common/CirrusLinearProgress';
+import ViewerTopRepositories from './scenes/Profile/ViewerTopRepositories';
+import ActiveRepositoriesDrawer from './scenes/Header/ActiveRepositoriesDrawer';
 
 const AsyncViewerProfile = React.lazy(() => import('./scenes/Profile/ViewerProfile'));
 
@@ -103,15 +106,13 @@ const useStyles = makeStyles(theme => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'flex-end',
-      paddingTop: '0',
-      marginBottom: theme.spacing(0.5),
       backgroundColor: theme.palette.action.disabledBackground,
       ...theme.mixins.toolbar,
     },
     drawerPaper: {
       position: 'relative',
       width: drawerWidth,
-      backgroundColor: '#bac0c61f',
+      // backgroundColor: '#bac0c61f',
       border: 'none',
     },
     topRepositories: {
@@ -164,7 +165,9 @@ function AllRoutes() {
         </IconButton>
       </div>
       <Suspense fallback={<CirrusLinearProgress />}>
-        <ViewerTopRepositories className={classes.topRepositories} />
+        <Box px={1} pb={0.5} pt={1} bgcolor="#b0b8bf4a">
+          <ViewerTopRepositories className={classes.topRepositories} />
+        </Box>
       </Suspense>
     </>
   );
@@ -189,7 +192,6 @@ function AllRoutes() {
           display: { xs: 'none', sm: 'block' },
           '& .MuiDrawer-paper': {
             borderRadius: `0px 0px ${theme.shape.borderRadius * 2}px 0px`,
-            paddingBottom: theme.spacing(0.5),
           },
         }}
         open={openDrawer}

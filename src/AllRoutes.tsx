@@ -112,7 +112,6 @@ const useStyles = makeStyles(theme => {
     drawerPaper: {
       position: 'relative',
       width: drawerWidth,
-      // backgroundColor: '#bac0c61f',
       border: 'none',
     },
     topRepositories: {

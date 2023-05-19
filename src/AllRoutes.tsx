@@ -55,7 +55,7 @@ const AsyncHook = React.lazy(() => import('./scenes/Hook/Hook'));
 
 const AsyncApiExplorerRenderer = React.lazy(() => import('./components/explorer/ApiExplorer'));
 
-const drawerWidth = 330;
+const drawerWidth = 310;
 
 const useStyles = makeStyles(theme => {
   return {

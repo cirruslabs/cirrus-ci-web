@@ -108,7 +108,7 @@ export default function ActiveRepositoryCard(props: Props) {
           </Grid>
         </Grid>
 
-        {/* LAST BUILD STATUS MESSAGE*/}
+        {/* LAST СOMMIT STATUS MESSAGE*/}
         <Stack direction="row" alignItems={'center'}>
           <BuildStatusChipNew build={build} mini />
           <Typography

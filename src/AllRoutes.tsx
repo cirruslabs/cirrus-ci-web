@@ -151,7 +151,7 @@ function AllRoutes() {
     return openDrawer ? { marginLeft: '15px', ...shared } : shared;
   }
 
-  const isScreenDownMdSize = useMediaQuery(theme.breakpoints.down('sm'));
+  const isScreenDownSmSize = useMediaQuery(theme.breakpoints.down('sm'));
 
   const drawerContent = (
     <>
@@ -176,7 +176,7 @@ function AllRoutes() {
       <Drawer
         variant="temporary"
         // Prevent body overflow hidden
-        open={isScreenDownMdSize && openDrawer}
+        open={isScreenDownSmSize && openDrawer}
         onClose={() => setOpenDrawer(false)}
         sx={{
           display: { xs: 'block', sm: 'none' },

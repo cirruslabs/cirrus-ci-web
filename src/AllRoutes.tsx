@@ -151,7 +151,7 @@ function AllRoutes() {
     return openDrawer ? { marginLeft: '15px', ...shared } : shared;
   }
 
-  const isScreenDownMdSize = useMediaQuery(theme.breakpoints.down('md'));
+  const isScreenDownMdSize = useMediaQuery(theme.breakpoints.down('sm'));
 
   const drawerContent = (
     <>

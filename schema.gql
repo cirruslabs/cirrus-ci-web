@@ -840,6 +840,11 @@ type Repository implements Node {
     branch to fetch builds for
     """
     branch: String
+
+    """
+    fetching only builds with the specified status
+    """
+    status: BuildStatus
   ): RepositoryBuildsConnection!
   settings: RepositorySettings!
   cronSettings: [RepositoryCronSettings!]!

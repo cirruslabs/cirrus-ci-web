@@ -1,29 +1,36 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { useFragment } from 'react-relay';
 
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import Tooltip from '@mui/material/Tooltip';
-import LastDefaultBranchBuildRow from '../builds/LastDefaultBranchBuildRow';
+import { graphql } from 'babel-plugin-relay/macro';
+
 import { makeStyles } from '@mui/styles';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Tooltip from '@mui/material/Tooltip';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { Link } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import { useFragment } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
+
+import RepositoryCard from '../repositories/RepositoryCard';
+
 import { OwnerRepositoryList_info$key } from './__generated__/OwnerRepositoryList_info.graphql';
 
 const useStyles = makeStyles(theme => {
   return {
-    paper: {
-      padding: theme.spacing(1, 2.5, 1.5),
-      boxShadow: '0 16px 52px rgb(0 0 0 / 13%)',
-      borderRadius: 4 * theme.shape.borderRadius,
-    },
     toolbar: {
       paddingLeft: 14,
+    },
+    cards: {
+      display: 'flex',
+      flexWrap: 'wrap',
+    },
+    card: {
+      width: '33.33333332%',
+      [theme.breakpoints.down('sm')]: {
+        width: '100%',
+      },
     },
   };
 });
@@ -70,20 +77,22 @@ export default function OwnerRepositoryList(props: Props) {
   }
 
   return (
-    <Paper className={classes.paper}>
+    <>
       <Toolbar className={classes.toolbar} sx={{ justifyContent: 'space-between' }} disableGutters>
         <Typography variant="h5" color="inherit">
           Repositories
         </Typography>
         {organizationSettings}
       </Toolbar>
-      <Table style={{ tableLayout: 'auto' }}>
-        <TableBody>
-          {info.repositories.edges.map(edge => (
-            <LastDefaultBranchBuildRow key={edge.node.id} repository={edge.node} />
-          ))}
-        </TableBody>
-      </Table>
-    </Paper>
+
+      {/* CARDS */}
+      <List className={classes.cards} disablePadding sx={{ mx: -1 }}>
+        {info.repositories.edges.map(edge => (
+          <ListItem className={classes.card} key={edge.node.id} disablePadding sx={{ px: 1, mb: 1 }}>
+            <RepositoryCard />
+          </ListItem>
+        ))}
+      </List>
+    </>
   );
 }

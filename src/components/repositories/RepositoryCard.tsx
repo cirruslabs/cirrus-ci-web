@@ -1,40 +1,28 @@
 import React, { useMemo } from 'react';
-import { useRecoilValue } from 'recoil';
-import { ThemeProvider } from '@emotion/react';
 import { useNavigate } from 'react-router-dom';
 import { graphql } from 'babel-plugin-relay/macro';
 import { useFragment, useSubscription } from 'react-relay';
-import cx from 'classnames';
 
 import { makeStyles } from '@mui/styles';
 import { useTheme } from '@mui/material';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-import { createTheme } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
-
+import Link from '@mui/material/Link';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
-import BuildStatusChipNew from '../chips/BuildStatusChipNew';
-import { muiThemeOptions } from '../../cirrusTheme';
-import { navigateRepositoryHelper } from '../../utils/navigateHelper';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import Settings from '@mui/icons-material/Settings';
+import GitHubIcon from '@mui/icons-material/GitHub';
 
 import Hash from '../chips/Hash';
+import BuildStatusChipNew from '../chips/BuildStatusChipNew';
 import BuildBranchNameChipNew from '../chips/BuildBranchNameChipNew';
 import { createLinkToRepository } from '../../utils/github';
+import { navigateRepositoryHelper } from '../../utils/navigateHelper';
 
 import { RepositoryCard_repository$key } from './__generated__/RepositoryCard_repository.graphql';
-
-import Ballot from '@mui/icons-material/Ballot';
-import Icon from '@mui/material/Icon';
-import Settings from '@mui/icons-material/Settings';
-import AddCircle from '@mui/icons-material/AddCircle';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import CardActionArea from '@mui/material/CardActionArea';
-import CardContent from '@mui/material/CardContent';
-import Tooltip from '@mui/material/Tooltip';
-import Link from '@mui/material/Link';
 
 interface Props {
   className?: string;
@@ -110,10 +98,8 @@ export default function RepositoryCard(props: Props) {
 
   let theme = useTheme();
   let classes = useStyles();
+  let navigate = useNavigate();
   let build = repository.lastDefaultBranchBuild;
-
-  const themeOptions = useRecoilValue(muiThemeOptions);
-  const muiTheme = useMemo(() => createTheme(themeOptions), [themeOptions]);
 
   let repositorySettings = null;
   if (repository.viewerPermission === 'WRITE' || repository.viewerPermission === 'ADMIN') {
@@ -139,8 +125,8 @@ export default function RepositoryCard(props: Props) {
   );
 
   const LastBuild = () => (
-    <Box borderTop={`1px solid ${theme.palette.divider}`} p={1} mt={0.5}>
-      <Typography variant="overline" color={theme.palette.text.secondary} lineHeight={1}>
+    <Box borderTop={`1px solid ${theme.palette.divider}`} px={0.5} pt={1} pb={0} mt={0.5}>
+      <Typography variant="overline" color={theme.palette.text.secondary} lineHeight={1} pl={0.5}>
         Last build
       </Typography>
       <Stack direction="row" alignItems="center" spacing={0.5} mb={0.5} mt={1}>
@@ -161,24 +147,24 @@ export default function RepositoryCard(props: Props) {
     </Box>
   );
 
-  if (!build) {
-    return null;
-  }
-
   return (
-    <ThemeProvider theme={muiTheme}>
-      <Card className={classes.card} elevation={0} sx={{ width: '100%', p: 2 }}>
-        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={0.5}>
-          <Typography className={classes.commitName} title={repository.name} variant="h6" pl={0.5}>
-            {repository.name}
-          </Typography>
-          <Stack direction="row" spacing={0}>
-            {repositorySettings}
-            {repositoryLinkButton}
-          </Stack>
+    <Card
+      className={classes.card}
+      elevation={0}
+      sx={{ width: '100%', p: 2, pt: 1.5 }}
+      onClick={e => navigateRepositoryHelper(navigate, e, repository.owner, repository.name)}
+      onAuxClick={e => navigateRepositoryHelper(navigate, e, repository.owner, repository.name)}
+    >
+      <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={0.5}>
+        <Typography className={classes.commitName} title={repository.name} variant="h6" pl={0.5}>
+          {repository.name}
+        </Typography>
+        <Stack direction="row" spacing={0}>
+          {repositorySettings}
+          {repositoryLinkButton}
         </Stack>
-        <LastBuild />
-      </Card>
-    </ThemeProvider>
+      </Stack>
+      <LastBuild />
+    </Card>
   );
 }

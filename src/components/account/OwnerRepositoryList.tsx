@@ -28,6 +28,9 @@ const useStyles = makeStyles(theme => {
     },
     card: {
       width: '33.33333332%',
+      [theme.breakpoints.down('md')]: {
+        width: '50%',
+      },
       [theme.breakpoints.down('sm')]: {
         width: '100%',
       },
@@ -51,7 +54,10 @@ export default function OwnerRepositoryList(props: Props) {
           edges {
             node {
               id
-              ...LastDefaultBranchBuildRow_repository
+              lastDefaultBranchBuild {
+                id
+              }
+              ...RepositoryCard_repository
             }
           }
         }
@@ -87,11 +93,14 @@ export default function OwnerRepositoryList(props: Props) {
 
       {/* CARDS */}
       <List className={classes.cards} disablePadding sx={{ mx: -1 }}>
-        {info.repositories.edges.map(edge => (
-          <ListItem className={classes.card} key={edge.node.id} disablePadding sx={{ px: 1, mb: 1 }}>
-            <RepositoryCard />
-          </ListItem>
-        ))}
+        {info.repositories.edges.map(
+          edge =>
+            edge.node.lastDefaultBranchBuild && (
+              <ListItem className={classes.card} key={edge.node.id} disablePadding sx={{ px: 0.5, mb: 1 }}>
+                <RepositoryCard repository={edge.node} />
+              </ListItem>
+            ),
+        )}
       </List>
     </>
   );

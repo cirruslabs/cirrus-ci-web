@@ -1,11 +1,12 @@
 import { useState, useMemo } from 'react';
 import { useFragment, useSubscription } from 'react-relay';
+import { Link } from 'react-router-dom';
 import { graphql } from 'babel-plugin-relay/macro';
 import { Helmet as Head } from 'react-helmet';
 import cx from 'classnames';
 
 import { makeStyles } from '@mui/styles';
-import Link from '@mui/material/Link';
+import MuiLink from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
@@ -105,7 +106,7 @@ export default function RepositoryBuildList(props: Props) {
   if (repository.viewerPermission === 'WRITE' || repository.viewerPermission === 'ADMIN') {
     repositorySettings = (
       <Tooltip title="Repository Settings">
-        <Link href={'/settings/repository/' + repository.id}>
+        <Link to={'/settings/repository/' + repository.id}>
           <IconButton size="large">
             <Settings />
           </IconButton>
@@ -126,7 +127,7 @@ export default function RepositoryBuildList(props: Props) {
   }
 
   let repositoryMetrics = (
-    <Link href={absoluteLink('metrics', 'repository', repository.platform, repository.owner, repository.name)}>
+    <Link to={absoluteLink('metrics', 'repository', repository.platform, repository.owner, repository.name)}>
       <Tooltip title="Repository Metrics">
         <IconButton size="large">
           <Timeline />
@@ -137,11 +138,11 @@ export default function RepositoryBuildList(props: Props) {
 
   const repositoryLinkButton = (
     <Tooltip title="Open on GitHub">
-      <Link href={createLinkToRepository(repository, props.branch)} target="_blank" rel="noopener noreferrer">
+      <MuiLink href={createLinkToRepository(repository, props.branch)} target="_blank" rel="noopener noreferrer">
         <IconButton size="large">
           <GitHubIcon />
         </IconButton>
-      </Link>
+      </MuiLink>
     </Tooltip>
   );
 

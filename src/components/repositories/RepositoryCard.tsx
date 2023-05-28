@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { graphql } from 'babel-plugin-relay/macro';
 import { useFragment, useSubscription } from 'react-relay';
 
 import { makeStyles } from '@mui/styles';
 import { useTheme } from '@mui/material';
 import Card from '@mui/material/Card';
+import MuiLink from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
@@ -24,6 +24,8 @@ import { createLinkToRepository } from '../../utils/github';
 import { navigateRepositoryHelper } from '../../utils/navigateHelper';
 
 import { RepositoryCard_repository$key } from './__generated__/RepositoryCard_repository.graphql';
+
+import Button from '@mui/material/Button';
 
 interface Props {
   className?: string;
@@ -47,10 +49,6 @@ const useStyles = makeStyles(theme => {
       transition: 'background-color 0.1s ease-in-out',
       '&:hover': {
         backgroundColor: theme.palette.action.hover,
-        '& $actionButtonToLastBuild': {
-          // visibility: 'visible',
-          opacity: 1,
-        },
       },
     },
     actionButton: {
@@ -60,11 +58,7 @@ const useStyles = makeStyles(theme => {
         color: theme.palette.text.primary,
       },
     },
-    actionButtonToLastBuild: {
-      transition: 'opacity 0.2s',
-      opacity: 0,
-      // visibility: 'hidden',
-    },
+
     commitName: {
       overflow: 'hidden',
       textOverflow: 'ellipsis',
@@ -116,7 +110,7 @@ export default function RepositoryCard(props: Props) {
   if (repository.viewerPermission === 'WRITE' || repository.viewerPermission === 'ADMIN') {
     repositorySettings = (
       <Tooltip title="Repository Settings">
-        <Link href={'/settings/repository/' + repository.id}>
+        <Link to={'/settings/repository/' + repository.id}>
           <IconButton disableRipple className={classes.actionButton} size="small">
             <Settings fontSize="small" />
           </IconButton>
@@ -127,11 +121,11 @@ export default function RepositoryCard(props: Props) {
 
   const repositoryLinkButton = (
     <Tooltip title="Open on GitHub">
-      <Link href={createLinkToRepository(repository, build?.branch)} target="_blank" rel="noopener noreferrer">
+      <MuiLink href={createLinkToRepository(repository, build?.branch)} target="_blank" rel="noopener noreferrer">
         <IconButton disableRipple className={classes.actionButton} size="small">
           <GitHubIcon fontSize="small" />
         </IconButton>
-      </Link>
+      </MuiLink>
     </Tooltip>
   );
 
@@ -144,7 +138,11 @@ export default function RepositoryCard(props: Props) {
 
   const repositoryOwner = (
     <Stack direction="row" alignItems={'center'} spacing={0.5} pl={0.5}>
-      <Avatar src={`https://github.com/${repository.owner}.png`} sizes="small" sx={{ width: '18px', height: '18px' }} />
+      <Avatar
+        src={`https://github.com/${repository.owner}.png`}
+        sizes="small"
+        sx={{ backgroundColor: theme.palette.action.selected, width: '18px', height: '18px' }}
+      />
       <Typography variant="body1" color={theme.palette.text.primary} lineHeight={1}>
         {repository.owner}
       </Typography>
@@ -152,18 +150,10 @@ export default function RepositoryCard(props: Props) {
   );
 
   const LastBuild = () => (
-    <Box borderTop={`1px solid ${theme.palette.divider}`} p={0.5} pb={0}>
+    <Box borderTop={`1px solid ${theme.palette.divider}`} pt={0.5}>
       <Typography variant="overline" color={theme.palette.text.secondary} lineHeight={1} pl={0.5}>
         Last build
       </Typography>
-      {/* ????? TO THE LAST BUILD */}
-      {/* <Tooltip className={classes.actionButtonToLastBuild} title="Go to last build">
-        <Link href={createLinkToRepository(repository, build?.branch)} target="_blank" rel="noopener noreferrer">
-          <IconButton disableRipple className={classes.actionButton} size="small">
-            <ArrowForwardIcon fontSize="small" />
-          </IconButton>
-        </Link>
-      </Tooltip> */}
       <Stack direction="row" alignItems="center" spacing={0.5} my={0.5}>
         <BuildStatusChipNew mini build={build} />
         <Typography
@@ -199,9 +189,9 @@ export default function RepositoryCard(props: Props) {
       }}
     >
       <Stack
-        direction={props.isDrawerView ? 'row' : 'row'}
-        justifyContent={props.isDrawerView ? 'space-between' : 'space-between'}
-        alignItems={props.isDrawerView ? 'center' : 'center'}
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
         spacing={props.isDrawerView ? 0 : 0.5}
         pb={1.5}
       >

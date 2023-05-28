@@ -40,7 +40,13 @@ export default function RepositoryOwnerChipNew(props: Props) {
     <Chip
       className={props.className}
       label={repository.owner}
-      avatar={<Avatar src={`https://github.com/${repository.owner}.png`} alt={repository.owner} />}
+      avatar={
+        <Avatar
+          src={`https://github.com/${repository.owner}.png`}
+          alt={repository.owner}
+          sx={{ backgroundColor: theme.palette.action.selected }}
+        />
+      }
       size="small"
       title={repository.owner}
       onClick={e => handleRepositoryClick(e, repository)}

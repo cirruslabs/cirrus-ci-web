@@ -17,17 +17,13 @@ import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 
 import RepositoryCard from '../repositories/RepositoryCard';
-import { muiThemeOptions } from '../../cirrusTheme';
+import { muiThemeOptions, cirrusOpenDrawerState } from '../../cirrusTheme';
 import useThemeWithAdjustableBreakpoints from '../../utils/useThemeWithAdjustableBreakpoints';
 
 import { OwnerRepositoryList_info$key } from './__generated__/OwnerRepositoryList_info.graphql';
 
 const useStyles = makeStyles(theme => {
-  return {
-    toolbar: {
-      paddingLeft: 14,
-    },
-  };
+  return {};
 });
 
 interface Props {
@@ -67,6 +63,8 @@ export default function OwnerRepositoryList(props: Props) {
     [themeWithAdjustableBreakpoints],
   );
 
+  const isDrawerOpen = useRecoilValue(cirrusOpenDrawerState);
+
   let organizationSettings = null;
 
   if (info && info.viewerPermission === 'ADMIN') {
@@ -83,15 +81,15 @@ export default function OwnerRepositoryList(props: Props) {
 
   return (
     <ThemeProvider theme={themeForNewDesign}>
-      <Toolbar className={classes.toolbar} sx={{ justifyContent: 'space-between' }} disableGutters>
-        <Typography variant="h5" color="inherit">
+      <Toolbar sx={{ justifyContent: 'start', px: isDrawerOpen && 2 }} disableGutters>
+        <Typography variant="h5" color="inherit" pr={0.5}>
           Repositories
         </Typography>
         {organizationSettings}
       </Toolbar>
 
       {/* CARDS */}
-      <List disablePadding sx={{ display: 'flex', flexWrap: 'wrap', mx: -1 }}>
+      <List disablePadding sx={{ display: 'flex', flexWrap: 'wrap', mx: -1, px: isDrawerOpen && 2 }}>
         {info.repositories.edges.map(
           edge =>
             edge.node.lastDefaultBranchBuild && (

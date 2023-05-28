@@ -15,6 +15,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import Settings from '@mui/icons-material/Settings';
 import GitHubIcon from '@mui/icons-material/GitHub';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 import Hash from '../chips/Hash';
 import BuildStatusChipNew from '../chips/BuildStatusChipNew';
@@ -27,6 +28,7 @@ import { RepositoryCard_repository$key } from './__generated__/RepositoryCard_re
 interface Props {
   className?: string;
   repository: RepositoryCard_repository$key;
+  isDrawerView?: boolean;
 }
 
 const buildSubscription = graphql`
@@ -45,6 +47,10 @@ const useStyles = makeStyles(theme => {
       transition: 'background-color 0.1s ease-in-out',
       '&:hover': {
         backgroundColor: theme.palette.action.hover,
+        '& $actionButtonToLastBuild': {
+          // visibility: 'visible',
+          opacity: 1,
+        },
       },
     },
     actionButton: {
@@ -53,6 +59,11 @@ const useStyles = makeStyles(theme => {
       '&:hover': {
         color: theme.palette.text.primary,
       },
+    },
+    actionButtonToLastBuild: {
+      transition: 'opacity 0.2s',
+      opacity: 0,
+      // visibility: 'hidden',
     },
     commitName: {
       overflow: 'hidden',
@@ -124,12 +135,36 @@ export default function RepositoryCard(props: Props) {
     </Tooltip>
   );
 
+  const repositoryActionButtons = (
+    <Stack direction="row" spacing={0}>
+      {repositorySettings}
+      {repositoryLinkButton}
+    </Stack>
+  );
+
+  const repositoryOwner = (
+    <Stack direction="row" alignItems={'center'} spacing={0.5} pl={0.5}>
+      <Avatar src={`https://github.com/${repository.owner}.png`} sizes="small" sx={{ width: '18px', height: '18px' }} />
+      <Typography variant="body1" color={theme.palette.text.primary} lineHeight={1}>
+        {repository.owner}
+      </Typography>
+    </Stack>
+  );
+
   const LastBuild = () => (
-    <Box borderTop={`1px solid ${theme.palette.divider}`} px={0.5} pt={1} pb={0} mt={0.5}>
+    <Box borderTop={`1px solid ${theme.palette.divider}`} p={0.5} pb={0}>
       <Typography variant="overline" color={theme.palette.text.secondary} lineHeight={1} pl={0.5}>
         Last build
       </Typography>
-      <Stack direction="row" alignItems="center" spacing={0.5} mb={0.5} mt={1}>
+      {/* ????? TO THE LAST BUILD */}
+      {/* <Tooltip className={classes.actionButtonToLastBuild} title="Go to last build">
+        <Link href={createLinkToRepository(repository, build?.branch)} target="_blank" rel="noopener noreferrer">
+          <IconButton disableRipple className={classes.actionButton} size="small">
+            <ArrowForwardIcon fontSize="small" />
+          </IconButton>
+        </Link>
+      </Tooltip> */}
+      <Stack direction="row" alignItems="center" spacing={0.5} my={0.5}>
         <BuildStatusChipNew mini build={build} />
         <Typography
           className={classes.commitName}
@@ -152,17 +187,28 @@ export default function RepositoryCard(props: Props) {
       className={classes.card}
       elevation={0}
       sx={{ width: '100%', p: 2, pt: 1.5 }}
-      onClick={e => navigateRepositoryHelper(navigate, e, repository.owner, repository.name)}
-      onAuxClick={e => navigateRepositoryHelper(navigate, e, repository.owner, repository.name)}
+      onClick={e => {
+        const target = e.target as HTMLElement;
+        if (target.closest('a')) return;
+        navigateRepositoryHelper(navigate, e, repository.owner, repository.name);
+      }}
+      onAuxClick={e => {
+        const target = e.target as HTMLElement;
+        if (target.closest('a')) return;
+        navigateRepositoryHelper(navigate, e, repository.owner, repository.name);
+      }}
     >
-      <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={0.5}>
+      <Stack
+        direction={props.isDrawerView ? 'row' : 'row'}
+        justifyContent={props.isDrawerView ? 'space-between' : 'space-between'}
+        alignItems={props.isDrawerView ? 'center' : 'center'}
+        spacing={props.isDrawerView ? 0 : 0.5}
+        pb={1.5}
+      >
         <Typography className={classes.commitName} title={repository.name} variant="h6" pl={0.5}>
           {repository.name}
         </Typography>
-        <Stack direction="row" spacing={0}>
-          {repositorySettings}
-          {repositoryLinkButton}
-        </Stack>
+        {props.isDrawerView ? repositoryOwner : repositoryActionButtons}
       </Stack>
       <LastBuild />
     </Card>

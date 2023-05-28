@@ -207,7 +207,7 @@ function AllRoutes() {
 
   return (
     <BrowserRouter>
-      <Stack className={classes.appFrame} direction="row" spacing={1} position="relative" zIndex={1}>
+      <Stack className={classes.appFrame} direction="row" position="relative" zIndex={1}>
         <AppBar
           enableColorOnDark
           position="static"
@@ -281,7 +281,7 @@ function AllRoutes() {
           })}
         >
           <div className={classNames('invisible', classes.drawerHeader)} />
-          <Container maxWidth={openDrawer ? false : 'lg'} disableGutters={openDrawer}>
+          <Container maxWidth={openDrawer ? false : 'lg'}>
             <Suspense fallback={<CirrusLinearProgress />}>
               <SentryRoutes>
                 <Route path="/" element={<AsyncHome />} />

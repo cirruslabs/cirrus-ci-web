@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => {
   return {
     hash: {
       border: `1px solid ${theme.palette.divider}`,
-      borderRadius: 3 * theme.shape.borderRadius,
+      borderRadius: '4px',
       width: 'fit-content',
       padding: `0 ${theme.spacing(0.5)}`,
     },

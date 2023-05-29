@@ -5,8 +5,8 @@ import { useRecoilValue } from 'recoil';
 
 import { graphql } from 'babel-plugin-relay/macro';
 
-import { makeStyles } from '@mui/styles';
 import { createTheme } from '@mui/material/styles';
+import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Tooltip from '@mui/material/Tooltip';
@@ -21,10 +21,6 @@ import { muiThemeOptions, cirrusOpenDrawerState } from '../../cirrusTheme';
 import useThemeWithAdjustableBreakpoints from '../../utils/useThemeWithAdjustableBreakpoints';
 
 import { OwnerRepositoryList_info$key } from './__generated__/OwnerRepositoryList_info.graphql';
-
-const useStyles = makeStyles(theme => {
-  return {};
-});
 
 interface Props {
   info: OwnerRepositoryList_info$key;
@@ -54,8 +50,6 @@ export default function OwnerRepositoryList(props: Props) {
     props.info,
   );
 
-  let classes = useStyles();
-
   let theme = useRecoilValue(muiThemeOptions);
   let themeWithAdjustableBreakpoints = useThemeWithAdjustableBreakpoints(theme);
   const themeForNewDesign = useMemo(
@@ -81,28 +75,30 @@ export default function OwnerRepositoryList(props: Props) {
 
   return (
     <ThemeProvider theme={themeForNewDesign}>
-      <Toolbar sx={{ justifyContent: 'start', px: isDrawerOpen && 2 }} disableGutters>
-        <Typography variant="h5" color="inherit" pr={0.5}>
-          Repositories
-        </Typography>
-        {organizationSettings}
-      </Toolbar>
+      <Box px={isDrawerOpen && 2}>
+        <Toolbar sx={{ justifyContent: 'start' }} disableGutters>
+          <Typography variant="h5" color="inherit" pr={0.5}>
+            Repositories
+          </Typography>
+          {organizationSettings}
+        </Toolbar>
 
-      {/* CARDS */}
-      <List disablePadding sx={{ display: 'flex', flexWrap: 'wrap', mx: -1, px: isDrawerOpen && 2 }}>
-        {info.repositories.edges.map(
-          edge =>
-            edge.node.lastDefaultBranchBuild && (
-              <ListItem
-                key={edge.node.id}
-                disablePadding
-                sx={{ width: { xs: '100%', sm: '50%', md: '33.3333%' }, px: 0.5, mb: 1 }}
-              >
-                <RepositoryCard repository={edge.node} />
-              </ListItem>
-            ),
-        )}
-      </List>
+        {/* CARDS */}
+        <List disablePadding sx={{ display: 'flex', flexWrap: 'wrap', mx: -0.5 }}>
+          {info.repositories.edges.map(
+            edge =>
+              edge.node.lastDefaultBranchBuild && (
+                <ListItem
+                  key={edge.node.id}
+                  disablePadding
+                  sx={{ width: { xs: '100%', sm: '50%', md: '33.3333%' }, px: 0.5, mb: 1 }}
+                >
+                  <RepositoryCard repository={edge.node} />
+                </ListItem>
+              ),
+          )}
+        </List>
+      </Box>
     </ThemeProvider>
   );
 }

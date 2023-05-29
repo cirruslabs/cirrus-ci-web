@@ -1,12 +1,12 @@
 import { useState, useMemo } from 'react';
 import { useFragment, useSubscription } from 'react-relay';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { graphql } from 'babel-plugin-relay/macro';
 import { Helmet as Head } from 'react-helmet';
 import cx from 'classnames';
 
 import { makeStyles } from '@mui/styles';
-import MuiLink from '@mui/material/Link';
+import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
@@ -106,11 +106,9 @@ export default function RepositoryBuildList(props: Props) {
   if (repository.viewerPermission === 'WRITE' || repository.viewerPermission === 'ADMIN') {
     repositorySettings = (
       <Tooltip title="Repository Settings">
-        <Link to={'/settings/repository/' + repository.id}>
-          <IconButton size="large">
-            <Settings />
-          </IconButton>
-        </Link>
+        <IconButton component={RouterLink} to={'/settings/repository/' + repository.id} size="large">
+          <Settings />
+        </IconButton>
       </Tooltip>
     );
 
@@ -127,22 +125,28 @@ export default function RepositoryBuildList(props: Props) {
   }
 
   let repositoryMetrics = (
-    <Link to={absoluteLink('metrics', 'repository', repository.platform, repository.owner, repository.name)}>
-      <Tooltip title="Repository Metrics">
-        <IconButton size="large">
-          <Timeline />
-        </IconButton>
-      </Tooltip>
-    </Link>
+    <Tooltip title="Repository Metrics">
+      <IconButton
+        component={RouterLink}
+        to={absoluteLink('metrics', 'repository', repository.platform, repository.owner, repository.name)}
+        size="large"
+      >
+        <Timeline />
+      </IconButton>
+    </Tooltip>
   );
 
   const repositoryLinkButton = (
     <Tooltip title="Open on GitHub">
-      <MuiLink href={createLinkToRepository(repository, props.branch)} target="_blank" rel="noopener noreferrer">
-        <IconButton size="large">
-          <GitHubIcon />
-        </IconButton>
-      </MuiLink>
+      <IconButton
+        component={Link}
+        href={createLinkToRepository(repository, props.branch)}
+        target="_blank"
+        rel="noopener noreferrer"
+        size="large"
+      >
+        <GitHubIcon />
+      </IconButton>
     </Tooltip>
   );
 

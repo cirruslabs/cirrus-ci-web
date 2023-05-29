@@ -185,7 +185,7 @@ export default function RepositoryCard(props: Props) {
       <Link
         className={classes.repositoryOwnerLink}
         component={RouterLink}
-        to={`${repository.platform}/${repository.owner}`}
+        to={`/${repository.platform}/${repository.owner}`}
         sx={{ position: 'relative' }}
         underline="hover"
         color={theme.palette.text.primary}
@@ -243,7 +243,7 @@ export default function RepositoryCard(props: Props) {
           <Link
             className={classes.repositoryBuildsLink}
             component={RouterLink}
-            to={`${repository.platform}/${repository.owner}/${repository.name}`}
+            to={`/${repository.platform}/${repository.owner}/${repository.name}`}
             sx={{ position: 'relative', width: '100%' }}
             underline="hover"
             color={theme.palette.text.primary}

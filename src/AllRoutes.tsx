@@ -6,7 +6,6 @@ import classNames from 'classnames';
 
 import { makeStyles } from '@mui/styles';
 import { Container, Tooltip, useTheme } from '@mui/material';
-import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import AppBar from '@mui/material/AppBar';
 import Drawer from '@mui/material/Drawer';
@@ -17,7 +16,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import CloseIcon from '@mui/icons-material/Close';
 
 import { cirrusOpenDrawerState } from '../src/cirrusTheme';
 import GCPStatus from './components/status/GCPStatus';
@@ -55,9 +54,10 @@ const AsyncHook = React.lazy(() => import('./scenes/Hook/Hook'));
 
 const AsyncApiExplorerRenderer = React.lazy(() => import('./components/explorer/ApiExplorer'));
 
-const drawerWidth = 310;
+const drawerWidth = 360;
 
 const useStyles = makeStyles(theme => {
+  globalThis.theme = theme;
   return {
     flex: {
       flex: 1,
@@ -103,10 +103,6 @@ const useStyles = makeStyles(theme => {
       },
     },
     drawerHeader: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'flex-end',
-      backgroundColor: theme.palette.action.disabledBackground,
       ...theme.mixins.toolbar,
     },
     drawerPaper: {
@@ -154,21 +150,19 @@ function AllRoutes() {
   const isScreenDownSmSize = useMediaQuery(theme.breakpoints.down('sm'));
 
   const drawerContent = (
-    <>
-      <div className={classes.drawerHeader}>
-        <Typography variant="h6" color="inherit">
+    <Stack px={2} pb={3} sx={{ background: '#b0b8bf4a' }}>
+      <Stack className={classes.drawerHeader} direction="row" alignItems="center" justifyContent="space-between">
+        <Typography variant="h6" color="text.primary">
           Active Repositories
         </Typography>
         <IconButton onClick={() => setOpenDrawer(false)} size="large">
-          <ChevronLeftIcon />
+          <CloseIcon />
         </IconButton>
-      </div>
+      </Stack>
       <Suspense fallback={<CirrusLinearProgress />}>
-        <Box px={1} pb={0.5} pt={1} bgcolor="#b0b8bf4a">
-          <ViewerTopRepositories className={classes.topRepositories} />
-        </Box>
+        <ViewerTopRepositories className={classes.topRepositories} />
       </Suspense>
-    </>
+    </Stack>
   );
 
   const drawer = (

@@ -4,8 +4,7 @@ import { graphql } from 'babel-plugin-relay/macro';
 import { useRecoilValue } from 'recoil';
 
 import { createTheme } from '@mui/material/styles';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
 
@@ -46,13 +45,11 @@ export default function ViewerTopRepositories(props: Props) {
   let repositories = response.viewer.topActiveRepositories;
   return (
     <ThemeProvider theme={themeForNewDesign}>
-      <List disablePadding>
+      <Stack spacing={1.5}>
         {repositories.map(repo => (
-          <ListItem key={repo.id} disablePadding sx={{ mb: 0.5 }}>
-            <RepositoryCard repository={repo} isDrawerView />
-          </ListItem>
+          <RepositoryCard key={repo.id} repository={repo} isDrawerView />
         ))}
-      </List>
+      </Stack>
     </ThemeProvider>
   );
 }

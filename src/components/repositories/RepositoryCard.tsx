@@ -6,7 +6,8 @@ import { useFragment, useSubscription } from 'react-relay';
 import { makeStyles } from '@mui/styles';
 import { useTheme } from '@mui/material';
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
+import Divider from '@mui/material/Divider';
+import CardActionArea from '@mui/material/CardActionArea';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
@@ -20,6 +21,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import Hash from '../chips/Hash';
 import BuildStatusChipNew from '../chips/BuildStatusChipNew';
 import BuildBranchNameChipNew from '../chips/BuildBranchNameChipNew';
+import { absoluteLink } from '../../utils/link';
 import { createLinkToRepository } from '../../utils/github';
 
 import { RepositoryCard_repository$key } from './__generated__/RepositoryCard_repository.graphql';
@@ -38,70 +40,19 @@ const buildSubscription = graphql`
   }
 `;
 
-const useStyles = makeStyles(theme => {
-  return {
-    repositoryOwnerLink: {
-      // hitbox
-      '&::after': {
-        content: '""',
-        position: 'absolute',
-        top: -16,
-        left: -24,
-        right: -18,
-        bottom: -18,
-        // backgroundColor: '#ff00ad73',
-      },
-    },
-    repositoryBuildsLink: {
-      // hitbox
-      '&::after': {
-        content: '""',
-        position: 'absolute',
-        top: -10,
-        left: -18,
-        right: 2,
-        bottom: -12,
-        // backgroundColor: '#ff000073',
-      },
-    },
-    actionButton: {
-      color: theme.palette.text.disabled,
-      transition: 'color 0.1s ease-in-out',
-      '&:hover': {
-        color: theme.palette.text.primary,
-      },
-    },
-    lastBuildTitle: {
-      width: 'fit-content',
-      padding: '0 4px',
-      borderRadius: 4,
-      transition: 'background 0.1s ease-in-out',
-    },
-    lastBuildLink: {
+const useStyles = makeStyles(theme => ({
+  actions: {
+    transition: theme.transitions.create('opacity'),
+    '.RepositoryCard__header:not(:hover):not(:has(& :focus)) &': {
+      opacity: 0,
       position: 'absolute',
-      top: 0,
-      left: -14,
-      right: -14,
-      bottom: -14,
-      '&:hover ~ .lastBuildTitle': {
-        background: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.24)' : theme.palette.action.hover,
-      },
-      // backgroundColor: '#00e9ff73',
+      right: theme.spacing(2),
     },
-    commitName: {
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-      whiteSpace: 'normal',
-      // Text truncate doesnt't work here without styles below
-      display: '-webkit-box',
-      WebkitLineClamp: 1,
-      WebkitBoxOrient: 'vertical',
-    },
-  };
-});
+  },
+}));
 
 export default function RepositoryCard(props: Props) {
-  let repository = useFragment(
+  const repository = useFragment(
     graphql`
       fragment RepositoryCard_repository on Repository {
         id
@@ -131,131 +82,116 @@ export default function RepositoryCard(props: Props) {
   );
   useSubscription(buildSubscriptionConfig);
 
-  let theme = useTheme();
-  let classes = useStyles();
-  let build = repository.lastDefaultBranchBuild;
+  const theme = useTheme();
+  const classes = useStyles();
+  const build = repository.lastDefaultBranchBuild;
+  const hasEditPermissions = repository.viewerPermission === 'WRITE' || repository.viewerPermission === 'ADMIN';
+  const stopPropagation = e => e.stopPropagation();
 
-  let repositorySettings = null;
-  if (repository.viewerPermission === 'WRITE' || repository.viewerPermission === 'ADMIN') {
-    repositorySettings = (
-      <Tooltip title="Repository Settings">
+  const owner = (
+    <Link
+      component={RouterLink}
+      underline="hover"
+      color="text.primary"
+      to={absoluteLink(repository.platform, repository.owner)}
+      onMouseDown={stopPropagation}
+    >
+      <Stack direction="row" alignItems="center" spacing={1}>
+        <Avatar
+          src={`https://github.com/${repository.owner}.png`}
+          sx={{ width: 20, height: 20, background: theme.palette.action.selected }}
+        />
+        <Typography variant="body1">{repository.owner}</Typography>
+      </Stack>
+    </Link>
+  );
+
+  const actions = (
+    <Stack className={classes.actions} direction="row" spacing={0.5}>
+      {/* SETTINGS */}
+      {hasEditPermissions && (
+        <Tooltip title="Repository Settings">
+          <IconButton
+            component={RouterLink}
+            size="small"
+            to={absoluteLink('settings', 'repository', repository.id)}
+            onMouseDown={stopPropagation}
+          >
+            <Settings fontSize="small" />
+          </IconButton>
+        </Tooltip>
+      )}
+
+      {/* GITHUB */}
+      <Tooltip title="Open on GitHub">
         <IconButton
-          className={classes.actionButton}
-          component={RouterLink}
-          to={'/settings/repository/' + repository.id}
-          disableRipple
+          component={Link}
+          href={createLinkToRepository(repository, build?.branch)}
+          target="_blank"
           size="small"
+          rel="noopener noreferrer"
+          onMouseDown={stopPropagation}
         >
-          <Settings fontSize="small" />
+          <GitHubIcon fontSize="small" />
         </IconButton>
       </Tooltip>
-    );
-  }
-
-  const repositoryLinkButton = (
-    <Tooltip title="Open on GitHub">
-      <IconButton
-        className={classes.actionButton}
-        component={Link}
-        href={createLinkToRepository(repository, build?.branch)}
-        target="_blank"
-        rel="noopener noreferrer"
-        disableRipple
-        size="small"
-      >
-        <GitHubIcon fontSize="small" />
-      </IconButton>
-    </Tooltip>
-  );
-
-  const repositoryActionButtons = (
-    <Stack direction="row">
-      {repositorySettings}
-      {repositoryLinkButton}
     </Stack>
-  );
-
-  const repositoryOwner = (
-    <Stack direction="row" alignItems={'center'} spacing={0.5} pr={0.5}>
-      <Avatar
-        src={`https://github.com/${repository.owner}.png`}
-        sizes="small"
-        sx={{ backgroundColor: theme.palette.action.selected, width: '18px', height: '18px' }}
-      />
-      <Link
-        className={classes.repositoryOwnerLink}
-        component={RouterLink}
-        to={`/${repository.platform}/${repository.owner}`}
-        sx={{ position: 'relative' }}
-        underline="hover"
-        color={theme.palette.text.primary}
-      >
-        <Typography variant="body1" lineHeight={1}>
-          {repository.owner}
-        </Typography>
-      </Link>
-    </Stack>
-  );
-
-  const LastBuild = () => (
-    <Box borderTop={`1px solid ${theme.palette.divider}`} pt={0.5} position="relative">
-      <Link
-        className={classes.lastBuildLink}
-        component={RouterLink}
-        to={`/build/${build.id}`}
-        sx={{ position: 'absolute' }}
-        underline="hover"
-      />
-      <Box className={`${classes.lastBuildTitle} lastBuildTitle `}>
-        <Typography variant="overline" color={theme.palette.text.secondary} lineHeight={1}>
-          Last build
-        </Typography>
-      </Box>
-      <Stack direction="row" alignItems="center" spacing={0.5} my={0.5}>
-        <BuildStatusChipNew mini build={build} />
-        <Typography
-          className={classes.commitName}
-          variant="subtitle1"
-          title={build.changeMessageTitle}
-          lineHeight={1.1}
-        >
-          {build.changeMessageTitle}
-        </Typography>
-      </Stack>
-      <Stack direction="row" alignItems="center" spacing={0.5}>
-        <Hash build={build} />
-        <BuildBranchNameChipNew build={build} />
-      </Stack>
-    </Box>
   );
 
   return (
-    <Card elevation={0} sx={{ width: '100%', border: `1px solid ${theme.palette.divider}` }}>
-      <CardContent sx={{ '&.MuiCardContent-root:last-child': { pb: 2 } }}>
-        <Stack
-          direction="row"
-          justifyContent="start"
-          alignItems="center"
-          spacing={props.isDrawerView ? 0 : 0.5}
-          my="-5px"
-          pb={2}
+    <Card variant="outlined" sx={{ width: '100%' }}>
+      {/* HEADER */}
+      <CardActionArea>
+        <Link
+          component={RouterLink}
+          underline="none"
+          to={absoluteLink(repository.platform, repository.owner, repository.name)}
         >
-          <Link
-            className={classes.repositoryBuildsLink}
-            component={RouterLink}
-            to={`/${repository.platform}/${repository.owner}/${repository.name}`}
-            sx={{ position: 'relative', width: '100%' }}
-            underline="hover"
-            color={theme.palette.text.primary}
+          <Stack
+            className="RepositoryCard__header"
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            spacing={1}
+            p={2}
           >
-            <Typography className={classes.commitName} title={repository.name} variant="h6" pl={0.5}>
+            {/* REPOSITORY NAME */}
+            <Typography variant="h6" color="text.primary" title={repository.name} noWrap>
               {repository.name}
             </Typography>
+
+            {/* OWNER / ACTIONS */}
+            {props.isDrawerView ? owner : actions}
+          </Stack>
+        </Link>
+      </CardActionArea>
+
+      <Divider />
+
+      {/* LAST BUILD */}
+      <Stack p={0.5}>
+        <CardActionArea sx={{ borderRadius: 1 }}>
+          <Link component={RouterLink} underline="none" to={absoluteLink('build', build.id)}>
+            <Stack p={1.5} spacing={1}>
+              <Typography variant="caption" color="text.secondary" gutterBottom>
+                LAST BUILD
+              </Typography>
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <BuildStatusChipNew mini build={build} />
+                <Typography title={build.changeMessageTitle} color="text.primary" noWrap>
+                  {build.changeMessageTitle}
+                </Typography>
+              </Stack>
+              <Stack direction="row" alignItems="center" spacing={1.5}>
+                <Hash build={build} />
+                <Box onMouseDown={stopPropagation}>
+                  <BuildBranchNameChipNew build={build} />
+                </Box>
+              </Stack>
+            </Stack>
           </Link>
-          <Box ml="auto">{props.isDrawerView ? repositoryOwner : repositoryActionButtons}</Box>
-        </Stack>
-        <LastBuild />
-      </CardContent>
+        </CardActionArea>
+      </Stack>
     </Card>
   );
 }

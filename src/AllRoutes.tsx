@@ -17,6 +17,7 @@ import Typography from '@mui/material/Typography';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CloseIcon from '@mui/icons-material/Close';
+import { grey } from '@mui/material/colors';
 
 import { cirrusOpenDrawerState } from '../src/cirrusTheme';
 import GCPStatus from './components/status/GCPStatus';
@@ -149,7 +150,7 @@ function AllRoutes() {
   const isScreenDownSmSize = useMediaQuery(theme.breakpoints.down('sm'));
 
   const drawerContent = (
-    <Stack px={2} pb={3} sx={{ background: '#b0b8bf4a' }}>
+    <Stack px={2} pb={3} sx={{ background: theme.palette.mode === 'light' ? grey[300] : grey[800] }}>
       <Stack className={classes.drawerHeader} direction="row" alignItems="center" justifyContent="space-between">
         <Typography variant="h6" color="text.primary">
           Active Repositories

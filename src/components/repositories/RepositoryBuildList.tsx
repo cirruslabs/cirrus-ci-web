@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useFragment, useSubscription } from 'react-relay';
+import { Link as RouterLink } from 'react-router-dom';
 import { graphql } from 'babel-plugin-relay/macro';
 import { Helmet as Head } from 'react-helmet';
 import cx from 'classnames';
@@ -105,11 +106,9 @@ export default function RepositoryBuildList(props: Props) {
   if (repository.viewerPermission === 'WRITE' || repository.viewerPermission === 'ADMIN') {
     repositorySettings = (
       <Tooltip title="Repository Settings">
-        <Link href={'/settings/repository/' + repository.id}>
-          <IconButton size="large">
-            <Settings />
-          </IconButton>
-        </Link>
+        <IconButton component={RouterLink} to={'/settings/repository/' + repository.id} size="large">
+          <Settings />
+        </IconButton>
       </Tooltip>
     );
 
@@ -126,22 +125,28 @@ export default function RepositoryBuildList(props: Props) {
   }
 
   let repositoryMetrics = (
-    <Link href={absoluteLink('metrics', 'repository', repository.platform, repository.owner, repository.name)}>
-      <Tooltip title="Repository Metrics">
-        <IconButton size="large">
-          <Timeline />
-        </IconButton>
-      </Tooltip>
-    </Link>
+    <Tooltip title="Repository Metrics">
+      <IconButton
+        component={RouterLink}
+        to={absoluteLink('metrics', 'repository', repository.platform, repository.owner, repository.name)}
+        size="large"
+      >
+        <Timeline />
+      </IconButton>
+    </Tooltip>
   );
 
   const repositoryLinkButton = (
     <Tooltip title="Open on GitHub">
-      <Link href={createLinkToRepository(repository, props.branch)} target="_blank" rel="noopener noreferrer">
-        <IconButton size="large">
-          <GitHubIcon />
-        </IconButton>
-      </Link>
+      <IconButton
+        component={Link}
+        href={createLinkToRepository(repository, props.branch)}
+        target="_blank"
+        rel="noopener noreferrer"
+        size="large"
+      >
+        <GitHubIcon />
+      </IconButton>
     </Tooltip>
   );
 

@@ -20,6 +20,7 @@ import RepositoryOwnerChipNew from '../chips/RepositoryOwnerChipNew';
 import usePageWidth from '../../utils/usePageWidth';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
 import { muiThemeOptions, cirrusOpenDrawerState } from '../../cirrusTheme';
+import useThemeWithAdjustableBreakpoints from '../../utils/useThemeWithAdjustableBreakpoints';
 
 import { BuildCard_build$key } from './__generated__/BuildCard_build.graphql';
 
@@ -74,30 +75,17 @@ export default function BuildCard(props: Props) {
 
   const pageWidth = usePageWidth();
 
-  // For default Chip component values
-  let themeOptions = useRecoilValue(muiThemeOptions);
+  let theme = useRecoilValue(muiThemeOptions);
+  let themeWithAdjustableBreakpoints = useThemeWithAdjustableBreakpoints(theme);
+  const themeForNewDesign = useMemo(
+    () => createTheme(themeWithAdjustableBreakpoints),
+    [themeWithAdjustableBreakpoints],
+  );
 
-  if (isDrawerOpen) {
-    themeOptions = {
-      ...themeOptions,
-      breakpoints: {
-        values: {
-          xs: 0,
-          sm: 900,
-          md: 1200,
-          lg: 1600,
-          xl: 1800,
-        },
-      },
-    };
-  }
-
-  const muiTheme = useMemo(() => createTheme(themeOptions), [themeOptions]);
-
-  const showChipsHeader = pageWidth >= muiTheme.breakpoints.values.md;
+  const showChipsHeader = pageWidth >= themeForNewDesign.breakpoints.values.md;
 
   return (
-    <ThemeProvider theme={muiTheme}>
+    <ThemeProvider theme={themeForNewDesign}>
       <Grid
         className={classes.card}
         container

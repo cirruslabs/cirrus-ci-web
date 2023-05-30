@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useLazyLoadQuery } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
+import { useRecoilValue } from 'recoil';
 
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
+import { createTheme } from '@mui/material/styles';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import ThemeProvider from '@mui/material/styles/ThemeProvider';
+
+import { muiThemeOptions } from '../../cirrusTheme';
+import RepositoryCard from '../../components/repositories/RepositoryCard';
 
 import { ViewerTopRepositoriesQuery } from './__generated__/ViewerTopRepositoriesQuery.graphql';
-import ActiveRepositoryCard from '../../components/builds/ActiveRepositoryCard';
 
 interface Props {
   className?: string;
@@ -20,13 +24,16 @@ export default function ViewerTopRepositories(props: Props) {
         viewer {
           topActiveRepositories {
             id
-            ...ActiveRepositoryCard_repository
+            ...RepositoryCard_repository
           }
         }
       }
     `,
     {},
   );
+
+  let theme = useRecoilValue(muiThemeOptions);
+  const themeForNewDesign = useMemo(() => createTheme(theme), [theme]);
 
   if (!response.viewer) {
     return (
@@ -37,12 +44,12 @@ export default function ViewerTopRepositories(props: Props) {
   }
   let repositories = response.viewer.topActiveRepositories;
   return (
-    <List disablePadding>
-      {repositories.map(repo => (
-        <ListItem key={repo.id} disablePadding sx={{ mb: 0.5 }}>
-          <ActiveRepositoryCard repository={repo} />
-        </ListItem>
-      ))}
-    </List>
+    <ThemeProvider theme={themeForNewDesign}>
+      <Stack spacing={1.5}>
+        {repositories.map(repo => (
+          <RepositoryCard key={repo.id} repository={repo} isDrawerView />
+        ))}
+      </Stack>
+    </ThemeProvider>
   );
 }

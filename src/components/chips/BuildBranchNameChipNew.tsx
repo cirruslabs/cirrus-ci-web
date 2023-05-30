@@ -59,6 +59,7 @@ export default function BuildBranchNameChipNew(props: Props) {
   let theme = useTheme();
 
   function handleBranchClick(event) {
+    event.preventDefault();
     if (build.repository) {
       navigateHelper(
         navigate,

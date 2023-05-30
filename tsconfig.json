@@ -19,7 +19,8 @@
     // https://docs.sentry.io/platforms/javascript/sourcemaps/uploading/typescript/#1-generate-source-maps.
     "sourceMap": true,
     "inlineSources": true,
-    "sourceRoot": "/"
+    "sourceRoot": "/",
+    "baseUrl": "src"
   },
   "include": ["src"]
 }

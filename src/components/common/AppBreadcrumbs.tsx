@@ -204,7 +204,7 @@ export default function AppBreadcrumbs(props: Props) {
         aria-label="breadcrumb"
       >
         {crumbs.map((crumb, i) => (
-          <Crumb
+          <CrumbComponent
             key={crumb.name}
             active={crumbs.length - 1 === i}
             name={crumb.name}
@@ -224,7 +224,7 @@ interface CrumbProps {
   Icon: typeof SvgIcon | React.ElementType;
 }
 
-const Crumb = ({ active, name, href, Icon }: CrumbProps) => {
+const CrumbComponent = ({ active, name, href, Icon }: CrumbProps) => {
   let classes = useStyles();
   const className = `${classes.crumb} ${active ? classes.crumbActive : ''}`;
   const content = (

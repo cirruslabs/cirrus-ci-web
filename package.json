@@ -83,6 +83,9 @@
     "typescript": "^5.0.4",
     "yarn-upgrade-all": "^0.7.2"
   },
+  "resolutions": {
+    "react-dev-utils/fork-ts-checker-webpack-plugin": "^6.5.3"
+  },
   "scripts": {
     "start": "react-scripts start",
     "start-untyped": "TSC_COMPILE_ON_ERROR=\"true\" react-scripts start",

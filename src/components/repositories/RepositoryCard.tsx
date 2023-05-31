@@ -1,23 +1,10 @@
 import React, { useMemo } from 'react';
+
 import { Link as RouterLink } from 'react-router-dom';
 import { graphql } from 'babel-plugin-relay/macro';
 import { useFragment, useSubscription } from 'react-relay';
 
-import { makeStyles } from '@mui/styles';
-import { useTheme } from '@mui/material';
-import Card from '@mui/material/Card';
-import Divider from '@mui/material/Divider';
-import CardActionArea from '@mui/material/CardActionArea';
-import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
-import Settings from '@mui/icons-material/Settings';
-import GitHubIcon from '@mui/icons-material/GitHub';
-
+import mui from 'mui';
 import Hash from '../chips/Hash';
 import BuildStatusChipNew from '../chips/BuildStatusChipNew';
 import BuildBranchNameChipNew from '../chips/BuildBranchNameChipNew';
@@ -40,7 +27,7 @@ const buildSubscription = graphql`
   }
 `;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = mui.makeStyles(theme => ({
   actions: {
     transition: theme.transitions.create('opacity'),
     '.RepositoryCard__header:not(:hover):not(:has(& :focus)) &': {
@@ -82,72 +69,72 @@ export default function RepositoryCard(props: Props) {
   );
   useSubscription(buildSubscriptionConfig);
 
-  const theme = useTheme();
+  const theme = mui.useTheme();
   const classes = useStyles();
   const build = repository.lastDefaultBranchBuild;
   const hasEditPermissions = repository.viewerPermission === 'WRITE' || repository.viewerPermission === 'ADMIN';
   const stopPropagation = e => e.stopPropagation();
 
   const owner = (
-    <Link
+    <mui.Link
       component={RouterLink}
       underline="hover"
       color="text.primary"
       to={absoluteLink(repository.platform, repository.owner)}
       onMouseDown={stopPropagation}
     >
-      <Stack direction="row" alignItems="center" spacing={1}>
-        <Avatar
+      <mui.Stack direction="row" alignItems="center" spacing={1}>
+        <mui.Avatar
           src={`https://github.com/${repository.owner}.png`}
           sx={{ width: 20, height: 20, background: theme.palette.action.selected }}
         />
-        <Typography variant="body1">{repository.owner}</Typography>
-      </Stack>
-    </Link>
+        <mui.Typography variant="body1">{repository.owner}</mui.Typography>
+      </mui.Stack>
+    </mui.Link>
   );
 
   const actions = (
-    <Stack className={classes.actions} direction="row" spacing={0.5}>
+    <mui.Stack className={classes.actions} direction="row" spacing={0.5}>
       {/* SETTINGS */}
       {hasEditPermissions && (
-        <Tooltip title="Repository Settings">
-          <IconButton
+        <mui.Tooltip title="Repository Settings">
+          <mui.IconButton
             component={RouterLink}
             size="small"
             to={absoluteLink('settings', 'repository', repository.id)}
             onMouseDown={stopPropagation}
           >
-            <Settings fontSize="small" />
-          </IconButton>
-        </Tooltip>
+            <mui.icons.Settings fontSize="small" />
+          </mui.IconButton>
+        </mui.Tooltip>
       )}
 
       {/* GITHUB */}
-      <Tooltip title="Open on GitHub">
-        <IconButton
-          component={Link}
+      <mui.Tooltip title="Open on GitHub">
+        <mui.IconButton
+          component={mui.Link}
           href={createLinkToRepository(repository, build?.branch)}
           target="_blank"
           size="small"
           rel="noopener noreferrer"
           onMouseDown={stopPropagation}
         >
-          <GitHubIcon fontSize="small" />
-        </IconButton>
-      </Tooltip>
-    </Stack>
+          <mui.icons.GitHub fontSize="small" />
+        </mui.IconButton>
+      </mui.Tooltip>
+    </mui.Stack>
   );
 
   return (
-    <Card variant="outlined" sx={{ width: '100%' }}>
+    <mui.Card variant="outlined" sx={{ width: '100%' }}>
       {/* HEADER */}
-      <CardActionArea>
-        <Link
+      <mui.CardActionArea>
+        <mui.Link
           component={RouterLink}
           underline="none"
           to={absoluteLink(repository.platform, repository.owner, repository.name)}
         >
-          <Stack
+          <mui.Stack
             className="RepositoryCard__header"
             direction="row"
             alignItems="center"
@@ -156,42 +143,42 @@ export default function RepositoryCard(props: Props) {
             p={2}
           >
             {/* REPOSITORY NAME */}
-            <Typography variant="h6" color="text.primary" title={repository.name} noWrap>
+            <mui.Typography variant="h6" color="text.primary" title={repository.name} noWrap>
               {repository.name}
-            </Typography>
+            </mui.Typography>
 
             {/* OWNER / ACTIONS */}
             {props.isDrawerView ? owner : actions}
-          </Stack>
-        </Link>
-      </CardActionArea>
+          </mui.Stack>
+        </mui.Link>
+      </mui.CardActionArea>
 
-      <Divider />
+      <mui.Divider />
 
       {/* LAST BUILD */}
-      <Stack p={0.5}>
-        <CardActionArea sx={{ borderRadius: 1 }}>
-          <Link component={RouterLink} underline="none" to={absoluteLink('build', build.id)}>
-            <Stack p={1.5} spacing={1}>
-              <Typography variant="caption" color="text.secondary" gutterBottom>
+      <mui.Stack p={0.5}>
+        <mui.CardActionArea sx={{ borderRadius: 1 }}>
+          <mui.Link component={RouterLink} underline="none" to={absoluteLink('build', build.id)}>
+            <mui.Stack p={1.5} spacing={1}>
+              <mui.Typography variant="caption" color="text.secondary" gutterBottom>
                 LAST BUILD
-              </Typography>
-              <Stack direction="row" alignItems="center" spacing={1}>
+              </mui.Typography>
+              <mui.Stack direction="row" alignItems="center" spacing={1}>
                 <BuildStatusChipNew mini build={build} />
-                <Typography title={build.changeMessageTitle} color="text.primary" noWrap>
+                <mui.Typography title={build.changeMessageTitle} color="text.primary" noWrap>
                   {build.changeMessageTitle}
-                </Typography>
-              </Stack>
-              <Stack direction="row" alignItems="center" spacing={1.5}>
+                </mui.Typography>
+              </mui.Stack>
+              <mui.Stack direction="row" alignItems="center" spacing={1.5}>
                 <Hash build={build} />
-                <Box onMouseDown={stopPropagation}>
+                <mui.Box onMouseDown={stopPropagation}>
                   <BuildBranchNameChipNew build={build} />
-                </Box>
-              </Stack>
-            </Stack>
-          </Link>
-        </CardActionArea>
-      </Stack>
-    </Card>
+                </mui.Box>
+              </mui.Stack>
+            </mui.Stack>
+          </mui.Link>
+        </mui.CardActionArea>
+      </mui.Stack>
+    </mui.Card>
   );
 }

@@ -435,6 +435,36 @@ type OrganizationSecuredVariablePayload {
   clientMutationId: String
 }
 
+"""
+An edge in a connection
+"""
+type OwnerBuildEdge {
+  """
+  The item at the end of the edge
+  """
+  node: Build
+
+  """
+  cursor marks a unique position or index into the connection
+  """
+  cursor: String!
+}
+
+"""
+A connection to a list of items.
+"""
+type OwnerBuildsConnection {
+  """
+  a list of edges
+  """
+  edges: [OwnerBuildEdge]
+
+  """
+  details about this specific page
+  """
+  pageInfo: PageInfo!
+}
+
 type OwnerInfo {
   uid: ID!
   platform: String!
@@ -487,6 +517,32 @@ type OwnerInfo {
     """
     last: Int
   ): OwnerRepositoriesConnection!
+  builds(
+    """
+    fetching only nodes before this node (exclusive)
+    """
+    before: String
+
+    """
+    fetching only nodes after this node (exclusive)
+    """
+    after: String
+
+    """
+    fetching only the first certain number of nodes
+    """
+    first: Int
+
+    """
+    fetching only the last certain number of nodes
+    """
+    last: Int
+
+    """
+    fetching only builds with the specified status
+    """
+    status: BuildStatus
+  ): OwnerBuildsConnection!
   balanceInCredits: String!
   billingSettings: BillingSettings
   transactions(

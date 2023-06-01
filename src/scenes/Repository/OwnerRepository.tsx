@@ -42,7 +42,6 @@ function OwnerRepositoryFor(platform: string, owner: string, name: string, branc
       <RepositoryBuildList repository={response.ownerRepository} branch={branch} />
     </>
   );
-
 }
 export default function OwnerRepository(): JSX.Element {
   let params = useParams();

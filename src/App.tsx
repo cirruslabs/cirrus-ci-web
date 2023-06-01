@@ -21,6 +21,7 @@ export default function App() {
   const theme = React.useMemo(() => createTheme(themeOptions), [themeOptions]);
 
   return (
+    // @ts-ignore
     <RelayEnvironmentProvider environment={environment}>
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={theme}>

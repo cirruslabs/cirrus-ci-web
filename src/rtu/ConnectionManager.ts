@@ -1,6 +1,7 @@
 import ReconnectingWebSocket from '../vendor/reconnecting-websocket/reconnecting-websocket';
 import { HandlersManager } from './HandlersManager';
 
+// @ts-ignore
 const ws = new ReconnectingWebSocket('wss://api.cirrus-ci.com/ws', null, null);
 
 const handlersManager = new HandlersManager();

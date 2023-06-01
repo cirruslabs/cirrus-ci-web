@@ -4,6 +4,7 @@ import { Environment, Network, Observable, RecordSource, Store, SubscribeFunctio
 import * as Sentry from '@sentry/react';
 import { RequestParameters } from 'relay-runtime/lib/util/RelayConcreteNode';
 import { SpanStatus } from '@sentry/tracing';
+import {Sink} from "relay-runtime/lib/network/RelayObservable";
 
 /*
  * See RelayNetwork.js:43 for details how it used in Relay
@@ -30,7 +31,7 @@ let subscription: SubscribeFunction = (operation, variables, cacheConfig) => {
 };
 
 function webSocketSubscriptions(operation, variables, kind2id: Array<[string, string]>) {
-  let dataSource = null;
+  let dataSource: Sink<any> | null = null;
 
   let result = Observable.create(sink => {
     dataSource = sink;

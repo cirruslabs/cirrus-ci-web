@@ -10,6 +10,9 @@ import {Sink} from "relay-runtime/lib/network/RelayObservable";
  * See RelayNetwork.js:43 for details how it used in Relay
  */
 let subscription: SubscribeFunction = (operation, variables, cacheConfig) => {
+  if (!operation.text) {
+    return
+  }
   if (variables['taskID'] && operation.text.indexOf('commands') > 0) {
     return webSocketSubscriptions(operation, variables, [
       ['TASK', variables['taskID']],

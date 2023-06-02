@@ -141,7 +141,7 @@ export default function RepositoryCard(props: Props) {
                 {build.changeMessageTitle}
               </mui.Typography>
             </mui.Stack>
-            <mui.Stack direction="row" alignItems="center" spacing={1.5}>
+            <mui.Stack direction="row" alignItems="center" spacing={1}>
               <Hash build={build} />
               <mui.Box onMouseDown={stopPropagation}>
                 <BuildBranchNameChipNew build={build} />
@@ -152,6 +152,7 @@ export default function RepositoryCard(props: Props) {
       </mui.CardActionArea>
     </mui.Stack>
   ) : null;
+
   return (
     <mui.Card variant="outlined" sx={{ width: '100%' }}>
       {/* HEADER */}
@@ -184,29 +185,6 @@ export default function RepositoryCard(props: Props) {
 
       {/* LAST BUILD */}
       {lastBuildComponent}
-      <mui.Stack p={0.5}>
-        <mui.CardActionArea sx={{ borderRadius: 1 }}>
-          <mui.Link component={RouterLink} underline="none" to={absoluteLink('build', build.id)}>
-            <mui.Stack p={1.5} spacing={1}>
-              <mui.Typography variant="caption" color="text.secondary" gutterBottom>
-                LAST BUILD
-              </mui.Typography>
-              <mui.Stack direction="row" alignItems="center" spacing={1}>
-                <BuildStatusChipNew mini build={build} />
-                <mui.Typography title={build.changeMessageTitle} color="text.primary" noWrap>
-                  {build.changeMessageTitle}
-                </mui.Typography>
-              </mui.Stack>
-              <mui.Stack direction="row" alignItems="center" spacing={1}>
-                <Hash build={build} />
-                <mui.Box onMouseDown={stopPropagation}>
-                  <BuildBranchNameChipNew build={build} />
-                </mui.Box>
-              </mui.Stack>
-            </mui.Stack>
-          </mui.Link>
-        </mui.CardActionArea>
-      </mui.Stack>
     </mui.Card>
   );
 }

@@ -29,11 +29,13 @@ const buildSubscription = graphql`
 
 const useStyles = mui.makeStyles(theme => ({
   actions: {
-    transition: theme.transitions.create('opacity'),
-    '.RepositoryCard__header:not(:hover):not(:has(& :focus)) &': {
-      opacity: 0,
-      position: 'absolute',
-      right: theme.spacing(2),
+    '@media (hover: hover)': {
+      transition: theme.transitions.create('opacity'),
+      '.RepositoryCard__header:not(:hover):not(:has(& :focus)) &': {
+        opacity: 0,
+        position: 'absolute',
+        right: theme.spacing(2),
+      },
     },
   },
 }));

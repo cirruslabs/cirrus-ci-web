@@ -157,7 +157,10 @@ function AllRoutes() {
           <mui.Typography variant="h6" color="text.primary">
             Active Repositories
           </mui.Typography>
-          <mui.Tooltip title="Repositories to which you have contributed, sorted by the date of your contribution">
+          <mui.Tooltip
+            title="Repositories to which you have contributed, sorted by the date of your contribution"
+            disableInteractive
+          >
             <mui.icons.InfoOutlined className={classes.drawerHeaderInfo} color="info" />
           </mui.Tooltip>
         </mui.Stack>

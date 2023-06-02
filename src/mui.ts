@@ -12,6 +12,7 @@ import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
+import Commit from '@mui/icons-material/Commit';
 import GitHub from '@mui/icons-material/GitHub';
 import Settings from '@mui/icons-material/Settings';
 
@@ -31,6 +32,7 @@ const mui = {
   Typography,
 
   icons: {
+    Commit,
     GitHub,
     Settings,
   },

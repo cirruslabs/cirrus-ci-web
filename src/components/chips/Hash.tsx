@@ -2,15 +2,11 @@ import cx from 'classnames';
 import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 
-import { makeStyles } from '@mui/styles';
-import { useTheme } from '@mui/material';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import CommitIcon from '@mui/icons-material/Commit';
+import mui from 'mui';
 
 import { Hash_build$key } from './__generated__/Hash_build.graphql';
 
-const useStyles = makeStyles(theme => {
+const useStyles = mui.makeStyles(theme => {
   return {
     hash: {
       border: `1px solid ${theme.palette.divider}`,
@@ -37,14 +33,14 @@ export default function Hash(props: Props) {
   );
 
   const classes = useStyles();
-  const theme = useTheme();
+  const theme = mui.useTheme();
 
   return (
-    <Stack className={cx(props.className, classes.hash)} direction="row" alignItems="center" spacing={0.5}>
-      <CommitIcon fontSize="small" sx={{ color: theme.palette.text.secondary }} />
-      <Typography variant="subtitle2" color={theme.palette.text.secondary}>
+    <mui.Stack className={cx(props.className, classes.hash)} direction="row" alignItems="center" spacing={0.5}>
+      <mui.icons.Commit fontSize="small" sx={{ color: theme.palette.text.secondary }} />
+      <mui.Typography variant="subtitle2" color={theme.palette.text.secondary}>
         {build.changeIdInRepo.substr(0, 7)}
-      </Typography>
-    </Stack>
+      </mui.Typography>
+    </mui.Stack>
   );
 }

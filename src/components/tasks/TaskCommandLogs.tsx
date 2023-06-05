@@ -12,7 +12,7 @@ import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
 import Fab from '@mui/material/Fab';
 import {
   TaskCommandLogsTailQuery,
-  TaskCommandLogsTailQueryResponse,
+  TaskCommandLogsTailQuery$data,
 } from './__generated__/TaskCommandLogsTailQuery.graphql';
 import { TaskCommandStatus, TaskCommandType } from './__generated__/TaskCommandList_task.graphql';
 
@@ -49,7 +49,7 @@ interface RealTimeLogsProps {
     type: TaskCommandType;
   };
   initialLogLines: ReadonlyArray<string>;
-  executionInfo: TaskCommandLogsTailQueryResponse['task']['executionInfo'];
+  executionInfo: TaskCommandLogsTailQuery$data['task']['executionInfo'];
 }
 
 function TaskCommandRealTimeLogs(props: RealTimeLogsProps) {
@@ -142,6 +142,8 @@ export default function TaskCommandLogs(props: TaskCommandLogsProps) {
     `,
     { taskId: props.taskId, commandName: props.command.name },
   );
+
+  if (!response.task) return null;
 
   return (
     <TaskCommandRealTimeLogs

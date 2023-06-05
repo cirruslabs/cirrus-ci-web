@@ -9,8 +9,8 @@ import { navigateHelper } from '../../utils/navigateHelper';
 import { useNavigate } from 'react-router-dom';
 import {
   RepositoryDangerSettingsDeleteMutation,
-  RepositoryDangerSettingsDeleteMutationResponse,
-  RepositoryDangerSettingsDeleteMutationVariables,
+  RepositoryDangerSettingsDeleteMutation$data,
+  RepositoryDangerSettingsDeleteMutation$variables,
 } from './__generated__/RepositoryDangerSettingsDeleteMutation.graphql';
 import { ListItem, ListItemText } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -42,7 +42,7 @@ export default function RepositoryDangerSettings(props: Props) {
     }
   `);
   function deleteCurrentRepository() {
-    const variables: RepositoryDangerSettingsDeleteMutationVariables = {
+    const variables: RepositoryDangerSettingsDeleteMutation$variables = {
       input: {
         clientMutationId: repository.name,
         repositoryId: repository.id,
@@ -51,7 +51,7 @@ export default function RepositoryDangerSettings(props: Props) {
 
     commitDeleteMutation({
       variables: variables,
-      onCompleted: (response: RepositoryDangerSettingsDeleteMutationResponse, errors) => {
+      onCompleted: (response: RepositoryDangerSettingsDeleteMutation$data, errors) => {
         if (errors) {
           console.log(errors);
         } else {

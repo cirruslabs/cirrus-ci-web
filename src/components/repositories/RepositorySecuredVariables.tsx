@@ -12,8 +12,8 @@ import TextField from '@mui/material/TextField';
 import { RepositorySecuredVariables_repository$key } from './__generated__/RepositorySecuredVariables_repository.graphql';
 import {
   RepositorySecuredVariablesMutation,
-  RepositorySecuredVariablesMutationResponse,
-  RepositorySecuredVariablesMutationVariables,
+  RepositorySecuredVariablesMutation$data,
+  RepositorySecuredVariablesMutation$variables,
 } from './__generated__/RepositorySecuredVariablesMutation.graphql';
 
 interface Props {
@@ -35,7 +35,7 @@ export default function RepositorySecuredVariables(props: Props) {
   let [inputValue, setInputValue] = useState('');
   let [securedVariableName, setSecuredVariableName] = useState(undefined);
 
-  let securedComponent = null;
+  let securedComponent: null | JSX.Element = null;
 
   if (securedVariableName) {
     let valueForYAMLFile = `ENCRYPTED[${securedVariableName}]`;
@@ -52,7 +52,7 @@ export default function RepositorySecuredVariables(props: Props) {
   `);
   function encryptCurrentValue() {
     let valueToSecure = inputValue;
-    const variables: RepositorySecuredVariablesMutationVariables = {
+    const variables: RepositorySecuredVariablesMutation$variables = {
       input: {
         clientMutationId: repository.name, // todo: replace with a hash of valueToSecure
         repositoryId: repository.id,
@@ -62,7 +62,7 @@ export default function RepositorySecuredVariables(props: Props) {
 
     commitSecuredVariableMutation({
       variables: variables,
-      onCompleted: (response: RepositorySecuredVariablesMutationResponse, errors) => {
+      onCompleted: (response: RepositorySecuredVariablesMutation$data, errors) => {
         if (errors) {
           console.log(errors);
           return;

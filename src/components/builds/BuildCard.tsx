@@ -69,6 +69,10 @@ export default function BuildCard(props: Props) {
     props.build,
   );
 
+  if (!build) {
+    return null;
+  }
+
   let classes = useStyles();
   const navigate = useNavigate();
   const isDrawerOpen = useRecoilValue(cirrusOpenDrawerState);

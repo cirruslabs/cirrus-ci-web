@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import queryString from 'query-string';
-import { TaskCommandList_task, TaskCommandList_task$key } from './__generated__/TaskCommandList_task.graphql';
+import { TaskCommandList_task$key, TaskCommandList_task$data } from './__generated__/TaskCommandList_task.graphql';
 import { ItemOfArray } from '../../utils/utility-types';
 import { useLocation } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
@@ -55,14 +55,14 @@ export default function TaskCommandList(props: Props) {
   let classes = useStyles();
   let commands = task.commands;
 
-  let commandComponents = [];
+  let commandComponents: JSX.Element[] = [];
   let lastTimestamp = task.executingTimestamp;
   let colorMapping = useCommandStatusColorMapping();
   let location = useLocation();
   let theme = useTheme();
   const prefersDarkMode = useRecoilValue(prefersDarkModeState);
 
-  function commandItem(command: ItemOfArray<TaskCommandList_task['commands']>, commandStartTimestamp: number) {
+  function commandItem(command: ItemOfArray<TaskCommandList_task$data['commands']>, commandStartTimestamp: number) {
     let search = queryString.parse(location.search);
     const selectedCommandName = search.command || search.logs;
     let summaryStyle = prefersDarkMode

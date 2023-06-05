@@ -11,8 +11,8 @@ import CopyPasteField from '../common/CopyPasteField';
 import TextField from '@mui/material/TextField';
 import {
   OwnerSecuredVariablesMutation,
-  OwnerSecuredVariablesMutationResponse,
-  OwnerSecuredVariablesMutationVariables,
+  OwnerSecuredVariablesMutation$data,
+  OwnerSecuredVariablesMutation$variables,
 } from './__generated__/OwnerSecuredVariablesMutation.graphql';
 import { OwnerSecuredVariables_info$key } from './__generated__/OwnerSecuredVariables_info.graphql';
 
@@ -34,7 +34,7 @@ export default function OwnerSecuredVariables(props: Props) {
 
   let [securedVariableName, setSecuredVariableName] = useState(undefined);
   let [inputValue, setInputValue] = useState('');
-  let securedComponent = null;
+  let securedComponent: null | JSX.Element = null;
 
   if (securedVariableName) {
     let valueForYAMLFile = `ENCRYPTED[${securedVariableName}]`;
@@ -50,7 +50,7 @@ export default function OwnerSecuredVariables(props: Props) {
     }
   `);
   function encryptCurrentValue() {
-    const variables: OwnerSecuredVariablesMutationVariables = {
+    const variables: OwnerSecuredVariablesMutation$variables = {
       input: {
         clientMutationId: info.name,
         platform: info.platform,
@@ -61,7 +61,7 @@ export default function OwnerSecuredVariables(props: Props) {
 
     commitSecuredVariableMutation({
       variables: variables,
-      onCompleted: (response: OwnerSecuredVariablesMutationResponse, errors) => {
+      onCompleted: (response: OwnerSecuredVariablesMutation$data, errors) => {
         if (errors) {
           console.log(errors);
           return;

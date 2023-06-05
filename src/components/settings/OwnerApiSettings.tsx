@@ -5,7 +5,7 @@ import { OwnerApiSettings_info$key } from './__generated__/OwnerApiSettings_info
 import {
   OwnerApiSettingsMutation,
   GenerateNewOwnerAccessTokenInput,
-  OwnerApiSettingsMutationResponse,
+  OwnerApiSettingsMutation$data,
 } from './__generated__/OwnerApiSettingsMutation.graphql';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
@@ -48,7 +48,7 @@ export default function OwnerApiSettings(props: Props) {
   );
 
   let classes = useStyles();
-  let existingTokenComponent = null;
+  let existingTokenComponent: null | JSX.Element = null;
   let [newToken, setNewToken] = useState(null);
   let [openDialog, setOpenDialog] = useState(false);
 
@@ -68,7 +68,7 @@ export default function OwnerApiSettings(props: Props) {
 
     commitGenerateNewTokenMutation({
       variables: { input },
-      onCompleted: (response: OwnerApiSettingsMutationResponse, errors) => {
+      onCompleted: (response: OwnerApiSettingsMutation$data, errors) => {
         if (errors) {
           console.log(errors);
           return;
@@ -84,7 +84,7 @@ export default function OwnerApiSettings(props: Props) {
       <Typography variant="subtitle1">Currently active token: {info.apiToken.maskedToken}</Typography>
     );
   }
-  let newTokenComponent = null;
+  let newTokenComponent: null | JSX.Element = null;
   if (newToken) {
     newTokenComponent = (
       <TextField

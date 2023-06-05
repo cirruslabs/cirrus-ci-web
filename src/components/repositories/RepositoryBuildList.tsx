@@ -101,8 +101,8 @@ export default function RepositoryBuildList(props: Props) {
   let classes = useStyles();
   let builds = repository.builds.edges.map(edge => edge.node);
 
-  let repositorySettings = null;
-  let repositoryAction = null;
+  let repositorySettings: null | JSX.Element = null;
+  let repositoryAction: null | JSX.Element = null;
   if (repository.viewerPermission === 'WRITE' || repository.viewerPermission === 'ADMIN') {
     repositorySettings = (
       <Tooltip title="Repository Settings">
@@ -150,7 +150,7 @@ export default function RepositoryBuildList(props: Props) {
     </Tooltip>
   );
 
-  let buildsChart = null;
+  let buildsChart: null | JSX.Element = null;
 
   const isDisplayBuildChart = props.branch && builds.length > 5;
 

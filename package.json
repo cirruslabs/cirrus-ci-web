@@ -97,7 +97,8 @@
     "prettier-check": "prettier --check .",
     "relay": "relay-compiler",
     "sync-schema": "get-graphql-schema https://api.cirrus-ci.com/schema.json | sed -e 's/Long/Int/g' > schema.gql && prettier --write schema.gql",
-    "bootstrap": "yarn sync-schema && yarn relay"
+    "bootstrap": "yarn sync-schema && yarn relay",
+    "husky-run": "husky run"
   },
   "eslintConfig": {
     "extends": [

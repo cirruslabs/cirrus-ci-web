@@ -3,21 +3,7 @@ import * as Sentry from '@sentry/react';
 import { useRecoilState } from 'recoil';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import classNames from 'classnames';
-
-import { makeStyles } from '@mui/styles';
-import { Container, Tooltip, useTheme } from '@mui/material';
-import Stack from '@mui/material/Stack';
-import AppBar from '@mui/material/AppBar';
-import Drawer from '@mui/material/Drawer';
-import Toolbar from '@mui/material/Toolbar';
-import MenuIcon from '@mui/icons-material/Menu';
-import BookIcon from '@mui/icons-material/Book';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import CloseIcon from '@mui/icons-material/Close';
-import { grey } from '@mui/material/colors';
+import mui from 'mui';
 
 import { cirrusOpenDrawerState } from '../src/cirrusTheme';
 import GCPStatus from './components/status/GCPStatus';
@@ -57,7 +43,7 @@ const AsyncApiExplorerRenderer = React.lazy(() => import('./components/explorer/
 
 const drawerWidth = 360;
 
-const useStyles = makeStyles(theme => {
+const useStyles = mui.makeStyles(theme => {
   return {
     flex: {
       flex: 1,
@@ -72,7 +58,7 @@ const useStyles = makeStyles(theme => {
       color: theme.palette.primary.contrastText,
       marginLeft: 8,
     },
-    // Reset ml for <nav> inside mui <Stack>
+    // Reset ml for <nav> inside mui <mui.Stack>
     nav: {
       marginLeft: '0 !important',
     },
@@ -104,6 +90,12 @@ const useStyles = makeStyles(theme => {
     },
     drawerHeader: {
       ...theme.mixins.toolbar,
+    },
+    drawerHeaderInfo: {
+      transition: theme.transitions.create('opacity'),
+      '.AllRouter__drawerHeader:not(:hover) &': {
+        opacity: 0,
+      },
     },
     drawerPaper: {
       position: 'relative',
@@ -139,7 +131,7 @@ const useStyles = makeStyles(theme => {
 
 function AllRoutes() {
   let classes = useStyles();
-  let theme = useTheme();
+  let theme = mui.useTheme();
   const [openDrawer, setOpenDrawer] = useRecoilState(cirrusOpenDrawerState);
 
   function getNavbarTitleStyling() {
@@ -147,27 +139,44 @@ function AllRoutes() {
     return openDrawer ? { marginLeft: '15px', ...shared } : shared;
   }
 
-  const isScreenDownSmSize = useMediaQuery(theme.breakpoints.down('sm'));
+  const isScreenDownSmSize = mui.useMediaQuery(theme.breakpoints.down('sm'));
 
   const drawerContent = (
-    <Stack px={2} pb={3} sx={{ background: theme.palette.mode === 'light' ? grey[300] : grey[800] }}>
-      <Stack className={classes.drawerHeader} direction="row" alignItems="center" justifyContent="space-between">
-        <Typography variant="h6" color="text.primary">
-          Active Repositories
-        </Typography>
-        <IconButton onClick={() => setOpenDrawer(false)} size="large">
-          <CloseIcon />
-        </IconButton>
-      </Stack>
+    <mui.Stack
+      px={2}
+      pb={3}
+      sx={{ background: theme.palette.mode === 'light' ? mui.colors.grey[300] : mui.colors.grey[800] }}
+    >
+      <mui.Stack
+        className={classNames(classes.drawerHeader, 'AllRouter__drawerHeader')}
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <mui.Stack direction="row" alignItems="center" spacing={1}>
+          <mui.Typography variant="h6" color="text.primary">
+            Active Repositories
+          </mui.Typography>
+          <mui.Tooltip
+            title="Repositories to which you have contributed, sorted by the time of your contribution."
+            disableInteractive
+          >
+            <mui.icons.InfoOutlined className={classes.drawerHeaderInfo} color="info" />
+          </mui.Tooltip>
+        </mui.Stack>
+        <mui.IconButton onClick={() => setOpenDrawer(false)} size="large">
+          <mui.icons.Close />
+        </mui.IconButton>
+      </mui.Stack>
       <Suspense fallback={<CirrusLinearProgress />}>
         <ViewerTopRepositories className={classes.topRepositories} />
       </Suspense>
-    </Stack>
+    </mui.Stack>
   );
 
   const drawer = (
     <nav className={classes.nav}>
-      <Drawer
+      <mui.Drawer
         variant="temporary"
         // Prevent body overflow hidden
         open={isScreenDownSmSize && openDrawer}
@@ -178,8 +187,8 @@ function AllRoutes() {
         }}
       >
         {drawerContent}
-      </Drawer>
-      <Drawer
+      </mui.Drawer>
+      <mui.Drawer
         variant="persistent"
         sx={{
           display: { xs: 'none', sm: 'block' },
@@ -193,7 +202,7 @@ function AllRoutes() {
         }}
       >
         {drawerContent}
-      </Drawer>
+      </mui.Drawer>
     </nav>
   );
 
@@ -201,8 +210,8 @@ function AllRoutes() {
 
   return (
     <BrowserRouter>
-      <Stack className={classes.appFrame} direction="row" position="relative" zIndex={1}>
-        <AppBar
+      <mui.Stack className={classes.appFrame} direction="row" position="relative" zIndex={1}>
+        <mui.AppBar
           enableColorOnDark
           position="static"
           className={classNames(classes.appBar, {
@@ -210,25 +219,25 @@ function AllRoutes() {
             [classes.appBarShift]: openDrawer,
           })}
         >
-          <Toolbar disableGutters={true}>
-            <IconButton
+          <mui.Toolbar disableGutters={true}>
+            <mui.IconButton
               color="inherit"
               aria-label="open navigation"
               onClick={() => setOpenDrawer(true)}
               className={classNames(classes.menuButton, openDrawer && classes.hide)}
               size="large"
             >
-              <MenuIcon />
-            </IconButton>
+              <mui.icons.Menu />
+            </mui.IconButton>
             <Link to={'/'} style={{ color: theme.palette.primary.contrastText, textDecoration: 'none' }}>
-              <Typography
+              <mui.Typography
                 variant="h6"
                 className={classNames({ [classes.titleShift]: openDrawer })}
                 style={getNavbarTitleStyling()}
                 color="inherit"
               >
                 Cirrus CI
-              </Typography>
+              </mui.Typography>
             </Link>
             <div className={classes.flex} />
             <Suspense fallback={<div />}>
@@ -238,35 +247,35 @@ function AllRoutes() {
               <GitHubStatus />
             </Suspense>
             <ThemeSwitchButton />
-            <Tooltip title="Go to front-end source repository">
-              <IconButton
+            <mui.Tooltip title="Go to front-end source repository">
+              <mui.IconButton
                 className={classes.linkButton}
                 href="https://github.com/cirruslabs/cirrus-ci-web"
                 target="_blank"
                 rel="noopener noreferrer"
                 size="large"
               >
-                <GitHubIcon style={{ color: theme.palette.primary.contrastText }} />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Go to documentation">
-              <IconButton
+                <mui.icons.GitHub style={{ color: theme.palette.primary.contrastText }} />
+              </mui.IconButton>
+            </mui.Tooltip>
+            <mui.Tooltip title="Go to documentation">
+              <mui.IconButton
                 className={classes.linkButton}
                 href="https://cirrus-ci.org/"
                 target="_blank"
                 rel="noopener noreferrer"
                 size="large"
               >
-                <BookIcon style={{ color: theme.palette.primary.contrastText }} />
-              </IconButton>
-            </Tooltip>
+                <mui.icons.Book style={{ color: theme.palette.primary.contrastText }} />
+              </mui.IconButton>
+            </mui.Tooltip>
             <div className={classes.marginRight}>
               <Suspense fallback={<CirrusLinearProgress />}>
                 <ActiveRepositoriesDrawer />
               </Suspense>
             </div>
-          </Toolbar>
-        </AppBar>
+          </mui.Toolbar>
+        </mui.AppBar>
         {openDrawer ? drawer : null}
         <main
           className={classNames(classes.content, {
@@ -275,7 +284,7 @@ function AllRoutes() {
           })}
         >
           <div className={classNames('invisible', classes.drawerHeader)} />
-          <Container maxWidth={openDrawer ? false : 'lg'}>
+          <mui.Container maxWidth={openDrawer ? false : 'lg'}>
             <Suspense fallback={<CirrusLinearProgress />}>
               <SentryRoutes>
                 <Route path="/" element={<AsyncHome />} />
@@ -297,9 +306,9 @@ function AllRoutes() {
                 <Route path="hook/:hookId" element={<AsyncHook />} />
               </SentryRoutes>
             </Suspense>
-          </Container>
+          </mui.Container>
         </main>
-      </Stack>
+      </mui.Stack>
     </BrowserRouter>
   );
 }

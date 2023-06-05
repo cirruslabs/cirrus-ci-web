@@ -29,11 +29,13 @@ const buildSubscription = graphql`
 
 const useStyles = mui.makeStyles(theme => ({
   actions: {
-    transition: theme.transitions.create('opacity'),
-    '.RepositoryCard__header:not(:hover):not(:has(& :focus)) &': {
-      opacity: 0,
-      position: 'absolute',
-      right: theme.spacing(2),
+    '@media (hover: hover)': {
+      transition: theme.transitions.create('opacity'),
+      '.RepositoryCard__header:not(:hover):not(:has(& :focus)) &': {
+        opacity: 0,
+        position: 'absolute',
+        right: theme.spacing(2),
+      },
     },
   },
 }));
@@ -139,7 +141,7 @@ export default function RepositoryCard(props: Props) {
                 {build.changeMessageTitle}
               </mui.Typography>
             </mui.Stack>
-            <mui.Stack direction="row" alignItems="center" spacing={1.5}>
+            <mui.Stack direction="row" alignItems="center" spacing={1}>
               <Hash build={build} />
               <mui.Box onMouseDown={stopPropagation}>
                 <BuildBranchNameChipNew build={build} />
@@ -150,6 +152,7 @@ export default function RepositoryCard(props: Props) {
       </mui.CardActionArea>
     </mui.Stack>
   ) : null;
+
   return (
     <mui.Card variant="outlined" sx={{ width: '100%' }}>
       {/* HEADER */}

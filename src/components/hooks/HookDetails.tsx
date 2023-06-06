@@ -28,7 +28,7 @@ import { navigateBuildHelper, navigateHookHelper, navigateTaskHelper } from '../
 
 import {
   HookDetailsRerunMutation,
-  HookDetailsRerunMutationResponse,
+  HookDetailsRerunMutation$data,
 } from './__generated__/HookDetailsRerunMutation.graphql';
 import { HookDetails_hook$key } from './__generated__/HookDetails_hook.graphql';
 
@@ -161,7 +161,7 @@ export default function HookDetails(props: Props) {
           hookIds: [hookId],
         },
       },
-      onCompleted: (response: HookDetailsRerunMutationResponse, error) => {
+      onCompleted: (response: HookDetailsRerunMutation$data, error) => {
         if (error) {
           console.log(error);
           return;

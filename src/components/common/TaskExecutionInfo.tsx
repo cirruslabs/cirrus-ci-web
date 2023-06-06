@@ -83,7 +83,7 @@ export default function TaskExecutionInfo(props: Props) {
         <ResponsiveContainer debounce={300} height={200} width="100%">
           <AreaChart data={chartPoints}>
             <YAxis type="number" domain={[0, requestedCPU]} hide />
-            <CartesianGrid stroke={null} fill={prefersDarkMode ? theme.palette.info.dark : theme.palette.info.light} />
+            <CartesianGrid fill={prefersDarkMode ? theme.palette.info.dark : theme.palette.info.light} />
             <Area
               type="monotone"
               dataKey="Used CPUs"
@@ -131,7 +131,7 @@ export default function TaskExecutionInfo(props: Props) {
         <ResponsiveContainer debounce={300} height={200} width="100%">
           <AreaChart data={chartPoints}>
             <YAxis type="number" domain={[0, memoryUnit === 'Gb' ? requestedMemory / 1024 : requestedMemory]} hide />
-            <CartesianGrid stroke={null} fill={prefersDarkMode ? theme.palette.info.dark : theme.palette.info.light} />
+            <CartesianGrid fill={prefersDarkMode ? theme.palette.info.dark : theme.palette.info.light} />
             <Area
               type="monotone"
               dataKey="Used Memory"

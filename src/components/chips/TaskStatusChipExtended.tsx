@@ -57,7 +57,7 @@ export default function TaskStatusChipExtended(props: Props) {
   );
   if (hasExecutingTimestamp) {
     return (
-      <Tooltip key={key} title={`Execution started at ${new Date(task.executingTimestamp).toLocaleTimeString()}`}>
+      <Tooltip key={key} title={`Execution started at ${new Date(task.executingTimestamp!).toLocaleTimeString()}`}>
         {chip}
       </Tooltip>
     );

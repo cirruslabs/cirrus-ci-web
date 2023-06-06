@@ -51,13 +51,13 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  info?: AppBreadcrumbs_info$key | null;
-  repository?: AppBreadcrumbs_repository$key | null;
-  build?: AppBreadcrumbs_build$key | null;
-  task?: AppBreadcrumbs_task$key | null;
-  branch?: string | null;
-  extraCrumbs?: Array<Crumb> | null;
-  viewer?: AppBreadcrumbs_viewer$key | null;
+  info?: AppBreadcrumbs_info$key;
+  repository?: AppBreadcrumbs_repository$key;
+  build?: AppBreadcrumbs_build$key;
+  task?: AppBreadcrumbs_task$key;
+  branch?: string;
+  extraCrumbs?: Array<Crumb>;
+  viewer?: AppBreadcrumbs_viewer$key;
 }
 
 interface Crumb {
@@ -74,7 +74,7 @@ export default function AppBreadcrumbs(props: Props) {
         name
       }
     `,
-    props.info,
+    props.info ?? null,
   );
   let repository = useFragment(
     graphql`
@@ -85,7 +85,7 @@ export default function AppBreadcrumbs(props: Props) {
         name
       }
     `,
-    props.repository,
+    props.repository ?? null,
   );
   let build = useFragment(
     graphql`
@@ -101,7 +101,7 @@ export default function AppBreadcrumbs(props: Props) {
         }
       }
     `,
-    props.build,
+    props.build ?? null,
   );
   let task = useFragment(
     graphql`
@@ -121,7 +121,7 @@ export default function AppBreadcrumbs(props: Props) {
         }
       }
     `,
-    props.task,
+    props.task ?? null,
   );
   let viewer = useFragment(
     graphql`
@@ -129,7 +129,7 @@ export default function AppBreadcrumbs(props: Props) {
         ...AccountSwitch_viewer
       }
     `,
-    props.viewer,
+    props.viewer ?? null,
   );
 
   let { branch, extraCrumbs } = props;

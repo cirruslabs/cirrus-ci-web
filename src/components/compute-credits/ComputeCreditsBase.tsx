@@ -69,7 +69,7 @@ export default function ComputeCreditsBase(props: Props) {
         ...BillingSettingsButton_info
       }
     `,
-    props.info,
+    props.info ?? null,
   );
 
   let [expanded, setExpanded] = useState(false);

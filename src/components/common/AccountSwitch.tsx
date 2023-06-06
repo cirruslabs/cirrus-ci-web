@@ -26,7 +26,7 @@ export default function AccountsSwitch(props: AccountSwitchProps) {
         }
       }
     `,
-    props.viewer,
+    props.viewer ?? null,
   );
 
   const navigate = useNavigate();

@@ -25,9 +25,10 @@ function BuildByIdStrict(buildId: string) {
     { buildId },
   );
 
-  if (!response.build) {
+  if (!response.build || !response.viewer) {
     return <NotFound />;
   }
+
   return (
     <>
       <AppBreadcrumbs build={response.build} viewer={response.viewer} />

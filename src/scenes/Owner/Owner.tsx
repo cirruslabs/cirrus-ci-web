@@ -25,9 +25,10 @@ function OwnerFor(platform: string, owner: string) {
     { platform, owner },
   );
 
-  if (!response.ownerInfoByName) {
+  if (!response.ownerInfoByName || !response.viewer) {
     return <NotFound />;
   }
+
   return (
     <>
       <AppBreadcrumbs info={response.ownerInfoByName} viewer={response.viewer} />
@@ -35,6 +36,7 @@ function OwnerFor(platform: string, owner: string) {
     </>
   );
 }
+
 export default function Owner() {
   let { platform, owner } = useParams();
 

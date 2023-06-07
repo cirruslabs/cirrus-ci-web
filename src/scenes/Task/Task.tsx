@@ -25,9 +25,10 @@ function TaskById(taskId: string) {
     { taskId },
   );
 
-  if (!response.task) {
+  if (!response.task || !response.viewer) {
     return <NotFound />;
   }
+
   return (
     <>
       <AppBreadcrumbs task={response.task} viewer={response.viewer} />

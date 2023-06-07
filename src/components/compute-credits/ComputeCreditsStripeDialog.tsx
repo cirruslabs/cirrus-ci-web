@@ -86,7 +86,7 @@ function ComputeCreditsStripeDialog(props: Props) {
 
   const [paymentInProgress, setPaymentInProgress] = useState(false);
 
-  const [error, setError] = useState<String | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const stripe = useStripe();
   const elements = useElements();
 

@@ -26,9 +26,10 @@ function RepositorySettingsById(repositoryId: string) {
     { repositoryId },
   );
 
-  if (!response.repository) {
+  if (!response.repository || !response.viewer) {
     return <NotFound />;
   }
+
   return (
     <>
       <AppBreadcrumbs
@@ -45,6 +46,7 @@ function RepositorySettingsById(repositoryId: string) {
     </>
   );
 }
+
 export default function RepositorySettings() {
   let { repositoryId } = useParams();
 

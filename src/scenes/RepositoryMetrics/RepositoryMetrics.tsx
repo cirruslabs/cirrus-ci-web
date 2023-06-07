@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
 import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 import TimelineIcon from '@mui/icons-material/Timeline';
 
-function RepositoryMetricsFor(platform: String, owner: string, name: string, parentProps) {
+function RepositoryMetricsFor(platform: string, owner: string, name: string, parentProps) {
   const response = useLazyLoadQuery<RepositoryMetricsQuery>(
     graphql`
       query RepositoryMetricsQuery($platform: String!, $owner: String!, $name: String!) {
@@ -26,9 +26,10 @@ function RepositoryMetricsFor(platform: String, owner: string, name: string, par
     { platform, owner, name },
   );
 
-  if (!response.ownerRepository) {
+  if (!response.ownerRepository || !response.viewer) {
     return <NotFound />;
   }
+
   return (
     <>
       <AppBreadcrumbs

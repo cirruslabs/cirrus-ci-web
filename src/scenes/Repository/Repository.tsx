@@ -33,6 +33,7 @@ function RepositoryById(repositoryId: string, branch?: string) {
     );
     return <NotFound messageComponent={notFoundMessage} />;
   }
+
   return (
     <>
       <AppBreadcrumbs repository={response.repository} />
@@ -40,6 +41,7 @@ function RepositoryById(repositoryId: string, branch?: string) {
     </>
   );
 }
+
 export default function Repository() {
   let params = useParams();
   let { repositoryId } = params;

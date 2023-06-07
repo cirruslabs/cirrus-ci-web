@@ -26,6 +26,10 @@ function OwnerSettingsRendererFor(platform: string, name: string) {
     { platform, name },
   );
 
+  if (!response.ownerInfoByName || !response.viewer) {
+    return <NotFound />;
+  }
+
   return (
     <>
       <AppBreadcrumbs
@@ -42,6 +46,7 @@ function OwnerSettingsRendererFor(platform: string, name: string) {
     </>
   );
 }
+
 export default function OwnerSettingsRenderer() {
   let { platform, name } = useParams();
 

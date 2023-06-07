@@ -15,7 +15,7 @@ declare module '@mui/styles/defaultTheme' {
   interface DefaultTheme extends Theme {}
 }
 
-export default function App(): JSX.Element {
+export default function App() {
   const themeOptions = useRecoilValue(cirrusThemeOptions);
 
   const theme = React.useMemo(() => createTheme(themeOptions), [themeOptions]);

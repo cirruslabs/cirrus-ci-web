@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
 import MarkdownTypography from '../../components/common/MarkdownTypography';
 import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 
-function OwnerRepositoryFor(platform: string, owner: string, name: string, branch?: string): JSX.Element {
+function OwnerRepositoryFor(platform: string, owner: string, name: string, branch?: string) {
   const response = useLazyLoadQuery<OwnerRepositoryQuery>(
     graphql`
       query OwnerRepositoryQuery($platform: String!, $owner: String!, $name: String!, $branch: String) {
@@ -43,7 +43,7 @@ function OwnerRepositoryFor(platform: string, owner: string, name: string, branc
     </>
   );
 }
-export default function OwnerRepository(): JSX.Element {
+export default function OwnerRepository() {
   let params = useParams();
   let { platform, owner, name } = params;
 

@@ -92,7 +92,7 @@ function topologicalSort(tasks: ReadonlyArray<Task>): ReadonlyArray<{
   return result;
 }
 
-export default function TaskList(props: Props): JSX.Element {
+export default function TaskList(props: Props) {
   let visualDataItems = topologicalSort(props.tasks || []);
   return (
     <Table style={{ tableLayout: 'auto' }}>

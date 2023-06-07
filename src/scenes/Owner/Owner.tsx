@@ -9,7 +9,7 @@ import OwnerRepositoryList from '../../components/account/OwnerRepositoryList';
 import NotFound from '../NotFound';
 import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 
-function OwnerFor(platform: string, owner: string): JSX.Element {
+function OwnerFor(platform: string, owner: string) {
   const response = useLazyLoadQuery<OwnerQuery>(
     graphql`
       query OwnerQuery($platform: String!, $owner: String!) {
@@ -35,7 +35,7 @@ function OwnerFor(platform: string, owner: string): JSX.Element {
     </>
   );
 }
-export default function Owner(): JSX.Element {
+export default function Owner() {
   let { platform, owner } = useParams();
 
   if (!platform || !owner) {

@@ -117,7 +117,7 @@ function base64toUIntArray(text: string): Uint8Array {
   return result;
 }
 
-export default function ActiveRepositoriesDrawer(): JSX.Element {
+export default function ActiveRepositoriesDrawer() {
   const response = useLazyLoadQuery<ActiveRepositoriesDrawerQuery>(
     graphql`
       query ActiveRepositoriesDrawerQuery {

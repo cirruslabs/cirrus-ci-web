@@ -8,7 +8,7 @@ import PoolDetails from '../../components/workers/PoolDetails';
 
 import { PoolByIdQuery } from './__generated__/PoolByIdQuery.graphql';
 
-function PoolDetailsById(poolId: string): JSX.Element {
+function PoolDetailsById(poolId: string) {
   const [fetchKey, setFetchKey] = useState(0);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ function PoolDetailsById(poolId: string): JSX.Element {
   return <PoolDetails pool={response.persistentWorkerPool} />;
 }
 
-export default function PoolById(): JSX.Element {
+export default function PoolById() {
   let { poolId } = useParams();
 
   if (!poolId) {

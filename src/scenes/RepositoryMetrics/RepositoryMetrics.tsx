@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
 import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 import TimelineIcon from '@mui/icons-material/Timeline';
 
-function RepositoryMetricsFor(platform: String, owner: string, name: string, parentProps): JSX.Element {
+function RepositoryMetricsFor(platform: String, owner: string, name: string, parentProps) {
   const response = useLazyLoadQuery<RepositoryMetricsQuery>(
     graphql`
       query RepositoryMetricsQuery($platform: String!, $owner: String!, $name: String!) {
@@ -46,7 +46,7 @@ function RepositoryMetricsFor(platform: String, owner: string, name: string, par
   );
 }
 
-export default function RepositoryMetrics(parentProps): JSX.Element {
+export default function RepositoryMetrics(parentProps) {
   const { platform, owner, name } = useParams();
 
   if (!platform || !owner || !name) {

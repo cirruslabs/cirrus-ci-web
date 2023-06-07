@@ -10,7 +10,7 @@ import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import NotFound from '../NotFound';
 
-function OwnerSettingsRendererFor(platform: string, name: string): JSX.Element {
+function OwnerSettingsRendererFor(platform: string, name: string) {
   const response = useLazyLoadQuery<OwnerSettingsRendererQuery>(
     graphql`
       query OwnerSettingsRendererQuery($platform: String!, $name: String!) {
@@ -42,7 +42,7 @@ function OwnerSettingsRendererFor(platform: string, name: string): JSX.Element {
     </>
   );
 }
-export default function OwnerSettingsRenderer(): JSX.Element {
+export default function OwnerSettingsRenderer() {
   let { platform, name } = useParams();
 
   if (!platform || !name) {

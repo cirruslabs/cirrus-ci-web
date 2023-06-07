@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
 import MarkdownTypography from '../../components/common/MarkdownTypography';
 import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 
-function RepositoryById(repositoryId: string, branch?: string): JSX.Element {
+function RepositoryById(repositoryId: string, branch?: string) {
   const response = useLazyLoadQuery<RepositoryQuery>(
     graphql`
       query RepositoryQuery($repositoryId: ID!, $branch: String) {
@@ -40,7 +40,7 @@ function RepositoryById(repositoryId: string, branch?: string): JSX.Element {
     </>
   );
 }
-export default function Repository(): JSX.Element {
+export default function Repository() {
   let params = useParams();
   let { repositoryId } = params;
 

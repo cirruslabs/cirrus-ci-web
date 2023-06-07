@@ -496,7 +496,7 @@ export default function TaskDetails(props: Props) {
       </Tooltip>
     );
 
-  let allOtherRuns: JSX.Element | [] = [];
+  let allOtherRuns: JSX.Element | null = null;
   if (task.allOtherRuns && task.allOtherRuns.length > 0) {
     allOtherRuns = (
       <Paper elevation={24}>
@@ -507,7 +507,7 @@ export default function TaskDetails(props: Props) {
       </Paper>
     );
   }
-  let dependencies: JSX.Element | [] = [];
+  let dependencies: JSX.Element | null = null;
   if (task.dependencies && task.dependencies.length > 0) {
     dependencies = (
       <Paper elevation={24}>
@@ -679,9 +679,9 @@ export default function TaskDetails(props: Props) {
         </Accordion>
       </Collapse>
       {artifactsComponent}
-      {dependencies ? <div className={classes.gap} /> : null}
+      {dependencies && <div className={classes.gap} />}
       {dependencies}
-      {allOtherRuns ? <div className={classes.gap} /> : null}
+      {allOtherRuns && <div className={classes.gap} />}
       {allOtherRuns}
       <div className={classes.gap} />
       <Paper elevation={24}>{tabbedCommandsAndHooks}</Paper>

@@ -58,7 +58,7 @@ export default function TaskCommandsProgress(props: Props) {
     }
   }, [task.status, task.creationTimestamp]);
 
-  let bars: JSX.Element[] = [];
+  let bars: Array<JSX.Element> = [];
 
   let colorMapping = useTaskStatusColorMapping();
 

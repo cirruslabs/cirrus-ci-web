@@ -7,11 +7,11 @@ import AccountInformation from '../../components/account/AccountInformation';
 import { ActiveRepositoriesDrawerQuery } from './__generated__/ActiveRepositoriesDrawerQuery.graphql';
 import {
   ActiveRepositoriesDrawerDeleteWebPushConfigurationMutation,
-  ActiveRepositoriesDrawerDeleteWebPushConfigurationMutationVariables,
+  ActiveRepositoriesDrawerDeleteWebPushConfigurationMutation$variables,
 } from './__generated__/ActiveRepositoriesDrawerDeleteWebPushConfigurationMutation.graphql';
 import {
   ActiveRepositoriesDrawerSaveWebPushConfigurationMutation,
-  ActiveRepositoriesDrawerSaveWebPushConfigurationMutationVariables,
+  ActiveRepositoriesDrawerSaveWebPushConfigurationMutation$variables,
 } from './__generated__/ActiveRepositoriesDrawerSaveWebPushConfigurationMutation.graphql';
 
 function RegisterServiceWorkerIfNeeded(userId: string, webPushServerKey: string) {
@@ -52,7 +52,7 @@ function RegisterServiceWorkerIfNeeded(userId: string, webPushServerKey: string)
         reg.pushManager.getSubscription().then(existingSubscription => {
           if (existingSubscription && permissionResult !== 'granted') {
             let jsonSub = existingSubscription.toJSON();
-            const variables: ActiveRepositoriesDrawerDeleteWebPushConfigurationMutationVariables = {
+            const variables: ActiveRepositoriesDrawerDeleteWebPushConfigurationMutation$variables = {
               input: {
                 clientMutationId: 'subscribe-' + userId,
                 endpoint: jsonSub.endpoint,
@@ -74,7 +74,7 @@ function RegisterServiceWorkerIfNeeded(userId: string, webPushServerKey: string)
               .then(sub => {
                 if (sub) {
                   let jsonSub = sub.toJSON();
-                  const variables: ActiveRepositoriesDrawerSaveWebPushConfigurationMutationVariables = {
+                  const variables: ActiveRepositoriesDrawerSaveWebPushConfigurationMutation$variables = {
                     input: {
                       clientMutationId: 'subscribe-' + userId,
                       endpoint: jsonSub.endpoint,

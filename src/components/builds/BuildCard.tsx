@@ -69,10 +69,6 @@ export default function BuildCard(props: Props) {
     props.build,
   );
 
-  if (!build) {
-    return null;
-  }
-
   let classes = useStyles();
   const navigate = useNavigate();
   const isDrawerOpen = useRecoilValue(cirrusOpenDrawerState);
@@ -85,6 +81,10 @@ export default function BuildCard(props: Props) {
     () => createTheme(themeWithAdjustableBreakpoints),
     [themeWithAdjustableBreakpoints],
   );
+
+  if (!build) {
+    return null;
+  }
 
   const showChipsHeader = pageWidth >= themeForNewDesign.breakpoints.values.md;
 

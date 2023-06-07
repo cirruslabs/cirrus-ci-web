@@ -55,7 +55,7 @@ export default function TaskCommandList(props: Props) {
   let classes = useStyles();
   let commands = task.commands;
 
-  let commandComponents: JSX.Element[] = [];
+  let commandComponents: Array<JSX.Element> = [];
   let lastTimestamp = task.executingTimestamp;
   let colorMapping = useCommandStatusColorMapping();
   let location = useLocation();

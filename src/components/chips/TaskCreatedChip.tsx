@@ -3,7 +3,7 @@ import Chip from '@mui/material/Chip';
 import Icon from '@mui/material/Icon';
 import Tooltip from '@mui/material/Tooltip';
 import { graphql } from 'babel-plugin-relay/macro';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useFragment } from 'react-relay';
 import { useTaskStatusColor } from '../../utils/colors';
 import { taskStatusIconName } from '../../utils/status';
@@ -29,9 +29,12 @@ export default function TaskCreatedChip(props: Props) {
   let theme = useTheme();
   const creationTimestamp = task.creationTimestamp;
 
-  const [durationAgoInSeconds, setDurationAgoInSeconds] = React.useState((Date.now() - creationTimestamp) / 1000);
+  const [durationAgoInSeconds, setDurationAgoInSeconds] = useState(
+    creationTimestamp ? (Date.now() - creationTimestamp) / 1000 : 0,
+  );
 
   useEffect(() => {
+    if (!creationTimestamp) return;
     const timeoutId = setInterval(
       () => {
         setDurationAgoInSeconds((Date.now() - creationTimestamp) / 1000);
@@ -41,17 +44,24 @@ export default function TaskCreatedChip(props: Props) {
     return () => clearInterval(timeoutId);
   }, [durationAgoInSeconds, creationTimestamp]);
 
-  const durationInSeconds = Math.floor(durationAgoInSeconds);
+  const tooltip = useMemo(() => {
+    if (!creationTimestamp) return '';
+    const time = new Date(creationTimestamp).toLocaleTimeString();
+    const date = new Date(creationTimestamp).toDateString();
+    return `Created at ${time} on ${date}`;
+  }, [creationTimestamp]);
+
+  const label = useMemo(() => {
+    if (!creationTimestamp) return 'Created';
+    const durationInSeconds = Math.floor(durationAgoInSeconds);
+    return `Created ${roundAndPresentDuration(durationInSeconds)} ago`;
+  }, [durationAgoInSeconds, creationTimestamp]);
 
   return (
-    <Tooltip
-      title={`Created at ${new Date(creationTimestamp).toLocaleTimeString()} on ${new Date(
-        creationTimestamp,
-      ).toDateString()}`}
-    >
+    <Tooltip title={tooltip}>
       <Chip
         className={props.className}
-        label={`Created ${roundAndPresentDuration(durationInSeconds)} ago`}
+        label={label}
         avatar={
           <Avatar style={{ backgroundColor: useTaskStatusColor('CREATED') }}>
             <Icon style={{ color: theme.palette.primary.contrastText }}>{taskStatusIconName('CREATED')}</Icon>

@@ -26,19 +26,19 @@ import DebuggingInformation from './BuildDebuggingInformation';
 import { HookType } from '../hooks/HookType';
 import {
   BuildDetailsApproveBuildMutation,
-  BuildDetailsApproveBuildMutationVariables,
+  BuildDetailsApproveBuildMutation$variables,
 } from './__generated__/BuildDetailsApproveBuildMutation.graphql';
 import {
   BuildDetailsReTriggerMutation,
-  BuildDetailsReTriggerMutationVariables,
+  BuildDetailsReTriggerMutation$variables,
 } from './__generated__/BuildDetailsReTriggerMutation.graphql';
 import {
   BuildDetailsReRunMutation,
-  BuildDetailsReRunMutationVariables,
+  BuildDetailsReRunMutation$variables,
 } from './__generated__/BuildDetailsReRunMutation.graphql';
 import {
   BuildDetailsCancelMutation,
-  BuildDetailsCancelMutationVariables,
+  BuildDetailsCancelMutation$variables,
 } from './__generated__/BuildDetailsCancelMutation.graphql';
 import CommitMessage from '../common/CommitMessage';
 
@@ -152,7 +152,7 @@ export default function BuildDetails(props: Props) {
   `);
 
   function approveBuild() {
-    const variables: BuildDetailsApproveBuildMutationVariables = {
+    const variables: BuildDetailsApproveBuildMutation$variables = {
       input: {
         clientMutationId: 'approve-build-' + build.id,
         buildId: build.id,
@@ -176,7 +176,7 @@ export default function BuildDetails(props: Props) {
   `);
 
   function reTriggerBuild() {
-    const variables: BuildDetailsReTriggerMutationVariables = {
+    const variables: BuildDetailsReTriggerMutation$variables = {
       input: {
         clientMutationId: 're-trigger-build-' + build.id,
         buildId: build.id,
@@ -202,7 +202,7 @@ export default function BuildDetails(props: Props) {
   `);
 
   function batchReRun(taskIds) {
-    const variables: BuildDetailsReRunMutationVariables = {
+    const variables: BuildDetailsReRunMutation$variables = {
       input: {
         clientMutationId: 'batch-rerun-' + build.id,
         taskIds: taskIds,
@@ -227,7 +227,7 @@ export default function BuildDetails(props: Props) {
 
   function batchCancellation(taskIds: string[]) {
     taskIds.forEach(id => {
-      const variables: BuildDetailsCancelMutationVariables = {
+      const variables: BuildDetailsCancelMutation$variables = {
         input: {
           clientMutationId: `batch-cancellation-${build.id}-${id}`,
           taskId: id,

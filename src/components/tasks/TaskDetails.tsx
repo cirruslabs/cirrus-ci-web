@@ -26,11 +26,11 @@ import CirrusFavicon from '../common/CirrusFavicon';
 import TaskCommandList from './TaskCommandList';
 import TaskCommandsProgress from './TaskCommandsProgress';
 import TaskList from './TaskList';
-import { TaskDetails_task, TaskDetails_task$key } from './__generated__/TaskDetails_task.graphql';
+import { TaskDetails_task$data, TaskDetails_task$key } from './__generated__/TaskDetails_task.graphql';
 import {
   TaskDetailsReRunMutation,
-  TaskDetailsReRunMutationResponse,
-  TaskDetailsReRunMutationVariables,
+  TaskDetailsReRunMutation$data,
+  TaskDetailsReRunMutation$variables,
 } from './__generated__/TaskDetailsReRunMutation.graphql';
 import TaskResourcesChip from '../chips/TaskResourcesChip';
 import ExecutionInfo from '../common/TaskExecutionInfo';
@@ -63,8 +63,8 @@ import {
 import { BugReport, Dehaze, Functions, LayersClear } from '@mui/icons-material';
 import {
   TaskDetailsInvalidateCachesMutation,
-  TaskDetailsInvalidateCachesMutationResponse,
-  TaskDetailsInvalidateCachesMutationVariables,
+  TaskDetailsInvalidateCachesMutation$data,
+  TaskDetailsInvalidateCachesMutation$variables,
 } from './__generated__/TaskDetailsInvalidateCachesMutation.graphql';
 import TaskRerunnerChip from '../chips/TaskRerunnerChip';
 import TaskCancellerChip from '../chips/TaskCancellerChip';
@@ -76,11 +76,11 @@ import { CirrusTerminal } from '../cirrus-terminal/CirrusTerminal';
 import { HookType } from '../hooks/HookType';
 import {
   TaskDetailsTriggerMutation,
-  TaskDetailsTriggerMutationVariables,
+  TaskDetailsTriggerMutation$variables,
 } from './__generated__/TaskDetailsTriggerMutation.graphql';
 import {
   TaskDetailsCancelMutation,
-  TaskDetailsCancelMutationVariables,
+  TaskDetailsCancelMutation$variables,
 } from './__generated__/TaskDetailsCancelMutation.graphql';
 import TaskDebuggingInformation from './TaskDebuggingInformation';
 import CirrusLinearProgress from '../common/CirrusLinearProgress';
@@ -301,7 +301,7 @@ export default function TaskDetails(props: Props) {
   `);
 
   function trigger(taskId) {
-    const variables: TaskDetailsTriggerMutationVariables = {
+    const variables: TaskDetailsTriggerMutation$variables = {
       input: {
         clientMutationId: 'trigger-' + taskId,
         taskId: taskId,
@@ -315,7 +315,7 @@ export default function TaskDetails(props: Props) {
   }
 
   function abort(taskId) {
-    const variables: TaskDetailsCancelMutationVariables = {
+    const variables: TaskDetailsCancelMutation$variables = {
       input: {
         clientMutationId: 'abort-' + taskId,
         taskId: taskId,
@@ -360,7 +360,7 @@ export default function TaskDetails(props: Props) {
   };
 
   function rerun(taskId: string, withTerminalAccess: boolean) {
-    const variables: TaskDetailsReRunMutationVariables = {
+    const variables: TaskDetailsReRunMutation$variables = {
       input: {
         clientMutationId: 'rerun-' + taskId,
         taskId: taskId,
@@ -370,7 +370,7 @@ export default function TaskDetails(props: Props) {
 
     commitTaskReRunMutation({
       variables: variables,
-      onCompleted: (response: TaskDetailsReRunMutationResponse, errors) => {
+      onCompleted: (response: TaskDetailsReRunMutation$data, errors) => {
         if (errors) {
           console.error(errors);
           return;
@@ -444,7 +444,7 @@ export default function TaskDetails(props: Props) {
 
   const [disableInvalidateCachesButton, setDisableInvalidateCachesButton] = React.useState(false);
 
-  function validCacheKeys(task: TaskDetails_task) {
+  function validCacheKeys(task: TaskDetails_task$data) {
     if (task.executionInfo === null || task.executionInfo.cacheRetrievalAttempts === null) return [];
 
     return task.executionInfo.cacheRetrievalAttempts.hits
@@ -456,12 +456,12 @@ export default function TaskDetails(props: Props) {
       });
   }
 
-  function invalidateCaches(task: TaskDetails_task) {
+  function invalidateCaches(task: TaskDetails_task$data) {
     let cacheKeys = validCacheKeys(task);
 
     if (cacheKeys.length === 0) return;
 
-    const variables: TaskDetailsInvalidateCachesMutationVariables = {
+    const variables: TaskDetailsInvalidateCachesMutation$variables = {
       input: {
         clientMutationId: 'invalidate-caches-' + task.id,
         taskId: task.id,
@@ -471,7 +471,7 @@ export default function TaskDetails(props: Props) {
 
     commitInvalidateCachesMutation({
       variables: variables,
-      onCompleted: (response: TaskDetailsInvalidateCachesMutationResponse, errors) => {
+      onCompleted: (response: TaskDetailsInvalidateCachesMutation$data, errors) => {
         if (errors) {
           console.log(errors);
           return;

@@ -49,7 +49,7 @@ export default function OwnerApiSettings(props: Props) {
 
   let classes = useStyles();
   let existingTokenComponent: null | JSX.Element = null;
-  let [newToken, setNewToken] = useState(null);
+  let [newToken, setNewToken] = useState<string | null>(null);
   let [openDialog, setOpenDialog] = useState(false);
 
   const [commitGenerateNewTokenMutation] = useMutation<OwnerApiSettingsMutation>(graphql`

@@ -20,7 +20,7 @@ import sjcl from 'sjcl/sjcl.js';
 import {
   WebHookSettingsMutation,
   SaveWebHookSettingsInput,
-  WebHookSettingsMutationVariables,
+  WebHookSettingsMutation$variables,
 } from './__generated__/WebHookSettingsMutation.graphql';
 import { Link } from '@mui/material';
 
@@ -85,7 +85,7 @@ export default function WebHookSettings(props: Props) {
     }
   `);
   function saveWebhookSettings() {
-    const variables: WebHookSettingsMutationVariables = {
+    const variables: WebHookSettingsMutation$variables = {
       input: {
         clientMutationId: webhookURL,
         platform: info.platform,

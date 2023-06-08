@@ -40,7 +40,7 @@ import {
 import {
   GetPersistentWorkerPoolRegistrationTokenInput,
   PoolDetailsGetRegistrationTokenMutation,
-  PoolDetailsGetRegistrationTokenMutationResponse,
+  PoolDetailsGetRegistrationTokenMutation$data,
 } from './__generated__/PoolDetailsGetRegistrationTokenMutation.graphql';
 import CopyPasteField from '../common/CopyPasteField';
 import WorkerStatusChip from './WorkerStatusChip';
@@ -110,7 +110,7 @@ export default function PoolDetails(props: PoolDetailsProps) {
   );
 
   let [openEditDialog, setOpenEditDialog] = useState(false);
-  let [registrationToken, setRegistrationToken] = useState(null);
+  let [registrationToken, setRegistrationToken] = useState<string | null>(null);
   const [commitGetRegistrationTokenMutation] = useMutation<PoolDetailsGetRegistrationTokenMutation>(graphql`
     mutation PoolDetailsGetRegistrationTokenMutation($input: GetPersistentWorkerPoolRegistrationTokenInput!) {
       persistentWorkerPoolRegistrationToken(input: $input) {
@@ -149,7 +149,7 @@ export default function PoolDetails(props: PoolDetailsProps) {
     };
     commitGetRegistrationTokenMutation({
       variables: { input: input },
-      onCompleted: (response: PoolDetailsGetRegistrationTokenMutationResponse, errors) => {
+      onCompleted: (response: PoolDetailsGetRegistrationTokenMutation$data, errors) => {
         if (errors) {
           console.log(errors);
           return;

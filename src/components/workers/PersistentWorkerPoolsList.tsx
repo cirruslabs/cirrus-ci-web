@@ -19,7 +19,7 @@ import { graphql } from 'babel-plugin-relay/macro';
 import {
   PersistentWorkerPoolsListCreateMutation,
   CreatePersistentWorkerPoolInput,
-  PersistentWorkerPoolsListCreateMutationResponse,
+  PersistentWorkerPoolsListCreateMutation$data,
 } from './__generated__/PersistentWorkerPoolsListCreateMutation.graphql';
 import { navigateHelper } from '../../utils/navigateHelper';
 import PropTypes from 'prop-types';
@@ -35,7 +35,7 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
   PersistentWorkerPoolsListDeleteMutation,
-  PersistentWorkerPoolsListDeleteMutationVariables,
+  PersistentWorkerPoolsListDeleteMutation$variables,
 } from './__generated__/PersistentWorkerPoolsListDeleteMutation.graphql';
 import PoolVisibilityIcon from '../icons/PoolVisibilityIcon';
 import { useNavigate } from 'react-router-dom';
@@ -62,7 +62,7 @@ function PersistentWorkerPoolsList(props: PoolsListProps) {
     }
   `);
   let deletePool = poolId => {
-    const variables: PersistentWorkerPoolsListDeleteMutationVariables = {
+    const variables: PersistentWorkerPoolsListDeleteMutation$variables = {
       input: {
         clientMutationId: 'delete-persistent-worker-pool-' + poolId,
         poolId: poolId,
@@ -145,7 +145,7 @@ function CreateNewPersistentWorkerPoolDialog(props: DialogProps) {
     };
     commitCreatePoolMutation({
       variables: { input: input },
-      onCompleted: (response: PersistentWorkerPoolsListCreateMutationResponse, errors) => {
+      onCompleted: (response: PersistentWorkerPoolsListCreateMutation$data, errors) => {
         if (errors) {
           console.log(errors);
           return;

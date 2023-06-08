@@ -33,7 +33,7 @@ export default function RepositorySecuredVariables(props: Props) {
   );
 
   let [inputValue, setInputValue] = useState('');
-  let [securedVariableName, setSecuredVariableName] = useState(undefined);
+  let [securedVariableName, setSecuredVariableName] = useState<string | undefined>(undefined);
 
   let securedComponent: null | JSX.Element = null;
 

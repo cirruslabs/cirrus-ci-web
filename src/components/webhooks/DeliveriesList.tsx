@@ -4,10 +4,10 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import DeliveryRow from './DeliveryRow';
 import { getNodesFromConnection } from '../../utils/graphql';
-import { WebHookSettings_info } from './__generated__/WebHookSettings_info.graphql';
+import { WebHookSettings_info$data } from './__generated__/WebHookSettings_info.graphql';
 
 interface Props {
-  deliveries: WebHookSettings_info['webhookDeliveries'];
+  deliveries: WebHookSettings_info$data['webhookDeliveries'];
 }
 
 const DeliveriesList = (props: Props) => {

@@ -32,7 +32,7 @@ export default function OwnerSecuredVariables(props: Props) {
     props.info,
   );
 
-  let [securedVariableName, setSecuredVariableName] = useState(undefined);
+  let [securedVariableName, setSecuredVariableName] = useState<string | undefined>(undefined);
   let [inputValue, setInputValue] = useState('');
   let securedComponent: null | JSX.Element = null;
 

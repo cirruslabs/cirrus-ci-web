@@ -35,6 +35,7 @@ function BuildByIdStrict(buildId: string) {
       <BuildDetails build={response.build} />
     </>
   );
+}
 
 export default function BuildById() {
   let { buildId } = useParams();

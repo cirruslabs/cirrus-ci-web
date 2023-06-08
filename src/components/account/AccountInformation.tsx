@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  viewer: AccountInformation_viewer$key;
+  viewer: AccountInformation_viewer$key | null;
 }
 
 export default function AccountInformation(props: Props) {

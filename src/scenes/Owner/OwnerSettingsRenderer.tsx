@@ -26,7 +26,7 @@ function OwnerSettingsRendererFor(platform: string, name: string) {
     { platform, name },
   );
 
-  if (!response.ownerInfoByName || !response.viewer) {
+  if (!response.ownerInfoByName) {
     return <NotFound />;
   }
 

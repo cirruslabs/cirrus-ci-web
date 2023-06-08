@@ -26,7 +26,7 @@ function RepositorySettingsById(repositoryId: string) {
     { repositoryId },
   );
 
-  if (!response.repository || !response.viewer) {
+  if (!response.repository) {
     return <NotFound />;
   }
 

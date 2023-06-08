@@ -57,7 +57,7 @@ interface Props {
   task?: AppBreadcrumbs_task$key;
   branch?: string;
   extraCrumbs?: Array<Crumb>;
-  viewer?: AppBreadcrumbs_viewer$key;
+  viewer?: AppBreadcrumbs_viewer$key | null;
 }
 
 interface Crumb {

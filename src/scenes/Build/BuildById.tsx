@@ -25,7 +25,7 @@ function BuildByIdStrict(buildId: string) {
     { buildId },
   );
 
-  if (!response.build || !response.viewer) {
+  if (!response.build) {
     return <NotFound />;
   }
 
@@ -35,7 +35,6 @@ function BuildByIdStrict(buildId: string) {
       <BuildDetails build={response.build} />
     </>
   );
-}
 
 export default function BuildById() {
   let { buildId } = useParams();

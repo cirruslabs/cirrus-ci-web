@@ -25,7 +25,7 @@ function OwnerFor(platform: string, owner: string) {
     { platform, owner },
   );
 
-  if (!response.ownerInfoByName || !response.viewer) {
+  if (!response.ownerInfoByName) {
     return <NotFound />;
   }
 

@@ -158,18 +158,18 @@ export default function ConfigurationWithIssues(props: Props) {
   const starlarkIssueCache = cacheIssues(starlarkIssues);
   const starlarkTable = generateTable(build.parsingResult.rawStarlarkConfig, starlarkIssueCache);
 
-  let yamlTitle = (
+  let yamlTitle: JSX.Element | null = (
     <Typography variant="subtitle1">
       <p>YAML configuration</p>
     </Typography>
   );
-  let starlarkTitle = (
+  let starlarkTitle: JSX.Element | null = (
     <Typography variant="subtitle1" className={classes.topPadded}>
       <p>Starlark configuration</p>
     </Typography>
   );
 
-  let summaryText: string;
+  let summaryText: string | null = null;
 
   const yamlHasErrors = yamlIssues.some(it => it.level === 'ERROR');
   const yamlHasIssues = yamlIssues.some(it => it.level !== 'ERROR');

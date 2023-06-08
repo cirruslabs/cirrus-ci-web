@@ -26,7 +26,7 @@ function RepositoryMetricsFor(platform: string, owner: string, name: string, par
     { platform, owner, name },
   );
 
-  if (!response.ownerRepository || !response.viewer) {
+  if (!response.ownerRepository) {
     return <NotFound />;
   }
 

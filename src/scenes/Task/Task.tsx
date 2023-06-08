@@ -25,7 +25,7 @@ function TaskById(taskId: string) {
     { taskId },
   );
 
-  if (!response.task || !response.viewer) {
+  if (!response.task) {
     return <NotFound />;
   }
 

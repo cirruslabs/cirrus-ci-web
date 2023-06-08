@@ -17,8 +17,8 @@ import 'ace-builds/src-noconflict/theme-github';
 import { CreateBuildDialog_repository$key } from './__generated__/CreateBuildDialog_repository.graphql';
 import {
   CreateBuildDialogMutation,
-  CreateBuildDialogMutationResponse,
-  CreateBuildDialogMutationVariables,
+  CreateBuildDialogMutation$data,
+  CreateBuildDialogMutation$variables,
 } from './__generated__/CreateBuildDialogMutation.graphql';
 
 interface Props {
@@ -64,7 +64,7 @@ export default function CreateBuildDialog(props: Props) {
   }
 
   function sendMutation() {
-    const variables: CreateBuildDialogMutationVariables = {
+    const variables: CreateBuildDialogMutation$variables = {
       input: {
         clientMutationId: repository.name,
         repositoryId: repository.id,
@@ -76,7 +76,7 @@ export default function CreateBuildDialog(props: Props) {
 
     commitCreateBuildMutation({
       variables: variables,
-      onCompleted: (response: CreateBuildDialogMutationResponse, errors) => {
+      onCompleted: (response: CreateBuildDialogMutation$data, errors) => {
         if (errors) {
           console.log(errors);
           return;

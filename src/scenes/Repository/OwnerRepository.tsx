@@ -37,10 +37,6 @@ function OwnerRepositoryFor(platform: string, owner: string, name: string, branc
     return <NotFound messageComponent={notFoundMessage} />;
   }
 
-  if (!response.viewer) {
-    return <NotFound />;
-  }
-
   return (
     <>
       <AppBreadcrumbs repository={response.ownerRepository} viewer={response.viewer} branch={branch} />

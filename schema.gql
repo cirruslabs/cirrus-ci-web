@@ -1127,7 +1127,7 @@ type Task implements Node {
   instancePlatform: PlatformType
   instanceArchitecture: ArchitectureType!
   instanceResources: InstanceResources
-  executionInfo: ExecutionInfo
+  executionInfo: ExecutionInfo!
   baseEnvironment: [String!]!
   hooks: [Hook!]!
   reranBy: UserBasicInfo

@@ -52,6 +52,10 @@ function RegisterServiceWorkerIfNeeded(userId: string, webPushServerKey: string)
         reg.pushManager.getSubscription().then(existingSubscription => {
           if (existingSubscription && permissionResult !== 'granted') {
             let jsonSub = existingSubscription.toJSON();
+            if (!jsonSub.endpoint) {
+              console.error('endpoint is empty');
+              return;
+            }
             const variables: ActiveRepositoriesDrawerDeleteWebPushConfigurationMutation$variables = {
               input: {
                 clientMutationId: 'subscribe-' + userId,
@@ -74,6 +78,14 @@ function RegisterServiceWorkerIfNeeded(userId: string, webPushServerKey: string)
               .then(sub => {
                 if (sub) {
                   let jsonSub = sub.toJSON();
+                  if (!jsonSub.endpoint) {
+                    console.error('endpoint is empty');
+                    return;
+                  }
+                  if (!jsonSub.keys) {
+                    console.error('keys is empty');
+                    return;
+                  }
                   const variables: ActiveRepositoriesDrawerSaveWebPushConfigurationMutation$variables = {
                     input: {
                       clientMutationId: 'subscribe-' + userId,

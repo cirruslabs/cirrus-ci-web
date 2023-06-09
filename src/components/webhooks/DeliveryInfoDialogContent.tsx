@@ -25,10 +25,16 @@ function DeliveryInfoDialogContent(props: Props) {
   let classes = useStyles();
 
   let payloadTab = (
-    <MarkdownTypography className={classes.markdown} text={'```json\n' + delivery.payload.data + '\n```'} />
+    <MarkdownTypography
+      className={classes.markdown}
+      text={delivery ? '```json\n' + delivery.payload.data + '\n```' : ''}
+    />
   );
   let responseTab = (
-    <MarkdownTypography className={classes.markdown} text={'```\n' + delivery.response.data + '\n```'} />
+    <MarkdownTypography
+      className={classes.markdown}
+      text={delivery ? '```\n' + delivery.response.data + '\n```' : ''}
+    />
   );
 
   return (

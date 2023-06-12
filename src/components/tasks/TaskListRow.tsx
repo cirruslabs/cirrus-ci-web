@@ -81,8 +81,10 @@ export default function TaskListRow(props: Props) {
   let classes = useStyles();
   let progress: null | JSX.Element = null;
   if (isTaskFinalStatus(task.status) && overallDuration && task.executingTimestamp) {
-    let scheduledDuration = Math.max(0, task.executingTimestamp - task.scheduledTimestamp) / 1000;
-    let executionDuration = Math.max(0, task.finalStatusTimestamp - task.executingTimestamp) / 1000;
+    const scheduledTimestamp = task.scheduledTimestamp || 0;
+    const finalStatusTimestamp = task.finalStatusTimestamp || 0;
+    let scheduledDuration = Math.max(0, task.executingTimestamp - scheduledTimestamp) / 1000;
+    let executionDuration = Math.max(0, finalStatusTimestamp - task.executingTimestamp) / 1000;
     progress = (
       <Tooltip
         title={`Task was scheduled in ${formatDuration(scheduledDuration)} and was executed in ${formatDuration(

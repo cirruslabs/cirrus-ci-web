@@ -14,7 +14,7 @@ interface Props {
 }
 
 function BuildDurationsChart(props: Props) {
-  let [selectedBuildId, setSelectedBuildId] = useState(null);
+  let [selectedBuildId, setSelectedBuildId] = useState<string | null>(null);
   let navigate = useNavigate();
   let statusColorMapping = useBuildStatusColorMapping();
   let { builds } = props;

@@ -56,7 +56,7 @@ const buildSubscription = graphql`
         localGroupId
         requiredGroups
         status
-        ...TaskListRow_task
+        ...TaskList_tasks
       }
     }
   }
@@ -97,7 +97,6 @@ export default function BuildDetails(props: Props) {
         changeIdInRepo
         changeMessageTitle
         ...BuildCreatedChip_build
-        ...BuildBranchNameChip_build
         ...BuildStatusChip_build
         notifications {
           message
@@ -107,22 +106,16 @@ export default function BuildDetails(props: Props) {
         ...BuildDebuggingInformation_build
         latestGroupTasks {
           id
-          localGroupId
-          requiredGroups
-          scheduledTimestamp
-          executingTimestamp
-          finalStatusTimestamp
           status
-          ...TaskListRow_task
+          requiredGroups
+          ...TaskList_tasks
         }
         repository {
-          ...RepositoryNameChip_repository
           cloneUrl
           viewerPermission
         }
         hooks {
-          timestamp
-          ...HookListRow_hook
+          ...HookList_hooks
         }
       }
     `,

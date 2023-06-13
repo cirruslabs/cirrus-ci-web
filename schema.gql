@@ -10,7 +10,7 @@ directive @specifiedBy(
 
 type ApiAccessToken {
   maskedToken: String!
-  creationTimestamp: Int
+  creationTimestamp: Int!
 }
 
 """
@@ -33,6 +33,47 @@ type Artifacts {
   files: [ArtifactFileInfo!]!
 }
 
+"""
+An edge in a connection
+"""
+type AuditEventEdge {
+  """
+  The item at the end of the edge
+  """
+  node: AuditEventType!
+
+  """
+  cursor marks a unique position or index into the connection
+  """
+  cursor: String!
+}
+
+"""
+A connection to a list of items.
+"""
+type AuditEventsConnection {
+  """
+  a list of edges
+  """
+  edges: [AuditEventEdge!]!
+
+  """
+  details about this specific page
+  """
+  pageInfo: PageInfo!
+}
+
+type AuditEventType implements Node {
+  id: ID!
+  platform: String!
+  ownerUid: String!
+  type: String!
+  data: String!
+  timestamp: Int!
+  repository: Repository
+  actor: UserBasicInfo
+}
+
 type BillingSettings {
   platform: String!
   ownerUid: String!
@@ -43,17 +84,17 @@ type BillingSettings {
 }
 
 input BillingSettingsInput {
-  platform: String
+  platform: String!
   ownerUid: ID!
   enabled: Boolean!
   billingEmailAddress: String!
   invoiceTemplate: String
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type BillingSettingsPayload {
-  settings: BillingSettings
-  clientMutationId: String
+  settings: BillingSettings!
+  clientMutationId: String!
 }
 
 type Build implements Node {
@@ -62,8 +103,8 @@ type Build implements Node {
   branch: String!
   tag: String
   changeIdInRepo: String!
-  changeMessageTitle: String
-  changeMessage: String
+  changeMessageTitle: String!
+  changeMessage: String!
   durationInSeconds: Int
   clockDurationInSeconds: Int
   pullRequest: Int
@@ -77,7 +118,7 @@ type Build implements Node {
   parsingResult: ParsingResult
   tasks: [Task!]!
   executingTasks: [Task!]!
-  taskGroupsAmount: Int
+  taskGroupsAmount: Int!
   latestGroupTasks: [Task!]!
   repository: Repository!
   viewerPermission: PermissionType!
@@ -88,22 +129,22 @@ type Build implements Node {
 
 input BuildApproveInput {
   buildId: ID!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type BuildApprovePayload {
   build: Build!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 input BuildReTriggerInput {
   buildId: ID!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type BuildReTriggerPayload {
   build: Build!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 """
@@ -126,14 +167,14 @@ input BuyComputeCreditsInput {
   amountOfCredits: String!
   paymentTokenId: String!
   receiptEmail: String
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type BuyComputeCreditsPayload {
   error: String
-  info: OwnerInfo
-  user: User
-  clientMutationId: String
+  info: OwnerInfo!
+  user: User!
+  clientMutationId: String!
 }
 
 type CacheRetrievalAttemptError {
@@ -163,6 +204,13 @@ type CacheRetrievalAttempts {
   misses: [CacheRetrievalAttemptMiss!]!
 }
 
+type ComputeUsage {
+  instancePlatform: PlatformType!
+  instanceArchitecture: ArchitectureType!
+  cpuSeconds: Int!
+  balanceInMicroCredits: Int!
+}
+
 """
 Repository Setting to choose where to look for the configuration file.
 """
@@ -173,16 +221,16 @@ enum ConfigResolutionStrategy {
 }
 
 input CreatePersistentWorkerPoolInput {
-  platform: String
+  platform: String!
   ownerUid: ID!
   name: String!
   enabledForPublic: Boolean!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type CreatePersistentWorkerPoolPayload {
   pool: PersistentWorkerPool!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type DayDate {
@@ -203,32 +251,32 @@ enum DecryptEnvironmentVariablesFor {
 input DeletePersistentWorkerInput {
   poolId: String!
   name: String!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type DeletePersistentWorkerPayload {
   deletedWorker: PersistentWorker!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 input DeletePersistentWorkerPoolInput {
   poolId: String!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type DeletePersistentWorkerPoolPayload {
   deletedPoolId: ID!
   deletedPool: PersistentWorkerPool!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 input DeleteWebPushConfigurationInput {
   endpoint: String!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type DeleteWebPushConfigurationPayload {
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type ExecutionChart {
@@ -257,38 +305,38 @@ type ExecutionInfo {
 }
 
 input GenerateNewOwnerAccessTokenInput {
-  platform: ID
-  ownerUid: ID
-  clientMutationId: String
+  platform: ID!
+  ownerUid: ID!
+  clientMutationId: String!
 }
 
 type GenerateNewOwnerAccessTokenPayload {
   token: String!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 input GenerateNewScopedAccessTokenInput {
-  platform: ID
-  ownerUid: ID
+  platform: ID!
+  ownerUid: ID!
   durationSeconds: Int
-  permission: PermissionType
-  repositoryNames: [String!]
-  clientMutationId: String
+  permission: PermissionType!
+  repositoryNames: [String!]!
+  clientMutationId: String!
 }
 
 type GenerateNewScopedAccessTokenPayload {
   token: String!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 input GetPersistentWorkerPoolRegistrationTokenInput {
-  poolId: ID
-  clientMutationId: String
+  poolId: ID!
+  clientMutationId: String!
 }
 
 type GetPersistentWorkerPoolRegistrationTokenPayload {
   token: String!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type Hook implements Node {
@@ -299,7 +347,7 @@ type Hook implements Node {
   build: Build!
   taskId: ID
   task: Task
-  timestamp: Int
+  timestamp: Int!
   name: String!
   info: HookExecutionInfo!
 }
@@ -309,18 +357,18 @@ type HookExecutionInfo {
   arguments: String!
   result: String!
   outputLogs: [String!]!
-  durationNanos: Int
+  durationNanos: Int!
   environment: [String!]!
 }
 
 input HooksReRunInput {
   hookIds: [ID!]
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type HooksReRunPayload {
-  newHooks: [Hook!]
-  clientMutationId: String
+  newHooks: [Hook!]!
+  clientMutationId: String!
 }
 
 type InstanceResources {
@@ -330,12 +378,12 @@ type InstanceResources {
 
 input InvalidateCacheEntriesInput {
   taskId: ID!
-  cacheKeys: [String!]
-  clientMutationId: String
+  cacheKeys: [String!]!
+  clientMutationId: String!
 }
 
 type InvalidateCacheEntriesPayload {
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 """
@@ -359,44 +407,45 @@ input MetricsQueryParameters {
   branch: String
 }
 
+type MonthlyComputeUsage {
+  date: String!
+  usageDetails: [ComputeUsage!]!
+}
+
 type Mutation {
-  securedVariable(input: RepositorySecuredVariableInput!): RepositorySecuredVariablePayload
-  securedOrganizationVariable(input: OrganizationSecuredVariableInput!): OrganizationSecuredVariablePayload
-  securedOwnerVariable(input: OwnerSecuredVariableInput!): OwnerSecuredVariablePayload
-  updateSecuredOrganizationVariable(
-    input: UpdateOrganizationSecuredVariableInput!
-  ): UpdateOrganizationSecuredVariablePayload
-  updateSecuredOwnerVariable(input: UpdateOwnerSecuredVariableInput!): UpdateOwnerSecuredVariablePayload
-  createBuild(input: RepositoryCreateBuildInput!): RepositoryCreateBuildPayload
-  deleteRepository(input: RepositoryDeleteInput!): RepositoryDeletePayload
-  rerun(input: TaskReRunInput!): TaskReRunPayload
-  batchReRun(input: TasksReRunInput!): TasksReRunPayload
-  abortTask(input: TaskAbortInput!): TaskAbortPayload
-  batchAbort(input: TaskBatchAbortInput!): TaskBatchAbortPayload
-  retrigger(input: BuildReTriggerInput!): BuildReTriggerPayload
-  saveSettings(input: RepositorySettingsInput!): RepositorySettingsPayload
-  saveCronSettings(input: RepositorySaveCronSettingsInput!): RepositorySaveCronSettingsPayload
-  removeCronSettings(input: RepositoryRemoveCronSettingsInput!): RepositoryRemoveCronSettingsPayload
-  approve(input: BuildApproveInput!): BuildApprovePayload
-  trigger(input: TaskTriggerInput!): TaskTriggerPayload
-  saveWebHookSettings(input: SaveWebHookSettingsInput!): SaveWebHookSettingsPayload
-  generateNewOwnerAccessToken(input: GenerateNewOwnerAccessTokenInput!): GenerateNewOwnerAccessTokenPayload
-  generateNewScopedAccessToken(input: GenerateNewScopedAccessTokenInput!): GenerateNewScopedAccessTokenPayload
-  deletePersistentWorker(input: DeletePersistentWorkerInput!): DeletePersistentWorkerPayload
-  updatePersistentWorker(input: UpdatePersistentWorkerInput!): UpdatePersistentWorkerPayload
+  securedVariable(input: RepositorySecuredVariableInput!): RepositorySecuredVariablePayload!
+  securedOwnerVariable(input: OwnerSecuredVariableInput!): OwnerSecuredVariablePayload!
+  updateSecuredOwnerVariable(input: UpdateOwnerSecuredVariableInput!): UpdateOwnerSecuredVariablePayload!
+  createBuild(input: RepositoryCreateBuildInput!): RepositoryCreateBuildPayload!
+  deleteRepository(input: RepositoryDeleteInput!): RepositoryDeletePayload!
+  rerun(input: TaskReRunInput!): TaskReRunPayload!
+  batchReRun(input: TasksReRunInput!): TasksReRunPayload!
+  abortTask(input: TaskAbortInput!): TaskAbortPayload!
+  batchAbort(input: TaskBatchAbortInput!): TaskBatchAbortPayload!
+  retrigger(input: BuildReTriggerInput!): BuildReTriggerPayload!
+  saveSettings(input: RepositorySettingsInput!): RepositorySettingsPayload!
+  saveCronSettings(input: RepositorySaveCronSettingsInput!): RepositorySaveCronSettingsPayload!
+  removeCronSettings(input: RepositoryRemoveCronSettingsInput!): RepositoryRemoveCronSettingsPayload!
+  approve(input: BuildApproveInput!): BuildApprovePayload!
+  trigger(input: TaskTriggerInput!): TaskTriggerPayload!
+  saveWebHookSettings(input: SaveWebHookSettingsInput!): SaveWebHookSettingsPayload!
+  generateNewOwnerAccessToken(input: GenerateNewOwnerAccessTokenInput!): GenerateNewOwnerAccessTokenPayload!
+  generateNewScopedAccessToken(input: GenerateNewScopedAccessTokenInput!): GenerateNewScopedAccessTokenPayload!
+  deletePersistentWorker(input: DeletePersistentWorkerInput!): DeletePersistentWorkerPayload!
+  updatePersistentWorker(input: UpdatePersistentWorkerInput!): UpdatePersistentWorkerPayload!
   persistentWorkerPoolRegistrationToken(
     input: GetPersistentWorkerPoolRegistrationTokenInput!
-  ): GetPersistentWorkerPoolRegistrationTokenPayload
-  createPersistentWorkerPool(input: CreatePersistentWorkerPoolInput!): CreatePersistentWorkerPoolPayload
-  updatePersistentWorkerPool(input: UpdatePersistentWorkerPoolInput!): UpdatePersistentWorkerPoolPayload
-  deletePersistentWorkerPool(input: DeletePersistentWorkerPoolInput!): DeletePersistentWorkerPoolPayload
-  saveWebPushConfiguration(input: SaveWebPushConfigurationInput!): SaveWebPushConfigurationPayload
-  deleteWebPushConfiguration(input: DeleteWebPushConfigurationInput!): DeleteWebPushConfigurationPayload
-  rerunHooks(input: HooksReRunInput!): HooksReRunPayload
-  repositorySetMetadata(input: RepositorySetMetadataInput!): RepositorySetMetadataPayload
-  invalidateCacheEntries(input: InvalidateCacheEntriesInput!): InvalidateCacheEntriesPayload
-  saveBillingSettings(input: BillingSettingsInput!): BillingSettingsPayload
-  buyComputeCredits(input: BuyComputeCreditsInput!): BuyComputeCreditsPayload
+  ): GetPersistentWorkerPoolRegistrationTokenPayload!
+  createPersistentWorkerPool(input: CreatePersistentWorkerPoolInput!): CreatePersistentWorkerPoolPayload!
+  updatePersistentWorkerPool(input: UpdatePersistentWorkerPoolInput!): UpdatePersistentWorkerPoolPayload!
+  deletePersistentWorkerPool(input: DeletePersistentWorkerPoolInput!): DeletePersistentWorkerPoolPayload!
+  saveWebPushConfiguration(input: SaveWebPushConfigurationInput!): SaveWebPushConfigurationPayload!
+  deleteWebPushConfiguration(input: DeleteWebPushConfigurationInput!): DeleteWebPushConfigurationPayload!
+  rerunHooks(input: HooksReRunInput!): HooksReRunPayload!
+  repositorySetMetadata(input: RepositorySetMetadataInput!): RepositorySetMetadataPayload!
+  invalidateCacheEntries(input: InvalidateCacheEntriesInput!): InvalidateCacheEntriesPayload!
+  saveBillingSettings(input: BillingSettingsInput!): BillingSettingsPayload!
+  buyComputeCredits(input: BuyComputeCreditsInput!): BuyComputeCreditsPayload!
 }
 
 """
@@ -424,17 +473,6 @@ enum NotificationLevel {
   ERROR
 }
 
-input OrganizationSecuredVariableInput {
-  organizationId: ID!
-  valueToSecure: String!
-  clientMutationId: String
-}
-
-type OrganizationSecuredVariablePayload {
-  variableName: String!
-  clientMutationId: String
-}
-
 """
 An edge in a connection
 """
@@ -442,7 +480,7 @@ type OwnerBuildEdge {
   """
   The item at the end of the edge
   """
-  node: Build
+  node: Build!
 
   """
   cursor marks a unique position or index into the connection
@@ -457,7 +495,7 @@ type OwnerBuildsConnection {
   """
   a list of edges
   """
-  edges: [OwnerBuildEdge]
+  edges: [OwnerBuildEdge!]!
 
   """
   details about this specific page
@@ -543,8 +581,29 @@ type OwnerInfo {
     """
     status: BuildStatus
   ): OwnerBuildsConnection!
+  auditEvents(
+    """
+    fetching only nodes before this node (exclusive)
+    """
+    before: String
+
+    """
+    fetching only nodes after this node (exclusive)
+    """
+    after: String
+
+    """
+    fetching only the first certain number of nodes
+    """
+    first: Int
+
+    """
+    fetching only the last certain number of nodes
+    """
+    last: Int
+  ): AuditEventsConnection!
   balanceInCredits: String!
-  billingSettings: BillingSettings
+  billingSettings: BillingSettings!
   transactions(
     """
     fetching only nodes before this node (exclusive)
@@ -565,7 +624,8 @@ type OwnerInfo {
     fetching only the last certain number of nodes
     """
     last: Int
-  ): OwnerTransactionsConnection
+  ): OwnerTransactionsConnection!
+  monthlyComputeUsage: [MonthlyComputeUsage!]!
 }
 
 type OwnerInfoDescription {
@@ -586,7 +646,7 @@ type OwnerRepositoriesConnection {
   """
   a list of edges
   """
-  edges: [OwnerRepositoryEdge]
+  edges: [OwnerRepositoryEdge!]!
 
   """
   details about this specific page
@@ -601,7 +661,7 @@ type OwnerRepositoryEdge {
   """
   The item at the end of the edge
   """
-  node: Repository
+  node: Repository!
 
   """
   cursor marks a unique position or index into the connection
@@ -613,12 +673,12 @@ input OwnerSecuredVariableInput {
   platform: String!
   ownerUid: ID!
   valueToSecure: String!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type OwnerSecuredVariablePayload {
   variableName: String!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type OwnerTransaction {
@@ -656,7 +716,7 @@ type OwnerTransactionsConnection {
   """
   a list of edges
   """
-  edges: [OwnerTransactionEdge]
+  edges: [OwnerTransactionEdge!]!
 
   """
   details about this specific page
@@ -671,7 +731,7 @@ type OwnerWebhookDeliveriesConnection {
   """
   a list of edges
   """
-  edges: [OwnerWebHookDeliveryEdge]
+  edges: [OwnerWebHookDeliveryEdge!]!
 
   """
   details about this specific page
@@ -686,7 +746,7 @@ type OwnerWebHookDeliveryEdge {
   """
   The item at the end of the edge
   """
-  node: WebHookDelivery
+  node: WebHookDelivery!
 
   """
   cursor marks a unique position or index into the connection
@@ -734,8 +794,8 @@ type ParsingResultIssue {
   message: String!
   rawDetails: String!
   path: String!
-  line: Int
-  column: Int
+  line: Int!
+  column: Int!
 }
 
 enum ParsingResultIssueLevel {
@@ -794,7 +854,7 @@ type PersistentWorkerAssignedTaskEdge {
   """
   The item at the end of the edge
   """
-  node: Task
+  node: Task!
 
   """
   cursor marks a unique position or index into the connection
@@ -809,7 +869,7 @@ type PersistentWorkerAssignedTasksConnection {
   """
   a list of edges
   """
-  edges: [PersistentWorkerAssignedTaskEdge]
+  edges: [PersistentWorkerAssignedTaskEdge!]!
 
   """
   details about this specific page
@@ -918,7 +978,7 @@ type RepositoryBuildEdge {
   """
   The item at the end of the edge
   """
-  node: Build
+  node: Build!
 
   """
   cursor marks a unique position or index into the connection
@@ -933,7 +993,7 @@ type RepositoryBuildsConnection {
   """
   a list of edges
   """
-  edges: [RepositoryBuildEdge]
+  edges: [RepositoryBuildEdge!]!
 
   """
   details about this specific page
@@ -946,31 +1006,31 @@ input RepositoryCreateBuildInput {
   branch: String!
   sha: String
   configOverride: String
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type RepositoryCreateBuildPayload {
   build: Build!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type RepositoryCronSettings {
   name: String!
   expression: String!
   branch: String!
-  nextInvocationTimestamp: Int
+  nextInvocationTimestamp: Int!
   lastInvocationBuild: Build
 }
 
 input RepositoryDeleteInput {
   repositoryId: ID!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type RepositoryDeletePayload {
   deleted: Boolean!
   deletedRepository: Repository
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type RepositoryMetadata {
@@ -983,12 +1043,12 @@ type RepositoryMetadata {
 input RepositoryRemoveCronSettingsInput {
   repositoryId: ID!
   name: String!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type RepositoryRemoveCronSettingsPayload {
-  settings: [RepositoryCronSettings!]
-  clientMutationId: String
+  settings: [RepositoryCronSettings!]!
+  clientMutationId: String!
 }
 
 input RepositorySaveCronSettingsInput {
@@ -996,37 +1056,37 @@ input RepositorySaveCronSettingsInput {
   name: String!
   expression: String!
   branch: String!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type RepositorySaveCronSettingsPayload {
-  settings: [RepositoryCronSettings!]
-  clientMutationId: String
+  settings: [RepositoryCronSettings!]!
+  clientMutationId: String!
 }
 
 input RepositorySecuredVariableInput {
   repositoryId: ID!
   valueToSecure: String!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type RepositorySecuredVariablePayload {
   variableName: String!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 input RepositorySetMetadataInput {
   repositoryId: ID!
-  key: String
-  value: String
+  key: String!
+  value: String!
   description: String
   hidden: Boolean
   ttlSeconds: Int
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type RepositorySetMetadataPayload {
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type RepositorySettings {
@@ -1034,25 +1094,25 @@ type RepositorySettings {
   decryptEnvironmentVariables: DecryptEnvironmentVariablesFor!
   configResolutionStrategy: ConfigResolutionStrategy!
   additionalEnvironment: [String!]!
-  cacheVersion: Int
-  paused: Boolean
+  cacheVersion: Int!
+  paused: Boolean!
   oidcSubIncludeClaimKeys: [String!]!
 }
 
 input RepositorySettingsInput {
   repositoryId: ID!
-  needsApproval: Boolean
-  decryptEnvironmentVariables: DecryptEnvironmentVariablesFor
+  needsApproval: Boolean!
+  decryptEnvironmentVariables: DecryptEnvironmentVariablesFor!
   configResolutionStrategy: ConfigResolutionStrategy
   additionalEnvironment: [String!]
   cacheVersion: Int
   oidcSubIncludeClaimKeys: [String!]
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type RepositorySettingsPayload {
   settings: RepositorySettings!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 input SaveWebHookSettingsInput {
@@ -1060,25 +1120,25 @@ input SaveWebHookSettingsInput {
   ownerUid: ID!
   webhookURL: String
   secretToken: String
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type SaveWebHookSettingsPayload {
   error: String
-  info: OwnerInfo
-  settings: WebHookSettings
-  clientMutationId: String
+  info: OwnerInfo!
+  settings: WebHookSettings!
+  clientMutationId: String!
 }
 
 input SaveWebPushConfigurationInput {
   endpoint: String!
   p256dhKey: String!
   authKey: String!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type SaveWebPushConfigurationPayload {
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type Subscription {
@@ -1092,24 +1152,24 @@ type Task implements Node {
   buildId: ID!
   repositoryId: ID!
   name: String!
-  localGroupId: Int
+  localGroupId: Int!
   requiredGroups: [Int!]!
   status: TaskStatus!
   notifications: [Notification!]!
   commands: [TaskCommand!]!
   firstFailedCommand: TaskCommand
   artifacts: [Artifacts!]!
-  commandLogsTail(name: String!): [String!]
-  statusTimestamp: Int
-  creationTimestamp: Int
+  commandLogsTail(name: String!): [String!]!
+  statusTimestamp: Int!
+  creationTimestamp: Int!
   scheduledTimestamp: Int
   executingTimestamp: Int
   finalStatusTimestamp: Int
-  durationInSeconds: Int
+  durationInSeconds: Int!
   labels: [String!]!
   uniqueLabels: [String!]!
   requiredPRLabels: [String!]!
-  timeoutInSeconds: Int
+  timeoutInSeconds: Int!
   optional: Boolean!
   statusDurations: [TaskStatusDuration!]!
   repository: Repository!
@@ -1127,7 +1187,7 @@ type Task implements Node {
   instancePlatform: PlatformType
   instanceArchitecture: ArchitectureType!
   instanceResources: InstanceResources
-  executionInfo: ExecutionInfo
+  executionInfo: ExecutionInfo!
   baseEnvironment: [String!]!
   hooks: [Hook!]!
   reranBy: UserBasicInfo
@@ -1138,22 +1198,22 @@ type Task implements Node {
 
 input TaskAbortInput {
   taskId: ID!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type TaskAbortPayload {
   abortedTask: Task!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 input TaskBatchAbortInput {
-  taskIds: [ID!]
-  clientMutationId: String
+  taskIds: [ID!]!
+  clientMutationId: String!
 }
 
 type TaskBatchAbortPayload {
-  tasks: [Task!]
-  clientMutationId: String
+  tasks: [Task!]!
+  clientMutationId: String!
 }
 
 type TaskCommand {
@@ -1161,7 +1221,7 @@ type TaskCommand {
   type: TaskCommandType!
   status: TaskCommandStatus!
   durationInSeconds: Int!
-  logsTail: [String!]
+  logsTail: [String!]!
 }
 
 """
@@ -1195,23 +1255,23 @@ enum TaskCommandType {
 input TaskReRunInput {
   taskId: ID!
   attachTerminal: Boolean
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type TaskReRunPayload {
   newTask: Task!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 input TasksReRunInput {
   taskIds: [ID!]
   attachTerminal: Boolean
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type TasksReRunPayload {
-  newTasks: [Task!]
-  clientMutationId: String
+  newTasks: [Task!]!
+  clientMutationId: String!
 }
 
 """
@@ -1236,12 +1296,12 @@ type TaskStatusDuration {
 
 input TaskTriggerInput {
   taskId: ID!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type TaskTriggerPayload {
   task: Task!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 """
@@ -1262,53 +1322,41 @@ type TimePoint {
   value: Float!
 }
 
-input UpdateOrganizationSecuredVariableInput {
-  organizationId: ID!
-  name: String!
-  updatedValueToSecure: String!
-  clientMutationId: String
-}
-
-type UpdateOrganizationSecuredVariablePayload {
-  variableName: String!
-  clientMutationId: String
-}
-
 input UpdateOwnerSecuredVariableInput {
   platform: String!
   ownerUid: ID!
   name: String!
   updatedValueToSecure: String!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type UpdateOwnerSecuredVariablePayload {
   variableName: String!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 input UpdatePersistentWorkerInput {
   poolId: String!
   name: String!
   disabled: Boolean!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type UpdatePersistentWorkerPayload {
   worker: PersistentWorker!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 input UpdatePersistentWorkerPoolInput {
   poolId: String!
   name: String!
   enabledForPublic: Boolean!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type UpdatePersistentWorkerPoolPayload {
   pool: PersistentWorkerPool!
-  clientMutationId: String
+  clientMutationId: String!
 }
 
 type User implements Node & UserBasicInfo {
@@ -1367,7 +1415,7 @@ type User implements Node & UserBasicInfo {
     fetching only the last certain number of nodes
     """
     last: Int
-  ): UserTransactionsConnection
+  ): UserTransactionsConnection!
 }
 
 interface UserBasicInfo {
@@ -1383,7 +1431,7 @@ type UserBuildEdge {
   """
   The item at the end of the edge
   """
-  node: Build
+  node: Build!
 
   """
   cursor marks a unique position or index into the connection
@@ -1398,7 +1446,7 @@ type UserBuildsConnection {
   """
   a list of edges
   """
-  edges: [UserBuildEdge]
+  edges: [UserBuildEdge!]!
 
   """
   details about this specific page
@@ -1428,7 +1476,7 @@ type UserTransactionsConnection {
   """
   a list of edges
   """
-  edges: [UserTransactionEdge]
+  edges: [UserTransactionEdge!]!
 
   """
   details about this specific page
@@ -1459,7 +1507,7 @@ type WebHookDeliveryResponse {
 }
 
 type WebHookSettings {
-  ownerUid: ID
+  ownerUid: ID!
   webhookURL: String
-  maskedSecretToken: String
+  maskedSecretToken: String!
 }

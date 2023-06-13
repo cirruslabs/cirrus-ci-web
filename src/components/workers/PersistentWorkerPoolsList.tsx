@@ -42,6 +42,7 @@ import { useNavigate } from 'react-router-dom';
 
 interface PoolsListProps {
   readonly ownerUid: string;
+  readonly platform: string;
   pools: ReadonlyArray<{
     readonly id: string;
     readonly name: string;
@@ -99,6 +100,7 @@ function PersistentWorkerPoolsList(props: PoolsListProps) {
       </CardContent>
       <CardActions>
         <CreateNewPersistentWorkerPoolDialog
+          platform={props.platform}
           ownerUid={props.ownerUid}
           open={openDialog}
           onClose={() => setOpenDialog(!openDialog)}
@@ -114,6 +116,7 @@ function PersistentWorkerPoolsList(props: PoolsListProps) {
 interface DialogProps {
   ownerUid: string;
   open: boolean;
+  platform: string;
 
   onClose(...args: any[]): void;
 }
@@ -134,6 +137,7 @@ function CreateNewPersistentWorkerPoolDialog(props: DialogProps) {
   `);
   function createPool() {
     const input: CreatePersistentWorkerPoolInput = {
+      platform: props.platform,
       clientMutationId: 'create-persistent-worker-pool-' + props.ownerUid,
       ownerUid: props.ownerUid,
       name: name,

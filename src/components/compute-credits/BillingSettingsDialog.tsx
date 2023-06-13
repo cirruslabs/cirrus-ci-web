@@ -45,6 +45,7 @@ export default function BillingSettingsDialog(props: Props) {
   let billingSettings = useFragment(
     graphql`
       fragment BillingSettingsDialog_billingSettings on BillingSettings {
+        platform
         ownerUid
         enabled
         billingCreditsLimit
@@ -68,6 +69,7 @@ export default function BillingSettingsDialog(props: Props) {
     mutation BillingSettingsDialogMutation($input: BillingSettingsInput!) {
       saveBillingSettings(input: $input) {
         settings {
+          platform
           ownerUid
           enabled
           billingCreditsLimit
@@ -80,6 +82,7 @@ export default function BillingSettingsDialog(props: Props) {
   function updateSettings() {
     const variables: BillingSettingsDialogMutationVariables = {
       input: {
+        platform: billingSettings.platform,
         clientMutationId: 'save-billing-settings-' + billingSettings.ownerUid,
         ownerUid: billingSettings.ownerUid,
         enabled: enabled,

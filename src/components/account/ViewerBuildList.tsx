@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useRefetchableFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { Helmet as Head } from 'react-helmet';
+import Helmet from 'react-helmet';
 
 import { makeStyles } from '@mui/styles';
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
@@ -96,9 +96,9 @@ function ViewerBuildList(props: Props) {
 
   return (
     <Paper className={classes.paper}>
-      <Head>
+      <Helmet>
         <title>Recent Builds - Cirrus CI</title>
-      </Head>
+      </Helmet>
       <Toolbar className={classes.header} disableGutters>
         <Typography variant="h5">Recent Builds</Typography>
         <ToggleButtonGroup value={filter} exclusive onChange={handleFilterChange}>

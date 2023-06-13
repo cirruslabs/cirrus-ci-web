@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { useFragment, useSubscription } from 'react-relay';
 import { Link as RouterLink } from 'react-router-dom';
 import { graphql } from 'babel-plugin-relay/macro';
-import { Helmet as Head } from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import cx from 'classnames';
 
 import { makeStyles } from '@mui/styles';
@@ -171,11 +171,11 @@ export default function RepositoryBuildList(props: Props) {
 
   return (
     <div className={classes.root}>
-      <Head>
+      <Helmet>
         <title>
           {repository.owner}/{repository.name} - Cirrus CI
         </title>
-      </Head>
+      </Helmet>
       {/* CHART */}
       {buildsChart}
 

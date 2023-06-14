@@ -23,10 +23,12 @@ function drawIcon(color, cb) {
     canvas.height = img.height;
 
     let context = canvas.getContext('2d');
-    context.clearRect(0, 0, img.width, img.height);
-    context.drawImage(img, 0, 0);
+    if (context) {
+      context.clearRect(0, 0, img.width, img.height);
+      context.drawImage(img, 0, 0);
 
-    cb(context.canvas.toDataURL());
+      cb(context.canvas.toDataURL());
+    }
   };
   img.src = 'data:image/svg+xml;base64,' + Base64.encode(iconSVG(color));
 }
@@ -50,7 +52,7 @@ function iconSVG(color) {
 }
 
 interface CirrusFaviconProps {
-  status?: BuildStatus | TaskStatus | boolean;
+  status?: BuildStatus | TaskStatus ;
 }
 
 export default function CirrusFavicon(props: CirrusFaviconProps) {

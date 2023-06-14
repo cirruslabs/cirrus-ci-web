@@ -3,15 +3,15 @@ import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
 import CallSplit from '@mui/icons-material/CallSplit';
-import { useNavigate } from 'react-router-dom';
-import { navigateHelper } from '../../utils/navigateHelper';
-import { useFragment } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
-import { BuildBranchNameChip_build$key } from './__generated__/BuildBranchNameChip_build.graphql';
-import { shorten } from '../../utils/text';
-import { makeStyles } from '@mui/styles';
-import { Commit } from '@mui/icons-material';
-import { Tooltip } from '@mui/material';
+import {useNavigate} from 'react-router-dom';
+import {navigateHelper} from '../../utils/navigateHelper';
+import {useFragment} from 'react-relay';
+import {graphql} from 'babel-plugin-relay/macro';
+import {BuildBranchNameChip_build$key} from './__generated__/BuildBranchNameChip_build.graphql';
+import {shorten} from '../../utils/text';
+import {makeStyles} from '@mui/styles';
+import {Commit} from '@mui/icons-material';
+import {Tooltip} from '@mui/material';
 
 const useStyles = makeStyles(theme => {
   return {
@@ -56,8 +56,6 @@ export default function BuildBranchNameChip(props: Props) {
         event,
         '/github/' + build.repository.owner + '/' + build.repository.name + '/' + build.branch,
       );
-    } else if (build.repository.id) {
-      navigateHelper(navigate, event, '/repository/' + build.repository.id + '/' + build.branch);
     }
   }
 

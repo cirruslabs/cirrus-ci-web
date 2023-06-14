@@ -66,15 +66,11 @@ function ViewerBuildList(props: Props) {
 
   const [filter, setFilter] = useState('all');
 
-  let builds = [];
-
-  if (data.viewer.builds) {
-    builds = data.viewer.builds.edges
-      .map(edge => edge.node)
-      .filter(build => {
-        return !(filter === 'running' && isBuildFinalStatus(build.status));
-      });
-  }
+  let builds = data?.viewer?.builds.edges
+    .map(edge => edge.node)
+    .filter(build => {
+      return !(filter === 'running' && isBuildFinalStatus(build.status));
+    }) || [];
   const handleFilterChange = (event, newFilter) => {
     // This prevents the depressing of the toggle button
     // without pressing another button.

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { Link as RouterLink } from 'react-router-dom';
 
 import { makeStyles } from '@mui/styles';
 import Link from '@mui/material/Link';
@@ -222,7 +221,7 @@ const Crumb = ({ active, name, href, Icon }: CrumbProps) => {
   }
 
   return (
-    <Link className={className} component={RouterLink} color="inherit" underline="hover" to={href}>
+    <Link className={className} color="inherit" underline="hover" href={href}>
       {content}
     </Link>
   );

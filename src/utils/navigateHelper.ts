@@ -9,7 +9,7 @@ export function navigateHelper(navigate, event, url) {
     window.open(url, '_blank');
   } /*else if (navigate && !url.includes('://')) {
     navigate(url);
-  } */else {
+  } */ else {
     window.open(url, '_self');
   }
   if (event) {

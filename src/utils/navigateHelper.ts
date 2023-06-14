@@ -7,9 +7,9 @@ export function navigateHelper(navigate, event, url) {
 
   if (event && (event.metaKey || event.ctrlKey || event.button === 1 || event.button === 4)) {
     window.open(url, '_blank');
-  } else if (navigate && !url.includes('://')) {
+  } /*else if (navigate && !url.includes('://')) {
     navigate(url);
-  } else {
+  } */else {
     window.open(url, '_self');
   }
   if (event) {

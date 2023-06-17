@@ -76,7 +76,7 @@ export default function TaskDurationChip(props: Props) {
   if (!isTaskInProgressStatus(task.status) && !isFinalStatus) {
     durationInSeconds = 0;
   } else if (!isFinalStatus) {
-    let timestamp = Math.max(task.creationTimestamp, task.scheduledTimestamp, task.executingTimestamp);
+    let timestamp = Math.max(task.creationTimestamp, task.scheduledTimestamp || 0, task.executingTimestamp || 0);
     durationInSeconds = (Date.now() - timestamp) / 1000;
   }
 

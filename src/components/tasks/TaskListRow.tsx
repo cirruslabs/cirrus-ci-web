@@ -77,12 +77,13 @@ export default function TaskListRow(props: Props) {
 
   let navigate = useNavigate();
   let colorMapping = useTaskStatusColorMapping();
-  let { durationBeforeScheduling, overallDuration } = props;
+  let { overallDuration } = props;
   let classes = useStyles();
   let progress: null | JSX.Element = null;
   if (isTaskFinalStatus(task.status) && overallDuration && task.executingTimestamp) {
     const scheduledTimestamp = task.scheduledTimestamp || 0;
     const finalStatusTimestamp = task.finalStatusTimestamp || 0;
+    const durationBeforeScheduling = props.durationBeforeScheduling || 0;
     let scheduledDuration = Math.max(0, task.executingTimestamp - scheduledTimestamp) / 1000;
     let executionDuration = Math.max(0, finalStatusTimestamp - task.executingTimestamp) / 1000;
     progress = (

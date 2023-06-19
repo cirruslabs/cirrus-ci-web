@@ -20,8 +20,7 @@ export default function OwnerComputeCredits(props: Props) {
         transactions(last: 50) {
           edges {
             node {
-              taskId
-              ...ComputeCreditsTransactionRow_transaction
+              ...ComputeCreditsTransactionsList_transactions
             }
           }
         }

@@ -194,27 +194,14 @@ export default function TaskDetails(props: Props) {
           ...RepositoryNameChip_repository
         }
         allOtherRuns {
-          id
-          localGroupId
-          requiredGroups
-          scheduledTimestamp
-          executingTimestamp
-          finalStatusTimestamp
-          ...TaskListRow_task
+          ...TaskList_tasks
         }
         dependencies {
-          id
-          localGroupId
-          requiredGroups
-          scheduledTimestamp
-          executingTimestamp
-          finalStatusTimestamp
-          ...TaskListRow_task
+          ...TaskList_tasks
         }
         ...TaskExecutionInfo_task
         hooks {
-          timestamp
-          ...HookListRow_hook
+          ...HookList_hooks
         }
         executionInfo {
           cacheRetrievalAttempts {
@@ -553,12 +540,17 @@ export default function TaskDetails(props: Props) {
     return !(label.startsWith('canceller_') || label.startsWith('rerunner_'));
   }
 
-  const shouldRunTerminal = task.terminalCredential != null && !isFinalStatus;
+  const shouldRunTerminal = Boolean(task.terminalCredential && !isFinalStatus);
 
   useEffect(() => {
-    let ct = new CirrusTerminal(document.getElementById('terminal'));
+    const terminalElement = document.getElementById('terminal');
+    if (!terminalElement) {
+      console.error('Terminal element not found');
+      return;
+    }
+    let ct = new CirrusTerminal(terminalElement);
 
-    if (shouldRunTerminal) {
+    if (task.terminalCredential && !isFinalStatus) {
       ct.connect(
         'https://terminal.cirrus-ci.com',
         task.terminalCredential.locator,
@@ -569,7 +561,7 @@ export default function TaskDetails(props: Props) {
     return () => {
       ct.dispose();
     };
-  }, [shouldRunTerminal, task.terminalCredential]);
+  }, [isFinalStatus, task.terminalCredential]);
 
   let taskLabelsToShow = task.labels.filter(desiredLabel);
   let MAX_TASK_LABELS_TO_SHOW = 5;

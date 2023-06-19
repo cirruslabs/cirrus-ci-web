@@ -62,7 +62,10 @@ export default function TaskCommandList(props: Props) {
   let theme = useTheme();
   const prefersDarkMode = useRecoilValue(prefersDarkModeState);
 
-  function commandItem(command: ItemOfArray<TaskCommandList_task$data['commands']>, commandStartTimestamp: number) {
+  function commandItem(
+    command: ItemOfArray<TaskCommandList_task$data['commands']>,
+    commandStartTimestamp: number | null = null,
+  ) {
     let search = queryString.parse(location.search);
     const selectedCommandName = search.command || search.logs;
     let summaryStyle = prefersDarkMode
@@ -115,7 +118,7 @@ export default function TaskCommandList(props: Props) {
                   'skipped'
                 ) : finished ? (
                   formatDuration(command.durationInSeconds)
-                ) : isTaskCommandExecuting(command.status) ? (
+                ) : isTaskCommandExecuting(command.status) && commandStartTimestamp ? (
                   <DurationTicker startTimestamp={commandStartTimestamp} />
                 ) : (
                   ''
@@ -136,7 +139,7 @@ export default function TaskCommandList(props: Props) {
   for (let i = 0; i < commands.length; ++i) {
     let command = commands[i];
     commandComponents.push(commandItem(command, lastTimestamp));
-    lastTimestamp += command.durationInSeconds * 1000;
+    if (lastTimestamp) lastTimestamp += command.durationInSeconds * 1000;
   }
   return <div>{commandComponents}</div>;
 }

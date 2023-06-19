@@ -2,17 +2,25 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import React from 'react';
 import ComputeCreditsTransactionRow from './ComputeCreditsTransactionRow';
-import { FragmentRefs } from 'relay-runtime';
+import { graphql } from 'babel-plugin-relay/macro';
+import { useFragment } from 'react-relay';
+import { ComputeCreditsTransactionsList_transactions$key } from './__generated__/ComputeCreditsTransactionsList_transactions.graphql';
 
 interface Props {
-  transactions: ReadonlyArray<{
-    readonly taskId: number;
-    readonly ' $fragmentRefs': FragmentRefs<'ComputeCreditsTransactionRow_transaction'>;
-  }>;
+  transactions: ComputeCreditsTransactionsList_transactions$key;
 }
 
 const ComputeCreditsTransactionsList = (props: Props) => {
-  let transactions = props.transactions || [];
+  const transactions = useFragment(
+    graphql`
+      fragment ComputeCreditsTransactionsList_transactions on OwnerTransaction @relay(plural: true) {
+        taskId
+        ...ComputeCreditsTransactionRow_transaction
+      }
+    `,
+    props.transactions,
+  );
+
   return (
     <Table style={{ tableLayout: 'auto' }}>
       <TableBody>

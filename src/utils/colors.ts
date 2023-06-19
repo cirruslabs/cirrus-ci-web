@@ -49,16 +49,18 @@ export function useHookStatusColor(hook) {
   return hook.info.error === '' ? palette.success.main : palette.error.main;
 }
 
-export function useFaviconColor(status: BuildStatus | TaskStatus | undefined) {
+export function useFaviconColor(status: BuildStatus | TaskStatus | boolean | undefined) {
   const palette = useTheme().palette;
   switch (status) {
     case 'COMPLETED':
+    case true:
       return palette.success.main;
     case 'SKIPPED':
       return palette.success.light;
     case 'ABORTED':
       return palette.error.main;
     case 'FAILED':
+    case false:
       return palette.error.main;
     case 'EXECUTING':
     case 'CREATED':

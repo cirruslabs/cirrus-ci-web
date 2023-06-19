@@ -121,7 +121,7 @@ export default function HookDetails(props: Props) {
   if (hook.name.startsWith('on_task')) {
     targetName = 'Task';
     targetState = hookArguments[0].payload.data.task.status;
-    navigateToAllHooks = e => navigateTaskHelper(navigate, e, hook.task.id, true);
+    navigateToAllHooks = e => navigateTaskHelper(navigate, e, hook.task!.id, true);
   }
 
   if (hook.name.startsWith('on_build')) {

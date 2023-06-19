@@ -59,7 +59,7 @@ function RegisterServiceWorkerIfNeeded(userId: string, webPushServerKey: string)
             const variables: ActiveRepositoriesDrawerDeleteWebPushConfigurationMutation$variables = {
               input: {
                 clientMutationId: 'subscribe-' + userId,
-                endpoint: jsonSub.endpoint || "",
+                endpoint: jsonSub.endpoint || '',
               },
             };
             commitDeleteWebPushConfigurationMutation({
@@ -89,9 +89,9 @@ function RegisterServiceWorkerIfNeeded(userId: string, webPushServerKey: string)
                   const variables: ActiveRepositoriesDrawerSaveWebPushConfigurationMutation$variables = {
                     input: {
                       clientMutationId: 'subscribe-' + userId,
-                      endpoint: jsonSub.endpoint || "",
-                      p256dhKey: (jsonSub.keys && jsonSub.keys['p256dh']) || "",
-                      authKey: (jsonSub.keys && jsonSub.keys['auth']) || "",
+                      endpoint: jsonSub.endpoint || '',
+                      p256dhKey: (jsonSub.keys && jsonSub.keys['p256dh']) || '',
+                      authKey: (jsonSub.keys && jsonSub.keys['auth']) || '',
                     },
                   };
                   commitSaveWebPushConfigurationMutation({

@@ -1,8 +1,8 @@
-import {Terminal} from 'xterm';
-import {FitAddon} from 'xterm-addon-fit';
-import {grpc} from '@improbable-eng/grpc-web';
-import {BidirectionalStream, GuestServiceClient} from './api/terminal_pb_service';
-import {Data, GuestTerminalRequest, GuestTerminalResponse, TerminalDimensions} from './api/terminal_pb';
+import { Terminal } from 'xterm';
+import { FitAddon } from 'xterm-addon-fit';
+import { grpc } from '@improbable-eng/grpc-web';
+import { BidirectionalStream, GuestServiceClient } from './api/terminal_pb_service';
+import { Data, GuestTerminalRequest, GuestTerminalResponse, TerminalDimensions } from './api/terminal_pb';
 import '../../../node_modules/xterm/css/xterm.css';
 
 enum CirrusTerminalState {

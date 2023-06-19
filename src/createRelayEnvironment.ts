@@ -4,14 +4,14 @@ import { Environment, Network, Observable, RecordSource, Store, SubscribeFunctio
 import * as Sentry from '@sentry/react';
 import { RequestParameters } from 'relay-runtime/lib/util/RelayConcreteNode';
 import { SpanStatus } from '@sentry/tracing';
-import {Sink} from "relay-runtime/lib/network/RelayObservable";
+import { Sink } from 'relay-runtime/lib/network/RelayObservable';
 
 /*
  * See RelayNetwork.js:43 for details how it used in Relay
  */
 let subscription: SubscribeFunction = (operation, variables, cacheConfig) => {
   if (!operation.text) {
-    return
+    return;
   }
   if (variables['taskID'] && operation.text.indexOf('commands') > 0) {
     return webSocketSubscriptions(operation, variables, [

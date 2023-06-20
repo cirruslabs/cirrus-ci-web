@@ -33,12 +33,6 @@ const useStyles = makeStyles(theme => {
       },
     },
     commitName: {
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-      display: '-webkit-box',
-      WebkitLineClamp: 1,
-      WebkitBoxOrient: 'vertical',
-      whiteSpace: 'normal',
       [theme.breakpoints.only('xs')]: {
         marginBottom: theme.spacing(2.5),
       },
@@ -114,12 +108,13 @@ export default function BuildCard(props: Props) {
         }}
       >
         {/* LEFT */}
-        <Grid xs={4} sm={3} md={2} mt={{ xs: 1, sm: 0 }}>
+        <Grid xs={4} sm={3} md={2} my={{ sm: 1.5 }} mt={{ xs: 1.5 }}>
           <Grid
             container
             direction="row"
-            spacing={{ xs: 0.5, sm: 1 }}
+            spacing={{ xs: 1 }}
             alignItems={{ xs: 'start', sm: 'center' }}
+            justifyContent={{ xs: 'space-between', sm: 'flex-start' }}
             wrap="nowrap"
           >
             {/* STATUS UP XS-SCREEN*/}
@@ -128,13 +123,14 @@ export default function BuildCard(props: Props) {
             </Grid>
 
             {/* COMMIT */}
-            <Grid xs={9} py={{ xs: 'default', sm: 0 }}>
+            <Grid py={{ xs: 'default', sm: 0 }}>
               <Typography
                 className={classes.commitName}
                 variant="subtitle1"
                 title={build.changeMessageTitle}
                 gutterBottom
                 lineHeight={1}
+                noWrap
               >
                 {build.changeMessageTitle}
               </Typography>
@@ -142,14 +138,14 @@ export default function BuildCard(props: Props) {
             </Grid>
 
             {/* DURATION XS-SCREEN*/}
-            <Grid display={{ xs: 'block', sm: 'none' }} xs={3}>
+            <Grid display={{ xs: 'block', sm: 'none' }} width={120}>
               <Duration build={build} iconFirst />
             </Grid>
           </Grid>
         </Grid>
 
         {/* RIGHT */}
-        <Grid xs={4} sm={1} md={2} mb={{ xs: 1, sm: 0 }}>
+        <Grid xs={4} sm={1} md={2} my={{ sm: 1.5 }} mb={{ xs: 1.5 }}>
           <Grid
             container
             columns={11}

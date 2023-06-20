@@ -20,7 +20,6 @@ task:
     - name: Prettier
       prettier-check_script: yarn prettier-check
     - name: Type Check
-      allow_failures: true
       typecheck_script: yarn typecheck
 
 deploy_docker_builder:

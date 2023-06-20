@@ -2,5 +2,8 @@
   "printWidth": 120,
   "singleQuote": true,
   "trailingComma": "all",
-  "arrowParens": "avoid"
+  "arrowParens": "avoid",
+  "importOrder": ["react", "<THIRD_PARTY_MODULES>", "^@mui/(.*)$", "^utils/(.*)$", "^[../]"],
+  "importOrderSeparation": true,
+  "importOrderGroupNamespaceSpecifiers": true
 }

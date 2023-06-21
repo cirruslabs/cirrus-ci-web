@@ -623,7 +623,7 @@ export default function TaskDetails(props: Props) {
           {abortButton}
           {reRunButton}
           {triggerButton}
-          mui. {preTriggerButton}
+          {preTriggerButton}
           {invalidateCachesButton}
         </mui.CardActions>
       </mui.Card>

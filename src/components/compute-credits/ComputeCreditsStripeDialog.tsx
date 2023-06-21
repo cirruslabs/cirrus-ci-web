@@ -22,8 +22,8 @@ import { UnspecifiedCallbackFunction } from '../../utils/utility-types';
 
 import {
   ComputeCreditsStripeDialogMutation,
-  ComputeCreditsStripeDialogMutationResponse,
-  ComputeCreditsStripeDialogMutationVariables,
+  ComputeCreditsStripeDialogMutation$data,
+  ComputeCreditsStripeDialogMutation$variables,
 } from './__generated__/ComputeCreditsStripeDialogMutation.graphql';
 
 const useStyles = makeStyles(theme => {
@@ -86,7 +86,7 @@ function ComputeCreditsStripeDialog(props: Props) {
 
   const [paymentInProgress, setPaymentInProgress] = useState(false);
 
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const stripe = useStripe();
   const elements = useElements();
 
@@ -98,15 +98,24 @@ function ComputeCreditsStripeDialog(props: Props) {
     }
   };
 
+  const card = useMemo(() => elements?.getElement(CardElement) || null, [elements]);
+
+  const submitDisabled = useMemo(
+    () => !stripe || !elements || !card || paymentInProgress,
+    [stripe, elements, card, paymentInProgress],
+  );
+
   // Handle form submission.
   const handleSubmit = async event => {
+    if (!stripe || !card) return;
+
     event.preventDefault();
     setPaymentInProgress(true);
-    const card = elements.getElement(CardElement);
+
     const result = await stripe.createToken(card);
     if (result.error) {
       // Inform the user if there was an error.
-      setError(result.error.message);
+      setError(result.error.message!);
       setPaymentInProgress(false);
     } else {
       setError(null);
@@ -128,7 +137,7 @@ function ComputeCreditsStripeDialog(props: Props) {
     }
   `);
   const stripeTokenHandler = (token: Token) => {
-    const variables: ComputeCreditsStripeDialogMutationVariables = {
+    const variables: ComputeCreditsStripeDialogMutation$variables = {
       input: {
         clientMutationId: 'buy-credits-' + props.ownerUid,
         platform: props.platform || 'github',
@@ -141,9 +150,9 @@ function ComputeCreditsStripeDialog(props: Props) {
 
     commitComputeCreditsBuyMutation({
       variables: variables,
-      onCompleted: (response: ComputeCreditsStripeDialogMutationResponse, errors) => {
-        if (errors) {
-          setError(errors);
+      onCompleted: (response: ComputeCreditsStripeDialogMutation$data, errors) => {
+        if (errors && errors.length > 0) {
+          setError(errors[0].message);
           return;
         }
         setPaymentInProgress(false);
@@ -154,9 +163,9 @@ function ComputeCreditsStripeDialog(props: Props) {
           props.onClose();
         }
       },
-      onError: err => {
+      onError: errors => {
         setPaymentInProgress(false);
-        setError(err);
+        setError(errors[0].message);
       },
     });
   };
@@ -207,7 +216,7 @@ function ComputeCreditsStripeDialog(props: Props) {
         </Typography>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleSubmit} disabled={paymentInProgress} variant="contained">
+        <Button onClick={handleSubmit} disabled={submitDisabled} variant="contained">
           Buy {credits.toLocaleString('en-US', { useGrouping: true })} credits
         </Button>
       </DialogActions>

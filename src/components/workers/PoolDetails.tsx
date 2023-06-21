@@ -1,9 +1,8 @@
 import { makeStyles } from '@mui/styles';
 import Card from '@mui/material/Card';
 import { graphql } from 'babel-plugin-relay/macro';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFragment, useMutation } from 'react-relay';
-import { Helmet as Head } from 'react-helmet';
 import { PoolDetails_pool$key } from './__generated__/PoolDetails_pool.graphql';
 import {
   Avatar,
@@ -35,13 +34,13 @@ import Input from '@mui/material/Input';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import {
-  UpdatePersistentWorkerPoolInput,
   PoolDetailsUpdateMutation,
+  UpdatePersistentWorkerPoolInput,
 } from './__generated__/PoolDetailsUpdateMutation.graphql';
 import {
   GetPersistentWorkerPoolRegistrationTokenInput,
-  PoolDetailsGetRegistrationTokenMutationResponse,
   PoolDetailsGetRegistrationTokenMutation,
+  PoolDetailsGetRegistrationTokenMutation$data,
 } from './__generated__/PoolDetailsGetRegistrationTokenMutation.graphql';
 import CopyPasteField from '../common/CopyPasteField';
 import WorkerStatusChip from './WorkerStatusChip';
@@ -54,8 +53,8 @@ import {
   PoolDetailsDeleteWorkerMutation,
 } from './__generated__/PoolDetailsDeleteWorkerMutation.graphql';
 import {
-  UpdatePersistentWorkerInput,
   PoolDetailsUpdateWorkerMutation,
+  UpdatePersistentWorkerInput,
 } from './__generated__/PoolDetailsUpdateWorkerMutation.graphql';
 
 const useStyles = makeStyles(theme => {
@@ -111,7 +110,7 @@ export default function PoolDetails(props: PoolDetailsProps) {
   );
 
   let [openEditDialog, setOpenEditDialog] = useState(false);
-  let [registrationToken, setRegistrationToken] = useState(null);
+  let [registrationToken, setRegistrationToken] = useState<string | null>(null);
   const [commitGetRegistrationTokenMutation] = useMutation<PoolDetailsGetRegistrationTokenMutation>(graphql`
     mutation PoolDetailsGetRegistrationTokenMutation($input: GetPersistentWorkerPoolRegistrationTokenInput!) {
       persistentWorkerPoolRegistrationToken(input: $input) {
@@ -150,7 +149,7 @@ export default function PoolDetails(props: PoolDetailsProps) {
     };
     commitGetRegistrationTokenMutation({
       variables: { input: input },
-      onCompleted: (response: PoolDetailsGetRegistrationTokenMutationResponse, errors) => {
+      onCompleted: (response: PoolDetailsGetRegistrationTokenMutation$data, errors) => {
         if (errors) {
           console.log(errors);
           return;
@@ -198,12 +197,13 @@ export default function PoolDetails(props: PoolDetailsProps) {
     });
   }
 
+  useEffect(() => {
+    document.title = `${pool.name} pool - Cirrus CI`;
+  }, [pool.name]);
+
   let viewerCanSeeToken = pool.viewerPermission === 'ADMIN' || pool.viewerPermission === 'WRITE';
   return (
     <>
-      <Head>
-        <title>{pool.name} pool</title>
-      </Head>
       <Card elevation={24}>
         <CardHeader
           avatar={

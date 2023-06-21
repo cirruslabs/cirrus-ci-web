@@ -7,7 +7,7 @@ import ViewerBuildList from '../../components/account/ViewerBuildList';
 import WelcomePage from './WelcomePage';
 import { HomeViewerQuery } from './__generated__/HomeViewerQuery.graphql';
 
-export default function Home(): JSX.Element {
+export default function Home() {
   const response = useLazyLoadQuery<HomeViewerQuery>(
     graphql`
       query HomeViewerQuery {

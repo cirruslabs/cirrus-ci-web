@@ -14,8 +14,8 @@ import { useFragment, useMutation } from 'react-relay';
 import { RepositorySettings_repository$key } from './__generated__/RepositorySettings_repository.graphql';
 import {
   RepositorySettingsMutation,
-  RepositorySettingsMutationResponse,
-  RepositorySettingsMutationVariables,
+  RepositorySettingsMutation$data,
+  RepositorySettingsMutation$variables,
 } from './__generated__/RepositorySettingsMutation.graphql';
 import {
   Checkbox,
@@ -116,7 +116,7 @@ export default function RepositorySettings(props: Props) {
   `);
 
   function onSave() {
-    const variables: RepositorySettingsMutationVariables = {
+    const variables: RepositorySettingsMutation$variables = {
       input: {
         clientMutationId: 'save-settings-' + repository.id,
         repositoryId: repository.id,
@@ -131,7 +131,7 @@ export default function RepositorySettings(props: Props) {
 
     commitSaveSettingsMutation({
       variables: variables,
-      onCompleted: (response: RepositorySettingsMutationResponse, errors) => {
+      onCompleted: (response: RepositorySettingsMutation$data, errors) => {
         if (errors) {
           console.log(errors);
           return;

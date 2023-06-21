@@ -1,5 +1,4 @@
-import React, { MouseEventHandler } from 'react';
-import { Helmet as Head } from 'react-helmet';
+import React, { MouseEventHandler, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFragment, useMutation } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
@@ -29,7 +28,7 @@ import { navigateBuildHelper, navigateHookHelper, navigateTaskHelper } from '../
 
 import {
   HookDetailsRerunMutation,
-  HookDetailsRerunMutationResponse,
+  HookDetailsRerunMutation$data,
 } from './__generated__/HookDetailsRerunMutation.graphql';
 import { HookDetails_hook$key } from './__generated__/HookDetails_hook.graphql';
 
@@ -122,7 +121,7 @@ export default function HookDetails(props: Props) {
   if (hook.name.startsWith('on_task')) {
     targetName = 'Task';
     targetState = hookArguments[0].payload.data.task.status;
-    navigateToAllHooks = e => navigateTaskHelper(navigate, e, hook.task.id, true);
+    navigateToAllHooks = e => navigateTaskHelper(navigate, e, hook.task!.id, true);
   }
 
   if (hook.name.startsWith('on_build')) {
@@ -162,7 +161,7 @@ export default function HookDetails(props: Props) {
           hookIds: [hookId],
         },
       },
-      onCompleted: (response: HookDetailsRerunMutationResponse, error) => {
+      onCompleted: (response: HookDetailsRerunMutation$data, error) => {
         if (error) {
           console.log(error);
           return;
@@ -192,12 +191,13 @@ export default function HookDetails(props: Props) {
       <Logs logsName="output" logs={hook.info.outputLogs.join('\n')} />
     );
 
+  useEffect(() => {
+    document.title = `${targetName} hook - Cirrus CI`;
+  }, [targetName]);
+
   return (
     <div>
       <CirrusFavicon status={hook.info.error === ''} />
-      <Head>
-        <title>{targetName} hook - Cirrus CI</title>
-      </Head>
       <Card elevation={24}>
         <CardContent>
           <div className={classes.wrapper}>

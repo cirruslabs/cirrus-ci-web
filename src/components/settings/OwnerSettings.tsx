@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => {
 });
 
 interface Props {
-  info: OwnerSettings_info$key;
+  info: OwnerSettings_info$key | null;
 }
 
 export default function OwnerSettings(props: Props) {

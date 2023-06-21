@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Logs from '../logs/Logs';
-import { useLazyLoadQuery } from 'react-relay';
+import { useLazyLoadQuery, useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import CirrusLinearProgress from '../common/CirrusLinearProgress';
 import { subscribeTaskCommandLogs } from '../../rtu/ConnectionManager';
@@ -10,10 +10,8 @@ import { makeStyles } from '@mui/styles';
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
 import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
 import Fab from '@mui/material/Fab';
-import {
-  TaskCommandLogsTailQuery,
-  TaskCommandLogsTailQueryResponse,
-} from './__generated__/TaskCommandLogsTailQuery.graphql';
+import { TaskCommandLogsTailQuery } from './__generated__/TaskCommandLogsTailQuery.graphql';
+import { TaskCommandLogs_executionInfo$key } from './__generated__/TaskCommandLogs_executionInfo.graphql';
 import { TaskCommandStatus, TaskCommandType } from './__generated__/TaskCommandList_task.graphql';
 
 function logURL(taskId: string, command) {
@@ -49,10 +47,23 @@ interface RealTimeLogsProps {
     type: TaskCommandType;
   };
   initialLogLines: ReadonlyArray<string>;
-  executionInfo: TaskCommandLogsTailQueryResponse['task']['executionInfo'];
+  executionInfo: TaskCommandLogs_executionInfo$key;
 }
 
 function TaskCommandRealTimeLogs(props: RealTimeLogsProps) {
+  const executionInfo = useFragment(
+    graphql`
+      fragment TaskCommandLogs_executionInfo on ExecutionInfo {
+        cacheRetrievalAttempts {
+          hits {
+            key
+          }
+        }
+      }
+    `,
+    props.executionInfo,
+  );
+
   let realTimeLogs = !isTaskCommandFinalStatus(props.command.status);
   let [additionalLogs, setAdditionalLogs] = useState('\n');
 
@@ -67,7 +78,7 @@ function TaskCommandRealTimeLogs(props: RealTimeLogsProps) {
     return () => closable();
   }, [realTimeLogs, props.taskId, props.command.name, additionalLogs]);
 
-  let { taskId, command, initialLogLines, executionInfo } = props;
+  let { taskId, command, initialLogLines } = props;
   let classes = useStyles();
 
   let inProgress = !isTaskCommandFinalStatus(command.status);
@@ -131,17 +142,15 @@ export default function TaskCommandLogs(props: TaskCommandLogsProps) {
         task(id: $taskId) {
           commandLogsTail(name: $commandName)
           executionInfo {
-            cacheRetrievalAttempts {
-              hits {
-                key
-              }
-            }
+            ...TaskCommandLogs_executionInfo
           }
         }
       }
     `,
     { taskId: props.taskId, commandName: props.command.name },
   );
+
+  if (!response.task) return null;
 
   return (
     <TaskCommandRealTimeLogs

@@ -50,8 +50,9 @@ export class CirrusTerminal {
         return;
       }
 
-      if (message.hasOutput()) {
-        const data = message.getOutput().getData();
+      let output = message.getOutput();
+      if (output) {
+        const data = output.getData();
         this.term.write(data);
       }
     });

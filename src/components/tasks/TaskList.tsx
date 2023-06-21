@@ -1,33 +1,27 @@
 import React from 'react';
+import { useFragment } from 'react-relay';
+import { graphql } from 'babel-plugin-relay/macro';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TaskListRow from './TaskListRow';
-import { FragmentRefs } from 'relay-runtime';
-
-interface Task {
-  readonly id: string;
-  readonly localGroupId: number;
-  readonly requiredGroups: ReadonlyArray<number | null> | null;
-  readonly scheduledTimestamp: number;
-  readonly executingTimestamp: number;
-  readonly finalStatusTimestamp: number;
-  readonly ' $fragmentRefs': FragmentRefs<'TaskListRow_task'>;
-}
+import { TaskList_tasks$key, TaskList_tasks$data } from './__generated__/TaskList_tasks.graphql';
 
 interface Props {
-  tasks: ReadonlyArray<Task>;
+  tasks: TaskList_tasks$key;
   showCreation?: boolean;
 }
 
+type TopologicalSortResult = Array<{
+  task: TaskList_tasks$data[number];
+  durationBeforeScheduling?: number;
+  overallDuration?: number;
+}>;
+
 // stable topological sort in O(n*k) where n is amount of tasks and k is amount of stages
 // plus populating data for visualization
-function topologicalSort(tasks: ReadonlyArray<Task>): ReadonlyArray<{
-  task: Task;
-  durationBeforeScheduling: number;
-  overallDuration: number;
-}> {
-  let result = [];
+function topologicalSort(tasks: TaskList_tasks$data): TopologicalSortResult {
+  let result: TopologicalSortResult = [];
 
   let satisfiedGroups = {};
 
@@ -61,11 +55,12 @@ function topologicalSort(tasks: ReadonlyArray<Task>): ReadonlyArray<{
 
     for (let i = 0; i < result.length; i++) {
       let current = result[i];
-      let scheduledDuration = Math.max(0, current.task.executingTimestamp - current.task.scheduledTimestamp) / 1000;
-      let executionDuration = current.task.executingTimestamp
-        ? Math.max(0, current.task.finalStatusTimestamp - current.task.executingTimestamp) / 1000
-        : 0;
-      let candidate = current.durationBeforeScheduling + executionDuration + scheduledDuration;
+      const executingTimestamp = current.task.executingTimestamp ?? 0;
+      const scheduledTimestamp = current.task.scheduledTimestamp ?? 0;
+      const finalStatusTimestamp = current.task.finalStatusTimestamp ?? 0;
+      let scheduledDuration = Math.max(0, executingTimestamp - scheduledTimestamp) / 1000;
+      let executionDuration = executingTimestamp ? Math.max(0, finalStatusTimestamp - executingTimestamp) / 1000 : 0;
+      let candidate = current.durationBeforeScheduling! + executionDuration + scheduledDuration;
       if (candidate > currentDurationBeforeScheduling) {
         currentDurationBeforeScheduling = candidate;
       }
@@ -79,9 +74,7 @@ function topologicalSort(tasks: ReadonlyArray<Task>): ReadonlyArray<{
   for (let i = 0; i < tasks.length; i++) {
     let task = tasks[i];
     if (!satisfiedGroups[task.localGroupId]) {
-      result.push({
-        task: task,
-      });
+      result.push({ task });
     }
   }
 
@@ -92,8 +85,22 @@ function topologicalSort(tasks: ReadonlyArray<Task>): ReadonlyArray<{
   return result;
 }
 
-export default function TaskList(props: Props): JSX.Element {
-  let visualDataItems = topologicalSort(props.tasks || []);
+export default function TaskList(props: Props) {
+  const tasks = useFragment(
+    graphql`
+      fragment TaskList_tasks on Task @relay(plural: true) {
+        id
+        localGroupId
+        requiredGroups
+        executingTimestamp
+        scheduledTimestamp
+        finalStatusTimestamp
+        ...TaskListRow_task
+      }
+    `,
+    props.tasks,
+  );
+  let visualDataItems = topologicalSort(tasks);
   return (
     <Table style={{ tableLayout: 'auto' }}>
       <TableBody>

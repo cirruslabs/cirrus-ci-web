@@ -15,8 +15,8 @@ import { useMutation, useFragment } from 'react-relay';
 import { OwnerScopedTokenDialog_ownerInfo$key } from './__generated__/OwnerScopedTokenDialog_ownerInfo.graphql';
 import {
   OwnerScopedTokenDialogMutation,
-  OwnerScopedTokenDialogMutationResponse,
-  OwnerScopedTokenDialogMutationVariables,
+  OwnerScopedTokenDialogMutation$data,
+  OwnerScopedTokenDialogMutation$variables,
 } from './__generated__/OwnerScopedTokenDialogMutation.graphql';
 import TextField from '@mui/material/TextField';
 
@@ -51,9 +51,9 @@ export default function OwnerScopedTokenDialog(props: Props) {
 
   let classes = useStyles();
   let [readOnly, setReadOnly] = useState(true);
-  let [expirationDays, setExpirationDays] = useState(null);
+  let [expirationDays, setExpirationDays] = useState<number | null>(null);
   let [repositoryNames, setRepositoryNames] = useState('');
-  let [newToken, setNewToken] = useState(null);
+  let [newToken, setNewToken] = useState<string | null>(null);
 
   const [commitGenerateNewScopedAccessTokenMutation] = useMutation<OwnerScopedTokenDialogMutation>(
     graphql`
@@ -65,7 +65,7 @@ export default function OwnerScopedTokenDialog(props: Props) {
     `,
   );
   function generateToken() {
-    const variables: OwnerScopedTokenDialogMutationVariables = {
+    const variables: OwnerScopedTokenDialogMutation$variables = {
       input: {
         clientMutationId: 'generate-scoped-token-' + ownerInfo.uid + repositoryNames,
         platform: ownerInfo.platform,
@@ -77,7 +77,7 @@ export default function OwnerScopedTokenDialog(props: Props) {
     };
     commitGenerateNewScopedAccessTokenMutation({
       variables: variables,
-      onCompleted: (response: OwnerScopedTokenDialogMutationResponse, errors) => {
+      onCompleted: (response: OwnerScopedTokenDialogMutation$data, errors) => {
         if (errors) {
           setNewToken(`Failed to generate token!\n\n${errors.map(e => e.message).join('\n')}`);
         } else {
@@ -90,7 +90,7 @@ export default function OwnerScopedTokenDialog(props: Props) {
     });
   }
 
-  let newTokenComponent = null;
+  let newTokenComponent: null | JSX.Element = null;
   if (newToken) {
     newTokenComponent = (
       <FormControl fullWidth>

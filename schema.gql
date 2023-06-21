@@ -701,7 +701,7 @@ type OwnerTransactionEdge {
   """
   The item at the end of the edge
   """
-  node: OwnerTransaction
+  node: OwnerTransaction!
 
   """
   cursor marks a unique position or index into the connection
@@ -1461,7 +1461,7 @@ type UserTransactionEdge {
   """
   The item at the end of the edge
   """
-  node: OwnerTransaction
+  node: OwnerTransaction!
 
   """
   cursor marks a unique position or index into the connection

@@ -16,8 +16,8 @@ import React, { useState } from 'react';
 import { useMutation, useFragment } from 'react-relay';
 import {
   BillingSettingsDialogMutation,
-  BillingSettingsDialogMutationResponse,
-  BillingSettingsDialogMutationVariables,
+  BillingSettingsDialogMutation$data,
+  BillingSettingsDialogMutation$variables,
 } from './__generated__/BillingSettingsDialogMutation.graphql';
 import { BillingSettingsDialog_billingSettings$key } from './__generated__/BillingSettingsDialog_billingSettings.graphql';
 import { Link } from '@mui/material';
@@ -80,7 +80,7 @@ export default function BillingSettingsDialog(props: Props) {
     }
   `);
   function updateSettings() {
-    const variables: BillingSettingsDialogMutationVariables = {
+    const variables: BillingSettingsDialogMutation$variables = {
       input: {
         platform: billingSettings.platform,
         clientMutationId: 'save-billing-settings-' + billingSettings.ownerUid,
@@ -92,7 +92,7 @@ export default function BillingSettingsDialog(props: Props) {
     };
     commitSaveBillingSettingsMutation({
       variables: variables,
-      onCompleted: (response: BillingSettingsDialogMutationResponse, errors) => {
+      onCompleted: (response: BillingSettingsDialogMutation$data, errors) => {
         if (errors) {
           console.log(errors);
           return;

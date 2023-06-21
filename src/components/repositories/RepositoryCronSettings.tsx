@@ -23,13 +23,13 @@ import Icon from '@mui/material/Icon';
 import NextCronInvocationTimeChip from '../chips/NextCronInvocationTimeChip';
 import {
   RepositoryCronSettingsSaveMutation,
-  RepositoryCronSettingsSaveMutationResponse,
-  RepositoryCronSettingsSaveMutationVariables,
+  RepositoryCronSettingsSaveMutation$data,
+  RepositoryCronSettingsSaveMutation$variables,
 } from './__generated__/RepositoryCronSettingsSaveMutation.graphql';
 import {
   RepositoryCronSettingsRemoveMutation,
-  RepositoryCronSettingsRemoveMutationResponse,
-  RepositoryCronSettingsRemoveMutationVariables,
+  RepositoryCronSettingsRemoveMutation$data,
+  RepositoryCronSettingsRemoveMutation$variables,
 } from './__generated__/RepositoryCronSettingsRemoveMutation.graphql';
 import { navigateBuildHelper } from '../../utils/navigateHelper';
 import { CardActions } from '@mui/material';
@@ -121,7 +121,7 @@ export default function RepositoryCronSettings(props: Props) {
     }
   `);
   function addNewCronSetting() {
-    const variables: RepositoryCronSettingsSaveMutationVariables = {
+    const variables: RepositoryCronSettingsSaveMutation$variables = {
       input: {
         clientMutationId: `cron-save-${repository.id}-${settings.name}`,
         repositoryId: repository.id,
@@ -133,7 +133,7 @@ export default function RepositoryCronSettings(props: Props) {
 
     commitSaveCronSettingsMutation({
       variables: variables,
-      onCompleted: (response: RepositoryCronSettingsSaveMutationResponse, errors) => {
+      onCompleted: (response: RepositoryCronSettingsSaveMutation$data, errors) => {
         if (errors) {
           console.log(errors);
           return;
@@ -163,7 +163,7 @@ export default function RepositoryCronSettings(props: Props) {
     `,
   );
   function removeCronSetting(name: string) {
-    const variables: RepositoryCronSettingsRemoveMutationVariables = {
+    const variables: RepositoryCronSettingsRemoveMutation$variables = {
       input: {
         clientMutationId: `cron-remove-${repository.id}-${name}`,
         repositoryId: repository.id,
@@ -173,7 +173,7 @@ export default function RepositoryCronSettings(props: Props) {
 
     commitRemoveCronSettingsMutation({
       variables: variables,
-      onCompleted: (response: RepositoryCronSettingsRemoveMutationResponse, errors) => {
+      onCompleted: (response: RepositoryCronSettingsRemoveMutation$data, errors) => {
         if (errors) {
           console.log(errors);
           return;

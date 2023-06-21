@@ -16,7 +16,6 @@ import BillingSettingsButton from './BillingSettingsButton';
 import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { ComputeCreditsBase_info$key } from './__generated__/ComputeCreditsBase_info.graphql';
-import { Helmet as Head } from 'react-helmet';
 import ComputeCreditsStripeDialog from './ComputeCreditsStripeDialog';
 import { Link } from '@mui/material';
 
@@ -70,7 +69,7 @@ export default function ComputeCreditsBase(props: Props) {
         ...BillingSettingsButton_info
       }
     `,
-    props.info,
+    props.info ?? null,
   );
 
   let [expanded, setExpanded] = useState(false);
@@ -80,9 +79,6 @@ export default function ComputeCreditsBase(props: Props) {
   return (
     <Card elevation={24}>
       <CardHeader title="Compute Credits" />
-      <Head>
-        <script src="https://js.stripe.com/v3/" async></script>
-      </Head>
       <CardContent>
         <Typography variant="h6">
           Your current compute credits balance: <b className={classes.credits}>{props.balanceInCredits || '0.00'}</b>

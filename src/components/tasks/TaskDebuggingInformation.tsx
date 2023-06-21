@@ -68,6 +68,7 @@ function TaskDebuggingInformation(props: Props) {
         <Typography variant="h6">Debugging Information</Typography>
         <InlineLogs title="Execution events" lines={events} />
         {agentNotificationsComponent}
+        {/* schema commandLogsTail*/}
         <InlineLogs title="Agent logs" lines={task.commandLogsTail} />
       </CardContent>
     </Card>

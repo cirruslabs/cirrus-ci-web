@@ -34,7 +34,7 @@ export default function Duration(props: Props) {
       direction={props.iconFirst ? 'row-reverse' : 'row'}
       alignItems="center"
       spacing={0.5}
-      justifyContent={props.rightAlighment && 'flex-end'}
+      justifyContent={props.rightAlighment ? 'flex-end' : 'flex-start'}
     >
       <Typography variant="subtitle1" lineHeight={1}>
         {build.clockDurationInSeconds ? formatDuration(build.clockDurationInSeconds) : '—'}

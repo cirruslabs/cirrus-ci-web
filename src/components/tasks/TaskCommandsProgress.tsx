@@ -51,13 +51,14 @@ export default function TaskCommandsProgress(props: Props) {
   useEffect(() => {
     if (!isTaskFinalStatus(task.status)) {
       const intervalId = setInterval(() => {
+        // schema creationTimestamp
         setTotalDuration((Date.now() - task.creationTimestamp) / 1000);
       }, 1000);
       return () => clearInterval(intervalId);
     }
   }, [task.status, task.creationTimestamp]);
 
-  let bars = [];
+  let bars: Array<JSX.Element> = [];
 
   let colorMapping = useTaskStatusColorMapping();
 

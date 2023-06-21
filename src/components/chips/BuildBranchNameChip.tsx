@@ -56,8 +56,6 @@ export default function BuildBranchNameChip(props: Props) {
         event,
         '/github/' + build.repository.owner + '/' + build.repository.name + '/' + build.branch,
       );
-    } else if (build.repository.id) {
-      navigateHelper(navigate, event, '/repository/' + build.repository.id + '/' + build.branch);
     }
   }
 

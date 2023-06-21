@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import UserProfile from '../../components/account/UserProfile';
 import { ViewerProfileQuery } from './__generated__/ViewerProfileQuery.graphql';
 
-export default function ViewerProfile(): JSX.Element {
+export default function ViewerProfile() {
   const response = useLazyLoadQuery<ViewerProfileQuery>(
     graphql`
       query ViewerProfileQuery {

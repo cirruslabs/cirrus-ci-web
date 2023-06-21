@@ -29,6 +29,10 @@ export default function TaskCancellerChip(props: Props) {
   if (!cancelledBy) return <></>;
 
   return (
-    <Chip className={props.className} label="Cancelled by a user" avatar={<Avatar src={cancelledBy.avatarURL} />} />
+    <Chip
+      className={props.className}
+      label="Cancelled by a user"
+      avatar={<Avatar src={cancelledBy.avatarURL || ''} />}
+    />
   );
 }

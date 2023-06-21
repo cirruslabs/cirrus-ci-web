@@ -7,11 +7,11 @@ import AccountInformation from '../../components/account/AccountInformation';
 import { ActiveRepositoriesDrawerQuery } from './__generated__/ActiveRepositoriesDrawerQuery.graphql';
 import {
   ActiveRepositoriesDrawerDeleteWebPushConfigurationMutation,
-  ActiveRepositoriesDrawerDeleteWebPushConfigurationMutationVariables,
+  ActiveRepositoriesDrawerDeleteWebPushConfigurationMutation$variables,
 } from './__generated__/ActiveRepositoriesDrawerDeleteWebPushConfigurationMutation.graphql';
 import {
   ActiveRepositoriesDrawerSaveWebPushConfigurationMutation,
-  ActiveRepositoriesDrawerSaveWebPushConfigurationMutationVariables,
+  ActiveRepositoriesDrawerSaveWebPushConfigurationMutation$variables,
 } from './__generated__/ActiveRepositoriesDrawerSaveWebPushConfigurationMutation.graphql';
 
 function RegisterServiceWorkerIfNeeded(userId: string, webPushServerKey: string) {
@@ -52,10 +52,14 @@ function RegisterServiceWorkerIfNeeded(userId: string, webPushServerKey: string)
         reg.pushManager.getSubscription().then(existingSubscription => {
           if (existingSubscription && permissionResult !== 'granted') {
             let jsonSub = existingSubscription.toJSON();
-            const variables: ActiveRepositoriesDrawerDeleteWebPushConfigurationMutationVariables = {
+            if (!jsonSub.endpoint) {
+              console.error('endpoint is empty');
+              return;
+            }
+            const variables: ActiveRepositoriesDrawerDeleteWebPushConfigurationMutation$variables = {
               input: {
                 clientMutationId: 'subscribe-' + userId,
-                endpoint: jsonSub.endpoint,
+                endpoint: jsonSub.endpoint || '',
               },
             };
             commitDeleteWebPushConfigurationMutation({
@@ -74,12 +78,20 @@ function RegisterServiceWorkerIfNeeded(userId: string, webPushServerKey: string)
               .then(sub => {
                 if (sub) {
                   let jsonSub = sub.toJSON();
-                  const variables: ActiveRepositoriesDrawerSaveWebPushConfigurationMutationVariables = {
+                  if (!jsonSub.endpoint) {
+                    console.error('endpoint is empty');
+                    return;
+                  }
+                  if (!jsonSub.keys) {
+                    console.error('keys is empty');
+                    return;
+                  }
+                  const variables: ActiveRepositoriesDrawerSaveWebPushConfigurationMutation$variables = {
                     input: {
                       clientMutationId: 'subscribe-' + userId,
-                      endpoint: jsonSub.endpoint,
-                      p256dhKey: jsonSub.keys['p256dh'],
-                      authKey: jsonSub.keys['auth'],
+                      endpoint: jsonSub.endpoint || '',
+                      p256dhKey: (jsonSub.keys && jsonSub.keys['p256dh']) || '',
+                      authKey: (jsonSub.keys && jsonSub.keys['auth']) || '',
                     },
                   };
                   commitSaveWebPushConfigurationMutation({
@@ -117,7 +129,7 @@ function base64toUIntArray(text: string): Uint8Array {
   return result;
 }
 
-export default function ActiveRepositoriesDrawer(): JSX.Element {
+export default function ActiveRepositoriesDrawer() {
   const response = useLazyLoadQuery<ActiveRepositoriesDrawerQuery>(
     graphql`
       query ActiveRepositoriesDrawerQuery {

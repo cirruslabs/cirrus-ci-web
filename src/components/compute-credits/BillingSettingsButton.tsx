@@ -8,7 +8,7 @@ import BillingSettingsDialog from './BillingSettingsDialog';
 import { BillingSettingsButton_info$key } from './__generated__/BillingSettingsButton_info.graphql';
 
 interface Props {
-  info: BillingSettingsButton_info$key;
+  info: BillingSettingsButton_info$key | null;
   className?: string;
 }
 
@@ -24,9 +24,10 @@ export default function BillingSettingsButton(props: Props) {
     `,
     props.info,
   );
+
   let [openDialog, setOpenDialog] = useState(false);
-  let { className } = props;
   if (!info) return null;
+  let { className } = props;
 
   let { billingSettings } = info;
   if (!billingSettings) return null;

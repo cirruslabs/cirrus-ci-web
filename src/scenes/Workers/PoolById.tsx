@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLazyLoadQuery } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import { useParams } from 'react-router-dom';
@@ -7,18 +7,13 @@ import NotFound from '../NotFound';
 import PoolDetails from '../../components/workers/PoolDetails';
 
 import { PoolByIdQuery } from './__generated__/PoolByIdQuery.graphql';
-import { useEffect, useState } from 'react';
 
-export default function PoolById(): JSX.Element {
-  let { poolId } = useParams();
-  const [refreshedQueryOptions, setRefreshedQueryOptions] = useState(null);
+function PoolDetailsById(poolId: string) {
+  const [fetchKey, setFetchKey] = useState(0);
 
   useEffect(() => {
     const timeoutId = setInterval(() => {
-      setRefreshedQueryOptions(prev => ({
-        fetchKey: (prev?.fetchKey ?? 0) + 1,
-        fetchPolicy: 'store-and-network',
-      }));
+      setFetchKey(fetchKey + 1);
     }, 10_000);
     return () => clearInterval(timeoutId);
   });
@@ -32,7 +27,10 @@ export default function PoolById(): JSX.Element {
       }
     `,
     { poolId },
-    refreshedQueryOptions ?? {},
+    {
+      fetchKey: fetchKey,
+      fetchPolicy: 'store-and-network',
+    },
   );
 
   // todo: pass error message to <NotFound>
@@ -40,4 +38,14 @@ export default function PoolById(): JSX.Element {
     return <NotFound />;
   }
   return <PoolDetails pool={response.persistentWorkerPool} />;
+}
+
+export default function PoolById() {
+  let { poolId } = useParams();
+
+  if (!poolId) {
+    return <NotFound />;
+  }
+
+  return PoolDetailsById(poolId);
 }

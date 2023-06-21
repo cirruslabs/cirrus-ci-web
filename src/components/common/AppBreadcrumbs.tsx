@@ -56,12 +56,14 @@ interface Props {
   build?: AppBreadcrumbs_build$key;
   task?: AppBreadcrumbs_task$key;
   branch?: string;
-  extraCrumbs?: Array<{
-    name: string;
-    href?: string;
-    Icon: typeof SvgIcon | React.ElementType;
-  }>;
-  viewer?: AppBreadcrumbs_viewer$key;
+  extraCrumbs?: Array<Crumb>;
+  viewer?: AppBreadcrumbs_viewer$key | null;
+}
+
+interface Crumb {
+  name: string;
+  href?: string;
+  Icon: typeof SvgIcon | React.ElementType;
 }
 
 export default function AppBreadcrumbs(props: Props) {
@@ -72,7 +74,7 @@ export default function AppBreadcrumbs(props: Props) {
         name
       }
     `,
-    props.info,
+    props.info ?? null,
   );
   let repository = useFragment(
     graphql`
@@ -83,7 +85,7 @@ export default function AppBreadcrumbs(props: Props) {
         name
       }
     `,
-    props.repository,
+    props.repository ?? null,
   );
   let build = useFragment(
     graphql`
@@ -99,7 +101,7 @@ export default function AppBreadcrumbs(props: Props) {
         }
       }
     `,
-    props.build,
+    props.build ?? null,
   );
   let task = useFragment(
     graphql`
@@ -119,7 +121,7 @@ export default function AppBreadcrumbs(props: Props) {
         }
       }
     `,
-    props.task,
+    props.task ?? null,
   );
   let viewer = useFragment(
     graphql`
@@ -127,7 +129,7 @@ export default function AppBreadcrumbs(props: Props) {
         ...AccountSwitch_viewer
       }
     `,
-    props.viewer,
+    props.viewer ?? null,
   );
 
   let { branch, extraCrumbs } = props;
@@ -136,55 +138,73 @@ export default function AppBreadcrumbs(props: Props) {
   let ownerName = task?.build?.repository?.owner || build?.repository?.owner || repository?.owner || info?.name;
   let platform =
     task?.build?.repository?.platform || build?.repository?.platform || repository?.platform || info?.platform;
-  const ownerCrumb = {
-    name: ownerName,
-    href: absoluteLink(platform, ownerName),
-    Icon: GitHubIcon,
-  };
+  const ownerCrumb: Crumb | null =
+    platform && ownerName
+      ? {
+          name: ownerName,
+          href: absoluteLink(platform, ownerName),
+          Icon: GitHubIcon,
+        }
+      : null;
 
   let repositoryName = task?.build?.repository?.name || build?.repository?.name || repository?.name;
-  const repositoryCrumb = repositoryName && {
-    name: repositoryName,
-    href: absoluteLink(platform, ownerName, repositoryName),
-    Icon: RepositoryIcon,
-  };
+  const repositoryCrumb: Crumb | null =
+    platform && ownerName && repositoryName
+      ? {
+          name: repositoryName,
+          href: absoluteLink(platform, ownerName, repositoryName),
+          Icon: RepositoryIcon,
+        }
+      : null;
 
   let branchName = branch || task?.build?.branch || build?.branch;
-  const branchCrumb = branchName && {
-    name: branchName,
-    href: absoluteLink(platform, ownerName, repositoryName, branchName),
-    Icon: CallSplitIcon,
-  };
+  const branchCrumb: Crumb | null =
+    platform && ownerName && repositoryName && branchName
+      ? {
+          name: branchName,
+          href: absoluteLink(platform, ownerName, repositoryName, branchName),
+          Icon: CallSplitIcon,
+        }
+      : null;
 
   let buildId = task?.build?.id || build?.id;
   let buildHash = task?.build?.changeIdInRepo || build?.changeIdInRepo;
-  const hasBuild = !!(buildHash && buildId);
-  const buildCrumb = hasBuild && {
-    name: `Build for ${buildHash.substr(0, 7)}`,
-    href: absoluteLink('build', buildId),
-    Icon: InputIcon,
-  };
+  const buildCrumb: Crumb | null =
+    buildId && buildHash
+      ? {
+          name: `Build for ${buildHash.substr(0, 7)}`,
+          href: absoluteLink('build', buildId),
+          Icon: InputIcon,
+        }
+      : null;
 
-  const taskCrumb = task && {
-    name: task.name,
-    href: absoluteLink('task', task.id),
-    Icon: BookmarkBorderIcon,
-  };
+  const taskCrumb: Crumb | null = task
+    ? {
+        name: task.name,
+        href: absoluteLink('task', task.id),
+        Icon: BookmarkBorderIcon,
+      }
+    : null;
 
-  const crumbs = [ownerCrumb, repositoryCrumb, branchCrumb, buildCrumb, taskCrumb, ...(extraCrumbs || [])].filter(
-    Boolean,
-  );
+  const crumbs: Crumb[] = [
+    ownerCrumb,
+    repositoryCrumb,
+    branchCrumb,
+    buildCrumb,
+    taskCrumb,
+    ...(extraCrumbs || []),
+  ].filter(crumb => crumb !== null) as Crumb[];
 
   return (
     <Stack className={classes.root} direction="row" spacing={1}>
-      <AccountSwitch viewer={viewer} />
+      {viewer ? <AccountSwitch viewer={viewer} /> : null}
       <Breadcrumbs
         className={classes.breadcrumbs}
         separator={<NavigateNextIcon fontSize="small" />}
         aria-label="breadcrumb"
       >
         {crumbs.map((crumb, i) => (
-          <Crumb
+          <CrumbComponent
             key={crumb.name}
             active={crumbs.length - 1 === i}
             name={crumb.name}
@@ -204,7 +224,7 @@ interface CrumbProps {
   Icon: typeof SvgIcon | React.ElementType;
 }
 
-const Crumb = ({ active, name, href, Icon }: CrumbProps) => {
+const CrumbComponent = ({ active, name, href, Icon }: CrumbProps) => {
   let classes = useStyles();
   const className = `${classes.crumb} ${active ? classes.crumbActive : ''}`;
   const content = (

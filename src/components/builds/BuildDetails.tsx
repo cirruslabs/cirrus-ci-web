@@ -5,15 +5,14 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Paper from '@mui/material/Paper';
 import { graphql } from 'babel-plugin-relay/macro';
-import React, { useMemo } from 'react';
-import { useFragment, useSubscription, useMutation } from 'react-relay';
+import React, { useEffect, useMemo } from 'react';
+import { useFragment, useMutation, useSubscription } from 'react-relay';
 import { hasWritePermissions } from '../../utils/permissions';
 import BuildCreatedChip from '../chips/BuildCreatedChip';
 import BuildStatusChip from '../chips/BuildStatusChip';
 import CirrusFavicon from '../common/CirrusFavicon';
 import TaskList from '../tasks/TaskList';
 import { BuildDetails_build$key } from './__generated__/BuildDetails_build.graphql';
-import { Helmet as Head } from 'react-helmet';
 import Refresh from '@mui/icons-material/Refresh';
 import Check from '@mui/icons-material/Check';
 import Notification from '../common/Notification';
@@ -27,19 +26,19 @@ import DebuggingInformation from './BuildDebuggingInformation';
 import { HookType } from '../hooks/HookType';
 import {
   BuildDetailsApproveBuildMutation,
-  BuildDetailsApproveBuildMutationVariables,
+  BuildDetailsApproveBuildMutation$variables,
 } from './__generated__/BuildDetailsApproveBuildMutation.graphql';
 import {
   BuildDetailsReTriggerMutation,
-  BuildDetailsReTriggerMutationVariables,
+  BuildDetailsReTriggerMutation$variables,
 } from './__generated__/BuildDetailsReTriggerMutation.graphql';
 import {
   BuildDetailsReRunMutation,
-  BuildDetailsReRunMutationVariables,
+  BuildDetailsReRunMutation$variables,
 } from './__generated__/BuildDetailsReRunMutation.graphql';
 import {
   BuildDetailsCancelMutation,
-  BuildDetailsCancelMutationVariables,
+  BuildDetailsCancelMutation$variables,
 } from './__generated__/BuildDetailsCancelMutation.graphql';
 import CommitMessage from '../common/CommitMessage';
 
@@ -57,7 +56,7 @@ const buildSubscription = graphql`
         localGroupId
         requiredGroups
         status
-        ...TaskListRow_task
+        ...TaskList_tasks
       }
     }
   }
@@ -98,7 +97,6 @@ export default function BuildDetails(props: Props) {
         changeIdInRepo
         changeMessageTitle
         ...BuildCreatedChip_build
-        ...BuildBranchNameChip_build
         ...BuildStatusChip_build
         notifications {
           message
@@ -108,22 +106,16 @@ export default function BuildDetails(props: Props) {
         ...BuildDebuggingInformation_build
         latestGroupTasks {
           id
-          localGroupId
-          requiredGroups
-          scheduledTimestamp
-          executingTimestamp
-          finalStatusTimestamp
           status
-          ...TaskListRow_task
+          requiredGroups
+          ...TaskList_tasks
         }
         repository {
-          ...RepositoryNameChip_repository
           cloneUrl
           viewerPermission
         }
         hooks {
-          timestamp
-          ...HookListRow_hook
+          ...HookList_hooks
         }
       }
     `,
@@ -151,8 +143,9 @@ export default function BuildDetails(props: Props) {
       }
     }
   `);
+
   function approveBuild() {
-    const variables: BuildDetailsApproveBuildMutationVariables = {
+    const variables: BuildDetailsApproveBuildMutation$variables = {
       input: {
         clientMutationId: 'approve-build-' + build.id,
         buildId: build.id,
@@ -174,8 +167,9 @@ export default function BuildDetails(props: Props) {
       }
     }
   `);
+
   function reTriggerBuild() {
-    const variables: BuildDetailsReTriggerMutationVariables = {
+    const variables: BuildDetailsReTriggerMutation$variables = {
       input: {
         clientMutationId: 're-trigger-build-' + build.id,
         buildId: build.id,
@@ -199,8 +193,9 @@ export default function BuildDetails(props: Props) {
       }
     }
   `);
+
   function batchReRun(taskIds) {
-    const variables: BuildDetailsReRunMutationVariables = {
+    const variables: BuildDetailsReRunMutation$variables = {
       input: {
         clientMutationId: 'batch-rerun-' + build.id,
         taskIds: taskIds,
@@ -222,9 +217,10 @@ export default function BuildDetails(props: Props) {
       }
     }
   `);
+
   function batchCancellation(taskIds: string[]) {
     taskIds.forEach(id => {
-      const variables: BuildDetailsCancelMutationVariables = {
+      const variables: BuildDetailsCancelMutation$variables = {
         input: {
           clientMutationId: `batch-cancellation-${build.id}-${id}`,
           taskId: id,
@@ -318,12 +314,13 @@ export default function BuildDetails(props: Props) {
     setDisplayDebugInfo(!displayDebugInfo);
   };
 
+  useEffect(() => {
+    document.title = `${build.changeMessageTitle} - Cirrus CI`;
+  }, [build.changeMessageTitle]);
+
   return (
     <div>
       <CirrusFavicon status={build.status} />
-      <Head>
-        <title>{build.changeMessageTitle} - Cirrus CI</title>
-      </Head>
       <Card elevation={24}>
         <CardContent>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>

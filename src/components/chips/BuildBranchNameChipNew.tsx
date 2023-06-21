@@ -5,8 +5,7 @@ import { graphql } from 'babel-plugin-relay/macro';
 import cx from 'classnames';
 
 import { makeStyles } from '@mui/styles';
-import { useTheme } from '@mui/material';
-import { Tooltip } from '@mui/material';
+import { Tooltip, useTheme } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
 import CallSplitIcon from '@mui/icons-material/CallSplit';
@@ -66,8 +65,6 @@ export default function BuildBranchNameChipNew(props: Props) {
         event,
         '/github/' + build.repository.owner + '/' + build.repository.name + '/' + build.branch,
       );
-    } else if (build.repository.id) {
-      navigateHelper(navigate, event, '/repository/' + build.repository.id + '/' + build.branch);
     }
   }
 

@@ -14,7 +14,7 @@ function CopyPasteField(props: OutlinedInputProps) {
           <IconButton
             aria-label="copy"
             onClick={event => {
-              copy(props.value.toString());
+              copy(props.value!.toString());
             }}
             edge="end"
             size="large"

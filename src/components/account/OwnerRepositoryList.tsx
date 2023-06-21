@@ -55,7 +55,7 @@ export default function OwnerRepositoryList(props: Props) {
     [themeWithAdjustableBreakpoints],
   );
 
-  let organizationSettings = null;
+  let organizationSettings: null | JSX.Element = null;
 
   if (info && info.viewerPermission === 'ADMIN') {
     organizationSettings = (

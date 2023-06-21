@@ -61,8 +61,8 @@ export default function ArtifactsView(props: Props) {
   );
 
   let navigate = useNavigate();
-  let [selectedArtifactName, setSelectedArtifactName] = useState(null);
-  let [selectedPath, setSelectedPath] = useState([]);
+  let [selectedArtifactName, setSelectedArtifactName] = useState<string | null>(null);
+  let [selectedPath, setSelectedPath] = useState<Array<string>>([]);
   let [isFolderView, setFolderView] = useState(true);
 
   let artifactURL = (name: string) => {
@@ -85,7 +85,7 @@ export default function ArtifactsView(props: Props) {
     return null;
   }
 
-  function currentPath(): string {
+  function currentPath(): string | null {
     if (!selectedArtifactName) {
       return null;
     }
@@ -123,7 +123,7 @@ export default function ArtifactsView(props: Props) {
     }
 
     let selectedPrefix = selectedPath.length === 0 ? '' : selectedPath.join('/') + '/';
-    let results = [];
+    const results: Array<SingleArtifactItemInfo> = [];
 
     let files = currentArtifact.files;
     for (let fileInfo of files) {
@@ -145,7 +145,7 @@ export default function ArtifactsView(props: Props) {
   let classes = useStyles();
   let { artifacts } = task;
 
-  let items = [];
+  let items: Array<JSX.Element> = [];
 
   // ... if needed
   if (selectedPath.length > 0 && isFolderView) {

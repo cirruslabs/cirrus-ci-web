@@ -1,14 +1,17 @@
 import React from 'react';
+import { useFragment } from 'react-relay';
 
+import { graphql } from 'babel-plugin-relay/macro';
+
+import Star from '@mui/icons-material/Star';
+import { useTheme } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
-import Star from '@mui/icons-material/Star';
 import Tooltip from '@mui/material/Tooltip';
-import { graphql } from 'babel-plugin-relay/macro';
-import { isTaskFinalStatus } from '../../utils/status';
-import { useFragment } from 'react-relay';
+
+import { isTaskFinalStatus } from 'utils/status';
+
 import { TaskTransactionChip_task$key } from './__generated__/TaskTransactionChip_task.graphql';
-import { useTheme } from '@mui/material';
 
 interface Props {
   task: TaskTransactionChip_task$key;

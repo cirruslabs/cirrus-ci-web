@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
+import AceEditor from 'react-ace';
 import { useFragment, useMutation } from 'react-relay';
+import { useNavigate } from 'react-router-dom';
+
+import 'ace-builds/src-noconflict/mode-yaml';
+import 'ace-builds/src-noconflict/theme-github';
 import { graphql } from 'babel-plugin-relay/macro';
+
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -8,18 +14,15 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
-import AceEditor from 'react-ace';
-import { useNavigate } from 'react-router-dom';
-import { navigateBuildHelper } from '../../utils/navigateHelper';
 
-import 'ace-builds/src-noconflict/mode-yaml';
-import 'ace-builds/src-noconflict/theme-github';
-import { CreateBuildDialog_repository$key } from './__generated__/CreateBuildDialog_repository.graphql';
+import { navigateBuildHelper } from 'utils/navigateHelper';
+
 import {
   CreateBuildDialogMutation,
   CreateBuildDialogMutation$data,
   CreateBuildDialogMutation$variables,
 } from './__generated__/CreateBuildDialogMutation.graphql';
+import { CreateBuildDialog_repository$key } from './__generated__/CreateBuildDialog_repository.graphql';
 
 interface Props {
   onClose: Function;

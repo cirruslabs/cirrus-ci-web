@@ -1,13 +1,17 @@
-import Avatar from '@mui/material/Avatar';
-import Chip from '@mui/material/Chip';
-import Input from '@mui/icons-material/Input';
-import { graphql } from 'babel-plugin-relay/macro';
 import React from 'react';
 import { useFragment } from 'react-relay';
 import { useNavigate } from 'react-router-dom';
-import { navigateBuildHelper } from '../../utils/navigateHelper';
-import { BuildChangeChip_build$key } from './__generated__/BuildChangeChip_build.graphql';
+
+import { graphql } from 'babel-plugin-relay/macro';
+
+import Input from '@mui/icons-material/Input';
+import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip';
 import { makeStyles } from '@mui/styles';
+
+import { navigateBuildHelper } from 'utils/navigateHelper';
+
+import { BuildChangeChip_build$key } from './__generated__/BuildChangeChip_build.graphql';
 
 const useStyles = makeStyles(theme => {
   return {

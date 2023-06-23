@@ -1,17 +1,20 @@
 import React from 'react';
+import { useFragment } from 'react-relay';
 import { useNavigate } from 'react-router-dom';
+
+import { graphql } from 'babel-plugin-relay/macro';
+import classNames from 'classnames';
 
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-import { useFragment } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
-import { navigateHookHelper } from '../../utils/navigateHelper';
 import { makeStyles } from '@mui/styles';
-import classNames from 'classnames';
+
+import HookCreatedChip from 'components/chips/HookCreatedChip';
+import HookNameChip from 'components/chips/HookNameChip';
+import HookStatusChip from 'components/chips/HookStatusChip';
+import { navigateHookHelper } from 'utils/navigateHelper';
+
 import { HookListRow_hook$key } from './__generated__/HookListRow_hook.graphql';
-import HookStatusChip from '../chips/HookStatusChip';
-import HookNameChip from '../chips/HookNameChip';
-import HookCreatedChip from '../chips/HookCreatedChip';
 
 const useStyles = makeStyles(theme => {
   return {

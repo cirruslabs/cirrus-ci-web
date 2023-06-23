@@ -1,5 +1,6 @@
-import { Link, Typography, TypographyProps } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
+
+import { Link, Typography, TypographyProps } from '@mui/material';
 
 interface MarkdownTypographyProps extends TypographyProps {
   text: string;

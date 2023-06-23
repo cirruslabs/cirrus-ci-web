@@ -1,15 +1,18 @@
 import React from 'react';
+import { useFragment } from 'react-relay';
 
+import { graphql } from 'babel-plugin-relay/macro';
+
+import { useTheme } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
 import Icon from '@mui/material/Icon';
 import Tooltip from '@mui/material/Tooltip';
-import { useTaskStatusColor } from '../../utils/colors';
-import { taskStatusIconName, taskStatusMessage } from '../../utils/status';
-import { useFragment } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
+
+import { useTaskStatusColor } from 'utils/colors';
+import { taskStatusIconName, taskStatusMessage } from 'utils/status';
+
 import { TaskStatusChip_task$key } from './__generated__/TaskStatusChip_task.graphql';
-import { useTheme } from '@mui/material';
 
 interface Props {
   task: TaskStatusChip_task$key;

@@ -1,15 +1,16 @@
 import React, { useMemo } from 'react';
-
-import { Link as RouterLink } from 'react-router-dom';
-import { graphql } from 'babel-plugin-relay/macro';
 import { useFragment, useSubscription } from 'react-relay';
+import { Link as RouterLink } from 'react-router-dom';
+
+import { graphql } from 'babel-plugin-relay/macro';
 
 import mui from 'mui';
-import Hash from '../chips/Hash';
-import BuildStatusChipNew from '../chips/BuildStatusChipNew';
-import BuildBranchNameChipNew from '../chips/BuildBranchNameChipNew';
-import { absoluteLink } from '../../utils/link';
-import { createLinkToRepository } from '../../utils/github';
+
+import BuildBranchNameChipNew from 'components/chips/BuildBranchNameChipNew';
+import BuildStatusChipNew from 'components/chips/BuildStatusChipNew';
+import Hash from 'components/chips/Hash';
+import { createLinkToRepository } from 'utils/github';
+import { absoluteLink } from 'utils/link';
 
 import { RepositoryCard_repository$key } from './__generated__/RepositoryCard_repository.graphql';
 

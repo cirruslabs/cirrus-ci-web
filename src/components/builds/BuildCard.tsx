@@ -1,26 +1,28 @@
-import { useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { ThemeProvider } from '@emotion/react';
+import { useMemo } from 'react';
 import { useFragment } from 'react-relay';
+import { useNavigate } from 'react-router-dom';
+
 import { graphql } from 'babel-plugin-relay/macro';
 import { useRecoilValue } from 'recoil';
 
-import { makeStyles } from '@mui/styles';
-import { createTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Unstable_Grid2';
+import { createTheme } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 
-import Hash from '../chips/Hash';
-import Duration from '../chips/Duration';
-import BuildStatusChipNew from '../chips/BuildStatusChipNew';
-import BuildBranchNameChipNew from '../chips/BuildBranchNameChipNew';
-import RepositoryNameChipNew from '../chips/RepositoryNameChipNew';
-import RepositoryOwnerChipNew from '../chips/RepositoryOwnerChipNew';
-import usePageWidth from '../../utils/usePageWidth';
-import { navigateBuildHelper } from '../../utils/navigateHelper';
-import { muiThemeOptions, cirrusOpenDrawerState } from '../../cirrusTheme';
-import useThemeWithAdjustableBreakpoints from '../../utils/useThemeWithAdjustableBreakpoints';
+import { muiThemeOptions, cirrusOpenDrawerState } from 'cirrusTheme';
+
+import BuildBranchNameChipNew from 'components/chips/BuildBranchNameChipNew';
+import BuildStatusChipNew from 'components/chips/BuildStatusChipNew';
+import Duration from 'components/chips/Duration';
+import Hash from 'components/chips/Hash';
+import RepositoryNameChipNew from 'components/chips/RepositoryNameChipNew';
+import RepositoryOwnerChipNew from 'components/chips/RepositoryOwnerChipNew';
+import { navigateBuildHelper } from 'utils/navigateHelper';
+import usePageWidth from 'utils/usePageWidth';
+import useThemeWithAdjustableBreakpoints from 'utils/useThemeWithAdjustableBreakpoints';
 
 import { BuildCard_build$key } from './__generated__/BuildCard_build.graphql';
 

@@ -1,12 +1,16 @@
 import React from 'react';
-import { CardContent, List } from '@mui/material';
 import { useLazyLoadQuery } from 'react-relay';
+
 import { graphql } from 'babel-plugin-relay/macro';
-import Typography from '@mui/material/Typography';
+
+import { CardContent, List } from '@mui/material';
 import Card from '@mui/material/Card';
-import InlineLogs from '../logs/InlineLogs';
+import Typography from '@mui/material/Typography';
+
+import Notification from 'components/common/Notification';
+import InlineLogs from 'components/logs/InlineLogs';
+
 import { TaskDebuggingInformationQuery } from './__generated__/TaskDebuggingInformationQuery.graphql';
-import Notification from '../common/Notification';
 
 interface Props {
   taskId: string;

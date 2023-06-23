@@ -1,14 +1,17 @@
 import React, { ReactNode } from 'react';
-import { Alert } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import { useFragment } from 'react-relay';
+
 import { graphql } from 'babel-plugin-relay/macro';
-import { ConfigurationWithIssues_build$key } from './__generated__/ConfigurationWithIssues_build.graphql';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
+
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Typography from '@mui/material/Typography';
+import { Alert } from '@mui/material';
+import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from '@mui/styles';
+
+import { ConfigurationWithIssues_build$key } from './__generated__/ConfigurationWithIssues_build.graphql';
 
 const useStyles = makeStyles(theme => {
   return {

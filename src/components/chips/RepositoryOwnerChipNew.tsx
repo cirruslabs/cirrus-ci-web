@@ -1,15 +1,16 @@
 import React from 'react';
 import { useFragment } from 'react-relay';
 import { useNavigate } from 'react-router-dom';
+
 import { graphql } from 'babel-plugin-relay/macro';
 
 import { useTheme } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
-import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 
-import { navigateHelper } from '../../utils/navigateHelper';
+import { navigateHelper } from 'utils/navigateHelper';
 
 import { RepositoryOwnerChipNew_repository$key } from './__generated__/RepositoryOwnerChipNew_repository.graphql';
 

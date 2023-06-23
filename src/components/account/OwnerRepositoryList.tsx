@@ -1,22 +1,23 @@
 import React, { useMemo } from 'react';
-import { Link } from 'react-router-dom';
 import { useFragment } from 'react-relay';
-import { useRecoilValue } from 'recoil';
+import { Link } from 'react-router-dom';
 
 import { graphql } from 'babel-plugin-relay/macro';
+import { useRecoilValue } from 'recoil';
 
-import { createTheme } from '@mui/material/styles';
-import Grid from '@mui/material/Unstable_Grid2';
-import Tooltip from '@mui/material/Tooltip';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import IconButton from '@mui/material/IconButton';
+import Toolbar from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Unstable_Grid2';
+import { createTheme } from '@mui/material/styles';
+import ThemeProvider from '@mui/material/styles/ThemeProvider';
 
-import RepositoryCard from '../repositories/RepositoryCard';
-import { muiThemeOptions } from '../../cirrusTheme';
-import useThemeWithAdjustableBreakpoints from '../../utils/useThemeWithAdjustableBreakpoints';
+import { muiThemeOptions } from 'cirrusTheme';
+
+import RepositoryCard from 'components/repositories/RepositoryCard';
+import useThemeWithAdjustableBreakpoints from 'utils/useThemeWithAdjustableBreakpoints';
 
 import { OwnerRepositoryList_info$key } from './__generated__/OwnerRepositoryList_info.graphql';
 

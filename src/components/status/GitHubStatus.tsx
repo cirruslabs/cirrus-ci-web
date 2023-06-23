@@ -1,7 +1,9 @@
-import { IconButton, Tooltip, useTheme } from '@mui/material';
-import ErrorIcon from '@mui/icons-material/Error';
-import { selector, useRecoilValue } from 'recoil';
 import React from 'react';
+
+import { selector, useRecoilValue } from 'recoil';
+
+import ErrorIcon from '@mui/icons-material/Error';
+import { IconButton, Tooltip, useTheme } from '@mui/material';
 
 export const GitHubStatusIndicatorState = selector({
   key: 'GitHubStatusIndicator',

@@ -1,46 +1,50 @@
-import { makeStyles } from '@mui/styles';
+import React, { useEffect, useMemo } from 'react';
+import { useFragment, useMutation, useSubscription } from 'react-relay';
+
+import { graphql } from 'babel-plugin-relay/macro';
+
+import { BugReport, Cancel, Dehaze, Functions } from '@mui/icons-material';
+import Check from '@mui/icons-material/Check';
+import Refresh from '@mui/icons-material/Refresh';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
+import { Box, Collapse, List, Tab, ToggleButton } from '@mui/material';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Paper from '@mui/material/Paper';
-import { graphql } from 'babel-plugin-relay/macro';
-import React, { useEffect, useMemo } from 'react';
-import { useFragment, useMutation, useSubscription } from 'react-relay';
-import { hasWritePermissions } from '../../utils/permissions';
-import BuildCreatedChip from '../chips/BuildCreatedChip';
-import BuildStatusChip from '../chips/BuildStatusChip';
-import CirrusFavicon from '../common/CirrusFavicon';
-import TaskList from '../tasks/TaskList';
-import { BuildDetails_build$key } from './__generated__/BuildDetails_build.graphql';
-import Refresh from '@mui/icons-material/Refresh';
-import Check from '@mui/icons-material/Check';
-import Notification from '../common/Notification';
-import ConfigurationWithIssues from './ConfigurationWithIssues';
-import HookList from '../hooks/HookList';
-import { Box, Collapse, List, Tab, ToggleButton } from '@mui/material';
-import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { BugReport, Cancel, Dehaze, Functions } from '@mui/icons-material';
 import Tooltip from '@mui/material/Tooltip';
+import { makeStyles } from '@mui/styles';
+
+import BuildCreatedChip from 'components/chips/BuildCreatedChip';
+import BuildStatusChip from 'components/chips/BuildStatusChip';
+import CirrusFavicon from 'components/common/CirrusFavicon';
+import CommitMessage from 'components/common/CommitMessage';
+import Notification from 'components/common/Notification';
+import HookList from 'components/hooks/HookList';
+import { HookType } from 'components/hooks/HookType';
+import TaskList from 'components/tasks/TaskList';
+import { hasWritePermissions } from 'utils/permissions';
+
 import DebuggingInformation from './BuildDebuggingInformation';
-import { HookType } from '../hooks/HookType';
+import ConfigurationWithIssues from './ConfigurationWithIssues';
 import {
   BuildDetailsApproveBuildMutation,
   BuildDetailsApproveBuildMutation$variables,
 } from './__generated__/BuildDetailsApproveBuildMutation.graphql';
 import {
-  BuildDetailsReTriggerMutation,
-  BuildDetailsReTriggerMutation$variables,
-} from './__generated__/BuildDetailsReTriggerMutation.graphql';
+  BuildDetailsCancelMutation,
+  BuildDetailsCancelMutation$variables,
+} from './__generated__/BuildDetailsCancelMutation.graphql';
 import {
   BuildDetailsReRunMutation,
   BuildDetailsReRunMutation$variables,
 } from './__generated__/BuildDetailsReRunMutation.graphql';
 import {
-  BuildDetailsCancelMutation,
-  BuildDetailsCancelMutation$variables,
-} from './__generated__/BuildDetailsCancelMutation.graphql';
-import CommitMessage from '../common/CommitMessage';
+  BuildDetailsReTriggerMutation,
+  BuildDetailsReTriggerMutation$variables,
+} from './__generated__/BuildDetailsReTriggerMutation.graphql';
+import { BuildDetails_build$key } from './__generated__/BuildDetails_build.graphql';
 
 const buildSubscription = graphql`
   subscription BuildDetailsSubscription($buildID: ID!) {

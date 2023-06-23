@@ -1,12 +1,13 @@
 import { useFragment } from 'react-relay';
+
 import { graphql } from 'babel-plugin-relay/macro';
 
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { Tooltip } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
-import { formatDuration } from '../../utils/time';
+import { formatDuration } from 'utils/time';
 
 import { Duration_build$key } from './__generated__/Duration_build.graphql';
 

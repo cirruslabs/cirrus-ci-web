@@ -1,6 +1,26 @@
+import ArrowBack from '@mui/icons-material/ArrowBack';
+import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
+import Book from '@mui/icons-material/Book';
+import BugReport from '@mui/icons-material/BugReport';
+import Cancel from '@mui/icons-material/Cancel';
+import Close from '@mui/icons-material/Close';
+import Commit from '@mui/icons-material/Commit';
+import Dehaze from '@mui/icons-material/Dehaze';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import Functions from '@mui/icons-material/Functions';
+import GitHub from '@mui/icons-material/GitHub';
+import Question from '@mui/icons-material/HelpOutlineOutlined';
+import Info from '@mui/icons-material/Info';
+import InfoOutlined from '@mui/icons-material/InfoOutlined';
+import LayersClear from '@mui/icons-material/LayersClear';
+import Menu from '@mui/icons-material/Menu';
+import PlayCircleFilled from '@mui/icons-material/PlayCircleFilled';
+import Refresh from '@mui/icons-material/Refresh';
+import Settings from '@mui/icons-material/Settings';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
 import { useTheme } from '@mui/material';
-import { makeStyles } from '@mui/styles';
-
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -30,36 +50,13 @@ import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import Stack from '@mui/material/Stack';
 import Tab from '@mui/material/Tab';
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
 import ToggleButton from '@mui/material/ToggleButton';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import useMediaQuery from '@mui/material/useMediaQuery';
-
-import ArrowBack from '@mui/icons-material/ArrowBack';
-import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
-import Book from '@mui/icons-material/Book';
-import BugReport from '@mui/icons-material/BugReport';
-import Cancel from '@mui/icons-material/Cancel';
-import Close from '@mui/icons-material/Close';
-import Commit from '@mui/icons-material/Commit';
-import Dehaze from '@mui/icons-material/Dehaze';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import Functions from '@mui/icons-material/Functions';
-import GitHub from '@mui/icons-material/GitHub';
-import Info from '@mui/icons-material/Info';
-import InfoOutlined from '@mui/icons-material/InfoOutlined';
-import LayersClear from '@mui/icons-material/LayersClear';
-import Menu from '@mui/icons-material/Menu';
-import PlayCircleFilled from '@mui/icons-material/PlayCircleFilled';
-import Question from '@mui/icons-material/HelpOutlineOutlined';
-import Refresh from '@mui/icons-material/Refresh';
-import Settings from '@mui/icons-material/Settings';
-
 import { grey } from '@mui/material/colors';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { makeStyles } from '@mui/styles';
 
 const mui = {
   makeStyles,

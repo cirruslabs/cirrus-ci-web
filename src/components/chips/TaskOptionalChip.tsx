@@ -1,13 +1,14 @@
 import React from 'react';
+import { useFragment } from 'react-relay';
 
+import { graphql } from 'babel-plugin-relay/macro';
+
+import Report from '@mui/icons-material/Report';
+import { useTheme } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
-import Report from '@mui/icons-material/Report';
 
-import { useFragment } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
 import { TaskOptionalChip_task$key } from './__generated__/TaskOptionalChip_task.graphql';
-import { useTheme } from '@mui/material';
 
 interface Props {
   task: TaskOptionalChip_task$key;

@@ -1,26 +1,30 @@
 import React, { Suspense } from 'react';
+import { useFragment } from 'react-relay';
+import { useLocation } from 'react-router-dom';
 
-import { useCommandStatusColorMapping } from '../../utils/colors';
-import TaskCommandLogs from './TaskCommandLogs';
-import { formatDuration } from '../../utils/time';
-import { isTaskCommandExecuting, isTaskCommandFinalStatus } from '../../utils/status';
-import DurationTicker from '../common/DurationTicker';
+import { graphql } from 'babel-plugin-relay/macro';
+import queryString from 'query-string';
+import { useRecoilValue } from 'recoil';
+
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Box, useTheme } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
-import { useFragment } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
-import queryString from 'query-string';
-import { TaskCommandList_task$key, TaskCommandList_task$data } from './__generated__/TaskCommandList_task.graphql';
-import { ItemOfArray } from '../../utils/utility-types';
-import { useLocation } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
-import { Box, useTheme } from '@mui/material';
-import { useRecoilValue } from 'recoil';
-import { prefersDarkModeState } from '../../cirrusTheme';
-import CirrusCircularProgress from '../common/CirrusCircularProgress';
+
+import { prefersDarkModeState } from 'cirrusTheme';
+
+import CirrusCircularProgress from 'components/common/CirrusCircularProgress';
+import DurationTicker from 'components/common/DurationTicker';
+import { useCommandStatusColorMapping } from 'utils/colors';
+import { isTaskCommandExecuting, isTaskCommandFinalStatus } from 'utils/status';
+import { formatDuration } from 'utils/time';
+import { ItemOfArray } from 'utils/utility-types';
+
+import TaskCommandLogs from './TaskCommandLogs';
+import { TaskCommandList_task$key, TaskCommandList_task$data } from './__generated__/TaskCommandList_task.graphql';
 
 const useStyles = makeStyles(theme => {
   return {

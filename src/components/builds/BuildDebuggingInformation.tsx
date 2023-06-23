@@ -1,11 +1,15 @@
 import React from 'react';
-import { CardContent } from '@mui/material';
 import { useFragment } from 'react-relay';
+
 import { graphql } from 'babel-plugin-relay/macro';
-import Typography from '@mui/material/Typography';
+
+import { CardContent } from '@mui/material';
 import Card from '@mui/material/Card';
+import Typography from '@mui/material/Typography';
+
+import InlineLogs from 'components/logs/InlineLogs';
+
 import { BuildDebuggingInformation_build$key } from './__generated__/BuildDebuggingInformation_build.graphql';
-import InlineLogs from '../logs/InlineLogs';
 
 interface Props {
   build: BuildDebuggingInformation_build$key;

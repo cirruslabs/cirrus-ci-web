@@ -1,17 +1,20 @@
 import React from 'react';
+import { useFragment } from 'react-relay';
+import { useNavigate } from 'react-router-dom';
 
+import { graphql } from 'babel-plugin-relay/macro';
+
+import { Commit } from '@mui/icons-material';
+import CallSplit from '@mui/icons-material/CallSplit';
+import { Tooltip } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
-import CallSplit from '@mui/icons-material/CallSplit';
-import { useNavigate } from 'react-router-dom';
-import { navigateHelper } from '../../utils/navigateHelper';
-import { useFragment } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
-import { BuildBranchNameChip_build$key } from './__generated__/BuildBranchNameChip_build.graphql';
-import { shorten } from '../../utils/text';
 import { makeStyles } from '@mui/styles';
-import { Commit } from '@mui/icons-material';
-import { Tooltip } from '@mui/material';
+
+import { navigateHelper } from 'utils/navigateHelper';
+import { shorten } from 'utils/text';
+
+import { BuildBranchNameChip_build$key } from './__generated__/BuildBranchNameChip_build.graphql';
 
 const useStyles = makeStyles(theme => {
   return {

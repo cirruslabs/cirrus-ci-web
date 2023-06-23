@@ -1,6 +1,5 @@
 // package:
 // file: terminal.proto
-
 import * as jspb from 'google-protobuf';
 
 export class GuestTerminalRequest extends jspb.Message {

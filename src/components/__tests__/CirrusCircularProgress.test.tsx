@@ -1,7 +1,9 @@
 import React from 'react';
-import CirrusCircularProgress from '../common/CirrusCircularProgress';
 import renderer from 'react-test-renderer';
+
 import { RecoilRoot } from 'recoil';
+
+import CirrusCircularProgress from 'components/common/CirrusCircularProgress';
 
 it('renders correctly', () => {
   const tree = renderer

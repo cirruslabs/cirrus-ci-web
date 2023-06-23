@@ -1,14 +1,15 @@
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useFragment } from 'react-relay';
+import { useNavigate } from 'react-router-dom';
+
 import { graphql } from 'babel-plugin-relay/macro';
 
-import Menu from '@mui/material/Menu';
-import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import Button from '@mui/material/Button';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
-import { navigateHelper } from '../../utils/navigateHelper';
+import { navigateHelper } from 'utils/navigateHelper';
 
 import { AccountSwitch_viewer$key } from './__generated__/AccountSwitch_viewer.graphql';
 

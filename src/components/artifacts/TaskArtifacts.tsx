@@ -1,6 +1,8 @@
 import React from 'react';
 import { useFragment } from 'react-relay';
+
 import { graphql } from 'babel-plugin-relay/macro';
+
 import ArtifactsView from './ArtifactsView';
 
 export default function TaskArtifacts(props) {

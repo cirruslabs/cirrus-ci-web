@@ -1,14 +1,18 @@
+import * as Sentry from '@sentry/react';
 import React from 'react';
+import { RelayEnvironmentProvider } from 'react-relay';
+
+import { useRecoilValue } from 'recoil';
+
+import { CssBaseline } from '@mui/material';
+import { createTheme, StyledEngineProvider, Theme, ThemeProvider } from '@mui/material/styles';
+
+import environment from 'createRelayEnvironment';
+
+import CirrusFavicon from 'components/common/CirrusFavicon';
 
 import Routes from './AllRoutes';
 import { cirrusThemeOptions } from './cirrusTheme';
-import { createTheme, StyledEngineProvider, Theme, ThemeProvider } from '@mui/material/styles';
-import CirrusFavicon from './components/common/CirrusFavicon';
-import { CssBaseline } from '@mui/material';
-import { useRecoilValue } from 'recoil';
-import * as Sentry from '@sentry/react';
-import { RelayEnvironmentProvider } from 'react-relay';
-import environment from '../src/createRelayEnvironment';
 
 declare module '@mui/styles/defaultTheme' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface

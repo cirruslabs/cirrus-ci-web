@@ -1,17 +1,19 @@
 import { useState } from 'react';
-import { useRefetchableFragment } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
 import { Helmet } from 'react-helmet';
+import { useRefetchableFragment } from 'react-relay';
 
-import { makeStyles } from '@mui/styles';
+import { graphql } from 'babel-plugin-relay/macro';
+
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { makeStyles } from '@mui/styles';
 
-import BuildCard from '../../components/builds/BuildCard';
-import { isBuildFinalStatus } from '../../utils/status';
-import MarkdownTypography from '../common/MarkdownTypography';
+import BuildCard from 'components/builds/BuildCard';
+import MarkdownTypography from 'components/common/MarkdownTypography';
+import { isBuildFinalStatus } from 'utils/status';
+
 import { ViewerBuildListRefetchQuery } from './__generated__/ViewerBuildListRefetchQuery.graphql';
 import { ViewerBuildList_viewer$key } from './__generated__/ViewerBuildList_viewer.graphql';
 

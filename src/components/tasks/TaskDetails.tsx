@@ -1,61 +1,61 @@
 import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { requestSubscription, useFragment, useMutation } from 'react-relay';
 import { useLocation, useNavigate } from 'react-router-dom';
-import environment from 'createRelayEnvironment';
+
 import { graphql } from 'babel-plugin-relay/macro';
 import classNames from 'classnames';
+
+import environment from 'createRelayEnvironment';
 import mui from 'mui';
 
+import TaskArtifacts from 'components/artifacts/TaskArtifacts';
+import TaskCancellerChip from 'components/chips/TaskCancellerChip';
+import TaskCreatedChip from 'components/chips/TaskCreatedChip';
+import TaskExperimentalChip from 'components/chips/TaskExperimentalChip';
+import TaskOptionalChip from 'components/chips/TaskOptionalChip';
+import TaskRerunnerChip from 'components/chips/TaskRerunnerChip';
+import TaskResourcesChip from 'components/chips/TaskResourcesChip';
+import TaskScheduledChip from 'components/chips/TaskScheduledChip';
+import TaskStatefulChip from 'components/chips/TaskStatefulChip';
+import TaskStatusChip from 'components/chips/TaskStatusChip';
+import TaskTimeoutChip from 'components/chips/TaskTimeoutChip';
+import TaskTransactionChip from 'components/chips/TaskTransactionChip';
+import { CirrusTerminal } from 'components/cirrus-terminal/CirrusTerminal';
+import CirrusFavicon from 'components/common/CirrusFavicon';
+import CirrusLinearProgress from 'components/common/CirrusLinearProgress';
+import CommitMessage from 'components/common/CommitMessage';
+import Notification from 'components/common/Notification';
+import ExecutionInfo from 'components/common/TaskExecutionInfo';
+import HookList from 'components/hooks/HookList';
+import { HookType } from 'components/hooks/HookType';
 import { navigateBuildHelper, navigateTaskHelper } from 'utils/navigateHelper';
 import { hasWritePermissions } from 'utils/permissions';
 import { isTaskFinalStatus } from 'utils/status';
 import { shorten } from 'utils/text';
 
-import { HookType } from '../hooks/HookType';
-import { CirrusTerminal } from '../cirrus-terminal/CirrusTerminal';
-import CirrusFavicon from '../common/CirrusFavicon';
-import CirrusLinearProgress from '../common/CirrusLinearProgress';
-import CommitMessage from '../common/CommitMessage';
-import ExecutionInfo from '../common/TaskExecutionInfo';
-import Notification from '../common/Notification';
-import HookList from '../hooks/HookList';
-import TaskArtifacts from '../artifacts/TaskArtifacts';
-import TaskDebuggingInformation from './TaskDebuggingInformation';
-import TaskCancellerChip from '../chips/TaskCancellerChip';
-import TaskCreatedChip from '../chips/TaskCreatedChip';
-import TaskExperimentalChip from '../chips/TaskExperimentalChip';
-import TaskOptionalChip from '../chips/TaskOptionalChip';
-import TaskRerunnerChip from '../chips/TaskRerunnerChip';
-import TaskResourcesChip from '../chips/TaskResourcesChip';
-import TaskScheduledChip from '../chips/TaskScheduledChip';
-import TaskStatefulChip from '../chips/TaskStatefulChip';
-import TaskStatusChip from '../chips/TaskStatusChip';
-import TaskTimeoutChip from '../chips/TaskTimeoutChip';
-import TaskTransactionChip from '../chips/TaskTransactionChip';
-
 import TaskCommandList from './TaskCommandList';
 import TaskCommandsProgress from './TaskCommandsProgress';
+import TaskDebuggingInformation from './TaskDebuggingInformation';
 import TaskList from './TaskList';
-
-import { TaskDetails_task$key, TaskDetails_task$data } from './__generated__/TaskDetails_task.graphql';
 import {
-  TaskDetailsReRunMutation,
-  TaskDetailsReRunMutation$data,
-  TaskDetailsReRunMutation$variables,
-} from './__generated__/TaskDetailsReRunMutation.graphql';
+  TaskDetailsCancelMutation,
+  TaskDetailsCancelMutation$variables,
+} from './__generated__/TaskDetailsCancelMutation.graphql';
 import {
   TaskDetailsInvalidateCachesMutation,
   TaskDetailsInvalidateCachesMutation$data,
   TaskDetailsInvalidateCachesMutation$variables,
 } from './__generated__/TaskDetailsInvalidateCachesMutation.graphql';
 import {
+  TaskDetailsReRunMutation,
+  TaskDetailsReRunMutation$data,
+  TaskDetailsReRunMutation$variables,
+} from './__generated__/TaskDetailsReRunMutation.graphql';
+import {
   TaskDetailsTriggerMutation,
   TaskDetailsTriggerMutation$variables,
 } from './__generated__/TaskDetailsTriggerMutation.graphql';
-import {
-  TaskDetailsCancelMutation,
-  TaskDetailsCancelMutation$variables,
-} from './__generated__/TaskDetailsCancelMutation.graphql';
+import { TaskDetails_task$key, TaskDetails_task$data } from './__generated__/TaskDetails_task.graphql';
 
 const taskSubscription = graphql`
   subscription TaskDetailsSubscription($taskID: ID!) {

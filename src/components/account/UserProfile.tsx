@@ -1,17 +1,21 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useFragment } from 'react-relay';
+import { useNavigate } from 'react-router-dom';
+
 import { graphql } from 'babel-plugin-relay/macro';
-import Tooltip from '@mui/material/Tooltip';
-import { makeStyles } from '@mui/styles';
+
+import Settings from '@mui/icons-material/Settings';
+import { List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
-import { navigateHelper } from '../../utils/navigateHelper';
 import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import { makeStyles } from '@mui/styles';
+
+import OwnerPlatformIcon from 'components/icons/OwnerPlatformIcon';
+import { navigateHelper } from 'utils/navigateHelper';
+
 import { UserProfile_user$key } from './__generated__/UserProfile_user.graphql';
-import Settings from '@mui/icons-material/Settings';
-import OwnerPlatformIcon from '../icons/OwnerPlatformIcon';
-import { List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 
 const useStyles = makeStyles(theme => {
   return {

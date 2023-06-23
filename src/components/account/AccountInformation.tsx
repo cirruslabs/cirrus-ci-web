@@ -1,21 +1,24 @@
 import React from 'react';
 import { useFragment } from 'react-relay';
+import { useNavigate } from 'react-router-dom';
+
 import { graphql } from 'babel-plugin-relay/macro';
 
+import DirectionsRun from '@mui/icons-material/DirectionsRun';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { navigateHelper } from '../../utils/navigateHelper';
-import { useNavigate } from 'react-router-dom';
-import { AccountInformation_viewer$key } from './__generated__/AccountInformation_viewer.graphql';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import DirectionsRun from '@mui/icons-material/DirectionsRun';
-import Button from '@mui/material/Button';
-import GitHubIcon from '@mui/icons-material/GitHub';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import { makeStyles } from '@mui/styles';
+
+import { navigateHelper } from 'utils/navigateHelper';
+
+import { AccountInformation_viewer$key } from './__generated__/AccountInformation_viewer.graphql';
 
 const useStyles = makeStyles(theme => {
   return {

@@ -1,14 +1,17 @@
 import React from 'react';
+import { useFragment } from 'react-relay';
+import { useNavigate } from 'react-router-dom';
 
+import { graphql } from 'babel-plugin-relay/macro';
+
+import GitHubIcon from '@mui/icons-material/GitHub';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
-import { navigateHelper } from '../../utils/navigateHelper';
-import { useFragment } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
-import { RepositoryOwnerChip_repository$key } from './__generated__/RepositoryOwnerChip_repository.graphql';
 import { makeStyles } from '@mui/styles';
-import { useNavigate } from 'react-router-dom';
-import GitHubIcon from '@mui/icons-material/GitHub';
+
+import { navigateHelper } from 'utils/navigateHelper';
+
+import { RepositoryOwnerChip_repository$key } from './__generated__/RepositoryOwnerChip_repository.graphql';
 
 const useStyles = makeStyles(theme => {
   return {

@@ -1,10 +1,14 @@
 import React from 'react';
-import CirrusLinearProgress from '../common/CirrusLinearProgress';
 import renderer from 'react-test-renderer';
+
 import { RecoilRoot } from 'recoil';
+
 import { createTheme } from '@mui/material/styles';
-import { cirrusLightTheme } from '../../cirrusTheme';
 import { ThemeProvider } from '@mui/styles';
+
+import { cirrusLightTheme } from 'cirrusTheme';
+
+import CirrusLinearProgress from 'components/common/CirrusLinearProgress';
 
 it('renders correctly', () => {
   const tree = renderer

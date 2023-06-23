@@ -1,13 +1,14 @@
 import React from 'react';
+import { useFragment } from 'react-relay';
 
+import { graphql } from 'babel-plugin-relay/macro';
+
+import CasinoIcon from '@mui/icons-material/Casino';
+import { useTheme } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
-import CasinoIcon from '@mui/icons-material/Casino';
 
-import { useFragment } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
 import { TaskExperimentalChip_task$key } from './__generated__/TaskExperimentalChip_task.graphql';
-import { useTheme } from '@mui/material';
 
 interface Props {
   className?: string;

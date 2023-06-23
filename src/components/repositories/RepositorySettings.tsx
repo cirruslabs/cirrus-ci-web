@@ -1,22 +1,10 @@
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormHelperText from '@mui/material/FormHelperText';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import Switch from '@mui/material/Switch';
-import { graphql } from 'babel-plugin-relay/macro';
 import React, { useState } from 'react';
 import { useFragment, useMutation } from 'react-relay';
-import { RepositorySettings_repository$key } from './__generated__/RepositorySettings_repository.graphql';
-import {
-  RepositorySettingsMutation,
-  RepositorySettingsMutation$data,
-  RepositorySettingsMutation$variables,
-} from './__generated__/RepositorySettingsMutation.graphql';
+
+import { graphql } from 'babel-plugin-relay/macro';
+
+import { AddCircle } from '@mui/icons-material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Checkbox,
   IconButton,
@@ -28,8 +16,23 @@ import {
   ListItemSecondaryAction,
   ListItemText,
 } from '@mui/material';
-import { AddCircle } from '@mui/icons-material';
-import DeleteIcon from '@mui/icons-material/Delete';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormHelperText from '@mui/material/FormHelperText';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import Switch from '@mui/material/Switch';
+
+import {
+  RepositorySettingsMutation,
+  RepositorySettingsMutation$data,
+  RepositorySettingsMutation$variables,
+} from './__generated__/RepositorySettingsMutation.graphql';
+import { RepositorySettings_repository$key } from './__generated__/RepositorySettings_repository.graphql';
 
 interface Props {
   repository: RepositorySettings_repository$key;

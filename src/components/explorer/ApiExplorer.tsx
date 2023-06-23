@@ -1,9 +1,11 @@
-import { useEffect } from 'react';
-import { Container, useTheme as useMuiTheme } from '@mui/material';
 import { useTheme as useGraphiqlTheme } from '@graphiql/react';
+import { useEffect } from 'react';
+
 import { GraphiQLInterface, GraphiQLProvider } from 'graphiql';
-import { makeStyles } from '@mui/styles';
 import 'graphiql/graphiql.css';
+
+import { Container, useTheme as useMuiTheme } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(theme => {
   return {

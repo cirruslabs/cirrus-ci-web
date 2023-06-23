@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { Bar, BarChart, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { useBuildStatusColorMapping } from '../../utils/colors';
-import { formatDuration } from '../../utils/time';
-import { navigateBuildHelper } from '../../utils/navigateHelper';
-import { NodeOfConnection } from '../../utils/utility-types';
-import { RepositoryBuildList_repository$data } from '../repositories/__generated__/RepositoryBuildList_repository.graphql';
-import { withStyles } from '@mui/styles';
 import { useNavigate } from 'react-router-dom';
+
+import { Bar, BarChart, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+
 import { Paper, Typography } from '@mui/material';
+import { withStyles } from '@mui/styles';
+
+import { RepositoryBuildList_repository$data } from 'components/repositories/__generated__/RepositoryBuildList_repository.graphql';
+import { useBuildStatusColorMapping } from 'utils/colors';
+import { navigateBuildHelper } from 'utils/navigateHelper';
+import { formatDuration } from 'utils/time';
+import { NodeOfConnection } from 'utils/utility-types';
 
 interface Props {
   builds: NodeOfConnection<RepositoryBuildList_repository$data['builds']>[];

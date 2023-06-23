@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
-
-import TableCell from '@mui/material/TableCell';
-import TableRow from '@mui/material/TableRow';
-import Chip from '@mui/material/Chip';
 import { useFragment } from 'react-relay';
+
 import { graphql } from 'babel-plugin-relay/macro';
-import { makeStyles } from '@mui/styles';
+import classNames from 'classnames';
+
 import ReportIcon from '@mui/icons-material/Report';
 import SendIcon from '@mui/icons-material/Send';
-import classNames from 'classnames';
+import { useTheme } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import { makeStyles } from '@mui/styles';
+
 import DeliveryInfoDialog from './DeliveryInfoDialog';
 import { DeliveryRow_delivery$key } from './__generated__/DeliveryRow_delivery.graphql';
-import Avatar from '@mui/material/Avatar';
-import { useTheme } from '@mui/material';
 
 const useStyles = makeStyles(theme => {
   return {

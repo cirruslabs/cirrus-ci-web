@@ -1,3 +1,8 @@
+import React, { useState } from 'react';
+import { useMutation, useFragment } from 'react-relay';
+
+import { graphql } from 'babel-plugin-relay/macro';
+
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -7,18 +12,16 @@ import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
-import { makeStyles } from '@mui/styles';
 import Switch from '@mui/material/Switch';
-import { graphql } from 'babel-plugin-relay/macro';
-import React, { useState } from 'react';
-import { useMutation, useFragment } from 'react-relay';
-import { OwnerScopedTokenDialog_ownerInfo$key } from './__generated__/OwnerScopedTokenDialog_ownerInfo.graphql';
+import TextField from '@mui/material/TextField';
+import { makeStyles } from '@mui/styles';
+
 import {
   OwnerScopedTokenDialogMutation,
   OwnerScopedTokenDialogMutation$data,
   OwnerScopedTokenDialogMutation$variables,
 } from './__generated__/OwnerScopedTokenDialogMutation.graphql';
-import TextField from '@mui/material/TextField';
+import { OwnerScopedTokenDialog_ownerInfo$key } from './__generated__/OwnerScopedTokenDialog_ownerInfo.graphql';
 
 const useStyles = makeStyles(theme => {
   return {

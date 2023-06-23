@@ -1,5 +1,6 @@
 import { useRecoilValue } from 'recoil';
-import { cirrusOpenDrawerState } from '../cirrusTheme';
+
+import { cirrusOpenDrawerState } from 'cirrusTheme';
 
 function useThemeWithAdjustableBreakpoints(theme) {
   const isDrawerOpen = useRecoilValue(cirrusOpenDrawerState);

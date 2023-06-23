@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useLazyLoadQuery } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
 import { useParams } from 'react-router-dom';
 
-import NotFound from '../NotFound';
-import PoolDetails from '../../components/workers/PoolDetails';
+import { graphql } from 'babel-plugin-relay/macro';
+
+import PoolDetails from 'components/workers/PoolDetails';
+import NotFound from 'scenes/NotFound';
 
 import { PoolByIdQuery } from './__generated__/PoolByIdQuery.graphql';
 

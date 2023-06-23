@@ -1,14 +1,15 @@
 import React from 'react';
-
 import { useLazyLoadQuery } from 'react-relay';
+import { useParams } from 'react-router-dom';
+
 import { graphql } from 'babel-plugin-relay/macro';
 
-import RepositoryBuildList from '../../components/repositories/RepositoryBuildList';
-import NotFound from '../NotFound';
+import AppBreadcrumbs from 'components/common/AppBreadcrumbs';
+import MarkdownTypography from 'components/common/MarkdownTypography';
+import RepositoryBuildList from 'components/repositories/RepositoryBuildList';
+import NotFound from 'scenes/NotFound';
+
 import { RepositoryQuery } from './__generated__/RepositoryQuery.graphql';
-import { useParams } from 'react-router-dom';
-import MarkdownTypography from '../../components/common/MarkdownTypography';
-import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 
 function RepositoryById(repositoryId: string, branch?: string) {
   const response = useLazyLoadQuery<RepositoryQuery>(

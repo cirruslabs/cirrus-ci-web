@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
+
 import Paper from '@mui/material/Paper';
-import MarkdownTypography from '../../components/common/MarkdownTypography';
 import { makeStyles } from '@mui/styles';
+
+import MarkdownTypography from 'components/common/MarkdownTypography';
 
 const useStyles = makeStyles(theme => {
   return {

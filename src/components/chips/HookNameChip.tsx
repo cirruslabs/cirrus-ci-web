@@ -1,13 +1,16 @@
 import React from 'react';
+import { useFragment } from 'react-relay';
+import { useNavigate } from 'react-router-dom';
 
+import { graphql } from 'babel-plugin-relay/macro';
+
+import Functions from '@mui/icons-material/Functions';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
-import Functions from '@mui/icons-material/Functions';
-import { useFragment } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
 import { makeStyles } from '@mui/styles';
-import { navigateHookHelper } from '../../utils/navigateHelper';
-import { useNavigate } from 'react-router-dom';
+
+import { navigateHookHelper } from 'utils/navigateHelper';
+
 import { HookNameChip_hook$key } from './__generated__/HookNameChip_hook.graphql';
 
 const useStyles = makeStyles(theme => {

@@ -1,28 +1,29 @@
 import { useState, useMemo } from 'react';
+import { Helmet } from 'react-helmet';
 import { useFragment, useSubscription } from 'react-relay';
 import { Link as RouterLink } from 'react-router-dom';
+
 import { graphql } from 'babel-plugin-relay/macro';
-import { Helmet } from 'react-helmet';
 import cx from 'classnames';
 
-import { makeStyles } from '@mui/styles';
+import AddCircle from '@mui/icons-material/AddCircle';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import Settings from '@mui/icons-material/Settings';
+import Timeline from '@mui/icons-material/Timeline';
+import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import Settings from '@mui/icons-material/Settings';
-import AddCircle from '@mui/icons-material/AddCircle';
-import Timeline from '@mui/icons-material/Timeline';
+import { makeStyles } from '@mui/styles';
 
-import { absoluteLink } from '../../utils/link';
-import { createLinkToRepository } from '../../utils/github';
-import CreateBuildDialog from '../builds/CreateBuildDialog';
-import BuildDurationsChart from '../builds/BuildDurationsChart';
-import BuildCard from '../../components/builds/BuildCard';
+import BuildCard from 'components/builds/BuildCard';
+import BuildDurationsChart from 'components/builds/BuildDurationsChart';
+import CreateBuildDialog from 'components/builds/CreateBuildDialog';
+import { createLinkToRepository } from 'utils/github';
+import { absoluteLink } from 'utils/link';
 
 import { RepositoryBuildList_repository$key } from './__generated__/RepositoryBuildList_repository.graphql';
 

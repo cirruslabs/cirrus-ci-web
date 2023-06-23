@@ -6,19 +6,19 @@ import { CardElement, Elements, useStripe } from '@stripe/react-stripe-js';
 import cx from 'classnames';
 
 import { useTheme } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import { FormHelperText } from '@mui/material';
-import Typography from '@mui/material/Typography';
-import DialogTitle from '@mui/material/DialogTitle';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Input from '@mui/material/Input';
 import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import FormControl from '@mui/material/FormControl';
+import Input from '@mui/material/Input';
+import InputLabel from '@mui/material/InputLabel';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from '@mui/styles';
 
-import { UnspecifiedCallbackFunction } from '../../utils/utility-types';
+import { UnspecifiedCallbackFunction } from 'utils/utility-types';
 
 import {
   ComputeCreditsStripeDialogMutation,

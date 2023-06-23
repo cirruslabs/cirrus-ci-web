@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { useMutation, useFragment } from 'react-relay';
+
 import { graphql } from 'babel-plugin-relay/macro';
+
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import FormControl from '@mui/material/FormControl';
-import CopyPasteField from '../common/CopyPasteField';
 import TextField from '@mui/material/TextField';
+
+import CopyPasteField from 'components/common/CopyPasteField';
+
 import {
   OwnerSecuredVariablesMutation,
   OwnerSecuredVariablesMutation$data,

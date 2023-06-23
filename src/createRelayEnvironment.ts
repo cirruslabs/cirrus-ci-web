@@ -5,7 +5,7 @@ import { Environment, Network, Observable, RecordSource, Store, SubscribeFunctio
 import { Sink } from 'relay-runtime/lib/network/RelayObservable';
 import { RequestParameters } from 'relay-runtime/lib/util/RelayConcreteNode';
 
-import { subscribeObjectUpdates } from './rtu/ConnectionManager';
+import { subscribeObjectUpdates } from 'rtu/ConnectionManager';
 
 /*
  * See RelayNetwork.js:43 for details how it used in Relay

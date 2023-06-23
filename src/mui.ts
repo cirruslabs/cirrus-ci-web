@@ -1,8 +1,10 @@
+import ArchiveOutlined from '@mui/icons-material/ArchiveOutlined';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
 import Book from '@mui/icons-material/Book';
 import BugReport from '@mui/icons-material/BugReport';
 import Cancel from '@mui/icons-material/Cancel';
+import Check from '@mui/icons-material/Check';
 import Close from '@mui/icons-material/Close';
 import Commit from '@mui/icons-material/Commit';
 import Dehaze from '@mui/icons-material/Dehaze';
@@ -14,6 +16,7 @@ import Info from '@mui/icons-material/Info';
 import InfoOutlined from '@mui/icons-material/InfoOutlined';
 import LayersClear from '@mui/icons-material/LayersClear';
 import Menu from '@mui/icons-material/Menu';
+import OpenInNewOutlined from '@mui/icons-material/OpenInNewOutlined';
 import PlayCircleFilled from '@mui/icons-material/PlayCircleFilled';
 import Refresh from '@mui/icons-material/Refresh';
 import Settings from '@mui/icons-material/Settings';
@@ -24,6 +27,7 @@ import { useTheme } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
+import Alert from '@mui/material/Alert';
 import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
 import Badge from '@mui/material/Badge';
@@ -38,8 +42,14 @@ import Chip from '@mui/material/Chip';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Collapse from '@mui/material/Collapse';
 import Container from '@mui/material/Container';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
+import Fab from '@mui/material/Fab';
 import Grow from '@mui/material/Grow';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
@@ -50,22 +60,33 @@ import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import Stack from '@mui/material/Stack';
 import Tab from '@mui/material/Tab';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import TextField from '@mui/material/TextField';
 import ToggleButton from '@mui/material/ToggleButton';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Unstable_Grid2';
 import { grey } from '@mui/material/colors';
+import { createTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { makeStyles } from '@mui/styles';
+import { withStyles } from '@mui/styles';
 
 const mui = {
+  createTheme,
   makeStyles,
-  useTheme,
   useMediaQuery,
+  useTheme,
+  withStyles,
 
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Alert,
   AppBar,
   Avatar,
   Badge,
@@ -80,8 +101,15 @@ const mui = {
   ClickAwayListener,
   Collapse,
   Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Divider,
   Drawer,
+  Fab,
+  Grid,
   Grow,
   IconButton,
   Link,
@@ -93,19 +121,26 @@ const mui = {
   Stack,
   Tab,
   TabContext,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
   TabList,
   TabPanel,
+  TextField,
   ToggleButton,
   Toolbar,
   Tooltip,
   Typography,
 
   icons: {
+    ArchiveOutlined,
     ArrowBack,
     ArrowDropDown,
     Book,
     BugReport,
     Cancel,
+    Check,
     Close,
     Commit,
     Dehaze,
@@ -116,6 +151,7 @@ const mui = {
     InfoOutlined,
     LayersClear,
     Menu,
+    OpenInNewOutlined,
     PlayCircleFilled,
     Question,
     Refresh,

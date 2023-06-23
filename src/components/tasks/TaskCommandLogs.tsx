@@ -3,11 +3,7 @@ import { useLazyLoadQuery, useFragment } from 'react-relay';
 
 import { graphql } from 'babel-plugin-relay/macro';
 
-import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
-import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
-import Fab from '@mui/material/Fab';
-import Tooltip from '@mui/material/Tooltip';
-import { makeStyles } from '@mui/styles';
+import mui from 'mui';
 
 import CirrusLinearProgress from 'components/common/CirrusLinearProgress';
 import Logs from 'components/logs/Logs';
@@ -26,7 +22,7 @@ function cacheURL(taskId: string, cacheHit) {
   return 'https://api.cirrus-ci.com/v1/task/' + taskId + '/caches/' + cacheHit.key + '.tar.gz';
 }
 
-const useStyles = makeStyles(theme => {
+const useStyles = mui.makeStyles(theme => {
   return {
     actionButtons: {
       position: 'absolute',
@@ -95,20 +91,20 @@ function TaskCommandRealTimeLogs(props: RealTimeLogsProps) {
   let downloadButton = (
     <div className={classes.actionButtons}>
       {cacheHit && (
-        <Tooltip title="Download Cache" disableInteractive>
-          <Fab
+        <mui.Tooltip title="Download Cache" disableInteractive>
+          <mui.Fab
             variant="circular"
             className={classes.downloadButton}
             href={cacheURL(taskId, cacheHit)}
             rel="noopener noreferrer"
             size="small"
           >
-            <ArchiveOutlinedIcon />
-          </Fab>
-        </Tooltip>
+            <mui.icons.ArchiveOutlined />
+          </mui.Fab>
+        </mui.Tooltip>
       )}
-      <Tooltip title="Open Full Logs" disableInteractive>
-        <Fab
+      <mui.Tooltip title="Open Full Logs" disableInteractive>
+        <mui.Fab
           variant="circular"
           className={classes.openButton}
           href={logURL(taskId, command)}
@@ -116,9 +112,9 @@ function TaskCommandRealTimeLogs(props: RealTimeLogsProps) {
           rel="noopener noreferrer"
           size="small"
         >
-          <OpenInNewOutlinedIcon fontSize="inherit" />
-        </Fab>
-      </Tooltip>
+          <mui.icons.OpenInNewOutlined fontSize="inherit" />
+        </mui.Fab>
+      </mui.Tooltip>
     </div>
   );
   return (

@@ -3,7 +3,7 @@ import { atom, selector } from 'recoil';
 import { grey, lightGreen, orange, red } from '@mui/material/colors';
 import { ThemeOptions } from '@mui/material/styles';
 
-import { localStorageEffect } from './utils/recoil';
+import { localStorageEffect } from 'utils/recoil';
 
 export const prefersDarkModeState = atom({
   key: 'CurrentlyPrefersDarkMode',

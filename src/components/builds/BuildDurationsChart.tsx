@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { Bar, BarChart, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
-import { Paper, Typography } from '@mui/material';
-import { withStyles } from '@mui/styles';
+import mui from 'mui';
 
 import { RepositoryBuildList_repository$data } from 'components/repositories/__generated__/RepositoryBuildList_repository.graphql';
 import { useBuildStatusColorMapping } from 'utils/colors';
@@ -32,11 +31,11 @@ function BuildDurationsChart(props: Props) {
     let payloadElement = payload[0];
     if (!payloadElement) return null;
     return (
-      <Paper>
-        <Typography style={{ margin: 4 }}>
+      <mui.Paper>
+        <mui.Typography style={{ margin: 4 }}>
           {formatDuration(payloadElement.value)} {label}
-        </Typography>
-      </Paper>
+        </mui.Typography>
+      </mui.Paper>
     );
   };
 
@@ -79,4 +78,4 @@ function BuildDurationsChart(props: Props) {
   );
 }
 
-export default withStyles({})(BuildDurationsChart);
+export default mui.withStyles({})(BuildDurationsChart);

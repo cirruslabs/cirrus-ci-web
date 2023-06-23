@@ -3,10 +3,7 @@ import { useFragment } from 'react-relay';
 
 import { graphql } from 'babel-plugin-relay/macro';
 
-import { Box } from '@mui/material';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
-import { makeStyles } from '@mui/styles';
+import mui from 'mui';
 
 import { useTaskStatusColorMapping } from 'utils/colors';
 import { isTaskFinalStatus } from 'utils/status';
@@ -14,7 +11,7 @@ import { formatDuration } from 'utils/time';
 
 import { TaskCommandsProgress_task$key } from './__generated__/TaskCommandsProgress_task.graphql';
 
-const useStyles = makeStyles(theme => {
+const useStyles = mui.makeStyles(theme => {
   return {
     progressBar: {
       backgroundColor: 'transparent',
@@ -82,7 +79,7 @@ export default function TaskCommandsProgress(props: Props) {
       colorStatus = task.status;
     }
     bars.push(
-      <Box
+      <mui.Box
         className={classes.progressBarElement}
         sx={{
           width: percent + '%',
@@ -95,16 +92,16 @@ export default function TaskCommandsProgress(props: Props) {
   let tooltipTitle = (
     <div>
       {task.statusDurations.map(statusDuration => (
-        <Typography variant="caption" display="block" key={statusDuration.status}>
+        <mui.Typography variant="caption" display="block" key={statusDuration.status}>
           {formatDuration(statusDuration.durationInSeconds)}: {statusDuration.status}
-        </Typography>
+        </mui.Typography>
       ))}
     </div>
   );
 
   return (
-    <Tooltip placement="bottom" title={tooltipTitle}>
-      <Box
+    <mui.Tooltip placement="bottom" title={tooltipTitle}>
+      <mui.Box
         className={classes.progressBar}
         sx={{
           display: 'flex',
@@ -112,7 +109,7 @@ export default function TaskCommandsProgress(props: Props) {
         }}
       >
         {bars}
-      </Box>
-    </Tooltip>
+      </mui.Box>
+    </mui.Tooltip>
   );
 }

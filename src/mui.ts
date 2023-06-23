@@ -1,3 +1,4 @@
+import AccountTree from '@mui/icons-material/AccountTree';
 import ArchiveOutlined from '@mui/icons-material/ArchiveOutlined';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
@@ -8,18 +9,25 @@ import Check from '@mui/icons-material/Check';
 import Close from '@mui/icons-material/Close';
 import Commit from '@mui/icons-material/Commit';
 import Dehaze from '@mui/icons-material/Dehaze';
+import DirectionsRun from '@mui/icons-material/DirectionsRun';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import Folder from '@mui/icons-material/Folder';
+import FolderOpen from '@mui/icons-material/FolderOpen';
 import Functions from '@mui/icons-material/Functions';
+import GetApp from '@mui/icons-material/GetApp';
 import GitHub from '@mui/icons-material/GitHub';
 import Question from '@mui/icons-material/HelpOutlineOutlined';
 import Info from '@mui/icons-material/Info';
 import InfoOutlined from '@mui/icons-material/InfoOutlined';
+import InsertDriveFile from '@mui/icons-material/InsertDriveFile';
 import LayersClear from '@mui/icons-material/LayersClear';
-import Menu from '@mui/icons-material/Menu';
+import ManageAccounts from '@mui/icons-material/ManageAccounts';
+import MenuIcon from '@mui/icons-material/Menu';
 import OpenInNewOutlined from '@mui/icons-material/OpenInNewOutlined';
 import PlayCircleFilled from '@mui/icons-material/PlayCircleFilled';
 import Refresh from '@mui/icons-material/Refresh';
 import Settings from '@mui/icons-material/Settings';
+import ViewList from '@mui/icons-material/ViewList';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
@@ -38,6 +46,7 @@ import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
 import Chip from '@mui/material/Chip';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Collapse from '@mui/material/Collapse';
@@ -54,6 +63,11 @@ import Grow from '@mui/material/Grow';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
 import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import Paper from '@mui/material/Paper';
@@ -66,12 +80,14 @@ import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import TextField from '@mui/material/TextField';
 import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
 import { grey } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
+import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { makeStyles } from '@mui/styles';
 import { withStyles } from '@mui/styles';
@@ -79,6 +95,7 @@ import { withStyles } from '@mui/styles';
 const mui = {
   createTheme,
   makeStyles,
+  ThemeProvider,
   useMediaQuery,
   useTheme,
   withStyles,
@@ -97,6 +114,7 @@ const mui = {
   CardActionArea,
   CardActions,
   CardContent,
+  CardHeader,
   Chip,
   ClickAwayListener,
   Collapse,
@@ -114,6 +132,11 @@ const mui = {
   IconButton,
   Link,
   List,
+  ListItem,
+  ListItemAvatar,
+  ListItemIcon,
+  ListItemText,
+  Menu,
   MenuItem,
   MenuList,
   Paper,
@@ -129,11 +152,13 @@ const mui = {
   TabPanel,
   TextField,
   ToggleButton,
+  ToggleButtonGroup,
   Toolbar,
   Tooltip,
   Typography,
 
   icons: {
+    AccountTree,
     ArchiveOutlined,
     ArrowBack,
     ArrowDropDown,
@@ -144,18 +169,26 @@ const mui = {
     Close,
     Commit,
     Dehaze,
+    DirectionsRun,
     ExpandMore,
+    Folder,
+    FolderOpen,
     Functions,
+    GetApp,
     GitHub,
     Info,
     InfoOutlined,
+    InsertDriveFile,
     LayersClear,
-    Menu,
+    ListItem,
+    ManageAccounts,
+    MenuIcon,
     OpenInNewOutlined,
     PlayCircleFilled,
     Question,
     Refresh,
     Settings,
+    ViewList,
   },
 
   colors: {

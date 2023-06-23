@@ -5,16 +5,8 @@ import { Link } from 'react-router-dom';
 import { graphql } from 'babel-plugin-relay/macro';
 import { useRecoilValue } from 'recoil';
 
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import IconButton from '@mui/material/IconButton';
-import Toolbar from '@mui/material/Toolbar';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Unstable_Grid2';
-import { createTheme } from '@mui/material/styles';
-import ThemeProvider from '@mui/material/styles/ThemeProvider';
-
 import { muiThemeOptions } from 'cirrusTheme';
+import mui from 'mui';
 
 import RepositoryCard from 'components/repositories/RepositoryCard';
 import useThemeWithAdjustableBreakpoints from 'utils/useThemeWithAdjustableBreakpoints';
@@ -52,7 +44,7 @@ export default function OwnerRepositoryList(props: Props) {
   let theme = useRecoilValue(muiThemeOptions);
   let themeWithAdjustableBreakpoints = useThemeWithAdjustableBreakpoints(theme);
   const themeForNewDesign = useMemo(
-    () => createTheme(themeWithAdjustableBreakpoints),
+    () => mui.createTheme(themeWithAdjustableBreakpoints),
     [themeWithAdjustableBreakpoints],
   );
 
@@ -60,36 +52,36 @@ export default function OwnerRepositoryList(props: Props) {
 
   if (info && info.viewerPermission === 'ADMIN') {
     organizationSettings = (
-      <Tooltip title="Account Settings">
+      <mui.Tooltip title="Account Settings">
         <Link to={`/settings/${info.platform}/${info.name}`}>
-          <IconButton size="large">
-            <ManageAccountsIcon />
-          </IconButton>
+          <mui.IconButton size="large">
+            <mui.icons.ManageAccounts />
+          </mui.IconButton>
         </Link>
-      </Tooltip>
+      </mui.Tooltip>
     );
   }
 
   return (
-    <ThemeProvider theme={themeForNewDesign}>
-      <Toolbar sx={{ justifyContent: 'start' }} disableGutters>
-        <Typography variant="h5" color="inherit" pr={0.5}>
+    <mui.ThemeProvider theme={themeForNewDesign}>
+      <mui.Toolbar sx={{ justifyContent: 'start' }} disableGutters>
+        <mui.Typography variant="h5" color="inherit" pr={0.5}>
           Repositories
-        </Typography>
+        </mui.Typography>
         {organizationSettings}
-      </Toolbar>
+      </mui.Toolbar>
 
       {/* CARDS */}
-      <Grid container spacing={2}>
+      <mui.Grid container spacing={2}>
         {info.repositories.edges.map(edge => {
           if (!edge.node.lastDefaultBranchBuild) return null;
           return (
-            <Grid xs={12} sm={6} md={4} key={edge.node.id}>
+            <mui.Grid xs={12} sm={6} md={4} key={edge.node.id}>
               <RepositoryCard repository={edge.node} />
-            </Grid>
+            </mui.Grid>
           );
         })}
-      </Grid>
-    </ThemeProvider>
+      </mui.Grid>
+    </mui.ThemeProvider>
   );
 }

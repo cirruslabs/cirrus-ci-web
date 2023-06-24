@@ -1,7 +1,9 @@
 import AccountTree from '@mui/icons-material/AccountTree';
+import AddCircle from '@mui/icons-material/AddCircle';
 import ArchiveOutlined from '@mui/icons-material/ArchiveOutlined';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
+import AttachMoney from '@mui/icons-material/AttachMoney';
 import Book from '@mui/icons-material/Book';
 import BugReport from '@mui/icons-material/BugReport';
 import Cancel from '@mui/icons-material/Cancel';
@@ -9,6 +11,7 @@ import Check from '@mui/icons-material/Check';
 import Close from '@mui/icons-material/Close';
 import Commit from '@mui/icons-material/Commit';
 import Dehaze from '@mui/icons-material/Dehaze';
+import Delete from '@mui/icons-material/Delete';
 import DirectionsRun from '@mui/icons-material/DirectionsRun';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Folder from '@mui/icons-material/Folder';
@@ -27,6 +30,7 @@ import OpenInNewOutlined from '@mui/icons-material/OpenInNewOutlined';
 import PlayCircleFilled from '@mui/icons-material/PlayCircleFilled';
 import Refresh from '@mui/icons-material/Refresh';
 import Settings from '@mui/icons-material/Settings';
+import Timeline from '@mui/icons-material/Timeline';
 import ViewList from '@mui/icons-material/ViewList';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
@@ -47,6 +51,7 @@ import CardActionArea from '@mui/material/CardActionArea';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
+import Checkbox from '@mui/material/Checkbox';
 import Chip from '@mui/material/Chip';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Collapse from '@mui/material/Collapse';
@@ -59,20 +64,29 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import Fab from '@mui/material/Fab';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormHelperText from '@mui/material/FormHelperText';
 import Grow from '@mui/material/Grow';
 import IconButton from '@mui/material/IconButton';
+import Input from '@mui/material/Input';
+import InputAdornment from '@mui/material/InputAdornment';
+import InputLabel from '@mui/material/InputLabel';
 import Link from '@mui/material/Link';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
+import Select from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
+import Switch from '@mui/material/Switch';
 import Tab from '@mui/material/Tab';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -85,7 +99,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
-import { grey } from '@mui/material/colors';
+import grey from '@mui/material/colors/grey';
+import orange from '@mui/material/colors/orange';
 import { createTheme } from '@mui/material/styles';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -93,13 +108,6 @@ import { makeStyles } from '@mui/styles';
 import { withStyles } from '@mui/styles';
 
 const mui = {
-  createTheme,
-  makeStyles,
-  ThemeProvider,
-  useMediaQuery,
-  useTheme,
-  withStyles,
-
   Accordion,
   AccordionDetails,
   AccordionSummary,
@@ -115,10 +123,12 @@ const mui = {
   CardActions,
   CardContent,
   CardHeader,
+  Checkbox,
   Chip,
   ClickAwayListener,
   Collapse,
   Container,
+  createTheme,
   Dialog,
   DialogActions,
   DialogContent,
@@ -127,21 +137,31 @@ const mui = {
   Divider,
   Drawer,
   Fab,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
   Grid,
   Grow,
   IconButton,
+  Input,
+  InputAdornment,
+  InputLabel,
   Link,
   List,
   ListItem,
   ListItemAvatar,
   ListItemIcon,
+  ListItemSecondaryAction,
   ListItemText,
+  makeStyles,
   Menu,
   MenuItem,
   MenuList,
   Paper,
   Popper,
+  Select,
   Stack,
+  Switch,
   Tab,
   TabContext,
   Table,
@@ -151,17 +171,23 @@ const mui = {
   TabList,
   TabPanel,
   TextField,
+  ThemeProvider,
   ToggleButton,
   ToggleButtonGroup,
   Toolbar,
   Tooltip,
   Typography,
+  useMediaQuery,
+  useTheme,
+  withStyles,
 
   icons: {
     AccountTree,
+    AddCircle,
     ArchiveOutlined,
     ArrowBack,
     ArrowDropDown,
+    AttachMoney,
     Book,
     BugReport,
     Cancel,
@@ -169,6 +195,7 @@ const mui = {
     Close,
     Commit,
     Dehaze,
+    Delete,
     DirectionsRun,
     ExpandMore,
     Folder,
@@ -182,17 +209,19 @@ const mui = {
     LayersClear,
     ListItem,
     ManageAccounts,
-    MenuIcon,
+    Menu: MenuIcon,
     OpenInNewOutlined,
     PlayCircleFilled,
     Question,
     Refresh,
     Settings,
+    Timeline,
     ViewList,
   },
 
   colors: {
     grey,
+    orange,
   },
 };
 

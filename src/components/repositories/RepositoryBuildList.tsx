@@ -6,18 +6,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { graphql } from 'babel-plugin-relay/macro';
 import cx from 'classnames';
 
-import AddCircle from '@mui/icons-material/AddCircle';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import Settings from '@mui/icons-material/Settings';
-import Timeline from '@mui/icons-material/Timeline';
-import IconButton from '@mui/material/IconButton';
-import Link from '@mui/material/Link';
-import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
-import Toolbar from '@mui/material/Toolbar';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
-import { makeStyles } from '@mui/styles';
+import mui from 'mui';
 
 import BuildCard from 'components/builds/BuildCard';
 import BuildDurationsChart from 'components/builds/BuildDurationsChart';
@@ -28,7 +17,7 @@ import { absoluteLink } from 'utils/link';
 import { RepositoryBuildList_repository$key } from './__generated__/RepositoryBuildList_repository.graphql';
 
 // todo: move custom values to mui theme adjustments
-const useStyles = makeStyles(theme => {
+const useStyles = mui.makeStyles(theme => {
   return {
     root: {
       paddingBottom: theme.spacing(16.0),
@@ -106,49 +95,49 @@ export default function RepositoryBuildList(props: Props) {
   let repositoryAction: null | JSX.Element = null;
   if (repository.viewerPermission === 'WRITE' || repository.viewerPermission === 'ADMIN') {
     repositorySettings = (
-      <Tooltip title="Repository Settings">
-        <IconButton component={RouterLink} to={'/settings/repository/' + repository.id} size="large">
-          <Settings />
-        </IconButton>
-      </Tooltip>
+      <mui.Tooltip title="Repository Settings">
+        <mui.IconButton component={RouterLink} to={'/settings/repository/' + repository.id} size="large">
+          <mui.icons.Settings />
+        </mui.IconButton>
+      </mui.Tooltip>
     );
 
     repositoryAction = (
       <>
         <div key="create-build-gap" />
-        <Tooltip title="Create Build">
-          <IconButton key="create-build-button" onClick={() => setOpenCreateDialog(true)} size="large">
-            <AddCircle />
-          </IconButton>
-        </Tooltip>
+        <mui.Tooltip title="Create Build">
+          <mui.IconButton key="create-build-button" onClick={() => setOpenCreateDialog(true)} size="large">
+            <mui.icons.AddCircle />
+          </mui.IconButton>
+        </mui.Tooltip>
       </>
     );
   }
 
   let repositoryMetrics = (
-    <Tooltip title="Repository Metrics">
-      <IconButton
+    <mui.Tooltip title="Repository Metrics">
+      <mui.IconButton
         component={RouterLink}
         to={absoluteLink('metrics', 'repository', repository.platform, repository.owner, repository.name)}
         size="large"
       >
-        <Timeline />
-      </IconButton>
-    </Tooltip>
+        <mui.icons.Timeline />
+      </mui.IconButton>
+    </mui.Tooltip>
   );
 
   const repositoryLinkButton = (
-    <Tooltip title="Open on GitHub">
-      <IconButton
-        component={Link}
+    <mui.Tooltip title="Open on GitHub">
+      <mui.IconButton
+        component={mui.Link}
         href={createLinkToRepository(repository, props.branch)}
         target="_blank"
         rel="noopener noreferrer"
         size="large"
       >
-        <GitHubIcon />
-      </IconButton>
-    </Tooltip>
+        <mui.icons.GitHub />
+      </mui.IconButton>
+    </mui.Tooltip>
   );
 
   let buildsChart: null | JSX.Element = null;
@@ -157,16 +146,16 @@ export default function RepositoryBuildList(props: Props) {
 
   if (isDisplayBuildChart) {
     buildsChart = (
-      <Paper className={classes.paper} sx={{ mb: 2 }}>
-        <Toolbar className={classes.header} disableGutters>
-          <Typography variant="h5" color="inherit">
+      <mui.Paper className={classes.paper} sx={{ mb: 2 }}>
+        <mui.Toolbar className={classes.header} disableGutters>
+          <mui.Typography variant="h5" color="inherit">
             Duration Chart
-          </Typography>
-        </Toolbar>
+          </mui.Typography>
+        </mui.Toolbar>
         <div className={classes.buildsChart}>
           <BuildDurationsChart builds={builds.slice().reverse()} />
         </div>
-      </Paper>
+      </mui.Paper>
     );
   }
 
@@ -181,25 +170,25 @@ export default function RepositoryBuildList(props: Props) {
       {buildsChart}
 
       {/* BUILDS */}
-      <Paper className={cx(classes.paper, classes.paperBuilds)}>
-        <Toolbar className={classes.header} disableGutters>
-          <Stack direction="row" alignItems="center">
-            <Typography variant="h5" color="inherit">
+      <mui.Paper className={cx(classes.paper, classes.paperBuilds)}>
+        <mui.Toolbar className={classes.header} disableGutters>
+          <mui.Stack direction="row" alignItems="center">
+            <mui.Typography variant="h5" color="inherit">
               Builds
-            </Typography>
+            </mui.Typography>
             {repositoryAction}
-          </Stack>
+          </mui.Stack>
           <div>
             {repositoryMetrics}
             {repositoryLinkButton}
             {repositorySettings}
           </div>
-        </Toolbar>
+        </mui.Toolbar>
 
         {builds.map(build => (
           <BuildCard key={build.id} build={build} />
         ))}
-      </Paper>
+      </mui.Paper>
       {openCreateDialog && (
         <CreateBuildDialog repository={repository} open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} />
       )}

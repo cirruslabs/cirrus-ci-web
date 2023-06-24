@@ -4,25 +4,13 @@ import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
 import classNames from 'classnames';
 
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Link } from '@mui/material';
-import Button from '@mui/material/Button/Button';
-import Card from '@mui/material/Card/Card';
-import CardActions from '@mui/material/CardActions/CardActions';
-import CardContent from '@mui/material/CardContent/CardContent';
-import CardHeader from '@mui/material/CardHeader/CardHeader';
-import Collapse from '@mui/material/Collapse/Collapse';
-import IconButton from '@mui/material/IconButton/IconButton';
-import Typography from '@mui/material/Typography/Typography';
-import { orange } from '@mui/material/colors';
-import { makeStyles } from '@mui/styles';
+import mui from 'mui';
 
 import BillingSettingsButton from './BillingSettingsButton';
 import ComputeCreditsStripeDialog from './ComputeCreditsStripeDialog';
 import { ComputeCreditsBase_info$key } from './__generated__/ComputeCreditsBase_info.graphql';
 
-const useStyles = makeStyles(theme => {
+const useStyles = mui.makeStyles(theme => {
   return {
     expand: {
       transform: 'rotate(0deg)',
@@ -50,9 +38,9 @@ const useStyles = makeStyles(theme => {
       padding: theme.spacing(4.0),
     },
     credits: {
-      color: orange[700],
+      color: mui.colors.orange[700],
       '&:hover': {
-        color: orange[900],
+        color: mui.colors.orange[900],
       },
     },
   };
@@ -80,38 +68,38 @@ export default function ComputeCreditsBase(props: Props) {
   let classes = useStyles();
 
   return (
-    <Card elevation={24}>
-      <CardHeader title="Compute Credits" />
-      <CardContent>
-        <Typography variant="h6">
+    <mui.Card elevation={24}>
+      <mui.CardHeader title="Compute Credits" />
+      <mui.CardContent>
+        <mui.Typography variant="h6">
           Your current compute credits balance: <b className={classes.credits}>{props.balanceInCredits || '0.00'}</b>
-        </Typography>
+        </mui.Typography>
         <div className={classes.gap} />
-        <Typography variant="subtitle1">
+        <mui.Typography variant="subtitle1">
           <p>
             Compute credits are used for buying <b>priority</b> CPU time on Community Clusters for your projects. It
             allows not to bother about configuring{' '}
-            <Link color="inherit" href="https://cirrus-ci.org/guide/supported-computing-services/">
+            <mui.Link color="inherit" href="https://cirrus-ci.org/guide/supported-computing-services/">
               Compute Services
-            </Link>{' '}
+            </mui.Link>
             and focus on the product instead of infrastructure.
           </p>
           <p>
             Read more about compute credits and how to use them in{' '}
-            <Link color="inherit" href="https://cirrus-ci.org/pricing/#compute-credits">
+            <mui.Link color="inherit" href="https://cirrus-ci.org/pricing/#compute-credits">
               documentation
-            </Link>
+            </mui.Link>
             .
           </p>
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <Button variant="contained" onClick={() => setOpenBuyCredits(true)} className={classes.buttonSpacing}>
-          <AttachMoneyIcon />
+        </mui.Typography>
+      </mui.CardContent>
+      <mui.CardActions disableSpacing>
+        <mui.Button variant="contained" onClick={() => setOpenBuyCredits(true)} className={classes.buttonSpacing}>
+          <mui.icons.AttachMoney />
           Add More Credits
-        </Button>
+        </mui.Button>
         <BillingSettingsButton info={info} />
-        <IconButton
+        <mui.IconButton
           className={classNames(classes.expand, {
             [classes.expandOpen]: expanded,
           })}
@@ -120,17 +108,17 @@ export default function ComputeCreditsBase(props: Props) {
           aria-label="Show Transactions"
           size="large"
         >
-          <ExpandMoreIcon />
-        </IconButton>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>{props.transactionsComponent}</CardContent>
-      </Collapse>
+          <mui.icons.ExpandMore />
+        </mui.IconButton>
+      </mui.CardActions>
+      <mui.Collapse in={expanded} timeout="auto" unmountOnExit>
+        <mui.CardContent>{props.transactionsComponent}</mui.CardContent>
+      </mui.Collapse>
       <ComputeCreditsStripeDialog
         ownerUid={props.ownerUid}
         open={openBuyCredits}
         onClose={() => setOpenBuyCredits(false)}
       />
-    </Card>
+    </mui.Card>
   );
 }

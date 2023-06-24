@@ -1,22 +1,12 @@
+import { CardElement, Elements, useStripe } from '@stripe/react-stripe-js';
 import React, { useState, useMemo } from 'react';
 import { useMutation } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
+
 import { StripeCardElementOptions, Token, StripeCardElement } from '@stripe/stripe-js';
-import { CardElement, Elements, useStripe } from '@stripe/react-stripe-js';
+import { graphql } from 'babel-plugin-relay/macro';
 import cx from 'classnames';
 
-import { useTheme } from '@mui/material';
-import { FormHelperText } from '@mui/material';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import FormControl from '@mui/material/FormControl';
-import Input from '@mui/material/Input';
-import InputLabel from '@mui/material/InputLabel';
-import Typography from '@mui/material/Typography';
-import { makeStyles } from '@mui/styles';
+import mui from 'mui';
 
 import { UnspecifiedCallbackFunction } from 'utils/utility-types';
 
@@ -26,7 +16,7 @@ import {
   ComputeCreditsStripeDialogMutation$variables,
 } from './__generated__/ComputeCreditsStripeDialogMutation.graphql';
 
-const useStyles = makeStyles(theme => {
+const useStyles = mui.makeStyles(theme => {
   return {
     inputLabel: {
       '&.Mui-focused': {
@@ -51,7 +41,7 @@ interface Props {
 }
 
 function ComputeCreditsStripeDialog(props: Props) {
-  const theme = useTheme();
+  const theme = mui.useTheme();
   const classes = useStyles();
   const stripe = useStripe();
   const { ownerUid, ...other } = props;
@@ -165,14 +155,14 @@ function ComputeCreditsStripeDialog(props: Props) {
   };
 
   return (
-    <Dialog {...other}>
-      <DialogTitle>Buy Compute Credits</DialogTitle>
-      <DialogContent sx={{ overflowY: 'visible' }}>
-        <FormControl fullWidth variant="standard">
-          <InputLabel htmlFor="credits-amount" className={classes.inputLabel}>
+    <mui.Dialog {...other}>
+      <mui.DialogTitle>Buy Compute Credits</mui.DialogTitle>
+      <mui.DialogContent sx={{ overflowY: 'visible' }}>
+        <mui.FormControl fullWidth variant="standard">
+          <mui.InputLabel htmlFor="credits-amount" className={classes.inputLabel}>
             Amount of Credits to Buy
-          </InputLabel>
-          <Input
+          </mui.InputLabel>
+          <mui.Input
             id="credits-amount"
             error={credits < 20}
             value={credits.toLocaleString('en-US', { useGrouping: true })}
@@ -180,24 +170,24 @@ function ComputeCreditsStripeDialog(props: Props) {
             onChange={handleAmountChange}
             autoFocus
           />
-          <FormHelperText id="credits-amount-helper-text" error={credits < 20}>
+          <mui.FormHelperText id="credits-amount-helper-text" error={credits < 20}>
             The minimum amount of credits you can buy is 20.
-          </FormHelperText>
-        </FormControl>
+          </mui.FormHelperText>
+        </mui.FormControl>
 
-        <FormControl fullWidth required={true} variant="standard">
-          <InputLabel htmlFor="receipt-email" className={classes.inputLabel}>
+        <mui.FormControl fullWidth required={true} variant="standard">
+          <mui.InputLabel htmlFor="receipt-email" className={classes.inputLabel}>
             Receipt Email
-          </InputLabel>
-          <Input
+          </mui.InputLabel>
+          <mui.Input
             id="receipt-email"
             value={receiptEmail}
             inputMode="email"
             error={!/\S+@\S+\.\S+/.test(receiptEmail) && receiptEmail !== ''}
             onChange={event => setReceiptEmail(event.target.value)}
           />
-        </FormControl>
-        <FormControl fullWidth sx={{ marginTop: 2 }}>
+        </mui.FormControl>
+        <mui.FormControl fullWidth sx={{ marginTop: 2 }}>
           <CardElement
             id="card-element"
             className={cx('form-control', classes.cardInput)}
@@ -205,17 +195,17 @@ function ComputeCreditsStripeDialog(props: Props) {
             onChange={handleChange}
             onReady={element => setCard(element)}
           />
-        </FormControl>
-        <Typography color="error" mt={1}>
+        </mui.FormControl>
+        <mui.Typography color="error" mt={1}>
           {error}
-        </Typography>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleSubmit} disabled={submitDisabled} variant="contained">
+        </mui.Typography>
+      </mui.DialogContent>
+      <mui.DialogActions>
+        <mui.Button onClick={handleSubmit} disabled={submitDisabled} variant="contained">
           Buy {credits.toLocaleString('en-US', { useGrouping: true })} credits
-        </Button>
-      </DialogActions>
-    </Dialog>
+        </mui.Button>
+      </mui.DialogActions>
+    </mui.Dialog>
   );
 }
 

@@ -229,7 +229,7 @@ function AllRoutes() {
               className={classNames(classes.menuButton, openDrawer && classes.hide)}
               size="large"
             >
-              <mui.icons.MenuIcon />
+              <mui.icons.Menu />
             </mui.IconButton>
             <Link to={'/'} style={{ color: theme.palette.primary.contrastText, textDecoration: 'none' }}>
               <mui.Typography

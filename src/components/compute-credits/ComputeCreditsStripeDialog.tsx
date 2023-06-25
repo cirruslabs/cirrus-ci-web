@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { useMutation } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { StripeCardElementOptions, Token } from '@stripe/stripe-js';
-import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js';
+import { StripeCardElementOptions, Token, StripeCardElement } from '@stripe/stripe-js';
+import { CardElement, Elements, useStripe } from '@stripe/react-stripe-js';
 import cx from 'classnames';
 
 import { useTheme } from '@mui/material';
@@ -51,8 +51,16 @@ interface Props {
 }
 
 function ComputeCreditsStripeDialog(props: Props) {
-  let theme = useTheme();
-  let classes = useStyles();
+  const theme = useTheme();
+  const classes = useStyles();
+  const stripe = useStripe();
+  const { ownerUid, ...other } = props;
+  const [credits, setCredits] = useState(20);
+  const [receiptEmail, setReceiptEmail] = useState('');
+  const [paymentInProgress, setPaymentInProgress] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [card, setCard] = useState<StripeCardElement | null>(null);
+
   const CARD_ELEMENT_OPTIONS: StripeCardElementOptions = useMemo(
     () => ({
       hidePostalCode: true,
@@ -76,19 +84,9 @@ function ComputeCreditsStripeDialog(props: Props) {
     [theme.palette.text.primary],
   );
 
-  const { ownerUid, ...other } = props;
-
-  const [credits, setCredits] = useState(20);
   const handleAmountChange = event => {
     setCredits(parseInt((event.target.value || '0').replace(/,/g, ''), 10));
   };
-  const [receiptEmail, setReceiptEmail] = useState('');
-
-  const [paymentInProgress, setPaymentInProgress] = useState(false);
-
-  const [error, setError] = useState<string | null>(null);
-  const stripe = useStripe();
-  const elements = useElements();
 
   const handleChange = event => {
     if (event.error) {
@@ -98,12 +96,7 @@ function ComputeCreditsStripeDialog(props: Props) {
     }
   };
 
-  const card = useMemo(() => elements?.getElement(CardElement) || null, [elements]);
-
-  const submitDisabled = useMemo(
-    () => !stripe || !elements || !card || paymentInProgress,
-    [stripe, elements, card, paymentInProgress],
-  );
+  const submitDisabled = useMemo(() => !stripe || !card || paymentInProgress, [stripe, card, paymentInProgress]);
 
   // Handle form submission.
   const handleSubmit = async event => {
@@ -136,6 +129,7 @@ function ComputeCreditsStripeDialog(props: Props) {
       }
     }
   `);
+
   const stripeTokenHandler = (token: Token) => {
     const variables: ComputeCreditsStripeDialogMutation$variables = {
       input: {
@@ -163,9 +157,9 @@ function ComputeCreditsStripeDialog(props: Props) {
           props.onClose();
         }
       },
-      onError: errors => {
+      onError: error => {
         setPaymentInProgress(false);
-        setError(errors[0].message);
+        setError(error.message);
       },
     });
   };
@@ -199,7 +193,7 @@ function ComputeCreditsStripeDialog(props: Props) {
             id="receipt-email"
             value={receiptEmail}
             inputMode="email"
-            error={!/\S+@\S+\.\S+/.test(receiptEmail)}
+            error={!/\S+@\S+\.\S+/.test(receiptEmail) && receiptEmail !== ''}
             onChange={event => setReceiptEmail(event.target.value)}
           />
         </FormControl>
@@ -209,6 +203,7 @@ function ComputeCreditsStripeDialog(props: Props) {
             className={cx('form-control', classes.cardInput)}
             options={CARD_ELEMENT_OPTIONS}
             onChange={handleChange}
+            onReady={element => setCard(element)}
           />
         </FormControl>
         <Typography color="error" mt={1}>

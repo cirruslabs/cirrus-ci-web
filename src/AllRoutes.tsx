@@ -158,7 +158,7 @@ function AllRoutes() {
             Active Repositories
           </mui.Typography>
           <mui.Tooltip
-            title="Repositories to which you have contributed, sorted by the time of your contribution."
+            title="Repositories you recently contributed&nbsp;to, sorted by&nbsp;the time of&nbsp;your contribution"
             disableInteractive
           >
             <mui.icons.InfoOutlined className={classes.drawerHeaderInfo} color="info" />

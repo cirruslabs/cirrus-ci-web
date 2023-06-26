@@ -1,13 +1,16 @@
 import React from 'react';
+import { useFragment } from 'react-relay';
 
+import { graphql } from 'babel-plugin-relay/macro';
+
+import { useTheme } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
 import Icon from '@mui/material/Icon';
-import { useHookStatusColor } from '../../utils/colors';
-import { hookIconName, hookStatusMessage } from '../../utils/status';
-import { useFragment } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
-import { useTheme } from '@mui/material';
+
+import { useHookStatusColor } from 'utils/colors';
+import { hookIconName, hookStatusMessage } from 'utils/status';
+
 import { HookStatusChip_hook$key } from './__generated__/HookStatusChip_hook.graphql';
 
 interface Props {

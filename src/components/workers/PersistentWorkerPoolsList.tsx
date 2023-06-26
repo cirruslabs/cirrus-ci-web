@@ -1,28 +1,11 @@
 import React, { useState } from 'react';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import Button from '@mui/material/Button';
 import { useMutation } from 'react-relay';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import InputLabel from '@mui/material/InputLabel';
-import Input from '@mui/material/Input';
-import DialogActions from '@mui/material/DialogActions';
+import { useNavigate } from 'react-router-dom';
+
 import { graphql } from 'babel-plugin-relay/macro';
-import {
-  PersistentWorkerPoolsListCreateMutation,
-  CreatePersistentWorkerPoolInput,
-  PersistentWorkerPoolsListCreateMutation$data,
-} from './__generated__/PersistentWorkerPoolsListCreateMutation.graphql';
-import { navigateHelper } from '../../utils/navigateHelper';
 import PropTypes from 'prop-types';
+
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Avatar,
   IconButton,
@@ -32,13 +15,34 @@ import {
   ListItemSecondaryAction,
   ListItemText,
 } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Input from '@mui/material/Input';
+import InputLabel from '@mui/material/InputLabel';
+import Switch from '@mui/material/Switch';
+import Typography from '@mui/material/Typography';
+
+import PoolVisibilityIcon from 'components/icons/PoolVisibilityIcon';
+import { navigateHelper } from 'utils/navigateHelper';
+
+import {
+  PersistentWorkerPoolsListCreateMutation,
+  CreatePersistentWorkerPoolInput,
+  PersistentWorkerPoolsListCreateMutation$data,
+} from './__generated__/PersistentWorkerPoolsListCreateMutation.graphql';
 import {
   PersistentWorkerPoolsListDeleteMutation,
   PersistentWorkerPoolsListDeleteMutation$variables,
 } from './__generated__/PersistentWorkerPoolsListDeleteMutation.graphql';
-import PoolVisibilityIcon from '../icons/PoolVisibilityIcon';
-import { useNavigate } from 'react-router-dom';
 
 interface PoolsListProps {
   readonly ownerUid: string;

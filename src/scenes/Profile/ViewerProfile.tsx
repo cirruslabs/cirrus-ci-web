@@ -1,10 +1,12 @@
 import React from 'react';
-
 import { useLazyLoadQuery } from 'react-relay';
+
 import { graphql } from 'babel-plugin-relay/macro';
 
 import Typography from '@mui/material/Typography';
-import UserProfile from '../../components/account/UserProfile';
+
+import UserProfile from 'components/account/UserProfile';
+
 import { ViewerProfileQuery } from './__generated__/ViewerProfileQuery.graphql';
 
 export default function ViewerProfile() {

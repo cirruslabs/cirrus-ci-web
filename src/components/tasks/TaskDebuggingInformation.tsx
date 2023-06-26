@@ -1,12 +1,14 @@
 import React from 'react';
-import { CardContent, List } from '@mui/material';
 import { useLazyLoadQuery } from 'react-relay';
+
 import { graphql } from 'babel-plugin-relay/macro';
-import Typography from '@mui/material/Typography';
-import Card from '@mui/material/Card';
-import InlineLogs from '../logs/InlineLogs';
+
+import mui from 'mui';
+
+import Notification from 'components/common/Notification';
+import InlineLogs from 'components/logs/InlineLogs';
+
 import { TaskDebuggingInformationQuery } from './__generated__/TaskDebuggingInformationQuery.graphql';
-import Notification from '../common/Notification';
 
 interface Props {
   taskId: string;
@@ -51,27 +53,27 @@ function TaskDebuggingInformation(props: Props) {
     !task.executionInfo.agentNotifications ||
     task.executionInfo.agentNotifications.length === 0 ? null : (
       <>
-        <Typography variant="subtitle1" sx={{ pt: 2 }}>
+        <mui.Typography variant="subtitle1" sx={{ pt: 2 }}>
           Agent notifications
-        </Typography>
-        <List>
+        </mui.Typography>
+        <mui.List>
           {task.executionInfo.agentNotifications.map(notification => (
             <Notification key={notification.message} notification={notification} />
           ))}
-        </List>
+        </mui.List>
       </>
     );
 
   return (
-    <Card elevation={24}>
-      <CardContent>
-        <Typography variant="h6">Debugging Information</Typography>
+    <mui.Card elevation={24}>
+      <mui.CardContent>
+        <mui.Typography variant="h6">Debugging Information</mui.Typography>
         <InlineLogs title="Execution events" lines={events} />
         {agentNotificationsComponent}
         {/* schema commandLogsTail*/}
         <InlineLogs title="Agent logs" lines={task.commandLogsTail} />
-      </CardContent>
-    </Card>
+      </mui.CardContent>
+    </mui.Card>
   );
 }
 

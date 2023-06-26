@@ -1,9 +1,10 @@
 import React from 'react';
-
 import { useLazyLoadQuery } from 'react-relay';
+
 import { graphql } from 'babel-plugin-relay/macro';
 
-import ViewerBuildList from '../../components/account/ViewerBuildList';
+import ViewerBuildList from 'components/account/ViewerBuildList';
+
 import WelcomePage from './WelcomePage';
 import { HomeViewerQuery } from './__generated__/HomeViewerQuery.graphql';
 

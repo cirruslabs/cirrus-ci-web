@@ -1,4 +1,5 @@
 import { Link, Typography } from '@mui/material';
+
 import MarkdownTypography from './MarkdownTypography';
 
 interface CommitMessageProps {

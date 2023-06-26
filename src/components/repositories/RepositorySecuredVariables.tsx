@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
 import { useFragment, useMutation } from 'react-relay';
+
 import { graphql } from 'babel-plugin-relay/macro';
+
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import FormControl from '@mui/material/FormControl';
-import CopyPasteField from '../common/CopyPasteField';
 import TextField from '@mui/material/TextField';
-import { RepositorySecuredVariables_repository$key } from './__generated__/RepositorySecuredVariables_repository.graphql';
+
+import CopyPasteField from 'components/common/CopyPasteField';
+
 import {
   RepositorySecuredVariablesMutation,
   RepositorySecuredVariablesMutation$data,
   RepositorySecuredVariablesMutation$variables,
 } from './__generated__/RepositorySecuredVariablesMutation.graphql';
+import { RepositorySecuredVariables_repository$key } from './__generated__/RepositorySecuredVariables_repository.graphql';
 
 interface Props {
   repository: RepositorySecuredVariables_repository$key;

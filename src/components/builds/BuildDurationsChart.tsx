@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { Bar, BarChart, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { useBuildStatusColorMapping } from '../../utils/colors';
-import { formatDuration } from '../../utils/time';
-import { navigateBuildHelper } from '../../utils/navigateHelper';
-import { NodeOfConnection } from '../../utils/utility-types';
-import { RepositoryBuildList_repository$data } from '../repositories/__generated__/RepositoryBuildList_repository.graphql';
-import { withStyles } from '@mui/styles';
 import { useNavigate } from 'react-router-dom';
-import { Paper, Typography } from '@mui/material';
+
+import { Bar, BarChart, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+
+import mui from 'mui';
+
+import { RepositoryBuildList_repository$data } from 'components/repositories/__generated__/RepositoryBuildList_repository.graphql';
+import { useBuildStatusColorMapping } from 'utils/colors';
+import { navigateBuildHelper } from 'utils/navigateHelper';
+import { formatDuration } from 'utils/time';
+import { NodeOfConnection } from 'utils/utility-types';
 
 interface Props {
   builds: NodeOfConnection<RepositoryBuildList_repository$data['builds']>[];
@@ -29,11 +31,11 @@ function BuildDurationsChart(props: Props) {
     let payloadElement = payload[0];
     if (!payloadElement) return null;
     return (
-      <Paper>
-        <Typography style={{ margin: 4 }}>
+      <mui.Paper>
+        <mui.Typography style={{ margin: 4 }}>
           {formatDuration(payloadElement.value)} {label}
-        </Typography>
-      </Paper>
+        </mui.Typography>
+      </mui.Paper>
     );
   };
 
@@ -76,4 +78,4 @@ function BuildDurationsChart(props: Props) {
   );
 }
 
-export default withStyles({})(BuildDurationsChart);
+export default mui.withStyles({})(BuildDurationsChart);

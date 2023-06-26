@@ -1,14 +1,15 @@
 import React from 'react';
-
 import { useLazyLoadQuery, useMutation } from 'react-relay';
+
 import { graphql } from 'babel-plugin-relay/macro';
 
-import AccountInformation from '../../components/account/AccountInformation';
-import { ActiveRepositoriesDrawerQuery } from './__generated__/ActiveRepositoriesDrawerQuery.graphql';
+import AccountInformation from 'components/account/AccountInformation';
+
 import {
   ActiveRepositoriesDrawerDeleteWebPushConfigurationMutation,
   ActiveRepositoriesDrawerDeleteWebPushConfigurationMutation$variables,
 } from './__generated__/ActiveRepositoriesDrawerDeleteWebPushConfigurationMutation.graphql';
+import { ActiveRepositoriesDrawerQuery } from './__generated__/ActiveRepositoriesDrawerQuery.graphql';
 import {
   ActiveRepositoriesDrawerSaveWebPushConfigurationMutation,
   ActiveRepositoriesDrawerSaveWebPushConfigurationMutation$variables,

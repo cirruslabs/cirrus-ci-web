@@ -1,15 +1,18 @@
 import React, { useEffect } from 'react';
+import { useFragment } from 'react-relay';
 
+import { graphql } from 'babel-plugin-relay/macro';
+
+import { useTheme } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
-import Tooltip from '@mui/material/Tooltip';
 import Icon from '@mui/material/Icon';
-import { useTaskStatusColor } from '../../utils/colors';
-import { taskStatusIconName } from '../../utils/status';
-import { roundAndPresentDuration } from '../../utils/time';
-import { useFragment } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
-import { useTheme } from '@mui/material';
+import Tooltip from '@mui/material/Tooltip';
+
+import { useTaskStatusColor } from 'utils/colors';
+import { taskStatusIconName } from 'utils/status';
+import { roundAndPresentDuration } from 'utils/time';
+
 import { HookCreatedChip_hook$key } from './__generated__/HookCreatedChip_hook.graphql';
 
 interface Props {

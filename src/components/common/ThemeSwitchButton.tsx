@@ -1,9 +1,12 @@
 import React from 'react';
-import { prefersDarkModeState } from '../../cirrusTheme';
-import { IconButton, Tooltip, useTheme } from '@mui/material';
-import SunIcon from '@mui/icons-material/BrightnessHigh';
-import MoonIcon from '@mui/icons-material/Brightness3';
+
 import { useRecoilState } from 'recoil';
+
+import MoonIcon from '@mui/icons-material/Brightness3';
+import SunIcon from '@mui/icons-material/BrightnessHigh';
+import { IconButton, Tooltip, useTheme } from '@mui/material';
+
+import { prefersDarkModeState } from 'cirrusTheme';
 
 const ThemeSwitchButton = () => {
   let theme = useTheme();

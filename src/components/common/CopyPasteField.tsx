@@ -1,7 +1,9 @@
 import React from 'react';
-import { IconButton, InputAdornment, OutlinedInput } from '@mui/material';
-import CopyIcon from '@mui/icons-material/FileCopy';
+
 import copy from 'clipboard-copy';
+
+import CopyIcon from '@mui/icons-material/FileCopy';
+import { IconButton, InputAdornment, OutlinedInput } from '@mui/material';
 import { OutlinedInputProps } from '@mui/material/OutlinedInput/OutlinedInput';
 
 function CopyPasteField(props: OutlinedInputProps) {

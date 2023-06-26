@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
+
 import { SvgIcon, SvgIconProps } from '@mui/material';
 
 interface Props extends SvgIconProps {

@@ -1,12 +1,15 @@
 import React from 'react';
+import { useFragment } from 'react-relay';
 
+import { graphql } from 'babel-plugin-relay/macro';
+
+import { Tooltip, useTheme } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
-import { useFragment } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
+
+import PlatformIcon from 'components/icons/PlatformIcon';
+
 import { WorkerStatusChip_worker$key } from './__generated__/WorkerStatusChip_worker.graphql';
-import { Tooltip, useTheme } from '@mui/material';
-import PlatformIcon from '../icons/PlatformIcon';
 
 interface Props {
   className?: string;

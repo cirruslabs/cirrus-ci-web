@@ -2,8 +2,10 @@ import React from 'react';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
+
+import { getNodesFromConnection } from 'utils/graphql';
+
 import DeliveryRow from './DeliveryRow';
-import { getNodesFromConnection } from '../../utils/graphql';
 import { WebHookSettings_info$data } from './__generated__/WebHookSettings_info.graphql';
 
 interface Props {

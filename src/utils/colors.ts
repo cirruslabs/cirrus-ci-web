@@ -1,11 +1,15 @@
-import { BuildStatus } from '../components/chips/__generated__/BuildStatusChip_build.graphql';
-import { TaskStatus } from '../components/chips/__generated__/TaskStatusChip_task.graphql';
 import { graphql } from 'babel-plugin-relay/macro';
-import { TaskCommandStatus } from './__generated__/colors_TaskCommand.graphql';
-import { NotificationLevel } from './__generated__/colors_Notification.graphql';
-import { useTheme } from '@mui/material';
-import { cirrusColorsState, prefersDarkModeState } from '../cirrusTheme';
 import { useRecoilValue } from 'recoil';
+
+import { useTheme } from '@mui/material';
+
+import { cirrusColorsState, prefersDarkModeState } from 'cirrusTheme';
+
+import { BuildStatus } from 'components/chips/__generated__/BuildStatusChip_build.graphql';
+import { TaskStatus } from 'components/chips/__generated__/TaskStatusChip_task.graphql';
+
+import { NotificationLevel } from './__generated__/colors_Notification.graphql';
+import { TaskCommandStatus } from './__generated__/colors_TaskCommand.graphql';
 
 export function useBuildStatusColor(status: BuildStatus) {
   const palette = useTheme().palette;

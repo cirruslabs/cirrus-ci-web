@@ -1,16 +1,13 @@
 import React, { ReactNode } from 'react';
-import { Alert } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import { useFragment } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
-import { ConfigurationWithIssues_build$key } from './__generated__/ConfigurationWithIssues_build.graphql';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Typography from '@mui/material/Typography';
-import AccordionDetails from '@mui/material/AccordionDetails';
 
-const useStyles = makeStyles(theme => {
+import { graphql } from 'babel-plugin-relay/macro';
+
+import mui from 'mui';
+
+import { ConfigurationWithIssues_build$key } from './__generated__/ConfigurationWithIssues_build.graphql';
+
+const useStyles = mui.makeStyles(theme => {
   return {
     configurationTable: {
       color: theme.palette.mode === 'dark' ? theme.palette.primary.light : theme.palette.primary.dark,
@@ -104,9 +101,9 @@ export default function ConfigurationWithIssues(props: Props) {
     if (issuesForLine === undefined || issuesForLine.length === 0) return null;
 
     const renderedIssues = issuesForLine.map(issue => (
-      <Alert className={classes.issue} severity={issue.level.toLowerCase()}>
+      <mui.Alert className={classes.issue} severity={issue.level.toLowerCase()}>
         {issue.message}
-      </Alert>
+      </mui.Alert>
     ));
 
     return (
@@ -131,9 +128,9 @@ export default function ConfigurationWithIssues(props: Props) {
 
     const extraLines = issueCache.get(0)
       ? issueCache.get(0).map(issue => [
-          <Alert className={classes.issue} severity={issue.level.toLowerCase()}>
+          <mui.Alert className={classes.issue} severity={issue.level.toLowerCase()}>
             {issue.message}
-          </Alert>,
+          </mui.Alert>,
         ])
       : null;
 
@@ -159,14 +156,14 @@ export default function ConfigurationWithIssues(props: Props) {
   const starlarkTable = generateTable(build.parsingResult.rawStarlarkConfig, starlarkIssueCache);
 
   let yamlTitle: JSX.Element | null = (
-    <Typography variant="subtitle1">
+    <mui.Typography variant="subtitle1">
       <p>YAML configuration</p>
-    </Typography>
+    </mui.Typography>
   );
   let starlarkTitle: JSX.Element | null = (
-    <Typography variant="subtitle1" className={classes.topPadded}>
+    <mui.Typography variant="subtitle1" className={classes.topPadded}>
       <p>Starlark configuration</p>
-    </Typography>
+    </mui.Typography>
   );
 
   let summaryText: string | null = null;
@@ -199,16 +196,16 @@ export default function ConfigurationWithIssues(props: Props) {
   }
 
   return (
-    <Accordion defaultExpanded={yamlHasErrors || starlarkHasErrors}>
-      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography variant="h6">{summaryText}</Typography>
-      </AccordionSummary>
-      <AccordionDetails className={classes.columnFlexDirection}>
+    <mui.Accordion defaultExpanded={yamlHasErrors || starlarkHasErrors}>
+      <mui.AccordionSummary expandIcon={<mui.icons.ExpandMore />}>
+        <mui.Typography variant="h6">{summaryText}</mui.Typography>
+      </mui.AccordionSummary>
+      <mui.AccordionDetails className={classes.columnFlexDirection}>
         {yamlTitle}
         {yamlTable}
         {starlarkTitle}
         {starlarkTable}
-      </AccordionDetails>
-    </Accordion>
+      </mui.AccordionDetails>
+    </mui.Accordion>
   );
 }

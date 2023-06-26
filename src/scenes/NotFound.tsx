@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import Icon from '@mui/material/Icon';
+
 import { Box, Link, Typography } from '@mui/material';
+import Icon from '@mui/material/Icon';
 
 export default function NotFound(props) {
   useEffect(() => {

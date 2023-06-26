@@ -1,45 +1,47 @@
-import React, { Suspense } from 'react';
 import * as Sentry from '@sentry/react';
-import { useRecoilState } from 'recoil';
+import React, { Suspense } from 'react';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+
 import classNames from 'classnames';
+import { useRecoilState } from 'recoil';
+
+import { cirrusOpenDrawerState } from 'cirrusTheme';
 import mui from 'mui';
 
-import { cirrusOpenDrawerState } from '../src/cirrusTheme';
-import GCPStatus from './components/status/GCPStatus';
-import GitHubStatus from './components/status/GitHubStatus';
-import ThemeSwitchButton from './components/common/ThemeSwitchButton';
-import CirrusLinearProgress from './components/common/CirrusLinearProgress';
-import ViewerTopRepositories from './scenes/Profile/ViewerTopRepositories';
-import ActiveRepositoriesDrawer from './scenes/Header/ActiveRepositoriesDrawer';
+import CirrusLinearProgress from 'components/common/CirrusLinearProgress';
+import ThemeSwitchButton from 'components/common/ThemeSwitchButton';
+import GCPStatus from 'components/status/GCPStatus';
+import GitHubStatus from 'components/status/GitHubStatus';
+import ActiveRepositoriesDrawer from 'scenes/Header/ActiveRepositoriesDrawer';
+import ViewerTopRepositories from 'scenes/Profile/ViewerTopRepositories';
 
-const AsyncViewerProfile = React.lazy(() => import('./scenes/Profile/ViewerProfile'));
+const AsyncViewerProfile = React.lazy(() => import('scenes/Profile/ViewerProfile'));
 
-const AsyncHome = React.lazy(() => import('./scenes/Home/Home'));
+const AsyncHome = React.lazy(() => import('scenes/Home/Home'));
 
-const AsyncBuildById = React.lazy(() => import('./scenes/Build/BuildById'));
+const AsyncBuildById = React.lazy(() => import('scenes/Build/BuildById'));
 
-const AsyncBuildBySHA = React.lazy(() => import('./scenes/Build/BuildBySHA'));
+const AsyncBuildBySHA = React.lazy(() => import('scenes/Build/BuildBySHA'));
 
-const AsyncRepository = React.lazy(() => import('./scenes/Repository/Repository'));
+const AsyncRepository = React.lazy(() => import('scenes/Repository/Repository'));
 
-const AsyncRepositorySettings = React.lazy(() => import('./scenes/RepositorySettings/RepositorySettings'));
+const AsyncRepositorySettings = React.lazy(() => import('scenes/RepositorySettings/RepositorySettings'));
 
-const AsyncRepositoryMetrics = React.lazy(() => import('./scenes/RepositoryMetrics/RepositoryMetrics'));
+const AsyncRepositoryMetrics = React.lazy(() => import('scenes/RepositoryMetrics/RepositoryMetrics'));
 
-const AsyncTask = React.lazy(() => import('./scenes/Task/Task'));
+const AsyncTask = React.lazy(() => import('scenes/Task/Task'));
 
-const AsyncOwnerRepository = React.lazy(() => import('./scenes/Repository/OwnerRepository'));
+const AsyncOwnerRepository = React.lazy(() => import('scenes/Repository/OwnerRepository'));
 
-const AsyncOwner = React.lazy(() => import('./scenes/Owner/Owner'));
+const AsyncOwner = React.lazy(() => import('scenes/Owner/Owner'));
 
-const AsyncOwnerSettingsRenderer = React.lazy(() => import('./scenes/Owner/OwnerSettingsRenderer'));
+const AsyncOwnerSettingsRenderer = React.lazy(() => import('scenes/Owner/OwnerSettingsRenderer'));
 
-const AsyncPoolById = React.lazy(() => import('./scenes/Workers/PoolById'));
+const AsyncPoolById = React.lazy(() => import('scenes/Workers/PoolById'));
 
-const AsyncHook = React.lazy(() => import('./scenes/Hook/Hook'));
+const AsyncHook = React.lazy(() => import('scenes/Hook/Hook'));
 
-const AsyncApiExplorerRenderer = React.lazy(() => import('./components/explorer/ApiExplorer'));
+const AsyncApiExplorerRenderer = React.lazy(() => import('components/explorer/ApiExplorer'));
 
 const drawerWidth = 360;
 

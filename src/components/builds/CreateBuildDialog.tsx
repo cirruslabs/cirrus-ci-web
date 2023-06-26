@@ -1,25 +1,22 @@
 import React, { useState } from 'react';
-import { useFragment, useMutation } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import TextField from '@mui/material/TextField';
 import AceEditor from 'react-ace';
+import { useFragment, useMutation } from 'react-relay';
 import { useNavigate } from 'react-router-dom';
-import { navigateBuildHelper } from '../../utils/navigateHelper';
 
 import 'ace-builds/src-noconflict/mode-yaml';
 import 'ace-builds/src-noconflict/theme-github';
-import { CreateBuildDialog_repository$key } from './__generated__/CreateBuildDialog_repository.graphql';
+import { graphql } from 'babel-plugin-relay/macro';
+
+import mui from 'mui';
+
+import { navigateBuildHelper } from 'utils/navigateHelper';
+
 import {
   CreateBuildDialogMutation,
   CreateBuildDialogMutation$data,
   CreateBuildDialogMutation$variables,
 } from './__generated__/CreateBuildDialogMutation.graphql';
+import { CreateBuildDialog_repository$key } from './__generated__/CreateBuildDialog_repository.graphql';
 
 interface Props {
   onClose: Function;
@@ -88,13 +85,13 @@ export default function CreateBuildDialog(props: Props) {
   }
 
   return (
-    <Dialog open={props.open} onClose={handleClose} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">
+    <mui.Dialog open={props.open} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <mui.DialogTitle id="form-dialog-title">
         Create new build for {repository.owner}/{repository.name}
-      </DialogTitle>
-      <DialogContent>
-        <DialogContentText>Customize parameters for build. (Optional)</DialogContentText>
-        <TextField
+      </mui.DialogTitle>
+      <mui.DialogContent>
+        <mui.DialogContentText>Customize parameters for build. (Optional)</mui.DialogContentText>
+        <mui.TextField
           margin="dense"
           id="branch"
           onChange={event => setBranch(event.target.value)}
@@ -102,7 +99,7 @@ export default function CreateBuildDialog(props: Props) {
           label="Branch"
           fullWidth
         />
-        <TextField
+        <mui.TextField
           margin="dense"
           id="sha"
           onChange={event => setSHA(event.target.value)}
@@ -110,7 +107,7 @@ export default function CreateBuildDialog(props: Props) {
           label="Optional SHA"
           fullWidth
         />
-        <DialogContentText>Optionally, you can override build configuration:</DialogContentText>
+        <mui.DialogContentText>Optionally, you can override build configuration:</mui.DialogContentText>
         <AceEditor
           mode="yaml"
           theme="github"
@@ -122,11 +119,11 @@ export default function CreateBuildDialog(props: Props) {
           highlightActiveLine={true}
           showGutter={true}
         />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={sendMutation}>Create</Button>
-      </DialogActions>
-    </Dialog>
+      </mui.DialogContent>
+      <mui.DialogActions>
+        <mui.Button onClick={handleClose}>Cancel</mui.Button>
+        <mui.Button onClick={sendMutation}>Create</mui.Button>
+      </mui.DialogActions>
+    </mui.Dialog>
   );
 }

@@ -1,22 +1,25 @@
 import React, { useState } from 'react';
 import { useMutation, useFragment } from 'react-relay';
+
 import { graphql } from 'babel-plugin-relay/macro';
-import { OwnerApiSettings_info$key } from './__generated__/OwnerApiSettings_info.graphql';
+
+import { Link } from '@mui/material';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from '@mui/styles';
+
+import OwnerScopedTokenDialog from './OwnerScopedTokenDialog';
 import {
   OwnerApiSettingsMutation,
   GenerateNewOwnerAccessTokenInput,
   OwnerApiSettingsMutation$data,
 } from './__generated__/OwnerApiSettingsMutation.graphql';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import CardActions from '@mui/material/CardActions';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
-import { Link } from '@mui/material';
-import { makeStyles } from '@mui/styles';
-import OwnerScopedTokenDialog from './OwnerScopedTokenDialog';
+import { OwnerApiSettings_info$key } from './__generated__/OwnerApiSettings_info.graphql';
 
 const useStyles = makeStyles(theme => {
   return {

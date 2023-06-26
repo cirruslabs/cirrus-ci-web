@@ -1,27 +1,28 @@
 import * as React from 'react';
 import { useFragment } from 'react-relay';
+
 import { graphql } from 'babel-plugin-relay/macro';
 
-import { makeStyles } from '@mui/styles';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import CallSplitIcon from '@mui/icons-material/CallSplit';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import InputIcon from '@mui/icons-material/Input';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import SvgIcon from '@mui/material/SvgIcon';
 import Typography from '@mui/material/Typography';
-import InputIcon from '@mui/icons-material/Input';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import CallSplitIcon from '@mui/icons-material/CallSplit';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import { makeStyles } from '@mui/styles';
 
-import { absoluteLink } from '../../utils/link';
-import RepositoryIcon from './RepositoryIcon';
+import { absoluteLink } from 'utils/link';
+
 import AccountSwitch from './AccountSwitch';
-
+import RepositoryIcon from './RepositoryIcon';
 import { AppBreadcrumbs_build$key } from './__generated__/AppBreadcrumbs_build.graphql';
+import { AppBreadcrumbs_info$key } from './__generated__/AppBreadcrumbs_info.graphql';
 import { AppBreadcrumbs_repository$key } from './__generated__/AppBreadcrumbs_repository.graphql';
 import { AppBreadcrumbs_task$key } from './__generated__/AppBreadcrumbs_task.graphql';
-import { AppBreadcrumbs_info$key } from './__generated__/AppBreadcrumbs_info.graphql';
 import { AppBreadcrumbs_viewer$key } from './__generated__/AppBreadcrumbs_viewer.graphql';
 
 const useStyles = makeStyles(theme => {

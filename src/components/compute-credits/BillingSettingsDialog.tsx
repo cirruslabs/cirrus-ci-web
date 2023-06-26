@@ -1,33 +1,23 @@
-import Button from '@mui/material/Button';
-import { orange } from '@mui/material/colors';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Input from '@mui/material/Input';
-import InputLabel from '@mui/material/InputLabel';
-import { makeStyles } from '@mui/styles';
-import Switch from '@mui/material/Switch';
-import Typography from '@mui/material/Typography';
-import { graphql } from 'babel-plugin-relay/macro';
 import React, { useState } from 'react';
 import { useMutation, useFragment } from 'react-relay';
+
+import { graphql } from 'babel-plugin-relay/macro';
+
+import mui from 'mui';
+
 import {
   BillingSettingsDialogMutation,
   BillingSettingsDialogMutation$data,
   BillingSettingsDialogMutation$variables,
 } from './__generated__/BillingSettingsDialogMutation.graphql';
 import { BillingSettingsDialog_billingSettings$key } from './__generated__/BillingSettingsDialog_billingSettings.graphql';
-import { Link } from '@mui/material';
 
-const useStyles = makeStyles(theme => {
+const useStyles = mui.makeStyles(theme => {
   return {
     limit: {
-      color: orange[700],
+      color: mui.colors.orange[700],
       '&:hover': {
-        color: orange[900],
+        color: mui.colors.orange[900],
       },
     },
   };
@@ -107,16 +97,16 @@ export default function BillingSettingsDialog(props: Props) {
   }
 
   return (
-    <Dialog onClose={props.onClose} open={props.open}>
-      <DialogTitle>Compute Credits Auto Pay</DialogTitle>
-      <DialogContent>
-        <FormControl fullWidth>
-          <FormControlLabel
-            control={<Switch checked={enabled} onChange={event => setEnabled(event.target.checked)} />}
+    <mui.Dialog onClose={props.onClose} open={props.open}>
+      <mui.DialogTitle>Compute Credits Auto Pay</mui.DialogTitle>
+      <mui.DialogContent>
+        <mui.FormControl fullWidth>
+          <mui.FormControlLabel
+            control={<mui.Switch checked={enabled} onChange={event => setEnabled(event.target.checked)} />}
             label="Auto Pay Enabled"
           />
-        </FormControl>
-        <Typography variant="subtitle1">
+        </mui.FormControl>
+        <mui.Typography variant="subtitle1">
           <p>
             By enabling Auto Pay your repositories will be able to use compute credits in advance. You'll be billed in
             the end of each month for the amount of compute credits that your repositories used that month.
@@ -124,38 +114,38 @@ export default function BillingSettingsDialog(props: Props) {
           <p>
             Your current limit is set to maximum <b className={classes.limit}>{billingSettings.billingCreditsLimit}</b>{' '}
             compute credits that your repositories can use each month. To increase the limit please{' '}
-            <Link color="inherit" href="mailto:support@cirruslabs.org">
+            <mui.Link color="inherit" href="mailto:support@cirruslabs.org">
               email support
-            </Link>
+            </mui.Link>
             .
           </p>
-        </Typography>
-        <FormControl fullWidth>
-          <InputLabel htmlFor="billingEmailAddress">Billing email address</InputLabel>
-          <Input
+        </mui.Typography>
+        <mui.FormControl fullWidth>
+          <mui.InputLabel htmlFor="billingEmailAddress">Billing email address</mui.InputLabel>
+          <mui.Input
             id="billingEmailAddress"
             value={billingEmailAddress}
             error={enabled && billingEmailAddress === ''}
             onChange={event => setBillingEmailAddress(event.target.value)}
           />
-        </FormControl>
-        <FormControl fullWidth>
-          <InputLabel htmlFor="invoiceTemplate">Invoice Template e.g. P.O Number</InputLabel>
-          <Input
+        </mui.FormControl>
+        <mui.FormControl fullWidth>
+          <mui.InputLabel htmlFor="invoiceTemplate">Invoice Template e.g. P.O Number</mui.InputLabel>
+          <mui.Input
             id="invoiceTemplate"
             value={invoiceTemplate}
             onChange={event => setInvoiceTemplate(event.target.value)}
           />
-        </FormControl>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={updateSettings} disabled={notChanged} variant="contained">
+        </mui.FormControl>
+      </mui.DialogContent>
+      <mui.DialogActions>
+        <mui.Button onClick={updateSettings} disabled={notChanged} variant="contained">
           Update
-        </Button>
-        <Button onClick={props.onClose} color="secondary" variant="contained">
+        </mui.Button>
+        <mui.Button onClick={props.onClose} color="secondary" variant="contained">
           Close
-        </Button>
-      </DialogActions>
-    </Dialog>
+        </mui.Button>
+      </mui.DialogActions>
+    </mui.Dialog>
   );
 }

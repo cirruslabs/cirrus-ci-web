@@ -1,7 +1,8 @@
 import React from 'react';
-import { Tooltip } from '@mui/material';
-import LockOpenIcon from '@mui/icons-material/LockOpen';
+
 import LockCloseIcon from '@mui/icons-material/Lock';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+import { Tooltip } from '@mui/material';
 
 interface Props {
   enabledForPublic: boolean;

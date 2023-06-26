@@ -1,8 +1,8 @@
 // package:
 // file: terminal.proto
+import { grpc } from '@improbable-eng/grpc-web';
 
 import * as terminal_pb from './terminal_pb';
-import { grpc } from '@improbable-eng/grpc-web';
 
 type GuestServiceTerminalChannel = {
   readonly methodName: string;

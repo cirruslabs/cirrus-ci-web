@@ -1,14 +1,17 @@
 import React from 'react';
+import { useFragment } from 'react-relay';
+import { useNavigate } from 'react-router-dom';
 
+import { graphql } from 'babel-plugin-relay/macro';
+
+import Bookmark from '@mui/icons-material/Bookmark';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
-import Bookmark from '@mui/icons-material/Bookmark';
-import { useFragment } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
 import { makeStyles } from '@mui/styles';
+
+import { navigateTaskHelper } from 'utils/navigateHelper';
+
 import { TaskNameChip_task$key } from './__generated__/TaskNameChip_task.graphql';
-import { navigateTaskHelper } from '../../utils/navigateHelper';
-import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => {
   return {

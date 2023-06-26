@@ -1,19 +1,22 @@
-import { graphql } from 'babel-plugin-relay/macro';
 import React, { useEffect, useState } from 'react';
 import { useFragment } from 'react-relay';
-import { makeStyles } from '@mui/styles';
-import RepositoryMetricsCharts from './RepositoryMetricsCharts';
+
+import { graphql } from 'babel-plugin-relay/macro';
+
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import Input from '@mui/material/Input';
-import MenuItem from '@mui/material/MenuItem';
-import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import { RepositoryMetricsPage_repository$key } from './__generated__/RepositoryMetricsPage_repository.graphql';
+import Input from '@mui/material/Input';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from '@mui/styles';
+
+import RepositoryMetricsCharts from './RepositoryMetricsCharts';
 import { MetricsQueryParameters } from './__generated__/RepositoryMetricsChartsQuery.graphql';
+import { RepositoryMetricsPage_repository$key } from './__generated__/RepositoryMetricsPage_repository.graphql';
 
 const useStyles = makeStyles(theme => {
   return {

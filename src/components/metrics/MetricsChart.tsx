@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
+import { useFragment } from 'react-relay';
+import { FlexibleWidthXYPlot, Hint, LineSeries, VerticalGridLines, XAxis, YAxis } from 'react-vis';
+import 'react-vis/dist/style.css';
+
 import { graphql } from 'babel-plugin-relay/macro';
+
+import Chip from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@mui/styles';
-import { useFragment } from 'react-relay';
-import 'react-vis/dist/style.css';
-import { FlexibleWidthXYPlot, Hint, LineSeries, VerticalGridLines, XAxis, YAxis } from 'react-vis';
-import Chip from '@mui/material/Chip';
-import { formatDuration } from '../../utils/time';
+
+import { formatDuration } from 'utils/time';
+
 import { MetricsChart_chart$key } from './__generated__/MetricsChart_chart.graphql';
 
 const useStyles = makeStyles(theme => {

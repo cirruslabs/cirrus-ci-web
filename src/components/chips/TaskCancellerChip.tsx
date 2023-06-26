@@ -1,10 +1,11 @@
 import React from 'react';
+import { useFragment } from 'react-relay';
+
+import { graphql } from 'babel-plugin-relay/macro';
 
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
 
-import { useFragment } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
 import { TaskCancellerChip_task$key } from './__generated__/TaskCancellerChip_task.graphql';
 
 interface Props {

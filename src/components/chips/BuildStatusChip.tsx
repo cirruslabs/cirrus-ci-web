@@ -1,16 +1,21 @@
+import React, { useEffect, useMemo } from 'react';
+import { useFragment, requestSubscription } from 'react-relay';
+
+import { graphql } from 'babel-plugin-relay/macro';
+
+import { useTheme } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
 import Icon from '@mui/material/Icon';
 import Tooltip from '@mui/material/Tooltip';
-import { graphql } from 'babel-plugin-relay/macro';
-import React, { useEffect, useMemo } from 'react';
-import { useFragment, requestSubscription } from 'react-relay';
-import environment from '../../createRelayEnvironment';
-import { useBuildStatusColor } from '../../utils/colors';
-import { buildStatusIconName, buildStatusMessage, isBuildFinalStatus } from '../../utils/status';
-import { formatDuration } from '../../utils/time';
+
+import environment from 'createRelayEnvironment';
+
+import { useBuildStatusColor } from 'utils/colors';
+import { buildStatusIconName, buildStatusMessage, isBuildFinalStatus } from 'utils/status';
+import { formatDuration } from 'utils/time';
+
 import { BuildStatusChip_build$key } from './__generated__/BuildStatusChip_build.graphql';
-import { useTheme } from '@mui/material';
 
 const buildSubscription = graphql`
   subscription BuildStatusChipSubscription($buildID: ID!) {

@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react';
+
 import { Base64 } from 'js-base64';
-import { BuildStatus } from '../chips/__generated__/BuildStatusChip_build.graphql';
-import { TaskStatus } from '../chips/__generated__/TaskStatusChip_task.graphql';
-import { useFaviconColor } from '../../utils/colors';
+
 import { useTheme } from '@mui/material';
+
+import { BuildStatus } from 'components/chips/__generated__/BuildStatusChip_build.graphql';
+import { TaskStatus } from 'components/chips/__generated__/TaskStatusChip_task.graphql';
+import { useFaviconColor } from 'utils/colors';
 
 function updateIcon(color) {
   let linkEl = document.getElementById('favicon') as HTMLLinkElement;

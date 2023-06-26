@@ -1,20 +1,24 @@
 import React from 'react';
 import { useFragment } from 'react-relay';
+
 import { graphql } from 'babel-plugin-relay/macro';
-import Paper from '@mui/material/Paper';
-import { makeStyles } from '@mui/styles';
-import Typography from '@mui/material/Typography';
-import Toolbar from '@mui/material/Toolbar';
-import OwnerComputeCredits from '../compute-credits/OwnerComputeCredits';
-import WebHookSettings from '../webhooks/WebHookSettings';
-import OwnerApiSettings from './OwnerApiSettings';
-import OwnerSecuredVariables from './OwnerSecuredVariables';
-import OwnerPersistentWorkerPools from './OwnerPersistentWorkerPools';
-import { OwnerSettings_info$key } from './__generated__/OwnerSettings_info.graphql';
-import MarkdownTypography from '../common/MarkdownTypography';
-import CardHeader from '@mui/material/CardHeader';
+
 import { Card, CardActions, CardContent } from '@mui/material';
 import Button from '@mui/material/Button';
+import CardHeader from '@mui/material/CardHeader';
+import Paper from '@mui/material/Paper';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from '@mui/styles';
+
+import MarkdownTypography from 'components/common/MarkdownTypography';
+import OwnerComputeCredits from 'components/compute-credits/OwnerComputeCredits';
+import WebHookSettings from 'components/webhooks/WebHookSettings';
+
+import OwnerApiSettings from './OwnerApiSettings';
+import OwnerPersistentWorkerPools from './OwnerPersistentWorkerPools';
+import OwnerSecuredVariables from './OwnerSecuredVariables';
+import { OwnerSettings_info$key } from './__generated__/OwnerSettings_info.graphql';
 
 const useStyles = makeStyles(theme => {
   return {

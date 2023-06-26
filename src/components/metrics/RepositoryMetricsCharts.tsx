@@ -1,7 +1,8 @@
 import React from 'react';
-
 import { useLazyLoadQuery } from 'react-relay';
+
 import { graphql } from 'babel-plugin-relay/macro';
+
 import MetricsChart from './MetricsChart';
 import {
   RepositoryMetricsChartsQuery,

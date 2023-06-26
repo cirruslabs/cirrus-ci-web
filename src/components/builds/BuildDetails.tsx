@@ -1,46 +1,39 @@
-import { makeStyles } from '@mui/styles';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Paper from '@mui/material/Paper';
-import { graphql } from 'babel-plugin-relay/macro';
 import React, { useEffect, useMemo } from 'react';
 import { useFragment, useMutation, useSubscription } from 'react-relay';
-import { hasWritePermissions } from '../../utils/permissions';
-import BuildCreatedChip from '../chips/BuildCreatedChip';
-import BuildStatusChip from '../chips/BuildStatusChip';
-import CirrusFavicon from '../common/CirrusFavicon';
-import TaskList from '../tasks/TaskList';
-import { BuildDetails_build$key } from './__generated__/BuildDetails_build.graphql';
-import Refresh from '@mui/icons-material/Refresh';
-import Check from '@mui/icons-material/Check';
-import Notification from '../common/Notification';
-import ConfigurationWithIssues from './ConfigurationWithIssues';
-import HookList from '../hooks/HookList';
-import { Box, Collapse, List, Tab, ToggleButton } from '@mui/material';
-import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { BugReport, Cancel, Dehaze, Functions } from '@mui/icons-material';
-import Tooltip from '@mui/material/Tooltip';
+
+import { graphql } from 'babel-plugin-relay/macro';
+
+import mui from 'mui';
+
+import BuildCreatedChip from 'components/chips/BuildCreatedChip';
+import BuildStatusChip from 'components/chips/BuildStatusChip';
+import CirrusFavicon from 'components/common/CirrusFavicon';
+import CommitMessage from 'components/common/CommitMessage';
+import Notification from 'components/common/Notification';
+import HookList from 'components/hooks/HookList';
+import { HookType } from 'components/hooks/HookType';
+import TaskList from 'components/tasks/TaskList';
+import { hasWritePermissions } from 'utils/permissions';
+
 import DebuggingInformation from './BuildDebuggingInformation';
-import { HookType } from '../hooks/HookType';
+import ConfigurationWithIssues from './ConfigurationWithIssues';
 import {
   BuildDetailsApproveBuildMutation,
   BuildDetailsApproveBuildMutation$variables,
 } from './__generated__/BuildDetailsApproveBuildMutation.graphql';
 import {
-  BuildDetailsReTriggerMutation,
-  BuildDetailsReTriggerMutation$variables,
-} from './__generated__/BuildDetailsReTriggerMutation.graphql';
+  BuildDetailsCancelMutation,
+  BuildDetailsCancelMutation$variables,
+} from './__generated__/BuildDetailsCancelMutation.graphql';
 import {
   BuildDetailsReRunMutation,
   BuildDetailsReRunMutation$variables,
 } from './__generated__/BuildDetailsReRunMutation.graphql';
 import {
-  BuildDetailsCancelMutation,
-  BuildDetailsCancelMutation$variables,
-} from './__generated__/BuildDetailsCancelMutation.graphql';
-import CommitMessage from '../common/CommitMessage';
+  BuildDetailsReTriggerMutation,
+  BuildDetailsReTriggerMutation$variables,
+} from './__generated__/BuildDetailsReTriggerMutation.graphql';
+import { BuildDetails_build$key } from './__generated__/BuildDetails_build.graphql';
 
 const buildSubscription = graphql`
   subscription BuildDetailsSubscription($buildID: ID!) {
@@ -62,7 +55,7 @@ const buildSubscription = graphql`
   }
 `;
 
-const useStyles = makeStyles(theme => {
+const useStyles = mui.makeStyles(theme => {
   return {
     gap: {
       paddingTop: 16,
@@ -235,11 +228,11 @@ export default function BuildDetails(props: Props) {
   }
 
   const notificationsComponent = !build.notifications ? null : (
-    <List>
+    <mui.List>
       {build.notifications.map(notification => (
         <Notification key={notification.message} notification={notification} />
       ))}
-    </List>
+    </mui.List>
   );
 
   const canBeReTriggered =
@@ -251,9 +244,9 @@ export default function BuildDetails(props: Props) {
     build.latestGroupTasks &&
     build.latestGroupTasks.length === 0;
   const reTriggerButton = !canBeReTriggered ? null : (
-    <Button variant="contained" onClick={() => reTriggerBuild()} startIcon={<Refresh />}>
+    <mui.Button variant="contained" onClick={() => reTriggerBuild()} startIcon={<mui.icons.Refresh />}>
       Re-Trigger
-    </Button>
+    </mui.Button>
   );
 
   const hasWritePermission = hasWritePermissions(build.repository.viewerPermission);
@@ -266,28 +259,32 @@ export default function BuildDetails(props: Props) {
     .map(task => task.id);
   const reRunAllTasksButton =
     allTaskIds.length === runningTaskIds.length || !hasWritePermission ? null : (
-      <Button variant="contained" onClick={() => batchReRun(allTaskIds)} startIcon={<Refresh />}>
+      <mui.Button variant="contained" onClick={() => batchReRun(allTaskIds)} startIcon={<mui.icons.Refresh />}>
         Re-Run All Tasks
-      </Button>
+      </mui.Button>
     );
   const reRunFailedTasksButton =
     failedTaskIds.length === 0 || !hasWritePermission ? null : (
-      <Button variant="contained" onClick={() => batchReRun(failedTaskIds)} startIcon={<Refresh />}>
+      <mui.Button variant="contained" onClick={() => batchReRun(failedTaskIds)} startIcon={<mui.icons.Refresh />}>
         Re-Run Failed Tasks
-      </Button>
+      </mui.Button>
     );
   const cancelAllTasksButton =
     runningTaskIds.length === 0 || !hasWritePermission ? null : (
-      <Button variant="contained" onClick={() => batchCancellation(runningTaskIds)} startIcon={<Cancel />}>
+      <mui.Button
+        variant="contained"
+        onClick={() => batchCancellation(runningTaskIds)}
+        startIcon={<mui.icons.Cancel />}
+      >
         Cancel All Tasks
-      </Button>
+      </mui.Button>
     );
 
   const needsApproval = build.status === 'NEEDS_APPROVAL' && hasWritePermission;
   const approveButton = !needsApproval ? null : (
-    <Button variant="contained" onClick={() => approveBuild()} startIcon={<Check />}>
+    <mui.Button variant="contained" onClick={() => approveBuild()} startIcon={<mui.icons.Check />}>
       Approve
-    </Button>
+    </mui.Button>
   );
 
   const [currentTab, setCurrentTab] = React.useState('1');
@@ -295,18 +292,18 @@ export default function BuildDetails(props: Props) {
     setCurrentTab(newValue);
   };
   const tabbedTasksAndHooks = (
-    <TabContext value={currentTab}>
-      <TabList onChange={handleChange}>
-        <Tab icon={<Dehaze />} label={'Tasks (' + build.latestGroupTasks.length + ')'} value="1" />
-        <Tab icon={<Functions />} label={'Hooks (' + build.hooks.length + ')'} value="2" />
-      </TabList>
-      <TabPanel value="1" className={classes.tabPanel}>
+    <mui.TabContext value={currentTab}>
+      <mui.TabList onChange={handleChange}>
+        <mui.Tab icon={<mui.icons.Dehaze />} label={'Tasks (' + build.latestGroupTasks.length + ')'} value="1" />
+        <mui.Tab icon={<mui.icons.Functions />} label={'Hooks (' + build.hooks.length + ')'} value="2" />
+      </mui.TabList>
+      <mui.TabPanel value="1" className={classes.tabPanel}>
         <TaskList tasks={build.latestGroupTasks} />
-      </TabPanel>
-      <TabPanel value="2" className={classes.tabPanel}>
+      </mui.TabPanel>
+      <mui.TabPanel value="2" className={classes.tabPanel}>
         <HookList hooks={build.hooks} type={HookType.Build} />
-      </TabPanel>
-    </TabContext>
+      </mui.TabPanel>
+    </mui.TabContext>
   );
 
   const [displayDebugInfo, setDisplayDebugInfo] = React.useState(false);
@@ -321,9 +318,9 @@ export default function BuildDetails(props: Props) {
   return (
     <div>
       <CirrusFavicon status={build.status} />
-      <Card elevation={24}>
-        <CardContent>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+      <mui.Card elevation={24}>
+        <mui.CardContent>
+          <mui.Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
             <div>
               <div className={classes.wrapper}>
                 <BuildCreatedChip className={classes.chip} build={build} />
@@ -331,13 +328,13 @@ export default function BuildDetails(props: Props) {
               </div>
             </div>
             <div>
-              <Tooltip title="Debugging Information">
-                <ToggleButton value="bug" onClick={toggleDisplayDebugInfo} selected={displayDebugInfo}>
-                  <BugReport />
-                </ToggleButton>
-              </Tooltip>
+              <mui.Tooltip title="Debugging Information">
+                <mui.ToggleButton value="bug" onClick={toggleDisplayDebugInfo} selected={displayDebugInfo}>
+                  <mui.icons.BugReport />
+                </mui.ToggleButton>
+              </mui.Tooltip>
             </div>
-          </Box>
+          </mui.Box>
           <div className={classes.gap} />
           <CommitMessage
             cloneUrl={repository.cloneUrl}
@@ -345,22 +342,22 @@ export default function BuildDetails(props: Props) {
             changeIdInRepo={build.changeIdInRepo}
             changeMessageTitle={build.changeMessageTitle}
           />
-        </CardContent>
-        <CardActions sx={{ justifyContent: 'flex-end' }}>
+        </mui.CardContent>
+        <mui.CardActions sx={{ justifyContent: 'flex-end' }}>
           {reTriggerButton}
           {approveButton}
           {reRunAllTasksButton}
           {reRunFailedTasksButton}
           {cancelAllTasksButton}
-        </CardActions>
-      </Card>
+        </mui.CardActions>
+      </mui.Card>
       <ConfigurationWithIssues build={build} />
       {notificationsComponent}
-      <Collapse in={displayDebugInfo}>
+      <mui.Collapse in={displayDebugInfo}>
         <DebuggingInformation build={build} />
-      </Collapse>
+      </mui.Collapse>
       <div className={classes.gap} />
-      <Paper elevation={24}>{tabbedTasksAndHooks}</Paper>
+      <mui.Paper elevation={24}>{tabbedTasksAndHooks}</mui.Paper>
     </div>
   );
 }

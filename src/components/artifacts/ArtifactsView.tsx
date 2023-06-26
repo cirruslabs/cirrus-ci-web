@@ -1,29 +1,16 @@
 import React, { useState } from 'react';
-import Typography from '@mui/material/Typography';
-import { makeStyles } from '@mui/styles';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import IconButton from '@mui/material/IconButton';
-import Toolbar from '@mui/material/Toolbar';
-import Tooltip from '@mui/material/Tooltip';
-import Paper from '@mui/material/Paper';
-import { navigateHelper } from '../../utils/navigateHelper';
-import { ArtifactsView_task$key } from './__generated__/ArtifactsView_task.graphql';
-import Folder from '@mui/icons-material/Folder';
-import InsertDriveFile from '@mui/icons-material/InsertDriveFile';
-import GetApp from '@mui/icons-material/GetApp';
-import FolderOpen from '@mui/icons-material/FolderOpen';
-import ViewList from '@mui/icons-material/ViewList';
-import AccountTree from '@mui/icons-material/AccountTree';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import { useNavigate } from 'react-router-dom';
 import { useFragment } from 'react-relay';
+import { useNavigate } from 'react-router-dom';
+
 import { graphql } from 'babel-plugin-relay/macro';
 
-const useStyles = makeStyles(theme => {
+import mui from 'mui';
+
+import { navigateHelper } from 'utils/navigateHelper';
+
+import { ArtifactsView_task$key } from './__generated__/ArtifactsView_task.graphql';
+
+const useStyles = mui.makeStyles(theme => {
   return {
     title: {
       display: 'flex',
@@ -150,38 +137,38 @@ export default function ArtifactsView(props: Props) {
   // ... if needed
   if (selectedPath.length > 0 && isFolderView) {
     items.push(
-      <ListItem key="..." button onClick={() => setSelectedPath(selectedPath.slice(0, selectedPath.length - 1))}>
-        <ListItemIcon>
-          <Folder />
-        </ListItemIcon>
-        <ListItemText primary="..." />
-      </ListItem>,
+      <mui.ListItem key="..." button onClick={() => setSelectedPath(selectedPath.slice(0, selectedPath.length - 1))}>
+        <mui.ListItemIcon>
+          <mui.icons.Folder />
+        </mui.ListItemIcon>
+        <mui.ListItemText primary="..." />
+      </mui.ListItem>,
     );
   } else if (selectedArtifactName && isFolderView) {
     items.push(
-      <ListItem key="..." button onClick={() => setSelectedArtifactName(null)}>
-        <ListItemIcon>
-          <Folder />
-        </ListItemIcon>
-        <ListItemText primary="..." />
-      </ListItem>,
+      <mui.ListItem key="..." button onClick={() => setSelectedArtifactName(null)}>
+        <mui.ListItemIcon>
+          <mui.icons.Folder />
+        </mui.ListItemIcon>
+        <mui.ListItemText primary="..." />
+      </mui.ListItem>,
     );
   }
 
   if (!selectedArtifactName) {
     for (let artifact of artifacts) {
       items.push(
-        <ListItem key={artifact.name} button onClick={() => setSelectedArtifactName(artifact.name)}>
-          <ListItemIcon>
-            <FolderOpen />
-          </ListItemIcon>
-          <ListItemText primary={artifact.name} />
-          <Tooltip title="Download All Files (.zip)">
-            <IconButton onClick={e => navigateHelper(navigate, e, artifactArchiveURL(artifact.name))} size="large">
-              <GetApp />
-            </IconButton>
-          </Tooltip>
-        </ListItem>,
+        <mui.ListItem key={artifact.name} button onClick={() => setSelectedArtifactName(artifact.name)}>
+          <mui.ListItemIcon>
+            <mui.icons.FolderOpen />
+          </mui.ListItemIcon>
+          <mui.ListItemText primary={artifact.name} />
+          <mui.Tooltip title="Download All Files (.zip)">
+            <mui.IconButton onClick={e => navigateHelper(navigate, e, artifactArchiveURL(artifact.name))} size="large">
+              <mui.icons.GetApp />
+            </mui.IconButton>
+          </mui.Tooltip>
+        </mui.ListItem>,
       );
     }
   } else {
@@ -192,12 +179,12 @@ export default function ArtifactsView(props: Props) {
       if (!info.isTopLevel && !folders.includes(info.folder) && isFolderView) {
         folders.push(info.folder);
         items.push(
-          <ListItem key={info.folder} button onClick={() => setSelectedPath(selectedPath.concat([info.folder]))}>
-            <ListItemIcon>
-              <Folder />
-            </ListItemIcon>
-            <ListItemText primary={info.folder} />
-          </ListItem>,
+          <mui.ListItem key={info.folder} button onClick={() => setSelectedPath(selectedPath.concat([info.folder]))}>
+            <mui.ListItemIcon>
+              <mui.icons.Folder />
+            </mui.ListItemIcon>
+            <mui.ListItemText primary={info.folder} />
+          </mui.ListItem>,
         );
       }
     }
@@ -205,40 +192,40 @@ export default function ArtifactsView(props: Props) {
     for (let info of scopedArtifactInfos) {
       if (info.isTopLevel || !isFolderView) {
         items.push(
-          <ListItem key={info.path} button onClick={() => window.open(artifactURL(info.path), '_blank')}>
-            <ListItemIcon>
-              <InsertDriveFile />
-            </ListItemIcon>
-            <ListItemText primary={info.path} secondary={bytesToHumanReadable(info.size)} />
-          </ListItem>,
+          <mui.ListItem key={info.path} button onClick={() => window.open(artifactURL(info.path), '_blank')}>
+            <mui.ListItemIcon>
+              <mui.icons.InsertDriveFile />
+            </mui.ListItemIcon>
+            <mui.ListItemText primary={info.path} secondary={bytesToHumanReadable(info.size)} />
+          </mui.ListItem>,
         );
       }
     }
   }
 
   return (
-    <Paper elevation={16}>
-      <Toolbar className={classes.title}>
-        <Typography variant="h6" color="inherit" className={classes.title}>
+    <mui.Paper elevation={16}>
+      <mui.Toolbar className={classes.title}>
+        <mui.Typography variant="h6" color="inherit" className={classes.title}>
           {currentPath() || 'Artifacts'}
-        </Typography>
+        </mui.Typography>
         {getSelectedArtifact() === null ? null : (
-          <ToggleButtonGroup
+          <mui.ToggleButtonGroup
             value={isFolderView}
             exclusive
             onChange={(_event, val) => setFolderView(val)}
             aria-label="folder view"
           >
-            <ToggleButton value={false} aria-label="overview">
-              <ViewList />
-            </ToggleButton>
-            <ToggleButton value={true} aria-label="tree view">
-              <AccountTree />
-            </ToggleButton>
-          </ToggleButtonGroup>
+            <mui.ToggleButton value={false} aria-label="overview">
+              <mui.icons.ViewList />
+            </mui.ToggleButton>
+            <mui.ToggleButton value={true} aria-label="tree view">
+              <mui.icons.AccountTree />
+            </mui.ToggleButton>
+          </mui.ToggleButtonGroup>
         )}
-      </Toolbar>
-      <List>{items}</List>
-    </Paper>
+      </mui.Toolbar>
+      <mui.List>{items}</mui.List>
+    </mui.Paper>
   );
 }

@@ -1,18 +1,19 @@
 import React from 'react';
 import { useFragment } from 'react-relay';
 import { useNavigate } from 'react-router-dom';
+
 import { graphql } from 'babel-plugin-relay/macro';
 import cx from 'classnames';
 
-import { makeStyles } from '@mui/styles';
+import CallSplitIcon from '@mui/icons-material/CallSplit';
+import UnarchiveIcon from '@mui/icons-material/UnarchiveOutlined';
 import { Tooltip, useTheme } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
-import CallSplitIcon from '@mui/icons-material/CallSplit';
-import UnarchiveIcon from '@mui/icons-material/UnarchiveOutlined';
+import { makeStyles } from '@mui/styles';
 
-import { shorten } from '../../utils/text';
-import { navigateHelper } from '../../utils/navigateHelper';
+import { navigateHelper } from 'utils/navigateHelper';
+import { shorten } from 'utils/text';
 
 import { BuildBranchNameChipNew_build$key } from './__generated__/BuildBranchNameChipNew_build.graphql';
 

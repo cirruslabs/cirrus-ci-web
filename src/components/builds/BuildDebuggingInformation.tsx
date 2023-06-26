@@ -1,11 +1,13 @@
 import React from 'react';
-import { CardContent } from '@mui/material';
 import { useFragment } from 'react-relay';
+
 import { graphql } from 'babel-plugin-relay/macro';
-import Typography from '@mui/material/Typography';
-import Card from '@mui/material/Card';
+
+import mui from 'mui';
+
+import InlineLogs from 'components/logs/InlineLogs';
+
 import { BuildDebuggingInformation_build$key } from './__generated__/BuildDebuggingInformation_build.graphql';
-import InlineLogs from '../logs/InlineLogs';
 
 interface Props {
   build: BuildDebuggingInformation_build$key;
@@ -42,14 +44,14 @@ export default function BuildDebuggingInformation(props: Props) {
     );
 
   return (
-    <Card elevation={24}>
-      <CardContent>
-        <Typography variant="h6">Debugging Information</Typography>
+    <mui.Card elevation={24}>
+      <mui.CardContent>
+        <mui.Typography variant="h6">Debugging Information</mui.Typography>
         <InlineLogs title="YAML configuration" lines={build.parsingResult.rawYamlConfig.split('\n')} />
         <InlineLogs title="Environment Variables" lines={build.parsingResult.environment} />
         <InlineLogs title="Affected Files" lines={build.parsingResult.affectedFiles} />
         {starlarkInformation}
-      </CardContent>
-    </Card>
+      </mui.CardContent>
+    </mui.Card>
   );
 }

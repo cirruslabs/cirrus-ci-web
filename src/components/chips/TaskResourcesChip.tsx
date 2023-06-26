@@ -1,12 +1,14 @@
 import React from 'react';
+import { useFragment } from 'react-relay';
 
+import { graphql } from 'babel-plugin-relay/macro';
+
+import Memory from '@mui/icons-material/Memory';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
 import Tooltip from '@mui/material/Tooltip';
-import Memory from '@mui/icons-material/Memory';
-import { useFragment } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
 import { makeStyles } from '@mui/styles';
+
 import { TaskResourcesChip_task$key } from './__generated__/TaskResourcesChip_task.graphql';
 
 const useStyles = makeStyles(theme => {

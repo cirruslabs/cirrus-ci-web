@@ -1,35 +1,16 @@
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormHelperText from '@mui/material/FormHelperText';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import Switch from '@mui/material/Switch';
-import { graphql } from 'babel-plugin-relay/macro';
 import React, { useState } from 'react';
 import { useFragment, useMutation } from 'react-relay';
-import { RepositorySettings_repository$key } from './__generated__/RepositorySettings_repository.graphql';
+
+import { graphql } from 'babel-plugin-relay/macro';
+
+import mui from 'mui';
+
 import {
   RepositorySettingsMutation,
   RepositorySettingsMutation$data,
   RepositorySettingsMutation$variables,
 } from './__generated__/RepositorySettingsMutation.graphql';
-import {
-  Checkbox,
-  IconButton,
-  Input,
-  InputAdornment,
-  InputLabel,
-  List,
-  ListItem,
-  ListItemSecondaryAction,
-  ListItemText,
-} from '@mui/material';
-import { AddCircle } from '@mui/icons-material';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { RepositorySettings_repository$key } from './__generated__/RepositorySettings_repository.graphql';
 
 interface Props {
   repository: RepositorySettings_repository$key;
@@ -150,45 +131,45 @@ export default function RepositorySettings(props: Props) {
     settings.decryptEnvironmentVariables === initialSettings.decryptEnvironmentVariables &&
     settings.cacheVersion === initialSettings.cacheVersion;
   return (
-    <Card elevation={24}>
-      <CardContent>
-        <FormControl fullWidth variant="standard">
-          <FormControlLabel
-            control={<Switch checked={settings.needsApproval} onChange={toggleField('needsApproval')} />}
+    <mui.Card elevation={24}>
+      <mui.CardContent>
+        <mui.FormControl fullWidth variant="standard">
+          <mui.FormControlLabel
+            control={<mui.Switch checked={settings.needsApproval} onChange={toggleField('needsApproval')} />}
             label="Require approval for builds from users without write permissions"
           />
-        </FormControl>
-        <FormControl fullWidth variant="standard">
-          <FormHelperText>Decrypt Secured Environment Variables for builds initialized by:</FormHelperText>
-          <Select
+        </mui.FormControl>
+        <mui.FormControl fullWidth variant="standard">
+          <mui.FormHelperText>Decrypt Secured Environment Variables for builds initialized by:</mui.FormHelperText>
+          <mui.Select
             value={settings.decryptEnvironmentVariables}
             onChange={changeField('decryptEnvironmentVariables')}
             fullWidth
             variant="standard"
           >
-            <MenuItem value={'USERS_WITH_WRITE_PERMISSIONS'}>Only users with write permissions</MenuItem>
-            <MenuItem value={'COLLABORATORS'}>Collaborators, bots and users with write permissions</MenuItem>
-            <MenuItem value={'EVERYONE'}>Everyone</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl fullWidth variant="standard">
-          <FormHelperText>Config resolution strategy:</FormHelperText>
-          <Select
+            <mui.MenuItem value={'USERS_WITH_WRITE_PERMISSIONS'}>Only users with write permissions</mui.MenuItem>
+            <mui.MenuItem value={'COLLABORATORS'}>Collaborators, bots and users with write permissions</mui.MenuItem>
+            <mui.MenuItem value={'EVERYONE'}>Everyone</mui.MenuItem>
+          </mui.Select>
+        </mui.FormControl>
+        <mui.FormControl fullWidth variant="standard">
+          <mui.FormHelperText>Config resolution strategy:</mui.FormHelperText>
+          <mui.Select
             value={settings.configResolutionStrategy}
             onChange={changeField('configResolutionStrategy')}
             fullWidth
             variant="standard"
           >
-            <MenuItem value={'SAME_SHA'}>Same SHA</MenuItem>
-            <MenuItem value={'MERGE_FOR_PRS'}>Merge for PRs</MenuItem>
-            <MenuItem value={'DEFAULT_BRANCH'}>Latest from default branch</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl fullWidth variant="standard">
-          <InputLabel htmlFor="oidc-sub-extra-claims">
+            <mui.MenuItem value={'SAME_SHA'}>Same SHA</mui.MenuItem>
+            <mui.MenuItem value={'MERGE_FOR_PRS'}>Merge for PRs</mui.MenuItem>
+            <mui.MenuItem value={'DEFAULT_BRANCH'}>Latest from default branch</mui.MenuItem>
+          </mui.Select>
+        </mui.FormControl>
+        <mui.FormControl fullWidth variant="standard">
+          <mui.InputLabel htmlFor="oidc-sub-extra-claims">
             Extra claims to include in the OIDC sub claim (comma separated). For example, "branch,user_permission".
-          </InputLabel>
-          <Input
+          </mui.InputLabel>
+          <mui.Input
             id="oidc-sub-extra-claims"
             value={settings.oidcSubIncludeClaimKeys.join(',')}
             onChange={event =>
@@ -198,55 +179,58 @@ export default function RepositorySettings(props: Props) {
               })
             }
           />
-        </FormControl>
+        </mui.FormControl>
         {settings.additionalEnvironment.length > 0 && (
-          <FormControl fullWidth variant="standard">
-            <FormHelperText>Environment variable overrides</FormHelperText>
-            <List>
+          <mui.FormControl fullWidth variant="standard">
+            <mui.FormHelperText>Environment variable overrides</mui.FormHelperText>
+            <mui.List>
               {settings.additionalEnvironment.map(line => (
-                <ListItem key={line}>
-                  <ListItemText primary={line} />
-                  <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete" onClick={() => deleteEnv(line)} size="large">
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
+                <mui.ListItem key={line}>
+                  <mui.ListItemText primary={line} />
+                  <mui.ListItemSecondaryAction>
+                    <mui.IconButton edge="end" aria-label="delete" onClick={() => deleteEnv(line)} size="large">
+                      <mui.icons.Delete />
+                    </mui.IconButton>
+                  </mui.ListItemSecondaryAction>
+                </mui.ListItem>
               ))}
-            </List>
-          </FormControl>
+            </mui.List>
+          </mui.FormControl>
         )}
-        <FormControl fullWidth variant="standard">
-          <InputLabel htmlFor="override-env-var">
+        <mui.FormControl fullWidth variant="standard">
+          <mui.InputLabel htmlFor="override-env-var">
             New Environment Variable Override (FOO=Bar or FOO=ENCRYPTED[...])
-          </InputLabel>
-          <Input
+          </mui.InputLabel>
+          <mui.Input
             id="override-env-var"
             value={additionalEnvironmentToAdd}
             onChange={event => setAdditionalEnvironmentToAdd(event.target.value)}
             endAdornment={
-              <InputAdornment position="end">
-                <IconButton aria-label="add new env variable override" onClick={addNewEnvVariable} size="large">
-                  <AddCircle />
-                </IconButton>
-              </InputAdornment>
+              <mui.InputAdornment position="end">
+                <mui.IconButton aria-label="add new env variable override" onClick={addNewEnvVariable} size="large">
+                  <mui.icons.AddCircle />
+                </mui.IconButton>
+              </mui.InputAdornment>
             }
           />
-        </FormControl>
-        <FormControl fullWidth variant="standard">
-          <FormControlLabel
+        </mui.FormControl>
+        <mui.FormControl fullWidth variant="standard">
+          <mui.FormControlLabel
             control={
-              <Checkbox checked={initialSettings.cacheVersion !== settings.cacheVersion} onChange={setClearCaches} />
+              <mui.Checkbox
+                checked={initialSettings.cacheVersion !== settings.cacheVersion}
+                onChange={setClearCaches}
+              />
             }
             label="Clear all repository caches"
           />
-        </FormControl>
-      </CardContent>
-      <CardActions>
-        <Button variant="contained" disabled={areSettingsTheSame} onClick={() => onSave()}>
+        </mui.FormControl>
+      </mui.CardContent>
+      <mui.CardActions>
+        <mui.Button variant="contained" disabled={areSettingsTheSame} onClick={() => onSave()}>
           Save
-        </Button>
-      </CardActions>
-    </Card>
+        </mui.Button>
+      </mui.CardActions>
+    </mui.Card>
   );
 }

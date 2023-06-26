@@ -1,9 +1,11 @@
-import { graphql } from 'babel-plugin-relay/macro';
 import React from 'react';
 import { useFragment } from 'react-relay';
+
+import { graphql } from 'babel-plugin-relay/macro';
+
 import ComputeCreditsBase from './ComputeCreditsBase';
-import { OwnerComputeCredits_info$key } from './__generated__/OwnerComputeCredits_info.graphql';
 import ComputeCreditsTransactionsList from './ComputeCreditsTransactionsList';
+import { OwnerComputeCredits_info$key } from './__generated__/OwnerComputeCredits_info.graphql';
 
 interface Props {
   info: OwnerComputeCredits_info$key;

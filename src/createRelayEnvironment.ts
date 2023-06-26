@@ -1,10 +1,11 @@
-import { subscribeObjectUpdates } from './rtu/ConnectionManager';
-
-import { Environment, Network, Observable, RecordSource, Store, SubscribeFunction } from 'relay-runtime';
 import * as Sentry from '@sentry/react';
-import { RequestParameters } from 'relay-runtime/lib/util/RelayConcreteNode';
+
 import { SpanStatus } from '@sentry/tracing';
+import { Environment, Network, Observable, RecordSource, Store, SubscribeFunction } from 'relay-runtime';
 import { Sink } from 'relay-runtime/lib/network/RelayObservable';
+import { RequestParameters } from 'relay-runtime/lib/util/RelayConcreteNode';
+
+import { subscribeObjectUpdates } from 'rtu/ConnectionManager';
 
 /*
  * See RelayNetwork.js:43 for details how it used in Relay

@@ -1,15 +1,17 @@
 import React, { useMemo } from 'react';
 import { useLazyLoadQuery } from 'react-relay';
+
 import { graphql } from 'babel-plugin-relay/macro';
 import { useRecoilValue } from 'recoil';
 
-import { createTheme } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { createTheme } from '@mui/material/styles';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
 
-import { muiThemeOptions } from '../../cirrusTheme';
-import RepositoryCard from '../../components/repositories/RepositoryCard';
+import { muiThemeOptions } from 'cirrusTheme';
+
+import RepositoryCard from 'components/repositories/RepositoryCard';
 
 import { ViewerTopRepositoriesQuery } from './__generated__/ViewerTopRepositoriesQuery.graphql';
 

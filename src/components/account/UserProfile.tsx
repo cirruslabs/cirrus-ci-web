@@ -1,19 +1,17 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useFragment } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
-import Tooltip from '@mui/material/Tooltip';
-import { makeStyles } from '@mui/styles';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import { navigateHelper } from '../../utils/navigateHelper';
-import IconButton from '@mui/material/IconButton';
-import { UserProfile_user$key } from './__generated__/UserProfile_user.graphql';
-import Settings from '@mui/icons-material/Settings';
-import OwnerPlatformIcon from '../icons/OwnerPlatformIcon';
-import { List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
-const useStyles = makeStyles(theme => {
+import { graphql } from 'babel-plugin-relay/macro';
+
+import mui from 'mui';
+
+import OwnerPlatformIcon from 'components/icons/OwnerPlatformIcon';
+import { navigateHelper } from 'utils/navigateHelper';
+
+import { UserProfile_user$key } from './__generated__/UserProfile_user.graphql';
+
+const useStyles = mui.makeStyles(theme => {
   return {
     title: {
       backgroundColor: theme.palette.action.disabledBackground,
@@ -66,33 +64,33 @@ export default function UserProfile(props: Props) {
   return (
     <div>
       <div className={classes.gap} />
-      <Card elevation={24}>
-        <CardHeader title="All Settings" />
-        <List>
+      <mui.Card elevation={24}>
+        <mui.CardHeader title="All Settings" />
+        <mui.List>
           {user.relatedOwners &&
             user.relatedOwners.map(owner => (
-              <ListItem
+              <mui.ListItem
                 key={owner.platform + owner.uid}
                 onClick={e => navigateHelper(navigate, e, '/github/' + owner.name)}
                 secondaryAction={
-                  <Tooltip title="Owner settings">
-                    <IconButton
+                  <mui.Tooltip title="Owner settings">
+                    <mui.IconButton
                       onClick={e => navigateHelper(navigate, e, `/settings/${owner.platform}/${owner.name}`)}
                       size="large"
                     >
-                      <Settings />
-                    </IconButton>
-                  </Tooltip>
+                      <mui.icons.Settings />
+                    </mui.IconButton>
+                  </mui.Tooltip>
                 }
               >
-                <ListItemAvatar>
+                <mui.ListItemAvatar>
                   <OwnerPlatformIcon platform={owner.platform} />
-                </ListItemAvatar>
-                <ListItemText>{owner.name}</ListItemText>
-              </ListItem>
+                </mui.ListItemAvatar>
+                <mui.ListItemText>{owner.name}</mui.ListItemText>
+              </mui.ListItem>
             ))}
-        </List>
-      </Card>
+        </mui.List>
+      </mui.Card>
     </div>
   );
 }

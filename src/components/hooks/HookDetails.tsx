@@ -1,30 +1,30 @@
 import React, { MouseEventHandler, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useFragment, useMutation } from 'react-relay';
+import { useNavigate } from 'react-router-dom';
+
 import { graphql } from 'babel-plugin-relay/macro';
 import classNames from 'classnames';
 
-import { makeStyles } from '@mui/styles';
-import Button from '@mui/material/Button';
-import { Card, CardContent } from '@mui/material';
-import Typography from '@mui/material/Typography';
-import CardActions from '@mui/material/CardActions';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import Refresh from '@mui/icons-material/Refresh';
+import { Card, CardContent } from '@mui/material';
+import Button from '@mui/material/Button';
+import CardActions from '@mui/material/CardActions';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from '@mui/styles';
 
-import RepositoryNameChip from '../chips/RepositoryNameChip';
-import BuildBranchNameChip from '../chips/BuildBranchNameChip';
-import HookStatusChip from '../chips/HookStatusChip';
-import BuildChangeChip from '../chips/BuildChangeChip';
-import TaskNameChip from '../chips/TaskNameChip';
-import HookCreatedChip from '../chips/HookCreatedChip';
-import RepositoryOwnerChip from '../chips/RepositoryOwnerChip';
-
-import Logs from '../logs/Logs';
-import CirrusFavicon from '../common/CirrusFavicon';
-import { hasWritePermissions } from '../../utils/permissions';
-import { useNotificationColor } from '../../utils/colors';
-import { navigateBuildHelper, navigateHookHelper, navigateTaskHelper } from '../../utils/navigateHelper';
+import BuildBranchNameChip from 'components/chips/BuildBranchNameChip';
+import BuildChangeChip from 'components/chips/BuildChangeChip';
+import HookCreatedChip from 'components/chips/HookCreatedChip';
+import HookStatusChip from 'components/chips/HookStatusChip';
+import RepositoryNameChip from 'components/chips/RepositoryNameChip';
+import RepositoryOwnerChip from 'components/chips/RepositoryOwnerChip';
+import TaskNameChip from 'components/chips/TaskNameChip';
+import CirrusFavicon from 'components/common/CirrusFavicon';
+import Logs from 'components/logs/Logs';
+import { useNotificationColor } from 'utils/colors';
+import { navigateBuildHelper, navigateHookHelper, navigateTaskHelper } from 'utils/navigateHelper';
+import { hasWritePermissions } from 'utils/permissions';
 
 import {
   HookDetailsRerunMutation,

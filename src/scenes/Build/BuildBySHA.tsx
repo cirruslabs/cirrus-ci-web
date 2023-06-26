@@ -1,14 +1,15 @@
 import React from 'react';
-
 import { useLazyLoadQuery } from 'react-relay';
-import { graphql } from 'babel-plugin-relay/macro';
-
-import BuildDetails from '../../components/builds/BuildDetails';
-import NotFound from '../NotFound';
-import { BuildBySHAQuery } from './__generated__/BuildBySHAQuery.graphql';
-import queryString from 'query-string';
 import { useParams } from 'react-router-dom';
-import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
+
+import { graphql } from 'babel-plugin-relay/macro';
+import queryString from 'query-string';
+
+import BuildDetails from 'components/builds/BuildDetails';
+import AppBreadcrumbs from 'components/common/AppBreadcrumbs';
+import NotFound from 'scenes/NotFound';
+
+import { BuildBySHAQuery } from './__generated__/BuildBySHAQuery.graphql';
 
 function BuildBySHAFor(owner: string, name: string, SHA: string): JSX.Element {
   const response = useLazyLoadQuery<BuildBySHAQuery>(

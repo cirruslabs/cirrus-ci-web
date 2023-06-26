@@ -1,14 +1,16 @@
 import React from 'react';
+import { useLazyLoadQuery } from 'react-relay';
+import { useParams } from 'react-router-dom';
 
 import { graphql } from 'babel-plugin-relay/macro';
-import { useLazyLoadQuery } from 'react-relay';
 
-import NotFound from '../NotFound';
-import RepositoryMetricsPage from '../../components/metrics/RepositoryMetricsPage';
-import { RepositoryMetricsQuery } from './__generated__/RepositoryMetricsQuery.graphql';
-import { useParams } from 'react-router-dom';
-import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 import TimelineIcon from '@mui/icons-material/Timeline';
+
+import AppBreadcrumbs from 'components/common/AppBreadcrumbs';
+import RepositoryMetricsPage from 'components/metrics/RepositoryMetricsPage';
+import NotFound from 'scenes/NotFound';
+
+import { RepositoryMetricsQuery } from './__generated__/RepositoryMetricsQuery.graphql';
 
 function RepositoryMetricsFor(platform: string, owner: string, name: string, parentProps) {
   const response = useLazyLoadQuery<RepositoryMetricsQuery>(

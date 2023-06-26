@@ -1,10 +1,11 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
 import { useLazyLoadQuery } from 'react-relay';
+import { useParams } from 'react-router-dom';
+
 import { graphql } from 'babel-plugin-relay/macro';
 
-import HookDetails from '../../components/hooks/HookDetails';
-import NotFound from '../NotFound';
+import HookDetails from 'components/hooks/HookDetails';
+import NotFound from 'scenes/NotFound';
 
 import { HookQuery } from './__generated__/HookQuery.graphql';
 

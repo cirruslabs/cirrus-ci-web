@@ -1,7 +1,10 @@
 import React from 'react';
 import { useFragment } from 'react-relay';
+
 import { graphql } from 'babel-plugin-relay/macro';
-import PersistentWorkerPoolsList from '../workers/PersistentWorkerPoolsList';
+
+import PersistentWorkerPoolsList from 'components/workers/PersistentWorkerPoolsList';
+
 import { OwnerPersistentWorkerPools_info$key } from './__generated__/OwnerPersistentWorkerPools_info.graphql';
 
 interface Props {

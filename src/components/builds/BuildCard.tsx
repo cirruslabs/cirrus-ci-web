@@ -1,30 +1,27 @@
-import { useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { ThemeProvider } from '@emotion/react';
+import { useMemo } from 'react';
 import { useFragment } from 'react-relay';
+import { useNavigate } from 'react-router-dom';
+
 import { graphql } from 'babel-plugin-relay/macro';
 import { useRecoilValue } from 'recoil';
 
-import { makeStyles } from '@mui/styles';
-import { createTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
+import { muiThemeOptions, cirrusOpenDrawerState } from 'cirrusTheme';
+import mui from 'mui';
 
-import Hash from '../chips/Hash';
-import Duration from '../chips/Duration';
-import BuildStatusChipNew from '../chips/BuildStatusChipNew';
-import BuildBranchNameChipNew from '../chips/BuildBranchNameChipNew';
-import RepositoryNameChipNew from '../chips/RepositoryNameChipNew';
-import RepositoryOwnerChipNew from '../chips/RepositoryOwnerChipNew';
-import usePageWidth from '../../utils/usePageWidth';
-import { navigateBuildHelper } from '../../utils/navigateHelper';
-import { muiThemeOptions, cirrusOpenDrawerState } from '../../cirrusTheme';
-import useThemeWithAdjustableBreakpoints from '../../utils/useThemeWithAdjustableBreakpoints';
+import BuildBranchNameChipNew from 'components/chips/BuildBranchNameChipNew';
+import BuildStatusChipNew from 'components/chips/BuildStatusChipNew';
+import Duration from 'components/chips/Duration';
+import Hash from 'components/chips/Hash';
+import RepositoryNameChipNew from 'components/chips/RepositoryNameChipNew';
+import RepositoryOwnerChipNew from 'components/chips/RepositoryOwnerChipNew';
+import { navigateBuildHelper } from 'utils/navigateHelper';
+import usePageWidth from 'utils/usePageWidth';
+import useThemeWithAdjustableBreakpoints from 'utils/useThemeWithAdjustableBreakpoints';
 
 import { BuildCard_build$key } from './__generated__/BuildCard_build.graphql';
 
-const useStyles = makeStyles(theme => {
+const useStyles = mui.makeStyles(theme => {
   return {
     card: {
       cursor: 'pointer',
@@ -72,7 +69,7 @@ export default function BuildCard(props: Props) {
   let theme = useRecoilValue(muiThemeOptions);
   let themeWithAdjustableBreakpoints = useThemeWithAdjustableBreakpoints(theme);
   const themeForNewDesign = useMemo(
-    () => createTheme(themeWithAdjustableBreakpoints),
+    () => mui.createTheme(themeWithAdjustableBreakpoints),
     [themeWithAdjustableBreakpoints],
   );
 
@@ -84,7 +81,7 @@ export default function BuildCard(props: Props) {
 
   return (
     <ThemeProvider theme={themeForNewDesign}>
-      <Grid
+      <mui.Grid
         className={classes.card}
         container
         columns={4}
@@ -108,8 +105,8 @@ export default function BuildCard(props: Props) {
         }}
       >
         {/* LEFT */}
-        <Grid xs={4} sm={3} md={2} my={{ sm: 1.5 }} mt={{ xs: 1.5 }}>
-          <Grid
+        <mui.Grid xs={4} sm={3} md={2} my={{ sm: 1.5 }} mt={{ xs: 1.5 }}>
+          <mui.Grid
             container
             direction="row"
             spacing={{ xs: 1 }}
@@ -118,13 +115,13 @@ export default function BuildCard(props: Props) {
             wrap="nowrap"
           >
             {/* STATUS UP XS-SCREEN*/}
-            <Grid display={{ xs: 'none', sm: 'block' }} minWidth={120} flexShrink={0} py={0}>
+            <mui.Grid display={{ xs: 'none', sm: 'block' }} minWidth={120} flexShrink={0} py={0}>
               <BuildStatusChipNew build={build} />
-            </Grid>
+            </mui.Grid>
 
             {/* COMMIT */}
-            <Grid py={{ xs: 'default', sm: 0 }}>
-              <Typography
+            <mui.Grid py={{ xs: 'default', sm: 0 }}>
+              <mui.Typography
                 className={classes.commitName}
                 variant="subtitle1"
                 title={build.changeMessageTitle}
@@ -133,20 +130,20 @@ export default function BuildCard(props: Props) {
                 noWrap
               >
                 {build.changeMessageTitle}
-              </Typography>
+              </mui.Typography>
               <Hash build={build} />
-            </Grid>
+            </mui.Grid>
 
             {/* DURATION XS-SCREEN*/}
-            <Grid display={{ xs: 'block', sm: 'none' }} width={120}>
+            <mui.Grid display={{ xs: 'block', sm: 'none' }} width={120}>
               <Duration build={build} iconFirst />
-            </Grid>
-          </Grid>
-        </Grid>
+            </mui.Grid>
+          </mui.Grid>
+        </mui.Grid>
 
         {/* RIGHT */}
-        <Grid xs={4} sm={1} md={2} my={{ sm: 1.5 }} mb={{ xs: 1.5 }}>
-          <Grid
+        <mui.Grid xs={4} sm={1} md={2} my={{ sm: 1.5 }} mb={{ xs: 1.5 }}>
+          <mui.Grid
             container
             columns={11}
             direction="row"
@@ -154,34 +151,34 @@ export default function BuildCard(props: Props) {
             alignItems={{ xs: 'start', md: 'center' }}
           >
             {/* STATUS XS-SCREEN */}
-            <Grid display={{ xs: 'block', sm: 'none' }}>
+            <mui.Grid display={{ xs: 'block', sm: 'none' }}>
               <BuildStatusChipNew build={build} />
-            </Grid>
+            </mui.Grid>
 
             {/* REPOSITORY */}
-            <Grid sm={11} md={3} py={{ sm: 'default', md: 0 }}>
+            <mui.Grid sm={11} md={3} py={{ sm: 'default', md: 0 }}>
               <RepositoryNameChipNew withHeader={showChipsHeader} repository={build.repository} />
-            </Grid>
+            </mui.Grid>
 
             {/* OWNER */}
-            <Grid sm={11} md={3} py={{ sm: 'default', md: 0 }}>
+            <mui.Grid sm={11} md={3} py={{ sm: 'default', md: 0 }}>
               <RepositoryOwnerChipNew withHeader={showChipsHeader} repository={build.repository} />
-            </Grid>
+            </mui.Grid>
 
             {/* BRANCH*/}
-            <Grid sm={11} md={3} py={{ sm: 'default', md: 0 }}>
+            <mui.Grid sm={11} md={3} py={{ sm: 'default', md: 0 }}>
               <BuildBranchNameChipNew withHeader={showChipsHeader} build={build} />
-            </Grid>
+            </mui.Grid>
 
             {/* DURATION UP XS-SCREEN*/}
-            <Grid display={{ xs: 'none', sm: 'block' }} sm={11} md={2} py={{ sm: 'default', md: 0 }}>
-              <Box ml={0.5} mt={isDrawerOpen ? { lg: 2 } : { md: 2 }}>
+            <mui.Grid display={{ xs: 'none', sm: 'block' }} sm={11} md={2} py={{ sm: 'default', md: 0 }}>
+              <mui.Box ml={0.5} mt={isDrawerOpen ? { lg: 2 } : { md: 2 }}>
                 <Duration build={build} iconFirst rightAlighment={!showChipsHeader} />
-              </Box>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
+              </mui.Box>
+            </mui.Grid>
+          </mui.Grid>
+        </mui.Grid>
+      </mui.Grid>
     </ThemeProvider>
   );
 }

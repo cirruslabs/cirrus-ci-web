@@ -1,14 +1,16 @@
 import React from 'react';
-
 import { useLazyLoadQuery } from 'react-relay';
+import { useParams } from 'react-router-dom';
+
 import { graphql } from 'babel-plugin-relay/macro';
 
-import OwnerSettings from '../../components/settings/OwnerSettings';
-import { OwnerSettingsRendererQuery } from './__generated__/OwnerSettingsRendererQuery.graphql';
-import { useParams } from 'react-router-dom';
-import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import NotFound from '../NotFound';
+
+import AppBreadcrumbs from 'components/common/AppBreadcrumbs';
+import OwnerSettings from 'components/settings/OwnerSettings';
+import NotFound from 'scenes/NotFound';
+
+import { OwnerSettingsRendererQuery } from './__generated__/OwnerSettingsRendererQuery.graphql';
 
 function OwnerSettingsRendererFor(platform: string, name: string) {
   const response = useLazyLoadQuery<OwnerSettingsRendererQuery>(

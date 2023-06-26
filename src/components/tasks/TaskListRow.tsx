@@ -1,25 +1,24 @@
 import React from 'react';
+import { useFragment } from 'react-relay';
 import { useNavigate } from 'react-router-dom';
 
-import TableCell from '@mui/material/TableCell';
-import TableRow from '@mui/material/TableRow';
-import Chip from '@mui/material/Chip';
-import TaskNameChip from '../chips/TaskNameChip';
-import TaskDurationChip from '../chips/TaskDurationChip';
-import { shorten } from '../../utils/text';
-import { useFragment } from 'react-relay';
 import { graphql } from 'babel-plugin-relay/macro';
-import { navigateTaskHelper } from '../../utils/navigateHelper';
-import { makeStyles } from '@mui/styles';
 import classNames from 'classnames';
-import TaskCreatedChip from '../chips/TaskCreatedChip';
-import { TaskListRow_task$key } from './__generated__/TaskListRow_task.graphql';
-import { isTaskFinalStatus } from '../../utils/status';
-import { useTaskStatusColorMapping } from '../../utils/colors';
-import { Box, Tooltip } from '@mui/material';
-import { formatDuration } from '../../utils/time';
 
-const useStyles = makeStyles(theme => {
+import mui from 'mui';
+
+import TaskCreatedChip from 'components/chips/TaskCreatedChip';
+import TaskDurationChip from 'components/chips/TaskDurationChip';
+import TaskNameChip from 'components/chips/TaskNameChip';
+import { useTaskStatusColorMapping } from 'utils/colors';
+import { navigateTaskHelper } from 'utils/navigateHelper';
+import { isTaskFinalStatus } from 'utils/status';
+import { shorten } from 'utils/text';
+import { formatDuration } from 'utils/time';
+
+import { TaskListRow_task$key } from './__generated__/TaskListRow_task.graphql';
+
+const useStyles = mui.makeStyles(theme => {
   return {
     chip: {
       marginTop: 4,
@@ -87,53 +86,53 @@ export default function TaskListRow(props: Props) {
     let scheduledDuration = Math.max(0, task.executingTimestamp - scheduledTimestamp) / 1000;
     let executionDuration = Math.max(0, finalStatusTimestamp - task.executingTimestamp) / 1000;
     progress = (
-      <Tooltip
+      <mui.Tooltip
         title={`Task was scheduled in ${formatDuration(scheduledDuration)} and was executed in ${formatDuration(
           executionDuration,
         )}.`}
       >
-        <Box
+        <mui.Box
           className={classes.progressBar}
           sx={{
             display: 'flex',
             alignItems: 'center',
           }}
         >
-          <Box
+          <mui.Box
             className={classes.progressBarElement}
             sx={{
               width: Math.floor((100 * durationBeforeScheduling) / overallDuration) + '%',
               backgroundColor: 'transparent',
             }}
           />
-          <Box
+          <mui.Box
             className={classes.progressBarElement}
             sx={{
               width: Math.floor((100 * scheduledDuration) / overallDuration) + '%',
               backgroundColor: colorMapping['SCHEDULED'],
             }}
           />
-          <Box
+          <mui.Box
             className={classes.progressBarElement}
             sx={{
               width: Math.max(1, Math.floor((100 * executionDuration) / overallDuration)) + '%',
               backgroundColor: colorMapping[task.status],
             }}
           />
-        </Box>
-      </Tooltip>
+        </mui.Box>
+      </mui.Tooltip>
     );
   }
   return (
-    <TableRow onClick={e => navigateTaskHelper(navigate, e, task.id)} hover={true} style={{ cursor: 'pointer' }}>
-      <TableCell className={classes.padding}>
+    <mui.TableRow onClick={e => navigateTaskHelper(navigate, e, task.id)} hover={true} style={{ cursor: 'pointer' }}>
+      <mui.TableCell className={classes.padding}>
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <TaskDurationChip task={task} className={classNames(classes.chip, classes.lastChip)} />
           <TaskNameChip task={task} className={classes.chip} withNavigation />
           {props.showCreation ? <TaskCreatedChip task={task} className={classes.chip} /> : null}
         </div>
-      </TableCell>
-      <TableCell
+      </mui.TableCell>
+      <mui.TableCell
         className={classes.cell}
         sx={{
           display: { xs: 'none', md: 'table-cell' },
@@ -141,10 +140,10 @@ export default function TaskListRow(props: Props) {
         }}
       >
         {task.uniqueLabels.map(label => {
-          return <Chip key={label} className={classes.chip} label={shorten(label)} />;
+          return <mui.Chip key={label} className={classes.chip} label={shorten(label)} />;
         })}
-      </TableCell>
-      <TableCell
+      </mui.TableCell>
+      <mui.TableCell
         className={classes.cell}
         sx={{
           display: { xs: 'none', sm: 'table-cell' },
@@ -152,7 +151,7 @@ export default function TaskListRow(props: Props) {
         }}
       >
         {progress}
-      </TableCell>
-    </TableRow>
+      </mui.TableCell>
+    </mui.TableRow>
   );
 }

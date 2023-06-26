@@ -1,13 +1,15 @@
 import React, { useEffect, useMemo } from 'react';
-import { graphql } from 'babel-plugin-relay/macro';
-import environment from '../../createRelayEnvironment';
 import { useFragment, requestSubscription } from 'react-relay';
+
+import { graphql } from 'babel-plugin-relay/macro';
 
 import Chip from '@mui/material/Chip';
 import Icon from '@mui/material/Icon';
 import { makeStyles } from '@mui/styles';
 
-import { isBuildFinalStatus } from '../../utils/status';
+import environment from 'createRelayEnvironment';
+
+import { isBuildFinalStatus } from 'utils/status';
 
 import { BuildStatusChipNew_build$key } from './__generated__/BuildStatusChipNew_build.graphql';
 

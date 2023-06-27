@@ -1,7 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 import { useFragment, useSubscription } from 'react-relay';
-import { Link as RouterLink } from 'react-router-dom';
 
 import { graphql } from 'babel-plugin-relay/macro';
 import cx from 'classnames';
@@ -96,7 +95,7 @@ export default function RepositoryBuildList(props: Props) {
   if (repository.viewerPermission === 'WRITE' || repository.viewerPermission === 'ADMIN') {
     repositorySettings = (
       <mui.Tooltip title="Repository Settings">
-        <mui.IconButton component={RouterLink} to={'/settings/repository/' + repository.id} size="large">
+        <mui.IconButton href={'/settings/repository/' + repository.id} size="large">
           <mui.icons.Settings />
         </mui.IconButton>
       </mui.Tooltip>
@@ -117,8 +116,7 @@ export default function RepositoryBuildList(props: Props) {
   let repositoryMetrics = (
     <mui.Tooltip title="Repository Metrics">
       <mui.IconButton
-        component={RouterLink}
-        to={absoluteLink('metrics', 'repository', repository.platform, repository.owner, repository.name)}
+        href={absoluteLink('metrics', 'repository', repository.platform, repository.owner, repository.name)}
         size="large"
       >
         <mui.icons.Timeline />

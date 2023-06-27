@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { useFragment, useSubscription } from 'react-relay';
-import { Link as RouterLink } from 'react-router-dom';
 
 import { graphql } from 'babel-plugin-relay/macro';
 
@@ -80,10 +79,9 @@ export default function RepositoryCard(props: Props) {
 
   const owner = (
     <mui.Link
-      component={RouterLink}
       underline="hover"
       color="text.primary"
-      to={absoluteLink(repository.platform, repository.owner)}
+      href={absoluteLink(repository.platform, repository.owner)}
       onMouseDown={stopPropagation}
     >
       <mui.Stack direction="row" alignItems="center" spacing={1}>
@@ -102,9 +100,8 @@ export default function RepositoryCard(props: Props) {
       {hasEditPermissions && (
         <mui.Tooltip title="Repository Settings">
           <mui.IconButton
-            component={RouterLink}
             size="small"
-            to={absoluteLink('settings', 'repository', repository.id)}
+            href={absoluteLink('settings', 'repository', repository.id)}
             onMouseDown={stopPropagation}
           >
             <mui.icons.Settings fontSize="small" />
@@ -131,7 +128,7 @@ export default function RepositoryCard(props: Props) {
   let lastBuildComponent = build ? (
     <mui.Stack p={0.5}>
       <mui.CardActionArea sx={{ borderRadius: 1 }}>
-        <mui.Link component={RouterLink} underline="none" to={absoluteLink('build', build.id)}>
+        <mui.Link underline="none" href={absoluteLink('build', build.id)}>
           <mui.Stack p={1.5} spacing={1}>
             <mui.Typography variant="caption" color="text.secondary" gutterBottom>
               LAST BUILD
@@ -158,11 +155,7 @@ export default function RepositoryCard(props: Props) {
     <mui.Card variant="outlined" sx={{ width: '100%' }}>
       {/* HEADER */}
       <mui.CardActionArea>
-        <mui.Link
-          component={RouterLink}
-          underline="none"
-          to={absoluteLink(repository.platform, repository.owner, repository.name)}
-        >
+        <mui.Link underline="none" href={absoluteLink(repository.platform, repository.owner, repository.name)}>
           <mui.Stack
             className="RepositoryCard__header"
             direction="row"

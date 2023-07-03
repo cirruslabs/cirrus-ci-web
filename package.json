@@ -50,7 +50,7 @@
     "react-helmet": "^6.1.0",
     "react-markdown": "^8.0.7",
     "react-relay": "^15.0.0",
-    "react-router-dom": "^6.12.1",
+    "react-router-dom": "^6.14.1",
     "react-stripe-elements": "^6.1.2",
     "react-vis": "^1.11.12",
     "recharts": "^2.6.2",

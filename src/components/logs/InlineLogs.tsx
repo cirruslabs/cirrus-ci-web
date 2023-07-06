@@ -29,6 +29,7 @@ const useStyles = makeStyles(theme => {
       width: '1%',
       minWidth: theme.spacing(5),
       textAlign: 'right',
+      userSelect: 'none',
     },
     lineContent: {
       fontFamily: 'Monaco, monospace',

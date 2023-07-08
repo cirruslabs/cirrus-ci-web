@@ -24,6 +24,7 @@ import { AppBreadcrumbs_info$key } from './__generated__/AppBreadcrumbs_info.gra
 import { AppBreadcrumbs_repository$key } from './__generated__/AppBreadcrumbs_repository.graphql';
 import { AppBreadcrumbs_task$key } from './__generated__/AppBreadcrumbs_task.graphql';
 import { AppBreadcrumbs_viewer$key } from './__generated__/AppBreadcrumbs_viewer.graphql';
+import Box from "@mui/material/Box";
 
 const useStyles = makeStyles(theme => {
   return {
@@ -198,7 +199,9 @@ export default function AppBreadcrumbs(props: Props) {
 
   return (
     <Stack className={classes.root} direction="row" spacing={1}>
-      {viewer ? <AccountSwitch viewer={viewer} /> : null}
+      <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+        {viewer ? <AccountSwitch viewer={viewer} /> : null}
+      </Box>
       <Breadcrumbs
         className={classes.breadcrumbs}
         separator={<NavigateNextIcon fontSize="small" />}

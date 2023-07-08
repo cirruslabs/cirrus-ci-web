@@ -17,7 +17,7 @@ interface AccountSwitchProps {
   viewer?: AccountSwitch_viewer$key;
 }
 
-export default function AccountsSwitch(props: AccountSwitchProps) {
+export default function AccountSwitch(props: AccountSwitchProps) {
   let viewer = useFragment(
     graphql`
       fragment AccountSwitch_viewer on User {

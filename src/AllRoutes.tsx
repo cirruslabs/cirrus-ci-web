@@ -249,7 +249,7 @@ function AllRoutes() {
               <GitHubStatus />
             </Suspense>
             <ThemeSwitchButton />
-            <mui.Tooltip title="Go to front-end source repository">
+            <mui.Tooltip sx={{ display: { xs: 'none', sm: 'block' } }} title="Go to front-end source repository">
               <mui.IconButton
                 className={classes.linkButton}
                 href="https://github.com/cirruslabs/cirrus-ci-web"
@@ -260,7 +260,7 @@ function AllRoutes() {
                 <mui.icons.GitHub style={{ color: theme.palette.primary.contrastText }} />
               </mui.IconButton>
             </mui.Tooltip>
-            <mui.Tooltip title="Go to documentation">
+            <mui.Tooltip sx={{ display: { xs: 'none', sm: 'block' } }} title="Go to documentation">
               <mui.IconButton
                 className={classes.linkButton}
                 href="https://cirrus-ci.org/"

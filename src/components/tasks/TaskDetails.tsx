@@ -576,7 +576,7 @@ export default function TaskDetails(props: Props) {
               <TaskScheduledChip className={classes.chip} task={task} />
               <TaskStatusChip className={classes.chip} task={task} />
             </div>
-            <mui.Tooltip title="Debugging View" sx={{ display: isFinalStatus ? null : 'none' }}>
+            <mui.Tooltip title="Debugging View" sx={{ display: isFinalStatus ? { xs: 'none', sm: 'block' } : 'none' }}>
               <mui.Badge variant="dot" color="warning" invisible={hasNoAgentNotifications}>
                 <mui.ToggleButton value="bug" onClick={toggleDisplayDebugInfo} selected={displayDebugInfo}>
                   <mui.icons.BugReport />

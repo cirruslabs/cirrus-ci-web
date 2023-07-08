@@ -20,6 +20,7 @@ import usePageWidth from 'utils/usePageWidth';
 import useThemeWithAdjustableBreakpoints from 'utils/useThemeWithAdjustableBreakpoints';
 
 import { BuildCard_build$key } from './__generated__/BuildCard_build.graphql';
+import Box from "@mui/material/Box";
 
 const useStyles = mui.makeStyles(theme => {
   return {
@@ -131,7 +132,9 @@ export default function BuildCard(props: Props) {
               >
                 {build.changeMessageTitle}
               </mui.Typography>
-              <Hash build={build} />
+              <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                <Hash build={build} />
+              </Box>
             </mui.Grid>
 
             {/* DURATION XS-SCREEN*/}

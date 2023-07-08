@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { graphql } from 'babel-plugin-relay/macro';
 import { useRecoilValue } from 'recoil';
 
+import Box from '@mui/material/Box';
+
 import { muiThemeOptions, cirrusOpenDrawerState } from 'cirrusTheme';
 import mui from 'mui';
 
@@ -20,7 +22,6 @@ import usePageWidth from 'utils/usePageWidth';
 import useThemeWithAdjustableBreakpoints from 'utils/useThemeWithAdjustableBreakpoints';
 
 import { BuildCard_build$key } from './__generated__/BuildCard_build.graphql';
-import Box from "@mui/material/Box";
 
 const useStyles = mui.makeStyles(theme => {
   return {

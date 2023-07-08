@@ -8,6 +8,7 @@ import CallSplitIcon from '@mui/icons-material/CallSplit';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import InputIcon from '@mui/icons-material/Input';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import Box from '@mui/material/Box';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
@@ -24,7 +25,6 @@ import { AppBreadcrumbs_info$key } from './__generated__/AppBreadcrumbs_info.gra
 import { AppBreadcrumbs_repository$key } from './__generated__/AppBreadcrumbs_repository.graphql';
 import { AppBreadcrumbs_task$key } from './__generated__/AppBreadcrumbs_task.graphql';
 import { AppBreadcrumbs_viewer$key } from './__generated__/AppBreadcrumbs_viewer.graphql';
-import Box from "@mui/material/Box";
 
 const useStyles = makeStyles(theme => {
   return {
@@ -199,9 +199,7 @@ export default function AppBreadcrumbs(props: Props) {
 
   return (
     <Stack className={classes.root} direction="row" spacing={1}>
-      <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-        {viewer ? <AccountSwitch viewer={viewer} /> : null}
-      </Box>
+      <Box sx={{ display: { xs: 'none', sm: 'block' } }}>{viewer ? <AccountSwitch viewer={viewer} /> : null}</Box>
       <Breadcrumbs
         className={classes.breadcrumbs}
         separator={<NavigateNextIcon fontSize="small" />}

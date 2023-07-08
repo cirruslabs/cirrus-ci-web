@@ -329,7 +329,12 @@ export default function BuildDetails(props: Props) {
             </div>
             <div>
               <mui.Tooltip title="Debugging Information">
-                <mui.ToggleButton sx={{ display: { xs: 'none', sm: 'block' } }} value="bug" onClick={toggleDisplayDebugInfo} selected={displayDebugInfo}>
+                <mui.ToggleButton
+                  sx={{ display: { xs: 'none', sm: 'block' } }}
+                  value="bug"
+                  onClick={toggleDisplayDebugInfo}
+                  selected={displayDebugInfo}
+                >
                   <mui.icons.BugReport />
                 </mui.ToggleButton>
               </mui.Tooltip>

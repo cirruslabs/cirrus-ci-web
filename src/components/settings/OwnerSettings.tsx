@@ -15,6 +15,7 @@ import MarkdownTypography from 'components/common/MarkdownTypography';
 import OwnerComputeCredits from 'components/compute-credits/OwnerComputeCredits';
 import WebHookSettings from 'components/webhooks/WebHookSettings';
 
+import MonthlyUsageChart from '../compute-credits/MonthlyUsageChart';
 import OwnerApiSettings from './OwnerApiSettings';
 import OwnerPersistentWorkerPools from './OwnerPersistentWorkerPools';
 import OwnerSecuredVariables from './OwnerSecuredVariables';
@@ -51,6 +52,7 @@ export default function OwnerSettings(props: Props) {
           }
         }
         ...OwnerComputeCredits_info
+        ...MonthlyUsageChart_info
         ...OwnerApiSettings_info
         ...OwnerSecuredVariables_info
         ...OwnerPersistentWorkerPools_info
@@ -96,6 +98,10 @@ export default function OwnerSettings(props: Props) {
       <div className={classes.settingGap} />
       <Paper elevation={16}>
         <OwnerComputeCredits info={info} />
+      </Paper>
+      <div className={classes.settingGap} />
+      <Paper elevation={16}>
+        <MonthlyUsageChart info={info} />
       </Paper>
       <div className={classes.settingGap} />
       <Paper elevation={16}>

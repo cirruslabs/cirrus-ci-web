@@ -74,18 +74,14 @@ export default function ComputeCreditsBase(props: Props) {
         <mui.Typography variant="h6">
           Your current compute credits balance: <b className={classes.credits}>{props.balanceInCredits || '0.00'}</b>
         </mui.Typography>
-        <div className={classes.gap} />
         <mui.Typography variant="subtitle1">
           <p>
-            Compute credits are used for buying <b>priority</b> CPU time on Community Clusters for your projects. It
-            allows not to bother about configuring{' '}
+            Compute credits are used for buying CPU time managed instances for your projects. It allows not to bother
+            about configuring{' '}
             <mui.Link color="inherit" href="https://cirrus-ci.org/guide/supported-computing-services/">
               Compute Services
-            </mui.Link>
-            and focus on the product instead of infrastructure.
-          </p>
-          <p>
-            Read more about compute credits and how to use them in{' '}
+            </mui.Link>{' '}
+            and focus on the product instead of infrastructure. Read more about compute credits and how to use them in{' '}
             <mui.Link color="inherit" href="https://cirrus-ci.org/pricing/#compute-credits">
               documentation
             </mui.Link>

@@ -47,6 +47,16 @@ export function useTaskStatusColorMapping() {
   };
 }
 
+export function usePlatformColorMapping() {
+  const palette = useTheme().palette;
+  return {
+    darwin: palette.success.main,
+    linux: palette.info.main,
+    windows: palette.warning.main,
+    freebsd: palette.error.main,
+  };
+}
+
 export function useHookStatusColor(hook) {
   const palette = useTheme().palette;
 

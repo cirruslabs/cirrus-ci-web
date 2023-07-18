@@ -30,6 +30,11 @@ export default function WorkerStatusChip(props: Props) {
     props.worker,
   );
 
+  // Work around https://github.com/facebook/relay/issues/3514
+  if (worker == null) {
+    return <></>;
+  }
+
   let theme = useTheme();
   let info = worker.info;
 

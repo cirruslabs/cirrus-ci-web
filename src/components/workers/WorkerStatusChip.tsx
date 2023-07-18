@@ -17,6 +17,7 @@ interface Props {
 }
 
 export default function WorkerStatusChip(props: Props) {
+  let theme = useTheme();
   let worker = useFragment(
     graphql`
       fragment WorkerStatusChip_worker on PersistentWorker {
@@ -35,7 +36,6 @@ export default function WorkerStatusChip(props: Props) {
     return <></>;
   }
 
-  let theme = useTheme();
   let info = worker.info;
 
   let offline = true;

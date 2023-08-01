@@ -904,6 +904,9 @@ enum PlatformType {
   DARWIN
   WINDOWS
   FREEBSD
+  SOLARIS
+  OPENBSD
+  NETBSD
 }
 
 type Query {

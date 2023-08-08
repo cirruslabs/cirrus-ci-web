@@ -116,6 +116,7 @@ type Build implements Node {
   status: BuildStatus!
   notifications: [Notification!]!
   parsingResult: ParsingResult
+  hasPausedTasks: Boolean!
   tasks: [Task!]!
   executingTasks: [Task!]!
   taskGroupsAmount: Int!
@@ -1155,6 +1156,7 @@ type Task implements Node {
   buildId: ID!
   repositoryId: ID!
   name: String!
+  nameAlias: String
   localGroupId: Int!
   requiredGroups: [Int!]!
   status: TaskStatus!

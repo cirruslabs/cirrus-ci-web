@@ -76,6 +76,7 @@ export default function MonthlyUsageChart(props: Props) {
 
   const UsageTooltip = ({ active, payload, label }) => {
     if (!active) return null;
+    if (!payload) return null;
     return (
       <mui.Paper>
         <mui.List dense={true}>

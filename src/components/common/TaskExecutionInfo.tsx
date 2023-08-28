@@ -2,7 +2,7 @@ import React from 'react';
 import { useFragment } from 'react-relay';
 
 import { graphql } from 'babel-plugin-relay/macro';
-import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, YAxis } from 'recharts';
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { useRecoilState } from 'recoil';
 
 import { Box, useTheme } from '@mui/material';
@@ -15,6 +15,8 @@ import { prefersDarkModeState } from 'cirrusTheme';
 import { formatDuration } from 'utils/time';
 
 import { TaskExecutionInfo_task$key } from './__generated__/TaskExecutionInfo_task.graphql';
+
+import * as _ from "lodash";
 
 const useStyles = makeStyles(theme => {
   return {
@@ -73,11 +75,15 @@ export default function TaskExecutionInfo(props: Props) {
 
     let chartPoints = Array(info.cpuChart.points.length);
     let requestedCPU = task.instanceResources ? task.instanceResources.cpu : info.cpuChart.maxValue;
+    let maxSecondsFromStartCPU = _.chain(info.cpuChart.points)
+      .map(point => point.secondsFromStart)
+      .max()
+      .value();
     info.cpuChart.points.forEach((point, index) => {
       chartPoints[index] = {
         'Requested CPUs': requestedCPU,
         'Used CPUs': point.value.toFixed(2),
-        TimestampLabel: formatDuration(point.secondsFromStart),
+        'Seconds from start': point.secondsFromStart,
       };
     });
     return (
@@ -87,6 +93,7 @@ export default function TaskExecutionInfo(props: Props) {
         </Typography>
         <ResponsiveContainer debounce={300} height={200} width="100%">
           <AreaChart data={chartPoints}>
+            <XAxis type="number" domain={[0, maxSecondsFromStartCPU]} dataKey="Seconds from start" hide />
             <YAxis type="number" domain={[0, requestedCPU]} hide />
             <CartesianGrid stroke={''} fill={prefersDarkMode ? theme.palette.info.dark : theme.palette.info.light} />
             <Area
@@ -96,7 +103,7 @@ export default function TaskExecutionInfo(props: Props) {
               fill={prefersDarkMode ? theme.palette.success.main : theme.palette.success.light}
             />
             <Tooltip
-              labelFormatter={index => `Time: ${chartPoints[index].TimestampLabel}`}
+              labelFormatter={(name) => `Time: ${formatDuration(name)}`}
               contentStyle={{ backgroundColor: theme.palette.background.paper }}
             />
           </AreaChart>
@@ -110,6 +117,10 @@ export default function TaskExecutionInfo(props: Props) {
     if (!info.memoryChart) return null;
     if (info.memoryChart.points.length < 2) return null;
 
+    let maxSecondsFromStartMemory = _.chain(info.memoryChart.points)
+      .map(point => point.secondsFromStart)
+      .max()
+      .value();
     let chartPoints = Array(info.memoryChart.points.length);
     let requestedMemory = task.instanceResources ? task.instanceResources.memory : info.memoryChart.maxValue;
     let memoryUnit = requestedMemory > 1024 ? 'Gb' : 'Mb';
@@ -118,13 +129,13 @@ export default function TaskExecutionInfo(props: Props) {
         chartPoints[index] = {
           'Requested Memory': (requestedMemory / 1024.0).toFixed(2),
           'Used Memory': Math.min(point.value / 1024.0, requestedMemory / 1024.0).toFixed(2),
-          TimestampLabel: formatDuration(point.secondsFromStart),
+          'Seconds from start': point.secondsFromStart,
         };
       } else {
         chartPoints[index] = {
           'Requested Memory': requestedMemory,
           'Used Memory': Math.min(point.value, requestedMemory),
-          TimestampLabel: formatDuration(point.secondsFromStart),
+          'Seconds from start': point.secondsFromStart,
         };
       }
     });
@@ -135,6 +146,7 @@ export default function TaskExecutionInfo(props: Props) {
         </Typography>
         <ResponsiveContainer debounce={300} height={200} width="100%">
           <AreaChart data={chartPoints}>
+            <XAxis type="number" domain={[0, maxSecondsFromStartMemory]} dataKey="Seconds from start" hide />
             <YAxis type="number" domain={[0, memoryUnit === 'Gb' ? requestedMemory / 1024 : requestedMemory]} hide />
             <CartesianGrid stroke={''} fill={prefersDarkMode ? theme.palette.info.dark : theme.palette.info.light} />
             <Area
@@ -144,7 +156,7 @@ export default function TaskExecutionInfo(props: Props) {
               fill={prefersDarkMode ? theme.palette.success.main : theme.palette.success.light}
             />
             <Tooltip
-              labelFormatter={index => `Time: ${chartPoints[index].TimestampLabel}`}
+              labelFormatter={name => `Time: ${formatDuration(name)}`}
               contentStyle={{ backgroundColor: theme.palette.background.paper }}
             />
           </AreaChart>

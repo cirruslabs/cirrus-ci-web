@@ -5748,6 +5748,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash@npm:^4.14.197":
+  version: 4.14.197
+  resolution: "@types/lodash@npm:4.14.197"
+  checksum: 53d7567d1704de76cf33266c78062e0fd722d4b846e5b1417d0b6ef0ee41c0d9c451b92bc34f73d5f1fcc45c7d36511e92f6f47a9279b48157ba60a92ddaa078
+  languageName: node
+  linkType: hard
+
 "@types/mdast@npm:^3.0.0, @types/mdast@npm:^3.0.3":
   version: 3.0.10
   resolution: "@types/mdast@npm:3.0.10"
@@ -7749,6 +7756,7 @@ __metadata:
     "@types/classnames": ^2.3.1
     "@types/google-protobuf": ^3.15.6
     "@types/jest": ^29.5.1
+    "@types/lodash": ^4.14.197
     "@types/node": ^20.2.5
     "@types/react": ^18
     "@types/react-dom": ^18
@@ -7769,6 +7777,7 @@ __metadata:
     graphql-relay: ^0.10.0
     husky: ^8.0.3
     js-base64: ^3.7.5
+    lodash: ^4.17.21
     pluralize: ^8.0.0
     prettier: ^2.8.8
     pretty-quick: ^3.1.3

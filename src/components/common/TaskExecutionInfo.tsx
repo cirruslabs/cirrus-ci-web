@@ -97,7 +97,7 @@ export default function TaskExecutionInfo(props: Props) {
               fill={prefersDarkMode ? theme.palette.success.main : theme.palette.success.light}
             />
             <Tooltip
-              labelFormatter={(name) => `Time: ${formatDuration(name)}`}
+              labelFormatter={name => `Time: ${formatDuration(name)}`}
               contentStyle={{ backgroundColor: theme.palette.background.paper }}
             />
           </AreaChart>

@@ -32,10 +32,14 @@ import { makeStyles } from '@mui/styles';
 import DeliveriesList from './DeliveriesList';
 import {
   WebHookDeliveryEndpointInput,
-  WebHookSettingsMutation,
-  WebHookSettingsMutation$data,
-  WebHookSettingsMutation$variables,
-} from './__generated__/WebHookSettingsMutation.graphql';
+  WebHookSettingsCreateMutation,
+  WebHookSettingsCreateMutation$data,
+  WebHookSettingsCreateMutation$variables,
+} from './__generated__/WebHookSettingsCreateMutation.graphql';
+import {
+  WebHookSettingsDeleteMutation,
+  WebHookSettingsDeleteMutation$variables,
+} from './__generated__/WebHookSettingsDeleteMutation.graphql';
 import { WebHookSettings_info$key } from './__generated__/WebHookSettings_info.graphql';
 
 const useStyles = makeStyles(theme => {
@@ -105,7 +109,7 @@ export default function WebHookSettings(props: Props) {
   let [deliveryEndpoints, setDeliveryEndpoints] = useState(convertedEndpoints);
   let classes = useStyles();
 
-  const [deleteWebHookSettingsMutation] = useMutation<WebHookSettingsMutation>(graphql`
+  const [deleteWebHookSettingsMutation] = useMutation<WebHookSettingsDeleteMutation>(graphql`
     mutation WebHookSettingsDeleteMutation($input: SaveWebHookSettingsInput!) {
       saveWebHookSettings(input: $input) {
         error
@@ -119,7 +123,7 @@ export default function WebHookSettings(props: Props) {
   function deleteWebhookEndpoint(endpoint: WebHookDeliveryEndpointInput) {
     const newEndpoints = deliveryEndpoints.filter(e => e.webhookURL !== endpoint.webhookURL);
 
-    const variables: WebHookSettingsMutation$variables = {
+    const variables: WebHookSettingsDeleteMutation$variables = {
       input: {
         clientMutationId: sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(newEndpoints.join(','))),
         platform: info.platform,
@@ -170,7 +174,7 @@ export default function WebHookSettings(props: Props) {
           ownerUid={info.uid}
           existingEndpoints={deliveryEndpoints}
           open={openDialog}
-          onClose={(updatedEndpoints) => {
+          onClose={updatedEndpoints => {
             setDeliveryEndpoints(updatedEndpoints);
             setOpenDialog(!openDialog);
           }}
@@ -213,7 +217,7 @@ function CreateWebHooEndpointDialog(props: DialogProps) {
   let [webHookURL, setWebHookURL] = useState('');
   let [secretToken, setSecretToken] = useState('');
 
-  const [createWebHookSettingsMutation] = useMutation<WebHookSettingsMutation>(graphql`
+  const [createWebHookSettingsMutation] = useMutation<WebHookSettingsCreateMutation>(graphql`
     mutation WebHookSettingsCreateMutation($input: SaveWebHookSettingsInput!) {
       saveWebHookSettings(input: $input) {
         error
@@ -231,7 +235,7 @@ function CreateWebHooEndpointDialog(props: DialogProps) {
       secretToken: secretToken,
     });
 
-    const variables: WebHookSettingsMutation$variables = {
+    const variables: WebHookSettingsCreateMutation$variables = {
       input: {
         clientMutationId: sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(newEndpoints.join(','))),
         platform: props.platform,
@@ -241,7 +245,7 @@ function CreateWebHooEndpointDialog(props: DialogProps) {
     };
     createWebHookSettingsMutation({
       variables: variables,
-      onCompleted: (response: WebHookSettingsMutation$data, errors) => {
+      onCompleted: (response: WebHookSettingsCreateMutation$data, errors) => {
         if (errors) {
           console.log(errors);
           return;

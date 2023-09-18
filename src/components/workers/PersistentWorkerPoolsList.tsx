@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
-import { useMutation } from 'react-relay';
-import { useNavigate } from 'react-router-dom';
+import React, {useState} from 'react';
+import {useMutation} from 'react-relay';
+import {useNavigate} from 'react-router-dom';
 
-import { graphql } from 'babel-plugin-relay/macro';
+import {graphql} from 'babel-plugin-relay/macro';
 import PropTypes from 'prop-types';
-import sjcl from 'sjcl/sjcl';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
@@ -33,12 +32,11 @@ import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 
 import PoolVisibilityIcon from 'components/icons/PoolVisibilityIcon';
-import { navigateHelper } from 'utils/navigateHelper';
+import {navigateHelper} from 'utils/navigateHelper';
 
-import { WebHookSettingsMutation$variables } from '../webhooks/__generated__/WebHookSettingsMutation.graphql';
 import {
-  PersistentWorkerPoolsListCreateMutation,
   CreatePersistentWorkerPoolInput,
+  PersistentWorkerPoolsListCreateMutation,
   PersistentWorkerPoolsListCreateMutation$data,
 } from './__generated__/PersistentWorkerPoolsListCreateMutation.graphql';
 import {

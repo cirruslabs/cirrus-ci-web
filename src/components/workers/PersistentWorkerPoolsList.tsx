@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { graphql } from 'babel-plugin-relay/macro';
 import PropTypes from 'prop-types';
+import sjcl from 'sjcl/sjcl';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
@@ -34,6 +35,7 @@ import Typography from '@mui/material/Typography';
 import PoolVisibilityIcon from 'components/icons/PoolVisibilityIcon';
 import { navigateHelper } from 'utils/navigateHelper';
 
+import { WebHookSettingsMutation$variables } from '../webhooks/__generated__/WebHookSettingsMutation.graphql';
 import {
   PersistentWorkerPoolsListCreateMutation,
   CreatePersistentWorkerPoolInput,
@@ -85,7 +87,7 @@ function PersistentWorkerPoolsList(props: PoolsListProps) {
           {props.pools.map(
             pool =>
               pool && (
-                <ListItem key={pool.id} button onClick={() => navigateHelper(navigate, '', '/pool/' + pool.id)}>
+                <ListItem key={pool.id} onClick={() => navigateHelper(navigate, '', '/pool/' + pool.id)}>
                   <ListItemAvatar>
                     <Avatar>
                       <PoolVisibilityIcon enabledForPublic={pool.enabledForPublic} />

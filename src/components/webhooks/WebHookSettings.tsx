@@ -110,14 +110,7 @@ export default function WebHookSettings(props: Props) {
       saveWebHookSettings(input: $input) {
         error
         info {
-          uid
-          webhookSettings {
-            ownerUid
-            endpoints {
-              webhookURL
-              maskedSecretToken
-            }
-          }
+          ...WebHookSettings_info
         }
       }
     }
@@ -137,6 +130,7 @@ export default function WebHookSettings(props: Props) {
 
     deleteWebHookSettingsMutation({
       variables: variables,
+      onCompleted: () => setDeliveryEndpoints(newEndpoints),
       onError: err => console.error(err),
     });
   }
@@ -148,6 +142,7 @@ export default function WebHookSettings(props: Props) {
         <List>
           {deliveryEndpoints.map(endpoint => (
             <ListItem
+              key={endpoint.webhookURL}
               secondaryAction={
                 <IconButton edge="end" aria-label="delete">
                   <DeleteIcon onClick={() => deleteWebhookEndpoint(endpoint)} />
@@ -175,7 +170,10 @@ export default function WebHookSettings(props: Props) {
           ownerUid={info.uid}
           existingEndpoints={deliveryEndpoints}
           open={openDialog}
-          onClose={() => setOpenDialog(!openDialog)}
+          onClose={(updatedEndpoints) => {
+            setDeliveryEndpoints(updatedEndpoints);
+            setOpenDialog(!openDialog);
+          }}
         />
         <Button variant="contained" onClick={() => setOpenDialog(!openDialog)}>
           Add New Webhook
@@ -208,7 +206,7 @@ interface DialogProps {
 
   open: boolean;
 
-  onClose(...args: any[]): void;
+  onClose(updatedEndpoints: WebHookDeliveryEndpointInput[]): void;
 }
 
 function CreateWebHooEndpointDialog(props: DialogProps) {
@@ -220,14 +218,7 @@ function CreateWebHooEndpointDialog(props: DialogProps) {
       saveWebHookSettings(input: $input) {
         error
         info {
-          uid
-          webhookSettings {
-            ownerUid
-            endpoints {
-              webhookURL
-              maskedSecretToken
-            }
-          }
+          ...WebHookSettings_info
         }
       }
     }
@@ -255,7 +246,7 @@ function CreateWebHooEndpointDialog(props: DialogProps) {
           console.log(errors);
           return;
         }
-        props.onClose();
+        props.onClose(newEndpoints);
       },
       onError: err => console.log(err),
     });
@@ -308,7 +299,7 @@ function CreateWebHooEndpointDialog(props: DialogProps) {
         <Button onClick={createEndpoint} disabled={webHookURL === ''} variant="contained">
           Create
         </Button>
-        <Button onClick={props.onClose} color="secondary" variant="contained">
+        <Button onClick={() => props.onClose(props.existingEndpoints)} color="secondary" variant="contained">
           Close
         </Button>
       </DialogActions>

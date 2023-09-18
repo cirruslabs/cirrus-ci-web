@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
-import {useMutation} from 'react-relay';
-import {useNavigate} from 'react-router-dom';
+import React, { useState } from 'react';
+import { useMutation } from 'react-relay';
+import { useNavigate } from 'react-router-dom';
 
-import {graphql} from 'babel-plugin-relay/macro';
+import { graphql } from 'babel-plugin-relay/macro';
 import PropTypes from 'prop-types';
 
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -32,7 +32,7 @@ import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 
 import PoolVisibilityIcon from 'components/icons/PoolVisibilityIcon';
-import {navigateHelper} from 'utils/navigateHelper';
+import { navigateHelper } from 'utils/navigateHelper';
 
 import {
   CreatePersistentWorkerPoolInput,

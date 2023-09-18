@@ -35,8 +35,8 @@ import PoolVisibilityIcon from 'components/icons/PoolVisibilityIcon';
 import { navigateHelper } from 'utils/navigateHelper';
 
 import {
-  PersistentWorkerPoolsListCreateMutation,
   CreatePersistentWorkerPoolInput,
+  PersistentWorkerPoolsListCreateMutation,
   PersistentWorkerPoolsListCreateMutation$data,
 } from './__generated__/PersistentWorkerPoolsListCreateMutation.graphql';
 import {
@@ -85,7 +85,7 @@ function PersistentWorkerPoolsList(props: PoolsListProps) {
           {props.pools.map(
             pool =>
               pool && (
-                <ListItem key={pool.id} button onClick={() => navigateHelper(navigate, '', '/pool/' + pool.id)}>
+                <ListItem key={pool.id} onClick={() => navigateHelper(navigate, '', '/pool/' + pool.id)}>
                   <ListItemAvatar>
                     <Avatar>
                       <PoolVisibilityIcon enabledForPublic={pool.enabledForPublic} />

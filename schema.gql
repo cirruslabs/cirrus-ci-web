@@ -1122,8 +1122,7 @@ type RepositorySettingsPayload {
 input SaveWebHookSettingsInput {
   platform: String!
   ownerUid: ID!
-  webhookURL: String
-  secretToken: String
+  deliveryEndpoints: [WebHookDeliveryEndpointInput!]
   clientMutationId: String!
 }
 
@@ -1499,6 +1498,16 @@ type WebHookDelivery implements Node {
   response: WebHookDeliveryResponse!
 }
 
+type WebHookDeliveryEndpoint {
+  webhookURL: String!
+  maskedSecretToken: String
+}
+
+input WebHookDeliveryEndpointInput {
+  webhookURL: String!
+  secretToken: String
+}
+
 type WebHookDeliveryPayload {
   event: String!
   action: String!
@@ -1513,6 +1522,5 @@ type WebHookDeliveryResponse {
 
 type WebHookSettings {
   ownerUid: ID!
-  webhookURL: String
-  maskedSecretToken: String!
+  endpoints: [WebHookDeliveryEndpoint!]!
 }

@@ -5,13 +5,13 @@ import { graphql } from 'babel-plugin-relay/macro';
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 import { useTheme } from '@mui/material';
+import Link from '@mui/material/Link';
 import Switch from '@mui/material/Switch';
+import Typography from '@mui/material/Typography';
 
 import mui from '../../mui';
 import PlatformIcon from '../icons/PlatformIcon';
 import { MonthlyUsageChart_info$key } from './__generated__/MonthlyUsageChart_info.graphql';
-import Link from "@mui/material/Link";
-import Typography from "@mui/material/Typography";
 
 interface Props {
   info?: MonthlyUsageChart_info$key;
@@ -98,7 +98,12 @@ export default function MonthlyUsageChart(props: Props) {
   return (
     <mui.Card elevation={24}>
       <mui.CardHeader
-        title={<Typography variant="h5">Compute Monthly Usage of <Link href="https://cirrus-ci.org/guide/writing-tasks/#execution-environment">managed-by-us</Link> instances</Typography>}
+        title={
+          <Typography variant="h5">
+            Compute Monthly Usage of{' '}
+            <Link href="https://cirrus-ci.org/guide/writing-tasks/#execution-environment">managed-by-us</Link> instances
+          </Typography>
+        }
         action={
           <mui.Stack direction="row" spacing={1} alignItems="center">
             <mui.Typography>Credits</mui.Typography>

@@ -34,6 +34,7 @@ import {
   BuildDetailsReTriggerMutation$variables,
 } from './__generated__/BuildDetailsReTriggerMutation.graphql';
 import { BuildDetails_build$key } from './__generated__/BuildDetails_build.graphql';
+import {isTaskFinalStatus} from "../../utils/status";
 
 const buildSubscription = graphql`
   subscription BuildDetailsSubscription($buildID: ID!) {
@@ -250,7 +251,9 @@ export default function BuildDetails(props: Props) {
   );
 
   const hasWritePermission = hasWritePermissions(build.repository.viewerPermission);
-  const allTaskIds = build.latestGroupTasks.map(task => task.id);
+  const finishedTaskIds = build.latestGroupTasks
+    .filter(task => isTaskFinalStatus(task.status) && task.status !== 'SKIPPED')
+    .map(task => task.id);
   const failedTaskIds = build.latestGroupTasks
     .filter(task => task.status === 'FAILED' || (task.status === 'ABORTED' && task.requiredGroups.length === 0))
     .map(task => task.id);
@@ -258,10 +261,12 @@ export default function BuildDetails(props: Props) {
     .filter(task => ['SCHEDULED', 'CREATED', 'EXECUTING', 'TRIGGERED'].includes(task.status))
     .map(task => task.id);
   const reRunAllTasksButton =
-    allTaskIds.length === runningTaskIds.length || !hasWritePermission ? null : (
-      <mui.Button variant="contained" onClick={() => batchReRun(allTaskIds)} startIcon={<mui.icons.Refresh />}>
-        Re-Run All Tasks
-      </mui.Button>
+    finishedTaskIds.length === 0 || !hasWritePermission ? null : (
+      <mui.Tooltip title="Re-Run tasks that finished executing">
+        <mui.Button variant="contained" onClick={() => batchReRun(finishedTaskIds)} startIcon={<mui.icons.Refresh />}>
+          Re-Run All Tasks
+        </mui.Button>
+      </mui.Tooltip>
     );
   const reRunFailedTasksButton =
     failedTaskIds.length === 0 || !hasWritePermission ? null : (

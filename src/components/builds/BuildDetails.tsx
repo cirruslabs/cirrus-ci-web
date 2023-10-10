@@ -15,6 +15,7 @@ import { HookType } from 'components/hooks/HookType';
 import TaskList from 'components/tasks/TaskList';
 import { hasWritePermissions } from 'utils/permissions';
 
+import { isTaskFinalStatus } from '../../utils/status';
 import DebuggingInformation from './BuildDebuggingInformation';
 import ConfigurationWithIssues from './ConfigurationWithIssues';
 import {
@@ -34,7 +35,6 @@ import {
   BuildDetailsReTriggerMutation$variables,
 } from './__generated__/BuildDetailsReTriggerMutation.graphql';
 import { BuildDetails_build$key } from './__generated__/BuildDetails_build.graphql';
-import {isTaskFinalStatus} from "../../utils/status";
 
 const buildSubscription = graphql`
   subscription BuildDetailsSubscription($buildID: ID!) {

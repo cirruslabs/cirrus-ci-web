@@ -29,6 +29,7 @@ const useStyles = mui.makeStyles(theme => {
 
 interface Props {
   task: TaskCommandList_task$key;
+  stripTimestamps?: boolean;
 }
 
 export default function TaskCommandList(props: Props) {
@@ -125,7 +126,7 @@ export default function TaskCommandList(props: Props) {
           </mui.AccordionSummary>
           <mui.AccordionDetails className={classes.details}>
             <Suspense fallback={<CirrusCircularProgress />}>
-              <TaskCommandLogs taskId={task.id} command={command} />
+              <TaskCommandLogs taskId={task.id} command={command} stripTimestamps={props.stripTimestamps} />
             </Suspense>
           </mui.AccordionDetails>
         </mui.Accordion>

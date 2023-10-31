@@ -5748,6 +5748,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash@npm:^4.14.200":
+  version: 4.14.200
+  resolution: "@types/lodash@npm:4.14.200"
+  checksum: 6471f8bb5da692a6ecf03a8da4935bfbc341e67ee9bcb4f5730bfacff0c367232548f0a01e8ac5ea18c6fe78fb085d502494e33ccb47a7ee87cbdee03b47d00d
+  languageName: node
+  linkType: hard
+
 "@types/mdast@npm:^3.0.0, @types/mdast@npm:^3.0.3":
   version: 3.0.10
   resolution: "@types/mdast@npm:3.0.10"
@@ -7749,6 +7756,7 @@ __metadata:
     "@types/classnames": ^2.3.1
     "@types/google-protobuf": ^3.15.6
     "@types/jest": ^29.5.1
+    "@types/lodash": ^4.14.200
     "@types/node": ^20.2.5
     "@types/react": ^18
     "@types/react-dom": ^18

@@ -35,7 +35,7 @@ import ViewList from '@mui/icons-material/ViewList';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import { useTheme } from '@mui/material';
+import {FormGroup, useTheme} from '@mui/material';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -137,6 +137,7 @@ const mui = {
   Divider,
   Drawer,
   Fab,
+  FormGroup,
   FormControl,
   FormControlLabel,
   FormHelperText,

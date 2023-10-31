@@ -2,13 +2,12 @@ import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { requestSubscription, useFragment, useMutation } from 'react-relay';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import * as _ from 'lodash';
 import { graphql } from 'babel-plugin-relay/macro';
 import classNames from 'classnames';
 
 import environment from 'createRelayEnvironment';
 import mui from 'mui';
-
-import * as _ from "lodash";
 
 import TaskArtifacts from 'components/artifacts/TaskArtifacts';
 import TaskCancellerChip from 'components/chips/TaskCancellerChip';
@@ -504,21 +503,24 @@ export default function TaskDetails(props: Props) {
   const [stripTimestamps, setStripTimestamps] = React.useState(false);
 
   const cirrusLogTimestamp = _.some(task.labels, function (label) {
-    return _.isEqual(label.split(":"), ["CIRRUS_LOG_TIMESTAMP", "true"]);
-  })
+    return _.isEqual(label.split(':'), ['CIRRUS_LOG_TIMESTAMP', 'true']);
+  });
 
   if (cirrusLogTimestamp) {
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       setStripTimestamps(!event.target.checked);
     };
 
-    taskLogOptions = <mui.Paper className={classes.taskLogOptions}>
-      <mui.FormGroup>
-        <mui.FormControlLabel control={
-          <mui.Checkbox checked={!stripTimestamps} onChange={onChange} />
-        } label="Display log timestamps" />
-      </mui.FormGroup>
-    </mui.Paper>;
+    taskLogOptions = (
+      <mui.Paper className={classes.taskLogOptions}>
+        <mui.FormGroup>
+          <mui.FormControlLabel
+            control={<mui.Checkbox checked={!stripTimestamps} onChange={onChange} />}
+            label="Display log timestamps"
+          />
+        </mui.FormGroup>
+      </mui.Paper>
+    );
   }
 
   const tabbedCommandsAndHooks = (

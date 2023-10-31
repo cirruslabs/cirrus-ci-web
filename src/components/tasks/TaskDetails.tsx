@@ -2,6 +2,7 @@ import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { requestSubscription, useFragment, useMutation } from 'react-relay';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import * as _ from 'lodash';
 import { graphql } from 'babel-plugin-relay/macro';
 import classNames from 'classnames';
 
@@ -95,6 +96,10 @@ const useStyles = mui.makeStyles(theme => {
     },
     transaction: {
       backgroundColor: theme.palette.success.light,
+    },
+    taskLogOptions: {
+      background: theme.palette.secondary.light,
+      padding: theme.spacing(2),
     },
     tabPanel: {
       padding: 0,
@@ -492,6 +497,32 @@ export default function TaskDetails(props: Props) {
     setDisplayDebugInfo(!displayDebugInfo);
   };
 
+  let taskLogOptions = <></>;
+
+  // Task log options
+  const [stripTimestamps, setStripTimestamps] = React.useState(false);
+
+  const cirrusLogTimestamp = _.some(task.labels, function (label) {
+    return _.isEqual(label.split(':'), ['CIRRUS_LOG_TIMESTAMP', 'true']);
+  });
+
+  if (cirrusLogTimestamp) {
+    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setStripTimestamps(!event.target.checked);
+    };
+
+    taskLogOptions = (
+      <mui.Paper className={classes.taskLogOptions}>
+        <mui.FormGroup>
+          <mui.FormControlLabel
+            control={<mui.Checkbox checked={!stripTimestamps} onChange={onChange} />}
+            label="Display log timestamps"
+          />
+        </mui.FormGroup>
+      </mui.Paper>
+    );
+  }
+
   const tabbedCommandsAndHooks = (
     <mui.TabContext value={currentTab}>
       <mui.TabList onChange={handleChange}>
@@ -502,8 +533,9 @@ export default function TaskDetails(props: Props) {
         />
         <mui.Tab icon={<mui.icons.Functions />} label={'Hooks (' + task.hooks.length + ')'} value="hooks" />
       </mui.TabList>
+      {taskLogOptions}
       <mui.TabPanel value="instructions" className={classes.tabPanel}>
-        <TaskCommandList task={task} />
+        <TaskCommandList task={task} stripTimestamps={stripTimestamps} />
       </mui.TabPanel>
       <mui.TabPanel value="hooks" className={classes.tabPanel}>
         <HookList hooks={task.hooks} type={HookType.Task} />

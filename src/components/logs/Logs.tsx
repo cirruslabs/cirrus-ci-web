@@ -86,9 +86,10 @@ function Logs(props: Props) {
     <div className={classes.logContainer}>
       {props.logs.split('\n').map((line, index) => {
         // Cirrus CI Agent uses exactly 15 characters for the timestamps[1]
+        // and they all start with a "[" prefix.
         //
         // [1]: https://github.com/cirruslabs/cirrus-ci-agent/blob/a4bc09e4e8c8190158f5859854995d13fba3d335/internal/executor/logs.go#L85
-        if (props.stripTimestamps) {
+        if (props.stripTimestamps && line.startsWith("[")) {
           line = line.slice(15);
         }
 

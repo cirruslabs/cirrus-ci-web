@@ -1,6 +1,6 @@
 {
   "name": "Cirrus CI GraphQL Schema",
-  "schemaPath": "schema.graphql",
+  "schemaPath": "schema.gql",
   "extensions": {
     "endpoints": {
       "Cirrus CI GraphQL Endpoint": {

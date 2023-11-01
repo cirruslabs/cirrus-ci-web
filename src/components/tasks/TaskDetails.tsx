@@ -2,6 +2,7 @@ import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { requestSubscription, useFragment, useMutation } from 'react-relay';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import * as graphlib from '@dagrejs/graphlib';
 import * as _ from 'lodash';
 import { graphql } from 'babel-plugin-relay/macro';
 import classNames from 'classnames';
@@ -123,6 +124,7 @@ export default function TaskDetails(props: Props) {
     graphql`
       fragment TaskDetails_task on Task {
         id
+        localGroupId
         name
         buildId
         status
@@ -157,6 +159,11 @@ export default function TaskDetails(props: Props) {
           ...Notification_notification
         }
         build {
+          tasks {
+            id
+            localGroupId
+            requiredGroups
+          }
           branch
           changeIdInRepo
           changeMessageTitle
@@ -219,9 +226,9 @@ export default function TaskDetails(props: Props) {
   let repository = task.repository;
 
   const [commitTaskReRunMutation] = useMutation<TaskDetailsReRunMutation>(graphql`
-    mutation TaskDetailsReRunMutation($input: TaskReRunInput!) {
-      rerun(input: $input) {
-        newTask {
+    mutation TaskDetailsReRunMutation($input: TasksReRunInput!) {
+      batchReRun(input: $input) {
+        newTasks {
           id
         }
       }
@@ -322,11 +329,36 @@ export default function TaskDetails(props: Props) {
     setRerunOptionsShown(false);
   };
 
-  function rerun(taskId: string, withTerminalAccess: boolean) {
+  function rerunCurrentTaskWithTraversal(reverse: boolean) {
+    let graph = new graphlib.Graph();
+
+    for (let buildTask of task.build.tasks) {
+      graph.setNode(buildTask.localGroupId.toString(), buildTask.id);
+
+      for (let requiredGroup of buildTask.requiredGroups) {
+        if (reverse) {
+          graph.setEdge(requiredGroup.toString(), buildTask.localGroupId.toString());
+        } else {
+          graph.setEdge(buildTask.localGroupId.toString(), requiredGroup.toString());
+        }
+      }
+    }
+
+    let taskIds: string[] = [];
+
+    // Traverse the graph and retrieve a task ID for each node
+    for (let node of graphlib.alg.preorder(graph, [task.localGroupId.toString()])) {
+      taskIds.push(graph.node(node));
+    }
+
+    rerun(taskIds, false);
+  }
+
+  function rerun(taskIds: string[], withTerminalAccess: boolean) {
     const variables: TaskDetailsReRunMutation$variables = {
       input: {
-        clientMutationId: 'rerun-' + taskId,
-        taskId: taskId,
+        clientMutationId: 'rerun-' + taskIds[0],
+        taskIds: taskIds,
         attachTerminal: withTerminalAccess,
       },
     };
@@ -338,7 +370,12 @@ export default function TaskDetails(props: Props) {
           console.error(errors);
           return;
         }
-        navigateTaskHelper(navigate, null, response.rerun.newTask.id);
+
+        if (taskIds.length > 1) {
+          navigateBuildHelper(navigate, null, task.buildId);
+        } else {
+          navigateTaskHelper(navigate, null, response.batchReRun.newTasks[0].id);
+        }
       },
       onError: err => console.error(err),
     });
@@ -348,7 +385,7 @@ export default function TaskDetails(props: Props) {
     !hasWritePermissions(build.viewerPermission) || !isFinalStatus ? null : (
       <>
         <mui.ButtonGroup variant="contained" ref={anchorRef}>
-          <mui.Button onClick={() => rerun(task.id, false)} startIcon={<mui.icons.Refresh />}>
+          <mui.Button onClick={() => rerun([task.id], false)} startIcon={<mui.icons.Refresh />}>
             Re-Run
           </mui.Button>
           <mui.Button size="small" onClick={toggleRerunOptions}>
@@ -373,7 +410,13 @@ export default function TaskDetails(props: Props) {
               <mui.Paper elevation={24}>
                 <mui.ClickAwayListener onClickAway={closeRerunOptions}>
                   <mui.MenuList id="split-button-menu">
-                    <mui.MenuItem onClick={() => rerun(task.id, true)}>Re-Run with Terminal Access</mui.MenuItem>
+                    <mui.MenuItem onClick={() => rerun([task.id], true)}>Re-Run with Terminal Access</mui.MenuItem>
+                    <mui.MenuItem onClick={() => rerunCurrentTaskWithTraversal(true)}>
+                      Re-Run with Dependents
+                    </mui.MenuItem>
+                    <mui.MenuItem onClick={() => rerunCurrentTaskWithTraversal(false)}>
+                      Re-Run with Dependencies
+                    </mui.MenuItem>
                   </mui.MenuList>
                 </mui.ClickAwayListener>
               </mui.Paper>

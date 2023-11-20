@@ -99,7 +99,7 @@ const useStyles = mui.makeStyles(theme => {
       backgroundColor: theme.palette.success.light,
     },
     taskLogOptions: {
-      background: theme.palette.secondary.light,
+      background: theme.palette.mode === 'dark' ? theme.palette.secondary.dark : theme.palette.secondary.light,
       padding: theme.spacing(2),
     },
     tabPanel: {

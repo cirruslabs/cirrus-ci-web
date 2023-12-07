@@ -32,6 +32,7 @@ import Refresh from '@mui/icons-material/Refresh';
 import Settings from '@mui/icons-material/Settings';
 import Timeline from '@mui/icons-material/Timeline';
 import ViewList from '@mui/icons-material/ViewList';
+import WatchLater from '@mui/icons-material/WatchLater';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
@@ -218,6 +219,7 @@ const mui = {
     Settings,
     Timeline,
     ViewList,
+    WatchLater,
   },
 
   colors: {

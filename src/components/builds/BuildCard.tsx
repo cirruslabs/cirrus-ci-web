@@ -1,12 +1,10 @@
 import { ThemeProvider } from '@emotion/react';
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useFragment } from 'react-relay';
 import { useNavigate } from 'react-router-dom';
 
 import { graphql } from 'babel-plugin-relay/macro';
 import { useRecoilValue } from 'recoil';
-
-import Box from '@mui/material/Box';
 
 import { muiThemeOptions, cirrusOpenDrawerState } from 'cirrusTheme';
 import mui from 'mui';
@@ -21,6 +19,7 @@ import { navigateBuildHelper } from 'utils/navigateHelper';
 import usePageWidth from 'utils/usePageWidth';
 import useThemeWithAdjustableBreakpoints from 'utils/useThemeWithAdjustableBreakpoints';
 
+import CreatedTime from '../chips/CreatedTime';
 import { BuildCard_build$key } from './__generated__/BuildCard_build.graphql';
 
 const useStyles = mui.makeStyles(theme => {
@@ -53,6 +52,7 @@ export default function BuildCard(props: Props) {
           ...RepositoryNameChipNew_repository
           ...RepositoryOwnerChipNew_repository
         }
+        ...CreatedTime_build
         ...Hash_build
         ...Duration_build
         ...BuildStatusChipNew_build
@@ -133,9 +133,10 @@ export default function BuildCard(props: Props) {
               >
                 {build.changeMessageTitle}
               </mui.Typography>
-              <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+              <mui.Stack direction="row" alignItems="center" spacing={1}>
                 <Hash build={build} />
-              </Box>
+                <CreatedTime build={build} />
+              </mui.Stack>
             </mui.Grid>
 
             {/* DURATION XS-SCREEN*/}

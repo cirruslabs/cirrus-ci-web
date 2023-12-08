@@ -5651,10 +5651,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/google-protobuf@npm:^3.15.6":
-  version: 3.15.6
-  resolution: "@types/google-protobuf@npm:3.15.6"
-  checksum: e8f7cd9d263093cd0a72eb10ff0bb8221e28aa8b9f601eddbe19b286932aae96fbc9ccb1f3a744525e7811fa87a6aeefd431858b6e2034f14a2dc68710a86d54
+"@types/google-protobuf@npm:^3.15.12":
+  version: 3.15.12
+  resolution: "@types/google-protobuf@npm:3.15.12"
+  checksum: c64efd268170eac0865a42c9616b05100e5ac07e7fa1ed87c827c9d2a58eb02cb2d01cb3248c7ddd563468ecb079295b81ab966e399ba08858f525896631e961
   languageName: node
   linkType: hard
 
@@ -5664,6 +5664,13 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: d076bb61f45d0fc42dee496ef8b1c2f8742e15d5e47e90e20d0243386e426c04d4efd408a48875ab432f7960b4ce3414db20ed0fbbfc7bcc89d84e574f6e045a
+  languageName: node
+  linkType: hard
+
+"@types/graphlib@npm:^2.1.12":
+  version: 2.1.12
+  resolution: "@types/graphlib@npm:2.1.12"
+  checksum: 009195aaf7d7c33068c93ece23e8fe11449663ba0ae6494f8028ffabebd7090a8a2daa86db73c65816a2e97d32d66db4a922c5003c2824ae4d4b4a169d77587d
   languageName: node
   linkType: hard
 
@@ -7762,7 +7769,8 @@ __metadata:
     "@trivago/prettier-plugin-sort-imports": ^4.1.1
     "@types/babel__preset-env": ^7.9.2
     "@types/classnames": ^2.3.1
-    "@types/google-protobuf": ^3.15.6
+    "@types/google-protobuf": ^3.15.12
+    "@types/graphlib": ^2.1.12
     "@types/jest": ^29.5.1
     "@types/lodash": ^4.14.200
     "@types/node": ^20.2.5

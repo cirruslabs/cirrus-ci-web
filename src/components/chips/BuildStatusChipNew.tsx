@@ -42,6 +42,7 @@ export default function BuildStatusChip(props: Props) {
       fragment BuildStatusChipNew_build on Build {
         id
         status
+        hasPausedTasks
       }
     `,
     props.build,
@@ -85,7 +86,7 @@ export default function BuildStatusChip(props: Props) {
       ABORTED: 'warning',
     }[build.status] || 'error';
 
-  const icon =
+  let icon =
     {
       TRIGGERED: 'play_circle',
       CREATED: 'cloud_circle',
@@ -94,6 +95,10 @@ export default function BuildStatusChip(props: Props) {
       FAILED: 'error_circle',
       ABORTED: 'stop_circle',
     }[build.status] || 'error_circle';
+
+  if (build.hasPausedTasks) {
+    icon = 'pause_circle';
+  }
 
   if (props.mini) {
     return <Icon color={color}>{icon}</Icon>;

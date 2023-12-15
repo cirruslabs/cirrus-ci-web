@@ -37,6 +37,7 @@ export default function BuildStatusChip(props: Props) {
       fragment BuildStatusChip_build on Build {
         id
         status
+        hasPausedTasks
         durationInSeconds
         clockDurationInSeconds
       }
@@ -66,11 +67,12 @@ export default function BuildStatusChip(props: Props) {
   let { mini, className } = props;
   let message = buildStatusMessage(build.status, build.durationInSeconds);
   let buildStatusColor = useBuildStatusColor(build.status);
+  let buildStatusIcon = build.hasPausedTasks ? 'pause' : buildStatusIconName(build.status);
   if (mini) {
     return (
       <Tooltip title={message}>
         <Avatar style={{ background: buildStatusColor }} className={className}>
-          <Icon style={{ color: theme.palette.primary.contrastText }}>{buildStatusIconName(build.status)}</Icon>
+          <Icon style={{ color: theme.palette.primary.contrastText }}>{buildStatusIcon}</Icon>
         </Avatar>
       </Tooltip>
     );
@@ -88,7 +90,7 @@ export default function BuildStatusChip(props: Props) {
         label={message}
         avatar={
           <Avatar style={{ background: buildStatusColor }}>
-            <Icon style={{ color: theme.palette.primary.contrastText }}>{buildStatusIconName(build.status)}</Icon>
+            <Icon style={{ color: theme.palette.primary.contrastText }}>{buildStatusIcon}</Icon>
           </Avatar>
         }
       />

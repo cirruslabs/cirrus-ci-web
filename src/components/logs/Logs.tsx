@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import AnsiUp from 'ansi_up';
@@ -64,11 +64,19 @@ function Logs(props: Props) {
 
     highLightedLineStart = parseInt(startLine.replace('L', ''), 10);
     highLightedLineEnd = parseInt(endLine.replace('L', ''), 10);
-    let elementToFocus = document.getElementById(startLine);
-    if (elementToFocus) {
-      elementToFocus.focus();
-    }
   }
+
+  useEffect(() => {
+    if (isNaN(highLightedLineStart)) {
+      return;
+    }
+
+    let startLine = document.getElementById(`L${highLightedLineStart}`);
+
+    if (startLine) {
+      startLine.focus();
+    }
+  }, []);
 
   function selectLine(event, lineNumber) {
     let lineRange = `L${lineNumber}`;

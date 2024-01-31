@@ -76,7 +76,7 @@ function Logs(props: Props) {
     if (startLine) {
       startLine.focus();
     }
-  }, []);
+  }, [highLightedLineStart]);
 
   function selectLine(event, lineNumber) {
     let lineRange = `L${lineNumber}`;

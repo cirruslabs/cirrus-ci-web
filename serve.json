@@ -9,7 +9,7 @@
         },
         {
           "key": "Cache-Control",
-          "value": "public,max-age=3600"
+          "value": "public"
         },
         {
           "key": "Strict-Transport-Security",
@@ -30,7 +30,7 @@
       ]
     },
     {
-      "source": "**/*.@(jpg|jpeg|gif|png|js|css)",
+      "source": "**/*.@(jpg|jpeg|gif|png|svg|ico|js|css|txt|json)",
       "headers": [
         {
           "key": "Vary",

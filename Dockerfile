@@ -27,7 +27,7 @@ EXPOSE 8080
 COPY --from=builder /tmp/cirrus-ci-web/serve.json /svc/cirrus-ci-web/serve.json
 COPY --from=builder /tmp/cirrus-ci-web/build/ /svc/cirrus-ci-web/
 
-RUN npm install -g serve@14.1.2
+RUN npm install -g serve@14.2.1
 
 CMD serve --single \
           --listen 8080 \

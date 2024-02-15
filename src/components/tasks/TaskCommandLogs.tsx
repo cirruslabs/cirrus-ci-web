@@ -48,6 +48,7 @@ interface RealTimeLogsProps {
   };
   initialLogLines: ReadonlyArray<string>;
   executionInfo: TaskCommandLogs_executionInfo$key;
+  stripTimestamps?: boolean;
 }
 
 function TaskCommandRealTimeLogs(props: RealTimeLogsProps) {
@@ -120,7 +121,11 @@ function TaskCommandRealTimeLogs(props: RealTimeLogsProps) {
   return (
     <div style={{ width: '100%', height: '100%' }}>
       {inProgress ? null : downloadButton}
-      <Logs logsName={command.name} logs={initialLogLines.join('\n') + additionalLogs} />
+      <Logs
+        logsName={command.name}
+        logs={initialLogLines.join('\n') + additionalLogs}
+        stripTimestamps={props.stripTimestamps}
+      />
       {inProgress ? <CirrusLinearProgress /> : null}
     </div>
   );
@@ -133,6 +138,7 @@ interface TaskCommandLogsProps {
     status: TaskCommandStatus;
     type: TaskCommandType;
   };
+  stripTimestamps?: boolean;
 }
 
 export default function TaskCommandLogs(props: TaskCommandLogsProps) {

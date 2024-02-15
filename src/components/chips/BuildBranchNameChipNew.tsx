@@ -73,14 +73,14 @@ export default function BuildBranchNameChipNew(props: Props) {
     <div className={props.withHeader ? classes.container : ''}>
       {props.withHeader && (
         <Typography variant="caption" color={theme.palette.text.disabled} lineHeight={1}>
-          Branch
+          {build.tag ? 'Tag' : 'Branch'}
         </Typography>
       )}
       {build.tag ? (
-        <Tooltip title={`${build.tag} tag`}>
+        <Tooltip title={`On ${build.branch} branch`}>
           <Chip
             className={cx(props.className, classes.chip)}
-            label={shorten(build.branch)}
+            label={build.tag}
             avatar={<UnarchiveIcon />}
             size="small"
             onClick={handleBranchClick}

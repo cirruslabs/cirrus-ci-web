@@ -9,7 +9,7 @@ task:
   node_modules_cache:
     folder: .yarn/cache
   install_script: yarn
-  bootstrap_script: yarn bootstrap
+  relay_script: yarn relay
   matrix:
     - name: Build
       build_script: yarn build

@@ -11,6 +11,7 @@ import Hash from 'components/chips/Hash';
 import { createLinkToRepository } from 'utils/github';
 import { absoluteLink } from 'utils/link';
 
+import CreatedTime from '../chips/CreatedTime';
 import { RepositoryCard_repository$key } from './__generated__/RepositoryCard_repository.graphql';
 
 interface Props {
@@ -53,6 +54,7 @@ export default function RepositoryCard(props: Props) {
           id
           branch
           changeMessageTitle
+          ...CreatedTime_build
           ...Hash_build
           ...BuildStatusChipNew_build
           ...BuildBranchNameChipNew_build
@@ -141,6 +143,7 @@ export default function RepositoryCard(props: Props) {
             </mui.Stack>
             <mui.Stack direction="row" alignItems="center" spacing={1}>
               <Hash build={build} />
+              <CreatedTime build={build} />
               <mui.Box onMouseDown={stopPropagation}>
                 <BuildBranchNameChipNew build={build} />
               </mui.Box>

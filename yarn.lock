@@ -3722,6 +3722,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@dagrejs/graphlib@npm:^2.1.13":
+  version: 2.1.13
+  resolution: "@dagrejs/graphlib@npm:2.1.13"
+  checksum: 7d0732f78675ea1c25e54ad1fb2dcd3b8784705faba328bd44def6f372140197ccdf546d75c33db05555da9b288a00d67f34317215f64233b89e9e59bd79596a
+  languageName: node
+  linkType: hard
+
 "@emotion/babel-plugin@npm:^11.11.0":
   version: 11.11.0
   resolution: "@emotion/babel-plugin@npm:11.11.0"
@@ -5644,10 +5651,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/google-protobuf@npm:^3.15.6":
-  version: 3.15.6
-  resolution: "@types/google-protobuf@npm:3.15.6"
-  checksum: e8f7cd9d263093cd0a72eb10ff0bb8221e28aa8b9f601eddbe19b286932aae96fbc9ccb1f3a744525e7811fa87a6aeefd431858b6e2034f14a2dc68710a86d54
+"@types/google-protobuf@npm:^3.15.12":
+  version: 3.15.12
+  resolution: "@types/google-protobuf@npm:3.15.12"
+  checksum: c64efd268170eac0865a42c9616b05100e5ac07e7fa1ed87c827c9d2a58eb02cb2d01cb3248c7ddd563468ecb079295b81ab966e399ba08858f525896631e961
   languageName: node
   linkType: hard
 
@@ -5657,6 +5664,13 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: d076bb61f45d0fc42dee496ef8b1c2f8742e15d5e47e90e20d0243386e426c04d4efd408a48875ab432f7960b4ce3414db20ed0fbbfc7bcc89d84e574f6e045a
+  languageName: node
+  linkType: hard
+
+"@types/graphlib@npm:^2.1.12":
+  version: 2.1.12
+  resolution: "@types/graphlib@npm:2.1.12"
+  checksum: 009195aaf7d7c33068c93ece23e8fe11449663ba0ae6494f8028ffabebd7090a8a2daa86db73c65816a2e97d32d66db4a922c5003c2824ae4d4b4a169d77587d
   languageName: node
   linkType: hard
 
@@ -5745,6 +5759,13 @@ __metadata:
   version: 0.0.29
   resolution: "@types/json5@npm:0.0.29"
   checksum: e60b153664572116dfea673c5bda7778dbff150498f44f998e34b5886d8afc47f16799280e4b6e241c0472aef1bc36add771c569c68fc5125fc2ae519a3eb9ac
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:^4.14.200":
+  version: 4.14.200
+  resolution: "@types/lodash@npm:4.14.200"
+  checksum: 6471f8bb5da692a6ecf03a8da4935bfbc341e67ee9bcb4f5730bfacff0c367232548f0a01e8ac5ea18c6fe78fb085d502494e33ccb47a7ee87cbdee03b47d00d
   languageName: node
   linkType: hard
 
@@ -7595,9 +7616,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.0, caniuse-lite@npm:^1.0.30001280, caniuse-lite@npm:^1.0.30001400, caniuse-lite@npm:^1.0.30001426, caniuse-lite@npm:^1.0.30001489":
-  version: 1.0.30001492
-  resolution: "caniuse-lite@npm:1.0.30001492"
-  checksum: 261869f910ec905ab6aa5a754e4ae57da8c5c33f3b723db2fa21840da307667bff61057aef3abaca32091c1561c254dd3a807c0fdb054cdc9e7e3ba495a55e20
+  version: 1.0.30001581
+  resolution: "caniuse-lite@npm:1.0.30001581"
+  checksum: ca4e2cd9d0acf5e3c71fa2e7cd65561e4532d32b640145f634c333792074bb63de1239b35abfb6b6d372f97caf26f8d97faac7ba51ef190717ad2d3ae9c0d7a2
   languageName: node
   linkType: hard
 
@@ -7730,6 +7751,7 @@ __metadata:
   dependencies:
     "@babel/preset-env": ^7.22.4
     "@babel/runtime": ^7.22.3
+    "@dagrejs/graphlib": ^2.1.13
     "@emotion/react": ^11.11.0
     "@emotion/styled": ^11.11.0
     "@fortawesome/fontawesome-svg-core": ^6.4.0
@@ -7747,8 +7769,10 @@ __metadata:
     "@trivago/prettier-plugin-sort-imports": ^4.1.1
     "@types/babel__preset-env": ^7.9.2
     "@types/classnames": ^2.3.1
-    "@types/google-protobuf": ^3.15.6
+    "@types/google-protobuf": ^3.15.12
+    "@types/graphlib": ^2.1.12
     "@types/jest": ^29.5.1
+    "@types/lodash": ^4.14.200
     "@types/node": ^20.2.5
     "@types/react": ^18
     "@types/react-dom": ^18

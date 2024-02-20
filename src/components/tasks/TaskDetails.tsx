@@ -426,7 +426,7 @@ export default function TaskDetails(props: Props) {
       </>
     );
 
-  let taskIsTriggerable = task.status === 'PAUSED';
+  let taskIsTriggerable = task.status === 'PAUSED' && task.triggerType === 'MANUAL';
   let taskIsPreTriggerable = task.status === 'CREATED' && task.triggerType === 'MANUAL';
   let triggerButton =
     !hasWritePermissions(build.viewerPermission) || !taskIsTriggerable ? null : (

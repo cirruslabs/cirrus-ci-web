@@ -9,7 +9,7 @@
         },
         {
           "key": "Cache-Control",
-          "value": "public"
+          "value": "no-cache"
         },
         {
           "key": "Strict-Transport-Security",

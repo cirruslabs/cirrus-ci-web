@@ -180,6 +180,7 @@ export default function TaskDetails(props: Props) {
           ...TaskList_tasks
         }
         dependencies {
+          status
           ...TaskList_tasks
         }
         ...TaskExecutionInfo_task

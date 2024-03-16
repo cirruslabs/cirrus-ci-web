@@ -180,6 +180,7 @@ export default function TaskDetails(props: Props) {
           ...TaskList_tasks
         }
         dependencies {
+          status
           ...TaskList_tasks
         }
         ...TaskExecutionInfo_task
@@ -426,7 +427,8 @@ export default function TaskDetails(props: Props) {
       </>
     );
 
-  let taskIsTriggerable = task.status === 'PAUSED';
+  let allDependenciesInFinalStatus = !task.dependencies.find(task => !isTaskFinalStatus(task.status));
+  let taskIsTriggerable = task.status === 'PAUSED' && (allDependenciesInFinalStatus || task.triggerType === 'MANUAL');
   let taskIsPreTriggerable = task.status === 'CREATED' && task.triggerType === 'MANUAL';
   let triggerButton =
     !hasWritePermissions(build.viewerPermission) || !taskIsTriggerable ? null : (

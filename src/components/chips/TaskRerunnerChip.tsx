@@ -30,6 +30,6 @@ export default function TaskRerunnerChip(props: Props) {
   if (!reranBy) return <></>;
 
   return (
-    <Chip className={props.className} label="Re-ran by a user" avatar={<Avatar src={reranBy.avatarURL || ''} />} />
+    <Chip className={props.className} label="Re-run by a user" avatar={<Avatar src={reranBy.avatarURL || ''} />} />
   );
 }

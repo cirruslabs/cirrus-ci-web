@@ -1,5 +1,4 @@
-container:
-  image: node:current
+persistent_worker: {}
 
 env:
   # see https://github.com/nodejs/node/blob/master/doc/changelogs/CHANGELOG_V17.md#17.0.0
@@ -10,5 +9,5 @@ docker_builder:
     - docker buildx create --use --name container --driver docker-container --driver-opt "network=host"
     - docker buildx build --network=host --cache-to type=gha,url=http://$CIRRUS_HTTP_CACHE_HOST/,token=$TOKEN,scope=image --build-arg CIRRUS_CHANGE_IN_REPO=$CIRRUS_CHANGE_IN_REPO --tag cirrusci/web-front-end:latest .
   env:
-    TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhYyI6IltdIiwiZXhwIjoxNzExNTMzOTg0LCJuYmYiOjE3MTE1MjY3ODR9.j6MbwnXrNX98jt5x9Sx1eBoxsDBgswmJ1iid-71UQqM
+    TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhYyI6IltdIiwiZXhwIjoxNzExNTQxNzQxLCJuYmYiOjE3MTE1MzQ1NDF9.isRyQbzJZyGroCIOAdxx4gboVnVqGJ48v0f4DrNHfbE
     CIRRUS_AGENT_VERSION: 1.132.2

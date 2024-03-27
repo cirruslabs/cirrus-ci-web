@@ -10,4 +10,4 @@ docker_builder:
     - docker buildx create --use --name container --driver docker-container --driver-opt "network=host"
     - docker buildx build --network=host --cache-to type=gha,url=http://$CIRRUS_HTTP_CACHE_HOST/,token=$TOKEN,scope=image --build-arg CIRRUS_CHANGE_IN_REPO=$CIRRUS_CHANGE_IN_REPO --tag cirrusci/web-front-end:latest .
   env:
-    TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhYyI6IltdIiwiZXhwIjoxNzQyOTc3MjExLCJuYmYiOjE3MTE0Mzc2MTF9.CTMl4dsu3-ajVTbi_qG9BZsLK1zGjTKbYYr0x9qWINc
+    TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhYyI6IltdIiwiZXhwIjoxNzExNTMzOTg0LCJuYmYiOjE3MTE1MjY3ODR9.j6MbwnXrNX98jt5x9Sx1eBoxsDBgswmJ1iid-71UQqM

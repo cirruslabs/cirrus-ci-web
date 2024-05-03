@@ -11,6 +11,7 @@ import environment from 'createRelayEnvironment';
 
 import { isBuildFinalStatus } from 'utils/status';
 
+import { useTaskStatusColorMapping } from '../../utils/colors';
 import { BuildStatusChipNew_build$key } from './__generated__/BuildStatusChipNew_build.graphql';
 
 interface Props {
@@ -49,6 +50,7 @@ export default function BuildStatusChip(props: Props) {
   );
 
   let classes = useStyles();
+  let taskColorMapping = useTaskStatusColorMapping();
 
   const isFinalStatus = useMemo(() => isBuildFinalStatus(build.status), [build.status]);
   useEffect(() => {
@@ -67,7 +69,7 @@ export default function BuildStatusChip(props: Props) {
     };
   }, [build.id, isFinalStatus]);
 
-  const label =
+  let label =
     {
       CREATED: 'created',
       EXECUTING: 'executing',
@@ -76,7 +78,7 @@ export default function BuildStatusChip(props: Props) {
       ABORTED: 'aborted',
     }[build.status] || build.status.toLowerCase();
 
-  const color =
+  let color =
     {
       TRIGGERED: 'info',
       CREATED: 'secondary',
@@ -97,7 +99,9 @@ export default function BuildStatusChip(props: Props) {
     }[build.status] || 'error_circle';
 
   if (build.hasPausedTasks) {
+    label = 'paused';
     icon = 'pause_circle';
+    color = taskColorMapping['PAUSED'];
   }
 
   if (props.mini) {

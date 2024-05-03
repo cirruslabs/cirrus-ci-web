@@ -11,8 +11,8 @@ import environment from 'createRelayEnvironment';
 
 import { isBuildFinalStatus } from 'utils/status';
 
+import { useTaskStatusColorMapping } from '../../utils/colors';
 import { BuildStatusChipNew_build$key } from './__generated__/BuildStatusChipNew_build.graphql';
-import {useTaskStatusColorMapping} from "../../utils/colors";
 
 interface Props {
   build: BuildStatusChipNew_build$key;
@@ -101,7 +101,7 @@ export default function BuildStatusChip(props: Props) {
   if (build.hasPausedTasks) {
     label = 'paused';
     icon = 'pause_circle';
-    color = taskColorMapping["PAUSED"];
+    color = taskColorMapping['PAUSED'];
   }
 
   if (props.mini) {

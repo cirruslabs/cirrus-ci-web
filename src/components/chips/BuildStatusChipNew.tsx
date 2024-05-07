@@ -101,7 +101,7 @@ export default function BuildStatusChip(props: Props) {
   if (build.hasPausedTasks) {
     label = 'paused';
     icon = 'pause_circle';
-    color = taskColorMapping['PAUSED'];
+    color = 'secondary';
   }
 
   if (props.mini) {

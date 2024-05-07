@@ -98,7 +98,6 @@ export default function BuildStatusChip(props: Props) {
     }[build.status] || 'error_circle';
 
   if (build.hasPausedTasks) {
-    label = 'paused';
     icon = 'pause_circle';
     color = 'secondary';
   }

@@ -50,8 +50,7 @@ export default function BuildStatusChip(props: Props) {
   );
 
   let classes = useStyles();
-  let taskColorMapping = useTaskStatusColorMapping();
-
+  useTaskStatusColorMapping();
   const isFinalStatus = useMemo(() => isBuildFinalStatus(build.status), [build.status]);
   useEffect(() => {
     if (isFinalStatus) {

@@ -61,6 +61,7 @@
     "stream-browserify": "^3.0.0",
     "ts-protoc-gen": "^0.15.0",
     "tss-react": "^4.8.5",
+    "vm-browserify": "^1.1.2",
     "xterm": "^5.1.0",
     "xterm-addon-fit": "^0.7.0"
   },

@@ -8039,6 +8039,7 @@ __metadata:
     ts-protoc-gen: ^0.15.0
     tss-react: ^4.8.5
     typescript: ^5.0.4
+    vm-browserify: ^1.1.2
     xterm: ^5.1.0
     xterm-addon-fit: ^0.7.0
     yarn-upgrade-all: ^0.7.2
@@ -19932,6 +19933,13 @@ __metadata:
     d3-time: ^3.0.0
     d3-timer: ^3.0.1
   checksum: 6411f7c19a776cef3919946d429293cfe33c93a6e4dcfdfa2ba1edecad3a28ed2cd6b0d117169b8917ab6a7679e2bade5e7bfc1fed3fc8b464b842f21dac5f49
+  languageName: node
+  linkType: hard
+
+"vm-browserify@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "vm-browserify@npm:1.1.2"
+  checksum: 10a1c50aab54ff8b4c9042c15fc64aefccce8d2fb90c0640403242db0ee7fb269f9b102bdb69cfb435d7ef3180d61fd4fb004a043a12709abaf9056cfd7e039d
   languageName: node
   linkType: hard
 

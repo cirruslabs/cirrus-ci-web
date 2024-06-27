@@ -77,9 +77,10 @@ async function fetchQuery(operation: RequestParameters, variables) {
       body: JSON.stringify(query),
     });
     transaction.setHttpStatus(response.status);
-    return response.json();
+    return await response.json();
   } catch (e) {
     transaction.setStatus(SpanStatus.InternalError);
+    throw e;
   } finally {
     transaction.finish();
   }

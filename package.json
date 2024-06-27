@@ -30,6 +30,8 @@
     "@sentry/tracing": "^7.53.1",
     "@stripe/react-stripe-js": "^2.1.0",
     "@stripe/stripe-js": "^1.54.0",
+    "@xterm/addon-fit": "^0.10.0",
+    "@xterm/xterm": "^5.5.0",
     "ansi_up": "^5.2.1",
     "babel-plugin-relay": "^15.0.0",
     "buffer": "^6.0.3",
@@ -61,9 +63,7 @@
     "stream-browserify": "^3.0.0",
     "ts-protoc-gen": "^0.15.0",
     "tss-react": "^4.8.5",
-    "vm-browserify": "^1.1.2",
-    "xterm": "^5.1.0",
-    "xterm-addon-fit": "^0.7.0"
+    "vm-browserify": "^1.1.2"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",

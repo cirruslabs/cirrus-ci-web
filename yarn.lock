@@ -6431,6 +6431,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@xterm/addon-fit@npm:^0.10.0":
+  version: 0.10.0
+  resolution: "@xterm/addon-fit@npm:0.10.0"
+  peerDependencies:
+    "@xterm/xterm": ^5.0.0
+  checksum: 8edfad561c0d0316c5883cbe2ce56109f105a2b2bf53b71d5f8c788e656a3205c1093a659dddcf4025a459e4b7ff8e07b6c6a19815c8711deeded560de5f1893
+  languageName: node
+  linkType: hard
+
+"@xterm/xterm@npm:^5.5.0":
+  version: 5.5.0
+  resolution: "@xterm/xterm@npm:5.5.0"
+  checksum: 393c1891b95fdd50d05e7a063abdc95a6643d2c45a4231637c23db90511426a95b1b56a5c4c91831121d2710aee9de97cf5e426016c589ca87dea8fff9a41b33
+  languageName: node
+  linkType: hard
+
 "@xtuc/ieee754@npm:^1.2.0":
   version: 1.2.0
   resolution: "@xtuc/ieee754@npm:1.2.0"
@@ -7999,6 +8015,8 @@ __metadata:
     "@types/react-relay": ^14.1.4
     "@types/react-router-dom": ^5.3.3
     "@types/relay-runtime": ^14.1.10
+    "@xterm/addon-fit": ^0.10.0
+    "@xterm/xterm": ^5.5.0
     ansi_up: ^5.2.1
     babel-plugin-relay: ^15.0.0
     buffer: ^6.0.3
@@ -8040,8 +8058,6 @@ __metadata:
     tss-react: ^4.8.5
     typescript: ^5.0.4
     vm-browserify: ^1.1.2
-    xterm: ^5.1.0
-    xterm-addon-fit: ^0.7.0
     yarn-upgrade-all: ^0.7.2
   languageName: unknown
   linkType: soft
@@ -20583,22 +20599,6 @@ __metadata:
   version: 4.0.2
   resolution: "xtend@npm:4.0.2"
   checksum: ac5dfa738b21f6e7f0dd6e65e1b3155036d68104e67e5d5d1bde74892e327d7e5636a076f625599dc394330a731861e87343ff184b0047fef1360a7ec0a5a36a
-  languageName: node
-  linkType: hard
-
-"xterm-addon-fit@npm:^0.7.0":
-  version: 0.7.0
-  resolution: "xterm-addon-fit@npm:0.7.0"
-  peerDependencies:
-    xterm: ^5.0.0
-  checksum: 512d41f80d6f9427ba02dab4e6fd642e94775a9cf7ef72ae4b55eab2a36856b5c67069bfc66b4af412fdce29a0842f9c6382af3672f0b514c4352dfd47defe8f
-  languageName: node
-  linkType: hard
-
-"xterm@npm:^5.1.0":
-  version: 5.1.0
-  resolution: "xterm@npm:5.1.0"
-  checksum: cbacbc9dc1bbcf21dabecff46856b43f2d5854b42c1bec4ea03a5720000f2a88d79b0da45b6c38213d6607474a1fbe66d5ff25fa120b7e9e60eeed964dd840a1
   languageName: node
   linkType: hard
 

@@ -6479,10 +6479,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ace-builds@npm:^1.4.14":
-  version: 1.15.3
-  resolution: "ace-builds@npm:1.15.3"
-  checksum: 793cc2211401fbd3af092418af3b6dcae7ce6d3f312260e6888cf5db4992c087877b5a2808e47e5e105161d61de3cd55a32a8d93d997244ef46c868b9212a53a
+"ace-builds@npm:^1.32.8":
+  version: 1.35.1
+  resolution: "ace-builds@npm:1.35.1"
+  checksum: 87803effa46f8728cc77181b0a6bc316f29bc1eedf9fc6f7337f5afc44620ea717b90dfa2377530fb731b9a79d5a90e7a5c7b2e80d7533dbef71669b6ed8ee9c
   languageName: node
   linkType: hard
 
@@ -8018,7 +8018,7 @@ __metadata:
     prop-types: ^15.8.1
     query-string: ^8.1.0
     react: ^18.2.0
-    react-ace: ^10.1.0
+    react-ace: ^12.0.0
     react-app-rewired: ^2.2.1
     react-dom: ^18.2.0
     react-helmet: ^6.1.0
@@ -16729,19 +16729,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-ace@npm:^10.1.0":
-  version: 10.1.0
-  resolution: "react-ace@npm:10.1.0"
+"react-ace@npm:^12.0.0":
+  version: 12.0.0
+  resolution: "react-ace@npm:12.0.0"
   dependencies:
-    ace-builds: ^1.4.14
+    ace-builds: ^1.32.8
     diff-match-patch: ^1.0.5
     lodash.get: ^4.4.2
     lodash.isequal: ^4.5.0
-    prop-types: ^15.7.2
+    prop-types: ^15.8.1
   peerDependencies:
     react: ^0.13.0 || ^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0 || ^18.0.0
     react-dom: ^0.13.0 || ^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0 || ^18.0.0
-  checksum: 8fc67e02f911dcc31cf474df97c06f2ba5b5f402d9ed425895e479e2daddf4894a2cd0e81744b37b7f2b07109cfe4470fc5ebeed305d648c596e3442142e4823
+  checksum: 98bf716f08263ba35411ebf00658f4ef158f101261322945a3f22c07666d2a1d42d22f3470383352ad8a5a4212507caf2601e76abaab47b538aec63499ef0375
   languageName: node
   linkType: hard
 

@@ -118,6 +118,7 @@ export default function CreateBuildDialog(props: Props) {
           editorProps={{ $blockScrolling: true }}
           highlightActiveLine={true}
           showGutter={true}
+          setOptions={{ useWorker: false }}
         />
       </mui.DialogContent>
       <mui.DialogActions>

@@ -1,8 +1,8 @@
 import { grpc } from '@improbable-eng/grpc-web';
-import { Terminal } from 'xterm';
-import { FitAddon } from 'xterm-addon-fit';
+import { FitAddon } from '@xterm/addon-fit';
+import { Terminal } from '@xterm/xterm';
 
-import '../../../node_modules/xterm/css/xterm.css';
+import '../../../node_modules/@xterm/xterm/css/xterm.css';
 import { Data, GuestTerminalRequest, GuestTerminalResponse, TerminalDimensions } from './api/terminal_pb';
 import { BidirectionalStream, GuestServiceClient } from './api/terminal_pb_service';
 

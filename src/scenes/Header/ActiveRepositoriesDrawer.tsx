@@ -43,67 +43,65 @@ function RegisterServiceWorkerIfNeeded(userId: string, webPushServerKey: string)
   }
 
   askNotificationPermission().then(permissionResult => {
-    navigator.serviceWorker
-      .register('/notification-service-worker.js')
-      .catch(function (err) {
-        console.error('Unable to register service worker.', err);
-      })
-      .then(reg => {
-        if (!reg) return;
-        reg.pushManager.getSubscription().then(existingSubscription => {
-          if (existingSubscription && permissionResult !== 'granted') {
-            let jsonSub = existingSubscription.toJSON();
-            if (!jsonSub.endpoint) {
-              console.error('endpoint is empty');
-              return;
-            }
-            const variables: ActiveRepositoriesDrawerDeleteWebPushConfigurationMutation$variables = {
-              input: {
-                clientMutationId: 'subscribe-' + userId,
-                endpoint: jsonSub.endpoint || '',
-              },
-            };
-            commitDeleteWebPushConfigurationMutation({
-              variables: variables,
-              onError: err => console.error(err),
-            });
-            existingSubscription.unsubscribe();
+    navigator.serviceWorker.register('/notification-service-worker.js').catch(err => {
+      console.error('Unable to register service worker.', err);
+    });
+
+    navigator.serviceWorker.ready.then(reg => {
+      reg.pushManager.getSubscription().then(existingSubscription => {
+        if (existingSubscription && permissionResult !== 'granted') {
+          let jsonSub = existingSubscription.toJSON();
+          if (!jsonSub.endpoint) {
+            console.error('endpoint is empty');
+            return;
           }
-          if (!existingSubscription && permissionResult === 'granted') {
-            let serverKey = base64toUIntArray(webPushServerKey);
-            reg.pushManager
-              .subscribe({
-                userVisibleOnly: true,
-                applicationServerKey: serverKey,
-              })
-              .then(sub => {
-                if (sub) {
-                  let jsonSub = sub.toJSON();
-                  if (!jsonSub.endpoint) {
-                    console.error('endpoint is empty');
-                    return;
-                  }
-                  if (!jsonSub.keys) {
-                    console.error('keys is empty');
-                    return;
-                  }
-                  const variables: ActiveRepositoriesDrawerSaveWebPushConfigurationMutation$variables = {
-                    input: {
-                      clientMutationId: 'subscribe-' + userId,
-                      endpoint: jsonSub.endpoint || '',
-                      p256dhKey: (jsonSub.keys && jsonSub.keys['p256dh']) || '',
-                      authKey: (jsonSub.keys && jsonSub.keys['auth']) || '',
-                    },
-                  };
-                  commitSaveWebPushConfigurationMutation({
-                    variables: variables,
-                    onError: err => console.error(err),
-                  });
+          const variables: ActiveRepositoriesDrawerDeleteWebPushConfigurationMutation$variables = {
+            input: {
+              clientMutationId: 'subscribe-' + userId,
+              endpoint: jsonSub.endpoint || '',
+            },
+          };
+          commitDeleteWebPushConfigurationMutation({
+            variables: variables,
+            onError: err => console.error(err),
+          });
+          existingSubscription.unsubscribe();
+        }
+        if (!existingSubscription && permissionResult === 'granted') {
+          let serverKey = base64toUIntArray(webPushServerKey);
+          reg.pushManager
+            .subscribe({
+              userVisibleOnly: true,
+              applicationServerKey: serverKey,
+            })
+            .then(sub => {
+              if (sub) {
+                let jsonSub = sub.toJSON();
+                if (!jsonSub.endpoint) {
+                  console.error('endpoint is empty');
+                  return;
                 }
-              });
-          }
-        });
+                if (!jsonSub.keys) {
+                  console.error('keys is empty');
+                  return;
+                }
+                const variables: ActiveRepositoriesDrawerSaveWebPushConfigurationMutation$variables = {
+                  input: {
+                    clientMutationId: 'subscribe-' + userId,
+                    endpoint: jsonSub.endpoint || '',
+                    p256dhKey: (jsonSub.keys && jsonSub.keys['p256dh']) || '',
+                    authKey: (jsonSub.keys && jsonSub.keys['auth']) || '',
+                  },
+                };
+                commitSaveWebPushConfigurationMutation({
+                  variables: variables,
+                  onError: err => console.error(err),
+                });
+              }
+            });
+        }
       });
+    });
   });
 }
 

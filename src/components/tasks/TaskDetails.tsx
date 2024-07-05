@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react';
 import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { requestSubscription, useFragment, useMutation } from 'react-relay';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -707,9 +708,11 @@ export default function TaskDetails(props: Props) {
       {notificationsComponent}
       <mui.Collapse in={displayDebugInfo} unmountOnExit={true}>
         <div className={classes.gap} />
-        <Suspense fallback={<CirrusLinearProgress />}>
-          <TaskDebuggingInformation taskId={task.id} />
-        </Suspense>
+        <Sentry.ErrorBoundary fallback={<CirrusLinearProgress />}>
+          <Suspense fallback={<CirrusLinearProgress />}>
+            <TaskDebuggingInformation taskId={task.id} />
+          </Suspense>
+        </Sentry.ErrorBoundary>
       </mui.Collapse>
       <mui.Collapse in={shouldRunTerminal}>
         <div className={classes.gap} />

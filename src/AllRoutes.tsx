@@ -15,6 +15,9 @@ import GitHubStatus from 'components/status/GitHubStatus';
 import ActiveRepositoriesDrawer from 'scenes/Header/ActiveRepositoriesDrawer';
 import ViewerTopRepositories from 'scenes/Profile/ViewerTopRepositories';
 
+import StatusFallback from './components/status/StatusFallback';
+import ActiveRepositoriesFallback from './scenes/Header/ActiveRepositoriesDrawerFallback';
+
 const AsyncViewerProfile = React.lazy(() => import('scenes/Profile/ViewerProfile'));
 
 const AsyncHome = React.lazy(() => import('scenes/Home/Home'));
@@ -170,9 +173,11 @@ function AllRoutes() {
           <mui.icons.Close />
         </mui.IconButton>
       </mui.Stack>
-      <Suspense fallback={<CirrusLinearProgress />}>
-        <ViewerTopRepositories className={classes.topRepositories} />
-      </Suspense>
+      <Sentry.ErrorBoundary fallback={<CirrusLinearProgress />}>
+        <Suspense fallback={<CirrusLinearProgress />}>
+          <ViewerTopRepositories className={classes.topRepositories} />
+        </Suspense>
+      </Sentry.ErrorBoundary>
     </mui.Stack>
   );
 
@@ -242,12 +247,16 @@ function AllRoutes() {
               </mui.Typography>
             </Link>
             <div className={classes.flex} />
-            <Suspense fallback={<div />}>
-              <GCPStatus />
-            </Suspense>
-            <Suspense fallback={<div />}>
-              <GitHubStatus />
-            </Suspense>
+            <Sentry.ErrorBoundary fallback={<StatusFallback />}>
+              <Suspense fallback={<StatusFallback />}>
+                <GCPStatus />
+              </Suspense>
+            </Sentry.ErrorBoundary>
+            <Sentry.ErrorBoundary fallback={<StatusFallback />}>
+              <Suspense fallback={<StatusFallback />}>
+                <GitHubStatus />
+              </Suspense>
+            </Sentry.ErrorBoundary>
             <ThemeSwitchButton />
             <mui.Tooltip sx={{ display: { xs: 'none', sm: 'block' } }} title="Go to front-end source repository">
               <mui.IconButton
@@ -272,9 +281,11 @@ function AllRoutes() {
               </mui.IconButton>
             </mui.Tooltip>
             <div className={classes.marginRight}>
-              <Suspense fallback={<CirrusLinearProgress />}>
-                <ActiveRepositoriesDrawer />
-              </Suspense>
+              <Sentry.ErrorBoundary fallback={<ActiveRepositoriesFallback />}>
+                <Suspense fallback={<ActiveRepositoriesFallback />}>
+                  <ActiveRepositoriesDrawer />
+                </Suspense>
+              </Sentry.ErrorBoundary>
             </div>
           </mui.Toolbar>
         </mui.AppBar>
@@ -287,27 +298,29 @@ function AllRoutes() {
         >
           <div className={classNames('invisible', classes.drawerHeader)} />
           <mui.Container maxWidth={openDrawer ? false : 'lg'}>
-            <Suspense fallback={<CirrusLinearProgress />}>
-              <SentryRoutes>
-                <Route path="/" element={<AsyncHome />} />
-                <Route path="explorer" element={<AsyncApiExplorerRenderer />} />
-                <Route path="settings/profile" element={<AsyncViewerProfile />} />
-                <Route path="settings/:platform/:name" element={<AsyncOwnerSettingsRenderer />} />
-                <Route path="settings/repository/:repositoryId" element={<AsyncRepositorySettings />} />
-                <Route path="build/:buildId" element={<AsyncBuildById />} />
-                <Route path="build/:owner/:name/:SHA" element={<AsyncBuildBySHA />} />
-                <Route path=":platform/:owner/:name/*" element={<AsyncOwnerRepository />} />
-                <Route path=":platform/:owner/:name" element={<AsyncOwnerRepository />} />
-                <Route path=":platform/:owner" element={<AsyncOwner />} />
-                <Route path="repository/:repositoryId/*" element={<AsyncRepository />} />
-                <Route path="repository/:repositoryId" element={<AsyncRepository />} />
-                <Route path="metrics/repository/:platform/:owner/:name" element={<AsyncRepositoryMetrics />} />
-                <Route path="task/:taskId" element={<AsyncTask />} />
-                <Route path="task/:taskId/hooks" element={<AsyncTask />} />
-                <Route path="pool/:poolId" element={<AsyncPoolById />} />
-                <Route path="hook/:hookId" element={<AsyncHook />} />
-              </SentryRoutes>
-            </Suspense>
+            <Sentry.ErrorBoundary fallback={<CirrusLinearProgress />}>
+              <Suspense fallback={<CirrusLinearProgress />}>
+                <SentryRoutes>
+                  <Route path="/" element={<AsyncHome />} />
+                  <Route path="explorer" element={<AsyncApiExplorerRenderer />} />
+                  <Route path="settings/profile" element={<AsyncViewerProfile />} />
+                  <Route path="settings/:platform/:name" element={<AsyncOwnerSettingsRenderer />} />
+                  <Route path="settings/repository/:repositoryId" element={<AsyncRepositorySettings />} />
+                  <Route path="build/:buildId" element={<AsyncBuildById />} />
+                  <Route path="build/:owner/:name/:SHA" element={<AsyncBuildBySHA />} />
+                  <Route path=":platform/:owner/:name/*" element={<AsyncOwnerRepository />} />
+                  <Route path=":platform/:owner/:name" element={<AsyncOwnerRepository />} />
+                  <Route path=":platform/:owner" element={<AsyncOwner />} />
+                  <Route path="repository/:repositoryId/*" element={<AsyncRepository />} />
+                  <Route path="repository/:repositoryId" element={<AsyncRepository />} />
+                  <Route path="metrics/repository/:platform/:owner/:name" element={<AsyncRepositoryMetrics />} />
+                  <Route path="task/:taskId" element={<AsyncTask />} />
+                  <Route path="task/:taskId/hooks" element={<AsyncTask />} />
+                  <Route path="pool/:poolId" element={<AsyncPoolById />} />
+                  <Route path="hook/:hookId" element={<AsyncHook />} />
+                </SentryRoutes>
+              </Suspense>
+            </Sentry.ErrorBoundary>
           </mui.Container>
         </main>
       </mui.Stack>

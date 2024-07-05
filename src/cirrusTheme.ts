@@ -92,6 +92,13 @@ export let cirrusLightTheme: ThemeOptions = {
         },
       },
     },
+    MuiSkeleton: {
+      styleOverrides: {
+        root: {
+          backgroundColor: grey['800'],
+        },
+      },
+    },
     MuiTableCell: {
       styleOverrides: {
         body: {

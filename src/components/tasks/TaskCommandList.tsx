@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react';
 import React, { Suspense } from 'react';
 import { useFragment } from 'react-relay';
 import { useLocation } from 'react-router-dom';
@@ -125,9 +126,11 @@ export default function TaskCommandList(props: Props) {
             </div>
           </mui.AccordionSummary>
           <mui.AccordionDetails className={classes.details}>
-            <Suspense fallback={<CirrusCircularProgress />}>
-              <TaskCommandLogs taskId={task.id} command={command} stripTimestamps={props.stripTimestamps} />
-            </Suspense>
+            <Sentry.ErrorBoundary fallback={<CirrusCircularProgress />}>
+              <Suspense fallback={<CirrusCircularProgress />}>
+                <TaskCommandLogs taskId={task.id} command={command} stripTimestamps={props.stripTimestamps} />
+              </Suspense>
+            </Sentry.ErrorBoundary>
           </mui.AccordionDetails>
         </mui.Accordion>
       </mui.Box>

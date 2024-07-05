@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react';
 import React, { Suspense } from 'react';
 
 import Button from '@mui/material/Button/Button';
@@ -23,9 +24,11 @@ export default function DeliveryInfoDialog(props: Props) {
   return (
     <Dialog {...other}>
       <DialogTitle>Delivery Info for {delivery.id}</DialogTitle>
-      <Suspense fallback={<CirrusLinearProgress />}>
-        <DeliveryInfoDialogLazyContent deliveryId={delivery.id} />
-      </Suspense>
+      <Sentry.ErrorBoundary fallback={<CirrusLinearProgress />}>
+        <Suspense fallback={<CirrusLinearProgress />}>
+          <DeliveryInfoDialogLazyContent deliveryId={delivery.id} />
+        </Suspense>
+      </Sentry.ErrorBoundary>
       <DialogActions>
         <Button onClick={props.onClose} variant="contained" autoFocus>
           Close

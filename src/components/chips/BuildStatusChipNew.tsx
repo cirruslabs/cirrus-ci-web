@@ -99,6 +99,9 @@ export default function BuildStatusChip(props: Props) {
 
   if (build.hasPausedTasks) {
     icon = 'pause_circle';
+  }
+
+  if (build.hasPausedTasks && build.status === 'COMPLETED') {
     color = 'secondary';
   }
 

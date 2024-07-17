@@ -110,7 +110,13 @@ export default function OwnerScopedTokenDialog(props: Props) {
   }
 
   return (
-    <Dialog onClose={props.onClose} open={props.open}>
+    <Dialog
+      onClose={() => {
+        setNewToken(null);
+        props.onClose();
+      }}
+      open={props.open}
+    >
       <DialogTitle>Generate API token for repositories</DialogTitle>
       <DialogContent>
         <FormControl fullWidth>
@@ -142,7 +148,14 @@ export default function OwnerScopedTokenDialog(props: Props) {
         <Button onClick={generateToken} disabled={repositoryNames === ''} variant="contained">
           Generate
         </Button>
-        <Button onClick={props.onClose} color="secondary" variant="contained">
+        <Button
+          onClick={() => {
+            setNewToken(null);
+            props.onClose();
+          }}
+          color="secondary"
+          variant="contained"
+        >
           Close
         </Button>
       </DialogActions>

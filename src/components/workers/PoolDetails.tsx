@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useFragment, useMutation } from 'react-relay';
+import React, {useEffect, useState} from 'react';
+import {useFragment, useMutation} from 'react-relay';
 
-import { graphql } from 'babel-plugin-relay/macro';
+import {graphql} from 'babel-plugin-relay/macro';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -35,7 +35,7 @@ import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
-import { makeStyles } from '@mui/styles';
+import {makeStyles} from '@mui/styles';
 
 import TaskStatusChipExtended from 'components/chips/TaskStatusChipExtended';
 import CopyPasteField from 'components/common/CopyPasteField';
@@ -59,7 +59,7 @@ import {
   PoolDetailsUpdateWorkerMutation,
   UpdatePersistentWorkerInput,
 } from './__generated__/PoolDetailsUpdateWorkerMutation.graphql';
-import { PoolDetails_pool$key } from './__generated__/PoolDetails_pool.graphql';
+import {PoolDetails_pool$key} from './__generated__/PoolDetails_pool.graphql';
 
 const useStyles = makeStyles(theme => {
   return {
@@ -152,7 +152,7 @@ export default function PoolDetails(props: PoolDetailsProps) {
       poolId: pool.id,
     };
     commitGetRegistrationTokenMutation({
-      variables: { input: input },
+      variables: {input: input},
       onCompleted: (response: PoolDetailsGetRegistrationTokenMutation$data, errors) => {
         if (errors) {
           console.log(errors);
@@ -172,7 +172,7 @@ export default function PoolDetails(props: PoolDetailsProps) {
       name: workerName,
     };
     commitDeleteWorkerMutation({
-      variables: { input: input },
+      variables: {input: input},
       onCompleted: (response, errors) => {
         if (errors) {
           console.log(errors);
@@ -191,7 +191,7 @@ export default function PoolDetails(props: PoolDetailsProps) {
       disabled: disabled,
     };
     commitUpdateWorkerMutation({
-      variables: { input: input },
+      variables: {input: input},
       onCompleted: (response, errors) => {
         if (errors) {
           console.log(errors);
@@ -205,21 +205,21 @@ export default function PoolDetails(props: PoolDetailsProps) {
     document.title = `${pool.name} pool - Cirrus CI`;
   }, [pool.name]);
 
-  let viewerCanSeeToken = pool.viewerPermission === 'ADMIN' || pool.viewerPermission === 'WRITE';
+  let viewerHasPermissions = pool.viewerPermission === 'ADMIN' || pool.viewerPermission === 'WRITE';
   return (
     <>
       <Card elevation={24}>
         <CardHeader
           avatar={
             <Avatar aria-label="recipe">
-              <PoolVisibilityIcon enabledForPublic={pool.enabledForPublic} />
+              <PoolVisibilityIcon enabledForPublic={pool.enabledForPublic}/>
             </Avatar>
           }
           action={
             <div>
               <Tooltip title="Edit">
                 <IconButton aria-label="edit" onClick={() => setOpenEditDialog(!openEditDialog)} size="large">
-                  <EditIcon />
+                  <EditIcon/>
                 </IconButton>
               </Tooltip>
               <EditPersistentWorkerPoolDialog
@@ -243,15 +243,15 @@ export default function PoolDetails(props: PoolDetailsProps) {
             on a machine that will become a persistent worker.
           </Typography>
         </CardContent>
-        {viewerCanSeeToken && registrationToken && (
+        {viewerHasPermissions && registrationToken && (
           <CardContent>
             <InputLabel htmlFor="registration-token">Registration Token</InputLabel>
-            <CopyPasteField id="registration-token" value={registrationToken} fullWidth={true} />
+            <CopyPasteField id="registration-token" value={registrationToken} fullWidth={true}/>
           </CardContent>
         )}
-        <CardActions sx={{ justifyContent: 'flex-end' }}>
-          {viewerCanSeeToken && !registrationToken && (
-            <Button variant="contained" startIcon={<VisibilityIcon />} onClick={retrieveRegistrationToken}>
+        <CardActions sx={{justifyContent: 'flex-end'}}>
+          {viewerHasPermissions && !registrationToken && (
+            <Button variant="contained" startIcon={<VisibilityIcon/>} onClick={retrieveRegistrationToken}>
               Show Registration Token
             </Button>
           )}
@@ -266,8 +266,8 @@ export default function PoolDetails(props: PoolDetailsProps) {
                 <TableCell>host</TableCell>
                 <TableCell>Labels</TableCell>
                 <TableCell>Running Tasks</TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
+                {viewerHasPermissions && <TableCell></TableCell>}
+                {viewerHasPermissions && <TableCell></TableCell>}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -276,7 +276,7 @@ export default function PoolDetails(props: PoolDetailsProps) {
                   worker && (
                     <TableRow key={worker.name}>
                       <TableCell>
-                        <WorkerStatusChip worker={worker} />
+                        <WorkerStatusChip worker={worker}/>
                       </TableCell>
                       <TableCell>{worker.version}</TableCell>
                       <TableCell component="th">{worker.name}</TableCell>
@@ -284,7 +284,7 @@ export default function PoolDetails(props: PoolDetailsProps) {
                       <TableCell>
                         <div className={classes.wrapper}>
                           {worker.labels.map(label => (
-                            <Chip key={label} className={classes.chip} label={label} />
+                            <Chip key={label} className={classes.chip} label={label}/>
                           ))}
                         </div>
                       </TableCell>
@@ -292,9 +292,10 @@ export default function PoolDetails(props: PoolDetailsProps) {
                         {!worker.info
                           ? null
                           : worker.info.runningTasks.map(task => (
-                              <TaskStatusChipExtended key={task.name} task={task} />
-                            ))}
+                            <TaskStatusChipExtended key={task.name} task={task}/>
+                          ))}
                       </TableCell>
+                      {viewerHasPermissions && (
                       <TableCell>
                         <Tooltip title={worker.disabled ? 'Enable task scheduling' : 'Disable task scheduling'}>
                           <IconButton
@@ -303,13 +304,15 @@ export default function PoolDetails(props: PoolDetailsProps) {
                             size="large"
                           >
                             {worker.disabled ? (
-                              <PlayCircleOutlineIcon className={classes.enabledWorkerButton} />
+                              <PlayCircleOutlineIcon className={classes.enabledWorkerButton}/>
                             ) : (
-                              <PauseCircleOutlineIcon />
+                              <PauseCircleOutlineIcon/>
                             )}
                           </IconButton>
                         </Tooltip>
                       </TableCell>
+                      )}
+                      {viewerHasPermissions && (
                       <TableCell>
                         <IconButton
                           edge="end"
@@ -317,9 +320,10 @@ export default function PoolDetails(props: PoolDetailsProps) {
                           onClick={() => deleteWorker(worker.name)}
                           size="large"
                         >
-                          <DeleteIcon />
+                          <DeleteIcon/>
                         </IconButton>
                       </TableCell>
+                      )}
                     </TableRow>
                   ),
               )}
@@ -364,7 +368,7 @@ function EditPersistentWorkerPoolDialog(props: DialogProps) {
       enabledForPublic: enabledForPublic,
     };
     commitUpdatePoolMutation({
-      variables: { input: input },
+      variables: {input: input},
       onCompleted: props.onClose,
       onError: err => console.log(err),
     });
@@ -377,7 +381,7 @@ function EditPersistentWorkerPoolDialog(props: DialogProps) {
         <FormControl fullWidth>
           <FormControlLabel
             control={
-              <Switch checked={enabledForPublic} onChange={event => setEnabledForPublic(event.target.checked)} />
+              <Switch checked={enabledForPublic} onChange={event => setEnabledForPublic(event.target.checked)}/>
             }
             label="Enabled for public"
           />
@@ -390,7 +394,7 @@ function EditPersistentWorkerPoolDialog(props: DialogProps) {
         </Typography>
         <FormControl fullWidth>
           <InputLabel htmlFor="name">Name</InputLabel>
-          <Input id="name" onChange={event => setName(event.target.value)} value={name} />
+          <Input id="name" onChange={event => setName(event.target.value)} value={name}/>
         </FormControl>
       </DialogContent>
       <DialogActions>

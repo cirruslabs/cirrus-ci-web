@@ -1,6 +1,7 @@
 import * as Sentry from '@sentry/react';
+import { setHttpStatus } from '@sentry/react';
 
-import { SpanStatus } from '@sentry/tracing';
+import { SPAN_STATUS_ERROR } from '@sentry/core';
 import { Environment, Network, Observable, RecordSource, Store, SubscribeFunction } from 'relay-runtime';
 import { Sink } from 'relay-runtime/lib/network/RelayObservable';
 import { RequestParameters } from 'relay-runtime/lib/util/RelayConcreteNode';
@@ -60,12 +61,14 @@ async function fetchQuery(operation: RequestParameters, variables) {
     query: operation.text, // GraphQL text from input
     variables,
   };
-  let transaction = Sentry.startTransaction({
+  let span = Sentry.startInactiveSpan({
     op: 'gql',
     name: operation.name,
   });
-  transaction.setTag('operationKind', operation.operationKind);
-  transaction.setData('id', operation.id);
+  span.setAttribute('operationKind', operation.operationKind);
+  if (operation.id !== null) {
+    span.setAttribute('id', operation.id);
+  }
   try {
     const response = await fetch('https://api.cirrus-ci.com/graphql', {
       method: 'POST',
@@ -76,13 +79,13 @@ async function fetchQuery(operation: RequestParameters, variables) {
       },
       body: JSON.stringify(query),
     });
-    transaction.setHttpStatus(response.status);
+    setHttpStatus(span, response.status);
     return await response.json();
   } catch (e) {
-    transaction.setStatus(SpanStatus.InternalError);
+    span.setStatus({ code: SPAN_STATUS_ERROR });
     throw e;
   } finally {
-    transaction.finish();
+    span.end();
   }
 }
 

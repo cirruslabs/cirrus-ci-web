@@ -4,7 +4,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createRoutesFromChildren, matchRoutes, useLocation, useNavigationType } from 'react-router-dom';
 
-import { BrowserTracing } from '@sentry/tracing';
 import { RecoilRoot } from 'recoil';
 
 import App from './App';

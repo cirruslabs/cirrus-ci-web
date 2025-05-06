@@ -3426,12 +3426,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.22.3":
-  version: 7.22.3
-  resolution: "@babel/runtime@npm:7.22.3"
-  dependencies:
-    regenerator-runtime: ^0.13.11
-  checksum: 8fc50785ca4cba749fed90bffca7e6fd52d4709755654e95b8d2a945fc034b56fb8c2e8a0183fea7c4abb86bf5fa77678c0ea35163b6920649833d180c34c234
+"@babel/runtime@npm:^7.26.10":
+  version: 7.27.1
+  resolution: "@babel/runtime@npm:7.27.1"
+  checksum: 11339838a54783e5b14e04d94d7a4d032e9965c5823f3f687e41556fa40344ae7aeb57c535720b7a74ab3e8217def7834a6f1a665ee55bbb3befede141419913
   languageName: node
   linkType: hard
 
@@ -8030,7 +8028,7 @@ __metadata:
   resolution: "cirrus-ci-web@workspace:."
   dependencies:
     "@babel/preset-env": ^7.22.4
-    "@babel/runtime": ^7.22.3
+    "@babel/runtime": ^7.26.10
     "@dagrejs/graphlib": ^2.1.13
     "@emotion/react": ^11.11.0
     "@emotion/styled": ^11.11.0

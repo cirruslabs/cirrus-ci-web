@@ -14,7 +14,7 @@
   "license": "MIT",
   "dependencies": {
     "@babel/preset-env": "^7.22.4",
-    "@babel/runtime": "^7.22.3",
+    "@babel/runtime": "^7.26.10",
     "@dagrejs/graphlib": "^2.1.13",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",

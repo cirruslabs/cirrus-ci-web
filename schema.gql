@@ -72,6 +72,7 @@ type AuditEventType implements Node {
   timestamp: Int!
   repository: Repository
   actor: UserBasicInfo
+  actorLocationIP: String
 }
 
 type BillingSettings {
@@ -108,6 +109,7 @@ type Build implements Node {
   durationInSeconds: Int
   clockDurationInSeconds: Int
   pullRequest: Int
+  pullRequestDraft: Boolean
   pullRequestLabels: [String!]!
   isSenderUserCollaborator: Boolean!
   senderUserPermissions: String!
@@ -1009,7 +1011,9 @@ input RepositoryCreateBuildInput {
   repositoryId: ID!
   branch: String!
   sha: String
+  message: String
   configOverride: String
+  scriptOverride: String
   clientMutationId: String!
 }
 
@@ -1183,6 +1187,8 @@ type Task implements Node {
   dependencies: [Task!]!
   automaticReRun: Boolean!
   automaticallyReRunnable: Boolean!
+  manualRerunCount: Int!
+  instanceType: String!
   experimental: Boolean!
   stateful: Boolean!
   useComputeCredits: Boolean!
@@ -1367,6 +1373,7 @@ type User implements Node & UserBasicInfo {
   id: ID!
   category: User!
   avatarURL: String!
+  username: String!
   builds(
     """
     fetching only nodes before this node (exclusive)
@@ -1394,38 +1401,17 @@ type User implements Node & UserBasicInfo {
     statuses: [BuildStatus!]
   ): UserBuildsConnection!
   topActiveRepositories: [Repository!]!
-  balanceInCredits: String!
   apiToken: ApiAccessToken
   webPushServerKey: String!
   persistentWorkerPools: [PersistentWorkerPool!]!
   relatedOwners: [OwnerInfo!]!
-  transactions(
-    """
-    fetching only nodes before this node (exclusive)
-    """
-    before: String
-
-    """
-    fetching only nodes after this node (exclusive)
-    """
-    after: String
-
-    """
-    fetching only the first certain number of nodes
-    """
-    first: Int
-
-    """
-    fetching only the last certain number of nodes
-    """
-    last: Int
-  ): UserTransactionsConnection!
 }
 
 interface UserBasicInfo {
   id: ID!
   category: User!
   avatarURL: String
+  username: String
 }
 
 """
@@ -1451,36 +1437,6 @@ type UserBuildsConnection {
   a list of edges
   """
   edges: [UserBuildEdge!]!
-
-  """
-  details about this specific page
-  """
-  pageInfo: PageInfo!
-}
-
-"""
-An edge in a connection
-"""
-type UserTransactionEdge {
-  """
-  The item at the end of the edge
-  """
-  node: OwnerTransaction!
-
-  """
-  cursor marks a unique position or index into the connection
-  """
-  cursor: String!
-}
-
-"""
-A connection to a list of items.
-"""
-type UserTransactionsConnection {
-  """
-  a list of edges
-  """
-  edges: [UserTransactionEdge!]!
 
   """
   details about this specific page

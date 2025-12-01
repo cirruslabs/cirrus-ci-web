@@ -3569,6 +3569,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@csstools/normalize.css@npm:12.1.1":
+  version: 12.1.1
+  resolution: "@csstools/normalize.css@npm:12.1.1"
+  checksum: 10/aa4d1b9a77c1ecba0a60e11371d944615c64b465abfb6fe7aea237d8bebd34dc47036f2570d7038a8633755ebd3ed09ec02326fbb7570b5bf7b80aa142c0ef4b
+  languageName: node
+  linkType: hard
+
 "@csstools/postcss-cascade-layers@npm:^1.1.1":
   version: 1.1.1
   resolution: "@csstools/postcss-cascade-layers@npm:1.1.1"
@@ -8075,6 +8082,7 @@ __metadata:
     husky: "npm:^8.0.3"
     js-base64: "npm:^3.7.5"
     pluralize: "npm:^8.0.0"
+    postcss-normalize: "npm:^13.0.1"
     prettier: "npm:^2.8.8"
     pretty-quick: "npm:^3.1.3"
     prop-types: "npm:^15.8.1"
@@ -15756,6 +15764,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"postcss-browser-comments@npm:^6.0.1":
+  version: 6.0.2
+  resolution: "postcss-browser-comments@npm:6.0.2"
+  peerDependencies:
+    browserslist: ^4.28.0
+    postcss: ^8.4
+  checksum: 10/a0cd4f3373796132f89f05a4baf7b52fbce1088264a3b321154bcb6e3e178e683102edc6d76860dd10257799b3d7be26911f57296ec4a5cdc0a49bfd9b82d7d7
+  languageName: node
+  linkType: hard
+
 "postcss-calc@npm:^8.2.3":
   version: 8.2.4
   resolution: "postcss-calc@npm:8.2.4"
@@ -16347,6 +16365,20 @@ __metadata:
     browserslist: ">= 4"
     postcss: ">= 8"
   checksum: 10/f2562ae30a75531436542cfd8ee5aec6c46f044cd410fed51d38dbecfc053f822ff5589687eeb1c0a1c5db3a16b25f6cebe0188c75be2cf4352d526212b760dc
+  languageName: node
+  linkType: hard
+
+"postcss-normalize@npm:^13.0.1":
+  version: 13.0.1
+  resolution: "postcss-normalize@npm:13.0.1"
+  dependencies:
+    "@csstools/normalize.css": "npm:12.1.1"
+    postcss-browser-comments: "npm:^6.0.1"
+    sanitize.css: "npm:13.0.0"
+  peerDependencies:
+    browserslist: ">= 4"
+    postcss: ">= 8"
+  checksum: 10/1bc8618d5a55efcf99ef47fc8687e49cd46b406af0a4ecf31e14ece3b632d94666a776378f311680f1fe3e96f09a70ab66d37cba872b265e3efdbaef10ef8414
   languageName: node
   linkType: hard
 
@@ -18170,7 +18202,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sanitize.css@npm:*":
+"sanitize.css@npm:*, sanitize.css@npm:13.0.0":
   version: 13.0.0
   resolution: "sanitize.css@npm:13.0.0"
   checksum: 10/508cde59d1c99a885806387ca8350c594c4211cab16804fe66ed75cd7e1ba7ebd4079224128b1aea4d4227f0d1add3e83a85a51a6a7e4419c083f4cce70d010f
